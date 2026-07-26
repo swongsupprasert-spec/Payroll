@@ -155,10 +155,11 @@
     <header class="top">
       <h1 id="pageTitle">แดชบอร์ด</h1>
       <div class="period">
-        <label>งวดเดือน</label>
+        <label id="periodLab">งวดเดือน</label>
         <select id="monthSel"></select>
         <select id="yearSel"></select>
       </div>
+      <button class="btn ghost sm no-print" id="langToggle" style="margin-left:10px">🌐 EN</button>
     </header>
     <div class="content" id="view"></div>
   </div>
@@ -177,6 +178,44 @@ const money = n => THB.format(Number(n||0));
 const num = n => new Intl.NumberFormat('th-TH').format(Number(n||0));
 const THAI_MONTHS = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 const THAI_MONTHS_ABBR = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const MONTHS_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+/* ---------- i18n (TH/EN) ---------- */
+let LANG = localStorage.getItem('lang') || 'th';
+const I18N = {
+  th:{
+    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
+    nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
+    nav_pnd1:'แบบ ภ.ง.ด.1', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ',
+    period:'งวดเดือน',
+    kpi_count:'จำนวนพนักงาน', kpi_salary:'เงินเดือนรวม', kpi_income:'เงินได้รวม', kpi_deduct:'เงินหักรวม', kpi_net:'เงินสุทธิรวม',
+    male:'ชาย', female:'หญิง', unspec:'ไม่ระบุ', unit_person:'คน',
+    dept_summary:'สรุปตามแผนก', grand_total:'รวมทั้งสิ้น', no_data:'ยังไม่มีข้อมูล',
+    th_dept:'แผนก', th_emp:'พนักงาน', th_salary:'เงินเดือน', th_income:'รายได้รวม', th_deduct:'หักรวม', th_net:'สุทธิ',
+    no_emp_hint:'ยังไม่มีพนักงาน — ไปที่เมนู “ข้อมูลพนักงาน” เพื่อเพิ่ม',
+    search_emp:'ค้นหา รหัส / ชื่อ / ตำแหน่ง / แผนก', import_csv:'⬆️ นำเข้า CSV', export_csv:'⬇️ ส่งออก CSV', add_emp:'➕ เพิ่มพนักงาน',
+    th_code:'รหัส', th_name:'ชื่อ-นามสกุล', th_position:'ตำแหน่ง', th_type:'ประเภท', th_wage:'ค่าจ้าง', th_start:'วันเริ่มงาน',
+    type_monthly:'รายเดือน', type_daily:'รายวัน', per_month:'/เดือน', per_day:'/วัน', emp_not_found:'ไม่พบพนักงาน',
+    print:'🖨️ พิมพ์',
+  },
+  en:{
+    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
+    nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
+    nav_pnd1:'PND.1 Form', nav_settings:'Settings', nav_admin:'👑 Admin',
+    period:'Period',
+    kpi_count:'Employees', kpi_salary:'Total Salary', kpi_income:'Total Earnings', kpi_deduct:'Total Deductions', kpi_net:'Total Net Pay',
+    male:'Male', female:'Female', unspec:'N/A', unit_person:'',
+    dept_summary:'Summary by Department', grand_total:'Grand Total', no_data:'No data',
+    th_dept:'Department', th_emp:'Staff', th_salary:'Salary', th_income:'Gross', th_deduct:'Deductions', th_net:'Net',
+    no_emp_hint:'No employees yet — go to “Employees” to add.',
+    search_emp:'Search code / name / position / dept', import_csv:'⬆️ Import CSV', export_csv:'⬇️ Export CSV', add_emp:'➕ Add Employee',
+    th_code:'Code', th_name:'Name', th_position:'Position', th_type:'Type', th_wage:'Wage', th_start:'Start Date',
+    type_monthly:'Monthly', type_daily:'Daily', per_month:'/mo', per_day:'/day', emp_not_found:'No employees found',
+    print:'🖨️ Print',
+  }
+};
+function tr(k){ return (I18N[LANG] && I18N[LANG][k]) || I18N.th[k] || k; }
+function monthName(i){ return LANG==='en' ? MONTHS_EN[i] : THAI_MONTHS[i]; }
 const shortMoney = n => { n=+n||0; const s=n<0?'-':''; n=Math.abs(n); if(n>=1e6) return s+(n/1e6).toFixed(n>=1e7?0:1)+'M'; if(n>=1e3) return s+Math.round(n/1e3)+'K'; return s+Math.round(n); };
 const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
@@ -204,7 +243,7 @@ function seed(){
   return d;
 }
 function curPeriod(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
-function periodLabel(p){ const [y,m]=p.split('-'); return `${THAI_MONTHS[+m-1]} ${(+y)+543}`; }
+function periodLabel(p){ const [y,m]=p.split('-'); return LANG==='en' ? `${MONTHS_EN[+m-1]} ${+y}` : `${THAI_MONTHS[+m-1]} ${(+y)+543}`; }
 // ช่วงวันที่ของงวดจ่าย ตามวันตัดรอบ (0 = สิ้นเดือน)
 function periodRange(p){
   const [y,m]=p.split('-').map(Number); const cut=+DB.cutoffDay||0;
@@ -344,7 +383,7 @@ function renderNav(){
   const nav = $('#nav'); nav.innerHTML='';
   const items = IS_ADMIN ? [...PAGES, ['admin','ผู้ดูแลระบบ','👑']] : PAGES;
   items.forEach(([id,label,ico])=>{
-    const b = el(`<button data-p="${id}"><span class="ico">${ico}</span><span class="t">${label}</span></button>`);
+    const b = el(`<button data-p="${id}"><span class="ico">${ico}</span><span class="t">${tr('nav_'+id)}</span></button>`);
     if(id===PAGE) b.classList.add('active');
     b.onclick = ()=>{ PAGE=id; renderNav(); render(); };
     nav.appendChild(b);
@@ -361,16 +400,16 @@ function renderPeriodSel(){
   const years=[...yset].sort((a,b)=>b-a);
 
   const mSel=$('#monthSel'), ySel=$('#yearSel');
-  mSel.innerHTML = THAI_MONTHS.map((m,i)=>`<option value="${i+1}" ${i+1===curM?'selected':''}>${m}</option>`).join('');
-  ySel.innerHTML = years.map(y=>`<option value="${y}" ${y===curY?'selected':''}>${y+543}</option>`).join('');
+  mSel.innerHTML = (LANG==='en'?MONTHS_EN:THAI_MONTHS).map((m,i)=>`<option value="${i+1}" ${i+1===curM?'selected':''}>${m}</option>`).join('');
+  ySel.innerHTML = years.map(y=>`<option value="${y}" ${y===curY?'selected':''}>${LANG==='en'?y:y+543}</option>`).join('');
   const apply=()=>{ PERIOD=`${ySel.value}-${String(mSel.value).padStart(2,'0')}`; render(); };
   mSel.onchange=apply; ySel.onchange=apply;
 }
 
 /* ---------- Router ---------- */
 function render(){
-  const meta = PAGES.find(p=>p[0]===PAGE) || (PAGE==='admin'?['admin','👑 ผู้ดูแลระบบ']:['','']);
-  $('#pageTitle').textContent = meta[1];
+  $('#pageTitle').textContent = tr('nav_'+PAGE);
+  const pl=$('#periodLab'); if(pl) pl.textContent=tr('period');
   renderPeriodSel();
   const v = $('#view'); v.innerHTML='';
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
@@ -515,20 +554,20 @@ function vDashboard(v){
 
   // KPI cards
   v.appendChild(el(`<div class="cards">
-    <div class="kpi b1"><div class="lab">👥 จำนวนพนักงาน</div><div class="val">${num(t.count)} <span class="muted" style="font-size:14px">คน</span></div>
+    <div class="kpi b1"><div class="lab">👥 ${tr('kpi_count')}</div><div class="val">${num(t.count)} <span class="muted" style="font-size:14px">${tr('unit_person')}</span></div>
       <div style="margin-top:6px;display:flex;gap:12px;font-size:12px">
-        <span style="color:#2563eb">♂ ชาย ${num(DB.employees.filter(e=>e.gender==='M').length)}</span>
-        <span style="color:#db2777">♀ หญิง ${num(DB.employees.filter(e=>e.gender==='F').length)}</span>
-        ${DB.employees.some(e=>!e.gender)?`<span class="muted">– ไม่ระบุ ${num(DB.employees.filter(e=>!e.gender).length)}</span>`:''}
+        <span style="color:#2563eb">♂ ${tr('male')} ${num(DB.employees.filter(e=>e.gender==='M').length)}</span>
+        <span style="color:#db2777">♀ ${tr('female')} ${num(DB.employees.filter(e=>e.gender==='F').length)}</span>
+        ${DB.employees.some(e=>!e.gender)?`<span class="muted">– ${tr('unspec')} ${num(DB.employees.filter(e=>!e.gender).length)}</span>`:''}
       </div></div>
-    <div class="kpi b2"><div class="lab">💼 เงินเดือนรวม</div><div class="val money">${money(t.salary)}</div></div>
-    <div class="kpi b3"><div class="lab">➕ เงินได้รวม</div><div class="val money">${money(t.gross)}</div></div>
-    <div class="kpi b4"><div class="lab">➖ เงินหักรวม</div><div class="val money">${money(t.ded)}</div></div>
-    <div class="kpi b5"><div class="lab">💰 เงินสุทธิรวม</div><div class="val money">${money(t.net)}</div></div>
+    <div class="kpi b2"><div class="lab">💼 ${tr('kpi_salary')}</div><div class="val money">${money(t.salary)}</div></div>
+    <div class="kpi b3"><div class="lab">➕ ${tr('kpi_income')}</div><div class="val money">${money(t.gross)}</div></div>
+    <div class="kpi b4"><div class="lab">➖ ${tr('kpi_deduct')}</div><div class="val money">${money(t.ded)}</div></div>
+    <div class="kpi b5"><div class="lab">💰 ${tr('kpi_net')}</div><div class="val money">${money(t.net)}</div></div>
   </div>`));
 
   if(DB.employees.length===0){
-    v.appendChild(el(`<div class="panel"><div class="pbody empty">ยังไม่มีพนักงาน — ไปที่เมนู “ข้อมูลพนักงาน” เพื่อเพิ่ม</div></div>`));
+    v.appendChild(el(`<div class="panel"><div class="pbody empty">${tr('no_emp_hint')}</div></div>`));
     return;
   }
 
@@ -558,11 +597,11 @@ function vDashboard(v){
 
   // Dept table
   const rows = depts.map(d=>`<tr><td>${esc(d.dept)}</td><td class="num">${num(d.count)}</td><td class="num">${money(d.salary)}</td><td class="num pos">${money(d.gross)}</td><td class="num neg">${money(d.ded)}</td><td class="num">${money(d.net)}</td></tr>`).join('');
-  const panel = el(`<div class="panel"><div class="phead"><h2>สรุปตามแผนก — ${scopeLabel}</h2></div><div class="pbody" style="padding:0"><div class="tbl-wrap"></div></div></div>`);
+  const panel = el(`<div class="panel"><div class="phead"><h2>${tr('dept_summary')} — ${scopeLabel}</h2></div><div class="pbody" style="padding:0"><div class="tbl-wrap"></div></div></div>`);
   panel.querySelector('.tbl-wrap').appendChild(el(`<table>
-    <thead><tr><th>แผนก</th><th class="num">พนักงาน</th><th class="num">เงินเดือน</th><th class="num">รายได้รวม</th><th class="num">หักรวม</th><th class="num">สุทธิ</th></tr></thead>
-    <tbody>${rows||'<tr><td colspan="6" class="empty">ยังไม่มีข้อมูล</td></tr>'}</tbody>
-    <tfoot><tr><td>รวมทั้งสิ้น</td><td class="num">${num(t.count)}</td><td class="num">${money(t.salary)}</td><td class="num">${money(t.gross)}</td><td class="num">${money(t.ded)}</td><td class="num">${money(t.net)}</td></tr></tfoot>
+    <thead><tr><th>${tr('th_dept')}</th><th class="num">${tr('th_emp')}</th><th class="num">${tr('th_salary')}</th><th class="num">${tr('th_income')}</th><th class="num">${tr('th_deduct')}</th><th class="num">${tr('th_net')}</th></tr></thead>
+    <tbody>${rows||`<tr><td colspan="6" class="empty">${tr('no_data')}</td></tr>`}</tbody>
+    <tfoot><tr><td>${tr('grand_total')}</td><td class="num">${num(t.count)}</td><td class="num">${money(t.salary)}</td><td class="num">${money(t.gross)}</td><td class="num">${money(t.ded)}</td><td class="num">${money(t.net)}</td></tr></tfoot>
   </table>`));
   v.appendChild(panel);
 }
@@ -579,10 +618,10 @@ function deptSummary(p){
 let empSearch='';
 function vEmployees(v){
   const tb = el(`<div class="toolbar">
-    <div class="search"><input id="empQ" placeholder="ค้นหา รหัส / ชื่อ / ตำแหน่ง / แผนก" value="${esc(empSearch)}"></div>
-    <button class="btn ghost sm" id="impBtn">⬆️ นำเข้า CSV</button>
-    <button class="btn ghost sm" id="expBtn">⬇️ ส่งออก CSV</button>
-    <button class="btn" id="addEmp">➕ เพิ่มพนักงาน</button>
+    <div class="search"><input id="empQ" placeholder="${tr('search_emp')}" value="${esc(empSearch)}"></div>
+    <button class="btn ghost sm" id="impBtn">${tr('import_csv')}</button>
+    <button class="btn ghost sm" id="expBtn">${tr('export_csv')}</button>
+    <button class="btn" id="addEmp">${tr('add_emp')}</button>
   </div>`);
   v.appendChild(tb);
   tb.querySelector('#addEmp').onclick=()=>empForm();
@@ -602,16 +641,16 @@ function drawEmp(){
     <td>${genderIcon(e.gender)}<strong>${esc(e.name)}</strong></td>
     <td>${esc(e.position)}</td>
     <td>${esc(e.dept)}</td>
-    <td>${daily?'<span class="chip" style="background:#fef3c7;color:#b45309">รายวัน</span>':'<span class="chip" style="background:#dbeafe;color:#1d4ed8">รายเดือน</span>'}</td>
-    <td class="num">${money(e.salary)} <span class="muted" style="font-size:11px">${daily?'/วัน':'/เดือน'}</span></td>
+    <td>${daily?`<span class="chip" style="background:#fef3c7;color:#b45309">${tr('type_daily')}</span>`:`<span class="chip" style="background:#dbeafe;color:#1d4ed8">${tr('type_monthly')}</span>`}</td>
+    <td class="num">${money(e.salary)} <span class="muted" style="font-size:11px">${daily?tr('per_day'):tr('per_month')}</span></td>
     <td>${esc(fmtDate(e.startDate))}</td>
     <td style="text-align:right">
       <button class="icon-btn" title="แก้ไข" data-ed="${e.id}">✏️</button>
       <button class="icon-btn" title="ลบ" data-del="${e.id}">🗑️</button>
     </td></tr>`;}).join('');
   const tbl = el(`<table>
-    <thead><tr><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>ตำแหน่ง</th><th>แผนก</th><th>ประเภท</th><th class="num">ค่าจ้าง</th><th>วันเริ่มงาน</th><th></th></tr></thead>
-    <tbody>${rows||'<tr><td colspan="8" class="empty">ไม่พบพนักงาน</td></tr>'}</tbody>
+    <thead><tr><th>${tr('th_code')}</th><th>${tr('th_name')}</th><th>${tr('th_position')}</th><th>${tr('th_dept')}</th><th>${tr('th_type')}</th><th class="num">${tr('th_wage')}</th><th>${tr('th_start')}</th><th></th></tr></thead>
+    <tbody>${rows||`<tr><td colspan="8" class="empty">${tr('emp_not_found')}</td></tr>`}</tbody>
   </table>`);
   tbl.querySelectorAll('[data-ed]').forEach(b=>b.onclick=()=>empForm(b.dataset.ed));
   tbl.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delEmp(b.dataset.del));
@@ -1297,6 +1336,9 @@ async function doSignup(){
 }
 
 /* ---------- Boot ---------- */
+const langBtn=$('#langToggle');
+if(langBtn){ langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH';
+  langBtn.onclick=()=>{ LANG = LANG==='th'?'en':'th'; localStorage.setItem('lang',LANG); langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH'; renderNav(); render(); }; }
 $('#authLogin').onclick=doLogin;
 $('#authSignup').onclick=doSignup;
 $('#authPass').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
