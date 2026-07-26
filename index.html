@@ -131,13 +131,25 @@
   .segbtn.on{background:#fff;color:var(--brand-d);box-shadow:var(--shadow)}
   @media(max-width:820px){.side{width:64px}.side .brand small,.nav button span.t{display:none}.grid2,.grid3{grid-template-columns:1fr}.dash2{grid-template-columns:1fr!important}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
+<div id="authGate" style="position:fixed;inset:0;background:linear-gradient(160deg,#1e3a8a,#0f172a);display:none;align-items:center;justify-content:center;z-index:200;padding:20px">
+  <div style="background:#fff;border-radius:16px;max-width:400px;width:100%;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.4)">
+    <div style="text-align:center;font-size:26px;font-weight:800;margin-bottom:4px">💵 ระบบเงินเดือน</div>
+    <div style="text-align:center;color:#64748b;margin-bottom:22px">เข้าสู่ระบบเพื่อใช้งาน</div>
+    <div class="field" style="margin-bottom:12px"><label>อีเมล</label><input id="authEmail" type="email" autocomplete="username" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
+    <div class="field" style="margin-bottom:16px"><label>รหัสผ่าน</label><input id="authPass" type="password" autocomplete="current-password" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
+    <button class="btn" id="authLogin" style="width:100%;justify-content:center;margin-bottom:8px">เข้าสู่ระบบ</button>
+    <button class="btn ghost" id="authSignup" style="width:100%;justify-content:center">สมัครสมาชิกใหม่</button>
+    <div id="authMsg" style="font-size:13px;margin-top:12px;text-align:center;min-height:18px;color:#dc2626"></div>
+  </div>
+</div>
 <div class="app">
   <aside class="side">
     <div class="brand">💵 Payroll<small>ระบบเงินเดือน</small></div>
     <nav class="nav" id="nav"></nav>
-    <div class="foot">ข้อมูลบันทึกในเครื่องนี้<br>(LocalStorage)</div>
+    <div class="foot" id="userFoot">☁️ กำลังเชื่อมต่อ…</div>
   </aside>
   <div class="main">
     <header class="top">
@@ -183,7 +195,7 @@ function load(){
   try{ const d = JSON.parse(localStorage.getItem(LS_KEY)); if(d && d.employees) return Object.assign(structuredClone(DEFAULT),d); }catch(e){}
   return seed();
 }
-function save(){ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(DB)); cloudSaveDebounced(); }
 function seed(){
   const d = structuredClone(DEFAULT);
   // [code,name,position,dept,rate,startDate,payType,gender]  rate: รายเดือน=เงินเดือน / รายวัน=ค่าจ้าง/วัน
@@ -1110,9 +1122,63 @@ function bahtText(n){
   return (neg?'ลบ':'')+txt;
 }
 
+/* ---------- Cloud (Supabase) ---------- */
+const SB_URL='https://sfzzswzyoqshlppsturd.supabase.co';
+const SB_ANON='__PASTE_SUPABASE_ANON_KEY_HERE__';   // ⬅️ วาง anon / publishable key ตรงนี้
+let sb=null;
+try{ sb = window.supabase.createClient(SB_URL, SB_ANON); }catch(e){}
+
+let _cloudT=null;
+function cloudSaveDebounced(){ if(!sb) return; clearTimeout(_cloudT); _cloudT=setTimeout(cloudSave, 1200); }
+async function cloudSave(){
+  try{ const {data:{user}}=await sb.auth.getUser(); if(!user) return;
+    const {error}=await sb.from('payroll_stores').upsert({user_id:user.id, data:DB});
+    setSync(error?'⚠️ ซิงก์ไม่สำเร็จ':'✓ บันทึกขึ้นคลาวด์แล้ว');
+  }catch(e){ setSync('⚠️ ซิงก์ไม่สำเร็จ'); }
+}
+async function cloudLoad(){
+  const {data:{user}}=await sb.auth.getUser();
+  const {data}=await sb.from('payroll_stores').select('data').eq('user_id',user.id).maybeSingle();
+  if(data && data.data && data.data.employees){ localStorage.setItem(LS_KEY, JSON.stringify(data.data)); }
+  DB=load();
+}
+function setSync(t){ const f=$('#userFoot'); if(f&&f._email){ f.innerHTML=`☁️ ${esc(f._email)}<br><span style="opacity:.75">${t}</span> · <a href="#" id="logoutBtn" style="color:#93c5fd">ออกจากระบบ</a>`; const b=$('#logoutBtn'); if(b) b.onclick=async(e)=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); location.reload(); }; } }
+
+function showLogin(msg){ $('#authGate').style.display='flex'; if(msg){ const m=$('#authMsg'); m.style.color='#dc2626'; m.textContent=msg; } }
+async function afterAuth(user){
+  $('#authGate').style.display='none';
+  const f=$('#userFoot'); if(f) f._email=user.email;
+  await cloudLoad();
+  renderNav(); render();
+  setSync('พร้อมใช้งาน'); cloudSaveDebounced();
+}
+async function boot(){
+  if(!sb || SB_ANON.indexOf('__PASTE')===0){ showLogin('ยังไม่ได้ตั้งค่า Supabase anon key ในไฟล์ (บรรทัด SB_ANON)'); return; }
+  try{ const {data:{session}}=await sb.auth.getSession(); if(session){ afterAuth(session.user); return; } }catch(e){}
+  showLogin();
+}
+async function doLogin(){
+  const email=$('#authEmail').value.trim(), pass=$('#authPass').value; const m=$('#authMsg');
+  m.style.color='#64748b'; m.textContent='กำลังเข้าสู่ระบบ…';
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){ m.style.color='#dc2626'; m.textContent=error.message; return; }
+  afterAuth(data.user);
+}
+async function doSignup(){
+  const email=$('#authEmail').value.trim(), pass=$('#authPass').value; const m=$('#authMsg');
+  if(pass.length<6){ m.style.color='#dc2626'; m.textContent='รหัสผ่านอย่างน้อย 6 ตัวอักษร'; return; }
+  m.style.color='#64748b'; m.textContent='กำลังสมัคร…';
+  const {data,error}=await sb.auth.signUp({email,password:pass});
+  if(error){ m.style.color='#dc2626'; m.textContent=error.message; return; }
+  if(data.session){ afterAuth(data.user); } else { m.style.color='#059669'; m.textContent='สมัครสำเร็จ! กรุณายืนยันอีเมลก่อน แล้วเข้าสู่ระบบ'; }
+}
+
 /* ---------- Boot ---------- */
-renderNav(); render();
+$('#authLogin').onclick=doLogin;
+$('#authSignup').onclick=doSignup;
+$('#authPass').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
 window.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+boot();
 </script>
 </body>
 </html>
