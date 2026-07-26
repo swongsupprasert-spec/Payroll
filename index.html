@@ -970,31 +970,77 @@ function vWHT(v){
   const e=DB.employees.find(x=>x.id===whtEmpId);
   const agg=yearAgg(e,whtYear);
   const area=el(`<div class="print-area"></div>`); v.appendChild(area);
-  area.appendChild(el(`<div class="doc">
-    <div style="text-align:right;font-size:12px">ฉบับที่ 1 (สำหรับผู้ถูกหักภาษี ณ ที่จ่าย)</div>
-    <h2 class="dt">หนังสือรับรองการหักภาษี ณ ที่จ่าย</h2>
-    <div style="text-align:center;margin-bottom:6px">ตามมาตรา 50 ทวิ แห่งประมวลรัษฎากร</div>
-    <div style="text-align:right;font-size:12px">เลขที่ ............ / ปีภาษี ${whtYear+543}</div>
-    <table class="dtbl" style="margin-top:8px">
-      <tr><td style="width:50%"><strong>ผู้มีหน้าที่หักภาษี ณ ที่จ่าย</strong><br>${esc(DB.company.name)}<br>${esc(DB.company.address)}</td>
-          <td><strong>เลขประจำตัวผู้เสียภาษี</strong><br>${esc(DB.company.taxId)}</td></tr>
-      <tr><td><strong>ผู้ถูกหักภาษี ณ ที่จ่าย</strong><br>${esc(e.name)}</td>
-          <td><strong>เลขประจำตัวผู้เสียภาษี</strong><br>${esc(e.taxId||'-')}</td></tr>
-    </table>
-    <table class="dtbl" style="margin-top:8px">
-      <thead><tr><th>ประเภทเงินได้พึงประเมิน</th><th style="text-align:right">จำนวนเงิน (บาท)</th><th style="text-align:right">ภาษีที่หัก (บาท)</th></tr></thead>
+  area.appendChild(el(wht50Doc(e, agg, whtYear)));
+}
+// ช่องเลขประจำตัวผู้เสียภาษี 13 หลัก
+function tid13(id){ id=String(id||'').replace(/\D/g,'').slice(0,13); let s='<span style="display:inline-flex;gap:1px;vertical-align:middle">';
+  for(let i=0;i<13;i++){ s+=`<span style="display:inline-block;width:13px;height:16px;border:1px solid #444;text-align:center;font-size:11px;line-height:16px">${id[i]||'&nbsp;'}</span>`; } return s+'</span>'; }
+// checkbox เล็ก (on=ติ๊ก)
+function ck(on){ return `<span style="display:inline-block;width:11px;height:11px;border:1px solid #333;text-align:center;line-height:10px;font-size:10px;vertical-align:middle">${on?'✓':''}</span>`; }
+function wht50Doc(e, agg, year){
+  const C=DB.company;
+  const blank='<span style="border-bottom:1px dotted #555;display:inline-block;min-width:60px">&nbsp;</span>';
+  const empty=(n)=>Array.from({length:n}).map(()=>'<td></td>').join('');
+  return `<div class="doc" style="font-size:12px;line-height:1.4;padding:22px 26px">
+    <div style="font-size:10.5px">ฉบับที่ 1 (สำหรับผู้ถูกหักภาษี ณ ที่จ่าย ใช้แนบพร้อมกับแบบแสดงรายการภาษี)<br>ฉบับที่ 2 (สำหรับผู้ถูกหักภาษี ณ ที่จ่าย เก็บไว้เป็นหลักฐาน)</div>
+    <h2 class="dt" style="margin-top:2px">หนังสือรับรองการหักภาษี ณ ที่จ่าย</h2>
+    <div style="text-align:center">ตามมาตรา 50 ทวิ แห่งประมวลรัษฎากร</div>
+    <div style="text-align:right;font-size:11px">เล่มที่ ............... &nbsp;&nbsp; เลขที่ ...............</div>
+
+    <div style="border:1px solid #333;padding:6px 9px;margin-top:5px">
+      <div style="display:flex;justify-content:space-between;gap:10px"><strong>ผู้มีหน้าที่หักภาษี ณ ที่จ่าย :–</strong><span>เลขประจำตัวผู้เสียภาษีอากร (13 หลัก)* ${tid13(C.taxId)}</span></div>
+      <div style="margin-top:3px">ชื่อ <strong>${esc(C.name)}</strong></div>
+      <div>ที่อยู่ ${esc(C.address||'')}</div>
+    </div>
+
+    <div style="border:1px solid #333;padding:6px 9px;margin-top:4px">
+      <div style="display:flex;justify-content:space-between;gap:10px"><strong>ผู้ถูกหักภาษี ณ ที่จ่าย :–</strong><span>เลขประจำตัวผู้เสียภาษีอากร (13 หลัก)* ${tid13(e.taxId)}</span></div>
+      <div style="margin-top:3px">ชื่อ <strong>${esc(e.name)}</strong></div>
+      <div>ที่อยู่ ${esc(e.address||'')}</div>
+    </div>
+
+    <div style="border:1px solid #333;padding:6px 9px;margin-top:4px;font-size:11.5px">
+      ลำดับที่ <span style="border:1px solid #333;padding:0 14px">&nbsp;</span> ในแบบ &nbsp;&nbsp;
+      ${ck(1)} (1) ภ.ง.ด.1ก &nbsp; ${ck()} (2) ภ.ง.ด.1ก พิเศษ &nbsp; ${ck()} (3) ภ.ง.ด.2 &nbsp; ${ck()} (4) ภ.ง.ด.3<br>
+      <span style="padding-left:70px"></span>${ck()} (5) ภ.ง.ด.2ก &nbsp; ${ck()} (6) ภ.ง.ด.3ก &nbsp; ${ck()} (7) ภ.ง.ด.53
+    </div>
+
+    <table class="dtbl" style="margin-top:4px;font-size:11.5px">
+      <thead><tr>
+        <th style="width:54%">ประเภทเงินได้พึงประเมินที่จ่าย</th>
+        <th style="width:16%">วัน เดือน<br>หรือปีภาษี ที่จ่าย</th>
+        <th style="width:15%">จำนวนเงินที่จ่าย</th>
+        <th style="width:15%">ภาษีที่หัก<br>และนำส่งไว้</th>
+      </tr></thead>
       <tbody>
-        <tr><td>1. เงินเดือน ค่าจ้าง ฯลฯ ตามมาตรา 40(1)</td><td style="text-align:right">${money(agg.income)}</td><td style="text-align:right">${money(agg.tax)}</td></tr>
-        <tr><td colspan="2" style="text-align:right"><strong>รวมเงินภาษีที่หักนำส่ง</strong></td><td style="text-align:right"><strong>${money(agg.tax)}</strong></td></tr>
+        <tr><td>1. เงินเดือน ค่าจ้าง เบี้ยเลี้ยง โบนัส ฯลฯ ตามมาตรา 40(1)</td><td style="text-align:center">ปีภาษี ${year+543}</td><td style="text-align:right">${money(agg.income)}</td><td style="text-align:right">${money(agg.tax)}</td></tr>
+        <tr><td>2. ค่าธรรมเนียม ค่านายหน้า ฯลฯ ตามมาตรา 40(2)</td>${empty(3)}</tr>
+        <tr><td>3. ค่าแห่งลิขสิทธิ์ ฯลฯ ตามมาตรา 40(3)</td>${empty(3)}</tr>
+        <tr><td>4. (ก) ดอกเบี้ย ฯลฯ ตามมาตรา 40(4)(ก)<br>&nbsp;&nbsp;&nbsp;(ข) เงินปันผล เงินส่วนแบ่งกำไร ฯลฯ ตามมาตรา 40(4)(ข)</td>${empty(3)}</tr>
+        <tr><td>5. การจ่ายเงินได้ที่ต้องหักภาษี ณ ที่จ่าย ตามคำสั่งกรมสรรพากร<br>&nbsp;&nbsp;&nbsp;ที่ออกตามมาตรา 3 เตรส ฯลฯ</td>${empty(3)}</tr>
+        <tr><td>6. อื่น ๆ (ระบุ) ....................................</td>${empty(3)}</tr>
+        <tr><td style="text-align:right"><strong>รวมเงินที่จ่ายและภาษีที่หักนำส่ง</strong></td><td></td><td style="text-align:right"><strong>${money(agg.income)}</strong></td><td style="text-align:right"><strong>${money(agg.tax)}</strong></td></tr>
+        <tr><td colspan="4">รวมเงินภาษีที่หักนำส่ง (ตัวอักษร) &nbsp; <strong>( ${bahtText(agg.tax)} )</strong></td></tr>
       </tbody>
     </table>
-    <div style="margin-top:6px">รวมเงินภาษีที่หักนำส่ง (ตัวอักษร) : <strong>${bahtText(agg.tax)}</strong></div>
-    <table class="dtbl" style="margin-top:8px">
-      <tr><td>เงินที่จ่ายเข้ากองทุนประกันสังคม</td><td style="text-align:right;width:30%">${money(agg.sso)} บาท</td></tr>
-      <tr><td>เงินที่จ่ายเข้ากองทุนสำรองเลี้ยงชีพ</td><td style="text-align:right">${money(agg.pvd)} บาท</td></tr>
-    </table>
-    <div class="sign"><div><div class="line"></div>ผู้จ่ายเงิน<br>(${esc(DB.company.signer)})<br>วันที่ ....../....../......</div></div>
-  </div>`));
+
+    <div style="border:1px solid #333;padding:6px 9px;margin-top:4px;font-size:11.5px">
+      เงินที่จ่ายเข้า กบข./กสจ./กองทุนสงเคราะห์ครูโรงเรียนเอกชน ${blank} บาท &nbsp;
+      กองทุนประกันสังคม <strong>${money(agg.sso)}</strong> บาท &nbsp;
+      กองทุนสำรองเลี้ยงชีพ <strong>${money(agg.pvd)}</strong> บาท
+    </div>
+
+    <div style="border:1px solid #333;padding:6px 9px;margin-top:4px;font-size:11.5px">
+      <strong>ผู้จ่ายเงิน</strong> &nbsp; ${ck(1)} (1) หัก ณ ที่จ่าย &nbsp; ${ck()} (2) ออกให้ตลอดไป &nbsp; ${ck()} (3) ออกให้ครั้งเดียว &nbsp; ${ck()} (4) อื่น ๆ (ระบุ) ..............
+    </div>
+
+    <div style="display:flex;gap:5px;margin-top:4px">
+      <div style="flex:1;border:1px solid #333;padding:6px 9px;font-size:10.5px"><strong>คำเตือน</strong> ผู้มีหน้าที่ออกหนังสือรับรองการหักภาษี ณ ที่จ่าย ฝ่าฝืนไม่ปฏิบัติตามมาตรา 50 ทวิ แห่งประมวลรัษฎากร ต้องรับโทษทางอาญาตามมาตรา 35 แห่งประมวลรัษฎากร</div>
+      <div style="flex:1;border:1px solid #333;padding:6px 9px;text-align:center;font-size:11.5px">ขอรับรองว่าข้อความและตัวเลขดังกล่าวข้างต้นถูกต้องตรงกับความจริงทุกประการ<br><br>
+        ลงชื่อ ...................................... ผู้จ่ายเงิน<br>( ${esc(C.signer)} )<br><br>
+        ......./......./....... วัน เดือน ปี ที่ออกหนังสือรับรองฯ</div>
+    </div>
+  </div>`;
 }
 function yearAgg(e, year){
   let income=0, tax=0, sso=0, pvd=0;
