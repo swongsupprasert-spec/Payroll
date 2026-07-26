@@ -341,7 +341,8 @@ const PAGES = [
 
 function renderNav(){
   const nav = $('#nav'); nav.innerHTML='';
-  PAGES.forEach(([id,label,ico])=>{
+  const items = IS_ADMIN ? [...PAGES, ['admin','ผู้ดูแลระบบ','👑']] : PAGES;
+  items.forEach(([id,label,ico])=>{
     const b = el(`<button data-p="${id}"><span class="ico">${ico}</span><span class="t">${label}</span></button>`);
     if(id===PAGE) b.classList.add('active');
     b.onclick = ()=>{ PAGE=id; renderNav(); render(); };
@@ -367,11 +368,33 @@ function renderPeriodSel(){
 
 /* ---------- Router ---------- */
 function render(){
-  $('#pageTitle').textContent = PAGES.find(p=>p[0]===PAGE)[1];
+  const meta = PAGES.find(p=>p[0]===PAGE) || (PAGE==='admin'?['admin','👑 ผู้ดูแลระบบ']:['','']);
+  $('#pageTitle').textContent = meta[1];
   renderPeriodSel();
   const v = $('#view'); v.innerHTML='';
+  if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
   ({dashboard:vDashboard, employees:vEmployees, payroll:vPayroll, summary:vSummary,
-    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, settings:vSettings}[PAGE])(v);
+    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, settings:vSettings, admin:vAdmin}[PAGE])(v);
+}
+/* ============ ADMIN — รายชื่อผู้ใช้ทั้งหมด ============ */
+async function vAdmin(v){
+  v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">👑 รายชื่อผู้ใช้ที่สมัครทั้งหมด</h2>
+    <button class="btn ghost sm" id="refreshUsers" style="margin-left:auto">↻ รีเฟรช</button></div>`));
+  const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap" id="usersTbl"><div class="empty">กำลังโหลด…</div></div></div></div>`);
+  v.appendChild(panel);
+  $('#refreshUsers').onclick=()=>render();
+  const {data,error}=await sb.from('profiles').select('id,email,created_at').order('created_at',{ascending:false});
+  const box=$('#usersTbl'); if(!box) return;
+  if(error){ box.innerHTML=`<div class="empty">โหลดไม่ได้: ${esc(error.message)}</div>`; return; }
+  const rows=(data||[]).map(u=>`<tr>
+    <td><strong>${esc(u.email||'(ไม่มีอีเมล)')}</strong>${u.id===MY_UID?' <span class="chip">คุณ</span>':''}</td>
+    <td>${esc(fmtDateTime(u.created_at))}</td>
+    <td style="text-align:right"><button class="btn sm" data-open="${u.id}" data-email="${esc(u.email||'')}">✏️ ดู/แก้ข้อมูล</button></td>
+  </tr>`).join('');
+  const tbl=el(`<table><thead><tr><th>อีเมล</th><th>สมัครเมื่อ</th><th></th></tr></thead>
+    <tbody>${rows||'<tr><td colspan="3" class="empty">ยังไม่มีผู้ใช้</td></tr>'}</tbody></table>`);
+  tbl.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>adminOpen(b.dataset.open, b.dataset.email));
+  box.innerHTML=''; box.appendChild(tbl);
 }
 
 /* ============ 0. DASHBOARD ============ */
@@ -1114,28 +1137,42 @@ const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJl
 let sb=null;
 try{ sb = window.supabase.createClient(SB_URL, SB_ANON); }catch(e){}
 
+let MY_UID=null, MY_EMAIL='', TARGET_UID=null, TARGET_EMAIL='', IS_ADMIN=false;
 let _cloudT=null;
-function cloudSaveDebounced(){ if(!sb) return; clearTimeout(_cloudT); _cloudT=setTimeout(cloudSave, 1200); }
+function cloudSaveDebounced(){ if(!sb||!TARGET_UID) return; clearTimeout(_cloudT); _cloudT=setTimeout(cloudSave, 1200); }
 async function cloudSave(){
-  try{ const {data:{user}}=await sb.auth.getUser(); if(!user) return;
-    const {error}=await sb.from('payroll_stores').upsert({user_id:user.id, data:DB});
+  try{ if(!TARGET_UID) return;
+    const {error}=await sb.from('payroll_stores').upsert({user_id:TARGET_UID, data:DB});
     setSync(error?'⚠️ ซิงก์ไม่สำเร็จ':'✓ บันทึกขึ้นคลาวด์แล้ว');
   }catch(e){ setSync('⚠️ ซิงก์ไม่สำเร็จ'); }
 }
-async function cloudLoad(){
-  const {data:{user}}=await sb.auth.getUser();
-  const {data}=await sb.from('payroll_stores').select('data').eq('user_id',user.id).maybeSingle();
+async function cloudLoad(uid){
+  const {data}=await sb.from('payroll_stores').select('data').eq('user_id',uid).maybeSingle();
   if(data && data.data && data.data.employees){ localStorage.setItem(LS_KEY, JSON.stringify(data.data)); }
-  else { localStorage.removeItem(LS_KEY); }   // ผู้ใช้ใหม่/ไม่มีข้อมูลบนคลาวด์ → เริ่มว่าง (กันข้อมูลค้างของคนก่อน)
+  else { localStorage.removeItem(LS_KEY); }   // ไม่มีข้อมูลบนคลาวด์ → เริ่มว่าง (กันข้อมูลค้างของคนก่อน)
   DB=load();
 }
-function setSync(t){ const f=$('#userFoot'); if(f&&f._email){ f.innerHTML=`☁️ ${esc(f._email)}<br><span style="opacity:.75">${t}</span> · <a href="#" id="logoutBtn" style="color:#93c5fd">ออกจากระบบ</a>`; const b=$('#logoutBtn'); if(b) b.onclick=async(e)=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); location.reload(); }; } }
+function setSync(t){ const f=$('#userFoot'); if(f&&f._email){ f.innerHTML=`☁️ ${esc(f._email)}${IS_ADMIN?' <span style="color:#fbbf24">👑</span>':''}<br><span style="opacity:.75">${t}</span> · <a href="#" id="logoutBtn" style="color:#93c5fd">ออกจากระบบ</a>`; const b=$('#logoutBtn'); if(b) b.onclick=async(e)=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); location.reload(); }; } }
+
+// แอดมิน: เปิดข้อมูลของผู้ใช้คนอื่นเพื่อดู/แก้
+async function adminOpen(uid,email){ TARGET_UID=uid; TARGET_EMAIL=email; await cloudLoad(uid); PAGE='dashboard'; renderNav(); render(); toast('เปิดข้อมูลของ '+email); }
+async function adminBackToMine(){ TARGET_UID=MY_UID; TARGET_EMAIL=MY_EMAIL; await cloudLoad(MY_UID); PAGE='admin'; renderNav(); render(); toast('กลับสู่ข้อมูลของฉัน'); }
+function adminBanner(){
+  const b=el(`<div class="panel" style="border:2px solid #d97706;background:#fffbeb"><div class="pbody" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span style="font-size:20px">👑</span><div><strong>โหมดแอดมิน</strong> — กำลังดู/แก้ไขข้อมูลของ <strong>${esc(TARGET_EMAIL)}</strong><br><span class="muted" style="font-size:12px">การแก้ไขจะบันทึกลงบัญชีของผู้ใช้คนนี้</span></div>
+    <button class="btn ghost sm" id="backMine" style="margin-left:auto">↩️ กลับสู่ข้อมูลของฉัน</button></div></div>`);
+  b.querySelector('#backMine').onclick=adminBackToMine; return b;
+}
+function fmtDateTime(s){ if(!s) return '-'; const d=new Date(s); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()+543} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
 
 function showLogin(msg){ $('#authGate').style.display='flex'; if(msg){ const m=$('#authMsg'); m.style.color='#dc2626'; m.textContent=msg; } }
 async function afterAuth(user){
   $('#authGate').style.display='none';
+  MY_UID=user.id; MY_EMAIL=user.email; TARGET_UID=MY_UID; TARGET_EMAIL=MY_EMAIL;
   const f=$('#userFoot'); if(f) f._email=user.email;
-  await cloudLoad();
+  try{ await sb.from('profiles').upsert({id:user.id, email:user.email}); }catch(e){}   // ให้แอดมินเห็นอีเมล
+  try{ const {data}=await sb.rpc('is_admin'); IS_ADMIN=!!data; }catch(e){ IS_ADMIN=false; }
+  await cloudLoad(MY_UID);
   renderNav(); render();
   setSync('พร้อมใช้งาน'); cloudSaveDebounced();
 }
