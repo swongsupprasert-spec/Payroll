@@ -197,24 +197,10 @@ function load(){
 }
 function save(){ localStorage.setItem(LS_KEY, JSON.stringify(DB)); cloudSaveDebounced(); }
 function seed(){
+  // เริ่มต้นด้วยข้อมูลว่างเปล่า (ไม่มีพนักงานตัวอย่าง) — ผู้ใช้ใหม่กรอกเอง
   const d = structuredClone(DEFAULT);
-  // [code,name,position,dept,rate,startDate,payType,gender]  rate: รายเดือน=เงินเดือน / รายวัน=ค่าจ้าง/วัน
-  const sample = [
-    ['EMP001','สมชาย ใจดี','ผู้จัดการ','บริหาร',45000,'2020-01-15','monthly','M'],
-    ['EMP002','สมหญิง รักงาน','หัวหน้าฝ่ายขาย','ขาย',30000,'2021-03-01','monthly','F'],
-    ['EMP003','อนันต์ พากเพียร','พนักงานบัญชี','บัญชี',22000,'2022-06-10','monthly','M'],
-    ['EMP004','กมลวรรณ ขยัน','พนักงานขาย','ขาย',15000,'2023-02-20','monthly','F'],
-    ['EMP005','ธนกร มั่นคง','ช่างเทคนิค','ผลิต',18000,'2021-11-05','monthly','M'],
-    ['EMP006','บุญมี รายวัน','พนักงานทั่วไป','ผลิต',450,'2024-05-01','daily','F'],
-  ];
-  d.employees = sample.map(s=>({id:uid(),code:s[0],name:s[1],position:s[2],dept:s[3],salary:s[4],startDate:s[5],payType:s[6],gender:s[7],taxId:'',bank:'',bankNo:'',pvdRate:3,spouse:0,children:0,otherAllow:0}));
-  const p = curPeriod();
-  d.payroll[p] = {};
-  d.employees.forEach(e=>{
-    const rec = { earn:{ot:0,commission:0,diligence:0,travel:0,position:0,bonus:0,other:0}, ded:{tax:0,sso:0,pvd:0,loan:0,studentloan:0,other:0} };
-    if(e.payType==='daily') rec.days = 26;   // ตัวอย่าง: ทำงาน 26 วัน
-    d.payroll[p][e.id] = rec;
-  });
+  d.employees = [];
+  d.payroll = {};
   return d;
 }
 function curPeriod(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
@@ -1140,6 +1126,7 @@ async function cloudLoad(){
   const {data:{user}}=await sb.auth.getUser();
   const {data}=await sb.from('payroll_stores').select('data').eq('user_id',user.id).maybeSingle();
   if(data && data.data && data.data.employees){ localStorage.setItem(LS_KEY, JSON.stringify(data.data)); }
+  else { localStorage.removeItem(LS_KEY); }   // ผู้ใช้ใหม่/ไม่มีข้อมูลบนคลาวด์ → เริ่มว่าง (กันข้อมูลค้างของคนก่อน)
   DB=load();
 }
 function setSync(t){ const f=$('#userFoot'); if(f&&f._email){ f.innerHTML=`☁️ ${esc(f._email)}<br><span style="opacity:.75">${t}</span> · <a href="#" id="logoutBtn" style="color:#93c5fd">ออกจากระบบ</a>`; const b=$('#logoutBtn'); if(b) b.onclick=async(e)=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); location.reload(); }; } }
