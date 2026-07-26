@@ -294,7 +294,8 @@ function estTax(emp, year, rec){
   const personal=60000;                                      // ลดหย่อนส่วนตัว (ไม่เฉลี่ยตามเดือน)
   const spouse=(+emp.spouse)?60000:0;                        // คู่สมรส
   const children=(Number(emp.children||0))*30000;            // บุตรคนละ 30,000
-  const sso=Math.min(autoSSO(wage)*months,9000);             // ประกันสังคม (ตามเดือนจริง) สูงสุด 9,000
+  const ssoCap=autoSSO(DB.ssoMaxBase)*12;                     // เพดาน ปกส./ปี = 875 × 12 = 10,500
+  const sso=Math.min(autoSSO(wage)*months, ssoCap);          // ประกันสังคม (ตามเดือนจริง)
   const pvd=Math.min(wage*(emp.pvdRate||0)/100*months,500000); // กสล.
   const other=Number(emp.otherAllow||0);                     // ลดหย่อนอื่น
   const totalDed=expense+personal+spouse+children+sso+pvd+other;
@@ -805,7 +806,7 @@ function taxModal(emp, r){
         ${line('หัก ลดหย่อนส่วนตัว', t.personal, true)}
         ${t.spouse?line('หัก คู่สมรส', t.spouse, true):''}
         ${t.children?line('หัก บุตร ('+ (emp.children||0) +' คน)', t.children, true):''}
-        ${line('หัก ประกันสังคม (สูงสุด 9,000)', t.sso, true)}
+        ${line('หัก ประกันสังคม (สูงสุด 10,500)', t.sso, true)}
         ${t.pvd?line('หัก กองทุนสำรองเลี้ยงชีพ', t.pvd, true):''}
         ${t.other?line('หัก ลดหย่อนอื่น', t.other, true):''}
       </tbody>
