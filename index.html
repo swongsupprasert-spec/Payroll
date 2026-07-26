@@ -1124,7 +1124,7 @@ function bahtText(n){
 
 /* ---------- Cloud (Supabase) ---------- */
 const SB_URL='https://sfzzswzyoqshlppsturd.supabase.co';
-const SB_ANON='__PASTE_SUPABASE_ANON_KEY_HERE__';   // ⬅️ วาง anon / publishable key ตรงนี้
+const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenpzd3p5b3FzaGxwcHN0dXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4OTE1ODAsImV4cCI6MjEwMDQ2NzU4MH0.5IVEuvp6JM-JZUKGfCEoVgQ_CwiLLsU8tUJxbW85eac';
 let sb=null;
 try{ sb = window.supabase.createClient(SB_URL, SB_ANON); }catch(e){}
 
