@@ -580,15 +580,15 @@ let empSearch='';
 function vEmployees(v){
   const tb = el(`<div class="toolbar">
     <div class="search"><input id="empQ" placeholder="ค้นหา รหัส / ชื่อ / ตำแหน่ง / แผนก" value="${esc(empSearch)}"></div>
-    <button class="btn ghost sm" id="impBtn">⬆️ นำเข้า</button>
-    <button class="btn ghost sm" id="expBtn">⬇️ ส่งออก</button>
+    <button class="btn ghost sm" id="impBtn">⬆️ นำเข้า CSV</button>
+    <button class="btn ghost sm" id="expBtn">⬇️ ส่งออก CSV</button>
     <button class="btn" id="addEmp">➕ เพิ่มพนักงาน</button>
   </div>`);
   v.appendChild(tb);
   tb.querySelector('#addEmp').onclick=()=>empForm();
   tb.querySelector('#empQ').oninput=(e)=>{ empSearch=e.target.value; drawEmp(); };
-  tb.querySelector('#expBtn').onclick=exportJSON;
-  tb.querySelector('#impBtn').onclick=importJSON;
+  tb.querySelector('#expBtn').onclick=exportEmpCSV;
+  tb.querySelector('#impBtn').onclick=importEmpCSV;
 
   const panel = el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap" id="empTbl"></div></div></div>`);
   v.appendChild(panel);
@@ -1093,6 +1093,58 @@ function importJSON(){
 function downloadFile(name, content, type){
   const b=new Blob([content],{type}); const u=URL.createObjectURL(b);
   const a=document.createElement('a'); a.href=u; a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(u),1000);
+}
+
+/* ---------- นำเข้า/ส่งออก พนักงาน เป็น CSV ---------- */
+const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','ตำแหน่ง','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','เลขบัตรประชาชน','อัตรากสล.%','ธนาคาร','เลขบัญชี','คู่สมรส','จำนวนบุตร','ลดหย่อนอื่น'];
+function csvEsc(v){ v=String(v??''); return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
+function parseCSV(text){
+  const rows=[]; let field='', row=[], inQ=false; text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+  for(let i=0;i<text.length;i++){ const c=text[i];
+    if(inQ){ if(c==='"'){ if(text[i+1]==='"'){field+='"';i++;} else inQ=false; } else field+=c; }
+    else if(c==='"') inQ=true;
+    else if(c===',') { row.push(field); field=''; }
+    else if(c==='\n'){ row.push(field); rows.push(row); row=[]; field=''; }
+    else field+=c;
+  }
+  if(field!==''||row.length){ row.push(field); rows.push(row); }
+  return rows;
+}
+function exportEmpCSV(){
+  const lines=[EMP_CSV_HEAD.map(csvEsc).join(',')];
+  DB.employees.forEach(e=>{
+    lines.push([e.code, e.name, e.gender==='M'?'ชาย':e.gender==='F'?'หญิง':'',
+      e.position, e.dept, e.payType==='daily'?'รายวัน':'รายเดือน',
+      e.salary, e.startDate||'', e.taxId||'', e.pvdRate||0, e.bank||'', e.bankNo||'',
+      (+e.spouse?'มี':''), e.children||0, e.otherAllow||0].map(csvEsc).join(','));
+  });
+  downloadFile(`employees_${curPeriod()}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
+  toast('ส่งออกพนักงานเป็น CSV แล้ว');
+}
+function importEmpCSV(){
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='.csv,text/csv';
+  inp.onchange=()=>{ const f=inp.files[0]; if(!f) return; const rd=new FileReader();
+    rd.onload=()=>{ try{
+      const rows=parseCSV(String(rd.result).replace(/^﻿/,''));
+      if(rows.length<2) throw 0;
+      let added=0, updated=0;
+      for(let r=1;r<rows.length;r++){ const c=rows[r]; if(!c || !String(c[0]||'').trim()) continue;
+        const rec={
+          code:String(c[0]).trim(), name:String(c[1]||'').trim(),
+          gender:/ชาย|^m$/i.test(String(c[2]||'').trim())?'M':/หญิง|^f$/i.test(String(c[2]||'').trim())?'F':'',
+          position:String(c[3]||'').trim(), dept:String(c[4]||'').trim(),
+          payType:/วัน|daily/i.test(String(c[5]||''))?'daily':'monthly',
+          salary:+c[6]||0, startDate:String(c[7]||'').trim(), taxId:String(c[8]||'').trim(),
+          pvdRate:+c[9]||0, bank:String(c[10]||'').trim(), bankNo:String(c[11]||'').trim(),
+          spouse:/มี|^1|true|yes/i.test(String(c[12]||'').trim())?1:0, children:+c[13]||0, otherAllow:+c[14]||0
+        };
+        const ex=DB.employees.find(x=>x.code===rec.code);
+        if(ex){ Object.assign(ex,rec); updated++; } else { DB.employees.push({id:uid(),...rec}); added++; }
+      }
+      save(); drawEmp(); toast(`นำเข้า CSV สำเร็จ: เพิ่ม ${added} · อัปเดต ${updated}`);
+    }catch(e){ toast('ไฟล์ CSV ไม่ถูกต้อง'); } };
+    rd.readAsText(f,'utf-8'); };
+  inp.click();
 }
 
 /* ---------- Modal ---------- */
