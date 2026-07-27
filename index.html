@@ -682,6 +682,7 @@ function empForm(id){
         <option value="" ${!e.gender?'selected':''}>ไม่ระบุ</option>
         <option value="M" ${e.gender==='M'?'selected':''}>♂ ชาย</option>
         <option value="F" ${e.gender==='F'?'selected':''}>♀ หญิง</option></select></div>
+      <div class="field"><label>สัญชาติ</label><input id="f_nationality" value="${esc(e.nationality||'ไทย')}" list="natList"><datalist id="natList"><option value="ไทย"><option value="พม่า"><option value="ลาว"><option value="กัมพูชา"><option value="เวียดนาม"></datalist></div>
       <div class="field"><label>ตำแหน่ง</label><input id="f_position" value="${esc(e.position)}"></div>
       <div class="field"><label>แผนก</label><input id="f_dept" value="${esc(e.dept)}" list="deptList"></div>
       <div class="field"><label>ประเภทการจ้าง *</label><select id="f_payType">
@@ -706,7 +707,7 @@ function empForm(id){
     const g=id=>$('#'+id).value;
     const code=g('f_code').trim(), name=g('f_name').trim();
     if(!code||!name){ toast('กรุณากรอกรหัสและชื่อ'); return; }
-    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),taxId:g('f_taxId').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,spouse:+g('f_spouse')||0,children:+g('f_children')||0,otherAllow:+g('f_otherAllow')||0};
+    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,spouse:+g('f_spouse')||0,children:+g('f_children')||0,otherAllow:+g('f_otherAllow')||0};
     if(id){ Object.assign(e,rec); } else { DB.employees.push({id:uid(),...rec}); }
     save(); closeModal(); drawEmp(); toast('บันทึกแล้ว');
   }]]);
