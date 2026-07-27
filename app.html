@@ -633,13 +633,15 @@ function vDashboard(v){
   v.appendChild(tb);
   tb.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ dashMode=b.dataset.m; render(); });
 
-  // KPI cards
+  // KPI cards — นับเฉพาะพนักงานที่ทำงานอยู่ในงวดนี้ (ไม่รวมคนลาออก)
+  const actives=DB.employees.filter(e=>activeInMonth(e,curY,isYear?12:curM));
+  const mCount=actives.filter(e=>e.gender==='M').length, fCount=actives.filter(e=>e.gender==='F').length, uCount=actives.filter(e=>!e.gender).length;
   v.appendChild(el(`<div class="cards">
-    <div class="kpi b1"><div class="lab">👥 ${tr('kpi_count')}</div><div class="val">${num(t.count)} <span class="muted" style="font-size:14px">${tr('unit_person')}</span></div>
+    <div class="kpi b1"><div class="lab">👥 ${tr('kpi_count')}</div><div class="val">${num(actives.length)} <span class="muted" style="font-size:14px">${tr('unit_person')}</span></div>
       <div style="margin-top:6px;display:flex;gap:12px;font-size:12px">
-        <span style="color:#2563eb">♂ ${tr('male')} ${num(DB.employees.filter(e=>e.gender==='M').length)}</span>
-        <span style="color:#db2777">♀ ${tr('female')} ${num(DB.employees.filter(e=>e.gender==='F').length)}</span>
-        ${DB.employees.some(e=>!e.gender)?`<span class="muted">– ${tr('unspec')} ${num(DB.employees.filter(e=>!e.gender).length)}</span>`:''}
+        <span style="color:#2563eb">♂ ${tr('male')} ${num(mCount)}</span>
+        <span style="color:#db2777">♀ ${tr('female')} ${num(fCount)}</span>
+        ${uCount?`<span class="muted">– ${tr('unspec')} ${num(uCount)}</span>`:''}
       </div></div>
     <div class="kpi b2"><div class="lab">💼 ${tr('kpi_salary')}</div><div class="val money">${money(t.salary)}</div></div>
     <div class="kpi b3"><div class="lab">➕ ${tr('kpi_income')}</div><div class="val money">${money(t.gross)}</div></div>
