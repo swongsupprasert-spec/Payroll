@@ -253,8 +253,10 @@ function periodRange(p){
 function fmtD(d){ return `${d.getDate()} ${THAI_MONTHS_ABBR[d.getMonth()]} ${d.getFullYear()+543}`; }
 
 /* ---------- Payroll calc ---------- */
-const EARN_FIELDS = [['ot','ค่าล่วงเวลา (OT)'],['commission','ค่าคอมมิชชั่น'],['diligence','ค่าเบี้ยขยัน'],['travel','ค่าเดินทาง'],['position','ค่าตำแหน่ง'],['bonus','โบนัส'],['other','อื่นๆ']];
-const DED_FIELDS = [['tax','ภาษีเงินได้'],['sso','ประกันสังคม'],['pvd','กองทุนสำรองเลี้ยงชีพ'],['loan','เงินกู้บริษัท'],['studentloan','กยศ.'],['other','อื่นๆ']];
+const EARN_FIELDS = [['ot','ค่าล่วงเวลา (OT)','Overtime (OT)'],['commission','ค่าคอมมิชชั่น','Commission'],['diligence','ค่าเบี้ยขยัน','Diligence Allowance'],['travel','ค่าเดินทาง','Travel Allowance'],['position','ค่าตำแหน่ง','Position Allowance'],['bonus','โบนัส','Bonus'],['other','อื่นๆ','Other']];
+const DED_FIELDS = [['tax','ภาษีเงินได้','Income Tax'],['sso','ประกันสังคม','Social Security'],['pvd','กองทุนสำรองเลี้ยงชีพ','Provident Fund'],['loan','เงินกู้บริษัท','Company Loan'],['studentloan','กยศ.','Student Loan (SLF)'],['other','อื่นๆ','Other']];
+// ป้ายรายการตามภาษา (f = [key, th, en])
+function FL(f){ return (LANG==='en' && f[2]) ? f[2] : f[1]; }
 
 function ensurePeriod(p){ if(!DB.payroll[p]) DB.payroll[p]={}; return DB.payroll[p]; }
 function blankRec(){ return { earn:{ot:0,commission:0,diligence:0,travel:0,position:0,bonus:0,other:0}, ded:{tax:0,sso:0,pvd:0,loan:0,studentloan:0,other:0} }; }
@@ -950,13 +952,25 @@ function vSlip(v){
   list.forEach(e=>area.appendChild(slipDoc(e)));
 }
 function slipDoc(e){
+  const en = LANG==='en';
+  const T = {
+    title: en?'Pay Slip':'สลิปเงินเดือน / Pay Slip',
+    period: en?'Period':'ประจำงวด', cycle: en?'Cycle':'รอบวันที่',
+    code: en?'Employee ID':'รหัสพนักงาน', name: en?'Name':'ชื่อ-นามสกุล',
+    position: en?'Position':'ตำแหน่ง', dept: en?'Department':'แผนก',
+    earnHead: en?'Earnings':'รายการเงินได้', dedHead: en?'Deductions':'รายการเงินหัก',
+    amount: en?'Amount (THB)':'จำนวน (บาท)', totalEarn: en?'Total Earnings':'รวมเงินได้',
+    totalDed: en?'Total Deductions':'รวมเงินหัก', net: en?'Net Pay':'เงินได้สุทธิ (Net Pay)',
+    salary: en?'Salary':'เงินเดือน', payer: en?'Payer':'ผู้จ่ายเงิน', payee: en?'Received by':'ผู้รับเงิน',
+    monthName: en?'month':'เดือน', days: en?'days':'วัน', prorated: en?'prorated':'ตามสัดส่วน',
+  };
   const c=calc(e,PERIOD); const r=c.r;
   const pr=prorate(e,PERIOD);
   const baseLabel = e.payType==='daily'
-    ? `ค่าจ้างรายวัน (${num(r.days||0)} วัน × ${money(e.salary)})`
-    : (pr.partial && pr.factor>0 ? `เงินเดือน (ตามสัดส่วน ${pr.worked}/${pr.dim} วัน)` : 'เงินเดือน');
-  const earnList=[[baseLabel,c.base],...EARN_FIELDS.map(([k,l])=>[l,r.earn[k]])].filter(x=>+x[1]);
-  const dedList=DED_FIELDS.map(([k,l])=>[l,r.ded[k]]).filter(x=>+x[1]);
+    ? (en?`Daily wage (${num(r.days||0)} ${T.days} × ${money(e.salary)})`:`ค่าจ้างรายวัน (${num(r.days||0)} วัน × ${money(e.salary)})`)
+    : (pr.partial && pr.factor>0 ? `${T.salary} (${T.prorated} ${pr.worked}/${pr.dim} ${T.days})` : T.salary);
+  const earnList=[[baseLabel,c.base],...EARN_FIELDS.map(f=>[FL(f),r.earn[f[0]]])].filter(x=>+x[1]);
+  const dedList=DED_FIELDS.map(f=>[FL(f),r.ded[f[0]]]).filter(x=>+x[1]);
   const n=Math.max(earnList.length,dedList.length);
   let rows='';
   for(let i=0;i<n;i++){
@@ -964,26 +978,27 @@ function slipDoc(e){
       <td>${earnList[i]?earnList[i][0]:''}</td><td style="text-align:right">${earnList[i]?money(earnList[i][1]):''}</td>
       <td>${dedList[i]?dedList[i][0]:''}</td><td style="text-align:right">${dedList[i]?money(dedList[i][1]):''}</td></tr>`;
   }
+  const rg=periodRange(PERIOD);
   return el(`<div class="doc">
     <div class="company"><div class="cn">${esc(DB.company.name)}</div><div>${esc(DB.company.address)}</div></div>
-    <h2 class="dt">สลิปเงินเดือน / Pay Slip</h2>
-    <div style="text-align:center;margin-bottom:14px">ประจำงวด ${periodLabel(PERIOD)}${(()=>{const rg=periodRange(PERIOD);return `<br><span style="font-size:13px">รอบวันที่ ${fmtD(rg.from)} – ${fmtD(rg.to)}</span>`;})()}</div>
+    <h2 class="dt">${T.title}</h2>
+    <div style="text-align:center;margin-bottom:14px">${T.period} ${periodLabel(PERIOD)}<br><span style="font-size:13px">${T.cycle} ${fmtD(rg.from)} – ${fmtD(rg.to)}</span></div>
     <div class="row2" style="margin-bottom:10px">
-      <div><strong>รหัสพนักงาน:</strong> ${esc(e.code)}<br><strong>ชื่อ-นามสกุล:</strong> ${esc(e.name)}</div>
-      <div style="text-align:right"><strong>ตำแหน่ง:</strong> ${esc(e.position||'-')}<br><strong>แผนก:</strong> ${esc(e.dept||'-')}</div>
+      <div><strong>${T.code}:</strong> ${esc(e.code)}<br><strong>${T.name}:</strong> ${esc(e.name)}</div>
+      <div style="text-align:right"><strong>${T.position}:</strong> ${esc(e.position||'-')}<br><strong>${T.dept}:</strong> ${esc(e.dept||'-')}</div>
     </div>
     <table class="dtbl">
-      <thead><tr><th>รายการเงินได้</th><th style="text-align:right">จำนวน (บาท)</th><th>รายการเงินหัก</th><th style="text-align:right">จำนวน (บาท)</th></tr></thead>
+      <thead><tr><th>${T.earnHead}</th><th style="text-align:right">${T.amount}</th><th>${T.dedHead}</th><th style="text-align:right">${T.amount}</th></tr></thead>
       <tbody>${rows}</tbody>
       <tfoot>
-        <tr><th>รวมเงินได้</th><th style="text-align:right">${money(c.gross)}</th><th>รวมเงินหัก</th><th style="text-align:right">${money(c.dedTotal)}</th></tr>
-        <tr><th colspan="3" style="text-align:right;font-size:15px">เงินได้สุทธิ (Net Pay)</th><th style="text-align:right;font-size:15px">${money(c.net)}</th></tr>
+        <tr><th>${T.totalEarn}</th><th style="text-align:right">${money(c.gross)}</th><th>${T.totalDed}</th><th style="text-align:right">${money(c.dedTotal)}</th></tr>
+        <tr><th colspan="3" style="text-align:right;font-size:15px">${T.net}</th><th style="text-align:right;font-size:15px">${money(c.net)}</th></tr>
       </tfoot>
     </table>
-    <div style="margin-top:6px;font-size:12px">(${bahtText(c.net)})</div>
+    ${en?'':`<div style="margin-top:6px;font-size:12px">(${bahtText(c.net)})</div>`}
     <div class="sign">
-      <div><div class="line"></div>ผู้จ่ายเงิน</div>
-      <div><div class="line"></div>ผู้รับเงิน (${esc(e.name)})</div>
+      <div><div class="line"></div>${T.payer}</div>
+      <div><div class="line"></div>${T.payee} (${esc(e.name)})</div>
     </div>
   </div>`);
 }
