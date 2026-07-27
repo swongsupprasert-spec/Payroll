@@ -117,7 +117,10 @@
   }
   .print-area .doc{max-width:800px;margin:0 auto 24px;border:1px solid var(--line);box-shadow:var(--shadow);padding:34px 40px;border-radius:6px}
   /* เอกสารขนาด A4 เต็มหน้า (เช่น 50 ทวิ) */
-  .print-area .doc.a4{width:210mm;max-width:210mm;min-height:297mm;padding:12mm 14mm;box-sizing:border-box}
+  .print-area .doc.a4{width:210mm;max-width:210mm;min-height:297mm;padding:9mm 11mm;box-sizing:border-box;font-size:10.5px}
+  /* บีบตารางให้พอดี 1 หน้า A4 */
+  .print-area .doc.a4 table.dtbl th,.print-area .doc.a4 table.dtbl td{padding:1.5px 6px;font-size:9.5px;line-height:1.2}
+  .print-area .doc.a4 h2.dt{font-size:16px}
   @media print{ .doc.a4{width:auto!important;max-width:none!important;min-height:0!important;padding:0!important} }
   .doc h2.dt{text-align:center;font-size:18px;margin-bottom:4px}
   .doc .company{text-align:center;margin-bottom:16px}
@@ -152,11 +155,12 @@
       Continue with Google
     </button>
     <div id="authMsg" style="font-size:13px;margin-top:12px;text-align:center;min-height:18px;color:#dc2626"></div>
+    <div style="text-align:center;margin-top:6px"><a href="#" id="authGuest" style="color:#64748b;font-size:14px;text-decoration:underline">เข้าใช้งานแบบทดลอง (ไม่ต้องสมัคร)</a></div>
   </div>
 </div>
 <div class="app">
   <aside class="side">
-    <div class="brand">💵 Payroll<small>ระบบเงินเดือน</small></div>
+    <a class="brand" href="index.html" title="กลับหน้าแรก" style="display:block;text-decoration:none;color:inherit;cursor:pointer">💵 Payroll<small>ระบบเงินเดือน · ← หน้าแรก</small></a>
     <nav class="nav" id="nav"></nav>
     <div class="foot" id="userFoot">☁️ กำลังเชื่อมต่อ…</div>
   </aside>
@@ -300,6 +304,14 @@ function basePay(emp, rec, p){
   const sal=Number(emp.salary||0);
   const pr=prorate(emp, p);
   return Math.round(sal*pr.factor*100)/100;
+}
+// คำนวณเงินหักอัตโนมัติ (ประกันสังคม + กสล. + ภาษี) จากค่าจ้างฐาน/เงินได้ของงวด
+function autoDeductions(emp, rec){
+  const base = basePay(emp, rec, PERIOD);
+  rec.ded.sso = autoSSO(base);
+  rec.ded.pvd = Math.round(base * (emp.pvdRate||0)/100);
+  rec.ded.tax = estTax(emp, +PERIOD.split('-')[0], rec).monthly;   // ภาษีหัก ณ ที่จ่าย/เดือน
+  save();
 }
 // ค่าจ้างต่อเดือนโดยประมาณ (ใช้คำนวณ ปกส./กสล./ภาษี) — รายวันใช้จำนวนวันจริง ถ้าไม่มีใช้ค่าเริ่มต้น
 function monthlyWage(emp, rec){
@@ -739,19 +751,18 @@ function vPayroll(v){
     <div class="field" style="min-width:280px"><label>เลือกพนักงาน</label>
       <select id="peSel">${DB.employees.map(e=>`<option value="${e.id}" ${e.id===payrollEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}</option>`).join('')}</select>
     </div>
-    <button class="btn ghost sm" id="autoTax" style="margin-top:22px">⚡ คำนวณภาษีอัตโนมัติ</button>
-    <button class="btn ghost sm" id="autoSso" style="margin-top:22px">⚡ คำนวณประกันสังคมอัตโนมัติ</button>
-    <button class="btn ghost sm" id="autoPvd" style="margin-top:22px">⚡ คำนวณ กสล. อัตโนมัติ</button>
+    <button class="btn ghost sm" id="autoTax" style="margin-top:22px">🔍 ดูวิธีคำนวณภาษี</button>
   </div>`);
   v.appendChild(tb);
   tb.querySelector('#peSel').onchange=(e)=>{ payrollEmpId=e.target.value; render(); };
 
   const emp=DB.employees.find(e=>e.id===payrollEmpId);
-  const r=getRec(PERIOD, emp.id); const c=calc(emp,PERIOD);
+  const r=getRec(PERIOD, emp.id);
+  // คำนวณประกันสังคม/กสล. อัตโนมัติ (ไม่ต้องกดปุ่ม)
+  autoDeductions(emp, r);
+  const c=calc(emp,PERIOD);
   const isDaily = emp.payType==='daily';
   tb.querySelector('#autoTax').onclick=()=>taxModal(emp,r);
-  tb.querySelector('#autoSso').onclick=()=>{ r.ded.sso=autoSSO(basePay(emp,r,PERIOD)); save(); render(); toast('คำนวณประกันสังคมแล้ว'); };
-  tb.querySelector('#autoPvd').onclick=()=>{ r.ded.pvd=Math.round(basePay(emp,r,PERIOD)*(emp.pvdRate||0)/100); save(); render(); toast('คำนวณ กสล. แล้ว'); };
 
   // พนักงานรายวัน: กล่องกรอกจำนวนวันทำงาน → ค่าจ้างฐาน
   const dayBlock = isDaily ? `<div class="field" style="grid-column:1/-1;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:12px 14px;margin-bottom:14px">
@@ -792,7 +803,12 @@ function vPayroll(v){
       <span class="muted" style="font-size:12px">(แก้ตัวเลขนี้เองได้)</span>
     </div>
   </div>`;
-  const dedRows=DED_FIELDS.map(([k,l])=>`<div class="field"><label>${l}</label><input type="number" step="0.01" data-ded="${k}" value="${r.ded[k]||0}"></div>`).join('');
+  const AUTO_DED={sso:1,pvd:1,tax:1};   // ช่องที่คำนวณอัตโนมัติ (แก้เองไม่ได้)
+  const dedRows=DED_FIELDS.map(([k,l])=>{
+    const auto=AUTO_DED[k];
+    return `<div class="field"><label>${l}${auto?' <span style="color:#059669;font-size:11px">(อัตโนมัติ)</span>':''}</label>
+      <input type="number" step="0.01" data-ded="${k}" id="ded_${k}" value="${r.ded[k]||0}" ${auto?'readonly style="background:#f0fdf4"':''}></div>`;
+  }).join('');
 
   const panel=el(`<div class="panel">
     <div class="phead"><h2>${esc(emp.name)} <span class="muted">— ${periodLabel(PERIOD)}</span></h2>
@@ -819,19 +835,25 @@ function vPayroll(v){
   v.appendChild(totBox);
   drawPeTot(emp);
 
-  panel.querySelectorAll('input[data-earn]').forEach(i=>i.oninput=()=>{ r.earn[i.dataset.earn]=+i.value||0; save(); drawPeTot(emp); });
-  panel.querySelectorAll('input[data-ded]').forEach(i=>i.oninput=()=>{ r.ded[i.dataset.ded]=+i.value||0; save(); drawPeTot(emp); });
+  // เงินได้เปลี่ยน → คำนวณ ปกส./กสล./ภาษี ใหม่ แล้วอัปเดตช่องอัตโนมัติ
+  const refreshAutoDed=()=>{ autoDeductions(emp,r);
+    ['sso','pvd','tax'].forEach(k=>{ const el2=panel.querySelector('#ded_'+k); if(el2) el2.value=r.ded[k]; }); };
+
+  panel.querySelectorAll('input[data-earn]').forEach(i=>i.oninput=()=>{ r.earn[i.dataset.earn]=+i.value||0; refreshAutoDed(); save(); drawPeTot(emp); });
+  panel.querySelectorAll('input[data-ded]:not([readonly])').forEach(i=>i.oninput=()=>{ r.ded[i.dataset.ded]=+i.value||0; save(); drawPeTot(emp); });
   // OT auto-calc: อัตรา/ชม. × ชั่วโมง × ตัวคูณ
   const otH=panel.querySelector('#otHours'), otM=panel.querySelector('#otMult'), otA=panel.querySelector('#otAmt');
   const recalcOT=()=>{
     r.earn.otHours=+otH.value||0; r.earn.otMult=+otM.value||0;
     const amt=otAmount(emp, r.earn.otHours, r.earn.otMult);
-    r.earn.ot=amt; otA.value=amt; save(); drawPeTot(emp);
+    r.earn.ot=amt; otA.value=amt; refreshAutoDed(); save(); drawPeTot(emp);
   };
   otH.oninput=recalcOT; otM.onchange=recalcOT;
   // พนักงานรายวัน: เปลี่ยนจำนวนวัน → อัปเดตค่าจ้างฐาน
   const wd=panel.querySelector('#workDays');
-  if(wd) wd.oninput=()=>{ r.days=+wd.value||0; panel.querySelector('#baseShow').value=money(basePay(emp,r)); save(); drawPeTot(emp); };
+  if(wd) wd.oninput=()=>{ r.days=+wd.value||0; panel.querySelector('#baseShow').value=money(basePay(emp,r));
+    refreshAutoDed();   // วันเปลี่ยน → คำนวณ ปกส./กสล./ภาษี ใหม่
+    save(); drawPeTot(emp); };
 }
 function drawPeTot(emp){
   const c=calc(emp,PERIOD);
@@ -1022,20 +1044,19 @@ function slipDoc(e){
 let whtEmpId=null, whtYear=null;
 function vWHT(v){
   if(DB.employees.length===0){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ยังไม่มีพนักงาน</div></div>`)); return; }
-  if(!whtEmpId||!DB.employees.find(e=>e.id===whtEmpId)) whtEmpId=DB.employees[0].id;
+  if(!whtEmpId||(whtEmpId!=='ALL'&&!DB.employees.find(e=>e.id===whtEmpId))) whtEmpId=DB.employees[0].id;
   if(!whtYear) whtYear=+PERIOD.split('-')[0];
   v.appendChild(el(`<div class="toolbar no-print">
     <div class="field" style="min-width:260px"><label>พนักงาน</label>
-      <select id="whtSel">${DB.employees.map(e=>`<option value="${e.id}" ${e.id===whtEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}</option>`).join('')}</select></div>
+      <select id="whtSel"><option value="ALL" ${whtEmpId==='ALL'?'selected':''}>— ทุกคน —</option>${DB.employees.map(e=>`<option value="${e.id}" ${e.id===whtEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}</option>`).join('')}</select></div>
     <div class="field"><label>ปี (พ.ศ.)</label><input id="whtYear" type="number" value="${whtYear+543}" style="width:120px"></div>
     <button class="btn" style="margin-top:22px" onclick="window.print()">🖨️ พิมพ์</button>
   </div>`));
   $('#whtSel').onchange=(e)=>{ whtEmpId=e.target.value; render(); };
   $('#whtYear').onchange=(e)=>{ whtYear=(+e.target.value)-543; render(); };
-  const e=DB.employees.find(x=>x.id===whtEmpId);
-  const agg=yearAgg(e,whtYear);
   const area=el(`<div class="print-area"></div>`); v.appendChild(area);
-  area.appendChild(el(wht50Doc(e, agg, whtYear)));
+  const list = whtEmpId==='ALL' ? DB.employees : DB.employees.filter(x=>x.id===whtEmpId);
+  list.forEach(e=>area.appendChild(el(wht50Doc(e, yearAgg(e,whtYear), whtYear))));
 }
 // ช่องเลขประจำตัวผู้เสียภาษี 13 หลัก
 function tid13(id){ id=String(id||'').replace(/\D/g,'').slice(0,13); let s='<span style="display:inline-flex;gap:1px;vertical-align:middle">';
@@ -1137,7 +1158,7 @@ function vPND1(v){
   let totIncome=0, totTax=0;
   const rows=DB.employees.map((e,i)=>{ const c=calc(e,PERIOD); totIncome+=c.gross; totTax+=+c.r.ded.tax||0;
     return `<tr><td style="text-align:center">${i+1}</td><td>${esc(e.taxId||'-')}</td><td>${esc(e.name)}</td>
-      <td style="text-align:center">01/${PERIOD.split('-')[1]}/${(+PERIOD.split('-')[0])+543}</td>
+      <td style="text-align:center">${daysInMonth(+PERIOD.split('-')[0],+PERIOD.split('-')[1])}/${PERIOD.split('-')[1]}/${(+PERIOD.split('-')[0])+543}</td>
       <td style="text-align:right">${money(c.gross)}</td><td style="text-align:right">${money(c.r.ded.tax)}</td></tr>`;
   }).join('');
   const area=el(`<div class="print-area"></div>`); v.appendChild(area);
@@ -1316,7 +1337,7 @@ const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJl
 let sb=null;
 try{ sb = window.supabase.createClient(SB_URL, SB_ANON); }catch(e){}
 
-let MY_UID=null, MY_EMAIL='', TARGET_UID=null, TARGET_EMAIL='', IS_ADMIN=false;
+let MY_UID=null, MY_EMAIL='', TARGET_UID=null, TARGET_EMAIL='', IS_ADMIN=false, GUEST=false;
 let _cloudT=null;
 function cloudSaveDebounced(){ if(!sb||!TARGET_UID) return; clearTimeout(_cloudT); _cloudT=setTimeout(cloudSave, 1200); }
 async function cloudSave(){
@@ -1355,7 +1376,16 @@ async function afterAuth(user){
   renderNav(); render();
   setSync('พร้อมใช้งาน'); cloudSaveDebounced();
 }
+function enterGuest(){
+  GUEST=true; MY_UID=null; TARGET_UID=null;
+  $('#authGate').style.display='none';
+  DB=load();
+  const f=$('#userFoot'); if(f){ f.innerHTML='🧪 โหมดทดลอง (ไม่ได้ล็อกอิน)<br><span style="opacity:.75">ข้อมูลเก็บในเครื่องนี้เท่านั้น</span> · <a href="app.html" style="color:#93c5fd">เข้าสู่ระบบ/สมัคร</a>'; }
+  renderNav(); render();
+}
 async function boot(){
+  const guest = new URLSearchParams(location.search).has('guest') || location.hash==='#guest';
+  if(guest){ enterGuest(); return; }
   if(!sb || SB_ANON.indexOf('__PASTE')===0){ showLogin('ยังไม่ได้ตั้งค่า Supabase anon key ในไฟล์ (บรรทัด SB_ANON)'); return; }
   try{ const {data:{session}}=await sb.auth.getSession(); if(session){ afterAuth(session.user); return; } }catch(e){}
   showLogin();
@@ -1382,6 +1412,7 @@ if(langBtn){ langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH';
   langBtn.onclick=()=>{ LANG = LANG==='th'?'en':'th'; localStorage.setItem('lang',LANG); langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH'; renderNav(); render(); }; }
 $('#authLogin').onclick=doLogin;
 $('#authSignup').onclick=doSignup;
+$('#authGuest').onclick=(e)=>{ e.preventDefault(); enterGuest(); };
 $('#authGoogle').onclick=async()=>{
   const m=$('#authMsg'); m.style.color='#64748b'; m.textContent='กำลังเปิดหน้าเข้าสู่ระบบ Google…';
   const {error}=await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.origin + window.location.pathname } });
