@@ -1282,18 +1282,21 @@ function vSettings(v){
     save(); toast('บันทึกการตั้งค่าแล้ว');
   };
 
-  const data=el(`<div class="panel"><div class="phead"><h2>ข้อมูลระบบ</h2></div><div class="pbody">
-    <div class="settings-row"><label>สำรอง/กู้คืนข้อมูล</label>
-      <button class="btn ghost sm" id="bkExp">⬇️ ส่งออกทั้งหมด (JSON)</button>
-      <button class="btn ghost sm" id="bkImp">⬆️ นำเข้า (JSON)</button></div>
-    <div class="settings-row"><label>ล้างข้อมูลทั้งหมด</label>
-      <button class="btn danger sm" id="resetAll">🗑️ รีเซ็ตเป็นค่าเริ่มต้น</button></div>
-  </div></div>`);
-  v.appendChild(data);
-  data.querySelector('#bkExp').onclick=exportJSON;
-  data.querySelector('#bkImp').onclick=importJSON;
-  data.querySelector('#resetAll').onclick=()=>openModal('รีเซ็ตข้อมูล','<p>ต้องการลบข้อมูลทั้งหมดและเริ่มใหม่หรือไม่? การกระทำนี้ย้อนกลับไม่ได้</p>',
-    [['ยกเลิก','ghost',closeModal],['รีเซ็ต','danger',()=>{ DB=seed(); save(); closeModal(); render(); toast('รีเซ็ตแล้ว'); }]]);
+  // ส่วน "ข้อมูลระบบ" (สำรอง/นำเข้า/รีเซ็ต) — เห็นเฉพาะผู้ดูแลระบบ
+  if(IS_ADMIN){
+    const data=el(`<div class="panel"><div class="phead"><h2>ข้อมูลระบบ <span style="color:#eab308">👑</span></h2></div><div class="pbody">
+      <div class="settings-row"><label>สำรอง/กู้คืนข้อมูล</label>
+        <button class="btn ghost sm" id="bkExp">⬇️ ส่งออกทั้งหมด (JSON)</button>
+        <button class="btn ghost sm" id="bkImp">⬆️ นำเข้า (JSON)</button></div>
+      <div class="settings-row"><label>ล้างข้อมูลทั้งหมด</label>
+        <button class="btn danger sm" id="resetAll">🗑️ รีเซ็ตเป็นค่าเริ่มต้น</button></div>
+    </div></div>`);
+    v.appendChild(data);
+    data.querySelector('#bkExp').onclick=exportJSON;
+    data.querySelector('#bkImp').onclick=importJSON;
+    data.querySelector('#resetAll').onclick=()=>openModal('รีเซ็ตข้อมูล','<p>ต้องการลบข้อมูลทั้งหมดและเริ่มใหม่หรือไม่? การกระทำนี้ย้อนกลับไม่ได้</p>',
+      [['ยกเลิก','ghost',closeModal],['รีเซ็ต','danger',()=>{ DB=seed(); save(); closeModal(); render(); toast('รีเซ็ตแล้ว'); }]]);
+  }
 }
 
 /* ---------- Import / Export ---------- */
