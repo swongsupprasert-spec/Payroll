@@ -28,7 +28,8 @@
   .nav button{background:none;border:0;color:#cbd5e1;text-align:left;padding:11px 14px;border-radius:8px;display:flex;gap:10px;align-items:center;transition:.15s}
   .nav button:hover{background:#1e293b;color:#fff}
   .nav button.active{background:var(--brand);color:#fff;font-weight:600}
-  .nav .ico{width:20px;text-align:center}
+  .nav .ico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+  .nav button.active .ico{box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
   .side .foot{margin-top:auto;padding:14px;font-size:11px;color:#64748b;border-top:1px solid #1e293b}
 
   .main{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -115,6 +116,9 @@
     @page{size:A4;margin:12mm}
   }
   .print-area .doc{max-width:800px;margin:0 auto 24px;border:1px solid var(--line);box-shadow:var(--shadow);padding:34px 40px;border-radius:6px}
+  /* เอกสารขนาด A4 เต็มหน้า (เช่น 50 ทวิ) */
+  .print-area .doc.a4{width:210mm;max-width:210mm;min-height:297mm;padding:12mm 14mm;box-sizing:border-box}
+  @media print{ .doc.a4{width:auto!important;max-width:none!important;min-height:0!important;padding:0!important} }
   .doc h2.dt{text-align:center;font-size:18px;margin-bottom:4px}
   .doc .company{text-align:center;margin-bottom:16px}
   .doc .company .cn{font-size:16px;font-weight:700}
@@ -134,7 +138,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
-<div id="authGate" style="position:fixed;inset:0;background:linear-gradient(160deg,#1e3a8a,#0f172a);display:none;align-items:center;justify-content:center;z-index:200;padding:20px">
+<div id="authGate" style="position:fixed;inset:0;background:#ffffff;display:none;align-items:center;justify-content:center;z-index:200;padding:20px">
   <div style="background:#fff;border-radius:16px;max-width:400px;width:100%;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.4)">
     <div style="text-align:center;font-size:26px;font-weight:800;margin-bottom:4px">💵 ระบบเงินเดือน</div>
     <div style="text-align:center;color:#64748b;margin-bottom:22px">เข้าสู่ระบบเพื่อใช้งาน</div>
@@ -142,6 +146,11 @@
     <div class="field" style="margin-bottom:16px"><label>รหัสผ่าน</label><input id="authPass" type="password" autocomplete="current-password" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
     <button class="btn" id="authLogin" style="width:100%;justify-content:center;margin-bottom:8px">เข้าสู่ระบบ</button>
     <button class="btn ghost" id="authSignup" style="width:100%;justify-content:center">สมัครสมาชิกใหม่</button>
+    <div style="display:flex;align-items:center;gap:10px;margin:16px 0;color:#94a3b8;font-size:13px"><div style="flex:1;height:1px;background:#e5e7eb"></div>หรือ / or<div style="flex:1;height:1px;background:#e5e7eb"></div></div>
+    <button id="authGoogle" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;border:1px solid #dadce0;border-radius:9px;background:#fff;color:#3c4043;font-weight:600;font-size:15px;cursor:pointer">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Continue with Google
+    </button>
     <div id="authMsg" style="font-size:13px;margin-top:12px;text-align:center;min-height:18px;color:#dc2626"></div>
   </div>
 </div>
@@ -381,11 +390,17 @@ const PAGES = [
   ['settings','ตั้งค่า','⚙️'],
 ];
 
+const NAV_COLORS = {
+  dashboard:'#3b82f6', employees:'#8b5cf6', payroll:'#06b6d4', summary:'#10b981',
+  dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
+  pnd1:'#6366f1', settings:'#64748b', admin:'#eab308'
+};
 function renderNav(){
   const nav = $('#nav'); nav.innerHTML='';
   const items = IS_ADMIN ? [...PAGES, ['admin','ผู้ดูแลระบบ','👑']] : PAGES;
   items.forEach(([id,label,ico])=>{
-    const b = el(`<button data-p="${id}"><span class="ico">${ico}</span><span class="t">${tr('nav_'+id)}</span></button>`);
+    const col = NAV_COLORS[id] || '#3b82f6';
+    const b = el(`<button data-p="${id}"><span class="ico" style="background:linear-gradient(135deg,${col}cc,${col}77);color:#fff">${ico}</span><span class="t">${tr('nav_'+id)}</span></button>`);
     if(id===PAGE) b.classList.add('active');
     b.onclick = ()=>{ PAGE=id; renderNav(); render(); };
     nav.appendChild(b);
@@ -1031,7 +1046,8 @@ function wht50Doc(e, agg, year){
   const C=DB.company;
   const blank='<span style="border-bottom:1px dotted #555;display:inline-block;min-width:60px">&nbsp;</span>';
   const empty=(n)=>Array.from({length:n}).map(()=>'<td></td>').join('');
-  return `<div class="doc" style="font-size:12px;line-height:1.4;padding:22px 26px">
+  const wr=(label)=>`<tr><td>${label}</td><td></td><td></td><td></td></tr>`;  // แถวประเภทเงินได้ (ว่าง)
+  return `<div class="doc a4" style="font-size:12px;line-height:1.4">
     <div style="font-size:10.5px">ฉบับที่ 1 (สำหรับผู้ถูกหักภาษี ณ ที่จ่าย ใช้แนบพร้อมกับแบบแสดงรายการภาษี)<br>ฉบับที่ 2 (สำหรับผู้ถูกหักภาษี ณ ที่จ่าย เก็บไว้เป็นหลักฐาน)</div>
     <h2 class="dt" style="margin-top:2px">หนังสือรับรองการหักภาษี ณ ที่จ่าย</h2>
     <div style="text-align:center">ตามมาตรา 50 ทวิ แห่งประมวลรัษฎากร</div>
@@ -1055,20 +1071,34 @@ function wht50Doc(e, agg, year){
       <span style="padding-left:70px"></span>${ck()} (5) ภ.ง.ด.2ก &nbsp; ${ck()} (6) ภ.ง.ด.3ก &nbsp; ${ck()} (7) ภ.ง.ด.53
     </div>
 
-    <table class="dtbl" style="margin-top:4px;font-size:11.5px">
+    <table class="dtbl" style="margin-top:4px;font-size:10.5px;line-height:1.3">
       <thead><tr>
-        <th style="width:54%">ประเภทเงินได้พึงประเมินที่จ่าย</th>
-        <th style="width:16%">วัน เดือน<br>หรือปีภาษี ที่จ่าย</th>
+        <th style="width:56%">ประเภทเงินได้พึงประเมินที่จ่าย</th>
+        <th style="width:15%">วัน เดือน<br>หรือปีภาษี ที่จ่าย</th>
         <th style="width:15%">จำนวนเงินที่จ่าย</th>
-        <th style="width:15%">ภาษีที่หัก<br>และนำส่งไว้</th>
+        <th style="width:14%">ภาษีที่หัก<br>และนำส่งไว้</th>
       </tr></thead>
       <tbody>
-        <tr><td>1. เงินเดือน ค่าจ้าง เบี้ยเลี้ยง โบนัส ฯลฯ ตามมาตรา 40(1)</td><td style="text-align:center">ปีภาษี ${year+543}</td><td style="text-align:right">${money(agg.income)}</td><td style="text-align:right">${money(agg.tax)}</td></tr>
-        <tr><td>2. ค่าธรรมเนียม ค่านายหน้า ฯลฯ ตามมาตรา 40(2)</td>${empty(3)}</tr>
-        <tr><td>3. ค่าแห่งลิขสิทธิ์ ฯลฯ ตามมาตรา 40(3)</td>${empty(3)}</tr>
-        <tr><td>4. (ก) ดอกเบี้ย ฯลฯ ตามมาตรา 40(4)(ก)<br>&nbsp;&nbsp;&nbsp;(ข) เงินปันผล เงินส่วนแบ่งกำไร ฯลฯ ตามมาตรา 40(4)(ข)</td>${empty(3)}</tr>
-        <tr><td>5. การจ่ายเงินได้ที่ต้องหักภาษี ณ ที่จ่าย ตามคำสั่งกรมสรรพากร<br>&nbsp;&nbsp;&nbsp;ที่ออกตามมาตรา 3 เตรส ฯลฯ</td>${empty(3)}</tr>
-        <tr><td>6. อื่น ๆ (ระบุ) ....................................</td>${empty(3)}</tr>
+        <tr><td>1. เงินเดือน ค่าจ้าง เบี้ยเลี้ยง โบนัส ฯลฯ ตามมาตรา 40 (1)</td><td style="text-align:center">ปีภาษี ${year+543}</td><td style="text-align:right">${money(agg.income)}</td><td style="text-align:right">${money(agg.tax)}</td></tr>
+        ${wr('2. ค่าธรรมเนียม ค่านายหน้า ฯลฯ ตามมาตรา 40 (2)')}
+        ${wr('3. ค่าแห่งลิขสิทธิ์ ฯลฯ ตามมาตรา 40 (3)')}
+        ${wr('4. (ก) ดอกเบี้ย ฯลฯ ตามมาตรา 40 (4) (ก)')}
+        ${wr('&nbsp;&nbsp;&nbsp;(ข) เงินปันผล เงินส่วนแบ่งกำไร ฯลฯ ตามมาตรา 40 (4) (ข)')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1) กรณีผู้ได้รับเงินปันผลได้รับเครดิตภาษี โดยจ่ายจากกำไรสุทธิ')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ของกิจการที่ต้องเสียภาษีเงินได้นิติบุคคลในอัตราดังนี้')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1.1) อัตราร้อยละ 30 ของกำไรสุทธิ')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1.2) อัตราร้อยละ 25 ของกำไรสุทธิ')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1.3) อัตราร้อยละ 20 ของกำไรสุทธิ')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1.4) อัตราอื่น ๆ (ระบุ) ........ ของกำไรสุทธิ')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2) กรณีผู้ได้รับเงินปันผลไม่ได้รับเครดิตภาษี เนื่องจากจ่ายจาก')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2.1) กำไรสุทธิของกิจการที่ได้รับยกเว้นภาษีเงินได้นิติบุคคล')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2.2) เงินปันผลหรือเงินส่วนแบ่งของกำไรที่ได้รับยกเว้นไม่ต้องนำมารวมคำนวณฯ')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2.3) กำไรสุทธิส่วนที่ได้หักผลขาดทุนสุทธิยกมาไม่เกิน 5 ปีฯ')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2.4) กำไรที่รับรู้ทางบัญชีโดยวิธีส่วนได้เสีย (equity method)')}
+        ${wr('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2.5) อื่น ๆ (ระบุ) ........................')}
+        ${wr('5. การจ่ายเงินได้ที่ต้องหักภาษี ณ ที่จ่าย ตามคำสั่งกรมสรรพากรที่ออกตามมาตรา 3 เตรส')}
+        ${wr('&nbsp;&nbsp;&nbsp;เช่น รางวัล ส่วนลดหรือประโยชน์ใด ๆ เนื่องจากการส่งเสริมการขาย ค่าจ้างทำของ ค่าโฆษณา ฯลฯ')}
+        ${wr('6. อื่น ๆ (ระบุ) ....................................')}
         <tr><td style="text-align:right"><strong>รวมเงินที่จ่ายและภาษีที่หักนำส่ง</strong></td><td></td><td style="text-align:right"><strong>${money(agg.income)}</strong></td><td style="text-align:right"><strong>${money(agg.tax)}</strong></td></tr>
         <tr><td colspan="4">รวมเงินภาษีที่หักนำส่ง (ตัวอักษร) &nbsp; <strong>( ${bahtText(agg.tax)} )</strong></td></tr>
       </tbody>
@@ -1352,6 +1382,11 @@ if(langBtn){ langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH';
   langBtn.onclick=()=>{ LANG = LANG==='th'?'en':'th'; localStorage.setItem('lang',LANG); langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH'; renderNav(); render(); }; }
 $('#authLogin').onclick=doLogin;
 $('#authSignup').onclick=doSignup;
+$('#authGoogle').onclick=async()=>{
+  const m=$('#authMsg'); m.style.color='#64748b'; m.textContent='กำลังเปิดหน้าเข้าสู่ระบบ Google…';
+  const {error}=await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.origin } });
+  if(error){ m.style.color='#dc2626'; m.textContent='เข้าสู่ระบบด้วย Google ไม่สำเร็จ: '+error.message; }
+};
 $('#authPass').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
 window.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 boot();
