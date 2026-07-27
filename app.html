@@ -1137,7 +1137,7 @@ function vPND1(v){
   let totIncome=0, totTax=0;
   const rows=DB.employees.map((e,i)=>{ const c=calc(e,PERIOD); totIncome+=c.gross; totTax+=+c.r.ded.tax||0;
     return `<tr><td style="text-align:center">${i+1}</td><td>${esc(e.taxId||'-')}</td><td>${esc(e.name)}</td>
-      <td style="text-align:center">05/12/${(+PERIOD.split('-')[0])+543}</td>
+      <td style="text-align:center">01/${PERIOD.split('-')[1]}/${(+PERIOD.split('-')[0])+543}</td>
       <td style="text-align:right">${money(c.gross)}</td><td style="text-align:right">${money(c.r.ded.tax)}</td></tr>`;
   }).join('');
   const area=el(`<div class="print-area"></div>`); v.appendChild(area);
