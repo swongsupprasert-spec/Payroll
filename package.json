@@ -1,0 +1,11 @@
+{
+  "name": "payroll",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ระบบเงินเดือน Payroll — รันในเครื่องด้วย static server",
+  "scripts": {
+    "start": "node serve.mjs",
+    "dev": "node --watch serve.mjs"
+  }
+}
