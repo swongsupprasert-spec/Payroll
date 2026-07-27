@@ -155,7 +155,6 @@
       Continue with Google
     </button>
     <div id="authMsg" style="font-size:13px;margin-top:12px;text-align:center;min-height:18px;color:#dc2626"></div>
-    <div style="text-align:center;margin-top:6px"><a href="#" id="authGuest" style="color:#64748b;font-size:14px;text-decoration:underline">เข้าใช้งานแบบทดลอง (ไม่ต้องสมัคร)</a></div>
   </div>
 </div>
 <div class="app">
@@ -1432,7 +1431,6 @@ if(langBtn){ langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH';
   langBtn.onclick=()=>{ LANG = LANG==='th'?'en':'th'; localStorage.setItem('lang',LANG); langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH'; renderNav(); render(); }; }
 $('#authLogin').onclick=doLogin;
 $('#authSignup').onclick=doSignup;
-$('#authGuest').onclick=(e)=>{ e.preventDefault(); enterGuest(); };
 $('#authGoogle').onclick=async()=>{
   const m=$('#authMsg'); m.style.color='#64748b'; m.textContent='กำลังเปิดหน้าเข้าสู่ระบบ Google…';
   const {error}=await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.origin + window.location.pathname } });
