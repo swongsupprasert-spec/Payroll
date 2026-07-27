@@ -696,18 +696,12 @@ function empForm(id){
       <div class="field"><label>เลขที่บัญชี</label><input id="f_bankNo" value="${esc(e.bankNo)}"></div>
       <div class="field" style="grid-column:1/-1"><label>ที่อยู่ (สำหรับหนังสือรับรองหัก ณ ที่จ่าย 50 ทวิ)</label><input id="f_address" value="${esc(e.address||'')}" placeholder="บ้านเลขที่ หมู่ ถนน ตำบล/แขวง อำเภอ/เขต จังหวัด รหัสไปรษณีย์"></div>
     </div>
-    <div class="sec-title">ค่าลดหย่อนภาษี (สำหรับคำนวณภาษีหัก ณ ที่จ่าย)</div>
-    <div class="grid3">
-      <div class="field"><label>คู่สมรส</label><select id="f_spouse"><option value="0" ${!(+e.spouse)?'selected':''}>ไม่มี</option><option value="1" ${(+e.spouse)?'selected':''}>มี (ลดหย่อน 60,000)</option></select></div>
-      <div class="field"><label>จำนวนบุตร (คนละ 30,000)</label><input id="f_children" type="number" min="0" value="${e.children||0}"></div>
-      <div class="field"><label>ลดหย่อนอื่น/ปี (เบี้ยประกันฯ)</label><input id="f_otherAllow" type="number" value="${e.otherAllow||0}"></div>
-    </div>
     <datalist id="deptList">${[...new Set(DB.employees.map(x=>x.dept).filter(Boolean))].map(d=>`<option value="${esc(d)}">`).join('')}</datalist>`;
   openModal(id?'แก้ไขพนักงาน':'เพิ่มพนักงาน', body, [['ยกเลิก','ghost',closeModal],['บันทึก','',()=>{
     const g=id=>$('#'+id).value;
     const code=g('f_code').trim(), name=g('f_name').trim();
     if(!code||!name){ toast('กรุณากรอกรหัสและชื่อ'); return; }
-    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,spouse:+g('f_spouse')||0,children:+g('f_children')||0,otherAllow:+g('f_otherAllow')||0};
+    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0};
     if(id){ Object.assign(e,rec); } else { DB.employees.push({id:uid(),...rec}); }
     save(); closeModal(); drawEmp(); toast('บันทึกแล้ว');
   }]]);
