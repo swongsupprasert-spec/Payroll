@@ -198,7 +198,7 @@ const I18N = {
   th:{
     nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_resign:'การลาออก', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
     nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
-    nav_pnd1:'แบบ ภ.ง.ด.1', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ',
+    nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ',
     period:'งวดเดือน',
     kpi_count:'จำนวนพนักงาน', kpi_salary:'เงินเดือนรวม', kpi_income:'เงินได้รวม', kpi_deduct:'เงินหักรวม', kpi_net:'เงินสุทธิรวม',
     male:'ชาย', female:'หญิง', unspec:'ไม่ระบุ', unit_person:'คน',
@@ -213,7 +213,7 @@ const I18N = {
   en:{
     nav_dashboard:'Dashboard', nav_employees:'Employees', nav_resign:'Resignation', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
     nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
-    nav_pnd1:'PND.1 Form', nav_settings:'Settings', nav_admin:'👑 Admin',
+    nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_admin:'👑 Admin',
     period:'Period',
     kpi_count:'Employees', kpi_salary:'Total Salary', kpi_income:'Total Earnings', kpi_deduct:'Total Deductions', kpi_net:'Total Net Pay',
     male:'Male', female:'Female', unspec:'N/A', unit_person:'',
@@ -411,13 +411,14 @@ const PAGES = [
   ['slip','สลิปเงินเดือน','🧾'],
   ['wht','หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)','📄'],
   ['pnd1','แบบ ภ.ง.ด.1','🗂️'],
+  ['sso','แบบประกันสังคม (สปส.1-10)','🛡️'],
   ['settings','ตั้งค่า','⚙️'],
 ];
 
 const NAV_COLORS = {
   dashboard:'#3b82f6', employees:'#8b5cf6', resign:'#f43f5e', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
-  pnd1:'#6366f1', settings:'#64748b', admin:'#eab308'
+  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#64748b', admin:'#eab308'
 };
 function renderNav(){
   const nav = $('#nav'); nav.innerHTML='';
@@ -455,7 +456,47 @@ function render(){
   const v = $('#view'); v.innerHTML='';
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
   ({dashboard:vDashboard, employees:vEmployees, resign:vResign, payroll:vPayroll, summary:vSummary,
-    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, settings:vSettings, admin:vAdmin}[PAGE])(v);
+    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, admin:vAdmin}[PAGE])(v);
+}
+/* ============ แบบประกันสังคม (สปส. 1-10) ============ */
+function vSSO(v){
+  const [py,pm]=PERIOD.split('-').map(Number);
+  const list=DB.employees.filter(e=>activeInMonth(e,py,pm));
+  v.appendChild(el(`<div class="toolbar no-print"><h2 style="font-size:16px">แบบรายการแสดงการส่งเงินสมทบ (สปส. 1-10) — ${periodLabel(PERIOD)}</h2>
+    <button class="btn ghost sm" style="margin-left:auto" id="ssoCsv">⬇️ CSV</button>
+    <button class="btn" onclick="window.print()">🖨️ พิมพ์</button></div>`));
+  let totWage=0, totSso=0;
+  const rows=list.map((e,i)=>{ const c=calc(e,PERIOD); const s=+readRec(PERIOD,e.id).ded.sso||0; totWage+=c.base; totSso+=s;
+    return `<tr><td style="text-align:center">${i+1}</td><td>${esc(e.taxId||'-')}</td><td>${esc(e.name)}</td>
+      <td style="text-align:right">${money(c.base)}</td><td style="text-align:right">${money(s)}</td></tr>`;
+  }).join('');
+  const area=el(`<div class="print-area"></div>`); v.appendChild(area);
+  area.appendChild(el(`<div class="doc">
+    <h2 class="dt">แบบรายการแสดงการส่งเงินสมทบ</h2>
+    <div style="text-align:center;margin-bottom:8px">สปส. 1-10 · ประจำเดือน ${THAI_MONTHS[pm-1]} พ.ศ. ${py+543}</div>
+    <table class="dtbl">
+      <tr><td style="width:60%"><strong>ชื่อสถานประกอบการ:</strong> ${esc(DB.company.name)}</td>
+          <td><strong>เลขที่บัญชีนายจ้าง:</strong> ${esc(DB.company.ssoNo||'-')}</td></tr>
+    </table>
+    <table class="dtbl" style="margin-top:8px">
+      <thead><tr><th style="width:8%">ลำดับ</th><th>เลขบัตรประชาชน</th><th>ชื่อ-สกุลผู้ประกันตน</th>
+        <th style="text-align:right">ค่าจ้าง (บาท)</th><th style="text-align:right">เงินสมทบ 5% (บาท)</th></tr></thead>
+      <tbody>${rows||'<tr><td colspan="5" style="text-align:center">ไม่มีข้อมูล</td></tr>'}</tbody>
+      <tfoot><tr><th colspan="3" style="text-align:right">รวม</th><th style="text-align:right">${money(totWage)}</th><th style="text-align:right">${money(totSso)}</th></tr></tfoot>
+    </table>
+    <table class="dtbl" style="margin-top:8px">
+      <tr><td>1. เงินสมทบผู้ประกันตน (ลูกจ้าง) รวม</td><td style="text-align:right;width:28%">${money(totSso)} บาท</td></tr>
+      <tr><td>2. เงินสมทบนายจ้าง (เท่ากับข้อ 1)</td><td style="text-align:right">${money(totSso)} บาท</td></tr>
+      <tr><td><strong>3. รวมเงินสมทบที่นำส่งทั้งสิ้น (ข้อ 1 + ข้อ 2)</strong></td><td style="text-align:right"><strong>${money(totSso*2)} บาท</strong></td></tr>
+    </table>
+    <div style="margin-top:6px;font-size:12px">จำนวนผู้ประกันตน ${num(list.length)} ราย · รวมนำส่ง ${money(totSso*2)} บาท (${bahtText(totSso*2)})</div>
+    <div class="sign"><div><div class="line"></div>ลายมือชื่อนายจ้าง / ผู้รับมอบอำนาจ<br>( ${esc(DB.company.signer)} )<br>วันที่ ......./......./.......</div></div>
+  </div>`));
+  $('#ssoCsv').onclick=()=>{
+    const lines=['ลำดับ,เลขบัตรประชาชน,ชื่อ,ค่าจ้าง,เงินสมทบ5%'];
+    list.forEach((e,i)=>{ const c=calc(e,PERIOD); const s=+readRec(PERIOD,e.id).ded.sso||0; lines.push(`${i+1},${e.taxId||''},"${e.name}",${c.base},${s}`); });
+    downloadFile(`sso_1-10_${PERIOD}.csv`, '﻿'+lines.join('\r\n'),'text/csv;charset=utf-8'); toast('ส่งออกแล้ว');
+  };
 }
 /* ============ การลาออก / เข้าใหม่ ============ */
 function vResign(v){
