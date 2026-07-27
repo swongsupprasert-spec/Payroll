@@ -196,7 +196,7 @@ const MONTHS_EN = ['January','February','March','April','May','June','July','Aug
 let LANG = localStorage.getItem('lang') || 'th';
 const I18N = {
   th:{
-    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_resign:'การลาออก / เข้าใหม่', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
+    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_resign:'การลาออก', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
     nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
     nav_pnd1:'แบบ ภ.ง.ด.1', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ',
     period:'งวดเดือน',
@@ -211,7 +211,7 @@ const I18N = {
     print:'🖨️ พิมพ์',
   },
   en:{
-    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_resign:'Resignation / New Hire', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
+    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_resign:'Resignation', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
     nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
     nav_pnd1:'PND.1 Form', nav_settings:'Settings', nav_admin:'👑 Admin',
     period:'Period',
@@ -403,7 +403,7 @@ function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&l
 const PAGES = [
   ['dashboard','แดชบอร์ด','📊'],
   ['employees','ข้อมูลพนักงาน','👥'],
-  ['resign','การลาออก / เข้าใหม่','🚪'],
+  ['resign','การลาออก','🚪'],
   ['payroll','เงินได้ / เงินหัก','🧮'],
   ['summary','สรุปเงินเดือน','📋'],
   ['dept','สรุปตามแผนก','🏢'],
@@ -798,11 +798,15 @@ function nextCode(){
 let payrollEmpId=null;
 function vPayroll(v){
   if(DB.employees.length===0){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ยังไม่มีพนักงาน</div></div>`)); return; }
-  if(!payrollEmpId || !DB.employees.find(e=>e.id===payrollEmpId)) payrollEmpId=DB.employees[0].id;
+  // เฉพาะพนักงานที่ยังทำงานในงวดนี้ (คนลาออกแล้วไม่แสดง)
+  const [py,pm]=PERIOD.split('-').map(Number);
+  const list=DB.employees.filter(e=>activeInMonth(e,py,pm));
+  if(list.length===0){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ไม่มีพนักงานที่ทำงานในงวด ${periodLabel(PERIOD)}</div></div>`)); return; }
+  if(!payrollEmpId || !list.find(e=>e.id===payrollEmpId)) payrollEmpId=list[0].id;
 
   const tb=el(`<div class="toolbar">
     <div class="field" style="min-width:280px"><label>เลือกพนักงาน</label>
-      <select id="peSel">${DB.employees.map(e=>`<option value="${e.id}" ${e.id===payrollEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}</option>`).join('')}</select>
+      <select id="peSel">${list.map(e=>`<option value="${e.id}" ${e.id===payrollEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}</option>`).join('')}</select>
     </div>
     <button class="btn ghost sm" id="autoTax" style="margin-top:22px">🔍 ดูวิธีคำนวณภาษี</button>
   </div>`);
