@@ -286,24 +286,35 @@ function readRec(p, empId){
 }
 function autoSSO(wage){ return Math.round(Math.min(wage, DB.ssoMaxBase) * DB.ssoRate/100); } // ปัดเป็นจำนวนเต็มบาท
 function daysInMonth(year, month){ return new Date(year, month, 0).getDate(); }
-// เงินเดือนตามสัดส่วน (prorate) — อิงช่วงงวดจ่ายตามวันตัดรอบ
+// เงินเดือนตามสัดส่วน (prorate) — อิงช่วงงวดจ่ายตามวันตัดรอบ + วันเริ่มงาน/ลาออก
 function prorate(emp, p){
-  if(!p || emp.payType==='daily' || !emp.startDate) return {partial:false, factor:1};
-  const {from,to}=periodRange(p);                         // ช่วงงวดจ่าย (ตามวันตัดรอบ)
-  const [sy,sm,sd]=emp.startDate.split('-').map(Number);
-  const S=new Date(sy,sm-1,sd);
-  const DAY=86400000, total=Math.round((to-from)/DAY)+1;  // จำนวนวันในงวด
-  if(S>to)    return {partial:true, factor:0, worked:0, dim:total};   // ยังไม่เข้างานในงวดนี้
-  if(S<=from) return {partial:false, factor:1};                       // เข้างานก่อนงวด = เต็มงวด
-  const worked=Math.round((to-S)/DAY)+1;                              // เข้ากลางงวด
+  if(!p || emp.payType==='daily') return {partial:false, factor:1};   // รายวันคิดจากจำนวนวันจริง
+  const {from,to}=periodRange(p);
+  const DAY=86400000, total=Math.round((to-from)/DAY)+1;
+  let eStart=from, eEnd=to;
+  if(emp.startDate){ const [y,m,d]=emp.startDate.split('-').map(Number); const S=new Date(y,m-1,d); if(S>eStart) eStart=S; }
+  if(emp.resignDate){ const [y,m,d]=emp.resignDate.split('-').map(Number); const R=new Date(y,m-1,d); if(R<eEnd) eEnd=R; }
+  if(eStart>eEnd) return {partial:true, factor:0, worked:0, dim:total, from, to};   // ไม่ได้ทำงานในงวดนี้
+  const worked=Math.round((eEnd-eStart)/DAY)+1;
+  if(worked>=total) return {partial:false, factor:1};                 // ทำงานเต็มงวด
   return {partial:true, factor:worked/total, worked, dim:total, from, to};
 }
 // ค่าจ้างฐานของงวด: รายเดือน = เงินเดือน (prorate เดือนแรก) · รายวัน = ค่าจ้าง/วัน × จำนวนวันทำงาน
 function basePay(emp, rec, p){
-  if(emp.payType==='daily') return Number(emp.salary||0) * Number((rec&&rec.days)||0);
+  if(emp.payType==='daily'){
+    if(resignedBefore(emp, p)) return 0;                 // ลาออกไปก่อนงวดนี้แล้ว
+    return Number(emp.salary||0) * Number((rec&&rec.days)||0);
+  }
   const sal=Number(emp.salary||0);
   const pr=prorate(emp, p);
   return Math.round(sal*pr.factor*100)/100;
+}
+// ลาออกก่อนงวดนี้เริ่มหรือไม่ (ทั้งงวดอยู่หลังวันลาออก)
+function resignedBefore(emp, p){
+  if(!emp.resignDate || !p) return false;
+  const {from}=periodRange(p);
+  const [y,m,d]=emp.resignDate.split('-').map(Number);
+  return new Date(y,m-1,d) < from;
 }
 // คำนวณเงินหักอัตโนมัติ (ประกันสังคม + กสล. + ภาษี) จากค่าจ้างฐาน/เงินได้ของงวด
 function autoDeductions(emp, rec){
@@ -335,11 +346,10 @@ function progressiveTax(net){
 }
 // จำนวนเดือนที่ทำงานในปีภาษี (คำนึงถึงวันเริ่มงาน)
 function monthsEmployedInYear(emp, year){
-  if(!emp.startDate) return 12;
-  const [sy,sm]=emp.startDate.split('-').map(Number);
-  if(sy>year) return 0;      // ยังไม่เริ่มงานในปีนี้
-  if(sy<year) return 12;     // ทำงานเต็มปี
-  return Math.max(0, 12 - sm + 1); // เข้ากลางปี = นับจากเดือนที่เริ่มถึง ธ.ค.
+  let startM=1, endM=12;
+  if(emp.startDate){ const [sy,sm]=emp.startDate.split('-').map(Number); if(sy>year) return 0; if(sy===year) startM=sm; }
+  if(emp.resignDate){ const [ry,rm]=emp.resignDate.split('-').map(Number); if(ry<year) return 0; if(ry===year) endM=rm; }
+  return Math.max(0, endM - startM + 1);   // นับจากเดือนเริ่ม → เดือนลาออก (หรือ ธ.ค.)
 }
 // ประมาณการภาษีหัก ณ ที่จ่ายรายเดือน (อิงเงินได้ทั้งหมด + จำนวนเดือนที่ทำงานจริงในปีภาษี)
 function estTax(emp, year, rec){
@@ -376,9 +386,11 @@ function calc(emp, p){
   return {base, earnTotal, gross, dedTotal, net, r};
 }
 function periodTotals(p){
-  let salary=0, earn=0, gross=0, ded=0, net=0, tax=0;
-  DB.employees.forEach(e=>{ const c=calc(e,p); salary+=c.base; earn+=c.earnTotal; gross+=c.gross; ded+=c.dedTotal; net+=c.net; tax+=Number(readRec(p,e.id).ded.tax||0); });
-  return {count:DB.employees.length, salary, earn, gross, ded, net, tax};
+  const [py,pm]=p.split('-').map(Number);
+  let salary=0, earn=0, gross=0, ded=0, net=0, tax=0, count=0;
+  DB.employees.forEach(e=>{ const c=calc(e,p); salary+=c.base; earn+=c.earnTotal; gross+=c.gross; ded+=c.dedTotal; net+=c.net; tax+=Number(readRec(p,e.id).ded.tax||0);
+    if(activeInMonth(e,py,pm)) count++; });   // นับเฉพาะพนักงานที่ยังทำงานในงวดนี้
+  return {count, salary, earn, gross, ded, net, tax};
 }
 
 /* ---------- UI helpers ---------- */
@@ -473,11 +485,9 @@ const C = {brand:'#2563eb',brandL:'#93c5fd',green:'#059669',greenL:'#6ee7b7',red
 function periodHasData(p){ const pp=DB.payroll[p]; return !!(pp && Object.keys(pp).length); }
 // พนักงานคนนี้ทำงานอยู่ในเดือนนี้หรือไม่ (ตามวันเริ่มงาน)
 function activeInMonth(emp, year, month){
-  if(!emp.startDate) return true;
-  const [sy,sm]=emp.startDate.split('-').map(Number);
-  if(sy>year) return false;
-  if(sy<year) return true;
-  return sm<=month;
+  if(emp.startDate){ const [sy,sm]=emp.startDate.split('-').map(Number); if(sy>year||(sy===year&&sm>month)) return false; }
+  if(emp.resignDate){ const [ry,rm]=emp.resignDate.split('-').map(Number); if(ry<year||(ry===year&&rm<month)) return false; }
+  return true;
 }
 // คำนวณยอดรวมของเดือน (ประมาณการทั้งปี: ใช้ค่าที่กรอกจริงถ้ามี ไม่งั้นใช้เงินเดือนฐาน) เคารพวันเริ่มงาน
 function monthCompute(year, m){
@@ -667,7 +677,7 @@ function drawEmp(){
   const list = DB.employees.filter(e=> !q || [e.code,e.name,e.position,e.dept].some(x=>String(x||'').toLowerCase().includes(q)));
   const rows = list.map(e=>{ const daily=e.payType==='daily'; return `<tr>
     <td><span class="chip">${esc(e.code)}</span></td>
-    <td>${genderIcon(e.gender)}<strong>${esc(e.name)}</strong></td>
+    <td>${genderIcon(e.gender)}<strong style="${e.resignDate?'color:#94a3b8;text-decoration:line-through':''}">${esc(e.name)}</strong>${e.resignDate?` <span class="chip" style="background:#fee2e2;color:#dc2626">ลาออก ${esc(fmtDate(e.resignDate))}</span>`:''}</td>
     <td>${esc(e.position)}</td>
     <td>${esc(e.dept)}</td>
     <td>${daily?`<span class="chip" style="background:#fef3c7;color:#b45309">${tr('type_daily')}</span>`:`<span class="chip" style="background:#dbeafe;color:#1d4ed8">${tr('type_monthly')}</span>`}</td>
@@ -719,6 +729,7 @@ function empForm(id){
         <option value="daily" ${isDaily?'selected':''}>รายวัน</option></select></div>
       <div class="field"><label id="f_salaryLab">${isDaily?'ค่าจ้างต่อวัน (บาท) *':'เงินเดือน (บาท) *'}</label><input id="f_salary" type="number" step="0.01" value="${e.salary||0}"></div>
       <div class="field"><label>วันที่เริ่มงาน</label><input id="f_startDate" type="date" value="${e.startDate||''}"></div>
+      <div class="field"><label>วันที่ลาออก <span style="color:#94a3b8;font-size:11px">(เว้นว่างถ้ายังทำงานอยู่)</span></label><input id="f_resignDate" type="date" value="${e.resignDate||''}"></div>
       <div class="field"><label>เลขบัตรประชาชน (13 หลัก)</label><input id="f_taxId" value="${esc(e.taxId)}" maxlength="13"></div>
       <div class="field"><label>อัตราสะสม กสล. (%)</label><input id="f_pvdRate" type="number" step="0.5" value="${e.pvdRate||0}"></div>
       <div class="field"><label>ธนาคาร</label><input id="f_bank" value="${esc(e.bank)}"></div>
@@ -730,7 +741,7 @@ function empForm(id){
     const g=id=>$('#'+id).value;
     const code=g('f_code').trim(), name=g('f_name').trim();
     if(!code||!name){ toast('กรุณากรอกรหัสและชื่อ'); return; }
-    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0};
+    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0};
     if(id){ Object.assign(e,rec); } else { DB.employees.push({id:uid(),...rec}); }
     save(); closeModal(); drawEmp(); toast('บันทึกแล้ว');
   }]]);
@@ -1151,14 +1162,23 @@ function yearAgg(e, year){
 }
 
 /* ============ 8. PND1 ============ */
+function pndPayDate(p){   // วันที่จ่ายของงวด (แก้เองได้ ค่าเริ่มต้น=สิ้นเดือน)
+  if(DB.payDates && DB.payDates[p]) return DB.payDates[p];
+  const [y,m]=p.split('-').map(Number);
+  return `${y}-${String(m).padStart(2,'0')}-${String(daysInMonth(y,m)).padStart(2,'0')}`;
+}
 function vPND1(v){
-  v.appendChild(el(`<div class="toolbar no-print"><h2 style="font-size:16px">แบบ ภ.ง.ด.1 — ${periodLabel(PERIOD)}</h2>
-    <button class="btn ghost sm" style="margin-left:auto" id="pnd1csv">⬇️ CSV</button>
-    <button class="btn" onclick="window.print()">🖨️ พิมพ์</button></div>`));
+  const tb=el(`<div class="toolbar no-print"><h2 style="font-size:16px">แบบ ภ.ง.ด.1 — ${periodLabel(PERIOD)}</h2>
+    <div class="field" style="margin-left:auto"><label>วันที่จ่ายเงิน</label><input type="date" id="pndDate" value="${pndPayDate(PERIOD)}"></div>
+    <button class="btn ghost sm" style="margin-top:22px" id="pnd1csv">⬇️ CSV</button>
+    <button class="btn" style="margin-top:22px" onclick="window.print()">🖨️ พิมพ์</button></div>`);
+  v.appendChild(tb);
+  tb.querySelector('#pndDate').onchange=(e)=>{ DB.payDates=DB.payDates||{}; DB.payDates[PERIOD]=e.target.value; save(); render(); };
+  const payD=fmtDate(pndPayDate(PERIOD));
   let totIncome=0, totTax=0;
   const rows=DB.employees.map((e,i)=>{ const c=calc(e,PERIOD); totIncome+=c.gross; totTax+=+c.r.ded.tax||0;
     return `<tr><td style="text-align:center">${i+1}</td><td>${esc(e.taxId||'-')}</td><td>${esc(e.name)}</td>
-      <td style="text-align:center">${daysInMonth(+PERIOD.split('-')[0],+PERIOD.split('-')[1])}/${PERIOD.split('-')[1]}/${(+PERIOD.split('-')[0])+543}</td>
+      <td style="text-align:center">${payD}</td>
       <td style="text-align:right">${money(c.gross)}</td><td style="text-align:right">${money(c.r.ded.tax)}</td></tr>`;
   }).join('');
   const area=el(`<div class="print-area"></div>`); v.appendChild(area);

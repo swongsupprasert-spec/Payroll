@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>บทความ — ระบบเงินเดือน Payroll</title>
+<meta name="description" content="บทความความรู้เรื่องเงินเดือน ภาษีหัก ณ ที่จ่าย ประกันสังคม กองทุนสำรองเลี้ยงชีพ 50 ทวิ ภ.ง.ด.1 สำหรับ HR และเจ้าของธุรกิจ">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--brand:#2563eb;--brand-d:#1d4ed8;--ink:#0f172a;--muted:#64748b;--bg:#f8fafc}
+  html{scroll-behavior:smooth}
+  body{font-family:"Sarabun","Segoe UI",Tahoma,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.7}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  .wrap.wide{max-width:1140px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:11px;font-weight:700;font-size:15px;cursor:pointer;border:0;transition:.18s}
+  .btn.primary{background:var(--brand);color:#fff;box-shadow:0 8px 24px rgba(37,99,235,.3)}
+  .btn.primary:hover{background:var(--brand-d);transform:translateY(-2px)}
+
+  header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid #eef2f7}
+  nav{display:flex;align-items:center;gap:14px;height:66px;max-width:1140px;margin:0 auto;padding:0 22px}
+  .logo{font-size:21px;font-weight:800;display:flex;align-items:center;gap:8px}
+  nav .sp{margin-left:auto;display:flex;gap:6px;align-items:center}
+  nav a.link{color:var(--muted);font-weight:600;padding:8px 12px;font-size:15px}
+  nav a.link:hover{color:var(--ink)}
+  nav a.link.active{color:var(--brand)}
+
+  .pagehead{background:radial-gradient(1000px 400px at 70% -20%,#dbeafe,transparent),linear-gradient(180deg,#fff,#f8fafc);padding:54px 0 40px;text-align:center}
+  .pagehead .badge{display:inline-block;background:#eef2ff;color:var(--brand-d);font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;margin-bottom:14px}
+  .pagehead h1{font-size:40px;letter-spacing:-.5px;margin-bottom:10px}
+  .pagehead p{color:var(--muted);font-size:18px}
+
+  section{padding:44px 0}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .card{display:block;background:#fff;border:1px solid #eef2f7;border-radius:16px;overflow:hidden;transition:.18s}
+  .card:hover{box-shadow:0 16px 40px rgba(15,23,42,.1);transform:translateY(-3px);border-color:#dbe3ee}
+  .card .cover{height:170px;overflow:hidden;background:#eef2f7}
+  .card .cover img{width:100%;height:100%;object-fit:cover;display:block;transition:.25s}
+  .card:hover .cover img{transform:scale(1.05)}
+  .card .body{padding:20px 22px}
+  .card .tag{font-size:12px;font-weight:700;color:var(--brand-d);background:#eef2ff;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+  .card h3{font-size:19px;margin-bottom:8px;line-height:1.35}
+  .card p{color:var(--muted);font-size:15px}
+  .card .more{color:var(--brand);font-weight:700;font-size:14px;margin-top:12px;display:inline-block}
+
+  article{border-top:1px solid #eef2f7;padding:44px 0}
+  article .meta{color:var(--muted);font-size:14px;margin-bottom:8px}
+  article h2{font-size:28px;letter-spacing:-.3px;margin-bottom:16px}
+  article h4{font-size:19px;margin:22px 0 8px}
+  article p{margin-bottom:12px;color:#1f2937}
+  article ul{margin:0 0 14px 22px;color:#1f2937}
+  article li{margin-bottom:6px}
+  article .box{background:var(--bg);border:1px solid #e8edf3;border-left:4px solid var(--brand);border-radius:10px;padding:14px 18px;margin:14px 0}
+  article .back{color:var(--brand);font-weight:700;font-size:14px}
+
+  .cta-band{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:24px;padding:44px 34px;text-align:center;margin:40px auto}
+  .cta-band h2{font-size:28px;margin-bottom:10px}
+  .cta-band p{opacity:.92;margin-bottom:22px}
+  .cta-band .btn.primary{background:#fff;color:var(--brand-d)}
+  footer{padding:34px 0;border-top:1px solid #eef2f7;color:var(--muted);font-size:14px;text-align:center}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}.pagehead h1{font-size:30px}article h2{font-size:23px}}
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="index.html" class="logo">💵 <span>ระบบเงินเดือน <span style="color:var(--brand)">Payroll</span></span></a>
+    <div class="sp">
+      <a href="index.html#features" class="link">ฟีเจอร์</a>
+      <a href="articles.html" class="link active">บทความ</a>
+      <a href="app.html#signup" class="btn primary" style="padding:9px 18px">เริ่มใช้งาน</a>
+    </div>
+  </nav>
+</header>
+
+<div class="pagehead">
+  <div class="wrap">
+    <span class="badge">📚 คลังความรู้</span>
+    <h1>บทความเรื่องเงินเดือน &amp; ภาษี</h1>
+    <p>สาระความรู้สำหรับ HR และเจ้าของธุรกิจ เข้าใจง่าย ใช้ได้จริง</p>
+  </div>
+</div>
+
+<!-- ARTICLE LIST -->
+<section>
+  <div class="wrap wide">
+    <div class="cards">
+      <a href="#a1" class="card"><div class="cover"><img loading="lazy" alt="คำนวณภาษี" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag">ภาษี</span><h3>ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง?</h3><p>เข้าใจอัตราภาษีขั้นบันได ค่าลดหย่อน และวิธีเฉลี่ยภาษีรายเดือนแบบง่ายๆ</p><span class="more">อ่านต่อ →</span></div></a>
+
+      <a href="#a2" class="card"><div class="cover"><img loading="lazy" alt="ประกันสังคม" src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag">ประกันสังคม</span><h3>ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</h3><p>ฐานเงินเดือนสูงสุด 17,500 บาท นายจ้างสมทบเท่าไหร่ และหักจากพนักงานยังไง</p><span class="more">อ่านต่อ →</span></div></a>
+
+      <a href="#a3" class="card"><div class="cover"><img loading="lazy" alt="พนักงาน" src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag">เงินเดือน</span><h3>พนักงานรายเดือน vs รายวัน ต่างกันยังไง</h3><p>วิธีคิดค่าจ้าง การคิด OT และการคิดเงินเดือนตามสัดส่วนเมื่อเข้างานกลางเดือน</p><span class="more">อ่านต่อ →</span></div></a>
+
+      <a href="#a4" class="card"><div class="cover"><img loading="lazy" alt="เอกสารภาษี" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag">เอกสาร</span><h3>50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</h3><p>เอกสารภาษีที่นายจ้างต้องออกและยื่นสรรพากร พร้อมกำหนดเวลาที่ต้องรู้</p><span class="more">อ่านต่อ →</span></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- FULL ARTICLES -->
+<div class="wrap">
+  <article id="a1">
+    <div class="meta">ภาษี · อ่าน 4 นาที</div>
+    <h2>🧮 ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง?</h2>
+    <p>ภาษีเงินได้บุคคลธรรมดาใช้ <strong>อัตราก้าวหน้า (ขั้นบันได)</strong> — ยิ่งเงินได้สุทธิสูง ยิ่งเสียอัตราสูงขึ้นเป็นช่วงๆ นายจ้างมีหน้าที่หักภาษี ณ ที่จ่ายจากเงินเดือนพนักงานทุกเดือนแล้วนำส่งสรรพากร</p>
+    <h4>ขั้นตอนคำนวณ</h4>
+    <ul>
+      <li><strong>เงินได้ทั้งปี</strong> = เงินเดือน × จำนวนเดือนที่ทำงานในปีนั้น (รวม OT/โบนัสด้วย)</li>
+      <li>หัก <strong>ค่าใช้จ่าย</strong> 50% ของเงินได้ (สูงสุด 100,000 บาท)</li>
+      <li>หัก <strong>ค่าลดหย่อน</strong> เช่น ส่วนตัว 60,000 · ประกันสังคม · กองทุนสำรองเลี้ยงชีพ</li>
+      <li>ได้ <strong>เงินได้สุทธิ</strong> → นำไปคูณอัตราภาษีขั้นบันได</li>
+    </ul>
+    <div class="box">อัตราขั้นบันได: 0–150,000 (ยกเว้น) · 150,001–300,000 (5%) · 300,001–500,000 (10%) · 500,001–750,000 (15%) · 750,001–1,000,000 (20%) · 1,000,001–2,000,000 (25%) · 2,000,001–5,000,000 (30%) · เกิน 5,000,000 (35%)</div>
+    <p>ภาษีที่หักแต่ละเดือน = ภาษีทั้งปี ÷ จำนวนเดือนที่ทำงาน — ระบบ Payroll คำนวณให้อัตโนมัติ ไม่ต้องคิดเอง</p>
+    <a href="#" class="back">↑ กลับขึ้นด้านบน</a>
+  </article>
+
+  <article id="a2">
+    <div class="meta">ประกันสังคม · อ่าน 3 นาที</div>
+    <h2>🛡️ ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</h2>
+    <p>ผู้ประกันตนมาตรา 33 (ลูกจ้าง) ถูกหักเงินสมทบประกันสังคม <strong>5% ของค่าจ้าง</strong> โดยมีฐานคำนวณขั้นต่ำและขั้นสูง</p>
+    <h4>สูตรคำนวณ</h4>
+    <ul>
+      <li>ฐานเงินเดือนขั้นสูง = <strong>17,500 บาท</strong> (เพดานปัจจุบัน)</li>
+      <li>หัก = ค่าจ้าง (ไม่เกิน 17,500) × 5% → <strong>สูงสุด 875 บาท/เดือน</strong></li>
+      <li>เช่น เงินเดือน 30,000 → หัก 17,500 × 5% = 875 บาท</li>
+      <li>เงินเดือน 10,000 → หัก 10,000 × 5% = 500 บาท</li>
+    </ul>
+    <div class="box">นายจ้าง <strong>สมทบเพิ่มอีกเท่ากัน</strong> (5%) และรัฐสมทบอีกส่วน — เงินนี้เป็นสิทธิประโยชน์กรณีเจ็บป่วย คลอดบุตร ว่างงาน ชราภาพ ฯลฯ</div>
+    <a href="#" class="back">↑ กลับขึ้นด้านบน</a>
+  </article>
+
+  <article id="a3">
+    <div class="meta">เงินเดือน · อ่าน 4 นาที</div>
+    <h2>📅 พนักงานรายเดือน vs รายวัน ต่างกันยังไง</h2>
+    <p>การคิดค่าจ้างต่างกันชัดเจน ระบบต้องรองรับทั้งสองแบบ</p>
+    <h4>พนักงานรายเดือน</h4>
+    <ul>
+      <li>ได้เงินเดือนคงที่ทุกเดือน</li>
+      <li>เข้างานกลางเดือน → คิด <strong>ตามสัดส่วน (Prorate)</strong> = เงินเดือน × วันที่ทำงาน ÷ วันในงวด</li>
+      <li>OT/ชม. = เงินเดือน ÷ 30 ÷ 8</li>
+    </ul>
+    <h4>พนักงานรายวัน</h4>
+    <ul>
+      <li>ได้ค่าจ้างตาม <strong>จำนวนวันทำงานจริง</strong> = ค่าจ้าง/วัน × จำนวนวัน</li>
+      <li>OT/ชม. = ค่าจ้าง/วัน ÷ 8</li>
+    </ul>
+    <div class="box">ตัวคูณ OT ตามกฎหมาย: 1.5× (ล่วงเวลาวันทำงาน), 3× (ล่วงเวลาวันหยุด) — ระบบ Payroll ให้เลือกตัวคูณและคำนวณให้ทันที</div>
+    <a href="#" class="back">↑ กลับขึ้นด้านบน</a>
+  </article>
+
+  <article id="a4">
+    <div class="meta">เอกสาร · อ่าน 3 นาที</div>
+    <h2>📄 50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</h2>
+    <h4>หนังสือรับรองการหักภาษี ณ ที่จ่าย (50 ทวิ)</h4>
+    <p>เอกสารที่นายจ้าง <strong>ออกให้พนักงาน</strong> เพื่อรับรองว่าหักภาษีไปเท่าไหร่ในปีภาษีนั้น พนักงานใช้แนบตอนยื่นภาษีเงินได้บุคคลธรรมดา (ภ.ง.ด.90/91)</p>
+    <h4>แบบ ภ.ง.ด.1</h4>
+    <ul>
+      <li>แบบยื่น <strong>รายเดือน</strong> — สรุปเงินได้และภาษีที่หักของพนักงานทุกคน</li>
+      <li>ยื่นภายใน <strong>วันที่ 7 ของเดือนถัดไป</strong> (ยื่นออนไลน์ได้ถึงวันที่ 15)</li>
+      <li>สิ้นปีต้องยื่น <strong>ภ.ง.ด.1ก</strong> สรุปทั้งปี ภายในเดือนกุมภาพันธ์</li>
+    </ul>
+    <div class="box">ระบบ Payroll ออกทั้ง 50 ทวิ (แบบฟอร์มราชการเต็ม A4) และ ภ.ง.ด.1 พร้อมส่งออก CSV เพื่อยื่นออนไลน์</div>
+    <a href="#" class="back">↑ กลับขึ้นด้านบน</a>
+  </article>
+</div>
+
+<div class="wrap">
+  <div class="cta-band">
+    <h2>อยากทำเงินเดือนให้ง่ายขึ้น?</h2>
+    <p>เริ่มใช้ระบบ Payroll ฟรีวันนี้ คำนวณภาษี ประกันสังคม ออกเอกสารครบ</p>
+    <a href="app.html#signup" class="btn primary">🚀 เริ่มใช้งาน</a>
+  </div>
+</div>
+
+<footer><div class="wrap">💵 ระบบเงินเดือน Payroll · จัดการเงินเดือนสำหรับธุรกิจไทย · © 2569</div></footer>
+</body>
+</html>
