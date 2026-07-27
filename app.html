@@ -198,7 +198,7 @@ const I18N = {
   th:{
     nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_resign:'การลาออก', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
     nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
-    nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ',
+    nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ', nav_feedback:'💬 แจ้งปัญหา/คำแนะนำ',
     period:'งวดเดือน',
     kpi_count:'จำนวนพนักงาน', kpi_salary:'เงินเดือนรวม', kpi_income:'เงินได้รวม', kpi_deduct:'เงินหักรวม', kpi_net:'เงินสุทธิรวม',
     male:'ชาย', female:'หญิง', unspec:'ไม่ระบุ', unit_person:'คน',
@@ -213,7 +213,7 @@ const I18N = {
   en:{
     nav_dashboard:'Dashboard', nav_employees:'Employees', nav_resign:'Resignation', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
     nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
-    nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_admin:'👑 Admin',
+    nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_admin:'👑 Admin', nav_feedback:'💬 Feedback',
     period:'Period',
     kpi_count:'Employees', kpi_salary:'Total Salary', kpi_income:'Total Earnings', kpi_deduct:'Total Deductions', kpi_net:'Total Net Pay',
     male:'Male', female:'Female', unspec:'N/A', unit_person:'',
@@ -418,11 +418,11 @@ const PAGES = [
 const NAV_COLORS = {
   dashboard:'#3b82f6', employees:'#8b5cf6', resign:'#f43f5e', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
-  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#64748b', admin:'#eab308'
+  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#64748b', feedback:'#f97316', admin:'#eab308'
 };
 function renderNav(){
   const nav = $('#nav'); nav.innerHTML='';
-  const items = IS_ADMIN ? [...PAGES, ['admin','ผู้ดูแลระบบ','👑']] : PAGES;
+  const items = IS_ADMIN ? [...PAGES, ['feedback','แจ้งปัญหา/คำแนะนำ','💬'], ['admin','ผู้ดูแลระบบ','👑']] : PAGES;
   items.forEach(([id,label,ico])=>{
     const col = NAV_COLORS[id] || '#3b82f6';
     const b = el(`<button data-p="${id}"><span class="ico" style="background:linear-gradient(135deg,${col}cc,${col}77);color:#fff">${ico}</span><span class="t">${tr('nav_'+id)}</span></button>`);
@@ -456,7 +456,30 @@ function render(){
   const v = $('#view'); v.innerHTML='';
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
   ({dashboard:vDashboard, employees:vEmployees, resign:vResign, payroll:vPayroll, summary:vSummary,
-    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, admin:vAdmin}[PAGE])(v);
+    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, admin:vAdmin}[PAGE])(v);
+}
+/* ============ แจ้งปัญหา / คำแนะนำ (แอดมินเท่านั้น) ============ */
+async function vFeedback(v){
+  v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">💬 แจ้งปัญหา / คำแนะนำ จากผู้ใช้</h2>
+    <button class="btn ghost sm" style="margin-left:auto" id="fbRefresh">↻ รีเฟรช</button></div>`));
+  const panel=el(`<div class="panel"><div class="pbody" id="fbList"><div class="empty">กำลังโหลด…</div></div></div>`);
+  v.appendChild(panel);
+  $('#fbRefresh').onclick=()=>render();
+  const {data,error}=await sb.from('feedback').select('*').order('created_at',{ascending:false});
+  const box=$('#fbList'); if(!box) return;
+  if(error){ box.innerHTML=`<div class="empty">โหลดไม่ได้: ${esc(error.message)}<br><span style="font-size:12px">(ยังไม่ได้สร้างตาราง feedback ใน Supabase?)</span></div>`; return; }
+  if(!data||!data.length){ box.innerHTML='<div class="empty">ยังไม่มีข้อความจากผู้ใช้</div>'; return; }
+  const kc={'ปัญหา':'#fee2e2;color:#dc2626','คำแนะนำ':'#dcfce7;color:#16a34a','สอบถาม':'#eef2ff;color:#1d4ed8'};
+  box.innerHTML=`<div style="margin-bottom:12px" class="muted">ทั้งหมด ${data.length} ข้อความ</div>`+data.map(f=>`
+    <div style="border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px">
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap">
+        <span class="chip" style="background:${kc[f.kind]||'#eef2ff;color:#1d4ed8'}">${esc(f.kind||'-')}</span>
+        <strong>${esc(f.name||'ไม่ระบุชื่อ')}</strong>
+        ${f.email?`<a href="mailto:${esc(f.email)}" class="muted" style="font-size:12px">${esc(f.email)}</a>`:''}
+        <span class="muted" style="font-size:12px;margin-left:auto">${esc(fmtDateTime(f.created_at))}</span>
+      </div>
+      <div style="white-space:pre-wrap">${esc(f.message)}</div>
+    </div>`).join('');
 }
 /* ============ แบบประกันสังคม (สปส. 1-10) ============ */
 function vSSO(v){

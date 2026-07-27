@@ -95,6 +95,7 @@
         <a href="#features" class="link">ฟีเจอร์</a>
         <a href="#how" class="link">วิธีใช้งาน</a>
         <a href="articles.html" class="link">บทความ</a>
+        <a href="about.html" class="link">เกี่ยวกับ</a>
         <a href="app.html" class="btn ghost" style="padding:9px 18px;font-size:15px">เข้าสู่ระบบ</a>
       </div>
     </nav>
@@ -176,8 +177,8 @@
   <div class="wrap">
     <div class="cta-band">
       <h2>พร้อมทำเงินเดือนให้ง่ายขึ้นแล้วหรือยัง?</h2>
-      <p>สมัครใช้งานฟรีวันนี้ ไม่ต้องติดตั้งอะไร เริ่มได้ทันที</p>
-      <a href="app.html#signup" class="btn primary">🚀 สมัครใช้งานฟรี</a>
+      <p>สมัครใช้งานวันนี้ ไม่ต้องติดตั้งอะไร เริ่มได้ทันที</p>
+      <a href="app.html#signup" class="btn primary">🚀 สมัครใช้งาน</a>
     </div>
   </div>
 </section>
@@ -185,5 +186,44 @@
 <footer>
   <div class="wrap">💵 ระบบเงินเดือน Payroll · จัดการเงินเดือนสำหรับธุรกิจไทย<br>© 2569 · สงวนลิขสิทธิ์</div>
 </footer>
+
+<!-- ปุ่มแจ้งปัญหา / คำแนะนำ -->
+<button id="fbBtn" title="แจ้งปัญหา / คำแนะนำ" style="position:fixed;right:22px;bottom:22px;z-index:60;background:var(--brand);color:#fff;border:0;border-radius:50px;padding:13px 20px;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 10px 30px rgba(37,99,235,.4);display:flex;gap:8px;align-items:center">💬 แจ้งปัญหา / คำแนะนำ</button>
+<div id="fbModal" style="position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:70;display:none;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;max-width:440px;width:100%;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div style="display:flex;align-items:center;margin-bottom:14px"><h3 style="font-size:20px;margin:0">💬 แจ้งปัญหา / คำแนะนำ</h3><button id="fbClose" style="margin-left:auto;background:none;border:0;font-size:24px;cursor:pointer;color:#94a3b8;line-height:1">×</button></div>
+    <select id="fbKind" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:9px;margin-bottom:10px"><option value="ปัญหา">🐛 แจ้งปัญหา</option><option value="คำแนะนำ">💡 คำแนะนำ</option><option value="สอบถาม">❓ สอบถาม</option></select>
+    <input id="fbName" placeholder="ชื่อ (ไม่บังคับ)" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:9px;margin-bottom:10px">
+    <input id="fbEmail" type="email" placeholder="อีเมล (ไม่บังคับ)" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:9px;margin-bottom:10px">
+    <textarea id="fbMsg" rows="4" placeholder="รายละเอียด..." style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:9px;margin-bottom:12px;resize:vertical;font-family:inherit"></textarea>
+    <button id="fbSend" class="btn primary" style="width:100%;justify-content:center">ส่งข้อความ</button>
+    <div id="fbMuMsg" style="text-align:center;font-size:13px;margin-top:10px;min-height:16px"></div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  const SB_URL='https://sfzzswzyoqshlppsturd.supabase.co';
+  const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenpzd3p5b3FzaGxwcHN0dXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4OTE1ODAsImV4cCI6MjEwMDQ2NzU4MH0.5IVEuvp6JM-JZUKGfCEoVgQ_CwiLLsU8tUJxbW85eac';
+  let sb=null; try{ sb=window.supabase.createClient(SB_URL,SB_ANON); }catch(e){}
+  const $=id=>document.getElementById(id);
+  const close=()=>{ $('fbModal').style.display='none'; };
+  $('fbBtn').onclick=()=>{ $('fbModal').style.display='flex'; };
+  $('fbClose').onclick=close;
+  $('fbModal').onclick=e=>{ if(e.target.id==='fbModal') close(); };
+  $('fbSend').onclick=async()=>{
+    const msg=$('fbMsg').value.trim(); const m=$('fbMuMsg');
+    if(!msg){ m.style.color='#dc2626'; m.textContent='กรุณากรอกรายละเอียด'; return; }
+    if(!sb){ m.style.color='#dc2626'; m.textContent='เชื่อมต่อไม่ได้'; return; }
+    m.style.color='#64748b'; m.textContent='กำลังส่ง...';
+    try{ const {error}=await sb.from('feedback').insert({kind:$('fbKind').value,name:$('fbName').value.trim(),email:$('fbEmail').value.trim(),message:msg});
+      if(error) throw error;
+      m.style.color='#059669'; m.textContent='✅ ส่งเรียบร้อย ขอบคุณครับ!';
+      $('fbMsg').value='';$('fbName').value='';$('fbEmail').value='';
+      setTimeout(()=>{ close(); m.textContent=''; },1600);
+    }catch(err){ m.style.color='#dc2626'; m.textContent='ส่งไม่สำเร็จ: '+(err.message||'ลองใหม่'); }
+  };
+})();
+</script>
 </body>
 </html>
