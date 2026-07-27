@@ -196,7 +196,7 @@ const MONTHS_EN = ['January','February','March','April','May','June','July','Aug
 let LANG = localStorage.getItem('lang') || 'th';
 const I18N = {
   th:{
-    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
+    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_resign:'การลาออก / เข้าใหม่', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
     nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
     nav_pnd1:'แบบ ภ.ง.ด.1', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ',
     period:'งวดเดือน',
@@ -211,7 +211,7 @@ const I18N = {
     print:'🖨️ พิมพ์',
   },
   en:{
-    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
+    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_resign:'Resignation / New Hire', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
     nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
     nav_pnd1:'PND.1 Form', nav_settings:'Settings', nav_admin:'👑 Admin',
     period:'Period',
@@ -403,6 +403,7 @@ function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&l
 const PAGES = [
   ['dashboard','แดชบอร์ด','📊'],
   ['employees','ข้อมูลพนักงาน','👥'],
+  ['resign','การลาออก / เข้าใหม่','🚪'],
   ['payroll','เงินได้ / เงินหัก','🧮'],
   ['summary','สรุปเงินเดือน','📋'],
   ['dept','สรุปตามแผนก','🏢'],
@@ -414,7 +415,7 @@ const PAGES = [
 ];
 
 const NAV_COLORS = {
-  dashboard:'#3b82f6', employees:'#8b5cf6', payroll:'#06b6d4', summary:'#10b981',
+  dashboard:'#3b82f6', employees:'#8b5cf6', resign:'#f43f5e', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
   pnd1:'#6366f1', settings:'#64748b', admin:'#eab308'
 };
@@ -453,9 +454,51 @@ function render(){
   renderPeriodSel();
   const v = $('#view'); v.innerHTML='';
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
-  ({dashboard:vDashboard, employees:vEmployees, payroll:vPayroll, summary:vSummary,
+  ({dashboard:vDashboard, employees:vEmployees, resign:vResign, payroll:vPayroll, summary:vSummary,
     dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, settings:vSettings, admin:vAdmin}[PAGE])(v);
 }
+/* ============ การลาออก / เข้าใหม่ ============ */
+function vResign(v){
+  const [py,pm]=PERIOD.split('-').map(Number);
+  const inYear=(iso)=>{ if(!iso) return false; return +iso.split('-')[0]===py; };
+  const active=DB.employees.filter(e=>!e.resignDate || !resignedBeforeToday(e));
+  const resigned=DB.employees.filter(e=>e.resignDate);
+  const newThisYear=DB.employees.filter(e=>inYear(e.startDate));
+  const resignThisYear=DB.employees.filter(e=>inYear(e.resignDate));
+  v.appendChild(el(`<div class="cards">
+    <div class="kpi b1"><div class="lab">👥 พนักงานทั้งหมด</div><div class="val">${num(DB.employees.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
+    <div class="kpi b2"><div class="lab">🟢 ทำงานอยู่</div><div class="val">${num(DB.employees.length-resigned.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
+    <div class="kpi b3"><div class="lab">🆕 เข้าใหม่ปี ${py+543}</div><div class="val">${num(newThisYear.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
+    <div class="kpi b4"><div class="lab">🚪 ลาออกปี ${py+543}</div><div class="val">${num(resignThisYear.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
+  </div>`));
+
+  const rows=DB.employees.map(e=>{
+    const isOut=!!e.resignDate;
+    return `<tr>
+      <td><span class="chip">${esc(e.code)}</span></td>
+      <td>${genderIcon(e.gender)}<strong style="${isOut?'color:#94a3b8;text-decoration:line-through':''}">${esc(e.name)}</strong></td>
+      <td>${esc(e.dept||'-')}</td>
+      <td>${esc(fmtDate(e.startDate))}</td>
+      <td>${isOut?'<span class="chip" style="background:#fee2e2;color:#dc2626">ลาออกแล้ว</span>':'<span class="chip" style="background:#dcfce7;color:#16a34a">ทำงานอยู่</span>'}</td>
+      <td><input type="date" data-resign="${e.id}" value="${e.resignDate||''}" style="padding:6px 8px;border:1px solid var(--line);border-radius:7px"></td>
+      <td style="text-align:right">${isOut?`<button class="btn ghost sm" data-clear="${e.id}">↩️ ยกเลิกลาออก</button>`:''}</td>
+    </tr>`;
+  }).join('');
+  const panel=el(`<div class="panel"><div class="phead"><h2>บันทึกการลาออก — ใส่วันที่ลาออกได้เลย</h2></div>
+    <div class="pbody" style="padding:0"><div class="tbl-wrap"><table>
+      <thead><tr><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>แผนก</th><th>วันเริ่มงาน</th><th>สถานะ</th><th>วันที่ลาออก</th><th></th></tr></thead>
+      <tbody>${rows||'<tr><td colspan="7" class="empty">ยังไม่มีพนักงาน</td></tr>'}</tbody>
+    </table></div></div></div>`);
+  v.appendChild(panel);
+  panel.querySelectorAll('input[data-resign]').forEach(i=>i.onchange=()=>{
+    const emp=DB.employees.find(x=>x.id===i.dataset.resign); emp.resignDate=i.value; save(); render(); toast(i.value?'บันทึกวันลาออกแล้ว':'ล้างวันลาออกแล้ว');
+  });
+  panel.querySelectorAll('[data-clear]').forEach(b=>b.onclick=()=>{
+    const emp=DB.employees.find(x=>x.id===b.dataset.clear); emp.resignDate=''; save(); render(); toast('ยกเลิกการลาออกแล้ว');
+  });
+  v.appendChild(el(`<div class="panel"><div class="pbody muted" style="font-size:13px">💡 เมื่อใส่วันที่ลาออก ระบบจะคิดเงินเดือนเดือนที่ลาออกตามสัดส่วนวันทำงานจริง และหยุดจ่ายในเดือนถัดไปอัตโนมัติ — มีผลกับสลิป, ภาษี, ภ.ง.ด.1 และแดชบอร์ดทั้งหมด</div></div>`));
+}
+function resignedBeforeToday(e){ if(!e.resignDate) return false; const [y,m,d]=e.resignDate.split('-').map(Number); return new Date(y,m-1,d) < new Date(); }
 /* ============ ADMIN — รายชื่อผู้ใช้ทั้งหมด ============ */
 async function vAdmin(v){
   v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">👑 รายชื่อผู้ใช้ที่สมัครทั้งหมด</h2>
