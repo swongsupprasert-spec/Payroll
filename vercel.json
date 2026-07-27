@@ -3,7 +3,7 @@
   "trailingSlash": false,
   "headers": [
     {
-      "source": "/index.html",
+      "source": "/(index.html|app.html)",
       "headers": [{ "key": "Cache-Control", "value": "no-store, must-revalidate" }]
     }
   ]
