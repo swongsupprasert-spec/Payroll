@@ -7,7 +7,7 @@
 <meta name="description" content="โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม กองทุนสำรองเลี้ยงชีพ ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 สปส.1-10 กท.20ก รองรับพนักงานรายเดือนและรายวัน">
 <meta name="keywords" content="โปรแกรมเงินเดือน,ระบบเงินเดือน,payroll,คำนวณภาษีเงินเดือน,ประกันสังคม,สลิปเงินเดือน,50 ทวิ,ภงด1,สปส 1-10,กท 20 ก,โปรแกรม HR">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#2563eb">
+<meta name="theme-color" content="#0e3a5c">
 <link rel="canonical" href="https://payroll-mtd.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="eSimPayroll">
@@ -15,10 +15,12 @@
 <meta property="og:url" content="https://payroll-mtd.vercel.app/">
 <meta property="og:title" content="eSimPayroll — จัดการเงินเดือนพนักงาน ครบ จบ ในที่เดียว">
 <meta property="og:description" content="คำนวณภาษี ประกันสังคม ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 อัตโนมัติ รองรับพนักงานรายเดือนและรายวัน">
+<meta property="og:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="eSimPayroll">
 <meta name="twitter:description" content="โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษีและประกันสังคมอัตโนมัติ">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='12' fill='%232563eb'/><path d='M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14' fill='none' stroke='white' stroke-width='3.6' stroke-linecap='round'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='12' fill='%230e3a5c'/><path d='M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14' fill='none' stroke='%236ee7b7' stroke-width='3.6' stroke-linecap='round'/></svg>">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"eSimPayroll",
 "applicationCategory":"BusinessApplication","operatingSystem":"Web",
@@ -28,7 +30,7 @@
 </script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  :root{--brand:#2563eb;--brand-d:#1d4ed8;--ink:#0f172a;--muted:#64748b;--bg:#f8fafc}
+  :root{--brand:#0e3a5c;--brand-d:#092942;--ink:#0f2438;--muted:#5b7186;--bg:#f6faf8;--accent:#10b981;--accent-l:#6ee7b7;--accent-bg:#eaf6f1}
   html{scroll-behavior:smooth}
   body{font-family:"Sarabun","Segoe UI",Tahoma,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.6}
   a{text-decoration:none;color:inherit}
@@ -48,9 +50,9 @@
   nav a.link:hover{color:var(--ink)}
 
   /* hero */
-  .hero{background:radial-gradient(1200px 500px at 70% -10%,#dbeafe,transparent),linear-gradient(180deg,#fff,#f8fafc);padding:70px 0 60px;overflow:hidden}
+  .hero{background:radial-gradient(1200px 500px at 70% -10%,#d8f3e6,transparent),linear-gradient(180deg,#fff,#f6faf8);padding:70px 0 60px;overflow:hidden}
   .hero .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
-  .badge{display:inline-block;background:#eef2ff;color:var(--brand-d);font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;margin-bottom:18px}
+  .badge{display:inline-block;background:#eaf6f1;color:var(--brand-d);font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;margin-bottom:18px}
   .hero h1{font-size:46px;line-height:1.18;letter-spacing:-.5px;margin-bottom:18px}
   .hero h1 .hl{color:var(--brand)}
   .hero p.lead{font-size:19px;color:var(--muted);margin-bottom:28px;max-width:520px}
@@ -58,18 +60,23 @@
   .trust{margin-top:22px;color:var(--muted);font-size:14px;display:flex;gap:18px;flex-wrap:wrap}
   .trust b{color:var(--ink)}
 
-  /* hero mock */
-  .mock{background:#fff;border:1px solid #e8edf3;border-radius:18px;box-shadow:0 30px 70px rgba(15,23,42,.16);padding:20px;transform:rotate(1.2deg)}
-  .mock .bar{display:flex;gap:6px;margin-bottom:14px}
-  .mock .bar i{width:11px;height:11px;border-radius:50%;display:inline-block}
-  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-  .k{border:1px solid #eef2f7;border-radius:12px;padding:13px 15px}
-  .k .l{font-size:12px;color:var(--muted)}
-  .k .v{font-size:22px;font-weight:800;margin-top:3px}
-  .k.b1{border-top:3px solid #3b82f6}.k.b2{border-top:3px solid #10b981}
-  .k.b3{border-top:3px solid #f59e0b}.k.b4{border-top:3px solid #8b5cf6}
-  .barsim{display:flex;align-items:flex-end;gap:8px;height:90px;margin-top:14px;padding:0 4px}
-  .barsim span{flex:1;background:linear-gradient(180deg,#60a5fa,#2563eb);border-radius:5px 5px 0 0}
+  /* hero cover */
+  .cover{position:relative}
+  .cover-img{width:100%;height:420px;object-fit:cover;border-radius:22px;display:block;
+    box-shadow:0 30px 70px rgba(14,58,92,.28);border:5px solid #fff}
+  .cover::after{content:"";position:absolute;inset:0;border-radius:22px;pointer-events:none;
+    background:linear-gradient(200deg,rgba(14,58,92,.35),rgba(16,185,129,.18) 60%,transparent)}
+  .cover-card{position:absolute;left:-18px;bottom:26px;z-index:2;background:rgba(255,255,255,.97);
+    backdrop-filter:blur(8px);border:1px solid #e6efea;border-radius:16px;padding:15px 18px;
+    box-shadow:0 18px 44px rgba(14,58,92,.22);min-width:236px}
+  .cover-card .cc-l{font-size:12px;color:var(--muted);font-weight:600}
+  .cover-card .cc-v{font-size:27px;font-weight:800;color:var(--brand);margin:3px 0 9px;letter-spacing:-.5px}
+  .cover-card .cc-v span{font-size:13px;font-weight:600;color:var(--muted)}
+  .cc-bars{display:flex;align-items:flex-end;gap:5px;height:44px}
+  .cc-bars span{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--accent-l),var(--brand))}
+  .cover-pill{position:absolute;right:-10px;top:24px;z-index:2;background:#fff;border:1px solid #e6efea;
+    border-radius:30px;padding:9px 16px;font-size:13px;font-weight:700;color:var(--brand);
+    box-shadow:0 12px 30px rgba(14,58,92,.18)}
 
   /* sections */
   section{padding:64px 0}
@@ -91,7 +98,7 @@
   .step h4{font-size:17px;margin-bottom:6px}
   .step p{color:var(--muted);font-size:14px}
 
-  .cta-band{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:24px;padding:52px 40px;text-align:center;margin:0 auto}
+  .cta-band{background:linear-gradient(135deg,#0a2a45,#0e3a5c);color:#fff;border-radius:24px;padding:52px 40px;text-align:center;margin:0 auto}
   .cta-band h2{font-size:32px;margin-bottom:12px}
   .cta-band p{opacity:.92;font-size:18px;margin-bottom:26px}
   .cta-band .btn.primary{background:#fff;color:var(--brand-d)}
@@ -102,7 +109,9 @@
   @media(max-width:900px){
     .hero .grid,.features,.steprow{grid-template-columns:1fr}
     .hero h1{font-size:34px}.sec-head h2{font-size:26px}
-    .mock{transform:none;margin-top:10px}
+    .cover{margin-top:14px}
+    .cover-img{height:320px}
+    .cover-card{left:8px;bottom:14px}
     .features{gap:14px}.steprow{gap:26px}
   }
   /* มือถือ */
@@ -123,7 +132,11 @@
     .sec-head h2{font-size:22px}
     .cta-band{padding:34px 20px;border-radius:18px}
     .cta-band h2{font-size:23px}.cta-band p{font-size:15px}
-    .k .v{font-size:19px}
+    .cover-img{height:230px;border-width:4px}
+    .cover-card{left:8px;right:8px;bottom:10px;min-width:0;padding:12px 14px}
+    .cover-card .cc-v{font-size:22px}
+    .cc-bars{height:32px}
+    .cover-pill{right:6px;top:12px;font-size:12px;padding:7px 12px}
     #fbBtn{right:12px!important;bottom:12px!important;padding:11px 15px!important;font-size:13px!important}
   }
 </style>
@@ -134,7 +147,7 @@
     <nav>
       <div class="logo">
         <svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true">
-          <defs><linearGradient id="lgNav" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset=".55" stop-color="#3b82f6"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs>
+          <defs><linearGradient id="lgNav" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs>
           <rect width="44" height="44" rx="12" fill="url(#lgNav)"/>
           <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -166,21 +179,19 @@
         <span>✅ ตั้งค่าง่ายใน 5 นาที</span>
       </div>
     </div>
-    <div>
-      <div class="mock">
-        <div class="bar"><i style="background:#ef4444"></i><i style="background:#f59e0b"></i><i style="background:#10b981"></i></div>
-        <div class="kpis">
-          <div class="k b1"><div class="l">👥 พนักงาน</div><div class="v">24 คน</div></div>
-          <div class="k b2"><div class="l">💰 เงินสุทธิรวม</div><div class="v">612,400</div></div>
-          <div class="k b3"><div class="l">➕ เงินได้รวม</div><div class="v">648,000</div></div>
-          <div class="k b4"><div class="l">➖ เงินหักรวม</div><div class="v">35,600</div></div>
-        </div>
-        <div class="barsim">
-          <span style="height:45%"></span><span style="height:62%"></span><span style="height:50%"></span>
-          <span style="height:78%"></span><span style="height:66%"></span><span style="height:90%"></span>
-          <span style="height:72%"></span><span style="height:84%"></span>
+    <div class="cover">
+      <img class="cover-img" src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop"
+           alt="ทีมงานฝ่ายบุคคลใช้ระบบเงินเดือนออนไลน์" width="1200" height="800" fetchpriority="high">
+      <div class="cover-card">
+        <div class="cc-row"><span class="cc-l">💰 เงินสุทธิรวมเดือนนี้</span></div>
+        <div class="cc-v">612,400 <span>บาท</span></div>
+        <div class="cc-bars">
+          <span style="height:42%"></span><span style="height:60%"></span><span style="height:48%"></span>
+          <span style="height:76%"></span><span style="height:64%"></span><span style="height:92%"></span>
+          <span style="height:70%"></span><span style="height:84%"></span>
         </div>
       </div>
+      <div class="cover-pill">✅ คำนวณภาษีอัตโนมัติ</div>
     </div>
   </div>
 </div>
@@ -194,12 +205,12 @@
       <p>ครอบคลุมงานเงินเดือนตั้งแต่ต้นจนจบ ไม่ต้องใช้ Excel หลายไฟล์อีกต่อไป</p>
     </div>
     <div class="features">
-      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">👥</div><h3>ข้อมูลพนักงาน</h3><p>เก็บประวัติ ตำแหน่ง แผนก เงินเดือน วันเริ่มงาน รองรับทั้งรายเดือนและรายวัน</p></div>
-      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">🧮</div><h3>คำนวณภาษีอัตโนมัติ</h3><p>ภาษีหัก ณ ที่จ่ายแบบขั้นบันได ประกันสังคม กสล. คิดให้อัตโนมัติตามกฎหมายไทย</p></div>
-      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#14b8a6,#0d9488)">🧾</div><h3>ออกสลิปเงินเดือน</h3><p>พิมพ์สลิปทีละคนหรือทั้งบริษัท พร้อมจำนวนเงินเป็นตัวอักษร รองรับ 2 ภาษา</p></div>
-      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#ef4444,#dc2626)">📄</div><h3>50 ทวิ &amp; ภ.ง.ด.1</h3><p>ออกหนังสือรับรองหักภาษี ณ ที่จ่าย และแบบยื่นรายเดือน ตามแบบฟอร์มราชการ</p></div>
-      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#f59e0b,#d97706)">📊</div><h3>แดชบอร์ด &amp; รายงาน</h3><p>สรุปยอดรายเดือน/รายปี แยกตามแผนก กราฟสวยงาม ส่งออก CSV ได้</p></div>
-      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">☁️</div><h3>ปลอดภัยบนคลาวด์</h3><p>ข้อมูลเก็บแยกแต่ละบัญชี เข้าถึงได้ทุกที่ พร้อมระบบล็อกอินและสำรองข้อมูล</p></div>
+      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#17557f,#0e3a5c)">👥</div><h3>ข้อมูลพนักงาน</h3><p>เก็บประวัติ ตำแหน่ง แผนก เงินเดือน วันเริ่มงาน รองรับทั้งรายเดือนและรายวัน</p></div>
+      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#2dd4bf,#0f766e)">🧮</div><h3>คำนวณภาษีอัตโนมัติ</h3><p>ภาษีหัก ณ ที่จ่ายแบบขั้นบันได ประกันสังคม กสล. คิดให้อัตโนมัติตามกฎหมายไทย</p></div>
+      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#6ee7b7,#059669)">🧾</div><h3>ออกสลิปเงินเดือน</h3><p>พิมพ์สลิปทีละคนหรือทั้งบริษัท พร้อมจำนวนเงินเป็นตัวอักษร รองรับ 2 ภาษา</p></div>
+      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#34d399,#0e3a5c)">📄</div><h3>50 ทวิ &amp; ภ.ง.ด.1</h3><p>ออกหนังสือรับรองหักภาษี ณ ที่จ่าย และแบบยื่นรายเดือน ตามแบบฟอร์มราชการ</p></div>
+      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#7dd3fc,#17557f)">📊</div><h3>แดชบอร์ด &amp; รายงาน</h3><p>สรุปยอดรายเดือน/รายปี แยกตามแผนก กราฟสวยงาม ส่งออก CSV ได้</p></div>
+      <div class="feat"><div class="ic" style="background:linear-gradient(135deg,#5eead4,#0e7490)">☁️</div><h3>ปลอดภัยบนคลาวด์</h3><p>ข้อมูลเก็บแยกแต่ละบัญชี เข้าถึงได้ทุกที่ พร้อมระบบล็อกอินและสำรองข้อมูล</p></div>
     </div>
   </div>
 </section>
@@ -263,7 +274,7 @@
     const msg=$('fbMsg').value.trim(); const m=$('fbMuMsg');
     if(!msg){ m.style.color='#dc2626'; m.textContent='กรุณากรอกรายละเอียด'; return; }
     if(!sb){ m.style.color='#dc2626'; m.textContent='เชื่อมต่อไม่ได้'; return; }
-    m.style.color='#64748b'; m.textContent='กำลังส่ง...';
+    m.style.color='#5b7186'; m.textContent='กำลังส่ง...';
     try{ const {error}=await sb.from('feedback').insert({kind:$('fbKind').value,name:$('fbName').value.trim(),email:$('fbEmail').value.trim(),message:msg});
       if(error) throw error;
       m.style.color='#059669'; m.textContent='✅ ส่งเรียบร้อย ขอบคุณครับ!';

@@ -7,7 +7,7 @@
 <meta name="description" content="บทความความรู้เรื่องเงินเดือน ภาษีหัก ณ ที่จ่าย ประกันสังคม 5% เพดาน 875 บาท กองทุนสำรองเลี้ยงชีพ 50 ทวิ ภ.ง.ด.1 สำหรับ HR และเจ้าของธุรกิจ">
 <meta name="keywords" content="คำนวณภาษีเงินเดือน,ภาษีหัก ณ ที่จ่าย,ประกันสังคม 875,พนักงานรายวัน,50 ทวิ,ภงด 1,ความรู้ HR">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#2563eb">
+<meta name="theme-color" content="#0e3a5c">
 <link rel="canonical" href="https://payroll-mtd.vercel.app/articles">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="eSimPayroll">
@@ -15,11 +15,13 @@
 <meta property="og:url" content="https://payroll-mtd.vercel.app/articles">
 <meta property="og:title" content="บทความเรื่องเงินเดือน & ภาษี">
 <meta property="og:description" content="สาระความรู้เรื่องภาษี ประกันสังคม และการทำเงินเดือน สำหรับ HR และเจ้าของธุรกิจ">
+<meta property="og:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='12' fill='%232563eb'/><path d='M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14' fill='none' stroke='white' stroke-width='3.6' stroke-linecap='round'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='12' fill='%230e3a5c'/><path d='M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14' fill='none' stroke='%236ee7b7' stroke-width='3.6' stroke-linecap='round'/></svg>">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  :root{--brand:#2563eb;--brand-d:#1d4ed8;--ink:#0f172a;--muted:#64748b;--bg:#f8fafc}
+  :root{--brand:#0e3a5c;--brand-d:#092942;--ink:#0f2438;--muted:#5b7186;--bg:#f6faf8;--accent:#10b981;--accent-l:#6ee7b7;--accent-bg:#eaf6f1}
   html{scroll-behavior:smooth}
   body{font-family:"Sarabun","Segoe UI",Tahoma,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.7}
   a{text-decoration:none;color:inherit}
@@ -37,8 +39,8 @@
   nav a.link:hover{color:var(--ink)}
   nav a.link.active{color:var(--brand)}
 
-  .pagehead{background:radial-gradient(1000px 400px at 70% -20%,#dbeafe,transparent),linear-gradient(180deg,#fff,#f8fafc);padding:54px 0 40px;text-align:center}
-  .pagehead .badge{display:inline-block;background:#eef2ff;color:var(--brand-d);font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;margin-bottom:14px}
+  .pagehead{background:radial-gradient(1000px 400px at 70% -20%,#d8f3e6,transparent),linear-gradient(180deg,#fff,#f6faf8);padding:54px 0 40px;text-align:center}
+  .pagehead .badge{display:inline-block;background:#eaf6f1;color:var(--brand-d);font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;margin-bottom:14px}
   .pagehead h1{font-size:40px;letter-spacing:-.5px;margin-bottom:10px}
   .pagehead p{color:var(--muted);font-size:18px}
 
@@ -46,11 +48,12 @@
   .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
   .card{display:block;background:#fff;border:1px solid #eef2f7;border-radius:16px;overflow:hidden;transition:.18s}
   .card:hover{box-shadow:0 16px 40px rgba(15,23,42,.1);transform:translateY(-3px);border-color:#dbe3ee}
-  .card .cover{height:170px;overflow:hidden;background:#eef2f7}
+  .card .cover{height:170px;overflow:hidden;background:#eaf6f1;position:relative}
+  .card .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(14,58,92,.22),rgba(16,185,129,.12))}
   .card .cover img{width:100%;height:100%;object-fit:cover;display:block;transition:.25s}
   .card:hover .cover img{transform:scale(1.05)}
   .card .body{padding:20px 22px}
-  .card .tag{font-size:12px;font-weight:700;color:var(--brand-d);background:#eef2ff;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+  .card .tag{font-size:12px;font-weight:700;color:var(--brand-d);background:#eaf6f1;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
   .card h3{font-size:19px;margin-bottom:8px;line-height:1.35}
   .card p{color:var(--muted);font-size:15px}
   .card .more{color:var(--brand);font-weight:700;font-size:14px;margin-top:12px;display:inline-block}
@@ -65,7 +68,7 @@
   article .box{background:var(--bg);border:1px solid #e8edf3;border-left:4px solid var(--brand);border-radius:10px;padding:14px 18px;margin:14px 0}
   article .back{color:var(--brand);font-weight:700;font-size:14px}
 
-  .cta-band{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:24px;padding:44px 34px;text-align:center;margin:40px auto}
+  .cta-band{background:linear-gradient(135deg,#0a2a45,#0e3a5c);color:#fff;border-radius:24px;padding:44px 34px;text-align:center;margin:40px auto}
   .cta-band h2{font-size:28px;margin-bottom:10px}
   .cta-band p{opacity:.92;margin-bottom:22px}
   .cta-band .btn.primary{background:#fff;color:var(--brand-d)}
@@ -87,7 +90,7 @@
 <body>
 <header>
   <nav>
-    <a href="index.html" class="logo"><svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgNav0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset=".55" stop-color="#3b82f6"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgNav0)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
+    <a href="index.html" class="logo"><svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgNav0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgNav0)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
     <div class="sp">
       <a href="index.html#features" class="link">ฟีเจอร์</a>
       <a href="articles.html" class="link active">บทความ</a>
@@ -109,13 +112,13 @@
 <section>
   <div class="wrap wide">
     <div class="cards">
-      <a href="#a1" class="card"><div class="cover"><img loading="lazy" alt="คำนวณภาษี" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80&auto=format&fit=crop"></div>
+      <a href="#a1" class="card"><div class="cover"><img loading="lazy" alt="คำนวณภาษี" src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80&auto=format&fit=crop"></div>
         <div class="body"><span class="tag">ภาษี</span><h3>ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง?</h3><p>เข้าใจอัตราภาษีขั้นบันได ค่าลดหย่อน และวิธีเฉลี่ยภาษีรายเดือนแบบง่ายๆ</p><span class="more">อ่านต่อ →</span></div></a>
 
-      <a href="#a2" class="card"><div class="cover"><img loading="lazy" alt="ประกันสังคม" src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&q=80&auto=format&fit=crop"></div>
+      <a href="#a2" class="card"><div class="cover"><img loading="lazy" alt="ประกันสังคม" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80&auto=format&fit=crop"></div>
         <div class="body"><span class="tag">ประกันสังคม</span><h3>ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</h3><p>ฐานเงินเดือนสูงสุด 17,500 บาท นายจ้างสมทบเท่าไหร่ และหักจากพนักงานยังไง</p><span class="more">อ่านต่อ →</span></div></a>
 
-      <a href="#a3" class="card"><div class="cover"><img loading="lazy" alt="พนักงาน" src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80&auto=format&fit=crop"></div>
+      <a href="#a3" class="card"><div class="cover"><img loading="lazy" alt="พนักงาน" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&q=80&auto=format&fit=crop"></div>
         <div class="body"><span class="tag">เงินเดือน</span><h3>พนักงานรายเดือน vs รายวัน ต่างกันยังไง</h3><p>วิธีคิดค่าจ้าง การคิด OT และการคิดเงินเดือนตามสัดส่วนเมื่อเข้างานกลางเดือน</p><span class="more">อ่านต่อ →</span></div></a>
 
       <a href="#a4" class="card"><div class="cover"><img loading="lazy" alt="เอกสารภาษี" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80&auto=format&fit=crop"></div>

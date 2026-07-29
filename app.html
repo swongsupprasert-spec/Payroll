@@ -6,14 +6,14 @@
 <title>eSimPayroll</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="theme-color" content="#0f172a">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='12' fill='%232563eb'/><path d='M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14' fill='none' stroke='white' stroke-width='3.6' stroke-linecap='round'/></svg>">
+<meta name="theme-color" content="#0e3a5c">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='12' fill='%230e3a5c'/><path d='M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14' fill='none' stroke='%236ee7b7' stroke-width='3.6' stroke-linecap='round'/></svg>">
 <style>
   :root{
     --bg:#f4f6fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
-    --line:#e5e7eb; --brand:#2563eb; --brand-d:#1d4ed8;
+    --line:#e5e7eb; --brand:#0e3a5c; --brand-d:#092942;
     --good:#059669; --bad:#dc2626; --warn:#d97706;
-    --chip:#eef2ff; --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+    --chip:#eaf6f1; --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -25,16 +25,16 @@
 
   /* Layout */
   .app{display:flex;min-height:100vh}
-  .side{width:230px;background:#0f172a;color:#cbd5e1;flex-shrink:0;display:flex;flex-direction:column}
+  .side{width:230px;background:#0f2438;color:#cbd5e1;flex-shrink:0;display:flex;flex-direction:column}
   .side .brand{padding:18px 18px 12px;font-size:18px;font-weight:700;color:#fff;letter-spacing:.3px}
   .side .brand small{display:block;font-weight:400;font-size:12px;color:#94a3b8;margin-top:2px}
   .nav{display:flex;flex-direction:column;padding:8px}
   .nav button{background:none;border:0;color:#cbd5e1;text-align:left;padding:11px 14px;border-radius:8px;display:flex;gap:10px;align-items:center;transition:.15s}
-  .nav button:hover{background:#1e293b;color:#fff}
-  .nav button.active{background:var(--brand);color:#fff;font-weight:600}
+  .nav button:hover{background:#16324d;color:#fff}
+  .nav button.active{background:linear-gradient(135deg,#17557f,#0f766e);color:#fff;font-weight:600;box-shadow:inset 3px 0 0 var(--accent-l)}
   .nav .ico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
   .nav button.active .ico{box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
-  .side .foot{margin-top:auto;padding:14px;font-size:11px;color:#64748b;border-top:1px solid #1e293b}
+  .side .foot{margin-top:auto;padding:14px;font-size:11px;color:#5b7186;border-top:1px solid #1b3550}
 
   .main{flex:1;min-width:0;display:flex;flex-direction:column}
   .top{background:var(--card);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:5}
@@ -79,7 +79,7 @@
   tbody tr:hover{background:#f9fafb}
   td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   .tbl-wrap{overflow-x:auto}
-  tfoot td{font-weight:700;background:#f8fafc;border-top:2px solid var(--line)}
+  tfoot td{font-weight:700;background:#f6faf8;border-top:2px solid var(--line)}
   .muted{color:var(--muted)}
   .chip{display:inline-block;background:var(--chip);color:var(--brand-d);padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600}
   .pos{color:var(--good)} .neg{color:var(--bad)}
@@ -106,7 +106,7 @@
   .search::before{content:"🔍";position:absolute;left:11px;top:9px;opacity:.5}
 
   .empty{text-align:center;padding:40px;color:var(--muted)}
-  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 20px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:100;opacity:0;transition:.3s;pointer-events:none}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f2438;color:#fff;padding:12px 20px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:100;opacity:0;transition:.3s;pointer-events:none}
   .toast.on{opacity:1}
 
   /* Print documents */
@@ -210,12 +210,12 @@
   <div style="background:#fff;border-radius:16px;max-width:400px;width:100%;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.4)">
     <div style="text-align:center;margin-bottom:10px">
       <svg viewBox="0 0 44 44" width="54" height="54" aria-hidden="true">
-        <defs><linearGradient id="lgAuth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset=".55" stop-color="#3b82f6"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs>
+        <defs><linearGradient id="lgAuth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs>
         <rect width="44" height="44" rx="12" fill="url(#lgAuth)"/>
         <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg></div>
     <div style="text-align:center;font-size:26px;font-weight:800;margin-bottom:4px">eSim<span style="color:var(--brand)">Payroll</span></div>
-    <div style="text-align:center;color:#64748b;margin-bottom:22px">เข้าสู่ระบบเพื่อใช้งาน</div>
+    <div style="text-align:center;color:#5b7186;margin-bottom:22px">เข้าสู่ระบบเพื่อใช้งาน</div>
     <div class="field" style="margin-bottom:12px"><label>อีเมล</label><input id="authEmail" type="email" autocomplete="username" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
     <div class="field" style="margin-bottom:16px"><label>รหัสผ่าน</label><input id="authPass" type="password" autocomplete="current-password" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
     <button class="btn" id="authLogin" style="width:100%;justify-content:center;margin-bottom:8px">เข้าสู่ระบบ</button>
@@ -234,10 +234,10 @@
     <a class="brand" href="index.html" title="กลับหน้าแรก" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
       <span style="display:flex;align-items:center;gap:9px">
         <svg viewBox="0 0 44 44" width="30" height="30" style="flex-shrink:0" aria-hidden="true">
-          <defs><linearGradient id="lgSide" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset=".55" stop-color="#3b82f6"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs>
+          <defs><linearGradient id="lgSide" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs>
           <rect width="44" height="44" rx="12" fill="url(#lgSide)"/>
           <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg><span>eSim<span style="color:#60a5fa">Payroll</span></span>
+        </svg><span>eSim<span style="color:#6ee7b7">Payroll</span></span>
       </span><small>← หน้าแรก</small></a>
     <nav class="nav" id="nav"></nav>
     <div class="foot" id="userFoot">☁️ กำลังเชื่อมต่อ…</div>
@@ -511,15 +511,15 @@ const PAGES = [
 ];
 
 const NAV_COLORS = {
-  dashboard:'#3b82f6', employees:'#8b5cf6', resign:'#f43f5e', payroll:'#06b6d4', summary:'#10b981',
+  dashboard:'#17557f', employees:'#8b5cf6', resign:'#f43f5e', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
-  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#64748b', feedback:'#f97316', admin:'#eab308'
+  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', feedback:'#f97316', admin:'#eab308'
 };
 function renderNav(){
   const nav = $('#nav'); nav.innerHTML='';
   const items = IS_ADMIN ? [...PAGES, ['feedback','แจ้งปัญหา/คำแนะนำ','💬'], ['admin','ผู้ดูแลระบบ','👑']] : PAGES;
   items.forEach(([id,label,ico])=>{
-    const col = NAV_COLORS[id] || '#3b82f6';
+    const col = NAV_COLORS[id] || '#17557f';
     const b = el(`<button data-p="${id}"><span class="ico" style="background:linear-gradient(135deg,${col}cc,${col}77);color:#fff">${ico}</span><span class="t">${tr('nav_'+id)}</span></button>`);
     if(id===PAGE) b.classList.add('active');
     b.onclick = ()=>{ PAGE=id; renderNav(); render(); sideOpen(false); window.scrollTo(0,0); };
@@ -566,11 +566,11 @@ async function vFeedback(v){
   const box=$('#fbList'); if(!box) return;
   if(error){ box.innerHTML=`<div class="empty">โหลดไม่ได้: ${esc(error.message)}<br><span style="font-size:12px">(ยังไม่ได้สร้างตาราง feedback ใน Supabase?)</span></div>`; return; }
   if(!data||!data.length){ box.innerHTML='<div class="empty">ยังไม่มีข้อความจากผู้ใช้</div>'; return; }
-  const kc={'ปัญหา':'#fee2e2;color:#dc2626','คำแนะนำ':'#dcfce7;color:#16a34a','สอบถาม':'#eef2ff;color:#1d4ed8'};
+  const kc={'ปัญหา':'#fee2e2;color:#dc2626','คำแนะนำ':'#dcfce7;color:#16a34a','สอบถาม':'#eaf6f1;color:#092942'};
   box.innerHTML=`<div style="margin-bottom:12px" class="muted">ทั้งหมด ${data.length} ข้อความ</div>`+data.map(f=>`
     <div style="border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px">
       <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap">
-        <span class="chip" style="background:${kc[f.kind]||'#eef2ff;color:#1d4ed8'}">${esc(f.kind||'-')}</span>
+        <span class="chip" style="background:${kc[f.kind]||'#eaf6f1;color:#092942'}">${esc(f.kind||'-')}</span>
         <strong>${esc(f.name||'ไม่ระบุชื่อ')}</strong>
         ${f.email?`<a href="mailto:${esc(f.email)}" class="muted" style="font-size:12px">${esc(f.email)}</a>`:''}
         <span class="muted" style="font-size:12px;margin-left:auto">${esc(fmtDateTime(f.created_at))}</span>
@@ -626,7 +626,7 @@ function vSSO(v){
   const exempt=activeAll.filter(e=>ssoExempt(e));
   // ปุ่มเลือกแบบฟอร์ม
   const seg=el(`<div class="toolbar no-print" style="margin-bottom:6px">
-    <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
+    <div class="seg" style="display:inline-flex;background:#eaf6f1;border-radius:10px;padding:3px">
       <button class="segbtn ${ssoForm==='sps10'?'on':''}" data-f="sps10">🛡️ สปส. 1-10 (รายเดือน)</button>
       <button class="segbtn ${ssoForm==='kt20'?'on':''}" data-f="kt20">📋 กท. 20 ก (รายปี)</button>
     </div>
@@ -789,7 +789,7 @@ function vResign(v){
   const years=[...yset].sort((a,b)=>b-a);
 
   const bar=el(`<div class="toolbar" style="margin-bottom:6px">
-    <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
+    <div class="seg" style="display:inline-flex;background:#eaf6f1;border-radius:10px;padding:3px">
       <button class="segbtn ${resignFilter==='all'?'on':''}" data-f="all">ทั้งหมด (${DB.employees.length})</button>
       <button class="segbtn ${resignFilter==='active'?'on':''}" data-f="active">🟢 ทำงานอยู่ (${activeList.length})</button>
       <button class="segbtn ${resignFilter==='resigned'?'on':''}" data-f="resigned">🚪 ลาออก (${resigned.length})</button>
@@ -860,7 +860,7 @@ async function vAdmin(v){
 
 /* ============ 0. DASHBOARD ============ */
 let dashMode = 'month'; // 'month' | 'year'
-const C = {brand:'#2563eb',brandL:'#93c5fd',green:'#059669',greenL:'#6ee7b7',red:'#dc2626',warn:'#d97706',purple:'#7c3aed',slate:'#94a3b8'};
+const C = {brand:'#0e3a5c',brandL:'#a7f3d0',green:'#059669',greenL:'#6ee7b7',red:'#dc2626',warn:'#d97706',purple:'#7c3aed',slate:'#94a3b8'};
 
 function periodHasData(p){ const pp=DB.payroll[p]; return !!(pp && Object.keys(pp).length); }
 // พนักงานคนนี้ทำงานอยู่ในเดือนนี้หรือไม่ (ตามวันเริ่มงาน)
@@ -922,7 +922,7 @@ function barChart(items,{color=C.brand,clickable=false,height=300}={}){
     if(clickable) g+=`<rect x="${padL+i*slot}" y="${padT}" width="${slot}" height="${innerH}" fill="transparent" data-i="${i}" style="cursor:pointer"><title>${it.label}: ${money(it.value)}</title></rect>`;
     g+=`<rect x="${x}" y="${y}" width="${bw}" height="${Math.max(0,bh)}" rx="4" fill="${fill}" data-i="${i}" style="${cursor}"><title>${it.label}: ${money(it.value)}</title></rect>`;
     if(hasVal) g+=`<text x="${x+bw/2}" y="${y-6}" font-size="13" text-anchor="middle" fill="#374151">${shortMoney(it.value)}</text>`;
-    g+=`<text x="${cx}" y="${H-10}" font-size="13" text-anchor="middle" fill="${it.active?'#2563eb':'#6b7280'}" font-weight="${it.active?'700':'400'}">${it.label}</text>`;
+    g+=`<text x="${cx}" y="${H-10}" font-size="13" text-anchor="middle" fill="${it.active?'#0e3a5c':'#6b7280'}" font-weight="${it.active?'700':'400'}">${it.label}</text>`;
   });
   g+=`<line x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}" stroke="#cbd5e1"/>`;
   return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:${height}px;overflow:visible">${g}</svg>`;
@@ -962,7 +962,7 @@ function vDashboard(v){
 
   // mode toggle
   const tb=el(`<div class="toolbar" style="margin-bottom:18px">
-    <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
+    <div class="seg" style="display:inline-flex;background:#eaf6f1;border-radius:10px;padding:3px">
       <button class="segbtn ${!isYear?'on':''}" data-m="month">📅 รายเดือน</button>
       <button class="segbtn ${isYear?'on':''}" data-m="year">📆 รายปี</button>
     </div>
@@ -977,7 +977,7 @@ function vDashboard(v){
   v.appendChild(el(`<div class="cards">
     <div class="kpi b1"><div class="lab">👥 ${tr('kpi_count')}</div><div class="val">${num(actives.length)} <span class="muted" style="font-size:14px">${tr('unit_person')}</span></div>
       <div style="margin-top:6px;display:flex;gap:12px;font-size:12px">
-        <span style="color:#2563eb">♂ ${tr('male')} ${num(mCount)}</span>
+        <span style="color:#0e3a5c">♂ ${tr('male')} ${num(mCount)}</span>
         <span style="color:#db2777">♀ ${tr('female')} ${num(fCount)}</span>
         ${uCount?`<span class="muted">– ${tr('unspec')} ${num(uCount)}</span>`:''}
       </div></div>
@@ -1052,7 +1052,7 @@ function vEmployees(v){
   const dC=baseList.filter(e=>e.payType==='daily').length;
   const outCount=DB.employees.length-baseList.length;
   const seg=el(`<div class="toolbar" style="margin-bottom:6px">
-    <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
+    <div class="seg" style="display:inline-flex;background:#eaf6f1;border-radius:10px;padding:3px">
       <button class="segbtn ${empFilter==='all'?'on':''}" data-f="all">ทั้งหมด (${baseList.length})</button>
       <button class="segbtn ${empFilter==='monthly'?'on':''}" data-f="monthly">📅 รายเดือน (${mC})</button>
       <button class="segbtn ${empFilter==='daily'?'on':''}" data-f="daily">🗓️ รายวัน (${dC})</button>
@@ -1085,7 +1085,7 @@ function drawEmp(){
     <td>${genderIcon(e.gender)}<strong style="${e.resignDate?'color:#94a3b8;text-decoration:line-through':''}">${esc(e.name)}</strong>${e.resignDate?` <span class="chip" style="background:#fee2e2;color:#dc2626">ลาออก ${esc(fmtDate(e.resignDate))}</span>`:''}</td>
     <td>${esc(e.position)}</td>
     <td>${esc(e.dept)}</td>
-    <td>${daily?`<span class="chip" style="background:#fef3c7;color:#b45309">${tr('type_daily')}</span>`:`<span class="chip" style="background:#dbeafe;color:#1d4ed8">${tr('type_monthly')}</span>`}</td>
+    <td>${daily?`<span class="chip" style="background:#fef3c7;color:#b45309">${tr('type_daily')}</span>`:`<span class="chip" style="background:#d8f3e6;color:#092942">${tr('type_monthly')}</span>`}</td>
     <td class="num">${money(e.salary)} <span class="muted" style="font-size:11px">${daily?tr('per_day'):tr('per_month')}</span></td>
     <td>${esc(fmtDate(e.startDate))}</td>
     <td style="text-align:right">
@@ -1102,7 +1102,7 @@ function drawEmp(){
 }
 function fmtDate(d){ if(!d) return '-'; const [y,m,dd]=d.split('-'); return `${dd}/${m}/${(+y)+543}`; }
 function genderIcon(g){
-  if(g==='M') return '<span title="ชาย" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#dbeafe;color:#2563eb;font-weight:700;margin-right:7px;font-size:13px">♂</span>';
+  if(g==='M') return '<span title="ชาย" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#d8f3e6;color:#0e3a5c;font-weight:700;margin-right:7px;font-size:13px">♂</span>';
   if(g==='F') return '<span title="หญิง" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#fce7f3;color:#db2777;font-weight:700;margin-right:7px;font-size:13px">♀</span>';
   return '<span title="ไม่ระบุ" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#f1f5f9;color:#94a3b8;margin-right:7px;font-size:13px">–</span>';
 }
@@ -1187,7 +1187,7 @@ function vPayroll(v){
 
   // ปุ่มสลับ ทั้งหมด / รายเดือน / รายวัน
   const seg=el(`<div class="toolbar" style="margin-bottom:6px">
-    <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
+    <div class="seg" style="display:inline-flex;background:#eaf6f1;border-radius:10px;padding:3px">
       <button class="segbtn ${payrollFilter==='all'?'on':''}" data-f="all">ทั้งหมด (${active.length})</button>
       <button class="segbtn ${payrollFilter==='monthly'?'on':''}" data-f="monthly">📅 รายเดือน (${mCount})</button>
       <button class="segbtn ${payrollFilter==='daily'?'on':''}" data-f="daily">🗓️ รายวัน (${dCount})</button>
@@ -1226,7 +1226,7 @@ function vPayroll(v){
     <div class="grid3" style="margin-top:8px">
       <div class="field"><label>ค่าจ้าง/วัน</label><input value="${money(emp.salary)}" readonly style="background:#fef3c7;font-weight:600"></div>
       <div class="field"><label>จำนวนวันทำงาน</label><input type="number" step="0.5" id="workDays" value="${r.days||0}"></div>
-      <div class="field"><label>ค่าจ้างฐาน (บาท)</label><input id="baseShow" value="${money(basePay(emp,r))}" readonly style="background:#eef2ff;font-weight:700"></div>
+      <div class="field"><label>ค่าจ้างฐาน (บาท)</label><input id="baseShow" value="${money(basePay(emp,r))}" readonly style="background:#eaf6f1;font-weight:700"></div>
     </div></div>` : '';
 
   // พนักงานรายเดือนที่เข้างานกลางเดือน: คิดเงินเดือนตามสัดส่วน
@@ -1242,10 +1242,10 @@ function vPayroll(v){
   const earnRows=EARN_FIELDS.filter(([k])=>k!=='ot').map(([k,l])=>`<div class="field"><label>${l}</label><input type="number" step="0.01" data-earn="${k}" value="${r.earn[k]||0}"></div>`).join('');
   const rate=otRate(emp);
   const otRateLabel = isDaily ? `${money(emp.salary)}÷${DB.otHours||8}` : `${money(emp.salary)}÷${DB.otDays||30}÷${DB.otHours||8}`;
-  const otBlock=`<div class="field" style="grid-column:1/-1;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+  const otBlock=`<div class="field" style="grid-column:1/-1;background:#f6faf8;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px">
     <label style="font-weight:700;color:var(--brand-d)">ค่าล่วงเวลา (OT) — คำนวณรายชั่วโมง</label>
     <div class="grid3" style="margin-top:8px">
-      <div class="field"><label>อัตรา/ชม. (${otRateLabel})</label><input value="${money(rate)}" readonly style="background:#eef2ff;font-weight:600"></div>
+      <div class="field"><label>อัตรา/ชม. (${otRateLabel})</label><input value="${money(rate)}" readonly style="background:#eaf6f1;font-weight:600"></div>
       <div class="field"><label>จำนวนชั่วโมง</label><input type="number" step="0.5" id="otHours" value="${r.earn.otHours||0}"></div>
       <div class="field"><label>ตัวคูณ (เท่า)</label>
         <select id="otMult">
@@ -1936,7 +1936,7 @@ async function cloudLoad(uid){
   else { localStorage.removeItem(LS_KEY); }   // ไม่มีข้อมูลบนคลาวด์ → เริ่มว่าง (กันข้อมูลค้างของคนก่อน)
   DB=load();
 }
-function setSync(t){ const f=$('#userFoot'); if(f&&f._email){ f.innerHTML=`☁️ ${esc(f._email)}${IS_ADMIN?' <span style="color:#fbbf24">👑</span>':''}<br><span style="opacity:.75">${t}</span> · <a href="#" id="logoutBtn" style="color:#93c5fd">ออกจากระบบ</a>`; const b=$('#logoutBtn'); if(b) b.onclick=async(e)=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); location.reload(); }; } }
+function setSync(t){ const f=$('#userFoot'); if(f&&f._email){ f.innerHTML=`☁️ ${esc(f._email)}${IS_ADMIN?' <span style="color:#fbbf24">👑</span>':''}<br><span style="opacity:.75">${t}</span> · <a href="#" id="logoutBtn" style="color:#a7f3d0">ออกจากระบบ</a>`; const b=$('#logoutBtn'); if(b) b.onclick=async(e)=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); location.reload(); }; } }
 
 // แอดมิน: เปิดข้อมูลของผู้ใช้คนอื่นเพื่อดู/แก้
 async function adminOpen(uid,email){ TARGET_UID=uid; TARGET_EMAIL=email; await cloudLoad(uid); PAGE='dashboard'; renderNav(); render(); toast('เปิดข้อมูลของ '+email); }
@@ -1964,7 +1964,7 @@ function enterGuest(){
   GUEST=true; MY_UID=null; TARGET_UID=null;
   $('#authGate').style.display='none';
   DB=load();
-  const f=$('#userFoot'); if(f){ f.innerHTML='🧪 โหมดทดลอง (ไม่ได้ล็อกอิน)<br><span style="opacity:.75">ข้อมูลเก็บในเครื่องนี้เท่านั้น</span> · <a href="app.html" style="color:#93c5fd">เข้าสู่ระบบ/สมัคร</a>'; }
+  const f=$('#userFoot'); if(f){ f.innerHTML='🧪 โหมดทดลอง (ไม่ได้ล็อกอิน)<br><span style="opacity:.75">ข้อมูลเก็บในเครื่องนี้เท่านั้น</span> · <a href="app.html" style="color:#a7f3d0">เข้าสู่ระบบ/สมัคร</a>'; }
   renderNav(); render();
 }
 async function boot(){
@@ -1976,7 +1976,7 @@ async function boot(){
 }
 async function doLogin(){
   const email=$('#authEmail').value.trim(), pass=$('#authPass').value; const m=$('#authMsg');
-  m.style.color='#64748b'; m.textContent='กำลังเข้าสู่ระบบ…';
+  m.style.color='#5b7186'; m.textContent='กำลังเข้าสู่ระบบ…';
   const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
   if(error){ m.style.color='#dc2626'; m.textContent=error.message; return; }
   afterAuth(data.user);
@@ -1984,7 +1984,7 @@ async function doLogin(){
 async function doSignup(){
   const email=$('#authEmail').value.trim(), pass=$('#authPass').value; const m=$('#authMsg');
   if(pass.length<6){ m.style.color='#dc2626'; m.textContent='รหัสผ่านอย่างน้อย 6 ตัวอักษร'; return; }
-  m.style.color='#64748b'; m.textContent='กำลังสมัคร…';
+  m.style.color='#5b7186'; m.textContent='กำลังสมัคร…';
   const {data,error}=await sb.auth.signUp({email,password:pass});
   if(error){ m.style.color='#dc2626'; m.textContent=error.message; return; }
   if(data.session){ afterAuth(data.user); } else { m.style.color='#059669'; m.textContent='สมัครสำเร็จ! กรุณายืนยันอีเมลก่อน แล้วเข้าสู่ระบบ'; }
@@ -2003,7 +2003,7 @@ if(langBtn){ langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH';
 $('#authLogin').onclick=doLogin;
 $('#authSignup').onclick=doSignup;
 $('#authGoogle').onclick=async()=>{
-  const m=$('#authMsg'); m.style.color='#64748b'; m.textContent='กำลังเปิดหน้าเข้าสู่ระบบ Google…';
+  const m=$('#authMsg'); m.style.color='#5b7186'; m.textContent='กำลังเปิดหน้าเข้าสู่ระบบ Google…';
   const {error}=await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.origin + window.location.pathname } });
   if(error){ m.style.color='#dc2626'; m.textContent='เข้าสู่ระบบด้วย Google ไม่สำเร็จ: '+error.message; }
 };
