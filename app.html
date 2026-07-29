@@ -899,7 +899,7 @@ function empForm(id){
   const isDaily = e.payType==='daily';
   const body = `
     <div class="grid2">
-      <div class="field"><label>รหัสพนักงาน *</label><input id="f_code" value="${esc(e.code)}"></div>
+      <div class="field"><label>รหัสพนักงาน *</label><input id="f_code" value="${esc(e.code)}"><div id="codeWarn" style="color:#dc2626;font-size:12px;min-height:14px;margin-top:2px"></div></div>
       <div class="field"><label>ชื่อ-นามสกุล *</label><input id="f_name" value="${esc(e.name)}"></div>
       <div class="field"><label>เพศ</label><select id="f_gender">
         <option value="" ${!e.gender?'selected':''}>ไม่ระบุ</option>
@@ -925,15 +925,29 @@ function empForm(id){
     const g=id=>$('#'+id).value;
     const code=g('f_code').trim(), name=g('f_name').trim();
     if(!code||!name){ toast('กรุณากรอกรหัสและชื่อ'); return; }
+    // ห้ามรหัสพนักงานซ้ำ (ไม่สนตัวพิมพ์เล็ก/ใหญ่ และไม่นับตัวเอง)
+    const dup=DB.employees.find(x=>x.id!==id && String(x.code||'').trim().toLowerCase()===code.toLowerCase());
+    if(dup){ toast(`รหัส ${code} ซ้ำกับ "${dup.name}" — กรุณาใช้รหัสอื่น`);
+      const f=$('#f_code'); if(f){ f.style.borderColor='#dc2626'; f.focus(); f.select(); } return; }
     const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0};
     if(id){ Object.assign(e,rec); } else { DB.employees.push({id:uid(),...rec}); }
     save(); closeModal(); drawEmp(); toast('บันทึกแล้ว');
   }]]);
   $('#f_payType').onchange=(ev)=>{ $('#f_salaryLab').textContent = ev.target.value==='daily' ? 'ค่าจ้างต่อวัน (บาท) *' : 'เงินเดือน (บาท) *'; };
+  // เตือนทันทีถ้ารหัสซ้ำ (ระหว่างพิมพ์)
+  $('#f_code').oninput=(ev)=>{
+    const val=ev.target.value.trim().toLowerCase();
+    const dup=val && DB.employees.some(x=>x.id!==id && String(x.code||'').trim().toLowerCase()===val);
+    ev.target.style.borderColor = dup ? '#dc2626' : '';
+    const w=$('#codeWarn'); if(w) w.textContent = dup ? '⚠️ รหัสนี้ถูกใช้แล้ว' : '';
+  };
 }
 function nextCode(){
+  const used=new Set(DB.employees.map(e=>String(e.code||'').trim().toLowerCase()));
   const nums = DB.employees.map(e=>{ const m=String(e.code).match(/(\d+)/); return m?+m[1]:0; });
-  const n=(Math.max(0,...nums)+1); return 'EMP'+String(n).padStart(3,'0');
+  let n=Math.max(0,...nums)+1, code;
+  do{ code='EMP'+String(n).padStart(3,'0'); n++; } while(used.has(code.toLowerCase()));  // กันชนซ้ำ
+  return code;
 }
 
 /* ============ 2. PAYROLL (earnings/deductions per employee) ============ */
