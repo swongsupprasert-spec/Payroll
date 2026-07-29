@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>เกี่ยวกับเรา — eSimPayroll</title>
-<meta name="description" content="เกี่ยวกับeSimPayroll — โปรแกรมจัดการเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม ออกสลิปและเอกสารภาษีครบ ใช้งานผ่านเว็บ ไม่ต้องติดตั้ง">
+<meta name="description" content="เกี่ยวกับ eSimPayroll — ที่มาของชื่อ e (Electronic/Easy) + Sim (Simple/Simulation) + Payroll โปรแกรมเงินเดือนบนคลาวด์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม ออกสลิปและเอกสารภาษีครบ">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0e3a5c">
 <link rel="canonical" href="https://payroll-mtd.vercel.app/about">
@@ -13,7 +13,7 @@
 <meta property="og:locale" content="th_TH">
 <meta property="og:url" content="https://payroll-mtd.vercel.app/about">
 <meta property="og:title" content="เกี่ยวกับเรา — eSimPayroll">
-<meta property="og:description" content="เราสร้างระบบเงินเดือนที่ธุรกิจไทยใช้งานได้จริง ตั้งแต่ร้านเล็กจนถึงบริษัท">
+<meta property="og:description" content="ที่มาของชื่อ eSimPayroll และแนวคิดเบื้องหลังระบบเงินเดือนบนคลาวด์สำหรับธุรกิจไทย">
 <meta property="og:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop">
 <meta name="twitter:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop">
 <meta name="twitter:card" content="summary">
@@ -59,6 +59,29 @@
   .val h3{font-size:19px;margin-bottom:7px}
   .val p{color:var(--muted);font-size:15px;margin:0}
 
+  /* ที่มาของชื่อแบรนด์ */
+  .brandstory{background:linear-gradient(180deg,#fff,var(--bg))}
+  .brandstory .badge{display:inline-block;background:var(--accent-bg);color:var(--brand-d);font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;margin-bottom:14px}
+  .np-e{color:var(--accent)}
+  .np-s{color:#0f766e}
+  .np-p{color:var(--brand)}
+  .namebox{background:#fff;border:1px solid #e6efea;border-radius:20px;padding:30px 20px;text-align:center;
+    box-shadow:0 16px 40px rgba(14,58,92,.10);margin-bottom:26px}
+  .nb-word{font-size:52px;font-weight:800;letter-spacing:-1.5px;line-height:1.1}
+  .nb-sub{color:var(--muted);font-size:15px;margin-top:8px}
+  .meanings{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .meaning{background:#fff;border:1px solid #e6efea;border-radius:16px;padding:24px 22px;transition:.18s}
+  .meaning:hover{box-shadow:0 16px 40px rgba(14,58,92,.12);transform:translateY(-3px)}
+  .m-badge{display:inline-flex;align-items:center;justify-content:center;min-width:52px;height:52px;padding:0 14px;
+    border-radius:14px;color:#fff;font-weight:800;font-size:20px;margin-bottom:14px}
+  .meaning h3{font-size:18px;margin-bottom:7px}
+  .meaning p{color:var(--muted);font-size:15px;margin:0}
+  .brandnote{display:flex;gap:16px;align-items:flex-start;margin-top:22px;background:#fff;
+    border:1px solid #e6efea;border-left:4px solid var(--accent);border-radius:14px;padding:20px 22px}
+  .brandnote .bn-ic{font-size:26px;line-height:1}
+  .brandnote h4{font-size:17px;margin-bottom:5px}
+  .brandnote p{color:var(--muted);font-size:15px;margin:0}
+
   .why{background:var(--bg)}
   .why ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
   .why li{display:flex;gap:10px;align-items:flex-start;font-size:16px}
@@ -72,7 +95,7 @@
   .cta-band p{opacity:.92;margin-bottom:22px;color:#fff}
   .cta-band .btn.primary{background:#fff;color:var(--brand-d)}
   footer{padding:34px 0;border-top:1px solid #eef2f7;color:var(--muted);font-size:14px;text-align:center}
-  @media(max-width:760px){.stats,.vals,.why ul{grid-template-columns:1fr}.pagehead h1{font-size:30px}section h2{font-size:23px}}
+  @media(max-width:760px){.stats,.vals,.why ul,.meanings{grid-template-columns:1fr}.pagehead h1{font-size:30px}section h2{font-size:23px}.nb-word{font-size:38px}}
   @media(max-width:640px){
     nav{height:auto;padding:10px 0;flex-wrap:wrap;gap:6px}
     .logo{font-size:18px}
@@ -83,6 +106,11 @@
     section{padding:30px 0}section h2{font-size:20px}
     .stats{grid-template-columns:1fr 1fr;gap:12px}.stat{padding:16px}.stat .n{font-size:24px}
     .cta-band{padding:30px 18px;border-radius:18px}.cta-band h2{font-size:21px}
+    .namebox{padding:22px 14px;border-radius:16px}
+    .nb-word{font-size:30px;letter-spacing:-1px}
+    .nb-sub{font-size:13px}
+    .meaning{padding:18px 16px}
+    .brandnote{flex-direction:column;gap:10px;padding:16px 18px}
   }
 </style>
 </head>
@@ -112,6 +140,48 @@
     <h2>เราคือใคร</h2>
     <p class="lead">eSimPayroll เกิดขึ้นเพื่อแก้ปัญหาที่ฝ่ายบุคคลและเจ้าของธุรกิจไทยเจอทุกเดือน — การคำนวณเงินเดือน ภาษี ประกันสังคม และการออกเอกสารที่ยุ่งยากและเสียเวลา</p>
     <p>เรารวมทุกอย่างไว้ในที่เดียว คำนวณให้อัตโนมัติตามกฎหมายไทย ออกสลิป หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ) แบบ ภ.ง.ด.1 และแบบประกันสังคม (สปส. 1-10) ได้ครบ พร้อมใช้งานได้ทุกที่ผ่านเว็บ</p>
+  </div>
+</section>
+
+<!-- ที่มาของชื่อแบรนด์ -->
+<section class="brandstory">
+  <div class="wrap wide">
+    <div style="text-align:center;max-width:680px;margin:0 auto 34px">
+      <span class="badge">💡 ที่มาของชื่อ</span>
+      <h2 style="margin-bottom:12px">ทำไมต้องชื่อ <span class="np-e">eSim</span><span class="np-p">Payroll</span></h2>
+      <p style="color:var(--muted);font-size:17px;margin:0">ชื่อที่ตั้งใจให้สื่อภาพลักษณ์ <strong>Tech-Forward &amp; Modern</strong> — เป็นซอฟต์แวร์บนคลาวด์ที่เชื่อมต่อได้ทันที ทำงานได้ทุกที่ทุกเวลา เหมือน <strong>eSIM</strong> ที่ไม่ต้องใช้การ์ดจริงอีกต่อไป</p>
+    </div>
+
+    <div class="namebox">
+      <div class="nb-word"><span class="np-e">e</span><span class="np-s">Sim</span><span class="np-p">Payroll</span></div>
+      <div class="nb-sub">3 ความหมาย รวมอยู่ในชื่อเดียว</div>
+    </div>
+
+    <div class="meanings">
+      <div class="meaning">
+        <div class="m-badge" style="background:linear-gradient(135deg,#34d399,#059669)">e</div>
+        <h3>Electronic / Easy</h3>
+        <p>ระบบ<strong>อิเล็กทรอนิกส์ออนไลน์</strong>ที่ใช้งานง่าย ไม่ต้องติดตั้ง เปิดเว็บก็ทำงานได้ทันที ทั้งคอม แท็บเล็ต และมือถือ</p>
+      </div>
+      <div class="meaning">
+        <div class="m-badge" style="background:linear-gradient(135deg,#2dd4bf,#0f766e)">Sim</div>
+        <h3>Simple / Simulation</h3>
+        <p><strong>เรียบง่าย</strong> ไม่ต้องเป็นผู้เชี่ยวชาญบัญชีก็ใช้เป็น และยัง<strong>จำลองคำนวณ</strong>ภาษีกับเงินเดือนล่วงหน้าได้ก่อนจ่ายจริง</p>
+      </div>
+      <div class="meaning">
+        <div class="m-badge" style="background:linear-gradient(135deg,#17557f,#0e3a5c)">Payroll</div>
+        <h3>Payroll</h3>
+        <p>ชัดเจน <strong>100%</strong> ว่าเป็นโปรแกรมจัดการเงินเดือน ลูกค้าเข้าใจทันทีตั้งแต่เห็นชื่อครั้งแรก</p>
+      </div>
+    </div>
+
+    <div class="brandnote">
+      <div class="bn-ic">🔎</div>
+      <div>
+        <h4>Unique &amp; Searchable</h4>
+        <p>เป็นการประสมคำที่มีเอกลักษณ์เฉพาะตัว จึง<strong>ค้นหาเจอง่าย จดจำได้เร็ว</strong> ไม่ปะปนกับคำทั่วไป และ<strong>ยื่นจดเครื่องหมายการค้า (Trademark) ได้สะดวก</strong></p>
+      </div>
+    </div>
   </div>
 </section>
 
