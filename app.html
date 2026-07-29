@@ -589,8 +589,20 @@ async function vOrders(v){
   const tbl=el(`<table><thead><tr><th>วันที่</th><th>ผู้สั่งซื้อ</th><th>แพ็กเกจ</th><th class="num">ยอด</th><th>สถานะ</th><th></th></tr></thead>
     <tbody>${rows}</tbody></table>`);
   tbl.querySelectorAll('[data-st]').forEach(s2=>s2.onchange=async()=>{
-    const {error:e2}=await sb.from('orders').update({status:s2.value}).eq('id',s2.dataset.st);
-    toast(e2?'อัปเดตไม่สำเร็จ':'อัปเดตสถานะแล้ว'); if(!e2) render();
+    const ord=data.find(o=>String(o.id)===s2.dataset.st);
+    const {error:e2}=await sb.from('orders').update({status:s2.value}).eq('id',ord.id);
+    if(e2){ toast('อัปเดตไม่สำเร็จ'); return; }
+    // ชำระแล้ว → ต่ออายุสิทธิ์ใช้งานให้ลูกค้าอัตโนมัติ
+    if(s2.value==='paid'){
+      const months = ord.cycle==='yearly' ? 12 : 1;
+      const {data:pf}=await sb.from('profiles').select('id,paid_until').eq('email',ord.email).maybeSingle();
+      if(!pf){ toast(`อัปเดตแล้ว — แต่ยังไม่พบบัญชี ${ord.email} (ลูกค้าต้องสมัครก่อน)`); render(); return; }
+      const base=new Date(Math.max(Date.now(), pf.paid_until?new Date(pf.paid_until).getTime():0));
+      base.setMonth(base.getMonth()+months);
+      const {error:e3}=await sb.from('profiles').update({paid_until:base.toISOString(), plan:ord.plan}).eq('id',pf.id);
+      toast(e3?('ต่ออายุไม่สำเร็จ: '+e3.message):`✅ ต่ออายุ ${ord.email} ถึง ${fmtDate(base.toISOString().slice(0,10))}`);
+    } else toast('อัปเดตสถานะแล้ว');
+    render();
   });
   box.innerHTML=''; box.appendChild(tbl);
 }
@@ -883,17 +895,40 @@ async function vAdmin(v){
   const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap" id="usersTbl"><div class="empty">กำลังโหลด…</div></div></div></div>`);
   v.appendChild(panel);
   $('#refreshUsers').onclick=()=>render();
-  const {data,error}=await sb.from('profiles').select('id,email,created_at').order('created_at',{ascending:false});
+  const {data,error}=await sb.from('profiles').select('id,email,created_at,paid_until,plan,trial_days').order('created_at',{ascending:false});
   const box=$('#usersTbl'); if(!box) return;
   if(error){ box.innerHTML=`<div class="empty">โหลดไม่ได้: ${esc(error.message)}</div>`; return; }
-  const rows=(data||[]).map(u=>`<tr>
-    <td><strong>${esc(u.email||'(ไม่มีอีเมล)')}</strong>${u.id===MY_UID?' <span class="chip">คุณ</span>':''}</td>
+  // สถานะสิทธิ์ใช้งานของแต่ละคน
+  const stat=u=>{
+    const now=Date.now();
+    const trialEnd=new Date(u.created_at).getTime()+ (u.trial_days||30)*864e5;
+    const paid=u.paid_until?new Date(u.paid_until).getTime():0;
+    if(paid>now) return {t:'ชำระแล้ว',c:'#dcfce7;color:#16a34a',d:Math.ceil((paid-now)/864e5),e:u.paid_until};
+    if(trialEnd>now) return {t:'ทดลองใช้',c:'#dbeafe;color:#1d4ed8',d:Math.ceil((trialEnd-now)/864e5),e:new Date(trialEnd).toISOString()};
+    return {t:'หมดอายุ',c:'#fee2e2;color:#dc2626',d:0,e:u.paid_until||new Date(trialEnd).toISOString()};
+  };
+  const rows=(data||[]).map(u=>{ const s=stat(u); return `<tr>
+    <td><strong>${esc(u.email||'(ไม่มีอีเมล)')}</strong>${u.id===MY_UID?' <span class="chip">คุณ</span>':''}
+      ${u.plan?`<br><span class="muted" style="font-size:12px">${esc(u.plan)}</span>`:''}</td>
     <td>${esc(fmtDateTime(u.created_at))}</td>
-    <td style="text-align:right"><button class="btn sm" data-open="${u.id}" data-email="${esc(u.email||'')}">✏️ ดู/แก้ข้อมูล</button></td>
-  </tr>`).join('');
-  const tbl=el(`<table><thead><tr><th>อีเมล</th><th>สมัครเมื่อ</th><th></th></tr></thead>
-    <tbody>${rows||'<tr><td colspan="3" class="empty">ยังไม่มีผู้ใช้</td></tr>'}</tbody></table>`);
+    <td><span class="chip" style="background:${s.c}">${s.t}</span>
+      ${s.d?`<br><span class="muted" style="font-size:12px">เหลือ ${s.d} วัน</span>`:''}</td>
+    <td>${s.e?esc(fmtDate(s.e.slice(0,10))):'-'}</td>
+    <td style="text-align:right;white-space:nowrap">
+      <button class="btn ghost sm" data-ext="${u.id}" data-email="${esc(u.email||'')}" title="ต่ออายุ 1 เดือน">➕1 เดือน</button>
+      <button class="btn sm" data-open="${u.id}" data-email="${esc(u.email||'')}">✏️ ดู/แก้</button></td>
+  </tr>`;}).join('');
+  const tbl=el(`<table><thead><tr><th>อีเมล</th><th>สมัครเมื่อ</th><th>สถานะ</th><th>ใช้ได้ถึง</th><th></th></tr></thead>
+    <tbody>${rows||'<tr><td colspan="5" class="empty">ยังไม่มีผู้ใช้</td></tr>'}</tbody></table>`);
   tbl.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>adminOpen(b.dataset.open, b.dataset.email));
+  tbl.querySelectorAll('[data-ext]').forEach(b=>b.onclick=async()=>{
+    const u=data.find(x=>x.id===b.dataset.ext);
+    const base=new Date(Math.max(Date.now(), u.paid_until?new Date(u.paid_until).getTime():0));
+    base.setMonth(base.getMonth()+1);
+    const {error:e2}=await sb.from('profiles').update({paid_until:base.toISOString()}).eq('id',u.id);
+    toast(e2?('ต่ออายุไม่สำเร็จ: '+e2.message):`✅ ต่ออายุ ${u.email} ถึง ${fmtDate(base.toISOString().slice(0,10))}`);
+    if(!e2) render();
+  });
   box.innerHTML=''; box.appendChild(tbl);
 }
 
@@ -1989,15 +2024,57 @@ function adminBanner(){
 function fmtDateTime(s){ if(!s) return '-'; const d=new Date(s); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()+543} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
 
 function showLogin(msg){ $('#authGate').style.display='flex'; if(msg){ const m=$('#authMsg'); m.style.color='#dc2626'; m.textContent=msg; } }
+let ACCESS={status:'trial',days_left:30};
 async function afterAuth(user){
   $('#authGate').style.display='none';
   MY_UID=user.id; MY_EMAIL=user.email; TARGET_UID=MY_UID; TARGET_EMAIL=MY_EMAIL;
   const f=$('#userFoot'); if(f) f._email=user.email;
   try{ await sb.from('profiles').upsert({id:user.id, email:user.email}); }catch(e){}   // ให้แอดมินเห็นอีเมล
   try{ const {data}=await sb.rpc('is_admin'); IS_ADMIN=!!data; }catch(e){ IS_ADMIN=false; }
+  // เช็คสิทธิ์ใช้งาน (ทดลอง 30 วัน / แพ็กเกจ)
+  try{ const {data}=await sb.rpc('my_access'); if(data&&data[0]) ACCESS=data[0]; }catch(e){}
+  if(ACCESS.status==='expired'){ showExpired(); return; }
   await cloudLoad(MY_UID);
-  renderNav(); render();
+  renderNav(); render(); showTrialBar();
   setSync('พร้อมใช้งาน'); cloudSaveDebounced();
+}
+/* ---------- แถบแจ้งวันทดลองที่เหลือ ---------- */
+function showTrialBar(){
+  const old=$('#trialBar'); if(old) old.remove();
+  if(ACCESS.status!=='trial' && !(ACCESS.status==='active'&&ACCESS.days_left<=7)) return;
+  const d=ACCESS.days_left, warn=d<=7;
+  const bar=el(`<div id="trialBar" class="no-print" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+      padding:11px 18px;font-size:14px;border-bottom:1px solid ${warn?'#fcd34d':'#bfe5d3'};
+      background:${warn?'#fffbeb':'#eaf6f1'};color:${warn?'#92400e':'#0e3a5c'}">
+    <span>${warn?'⚠️':'🎁'} <strong>${ACCESS.status==='trial'?'ทดลองใช้ฟรี':'แพ็กเกจของคุณ'}</strong>
+      เหลืออีก <strong>${d}</strong> วัน${warn?' — ต่ออายุเพื่อใช้งานต่อเนื่อง':''}</span>
+    <a href="pricing.html" class="btn sm" style="margin-left:auto;background:${warn?'#d97706':'#0e3a5c'};color:#fff">💳 ดูแพ็กเกจ</a>
+  </div>`);
+  const main=document.querySelector('.main'); main.insertBefore(bar, main.children[1]);
+}
+/* ---------- หน้าจอเมื่อหมดอายุ ---------- */
+function showExpired(){
+  document.querySelector('.app').style.display='none';
+  const scr=el(`<div style="position:fixed;inset:0;background:linear-gradient(160deg,#f6faf8,#eaf6f1);z-index:300;
+      display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto">
+    <div style="background:#fff;border-radius:20px;max-width:520px;width:100%;padding:38px 32px;text-align:center;
+        box-shadow:0 26px 60px rgba(14,58,92,.22)">
+      <div style="font-size:56px;line-height:1">⏳</div>
+      <h2 style="font-size:25px;margin:12px 0 8px">หมดระยะทดลองใช้งานแล้ว</h2>
+      <p style="color:#5b7186;margin-bottom:6px">บัญชี <strong>${esc(MY_EMAIL)}</strong></p>
+      <p style="color:#5b7186;margin-bottom:22px">ทดลองใช้ฟรี 30 วันสิ้นสุดแล้ว กรุณาเลือกแพ็กเกจเพื่อใช้งานต่อ<br>
+        <span style="font-size:13px">ข้อมูลของคุณยังถูกเก็บไว้ครบ และกลับมาใช้ได้ทันทีหลังชำระเงิน</span></p>
+      <a href="pricing.html" class="btn" style="width:100%;justify-content:center;padding:14px;font-size:16px;
+         background:linear-gradient(135deg,#10b981,#0f766e);color:#fff;margin-bottom:10px">💳 เลือกแพ็กเกจ</a>
+      <a href="index.html" class="btn ghost" style="width:100%;justify-content:center">← กลับหน้าแรก</a>
+      <div style="margin-top:16px;font-size:13px;color:#5b7186">
+        ชำระเงินแล้ว? <a href="#" id="reCheck" style="color:#0e3a5c;font-weight:700">ตรวจสอบสถานะอีกครั้ง</a>
+        · <a href="#" id="expLogout" style="color:#5b7186">ออกจากระบบ</a>
+      </div>
+    </div></div>`);
+  document.body.appendChild(scr);
+  scr.querySelector('#reCheck').onclick=e=>{ e.preventDefault(); location.reload(); };
+  scr.querySelector('#expLogout').onclick=async e=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); location.reload(); };
 }
 function enterGuest(){
   GUEST=true; MY_UID=null; TARGET_UID=null;
