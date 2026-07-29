@@ -540,9 +540,57 @@ async function vFeedback(v){
     </div>`).join('');
 }
 /* ============ แบบประกันสังคม (สปส. 1-10) ============ */
+/* ---------- ข้อมูลค่าจ้างรายเดือนสำหรับ กท.20 ก ----------
+   ค่าจ้างตามกฎหมายประกันสังคม = ค่าจ้างฐาน + ค่าตอบแทนประจำ
+   (ไม่รวมค่าล่วงเวลาและโบนัส ตามหมายเหตุในแบบฟอร์ม)                    */
+const KT20_OTHER_KEYS=['commission','diligence','travel','position','other'];
+const KT20_CAP=20000;   // เพดานค่าจ้างที่ต้องแจ้ง 20,000/คน/เดือน
+function kt20Month(year, m){
+  const p=`${year}-${String(m).padStart(2,'0')}`;
+  let count=0, salary=0, daily=0, other=0, excess=0, ot=0, bonus=0;
+  DB.employees.forEach(e=>{
+    if(!activeInMonth(e,year,m)) return;
+    const r=readRec(p,e.id), c=calc(e,p);
+    const oth=KT20_OTHER_KEYS.reduce((s,k)=>s+Number(r.earn[k]||0),0);
+    const wage=c.base+oth;                       // ค่าจ้างของคนนี้ในเดือนนี้
+    if(wage<=0 && c.base<=0) return;
+    count++;
+    if(e.payType==='daily') daily+=c.base; else salary+=c.base;
+    other+=oth;
+    excess+=Math.max(0, wage-KT20_CAP);          // ส่วนที่เกินเพดาน (รายคน)
+    ot+=Number(r.earn.ot||0); bonus+=Number(r.earn.bonus||0);
+  });
+  const total=salary+daily+other;
+  return {count, salary, daily, other, total, excess, net:total-excess, ot, bonus};
+}
+function kt20Year(year){
+  const months=Array.from({length:12},(_,i)=>kt20Month(year,i+1));
+  const sum=months.reduce((a,b)=>({count:0,salary:a.salary+b.salary,daily:a.daily+b.daily,other:a.other+b.other,
+    total:a.total+b.total,excess:a.excess+b.excess,net:a.net+b.net,ot:a.ot+b.ot,bonus:a.bonus+b.bonus}),
+    {salary:0,daily:0,other:0,total:0,excess:0,net:0,ot:0,bonus:0});
+  sum.count=Math.max(0,...months.map(x=>x.count));    // จำนวนลูกจ้างสูงสุดในปี
+  // ค่าจ้างต่ำสุด
+  const monthlyEmps=DB.employees.filter(e=>(e.payType||'monthly')==='monthly'&&+e.salary>0);
+  const dailyEmps=DB.employees.filter(e=>e.payType==='daily'&&+e.salary>0);
+  sum.minMonthly = monthlyEmps.length?Math.min(...monthlyEmps.map(e=>+e.salary)):0;
+  sum.minDaily   = dailyEmps.length?Math.min(...dailyEmps.map(e=>+e.salary)):0;
+  return {months, sum};
+}
+let ssoForm='sps10';   // sps10 | kt20
 function vSSO(v){
   const [py,pm]=PERIOD.split('-').map(Number);
   const list=DB.employees.filter(e=>activeInMonth(e,py,pm));
+  // ปุ่มเลือกแบบฟอร์ม
+  const seg=el(`<div class="toolbar no-print" style="margin-bottom:6px">
+    <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
+      <button class="segbtn ${ssoForm==='sps10'?'on':''}" data-f="sps10">🛡️ สปส. 1-10 (รายเดือน)</button>
+      <button class="segbtn ${ssoForm==='kt20'?'on':''}" data-f="kt20">📋 กท. 20 ก (รายปี)</button>
+    </div>
+  </div>`);
+  v.appendChild(seg);
+  seg.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ ssoForm=b.dataset.f; render(); });
+  if(ssoForm==='kt20'){ vKT20(v, py); return; }
+
   v.appendChild(el(`<div class="toolbar no-print"><h2 style="font-size:16px">แบบรายการแสดงการส่งเงินสมทบ (สปส. 1-10) — ${periodLabel(PERIOD)}</h2>
     <button class="btn ghost sm" style="margin-left:auto" id="ssoCsv">⬇️ CSV</button>
     <button class="btn" onclick="window.print()">🖨️ พิมพ์</button></div>`));
@@ -577,6 +625,76 @@ function vSSO(v){
     const lines=['ลำดับ,เลขบัตรประชาชน,ชื่อ,ค่าจ้าง,เงินสมทบ5%'];
     list.forEach((e,i)=>{ const c=calc(e,PERIOD); const s=+readRec(PERIOD,e.id).ded.sso||0; lines.push(`${i+1},${e.taxId||''},"${e.name}",${c.base},${s}`); });
     downloadFile(`sso_1-10_${PERIOD}.csv`, '﻿'+lines.join('\r\n'),'text/csv;charset=utf-8'); toast('ส่งออกแล้ว');
+  };
+}
+/* ---------- แบบ กท. 20 ก (คำนวณค่าจ้างทั้งปี) ---------- */
+function vKT20(v, year){
+  const {months, sum}=kt20Year(year);
+  v.appendChild(el(`<div class="toolbar no-print"><h2 style="font-size:16px">แบบคำนวณค่าจ้าง (กท. 20 ก) — ประจำปี ${year+543}</h2>
+    <button class="btn ghost sm" style="margin-left:auto" id="ktCsv">⬇️ CSV</button>
+    <button class="btn" onclick="window.print()">🖨️ พิมพ์</button></div>`));
+  const line='<span style="border-bottom:1px dotted #555;display:inline-block;min-width:110px">&nbsp;</span>';
+  const rows=months.map((x,i)=>`<tr>
+    <td style="text-align:center">${THAI_MONTHS_ABBR[i]}</td>
+    <td style="text-align:center">${x.count||''}</td>
+    <td style="text-align:right">${x.salary?money(x.salary):''}</td>
+    <td style="text-align:right">${x.daily?money(x.daily):''}</td>
+    <td style="text-align:right">${x.other?money(x.other):''}</td>
+    <td style="text-align:right">${x.total?money(x.total):''}</td>
+    <td style="text-align:right">${x.excess?money(x.excess):''}</td>
+    <td style="text-align:right">${x.net?money(x.net):''}</td></tr>`).join('');
+
+  const area=el(`<div class="print-area"></div>`); v.appendChild(area);
+  area.appendChild(el(`<div class="doc a4" style="font-size:11px;line-height:1.35">
+    <div style="text-align:center;font-weight:800;text-decoration:underline;font-size:13px">โปรดกรอกเอกสารฉบับนี้และส่งคืนสำนักงานพร้อมแบบ กท. 20 ก</div>
+    <div style="text-align:center;margin-bottom:8px">แบบคำนวณค่าจ้างเพื่อประกอบการรายงานค่าจ้างตามแบบ กท. 20 ก ประจำปี ${year+543}</div>
+    <div style="display:flex;gap:16px"><div style="flex:1">สำนักงานประกันสังคมจังหวัด ${line}</div><div style="width:34%">โทร. ${line}</div></div>
+    <div style="display:flex;gap:16px"><div style="flex:1">ชื่อสถานประกอบการ <strong>${esc(DB.company.name)}</strong></div><div style="width:34%">เลขที่บัญชี <strong>${esc(DB.company.ssoNo||'-')}</strong></div></div>
+    <div style="display:flex;gap:16px;margin-bottom:6px"><div style="flex:1">(ก) รหัสกิจการ ${line} อัตราเงินสมทบ ${line}</div><div style="width:34%">โทร. ${line}</div></div>
+
+    <table class="dtbl">
+      <thead>
+        <tr>
+          <th rowspan="2" style="width:8%">เดือน</th>
+          <th rowspan="2" style="width:9%">จำนวน<br>ลูกจ้าง</th>
+          <th colspan="4">① ประเภทของค่าจ้างตามกฎหมาย (รวมทุกสาขา)</th>
+          <th rowspan="2" style="width:13%">② ส่วนที่เกิน<br>20,000/คน/เดือน</th>
+          <th rowspan="2" style="width:14%">①-②=③ ค่าจ้างสุทธิ<br>ที่ต้องแจ้ง</th>
+        </tr>
+        <tr><th>เงินเดือน</th><th>ค่าจ้างรายวัน</th><th>ค่าตอบแทนอื่น ๆ</th><th>① รวมค่าจ้าง</th></tr>
+        <tr><th colspan="8" style="font-weight:400;font-size:10px;text-align:left">** ไม่รวมเงินที่ไม่ใช่ค่าจ้าง เช่น ค่าล่วงเวลา โบนัส ฯลฯ **</th></tr>
+      </thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr><th>รวม</th><th style="text-align:center">${sum.count||'-'}</th>
+        <th style="text-align:right">${money(sum.salary)}</th><th style="text-align:right">${money(sum.daily)}</th>
+        <th style="text-align:right">${money(sum.other)}</th><th style="text-align:right">${money(sum.total)}</th>
+        <th style="text-align:right">${money(sum.excess)}</th><th style="text-align:right">${money(sum.net)}</th></tr></tfoot>
+    </table>
+
+    <div style="margin-top:5px">(ข) ค่าจ้างรายเดือนของลูกจ้างที่ได้รับต่ำสุด เดือนละ <strong>${sum.minMonthly?money(sum.minMonthly):'-'}</strong> บาท &nbsp; ค่าจ้างรายวันของลูกจ้างที่ได้รับต่ำสุดวันละ <strong>${sum.minDaily?money(sum.minDaily):'-'}</strong> บาท</div>
+
+    <div style="display:flex;gap:8px;margin-top:5px">
+      <div style="flex:1;border:1px solid #333;padding:6px 9px">
+        <div>(ค) รายการเงินได้ตามแบบยื่นรายการภาษีเงินได้หัก ณ ที่จ่าย ภงด. 1 ก</div>
+        <div style="margin-top:3px">จำนวน <strong>${num(sum.count)}</strong> ราย &nbsp; เงินได้ทั้งสิ้น <strong>${money(sum.total+sum.ot+sum.bonus)}</strong> บาท</div>
+        <div>ประกอบด้วย &nbsp; เงินเดือน <strong>${money(sum.salary)}</strong> บาท</div>
+        <div>ค่าจ้างรายวัน <strong>${money(sum.daily)}</strong> บาท &nbsp; ค่าล่วงเวลา <strong>${money(sum.ot)}</strong> บาท</div>
+        <div>โบนัส <strong>${money(sum.bonus)}</strong> บาท &nbsp; ค่าตอบแทนอื่น ๆ <strong>${money(sum.other)}</strong> บาท</div>
+      </div>
+      <div style="flex:1;text-align:center;padding-top:14px">
+        ลงชื่อ ............................................... นายจ้าง<br>
+        ( ${esc(DB.company.signer)} )<br>
+        ตำแหน่ง ...............................................<br><br>
+        <span style="display:inline-block;border:1px solid #333;border-radius:50%;padding:14px 10px;font-size:9px">ประทับตรา<br>นิติบุคคล</span>
+      </div>
+    </div>
+  </div>`));
+
+  $('#ktCsv').onclick=()=>{
+    const lines=['เดือน,จำนวนลูกจ้าง,เงินเดือน,ค่าจ้างรายวัน,ค่าตอบแทนอื่นๆ,รวมค่าจ้าง,ส่วนที่เกิน20000,ค่าจ้างสุทธิที่ต้องแจ้ง'];
+    months.forEach((x,i)=>lines.push([THAI_MONTHS[i],x.count,x.salary,x.daily,x.other,x.total,x.excess,x.net].join(',')));
+    lines.push(['รวม',sum.count,sum.salary,sum.daily,sum.other,sum.total,sum.excess,sum.net].join(','));
+    downloadFile(`kt20k_${year+543}.csv`, '﻿'+lines.join('\r\n'),'text/csv;charset=utf-8'); toast('ส่งออก กท.20 ก แล้ว');
   };
 }
 /* ============ การลาออก / เข้าใหม่ ============ */
