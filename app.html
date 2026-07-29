@@ -380,7 +380,7 @@ function resignedBefore(emp, p){
 // คำนวณเงินหักอัตโนมัติ (ประกันสังคม + กสล. + ภาษี) จากค่าจ้างฐาน/เงินได้ของงวด
 function autoDeductions(emp, rec){
   const base = basePay(emp, rec, PERIOD);
-  rec.ded.sso = autoSSO(ssoWage(emp, rec, PERIOD));   // ปกส. คิดจากค่าจ้างตามนิยามประกันสังคม
+  rec.ded.sso = ssoExempt(emp) ? 0 : autoSSO(ssoWage(emp, rec, PERIOD));   // กรรมการ = ไม่หัก ปกส.
   rec.ded.pvd = Math.round(base * (emp.pvdRate||0)/100);
   rec.ded.tax = estTax(emp, +PERIOD.split('-')[0], rec).monthly;   // ภาษีหัก ณ ที่จ่าย/เดือน
   save();
@@ -391,6 +391,11 @@ const SSO_WAGE_KEYS=['commission','diligence','travel','position','other'];
 function ssoWage(emp, rec, p){
   const r = rec || readRec(p||PERIOD, emp.id);
   return basePay(emp, r, p||PERIOD) + SSO_WAGE_KEYS.reduce((s,k)=>s+Number(r.earn[k]||0),0);
+}
+// ยกเว้นประกันสังคม — กรรมการ (ไม่ใช่ลูกจ้างตาม ม.33) หรือกาช่องยกเว้นเอง
+function ssoExempt(emp){
+  if(emp.noSSO) return true;
+  return /กรรมการ|director/i.test(String(emp.position||''));
 }
 // ค่าจ้างต่อเดือนโดยประมาณ (ใช้คำนวณ ปกส./กสล./ภาษี) — รายวันใช้จำนวนวันจริง ถ้าไม่มีใช้ค่าเริ่มต้น
 function monthlyWage(emp, rec){
@@ -561,6 +566,7 @@ function kt20Month(year, m){
   let count=0, salary=0, daily=0, other=0, excess=0, ot=0, bonus=0, sso=0;
   DB.employees.forEach(e=>{
     if(!activeInMonth(e,year,m)) return;
+    if(ssoExempt(e)) return;                     // กรรมการ ไม่นับในแบบประกันสังคม
     const r=readRec(p,e.id);
     const base=basePay(e,r,p);
     const oth=SSO_WAGE_KEYS.reduce((s,k)=>s+Number(r.earn[k]||0),0);
@@ -592,7 +598,9 @@ function kt20Year(year){
 let ssoForm='sps10';   // sps10 | kt20
 function vSSO(v){
   const [py,pm]=PERIOD.split('-').map(Number);
-  const list=DB.employees.filter(e=>activeInMonth(e,py,pm));
+  const activeAll=DB.employees.filter(e=>activeInMonth(e,py,pm));
+  const list=activeAll.filter(e=>!ssoExempt(e));          // ตัดกรรมการออกจากแบบประกันสังคม
+  const exempt=activeAll.filter(e=>ssoExempt(e));
   // ปุ่มเลือกแบบฟอร์ม
   const seg=el(`<div class="toolbar no-print" style="margin-bottom:6px">
     <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
@@ -607,6 +615,8 @@ function vSSO(v){
   v.appendChild(el(`<div class="toolbar no-print"><h2 style="font-size:16px">แบบรายการแสดงการส่งเงินสมทบ (สปส. 1-10) — ${periodLabel(PERIOD)}</h2>
     <button class="btn ghost sm" style="margin-left:auto" id="ssoCsv">⬇️ CSV</button>
     <button class="btn" onclick="window.print()">🖨️ พิมพ์</button></div>`));
+  if(exempt.length) v.appendChild(el(`<div class="panel no-print" style="border-color:#fcd34d;background:#fffbeb"><div class="pbody" style="font-size:13px;color:#92400e">
+    ⚠️ ไม่นับรวมในแบบประกันสังคม ${exempt.length} คน (ตำแหน่งกรรมการ / ตั้งค่ายกเว้น): ${exempt.map(e=>esc(e.name)).join(', ')}</div></div>`));
   let totWage=0, totSso=0;
   const rows=list.map((e,i)=>{ const r=readRec(PERIOD,e.id); const c={base:ssoWage(e,r,PERIOD)}; const s=+r.ded.sso||0; totWage+=c.base; totSso+=s;
     return `<tr><td style="text-align:center">${i+1}</td><td>${esc(e.taxId||'-')}</td><td>${esc(e.name)}</td>
@@ -1067,6 +1077,10 @@ function empForm(id){
       <div class="field"><label>วันที่ลาออก <span style="color:#94a3b8;font-size:11px">(เว้นว่างถ้ายังทำงานอยู่)</span></label><input id="f_resignDate" type="date" value="${e.resignDate||''}"></div>
       <div class="field"><label>เลขบัตรประชาชน (13 หลัก)</label><input id="f_taxId" value="${esc(e.taxId)}" maxlength="13"></div>
       <div class="field"><label>อัตราสะสม กสล. (%)</label><input id="f_pvdRate" type="number" step="0.5" value="${e.pvdRate||0}"></div>
+      <div class="field"><label>ประกันสังคม</label><select id="f_noSSO">
+        <option value="0" ${!e.noSSO?'selected':''}>เข้าประกันสังคม (หัก 5%)</option>
+        <option value="1" ${e.noSSO?'selected':''}>ยกเว้น — ไม่หัก/ไม่ยื่น (เช่น กรรมการ)</option></select>
+        <div class="muted" style="font-size:11px;margin-top:2px">* ตำแหน่งที่มีคำว่า "กรรมการ" ระบบยกเว้นให้อัตโนมัติ</div></div>
       <div class="field"><label>ธนาคาร</label><input id="f_bank" value="${esc(e.bank)}"></div>
       <div class="field"><label>เลขที่บัญชี</label><input id="f_bankNo" value="${esc(e.bankNo)}"></div>
       <div class="field" style="grid-column:1/-1"><label>ที่อยู่ (สำหรับหนังสือรับรองหัก ณ ที่จ่าย 50 ทวิ)</label><input id="f_address" value="${esc(e.address||'')}" placeholder="บ้านเลขที่ หมู่ ถนน ตำบล/แขวง อำเภอ/เขต จังหวัด รหัสไปรษณีย์"></div>
@@ -1080,7 +1094,7 @@ function empForm(id){
     const dup=DB.employees.find(x=>x.id!==id && String(x.code||'').trim().toLowerCase()===code.toLowerCase());
     if(dup){ toast(`รหัส ${code} ซ้ำกับ "${dup.name}" — กรุณาใช้รหัสอื่น`);
       const f=$('#f_code'); if(f){ f.style.borderColor='#dc2626'; f.focus(); f.select(); } return; }
-    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0};
+    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,noSSO:+g('f_noSSO')||0};
     if(id){ Object.assign(e,rec); } else { DB.employees.push({id:uid(),...rec}); }
     save(); closeModal(); drawEmp(); toast('บันทึกแล้ว');
   }]]);
