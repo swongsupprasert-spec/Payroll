@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แพ็กเกจและราคา — eSimPayroll</title>
+<meta name="description" content="ราคาแพ็กเกจ eSimPayroll คิดตามจำนวนพนักงาน เริ่มต้น 590 บาท/เดือน สำหรับ 1-5 คน จ่ายรายปีประหยัด 2 เดือน ต่ออายุออนไลน์ได้ทันที">
+<meta name="keywords" content="ราคาโปรแกรมเงินเดือน,แพ็กเกจ payroll,ค่าบริการโปรแกรม HR,โปรแกรมเงินเดือนรายเดือน">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0e3a5c">
+<link rel="canonical" href="https://payroll-mtd.vercel.app/pricing">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="eSimPayroll">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://payroll-mtd.vercel.app/pricing">
+<meta property="og:title" content="แพ็กเกจและราคา — eSimPayroll">
+<meta property="og:description" content="คิดราคาตามจำนวนพนักงาน เริ่มต้น 590 บาท/เดือน จ่ายรายปีประหยัด 2 เดือน">
+<meta property="og:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='12' fill='%230e3a5c'/><path d='M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14' fill='none' stroke='%236ee7b7' stroke-width='3.6' stroke-linecap='round'/></svg>">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--brand:#0e3a5c;--brand-d:#092942;--ink:#0f2438;--muted:#5b7186;--bg:#f6faf8;--accent:#10b981;--accent-l:#6ee7b7;--accent-bg:#eaf6f1}
+  html{scroll-behavior:smooth}
+  body{font-family:"Sarabun","Segoe UI",Tahoma,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.65}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:11px;font-weight:700;font-size:15px;cursor:pointer;border:0;transition:.18s;font-family:inherit}
+  .btn.primary{background:var(--brand);color:#fff;box-shadow:0 8px 24px rgba(14,58,92,.3)}
+  .btn.primary:hover{background:var(--brand-d);transform:translateY(-2px)}
+  .btn.ghost{background:#fff;color:var(--ink);border:1.5px solid #e2e8f0}
+  .btn.ghost:hover{border-color:var(--brand);color:var(--brand)}
+  .btn.green{background:linear-gradient(135deg,#10b981,#0f766e);color:#fff;box-shadow:0 8px 24px rgba(16,185,129,.35)}
+  .btn.green:hover{transform:translateY(-2px)}
+
+  header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid #eef2f7}
+  nav{display:flex;align-items:center;gap:14px;height:66px;max-width:1140px;margin:0 auto;padding:0 22px}
+  .logo{font-size:21px;font-weight:800;display:flex;align-items:center;gap:8px}
+  nav .sp{margin-left:auto;display:flex;gap:6px;align-items:center}
+  nav a.link{color:var(--muted);font-weight:600;padding:8px 12px;font-size:15px}
+  nav a.link:hover{color:var(--ink)}
+  nav a.link.active{color:var(--brand)}
+
+  .pagehead{background:radial-gradient(1000px 400px at 70% -20%,#d8f3e6,transparent),linear-gradient(180deg,#fff,#f6faf8);padding:52px 0 30px;text-align:center}
+  .badge{display:inline-block;background:var(--accent-bg);color:var(--brand-d);font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;margin-bottom:14px}
+  .pagehead h1{font-size:40px;letter-spacing:-.6px;margin-bottom:10px}
+  .pagehead p{color:var(--muted);font-size:18px;max-width:620px;margin:0 auto}
+
+  /* ตัวเลือกรอบบิล */
+  .cycle{display:inline-flex;background:#eef4f1;border-radius:12px;padding:4px;margin:22px auto 6px;position:relative}
+  .cycle button{background:none;border:0;padding:9px 22px;border-radius:9px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;font-family:inherit;transition:.18s}
+  .cycle button.on{background:#fff;color:var(--brand);box-shadow:0 3px 10px rgba(14,58,92,.12)}
+  .save-tag{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;margin-left:6px}
+
+  /* สไลเดอร์เลือกจำนวนคน */
+  .calc{background:#fff;border:1px solid #e6efea;border-radius:22px;padding:28px 30px;margin:26px auto 0;
+    box-shadow:0 20px 50px rgba(14,58,92,.10);max-width:820px}
+  .calc-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .calc-top .lbl{font-weight:700;font-size:16px}
+  .cnt-box{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .cnt-box input[type=number]{width:88px;padding:9px 10px;border:1.5px solid #e2e8f0;border-radius:10px;
+    font-size:19px;font-weight:800;text-align:center;color:var(--brand);font-family:inherit}
+  .cnt-box span{color:var(--muted);font-size:14px}
+  input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:10px;border-radius:20px;outline:none;margin:14px 0 6px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;
+    background:#fff;border:4px solid var(--accent);cursor:pointer;box-shadow:0 3px 10px rgba(14,58,92,.28)}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--accent);cursor:pointer}
+  .ticks{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:18px}
+  .result{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:linear-gradient(135deg,#0e3a5c,#0f766e);
+    border-radius:16px;padding:20px 24px;color:#fff}
+  .result .r-l{font-size:13px;opacity:.85}
+  .result .r-pkg{font-size:18px;font-weight:800}
+  .result .r-price{margin-left:auto;text-align:right}
+  .result .r-price b{font-size:38px;font-weight:800;letter-spacing:-1px}
+  .result .r-price small{font-size:14px;opacity:.85}
+  .result .r-note{width:100%;font-size:13px;opacity:.9;border-top:1px solid rgba(255,255,255,.2);padding-top:10px;margin-top:4px}
+
+  /* การ์ดแพ็กเกจ */
+  section{padding:52px 0}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .plan{background:#fff;border:1.5px solid #e6efea;border-radius:18px;padding:24px 22px;position:relative;transition:.2s}
+  .plan:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(14,58,92,.14)}
+  .plan.active{border-color:var(--accent);box-shadow:0 18px 44px rgba(16,185,129,.22)}
+  .plan.active::before{content:"✓ ตรงกับจำนวนพนักงานของคุณ";position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+    background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;white-space:nowrap}
+  .plan .p-range{font-size:15px;font-weight:800;color:var(--brand)}
+  .plan .p-sub{color:var(--muted);font-size:13px;margin-bottom:12px}
+  .plan .p-price{font-size:34px;font-weight:800;letter-spacing:-1px;color:var(--ink)}
+  .plan .p-price small{font-size:14px;font-weight:600;color:var(--muted)}
+  .plan .p-per{color:var(--muted);font-size:12.5px;margin:4px 0 16px}
+  .plan .btn{width:100%}
+  .hot{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;
+    font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px}
+  .plan.quote{background:linear-gradient(135deg,#0e3a5c,#092942);color:#fff;border-color:transparent}
+  .plan.quote .p-range,.plan.quote .p-price{color:#fff}
+  .plan.quote .p-sub,.plan.quote .p-per{color:#b9cddb}
+
+  .incl{background:var(--bg);border-top:1px solid #e6efea}
+  .incl ul{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+  .incl li{display:flex;gap:9px;align-items:flex-start;font-size:15px}
+  .incl li .ck{color:var(--accent);font-weight:800;flex-shrink:0}
+  .sec-head{text-align:center;max-width:620px;margin:0 auto 26px}
+  .sec-head h2{font-size:30px;letter-spacing:-.4px;margin-bottom:8px}
+  .sec-head p{color:var(--muted)}
+
+  .faq{max-width:820px;margin:0 auto}
+  .faq details{background:#fff;border:1px solid #e6efea;border-radius:13px;padding:15px 18px;margin-bottom:10px}
+  .faq summary{font-weight:700;cursor:pointer;list-style:none}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::before{content:"＋ ";color:var(--accent);font-weight:800}
+  .faq details[open] summary::before{content:"− "}
+  .faq p{color:var(--muted);font-size:15px;margin-top:9px}
+
+  /* กล่องสั่งซื้อ */
+  .backdrop{position:fixed;inset:0;background:rgba(15,36,56,.55);z-index:60;display:none;align-items:flex-start;justify-content:center;padding:24px 16px;overflow:auto}
+  .backdrop.on{display:flex}
+  .modal{background:#fff;border-radius:18px;max-width:520px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+  .modal .mh{padding:18px 22px;border-bottom:1px solid #eef2f7;display:flex;align-items:center}
+  .modal .mh h3{font-size:19px}
+  .modal .mh button{margin-left:auto;background:none;border:0;font-size:24px;color:#94a3b8;cursor:pointer;line-height:1}
+  .modal .mb{padding:20px 22px}
+  .sum{background:var(--accent-bg);border:1px solid #d6ebe1;border-radius:13px;padding:15px 17px;margin-bottom:16px}
+  .sum .row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px}
+  .sum .row.total{border-top:1px dashed #b9d8ca;padding-top:9px;margin-top:9px;font-size:19px;font-weight:800;color:var(--brand)}
+  .fld{margin-bottom:11px}
+  .fld label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:4px}
+  .fld input,.fld select{width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:inherit}
+  .fld input:focus,.fld select:focus{outline:2px solid var(--accent);border-color:transparent}
+  .paybox{border:1px solid #e6efea;border-radius:13px;padding:14px 16px;margin:14px 0;background:#fbfdfc;font-size:14px}
+  .paybox b{color:var(--brand)}
+  .msg{text-align:center;font-size:14px;margin-top:10px;min-height:18px}
+
+  footer{padding:34px 0;border-top:1px solid #eef2f7;color:var(--muted);font-size:14px;text-align:center}
+  @media(max-width:900px){.plans{grid-template-columns:1fr 1fr}.incl ul{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){
+    nav{height:auto;padding:10px 0;flex-wrap:wrap;gap:6px}
+    .logo{font-size:18px}
+    nav .sp{width:100%;margin-left:0;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    nav a.link{padding:7px 9px;font-size:14px;white-space:nowrap}
+    nav .sp .btn{white-space:nowrap;flex-shrink:0;padding:9px 14px}
+    .pagehead h1{font-size:26px}.pagehead p{font-size:15px}
+    .calc{padding:20px 16px;border-radius:16px}
+    .result{padding:16px}.result .r-price b{font-size:30px}
+    .plans,.incl ul{grid-template-columns:1fr}
+    section{padding:34px 0}.sec-head h2{font-size:22px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true">
+        <defs><linearGradient id="lgP" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs>
+        <rect width="44" height="44" rx="12" fill="url(#lgP)"/>
+        <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
+    <div class="sp">
+      <a href="index.html#features" class="link">ฟีเจอร์</a>
+      <a href="pricing.html" class="link active">ราคา</a>
+      <a href="articles.html" class="link">บทความ</a>
+      <a href="about.html" class="link">เกี่ยวกับ</a>
+      <a href="app.html#signup" class="btn primary" style="padding:9px 18px">เริ่มใช้งาน</a>
+    </div>
+  </nav>
+</header>
+
+<div class="pagehead">
+  <div class="wrap">
+    <span class="badge">💎 แพ็กเกจและราคา</span>
+    <h1>จ่ายตามจำนวนพนักงาน ไม่มีค่าซ่อนเร้น</h1>
+    <p>เลื่อนแถบด้านล่างเพื่อดูราคาที่ตรงกับธุรกิจคุณ — ใช้ได้ทุกฟีเจอร์ ไม่จำกัดการออกเอกสาร</p>
+
+    <div class="cycle">
+      <button id="cyM" class="on" data-c="m">รายเดือน</button>
+      <button id="cyY" data-c="y">รายปี <span class="save-tag">ประหยัด 2 เดือน</span></button>
+    </div>
+
+    <div class="calc">
+      <div class="calc-top">
+        <span class="lbl">👥 บริษัทคุณมีพนักงานกี่คน?</span>
+        <span class="cnt-box"><input type="number" id="cnt" min="1" max="200" value="8"><span>คน</span></span>
+      </div>
+      <input type="range" id="rng" min="1" max="100" value="8">
+      <div class="ticks"><span>1</span><span>20</span><span>40</span><span>60</span><span>80</span><span>100+</span></div>
+      <div class="result">
+        <div>
+          <div class="r-l">แพ็กเกจที่เหมาะกับคุณ</div>
+          <div class="r-pkg" id="rPkg">6-10 คน</div>
+        </div>
+        <div class="r-price">
+          <b id="rPrice">990</b> <small id="rUnit">บาท / เดือน</small>
+          <div class="r-l" id="rSub" style="margin-top:2px"></div>
+        </div>
+        <div class="r-note" id="rNote"></div>
+      </div>
+      <div style="margin-top:16px"><button class="btn green" id="buyNow" style="width:100%;font-size:16px;padding:14px">💳 ชำระเงิน / ต่ออายุ</button></div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><h2>ตารางราคาทั้งหมด</h2><p>ราคาต่อเดือน ใช้งานได้ทุกฟีเจอร์เท่ากันทุกแพ็กเกจ</p></div>
+    <div class="plans" id="plans"></div>
+  </div>
+</section>
+
+<section class="incl">
+  <div class="wrap">
+    <div class="sec-head"><h2>ทุกแพ็กเกจได้ครบเหมือนกัน</h2><p>ไม่ล็อกฟีเจอร์ ไม่คิดเพิ่มรายเอกสาร</p></div>
+    <ul>
+      <li><span class="ck">✓</span> คำนวณภาษีหัก ณ ที่จ่ายอัตโนมัติ</li>
+      <li><span class="ck">✓</span> ประกันสังคม &amp; กองทุนสำรองเลี้ยงชีพ</li>
+      <li><span class="ck">✓</span> พนักงานรายเดือน และ รายวัน</li>
+      <li><span class="ck">✓</span> สลิปเงินเดือน (พิมพ์/PDF)</li>
+      <li><span class="ck">✓</span> หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)</li>
+      <li><span class="ck">✓</span> แบบ ภ.ง.ด.1 · สปส.1-10 · กท.20ก</li>
+      <li><span class="ck">✓</span> แดชบอร์ดและกราฟสรุป</li>
+      <li><span class="ck">✓</span> นำเข้า/ส่งออก CSV</li>
+      <li><span class="ck">✓</span> ข้อมูลบนคลาวด์ ใช้ได้ทุกอุปกรณ์</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><h2>คำถามที่พบบ่อย</h2></div>
+    <div class="faq">
+      <details open><summary>นับจำนวนพนักงานอย่างไร?</summary><p>นับจากจำนวนพนักงานที่ยังทำงานอยู่ในระบบ (ไม่นับคนที่บันทึกลาออกแล้ว) หากเดือนไหนพนักงานเกินแพ็กเกจ ระบบจะแจ้งให้อัปเกรด</p></details>
+      <details><summary>ถ้าพนักงานเพิ่มระหว่างรอบ ต้องจ่ายเพิ่มไหม?</summary><p>อัปเกรดได้ทุกเมื่อ โดยจ่ายเฉพาะส่วนต่างตามจำนวนวันที่เหลือของรอบบิลปัจจุบัน</p></details>
+      <details><summary>จ่ายรายปีคุ้มกว่าอย่างไร?</summary><p>จ่ายรายปีคิดเพียง 10 เดือน เท่ากับใช้ฟรี 2 เดือน (ประหยัดประมาณ 17%)</p></details>
+      <details><summary>ยกเลิกได้ไหม?</summary><p>ยกเลิกได้ทุกเมื่อ ไม่มีสัญญาผูกมัด ใช้งานได้จนครบรอบบิลที่ชำระไว้ และดาวน์โหลดข้อมูลออกเป็น CSV/JSON ได้เสมอ</p></details>
+      <details><summary>มีพนักงานเกิน 80 คน ทำอย่างไร?</summary><p>ติดต่อขอใบเสนอราคาพิเศษ เรามีแพ็กเกจสำหรับองค์กรขนาดใหญ่พร้อมบริการช่วยตั้งค่าเริ่มต้น</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap"><strong>eSim<span style="color:var(--brand)">Payroll</span></strong> · จัดการเงินเดือนสำหรับธุรกิจไทย<br>© 2569 · สงวนลิขสิทธิ์</div>
+</footer>
+
+<!-- กล่องสั่งซื้อ -->
+<div class="backdrop" id="bd">
+  <div class="modal">
+    <div class="mh"><h3 id="mTitle">ยืนยันการสั่งซื้อ</h3><button id="mClose">×</button></div>
+    <div class="mb" id="mBody"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+  const SB_URL='https://sfzzswzyoqshlppsturd.supabase.co';
+  const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenpzd3p5b3FzaGxwcHN0dXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4OTE1ODAsImV4cCI6MjEwMDQ2NzU4MH0.5IVEuvp6JM-JZUKGfCEoVgQ_CwiLLsU8tUJxbW85eac';
+  let sb=null; try{ sb=window.supabase.createClient(SB_URL,SB_ANON); }catch(e){}
+  const $=id=>document.getElementById(id);
+  const fmt=n=>n.toLocaleString('th-TH');
+
+  /* ---- แพ็กเกจ ---- */
+  const TIERS=[
+    {min:1,  max:5,   price:590},
+    {min:6,  max:10,  price:990,  hot:true},
+    {min:11, max:20,  price:1590},
+    {min:21, max:40,  price:2990},
+    {min:41, max:60,  price:4290},
+    {min:61, max:80,  price:5590},
+    {min:81, max:Infinity, price:null}   // ขอใบเสนอราคา
+  ];
+  const YEAR_MONTHS=10;                   // จ่ายรายปี = 10 เดือน (ฟรี 2 เดือน)
+  let cycle='m', count=8;
+
+  const tierOf=n=>TIERS.find(t=>n>=t.min&&n<=t.max);
+  const label=t=>t.price===null?'มากกว่า 80 คน':`${t.min}-${t.max} คน`;
+  const priceOf=t=>t.price===null?null:(cycle==='y'?t.price*YEAR_MONTHS:t.price);
+
+  /* ---- การ์ดแพ็กเกจ ---- */
+  function drawPlans(){
+    const cur=tierOf(count);
+    $('plans').innerHTML=TIERS.map(t=>{
+      const quote=t.price===null;
+      const p=priceOf(t);
+      const active=(t===cur)?' active':'';
+      return `<div class="plan${quote?' quote':''}${active}">
+        ${t.hot?'<span class="hot">ยอดนิยม</span>':''}
+        <div class="p-range">${label(t)}</div>
+        <div class="p-sub">${quote?'องค์กรขนาดใหญ่':'พนักงานสูงสุด '+t.max+' คน'}</div>
+        ${quote
+          ? `<div class="p-price" style="font-size:22px">ติดต่อขอใบเสนอราคา</div><div class="p-per">ราคาพิเศษตามจำนวนพนักงาน</div>
+             <a class="btn ghost" style="width:100%;background:transparent;color:#fff;border-color:rgba(255,255,255,.5)" href="mailto:support@payroll-mtd.com?subject=ขอใบเสนอราคา eSimPayroll">✉️ ขอใบเสนอราคา</a>`
+          : `<div class="p-price">${fmt(p)} <small>บาท</small></div>
+             <div class="p-per">${cycle==='y'?'ต่อปี (เฉลี่ย '+fmt(t.price)+' บาท/เดือน)':'ต่อเดือน'}</div>
+             <button class="btn ${active?'green':'primary'}" data-buy="${t.min}">${active?'💳 ชำระเงิน':'เลือกแพ็กเกจนี้'}</button>`}
+      </div>`;
+    }).join('');
+    $('plans').querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{
+      const t=TIERS.find(x=>x.min==b.dataset.buy);
+      count=Math.max(t.min,Math.min(t.max===Infinity?100:t.max,count));
+      if(count<t.min||count>t.max) count=t.min;
+      sync(); openOrder();
+    });
+  }
+
+  /* ---- อัปเดตผลลัพธ์ ---- */
+  function sync(){
+    count=Math.max(1,Math.min(200,+$('cnt').value||1));
+    $('cnt').value=count;
+    $('rng').value=Math.min(100,count);
+    const pct=(Math.min(100,count)-1)/99*100;
+    $('rng').style.background=`linear-gradient(90deg,var(--accent) ${pct}%,#dbe7e1 ${pct}%)`;
+    const t=tierOf(count), p=priceOf(t);
+    $('rPkg').textContent=label(t);
+    if(p===null){
+      $('rPrice').textContent='—'; $('rUnit').textContent='ขอใบเสนอราคา';
+      $('rSub').textContent=''; $('rNote').textContent='พนักงานเกิน 80 คน — ติดต่อรับข้อเสนอพิเศษสำหรับองค์กร';
+      $('buyNow').textContent='✉️ ขอใบเสนอราคา';
+    }else{
+      $('rPrice').textContent=fmt(p);
+      $('rUnit').textContent=cycle==='y'?'บาท / ปี':'บาท / เดือน';
+      $('rSub').textContent=cycle==='y'?`เฉลี่ย ${fmt(t.price)} บาท/เดือน`:'';
+      const perHead=Math.round(t.price/count);
+      $('rNote').textContent=`≈ ${fmt(perHead)} บาท/คน/เดือน · ${cycle==='y'?'จ่ายรายปีประหยัด '+fmt(t.price*2)+' บาท':'เปลี่ยนเป็นรายปีประหยัด '+fmt(t.price*2)+' บาท'}`;
+      $('buyNow').textContent='💳 ชำระเงิน / ต่ออายุ';
+    }
+    drawPlans();
+  }
+
+  $('rng').oninput=()=>{ $('cnt').value=$('rng').value; sync(); };
+  $('cnt').oninput=sync;
+  $('cyM').onclick=()=>{ cycle='m'; $('cyM').classList.add('on'); $('cyY').classList.remove('on'); sync(); };
+  $('cyY').onclick=()=>{ cycle='y'; $('cyY').classList.add('on'); $('cyM').classList.remove('on'); sync(); };
+
+  /* ---- กล่องสั่งซื้อ ---- */
+  const close=()=>$('bd').classList.remove('on');
+  $('mClose').onclick=close;
+  $('bd').onclick=e=>{ if(e.target.id==='bd') close(); };
+
+  function openOrder(){
+    const t=tierOf(count), p=priceOf(t);
+    if(p===null){ location.href='mailto:support@payroll-mtd.com?subject=ขอใบเสนอราคา eSimPayroll (พนักงาน '+count+' คน)'; return; }
+    $('mTitle').textContent='ยืนยันการสั่งซื้อ';
+    $('mBody').innerHTML=`
+      <div class="sum">
+        <div class="row"><span>แพ็กเกจ</span><b>${label(t)}</b></div>
+        <div class="row"><span>จำนวนพนักงาน</span><b>${count} คน</b></div>
+        <div class="row"><span>รอบชำระ</span><b>${cycle==='y'?'รายปี (10 เดือน)':'รายเดือน'}</b></div>
+        <div class="row total"><span>ยอดชำระ</span><span>${fmt(p)} บาท</span></div>
+      </div>
+      <div class="fld"><label>ชื่อบริษัท / ผู้ติดต่อ *</label><input id="oName" placeholder="บริษัท ตัวอย่าง จำกัด"></div>
+      <div class="fld"><label>อีเมล * (ใช้รับใบเสร็จและเปิดใช้งาน)</label><input id="oEmail" type="email" placeholder="you@example.com"></div>
+      <div class="fld"><label>เบอร์โทร</label><input id="oPhone" placeholder="08x-xxx-xxxx"></div>
+      <div class="paybox">
+        <b>วิธีชำระเงิน — โอน / พร้อมเพย์</b><br>
+        โอนเข้าบัญชี <b>บริษัท อีซิมเพย์โรล จำกัด</b><br>
+        ธนาคารกสิกรไทย เลขที่ <b>xxx-x-xxxxx-x</b><br>
+        <span style="color:var(--muted)">กด "ยืนยันการสั่งซื้อ" แล้วเราจะส่งรายละเอียดการชำระเงินไปที่อีเมลของคุณภายใน 1 วันทำการ</span>
+      </div>
+      <button class="btn green" id="oSend" style="width:100%;padding:13px;font-size:16px">✅ ยืนยันการสั่งซื้อ</button>
+      <div class="msg" id="oMsg"></div>`;
+    $('bd').classList.add('on');
+    $('oSend').onclick=submitOrder;
+  }
+  $('buyNow').onclick=openOrder;
+
+  async function submitOrder(){
+    const t=tierOf(count), p=priceOf(t);
+    const name=$('oName').value.trim(), email=$('oEmail').value.trim(), phone=$('oPhone').value.trim();
+    const m=$('oMsg');
+    if(!name||!email){ m.style.color='#dc2626'; m.textContent='กรุณากรอกชื่อและอีเมล'; return; }
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ m.style.color='#dc2626'; m.textContent='รูปแบบอีเมลไม่ถูกต้อง'; return; }
+    if(!sb){ m.style.color='#dc2626'; m.textContent='เชื่อมต่อไม่ได้ กรุณาลองใหม่'; return; }
+    m.style.color='var(--muted)'; m.textContent='กำลังส่ง...';
+    try{
+      const {error}=await sb.from('orders').insert({
+        company:name, email, phone,
+        employees:count, plan:label(t), cycle:cycle==='y'?'yearly':'monthly', amount:p, status:'pending'
+      });
+      if(error) throw error;
+      $('mTitle').textContent='รับคำสั่งซื้อแล้ว';
+      $('mBody').innerHTML=`<div style="text-align:center;padding:16px 6px">
+        <div style="font-size:52px;line-height:1">✅</div>
+        <h3 style="margin:10px 0 6px">ขอบคุณครับ!</h3>
+        <p style="color:var(--muted)">เราได้รับคำสั่งซื้อ <b>${label(t)}</b> ยอด <b>${fmt(p)} บาท</b> แล้ว<br>
+        ทีมงานจะส่งรายละเอียดการชำระเงินไปที่<br><b>${email}</b> ภายใน 1 วันทำการ</p>
+        <button class="btn primary" style="margin-top:14px" onclick="document.getElementById('bd').classList.remove('on')">ปิด</button>
+      </div>`;
+    }catch(err){ m.style.color='#dc2626'; m.textContent='ส่งไม่สำเร็จ: '+(err.message||'ลองใหม่อีกครั้ง'); }
+  }
+
+  sync();
+})();
+</script>
+</body>
+</html>

@@ -278,7 +278,7 @@ const I18N = {
   th:{
     nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_resign:'การลาออก', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
     nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
-    nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ', nav_feedback:'💬 แจ้งปัญหา/คำแนะนำ',
+    nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ', nav_feedback:'💬 แจ้งปัญหา/คำแนะนำ', nav_orders:'🧾 คำสั่งซื้อ/ต่ออายุ',
     period:'งวดเดือน',
     kpi_count:'จำนวนพนักงาน', kpi_salary:'เงินเดือนรวม', kpi_income:'เงินได้รวม', kpi_deduct:'เงินหักรวม', kpi_net:'เงินสุทธิรวม',
     male:'ชาย', female:'หญิง', unspec:'ไม่ระบุ', unit_person:'คน',
@@ -293,7 +293,7 @@ const I18N = {
   en:{
     nav_dashboard:'Dashboard', nav_employees:'Employees', nav_resign:'Resignation', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
     nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
-    nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_admin:'👑 Admin', nav_feedback:'💬 Feedback',
+    nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_admin:'👑 Admin', nav_feedback:'💬 Feedback', nav_orders:'🧾 Orders',
     period:'Period',
     kpi_count:'Employees', kpi_salary:'Total Salary', kpi_income:'Total Earnings', kpi_deduct:'Total Deductions', kpi_net:'Total Net Pay',
     male:'Male', female:'Female', unspec:'N/A', unit_person:'',
@@ -513,11 +513,11 @@ const PAGES = [
 const NAV_COLORS = {
   dashboard:'#17557f', employees:'#8b5cf6', resign:'#f43f5e', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
-  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', feedback:'#f97316', admin:'#eab308'
+  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', feedback:'#f97316', orders:'#22c55e', admin:'#eab308'
 };
 function renderNav(){
   const nav = $('#nav'); nav.innerHTML='';
-  const items = IS_ADMIN ? [...PAGES, ['feedback','แจ้งปัญหา/คำแนะนำ','💬'], ['admin','ผู้ดูแลระบบ','👑']] : PAGES;
+  const items = IS_ADMIN ? [...PAGES, ['orders','คำสั่งซื้อ/ต่ออายุ','🧾'], ['feedback','แจ้งปัญหา/คำแนะนำ','💬'], ['admin','ผู้ดูแลระบบ','👑']] : PAGES;
   items.forEach(([id,label,ico])=>{
     const col = NAV_COLORS[id] || '#17557f';
     const b = el(`<button data-p="${id}"><span class="ico" style="background:linear-gradient(135deg,${col}cc,${col}77);color:#fff">${ico}</span><span class="t">${tr('nav_'+id)}</span></button>`);
@@ -553,7 +553,46 @@ function render(){
   const v = $('#view'); v.innerHTML='';
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
   ({dashboard:vDashboard, employees:vEmployees, resign:vResign, payroll:vPayroll, summary:vSummary,
-    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, admin:vAdmin}[PAGE])(v);
+    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders, admin:vAdmin}[PAGE])(v);
+}
+/* ============ คำสั่งซื้อ / ต่ออายุ (แอดมินเท่านั้น) ============ */
+async function vOrders(v){
+  v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">🧾 คำสั่งซื้อ / ต่ออายุแพ็กเกจ</h2>
+    <button class="btn ghost sm" style="margin-left:auto" id="oRef">↻ รีเฟรช</button></div>`));
+  const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap" id="ordTbl"><div class="empty">กำลังโหลด…</div></div></div></div>`);
+  v.appendChild(panel);
+  $('#oRef').onclick=()=>render();
+  const {data,error}=await sb.from('orders').select('*').order('created_at',{ascending:false});
+  const box=$('#ordTbl'); if(!box) return;
+  if(error){ box.innerHTML=`<div class="empty">โหลดไม่ได้: ${esc(error.message)}<br><span style="font-size:12px">(ยังไม่ได้สร้างตาราง orders ใน Supabase?)</span></div>`; return; }
+  if(!data||!data.length){ box.innerHTML='<div class="empty">ยังไม่มีคำสั่งซื้อ</div>'; return; }
+  const sc={pending:'#fef3c7;color:#b45309',paid:'#dcfce7;color:#16a34a',cancelled:'#fee2e2;color:#dc2626'};
+  const st={pending:'รอชำระ',paid:'ชำระแล้ว',cancelled:'ยกเลิก'};
+  const sum=data.filter(o=>o.status==='paid').reduce((s,o)=>s+Number(o.amount||0),0);
+  const pend=data.filter(o=>o.status==='pending').length;
+  v.insertBefore(el(`<div class="cards">
+    <div class="kpi b1"><div class="lab">🧾 คำสั่งซื้อทั้งหมด</div><div class="val">${num(data.length)}</div></div>
+    <div class="kpi b3"><div class="lab">⏳ รอชำระ</div><div class="val">${num(pend)}</div></div>
+    <div class="kpi b2"><div class="lab">💰 ยอดที่ชำระแล้ว</div><div class="val money">${money(sum)}</div></div>
+  </div>`), panel);
+  const rows=data.map(o=>`<tr>
+    <td>${esc(fmtDateTime(o.created_at))}</td>
+    <td><strong>${esc(o.company||'-')}</strong><br><span class="muted" style="font-size:12px">${esc(o.email||'')}${o.phone?' · '+esc(o.phone):''}</span></td>
+    <td>${esc(o.plan||'-')}<br><span class="muted" style="font-size:12px">${num(o.employees||0)} คน · ${o.cycle==='yearly'?'รายปี':'รายเดือน'}</span></td>
+    <td class="num"><strong>${money(o.amount)}</strong></td>
+    <td><span class="chip" style="background:${sc[o.status]||sc.pending}">${st[o.status]||o.status}</span></td>
+    <td style="text-align:right">
+      <select data-st="${o.id}" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">
+        ${Object.keys(st).map(k=>`<option value="${k}" ${o.status===k?'selected':''}>${st[k]}</option>`).join('')}
+      </select></td>
+  </tr>`).join('');
+  const tbl=el(`<table><thead><tr><th>วันที่</th><th>ผู้สั่งซื้อ</th><th>แพ็กเกจ</th><th class="num">ยอด</th><th>สถานะ</th><th></th></tr></thead>
+    <tbody>${rows}</tbody></table>`);
+  tbl.querySelectorAll('[data-st]').forEach(s2=>s2.onchange=async()=>{
+    const {error:e2}=await sb.from('orders').update({status:s2.value}).eq('id',s2.dataset.st);
+    toast(e2?'อัปเดตไม่สำเร็จ':'อัปเดตสถานะแล้ว'); if(!e2) render();
+  });
+  box.innerHTML=''; box.appendChild(tbl);
 }
 /* ============ แจ้งปัญหา / คำแนะนำ (แอดมินเท่านั้น) ============ */
 async function vFeedback(v){
