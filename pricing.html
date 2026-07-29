@@ -350,15 +350,29 @@
       <div class="fld"><label>อีเมล * (ใช้รับใบเสร็จและเปิดใช้งาน)</label><input id="oEmail" type="email" placeholder="you@example.com"></div>
       <div class="fld"><label>เบอร์โทร</label><input id="oPhone" placeholder="08x-xxx-xxxx"></div>
       <div class="paybox">
-        <b>วิธีชำระเงิน — โอน / พร้อมเพย์</b><br>
-        โอนเข้าบัญชี <b>บริษัท อีซิมเพย์โรล จำกัด</b><br>
-        ธนาคารกสิกรไทย เลขที่ <b>xxx-x-xxxxx-x</b><br>
-        <span style="color:var(--muted)">กด "ยืนยันการสั่งซื้อ" แล้วเราจะส่งรายละเอียดการชำระเงินไปที่อีเมลของคุณภายใน 1 วันทำการ</span>
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#138f2d;color:#fff;font-weight:800;font-size:13px">K</span>
+          <b>โอนเงิน — ธนาคารกสิกรไทย</b>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:20px;font-weight:800;color:var(--brand);letter-spacing:.5px" id="acctNo">008-2-50516-6</span>
+          <button type="button" class="btn ghost" id="copyAcct" style="padding:5px 12px;font-size:13px">📋 คัดลอก</button>
+        </div>
+        <div style="margin-top:4px">ชื่อบัญชี <b id="acctName">—</b></div>
+        <div style="color:var(--muted);margin-top:7px">โอนแล้วส่งสลิปมาที่อีเมล <b>support@payroll-mtd.com</b> หรือกด "ยืนยันการสั่งซื้อ" ไว้ก่อน แล้วเราจะติดต่อกลับภายใน 1 วันทำการ</div>
       </div>
       <button class="btn green" id="oSend" style="width:100%;padding:13px;font-size:16px">✅ ยืนยันการสั่งซื้อ</button>
       <div class="msg" id="oMsg"></div>`;
     $('bd').classList.add('on');
     $('oSend').onclick=submitOrder;
+    const cp=$('copyAcct');
+    if(cp) cp.onclick=async()=>{
+      const no='0082505166';
+      try{ await navigator.clipboard.writeText(no); }
+      catch(e){ const ta=document.createElement('textarea'); ta.value=no; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+      cp.textContent='✅ คัดลอกแล้ว';
+      setTimeout(()=>cp.textContent='📋 คัดลอก',1600);
+    };
   }
   $('buyNow').onclick=openOrder;
 
