@@ -228,7 +228,7 @@
     <header class="top">
       <button class="menuBtn no-print" id="menuBtn" aria-label="เมนู">☰</button>
       <h1 id="pageTitle">แดชบอร์ด</h1>
-      <div class="period">
+      <div class="period" id="periodBox">
         <label id="periodLab">งวดเดือน</label>
         <select id="monthSel"></select>
         <select id="yearSel"></select>
@@ -529,6 +529,8 @@ function renderPeriodSel(){
 function render(){
   $('#pageTitle').textContent = tr('nav_'+PAGE);
   const pl=$('#periodLab'); if(pl) pl.textContent=tr('period');
+  // หน้าการลาออกมีตัวเลือกปีของตัวเอง — ซ่อนตัวเลือกงวดเดือนด้านบน
+  const pbox=$('#periodBox'); if(pbox) pbox.style.display = (PAGE==='resign') ? 'none' : '';
   renderPeriodSel();
   const v = $('#view'); v.innerHTML='';
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
