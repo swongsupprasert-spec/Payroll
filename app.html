@@ -121,6 +121,10 @@
   /* บีบตารางให้พอดี 1 หน้า A4 */
   .print-area .doc.a4 table.dtbl th,.print-area .doc.a4 table.dtbl td{padding:1.5px 6px;font-size:9.5px;line-height:1.2}
   .print-area .doc.a4 h2.dt{font-size:16px}
+  /* แบบ กท.20 ก — บีบให้พอดี 1 หน้า A4 */
+  .doc.kt20{font-size:10.5px;line-height:1.28}
+  .print-area .doc.kt20 table.dtbl th,.print-area .doc.kt20 table.dtbl td{padding:2px 5px;font-size:9.5px;line-height:1.25}
+  .doc.kt20 table.kt20m tbody td{height:19px}
   @media print{ .doc.a4{width:auto!important;max-width:none!important;min-height:0!important;padding:0!important} }
   .doc h2.dt{text-align:center;font-size:18px;margin-bottom:4px}
   .doc .company{text-align:center;margin-bottom:16px}
@@ -376,10 +380,17 @@ function resignedBefore(emp, p){
 // คำนวณเงินหักอัตโนมัติ (ประกันสังคม + กสล. + ภาษี) จากค่าจ้างฐาน/เงินได้ของงวด
 function autoDeductions(emp, rec){
   const base = basePay(emp, rec, PERIOD);
-  rec.ded.sso = autoSSO(base);
+  rec.ded.sso = autoSSO(ssoWage(emp, rec, PERIOD));   // ปกส. คิดจากค่าจ้างตามนิยามประกันสังคม
   rec.ded.pvd = Math.round(base * (emp.pvdRate||0)/100);
   rec.ded.tax = estTax(emp, +PERIOD.split('-')[0], rec).monthly;   // ภาษีหัก ณ ที่จ่าย/เดือน
   save();
+}
+/* ---------- ค่าจ้างตามนิยามประกันสังคม (ใช้ร่วมกันทั้ง สปส.1-10 และ กท.20 ก) ----------
+   = ค่าจ้างฐาน + ค่าตอบแทนประจำ  (ไม่รวมค่าล่วงเวลาและโบนัส)                        */
+const SSO_WAGE_KEYS=['commission','diligence','travel','position','other'];
+function ssoWage(emp, rec, p){
+  const r = rec || readRec(p||PERIOD, emp.id);
+  return basePay(emp, r, p||PERIOD) + SSO_WAGE_KEYS.reduce((s,k)=>s+Number(r.earn[k]||0),0);
 }
 // ค่าจ้างต่อเดือนโดยประมาณ (ใช้คำนวณ ปกส./กสล./ภาษี) — รายวันใช้จำนวนวันจริง ถ้าไม่มีใช้ค่าเริ่มต้น
 function monthlyWage(emp, rec){
@@ -543,31 +554,33 @@ async function vFeedback(v){
 /* ---------- ข้อมูลค่าจ้างรายเดือนสำหรับ กท.20 ก ----------
    ค่าจ้างตามกฎหมายประกันสังคม = ค่าจ้างฐาน + ค่าตอบแทนประจำ
    (ไม่รวมค่าล่วงเวลาและโบนัส ตามหมายเหตุในแบบฟอร์ม)                    */
-const KT20_OTHER_KEYS=['commission','diligence','travel','position','other'];
 const KT20_CAP=20000;   // เพดานค่าจ้างที่ต้องแจ้ง 20,000/คน/เดือน
+// ดึงยอดของเดือนนั้นจากข้อมูลประกันสังคมรายเดือน (ฐานเดียวกับ สปส. 1-10)
 function kt20Month(year, m){
   const p=`${year}-${String(m).padStart(2,'0')}`;
-  let count=0, salary=0, daily=0, other=0, excess=0, ot=0, bonus=0;
+  let count=0, salary=0, daily=0, other=0, excess=0, ot=0, bonus=0, sso=0;
   DB.employees.forEach(e=>{
     if(!activeInMonth(e,year,m)) return;
-    const r=readRec(p,e.id), c=calc(e,p);
-    const oth=KT20_OTHER_KEYS.reduce((s,k)=>s+Number(r.earn[k]||0),0);
-    const wage=c.base+oth;                       // ค่าจ้างของคนนี้ในเดือนนี้
-    if(wage<=0 && c.base<=0) return;
+    const r=readRec(p,e.id);
+    const base=basePay(e,r,p);
+    const oth=SSO_WAGE_KEYS.reduce((s,k)=>s+Number(r.earn[k]||0),0);
+    const wage=ssoWage(e,r,p);                   // = base + oth (ค่าจ้าง ปกส. ของคนนี้เดือนนี้)
+    if(wage<=0) return;
     count++;
-    if(e.payType==='daily') daily+=c.base; else salary+=c.base;
+    if(e.payType==='daily') daily+=base; else salary+=base;
     other+=oth;
-    excess+=Math.max(0, wage-KT20_CAP);          // ส่วนที่เกินเพดาน (รายคน)
+    excess+=Math.max(0, wage-KT20_CAP);          // ส่วนที่เกินเพดาน (คิดรายคน)
+    sso+=Number(r.ded.sso||0);                   // เงินสมทบที่นำส่งเดือนนั้น
     ot+=Number(r.earn.ot||0); bonus+=Number(r.earn.bonus||0);
   });
   const total=salary+daily+other;
-  return {count, salary, daily, other, total, excess, net:total-excess, ot, bonus};
+  return {count, salary, daily, other, total, excess, net:total-excess, ot, bonus, sso};
 }
 function kt20Year(year){
   const months=Array.from({length:12},(_,i)=>kt20Month(year,i+1));
   const sum=months.reduce((a,b)=>({count:0,salary:a.salary+b.salary,daily:a.daily+b.daily,other:a.other+b.other,
-    total:a.total+b.total,excess:a.excess+b.excess,net:a.net+b.net,ot:a.ot+b.ot,bonus:a.bonus+b.bonus}),
-    {salary:0,daily:0,other:0,total:0,excess:0,net:0,ot:0,bonus:0});
+    total:a.total+b.total,excess:a.excess+b.excess,net:a.net+b.net,ot:a.ot+b.ot,bonus:a.bonus+b.bonus,sso:a.sso+b.sso}),
+    {salary:0,daily:0,other:0,total:0,excess:0,net:0,ot:0,bonus:0,sso:0});
   sum.count=Math.max(0,...months.map(x=>x.count));    // จำนวนลูกจ้างสูงสุดในปี
   // ค่าจ้างต่ำสุด
   const monthlyEmps=DB.employees.filter(e=>(e.payType||'monthly')==='monthly'&&+e.salary>0);
@@ -595,7 +608,7 @@ function vSSO(v){
     <button class="btn ghost sm" style="margin-left:auto" id="ssoCsv">⬇️ CSV</button>
     <button class="btn" onclick="window.print()">🖨️ พิมพ์</button></div>`));
   let totWage=0, totSso=0;
-  const rows=list.map((e,i)=>{ const c=calc(e,PERIOD); const s=+readRec(PERIOD,e.id).ded.sso||0; totWage+=c.base; totSso+=s;
+  const rows=list.map((e,i)=>{ const r=readRec(PERIOD,e.id); const c={base:ssoWage(e,r,PERIOD)}; const s=+r.ded.sso||0; totWage+=c.base; totSso+=s;
     return `<tr><td style="text-align:center">${i+1}</td><td>${esc(e.taxId||'-')}</td><td>${esc(e.name)}</td>
       <td style="text-align:right">${money(c.base)}</td><td style="text-align:right">${money(s)}</td></tr>`;
   }).join('');
@@ -623,7 +636,7 @@ function vSSO(v){
   </div>`));
   $('#ssoCsv').onclick=()=>{
     const lines=['ลำดับ,เลขบัตรประชาชน,ชื่อ,ค่าจ้าง,เงินสมทบ5%'];
-    list.forEach((e,i)=>{ const c=calc(e,PERIOD); const s=+readRec(PERIOD,e.id).ded.sso||0; lines.push(`${i+1},${e.taxId||''},"${e.name}",${c.base},${s}`); });
+    list.forEach((e,i)=>{ const r=readRec(PERIOD,e.id); const s=+r.ded.sso||0; lines.push(`${i+1},${e.taxId||''},"${e.name}",${ssoWage(e,r,PERIOD)},${s}`); });
     downloadFile(`sso_1-10_${PERIOD}.csv`, '﻿'+lines.join('\r\n'),'text/csv;charset=utf-8'); toast('ส่งออกแล้ว');
   };
 }
@@ -645,14 +658,14 @@ function vKT20(v, year){
     <td style="text-align:right">${x.net?money(x.net):''}</td></tr>`).join('');
 
   const area=el(`<div class="print-area"></div>`); v.appendChild(area);
-  area.appendChild(el(`<div class="doc a4" style="font-size:11px;line-height:1.35">
+  area.appendChild(el(`<div class="doc a4 kt20">
     <div style="text-align:center;font-weight:800;text-decoration:underline;font-size:13px">โปรดกรอกเอกสารฉบับนี้และส่งคืนสำนักงานพร้อมแบบ กท. 20 ก</div>
     <div style="text-align:center;margin-bottom:8px">แบบคำนวณค่าจ้างเพื่อประกอบการรายงานค่าจ้างตามแบบ กท. 20 ก ประจำปี ${year+543}</div>
     <div style="display:flex;gap:16px"><div style="flex:1">สำนักงานประกันสังคมจังหวัด ${line}</div><div style="width:34%">โทร. ${line}</div></div>
     <div style="display:flex;gap:16px"><div style="flex:1">ชื่อสถานประกอบการ <strong>${esc(DB.company.name)}</strong></div><div style="width:34%">เลขที่บัญชี <strong>${esc(DB.company.ssoNo||'-')}</strong></div></div>
     <div style="display:flex;gap:16px;margin-bottom:6px"><div style="flex:1">(ก) รหัสกิจการ ${line} อัตราเงินสมทบ ${line}</div><div style="width:34%">โทร. ${line}</div></div>
 
-    <table class="dtbl">
+    <table class="dtbl kt20m">
       <thead>
         <tr>
           <th rowspan="2" style="width:8%">เดือน</th>
@@ -673,21 +686,41 @@ function vKT20(v, year){
 
     <div style="margin-top:5px">(ข) ค่าจ้างรายเดือนของลูกจ้างที่ได้รับต่ำสุด เดือนละ <strong>${sum.minMonthly?money(sum.minMonthly):'-'}</strong> บาท &nbsp; ค่าจ้างรายวันของลูกจ้างที่ได้รับต่ำสุดวันละ <strong>${sum.minDaily?money(sum.minDaily):'-'}</strong> บาท</div>
 
-    <div style="display:flex;gap:8px;margin-top:5px">
-      <div style="flex:1;border:1px solid #333;padding:6px 9px">
+    <div style="display:flex;gap:10px;margin-top:4px">
+      <div style="flex:1.15;border:1px solid #333;padding:5px 8px">
         <div>(ค) รายการเงินได้ตามแบบยื่นรายการภาษีเงินได้หัก ณ ที่จ่าย ภงด. 1 ก</div>
-        <div style="margin-top:3px">จำนวน <strong>${num(sum.count)}</strong> ราย &nbsp; เงินได้ทั้งสิ้น <strong>${money(sum.total+sum.ot+sum.bonus)}</strong> บาท</div>
-        <div>ประกอบด้วย &nbsp; เงินเดือน <strong>${money(sum.salary)}</strong> บาท</div>
-        <div>ค่าจ้างรายวัน <strong>${money(sum.daily)}</strong> บาท &nbsp; ค่าล่วงเวลา <strong>${money(sum.ot)}</strong> บาท</div>
-        <div>โบนัส <strong>${money(sum.bonus)}</strong> บาท &nbsp; ค่าตอบแทนอื่น ๆ <strong>${money(sum.other)}</strong> บาท</div>
+        <div style="margin-top:2px">จำนวน <strong>${num(sum.count)}</strong> ราย &nbsp; เงินได้ทั้งสิ้น <strong>${money(sum.total+sum.ot+sum.bonus)}</strong> บาท</div>
+        <div style="padding-left:26px">ประกอบด้วย &nbsp; เงินเดือน <strong>${money(sum.salary)}</strong> บาท</div>
+        <div>ค่าจ้างรายวัน <strong>${money(sum.daily)}</strong> บาท &nbsp;&nbsp; ค่าล่วงเวลา <strong>${money(sum.ot)}</strong> บาท</div>
+        <div>โบนัส <strong>${money(sum.bonus)}</strong> บาท &nbsp;&nbsp; ค่าตอบแทนอื่น ๆ <strong>${money(sum.other)}</strong> บาท</div>
+        <div>${line} บาท &nbsp;&nbsp; ${line} บาท</div>
       </div>
-      <div style="flex:1;text-align:center;padding-top:14px">
-        ลงชื่อ ............................................... นายจ้าง<br>
+      <div style="flex:1;text-align:center;padding-top:6px;position:relative">
+        ลงชื่อ ................................................ นายจ้าง<br>
         ( ${esc(DB.company.signer)} )<br>
-        ตำแหน่ง ...............................................<br><br>
-        <span style="display:inline-block;border:1px solid #333;border-radius:50%;padding:14px 10px;font-size:9px">ประทับตรา<br>นิติบุคคล</span>
+        ตำแหน่ง ................................................<br>
+        <span style="display:inline-block;border:1px solid #333;border-radius:50%;width:62px;height:62px;line-height:1.1;font-size:8px;padding-top:20px;margin-top:6px">ประทับตรา<br>นิติบุคคล</span>
       </div>
     </div>
+
+    <div style="border-top:1px solid #333;margin:8px 0 5px"></div>
+
+    <div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:3px">
+      <div style="flex:1">ประจำปี <strong>${year+543}</strong> &nbsp; รหัสกิจการ ${line} &nbsp; อัตราเงินสมทบ ${line}</div>
+      <div style="font-weight:700">สำหรับเจ้าหน้าที่</div>
+    </div>
+    <table class="dtbl">
+      <thead><tr>
+        <th style="width:26%">ประเภท</th><th>ค่าจ้าง</th>
+        <th>ปรับขั้นต่ำ (เฉพาะลูกจ้าง 1 คน)</th><th>ค่าจ้างสุทธิ</th><th style="width:15%">เงินสมทบ</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>การประเมินต้นปี</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>การรายงานค่าจ้าง</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>สปส 1-10</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="4">กองทุนเงินทดแทน สรุปผลเป็น เรียกเพิ่ม (Dr.), จ่ายคืน (Cr.)</td><td></td></tr>
+      </tbody>
+    </table>
   </div>`));
 
   $('#ktCsv').onclick=()=>{
@@ -1090,16 +1123,20 @@ function vPayroll(v){
   seg.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ payrollFilter=b.dataset.f; payrollEmpId=null; render(); });
 
   if(list.length===0){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ไม่มีพนักงาน${payrollFilter==='daily'?'รายวัน':payrollFilter==='monthly'?'รายเดือน':''}ในงวด ${periodLabel(PERIOD)}</div></div>`)); return; }
-  if(!payrollEmpId || !list.find(e=>e.id===payrollEmpId)) payrollEmpId=list[0].id;
+  if(payrollEmpId!=='ALL' && (!payrollEmpId || !list.find(e=>e.id===payrollEmpId))) payrollEmpId=list[0].id;
+  const isAll = payrollEmpId==='ALL';
 
   const tb=el(`<div class="toolbar">
     <div class="field" style="min-width:280px"><label>เลือกพนักงาน</label>
-      <select id="peSel">${list.map(e=>`<option value="${e.id}" ${e.id===payrollEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}${e.payType==='daily'?' (รายวัน)':''}</option>`).join('')}</select>
+      <select id="peSel"><option value="ALL" ${isAll?'selected':''}>— ทั้งหมด (${list.length} คน) —</option>${list.map(e=>`<option value="${e.id}" ${e.id===payrollEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}${e.payType==='daily'?' (รายวัน)':''}</option>`).join('')}</select>
     </div>
-    <button class="btn ghost sm" id="autoTax" style="margin-top:22px">🔍 ดูวิธีคำนวณภาษี</button>
+    ${isAll?'':`<button class="btn ghost sm" id="autoTax" style="margin-top:22px">🔍 ดูวิธีคำนวณภาษี</button>`}
+    <button class="btn ghost sm" id="peCsv" style="margin-top:22px">⬇️ ส่งออก CSV</button>
   </div>`);
   v.appendChild(tb);
   tb.querySelector('#peSel').onchange=(e)=>{ payrollEmpId=e.target.value; render(); };
+  tb.querySelector('#peCsv').onclick=()=>exportPayrollCSV(list);
+  if(isAll){ vPayrollAll(v, list); return; }
 
   const emp=DB.employees.find(e=>e.id===payrollEmpId);
   const r=getRec(PERIOD, emp.id);
@@ -1199,6 +1236,95 @@ function vPayroll(v){
   if(wd) wd.oninput=()=>{ r.days=+wd.value||0; panel.querySelector('#baseShow').value=money(basePay(emp,r));
     refreshAutoDed();   // วันเปลี่ยน → คำนวณ ปกส./กสล./ภาษี ใหม่
     save(); drawPeTot(emp); };
+}
+/* ---------- มุมมอง "ทั้งหมด" : ตารางกรอกเงินได้/เงินหักทุกคน ---------- */
+const MANUAL_DED=['loan','studentloan','other'];        // ช่องหักที่กรอกเอง
+function vPayrollAll(v, list){
+  const panel=el(`<div class="panel">
+    <div class="phead"><h2>เงินได้ / เงินหัก ทุกคน — ${periodLabel(PERIOD)}</h2>
+      <div class="sp"><span class="muted" style="font-size:12px">💡 แก้ตัวเลขในตารางได้เลย · ช่องสีเขียวคำนวณอัตโนมัติ</span></div></div>
+    <div class="pbody" style="padding:0"><div class="tbl-wrap" id="allTbl"></div></div></div>`);
+  v.appendChild(panel);
+
+  const inp=(v2,attrs)=>`<input type="number" step="0.01" value="${v2||0}" ${attrs} style="width:92px;padding:5px 7px;border:1px solid var(--line);border-radius:6px;text-align:right">`;
+  const ro =(v2)=>`<input value="${money(v2)}" readonly style="width:92px;padding:5px 7px;border:1px solid var(--line);border-radius:6px;text-align:right;background:#f0fdf4">`;
+
+  const rows=list.map(e=>{
+    const r=getRec(PERIOD,e.id); autoDeductions(e,r); const c=calc(e,PERIOD);
+    return `<tr data-row="${e.id}">
+      <td><span class="chip">${esc(e.code)}</span></td>
+      <td><strong>${esc(e.name)}</strong>${e.payType==='daily'?' <span class="chip" style="background:#fef3c7;color:#b45309">รายวัน</span>':''}</td>
+      ${e.payType==='daily'?`<td class="num">${inp(r.days,`data-days="${e.id}"`)}</td>`:'<td class="num muted">-</td>'}
+      <td class="num" data-base="${e.id}">${money(c.base)}</td>
+      ${EARN_FIELDS.map(f=>`<td class="num">${inp(r.earn[f[0]],`data-e="${f[0]}" data-id="${e.id}"`)}</td>`).join('')}
+      <td class="num pos" data-gross="${e.id}"><strong>${money(c.gross)}</strong></td>
+      <td class="num">${ro(r.ded.tax)}</td><td class="num">${ro(r.ded.sso)}</td><td class="num">${ro(r.ded.pvd)}</td>
+      ${MANUAL_DED.map(k=>`<td class="num">${inp(r.ded[k],`data-d="${k}" data-id="${e.id}"`)}</td>`).join('')}
+      <td class="num neg" data-ded="${e.id}">${money(c.dedTotal)}</td>
+      <td class="num" data-net="${e.id}"><strong>${money(c.net)}</strong></td>
+    </tr>`;
+  }).join('');
+
+  const dedLabel=k=>DED_FIELDS.find(f=>f[0]===k)[1];
+  const tbl=el(`<table style="font-size:13px">
+    <thead><tr>
+      <th>รหัส</th><th>ชื่อ</th><th class="num">วันทำงาน</th><th class="num">ค่าจ้างฐาน</th>
+      ${EARN_FIELDS.map(f=>`<th class="num">${FL(f)}</th>`).join('')}
+      <th class="num">รายได้รวม</th>
+      <th class="num">ภาษี</th><th class="num">ปกส.</th><th class="num">กสล.</th>
+      ${MANUAL_DED.map(k=>`<th class="num">${dedLabel(k)}</th>`).join('')}
+      <th class="num">หักรวม</th><th class="num">สุทธิ</th>
+    </tr></thead><tbody>${rows}</tbody></table>`);
+  const box=$('#allTbl'); box.innerHTML=''; box.appendChild(tbl);
+
+  // อัปเดตแถวเดียวเมื่อแก้ตัวเลข
+  const refreshRow=(id)=>{
+    const e=DB.employees.find(x=>x.id===id), r=getRec(PERIOD,e.id);
+    autoDeductions(e,r); const c=calc(e,PERIOD);
+    const q=s=>tbl.querySelector(s);
+    q(`[data-base="${id}"]`).textContent=money(c.base);
+    q(`[data-gross="${id}"]`).innerHTML=`<strong>${money(c.gross)}</strong>`;
+    q(`[data-ded="${id}"]`).textContent=money(c.dedTotal);
+    q(`[data-net="${id}"]`).innerHTML=`<strong>${money(c.net)}</strong>`;
+    const tr2=q(`[data-row="${id}"]`), ros=tr2.querySelectorAll('input[readonly]');
+    if(ros[0]) ros[0].value=money(r.ded.tax); if(ros[1]) ros[1].value=money(r.ded.sso); if(ros[2]) ros[2].value=money(r.ded.pvd);
+    save(); drawAllTot(list);
+  };
+  tbl.querySelectorAll('input[data-e]').forEach(i=>i.oninput=()=>{ const id=i.dataset.id;
+    getRec(PERIOD,id).earn[i.dataset.e]=+i.value||0; refreshRow(id); });
+  tbl.querySelectorAll('input[data-d]').forEach(i=>i.oninput=()=>{ const id=i.dataset.id;
+    getRec(PERIOD,id).ded[i.dataset.d]=+i.value||0; refreshRow(id); });
+  tbl.querySelectorAll('input[data-days]').forEach(i=>i.oninput=()=>{ const id=i.dataset.days;
+    getRec(PERIOD,id).days=+i.value||0; refreshRow(id); });
+
+  v.appendChild(el(`<div class="cards" id="allTot"></div>`));
+  drawAllTot(list);
+}
+function drawAllTot(list){
+  let g=0,d=0,n=0;
+  list.forEach(e=>{ const c=calc(e,PERIOD); g+=c.gross; d+=c.dedTotal; n+=c.net; });
+  const box=$('#allTot'); if(!box) return;
+  box.innerHTML=`<div class="kpi b3"><div class="lab">รายได้รวม (${list.length} คน)</div><div class="val money">${money(g)}</div></div>
+    <div class="kpi b4"><div class="lab">หักรวม</div><div class="val money">${money(d)}</div></div>
+    <div class="kpi b5"><div class="lab">เงินสุทธิรวม</div><div class="val money">${money(n)}</div></div>`;
+}
+/* ---------- ส่งออก CSV หน้าเงินได้/เงินหัก ---------- */
+function exportPayrollCSV(list){
+  const head=['รหัส','ชื่อ-นามสกุล','ประเภท','วันทำงาน','ค่าจ้างฐาน',
+    ...EARN_FIELDS.map(f=>f[1]),'รายได้รวม',...DED_FIELDS.map(f=>f[1]),'หักรวม','เงินสุทธิ'];
+  const lines=[head.map(csvEsc).join(',')];
+  let tg=0,td=0,tn=0;
+  list.forEach(e=>{ const r=getRec(PERIOD,e.id); autoDeductions(e,r); const c=calc(e,PERIOD);
+    tg+=c.gross; td+=c.dedTotal; tn+=c.net;
+    lines.push([e.code, e.name, e.payType==='daily'?'รายวัน':'รายเดือน',
+      e.payType==='daily'?(r.days||0):'', c.base,
+      ...EARN_FIELDS.map(f=>r.earn[f[0]]||0), c.gross,
+      ...DED_FIELDS.map(f=>r.ded[f[0]]||0), c.dedTotal, c.net].map(csvEsc).join(','));
+  });
+  lines.push(['รวม','','','','',...EARN_FIELDS.map(()=>''),tg,...DED_FIELDS.map(()=>''),td,tn].map(csvEsc).join(','));
+  const tag = payrollFilter==='daily'?'_รายวัน' : payrollFilter==='monthly'?'_รายเดือน' : '';
+  downloadFile(`payroll${tag}_${PERIOD}.csv`, '﻿'+lines.join('\r\n'),'text/csv;charset=utf-8');
+  toast(`ส่งออก CSV แล้ว (${list.length} คน)`);
 }
 function drawPeTot(emp){
   const c=calc(emp,PERIOD);
