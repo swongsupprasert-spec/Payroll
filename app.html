@@ -744,21 +744,51 @@ function vKT20(v, year){
   };
 }
 /* ============ การลาออก / เข้าใหม่ ============ */
+let resignFilter='all', resignYear;   // all | active | resigned · ปี (undefined = ยังไม่เลือก → ใช้ปีของงวด, null = ทุกปี)
 function vResign(v){
-  const [py,pm]=PERIOD.split('-').map(Number);
-  const inYear=(iso)=>{ if(!iso) return false; return +iso.split('-')[0]===py; };
-  const active=DB.employees.filter(e=>!e.resignDate || !resignedBeforeToday(e));
+  const [py]=PERIOD.split('-').map(Number);
+  if(resignYear===undefined) resignYear=py;
+  const yr = resignYear;   // null = ทุกปี
+  const inYear=(iso)=>{ if(!iso) return false; return yr===null || +iso.split('-')[0]===yr; };
+
   const resigned=DB.employees.filter(e=>e.resignDate);
-  const newThisYear=DB.employees.filter(e=>inYear(e.startDate));
-  const resignThisYear=DB.employees.filter(e=>inYear(e.resignDate));
+  const activeList=DB.employees.filter(e=>!e.resignDate);
+  const newInYear=DB.employees.filter(e=>inYear(e.startDate));
+  const resignInYear=DB.employees.filter(e=>inYear(e.resignDate));
+
   v.appendChild(el(`<div class="cards">
     <div class="kpi b1"><div class="lab">👥 พนักงานทั้งหมด</div><div class="val">${num(DB.employees.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
-    <div class="kpi b2"><div class="lab">🟢 ทำงานอยู่</div><div class="val">${num(DB.employees.length-resigned.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
-    <div class="kpi b3"><div class="lab">🆕 เข้าใหม่ปี ${py+543}</div><div class="val">${num(newThisYear.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
-    <div class="kpi b4"><div class="lab">🚪 ลาออกปี ${py+543}</div><div class="val">${num(resignThisYear.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
+    <div class="kpi b2"><div class="lab">🟢 ทำงานอยู่</div><div class="val">${num(activeList.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
+    <div class="kpi b3"><div class="lab">🆕 เข้าใหม่${yr===null?' (ทุกปี)':' ปี '+(yr+543)}</div><div class="val">${num(newInYear.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
+    <div class="kpi b4"><div class="lab">🚪 ลาออก${yr===null?' (ทุกปี)':' ปี '+(yr+543)}</div><div class="val">${num(resignInYear.length)} <span class="muted" style="font-size:14px">คน</span></div></div>
   </div>`));
 
-  const rows=DB.employees.map(e=>{
+  // ปีที่เลือกได้ = ปีที่มีวันเริ่มงาน/ลาออก + ปีปัจจุบัน
+  const yset=new Set([py]);
+  DB.employees.forEach(e=>{ if(e.startDate) yset.add(+e.startDate.split('-')[0]); if(e.resignDate) yset.add(+e.resignDate.split('-')[0]); });
+  const years=[...yset].sort((a,b)=>b-a);
+
+  const bar=el(`<div class="toolbar" style="margin-bottom:6px">
+    <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
+      <button class="segbtn ${resignFilter==='all'?'on':''}" data-f="all">ทั้งหมด (${DB.employees.length})</button>
+      <button class="segbtn ${resignFilter==='active'?'on':''}" data-f="active">🟢 ทำงานอยู่ (${activeList.length})</button>
+      <button class="segbtn ${resignFilter==='resigned'?'on':''}" data-f="resigned">🚪 ลาออก (${resigned.length})</button>
+    </div>
+    <div class="field" style="margin-left:auto"><label>ปี (พ.ศ.)</label>
+      <select id="resignYr"><option value="">ทุกปี</option>${years.map(y=>`<option value="${y}" ${yr===y?'selected':''}>${y+543}</option>`).join('')}</select></div>
+  </div>`);
+  v.appendChild(bar);
+  bar.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ resignFilter=b.dataset.f; render(); });
+  bar.querySelector('#resignYr').onchange=(ev)=>{ resignYear = ev.target.value===''?null:+ev.target.value; render(); };
+
+  // กรองรายชื่อตามปุ่ม + ปี
+  const list=DB.employees.filter(e=>{
+    if(resignFilter==='active')   return !e.resignDate;
+    if(resignFilter==='resigned') return !!e.resignDate && inYear(e.resignDate);
+    return true;
+  });
+
+  const rows=list.map(e=>{
     const isOut=!!e.resignDate;
     return `<tr>
       <td><span class="chip">${esc(e.code)}</span></td>
@@ -770,10 +800,12 @@ function vResign(v){
       <td style="text-align:right">${isOut?`<button class="btn ghost sm" data-clear="${e.id}">↩️ ยกเลิกลาออก</button>`:''}</td>
     </tr>`;
   }).join('');
-  const panel=el(`<div class="panel"><div class="phead"><h2>บันทึกการลาออก — ใส่วันที่ลาออกได้เลย</h2></div>
+  const scope = resignFilter==='active'?'เฉพาะที่ทำงานอยู่' : resignFilter==='resigned'?`เฉพาะที่ลาออก${yr===null?'':' ปี '+(yr+543)}` : 'ทั้งหมด';
+  const panel=el(`<div class="panel"><div class="phead"><h2>บันทึกการลาออก — ใส่วันที่ลาออกได้เลย</h2>
+      <div class="sp"><span class="muted" style="font-size:12px">แสดง ${scope} · ${list.length} คน</span></div></div>
     <div class="pbody" style="padding:0"><div class="tbl-wrap"><table>
       <thead><tr><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>แผนก</th><th>วันเริ่มงาน</th><th>สถานะ</th><th>วันที่ลาออก</th><th></th></tr></thead>
-      <tbody>${rows||'<tr><td colspan="7" class="empty">ยังไม่มีพนักงาน</td></tr>'}</tbody>
+      <tbody>${rows||'<tr><td colspan="7" class="empty">ไม่พบพนักงานตามเงื่อนไขที่เลือก</td></tr>'}</tbody>
     </table></div></div></div>`);
   v.appendChild(panel);
   panel.querySelectorAll('input[data-resign]').forEach(i=>i.onchange=()=>{
