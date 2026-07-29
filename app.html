@@ -820,8 +820,27 @@ function deptSummary(p){
 }
 
 /* ============ 1. EMPLOYEES ============ */
-let empSearch='';
+let empSearch='', empFilter='all';
+// รายชื่อพนักงานที่แสดงอยู่ (ตามตัวกรอง + คำค้น) — ใช้ร่วมกับตารางและการส่งออก CSV
+function empVisibleList(){
+  const q=empSearch.trim().toLowerCase();
+  return DB.employees
+    .filter(e=> empFilter==='all' || (e.payType||'monthly')===empFilter)
+    .filter(e=> !q || [e.code,e.name,e.position,e.dept].some(x=>String(x||'').toLowerCase().includes(q)));
+}
 function vEmployees(v){
+  const mC=DB.employees.filter(e=>(e.payType||'monthly')==='monthly').length;
+  const dC=DB.employees.filter(e=>e.payType==='daily').length;
+  const seg=el(`<div class="toolbar" style="margin-bottom:6px">
+    <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
+      <button class="segbtn ${empFilter==='all'?'on':''}" data-f="all">ทั้งหมด (${DB.employees.length})</button>
+      <button class="segbtn ${empFilter==='monthly'?'on':''}" data-f="monthly">📅 รายเดือน (${mC})</button>
+      <button class="segbtn ${empFilter==='daily'?'on':''}" data-f="daily">🗓️ รายวัน (${dC})</button>
+    </div>
+  </div>`);
+  v.appendChild(seg);
+  seg.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ empFilter=b.dataset.f; render(); });
+
   const tb = el(`<div class="toolbar">
     <div class="search"><input id="empQ" placeholder="${tr('search_emp')}" value="${esc(empSearch)}"></div>
     <button class="btn ghost sm" id="impBtn">${tr('import_csv')}</button>
@@ -839,8 +858,7 @@ function vEmployees(v){
   drawEmp();
 }
 function drawEmp(){
-  const q = empSearch.trim().toLowerCase();
-  const list = DB.employees.filter(e=> !q || [e.code,e.name,e.position,e.dept].some(x=>String(x||'').toLowerCase().includes(q)));
+  const list = empVisibleList();
   const rows = list.map(e=>{ const daily=e.payType==='daily'; return `<tr>
     <td><span class="chip">${esc(e.code)}</span></td>
     <td>${genderIcon(e.gender)}<strong style="${e.resignDate?'color:#94a3b8;text-decoration:line-through':''}">${esc(e.name)}</strong>${e.resignDate?` <span class="chip" style="background:#fee2e2;color:#dc2626">ลาออก ${esc(fmtDate(e.resignDate))}</span>`:''}</td>
@@ -1450,7 +1468,7 @@ function downloadFile(name, content, type){
 }
 
 /* ---------- นำเข้า/ส่งออก พนักงาน เป็น CSV ---------- */
-const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','ตำแหน่ง','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','เลขบัตรประชาชน','อัตรากสล.%','ธนาคาร','เลขบัญชี','คู่สมรส','จำนวนบุตร','ลดหย่อนอื่น'];
+const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%'];
 function csvEsc(v){ v=String(v??''); return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
 function parseCSV(text){
   const rows=[]; let field='', row=[], inQ=false; text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
@@ -1465,15 +1483,18 @@ function parseCSV(text){
   return rows;
 }
 function exportEmpCSV(){
+  const list = empVisibleList();                     // ส่งออกตามที่กรอง/ค้นหาอยู่
   const lines=[EMP_CSV_HEAD.map(csvEsc).join(',')];
-  DB.employees.forEach(e=>{
+  list.forEach(e=>{
     lines.push([e.code, e.name, e.gender==='M'?'ชาย':e.gender==='F'?'หญิง':'',
-      e.position, e.dept, e.payType==='daily'?'รายวัน':'รายเดือน',
-      e.salary, e.startDate||'', e.taxId||'', e.pvdRate||0, e.bank||'', e.bankNo||'',
-      (+e.spouse?'มี':''), e.children||0, e.otherAllow||0].map(csvEsc).join(','));
+      e.nationality||'', e.position||'', e.dept||'',
+      e.payType==='daily'?'รายวัน':'รายเดือน',
+      e.salary||0, e.startDate||'', e.resignDate||'', e.taxId||'',
+      e.address||'', e.bank||'', e.bankNo||'', e.pvdRate||0].map(csvEsc).join(','));
   });
-  downloadFile(`employees_${curPeriod()}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
-  toast('ส่งออกพนักงานเป็น CSV แล้ว');
+  const tag = empFilter==='daily'?'_รายวัน' : empFilter==='monthly'?'_รายเดือน' : '';
+  downloadFile(`employees${tag}_${curPeriod()}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
+  toast(`ส่งออก CSV แล้ว (${list.length} คน)`);
 }
 function importEmpCSV(){
   const inp=document.createElement('input'); inp.type='file'; inp.accept='.csv,text/csv';
@@ -1486,11 +1507,12 @@ function importEmpCSV(){
         const rec={
           code:String(c[0]).trim(), name:String(c[1]||'').trim(),
           gender:/ชาย|^m$/i.test(String(c[2]||'').trim())?'M':/หญิง|^f$/i.test(String(c[2]||'').trim())?'F':'',
-          position:String(c[3]||'').trim(), dept:String(c[4]||'').trim(),
-          payType:/วัน|daily/i.test(String(c[5]||''))?'daily':'monthly',
-          salary:+c[6]||0, startDate:String(c[7]||'').trim(), taxId:String(c[8]||'').trim(),
-          pvdRate:+c[9]||0, bank:String(c[10]||'').trim(), bankNo:String(c[11]||'').trim(),
-          spouse:/มี|^1|true|yes/i.test(String(c[12]||'').trim())?1:0, children:+c[13]||0, otherAllow:+c[14]||0
+          nationality:String(c[3]||'').trim(),
+          position:String(c[4]||'').trim(), dept:String(c[5]||'').trim(),
+          payType:/วัน|daily/i.test(String(c[6]||''))?'daily':'monthly',
+          salary:+c[7]||0, startDate:String(c[8]||'').trim(), resignDate:String(c[9]||'').trim(),
+          taxId:String(c[10]||'').trim(), address:String(c[11]||'').trim(),
+          bank:String(c[12]||'').trim(), bankNo:String(c[13]||'').trim(), pvdRate:+c[14]||0
         };
         const ex=DB.employees.find(x=>x.code===rec.code);
         if(ex){ Object.assign(ex,rec); updated++; } else { DB.employees.push({id:uid(),...rec}); added++; }
