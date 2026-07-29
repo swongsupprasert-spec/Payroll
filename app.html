@@ -861,18 +861,32 @@ function nextCode(){
 }
 
 /* ============ 2. PAYROLL (earnings/deductions per employee) ============ */
-let payrollEmpId=null;
+let payrollEmpId=null, payrollFilter='all';
 function vPayroll(v){
   if(DB.employees.length===0){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ยังไม่มีพนักงาน</div></div>`)); return; }
-  // เฉพาะพนักงานที่ยังทำงานในงวดนี้ (คนลาออกแล้วไม่แสดง)
+  // เฉพาะพนักงานที่ยังทำงานในงวดนี้ (คนลาออกแล้วไม่แสดง) + กรองตามประเภทการจ้าง
   const [py,pm]=PERIOD.split('-').map(Number);
-  const list=DB.employees.filter(e=>activeInMonth(e,py,pm));
-  if(list.length===0){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ไม่มีพนักงานที่ทำงานในงวด ${periodLabel(PERIOD)}</div></div>`)); return; }
+  const active=DB.employees.filter(e=>activeInMonth(e,py,pm));
+  const list=active.filter(e=> payrollFilter==='all' || (e.payType||'monthly')===payrollFilter);
+  const mCount=active.filter(e=>(e.payType||'monthly')==='monthly').length, dCount=active.filter(e=>e.payType==='daily').length;
+
+  // ปุ่มสลับ ทั้งหมด / รายเดือน / รายวัน
+  const seg=el(`<div class="toolbar" style="margin-bottom:6px">
+    <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
+      <button class="segbtn ${payrollFilter==='all'?'on':''}" data-f="all">ทั้งหมด (${active.length})</button>
+      <button class="segbtn ${payrollFilter==='monthly'?'on':''}" data-f="monthly">📅 รายเดือน (${mCount})</button>
+      <button class="segbtn ${payrollFilter==='daily'?'on':''}" data-f="daily">🗓️ รายวัน (${dCount})</button>
+    </div>
+  </div>`);
+  v.appendChild(seg);
+  seg.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ payrollFilter=b.dataset.f; payrollEmpId=null; render(); });
+
+  if(list.length===0){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ไม่มีพนักงาน${payrollFilter==='daily'?'รายวัน':payrollFilter==='monthly'?'รายเดือน':''}ในงวด ${periodLabel(PERIOD)}</div></div>`)); return; }
   if(!payrollEmpId || !list.find(e=>e.id===payrollEmpId)) payrollEmpId=list[0].id;
 
   const tb=el(`<div class="toolbar">
     <div class="field" style="min-width:280px"><label>เลือกพนักงาน</label>
-      <select id="peSel">${list.map(e=>`<option value="${e.id}" ${e.id===payrollEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}</option>`).join('')}</select>
+      <select id="peSel">${list.map(e=>`<option value="${e.id}" ${e.id===payrollEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}${e.payType==='daily'?' (รายวัน)':''}</option>`).join('')}</select>
     </div>
     <button class="btn ghost sm" id="autoTax" style="margin-top:22px">🔍 ดูวิธีคำนวณภาษี</button>
   </div>`);
