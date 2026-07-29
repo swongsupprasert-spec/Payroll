@@ -136,7 +136,63 @@
   .settings-row label{width:200px;color:var(--muted)}
   .segbtn{background:none;border:0;padding:8px 16px;border-radius:8px;font-weight:600;color:var(--muted)}
   .segbtn.on{background:#fff;color:var(--brand-d);box-shadow:var(--shadow)}
-  @media(max-width:820px){.side{width:64px}.side .brand small,.nav button span.t{display:none}.grid2,.grid3{grid-template-columns:1fr}.dash2{grid-template-columns:1fr!important}}
+  /* ปุ่มเมนู (มือถือ) + ฉากหลังทับตอนเปิด drawer */
+  .menuBtn{display:none;background:none;border:1px solid var(--line);border-radius:9px;width:42px;height:42px;font-size:20px;line-height:1;color:var(--ink);flex-shrink:0}
+  .menuBtn:active{background:#f1f5f9}
+  .sideOverlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:29}
+  .sideOverlay.on{display:block}
+
+  /* ===== iPad / จอกลาง : เมนูเหลือไอคอน ===== */
+  @media(max-width:1024px){
+    .side{width:68px}
+    .side .brand{font-size:0;padding:16px 0;text-align:center}
+    .side .brand small{display:none}
+    .nav button{justify-content:center;padding:11px 8px}
+    .nav button span.t{display:none}
+    .side .foot{font-size:0;padding:10px 6px;text-align:center}
+    .content{padding:18px}
+    .grid3{grid-template-columns:1fr 1fr}
+    .dash2{grid-template-columns:1fr!important}
+  }
+
+  /* ===== มือถือ : เมนูเป็น drawer เลื่อนออกมา ===== */
+  @media(max-width:720px){
+    .menuBtn{display:flex;align-items:center;justify-content:center}
+    .side{position:fixed;left:0;top:0;bottom:0;width:250px;z-index:30;transform:translateX(-100%);transition:transform .25s ease;overflow-y:auto}
+    .side.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.45)}
+    .side .brand{font-size:18px;padding:18px 18px 12px;text-align:left}
+    .side .brand small{display:block}
+    .nav button{justify-content:flex-start;padding:13px 14px}
+    .nav button span.t{display:inline}
+    .side .foot{font-size:11px;padding:14px;text-align:left}
+    .top{padding:10px 14px;gap:8px;flex-wrap:wrap}
+    .top h1{font-size:17px}
+    .period{width:100%;order:3;margin-left:0}
+    .period select{flex:1;min-width:0}
+    .content{padding:14px}
+    .cards{grid-template-columns:1fr 1fr;gap:10px}
+    .kpi{padding:13px 14px}
+    .kpi .val{font-size:21px}
+    .grid2,.grid3{grid-template-columns:1fr}
+    .toolbar{gap:8px}
+    .modal{max-width:100%}
+    .modal .mbody{max-height:65vh}
+    .backdrop{padding:12px}
+    th,td{padding:9px 10px}
+    .seg{width:100%;overflow-x:auto}
+    .segbtn{white-space:nowrap;flex-shrink:0}
+    .print-area .doc{padding:18px 16px}
+    .print-area .doc.a4{width:100%;max-width:100%;min-height:0;padding:16px 14px;font-size:11px}
+  }
+  /* จอเล็กมาก : การ์ดเรียงเดียว */
+  @media(max-width:430px){ .cards{grid-template-columns:1fr} }
+
+  /* มือถือ/แท็บเล็ต: ช่องกรอกอย่างน้อย 16px กัน iOS ซูมเอง + ปุ่มกดง่าย */
+  @media(max-width:1024px){
+    input,select,textarea{font-size:16px}
+    .btn{padding:11px 16px}
+    .icon-btn{padding:8px 10px;font-size:16px}
+  }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -158,20 +214,22 @@
   </div>
 </div>
 <div class="app">
-  <aside class="side">
+  <div class="sideOverlay no-print" id="sideOverlay"></div>
+  <aside class="side" id="side">
     <a class="brand" href="index.html" title="กลับหน้าแรก" style="display:block;text-decoration:none;color:inherit;cursor:pointer">💵 Payroll<small>ระบบเงินเดือน · ← หน้าแรก</small></a>
     <nav class="nav" id="nav"></nav>
     <div class="foot" id="userFoot">☁️ กำลังเชื่อมต่อ…</div>
   </aside>
   <div class="main">
     <header class="top">
+      <button class="menuBtn no-print" id="menuBtn" aria-label="เมนู">☰</button>
       <h1 id="pageTitle">แดชบอร์ด</h1>
       <div class="period">
         <label id="periodLab">งวดเดือน</label>
         <select id="monthSel"></select>
         <select id="yearSel"></select>
       </div>
-      <button class="btn ghost sm no-print" id="langToggle" style="margin-left:10px">🌐 EN</button>
+      <button class="btn ghost sm no-print" id="langToggle">🌐 EN</button>
     </header>
     <div class="content" id="view"></div>
   </div>
@@ -427,7 +485,7 @@ function renderNav(){
     const col = NAV_COLORS[id] || '#3b82f6';
     const b = el(`<button data-p="${id}"><span class="ico" style="background:linear-gradient(135deg,${col}cc,${col}77);color:#fff">${ico}</span><span class="t">${tr('nav_'+id)}</span></button>`);
     if(id===PAGE) b.classList.add('active');
-    b.onclick = ()=>{ PAGE=id; renderNav(); render(); };
+    b.onclick = ()=>{ PAGE=id; renderNav(); render(); sideOpen(false); window.scrollTo(0,0); };
     nav.appendChild(b);
   });
 }
@@ -1556,6 +1614,12 @@ async function doSignup(){
 }
 
 /* ---------- Boot ---------- */
+/* ---------- เมนู drawer (มือถือ) ---------- */
+function sideOpen(on){ $('#side').classList.toggle('open',on); $('#sideOverlay').classList.toggle('on',on); }
+$('#menuBtn').onclick=()=>sideOpen(!$('#side').classList.contains('open'));
+$('#sideOverlay').onclick=()=>sideOpen(false);
+window.addEventListener('keydown',e=>{ if(e.key==='Escape') sideOpen(false); });
+
 const langBtn=$('#langToggle');
 if(langBtn){ langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH';
   langBtn.onclick=()=>{ LANG = LANG==='th'?'en':'th'; localStorage.setItem('lang',LANG); langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH'; renderNav(); render(); }; }
