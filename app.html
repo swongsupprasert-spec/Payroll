@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ระบบเงินเดือน Payroll</title>
+<title>eSimPayroll</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#0f172a">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💵</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='12' fill='%232563eb'/><path d='M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14' fill='none' stroke='white' stroke-width='3.6' stroke-linecap='round'/></svg>">
 <style>
   :root{
     --bg:#f4f6fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
@@ -154,6 +154,7 @@
   @media(max-width:1024px){
     .side{width:68px}
     .side .brand{font-size:0;padding:16px 0;text-align:center}
+    .side .brand>span{justify-content:center;gap:0}
     .side .brand small{display:none}
     .nav button{justify-content:center;padding:11px 8px}
     .nav button span.t{display:none}
@@ -207,7 +208,13 @@
 <body>
 <div id="authGate" style="position:fixed;inset:0;background:#ffffff;display:none;align-items:center;justify-content:center;z-index:200;padding:20px">
   <div style="background:#fff;border-radius:16px;max-width:400px;width:100%;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.4)">
-    <div style="text-align:center;font-size:26px;font-weight:800;margin-bottom:4px">💵 ระบบเงินเดือน</div>
+    <div style="text-align:center;margin-bottom:10px">
+      <svg viewBox="0 0 44 44" width="54" height="54" aria-hidden="true">
+        <defs><linearGradient id="lgAuth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset=".55" stop-color="#3b82f6"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs>
+        <rect width="44" height="44" rx="12" fill="url(#lgAuth)"/>
+        <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg></div>
+    <div style="text-align:center;font-size:26px;font-weight:800;margin-bottom:4px">eSim<span style="color:var(--brand)">Payroll</span></div>
     <div style="text-align:center;color:#64748b;margin-bottom:22px">เข้าสู่ระบบเพื่อใช้งาน</div>
     <div class="field" style="margin-bottom:12px"><label>อีเมล</label><input id="authEmail" type="email" autocomplete="username" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
     <div class="field" style="margin-bottom:16px"><label>รหัสผ่าน</label><input id="authPass" type="password" autocomplete="current-password" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
@@ -224,7 +231,14 @@
 <div class="app">
   <div class="sideOverlay no-print" id="sideOverlay"></div>
   <aside class="side" id="side">
-    <a class="brand" href="index.html" title="กลับหน้าแรก" style="display:block;text-decoration:none;color:inherit;cursor:pointer">💵 Payroll<small>ระบบเงินเดือน · ← หน้าแรก</small></a>
+    <a class="brand" href="index.html" title="กลับหน้าแรก" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
+      <span style="display:flex;align-items:center;gap:9px">
+        <svg viewBox="0 0 44 44" width="30" height="30" style="flex-shrink:0" aria-hidden="true">
+          <defs><linearGradient id="lgSide" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset=".55" stop-color="#3b82f6"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs>
+          <rect width="44" height="44" rx="12" fill="url(#lgSide)"/>
+          <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg><span>eSim<span style="color:#60a5fa">Payroll</span></span>
+      </span><small>← หน้าแรก</small></a>
     <nav class="nav" id="nav"></nav>
     <div class="foot" id="userFoot">☁️ กำลังเชื่อมต่อ…</div>
   </aside>
