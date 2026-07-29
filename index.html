@@ -104,6 +104,20 @@
   .cta-band .btn.primary{background:#fff;color:var(--brand-d)}
   .cta-band .btn.primary:hover{background:#f1f5f9}
 
+  /* บทความล่าสุด (ท้ายหน้า) */
+  .artsec{background:var(--bg);border-top:1px solid #e6efea}
+  .arts{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .art{display:block;background:#fff;border:1px solid #e6efea;border-radius:16px;overflow:hidden;transition:.18s}
+  .art:hover{box-shadow:0 16px 40px rgba(14,58,92,.13);transform:translateY(-3px)}
+  .art-cover{height:132px;overflow:hidden;position:relative;background:var(--accent-bg)}
+  .art-cover img{width:100%;height:100%;object-fit:cover;display:block;transition:.25s}
+  .art-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(14,58,92,.22),rgba(16,185,129,.12))}
+  .art:hover .art-cover img{transform:scale(1.06)}
+  .art-body{padding:16px 18px}
+  .art-tag{display:inline-block;font-size:11px;font-weight:700;color:var(--brand-d);background:var(--accent-bg);padding:3px 10px;border-radius:20px;margin-bottom:9px}
+  .art-body h3{font-size:16px;line-height:1.4;margin-bottom:6px}
+  .art-body p{color:var(--muted);font-size:14px;margin:0}
+
   footer{padding:36px 0;border-top:1px solid #eef2f7;color:var(--muted);font-size:14px;text-align:center}
 
   @media(max-width:900px){
@@ -113,6 +127,7 @@
     .cover-img{height:320px}
     .cover-card{left:8px;bottom:14px}
     .features{gap:14px}.steprow{gap:26px}
+    .arts{grid-template-columns:1fr 1fr}
   }
   /* มือถือ */
   @media(max-width:640px){
@@ -137,6 +152,8 @@
     .cover-card .cc-v{font-size:22px}
     .cc-bars{height:32px}
     .cover-pill{right:6px;top:12px;font-size:12px;padding:7px 12px}
+    .arts{grid-template-columns:1fr;gap:14px}
+    .art-cover{height:150px}
     #fbBtn{right:12px!important;bottom:12px!important;padding:11px 15px!important;font-size:13px!important}
   }
 </style>
@@ -238,6 +255,46 @@
       <h2>พร้อมทำเงินเดือนให้ง่ายขึ้นแล้วหรือยัง?</h2>
       <p>สมัครใช้งานวันนี้ ไม่ต้องติดตั้งอะไร เริ่มได้ทันที</p>
       <a href="app.html#signup" class="btn primary">🚀 สมัครใช้งาน</a>
+    </div>
+  </div>
+</section>
+
+<!-- บทความล่าสุด -->
+<section class="artsec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="badge">📚 คลังความรู้</span>
+      <h2>บทความเรื่องเงินเดือน &amp; ภาษี</h2>
+      <p>สาระความรู้สำหรับ HR และเจ้าของธุรกิจ เข้าใจง่าย ใช้ได้จริง</p>
+    </div>
+    <div class="arts">
+      <a href="articles.html#a1" class="art">
+        <div class="art-cover"><img loading="lazy" alt="คำนวณภาษี" src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&q=80&auto=format&fit=crop"></div>
+        <div class="art-body"><span class="art-tag">ภาษี</span>
+          <h3>ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง?</h3>
+          <p>เข้าใจอัตราภาษีขั้นบันได ค่าลดหย่อน และวิธีเฉลี่ยภาษีรายเดือน</p></div>
+      </a>
+      <a href="articles.html#a2" class="art">
+        <div class="art-cover"><img loading="lazy" alt="ประกันสังคม" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80&auto=format&fit=crop"></div>
+        <div class="art-body"><span class="art-tag">ประกันสังคม</span>
+          <h3>ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</h3>
+          <p>ฐานเงินเดือนสูงสุด 17,500 บาท นายจ้างสมทบเท่าไหร่</p></div>
+      </a>
+      <a href="articles.html#a3" class="art">
+        <div class="art-cover"><img loading="lazy" alt="พนักงาน" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&q=80&auto=format&fit=crop"></div>
+        <div class="art-body"><span class="art-tag">เงินเดือน</span>
+          <h3>พนักงานรายเดือน vs รายวัน ต่างกันยังไง</h3>
+          <p>วิธีคิดค่าจ้าง OT และเงินเดือนตามสัดส่วนเมื่อเข้างานกลางเดือน</p></div>
+      </a>
+      <a href="articles.html#a4" class="art">
+        <div class="art-cover"><img loading="lazy" alt="เอกสารภาษี" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80&auto=format&fit=crop"></div>
+        <div class="art-body"><span class="art-tag">เอกสาร</span>
+          <h3>50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</h3>
+          <p>เอกสารภาษีที่นายจ้างต้องออก พร้อมกำหนดเวลาที่ต้องรู้</p></div>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:28px">
+      <a href="articles.html" class="btn ghost">อ่านบทความทั้งหมด →</a>
     </div>
   </div>
 </section>
