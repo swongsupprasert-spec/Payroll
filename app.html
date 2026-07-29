@@ -529,8 +529,8 @@ function renderPeriodSel(){
 function render(){
   $('#pageTitle').textContent = tr('nav_'+PAGE);
   const pl=$('#periodLab'); if(pl) pl.textContent=tr('period');
-  // หน้าการลาออกมีตัวเลือกปีของตัวเอง — ซ่อนตัวเลือกงวดเดือนด้านบน
-  const pbox=$('#periodBox'); if(pbox) pbox.style.display = (PAGE==='resign') ? 'none' : '';
+  // หน้าที่ไม่ผูกกับงวดเดือน — ซ่อนตัวเลือกงวดเดือนด้านบน
+  const pbox=$('#periodBox'); if(pbox) pbox.style.display = (PAGE==='resign'||PAGE==='employees') ? 'none' : '';
   renderPeriodSel();
   const v = $('#view'); v.innerHTML='';
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
@@ -1019,22 +1019,27 @@ function deptSummary(p){
 
 /* ============ 1. EMPLOYEES ============ */
 let empSearch='', empFilter='all';
+// พนักงานที่ยังทำงานอยู่ (คนลาออกแล้วดูได้ที่เมนู "การลาออก")
+function empActiveList(){ return DB.employees.filter(e=>!e.resignDate); }
 // รายชื่อพนักงานที่แสดงอยู่ (ตามตัวกรอง + คำค้น) — ใช้ร่วมกับตารางและการส่งออก CSV
 function empVisibleList(){
   const q=empSearch.trim().toLowerCase();
-  return DB.employees
+  return empActiveList()
     .filter(e=> empFilter==='all' || (e.payType||'monthly')===empFilter)
     .filter(e=> !q || [e.code,e.name,e.position,e.dept].some(x=>String(x||'').toLowerCase().includes(q)));
 }
 function vEmployees(v){
-  const mC=DB.employees.filter(e=>(e.payType||'monthly')==='monthly').length;
-  const dC=DB.employees.filter(e=>e.payType==='daily').length;
+  const baseList=empActiveList();
+  const mC=baseList.filter(e=>(e.payType||'monthly')==='monthly').length;
+  const dC=baseList.filter(e=>e.payType==='daily').length;
+  const outCount=DB.employees.length-baseList.length;
   const seg=el(`<div class="toolbar" style="margin-bottom:6px">
     <div class="seg" style="display:inline-flex;background:#eef2ff;border-radius:10px;padding:3px">
-      <button class="segbtn ${empFilter==='all'?'on':''}" data-f="all">ทั้งหมด (${DB.employees.length})</button>
+      <button class="segbtn ${empFilter==='all'?'on':''}" data-f="all">ทั้งหมด (${baseList.length})</button>
       <button class="segbtn ${empFilter==='monthly'?'on':''}" data-f="monthly">📅 รายเดือน (${mC})</button>
       <button class="segbtn ${empFilter==='daily'?'on':''}" data-f="daily">🗓️ รายวัน (${dC})</button>
     </div>
+    ${outCount?`<span class="muted" style="font-size:12px;margin-left:6px">🚪 ลาออกแล้ว ${outCount} คน (ดูที่เมนู "การลาออก")</span>`:''}
   </div>`);
   v.appendChild(seg);
   seg.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ empFilter=b.dataset.f; render(); });
