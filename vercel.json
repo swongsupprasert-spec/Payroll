@@ -17,7 +17,7 @@
       ]
     },
     {
-      "source": "/app.html",
+      "source": "/(app|app.html)",
       "headers": [
         { "key": "Cache-Control", "value": "no-store, must-revalidate" },
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
