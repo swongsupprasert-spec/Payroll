@@ -174,29 +174,30 @@
         <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
     <div class="sp">
-      <a href="index.html#features" class="link">ฟีเจอร์</a>
-      <a href="pricing.html" class="link active">ราคา</a>
-      <a href="articles.html" class="link">บทความ</a>
-      <a href="about.html" class="link">เกี่ยวกับ</a>
-      <a href="app.html#signup" class="btn primary" style="padding:9px 18px">ทดลองฟรี 30 วัน</a>
+      <a href="index.html#features" class="link" data-en="Features">ฟีเจอร์</a>
+      <a href="pricing.html" class="link active" data-en="Pricing">ราคา</a>
+      <a href="articles.html" class="link" data-en="Articles">บทความ</a>
+      <a href="about.html" class="link" data-en="About">เกี่ยวกับ</a>
+      <button id="langBtn" class="btn ghost" style="padding:8px 12px;font-size:14px;margin-left:4px">🌐 EN</button>
+        <a href="app.html#signup" class="btn primary" style="padding:9px 18px" data-en="30-day free trial">ทดลองฟรี 30 วัน</a>
     </div>
   </nav>
 </header>
 
 <div class="pagehead">
   <div class="wrap">
-    <span class="badge">💎 แพ็กเกจและราคา</span>
-    <h1>จ่ายตามจำนวนพนักงาน ไม่มีค่าซ่อนเร้น</h1>
-    <p>เลื่อนแถบด้านล่างเพื่อดูราคาที่ตรงกับธุรกิจคุณ — ใช้ได้ทุกฟีเจอร์ ไม่จำกัดการออกเอกสาร</p>
+    <span class="badge" data-en="💎 Plans &amp; pricing">💎 แพ็กเกจและราคา</span>
+    <h1 data-en="Pay by headcount. No hidden fees.">จ่ายตามจำนวนพนักงาน ไม่มีค่าซ่อนเร้น</h1>
+    <p data-en="Slide below to see the price that fits your business — all features included, unlimited documents.">เลื่อนแถบด้านล่างเพื่อดูราคาที่ตรงกับธุรกิจคุณ — ใช้ได้ทุกฟีเจอร์ ไม่จำกัดการออกเอกสาร</p>
 
     <div class="cycle">
-      <button id="cyM" class="on" data-c="m">รายเดือน</button>
+      <button id="cyM" class="on" data-c="m" data-en="Monthly">รายเดือน</button>
       <button id="cyY" data-c="y">รายปี <span class="save-tag">ประหยัด 2 เดือน</span></button>
     </div>
 
     <div class="calc">
       <div class="calc-top">
-        <span class="lbl">👥 บริษัทคุณมีพนักงานกี่คน?</span>
+        <span class="lbl" data-en="👥 How many employees do you have?">👥 บริษัทคุณมีพนักงานกี่คน?</span>
         <span class="cnt-box"><input type="number" id="cnt" min="1" max="200" value="8"><span>คน</span></span>
       </div>
       <input type="range" id="rng" min="1" max="100" value="8">
@@ -219,14 +220,14 @@
 
 <section>
   <div class="wrap">
-    <div class="sec-head"><h2>ตารางราคาทั้งหมด</h2><p>ราคาต่อเดือน ใช้งานได้ทุกฟีเจอร์เท่ากันทุกแพ็กเกจ</p></div>
+    <div class="sec-head"><h2 data-en="Full price list">ตารางราคาทั้งหมด</h2><p data-en="Monthly price. Every plan includes all features.">ราคาต่อเดือน ใช้งานได้ทุกฟีเจอร์เท่ากันทุกแพ็กเกจ</p></div>
     <div class="plans" id="plans"></div>
   </div>
 </section>
 
 <section class="incl">
   <div class="wrap">
-    <div class="sec-head"><h2>ทุกแพ็กเกจได้ครบเหมือนกัน</h2><p>ไม่ล็อกฟีเจอร์ ไม่คิดเพิ่มรายเอกสาร</p></div>
+    <div class="sec-head"><h2 data-en="Every plan includes everything">ทุกแพ็กเกจได้ครบเหมือนกัน</h2><p data-en="No feature gating, no per-document charges.">ไม่ล็อกฟีเจอร์ ไม่คิดเพิ่มรายเอกสาร</p></div>
     <ul>
       <li><span class="ck">✓</span> คำนวณภาษีหัก ณ ที่จ่ายอัตโนมัติ</li>
       <li><span class="ck">✓</span> ประกันสังคม &amp; กองทุนสำรองเลี้ยงชีพ</li>
@@ -243,7 +244,7 @@
 
 <section>
   <div class="wrap">
-    <div class="sec-head"><h2>คำถามที่พบบ่อย</h2></div>
+    <div class="sec-head"><h2 data-en="Frequently asked questions">คำถามที่พบบ่อย</h2></div>
     <div class="faq">
       <details open><summary>นับจำนวนพนักงานอย่างไร?</summary><p>นับจากจำนวนพนักงานที่ยังทำงานอยู่ในระบบ (ไม่นับคนที่บันทึกลาออกแล้ว) หากเดือนไหนพนักงานเกินแพ็กเกจ ระบบจะแจ้งให้อัปเกรด</p></details>
       <details><summary>ถ้าพนักงานเพิ่มระหว่างรอบ ต้องจ่ายเพิ่มไหม?</summary><p>อัปเกรดได้ทุกเมื่อ โดยจ่ายเฉพาะส่วนต่างตามจำนวนวันที่เหลือของรอบบิลปัจจุบัน</p></details>
@@ -255,7 +256,7 @@
 </section>
 
 <footer>
-  <div class="wrap"><strong>eSim<span style="color:var(--brand)">Payroll</span></strong> · จัดการเงินเดือนสำหรับธุรกิจไทย<br>© 2569 · สงวนลิขสิทธิ์</div>
+  <div class="wrap" data-en="<strong>eSim<span style=&quot;color:var(--brand)&quot;>Payroll</span></strong> · Payroll software for Thai businesses<br>© 2026 · All rights reserved"><strong>eSim<span style="color:var(--brand)">Payroll</span></strong> · จัดการเงินเดือนสำหรับธุรกิจไทย<br>© 2569 · สงวนลิขสิทธิ์</div>
 </footer>
 
 <!-- กล่องสั่งซื้อ -->
@@ -489,6 +490,8 @@
   * กรุณาชำระเงินภายใน 7 วันนับจากวันที่ในเอกสาร เพื่อเปิดใช้งานระบบต่อเนื่อง
 </div>
 <script>window.onload=function(){setTimeout(function(){window.print();},350)}<\/script>
+
+
 </body></html>`;
     const w=window.open('','_blank');
     if(!w){ alert('เบราว์เซอร์บล็อกป๊อปอัป กรุณาอนุญาตป๊อปอัปแล้วลองอีกครั้ง'); return; }
@@ -641,6 +644,31 @@
   }
 
   sync();
+})();
+</script>
+<script>
+(function(){
+  var KEY='lang';
+  function apply(l){
+    document.documentElement.lang = (l==='en'?'en':'th');
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      if(!el.hasAttribute('data-th')) el.setAttribute('data-th', el.innerHTML);
+      el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-th');
+    });
+    document.querySelectorAll('[data-en-ph]').forEach(function(el){
+      if(!el.hasAttribute('data-th-ph')) el.setAttribute('data-th-ph', el.placeholder||'');
+      el.placeholder = (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-th-ph');
+    });
+    var b=document.getElementById('langBtn'); if(b) b.textContent = (l==='en'?'🌐 TH':'🌐 EN');
+    try{ localStorage.setItem(KEY,l); }catch(e){}
+  }
+  var cur='th'; try{ cur = localStorage.getItem(KEY)||'th'; }catch(e){}
+  window.__setLang=apply;
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(cur);
+    var b=document.getElementById('langBtn');
+    if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); };
+  });
 })();
 </script>
 </body>

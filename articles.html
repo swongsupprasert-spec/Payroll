@@ -92,20 +92,21 @@
   <nav>
     <a href="index.html" class="logo"><svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgNav0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgNav0)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
     <div class="sp">
-      <a href="index.html#features" class="link">ฟีเจอร์</a>
-        <a href="pricing.html" class="link">ราคา</a>
-      <a href="articles.html" class="link active">บทความ</a>
-      <a href="about.html" class="link">เกี่ยวกับ</a>
-      <a href="app.html#signup" class="btn primary" style="padding:9px 18px">ทดลองฟรี 30 วัน</a>
+      <a href="index.html#features" class="link" data-en="Features">ฟีเจอร์</a>
+        <a href="pricing.html" class="link" data-en="Pricing">ราคา</a>
+      <a href="articles.html" class="link active" data-en="Articles">บทความ</a>
+      <a href="about.html" class="link" data-en="About">เกี่ยวกับ</a>
+      <button id="langBtn" class="btn ghost" style="padding:8px 12px;font-size:14px;margin-left:4px">🌐 EN</button>
+        <a href="app.html#signup" class="btn primary" style="padding:9px 18px" data-en="30-day free trial">ทดลองฟรี 30 วัน</a>
     </div>
   </nav>
 </header>
 
 <div class="pagehead">
   <div class="wrap">
-    <span class="badge">📚 คลังความรู้</span>
-    <h1>บทความเรื่องเงินเดือน &amp; ภาษี</h1>
-    <p>สาระความรู้สำหรับ HR และเจ้าของธุรกิจ เข้าใจง่าย ใช้ได้จริง</p>
+    <span class="badge" data-en="📚 Knowledge base">📚 คลังความรู้</span>
+    <h1 data-en="Payroll &amp; tax articles">บทความเรื่องเงินเดือน &amp; ภาษี</h1>
+    <p data-en="Practical knowledge for HR teams and business owners.">สาระความรู้สำหรับ HR และเจ้าของธุรกิจ เข้าใจง่าย ใช้ได้จริง</p>
   </div>
 </div>
 
@@ -204,6 +205,32 @@
   </div>
 </div>
 
-<footer><div class="wrap"><strong>eSim<span style="color:var(--brand)">Payroll</span></strong> · จัดการเงินเดือนสำหรับธุรกิจไทย · © 2569</div></footer>
+<footer><div class="wrap" data-en="<strong>eSim<span style=&quot;color:var(--brand)&quot;>Payroll</span></strong> · Payroll software for Thai businesses · © 2026"><strong>eSim<span style="color:var(--brand)">Payroll</span></strong> · จัดการเงินเดือนสำหรับธุรกิจไทย · © 2569</div></footer>
+
+<script>
+(function(){
+  var KEY='lang';
+  function apply(l){
+    document.documentElement.lang = (l==='en'?'en':'th');
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      if(!el.hasAttribute('data-th')) el.setAttribute('data-th', el.innerHTML);
+      el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-th');
+    });
+    document.querySelectorAll('[data-en-ph]').forEach(function(el){
+      if(!el.hasAttribute('data-th-ph')) el.setAttribute('data-th-ph', el.placeholder||'');
+      el.placeholder = (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-th-ph');
+    });
+    var b=document.getElementById('langBtn'); if(b) b.textContent = (l==='en'?'🌐 TH':'🌐 EN');
+    try{ localStorage.setItem(KEY,l); }catch(e){}
+  }
+  var cur='th'; try{ cur = localStorage.getItem(KEY)||'th'; }catch(e){}
+  window.__setLang=apply;
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(cur);
+    var b=document.getElementById('langBtn');
+    if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); };
+  });
+})();
+</script>
 </body>
 </html>
