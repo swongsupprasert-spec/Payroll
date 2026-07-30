@@ -140,6 +140,11 @@
   .bt.on::after{content:"✓";position:absolute;top:6px;right:9px;color:var(--accent);font-weight:800;font-size:13px}
 
   .paybox{border:1px solid #e6efea;border-radius:13px;padding:14px 16px;margin:14px 0;background:#fbfdfc;font-size:14px}
+  /* แท็บวิธีชำระเงิน */
+  .pay-tabs{display:flex;gap:6px;background:#eef4f1;border-radius:10px;padding:3px}
+  .pay-tabs .pt{flex:1;background:none;border:0;padding:8px 6px;border-radius:8px;font-weight:700;font-size:13.5px;
+    color:var(--muted);cursor:pointer;font-family:inherit;transition:.16s}
+  .pay-tabs .pt.on{background:#fff;color:var(--brand);box-shadow:0 3px 9px rgba(14,58,92,.12)}
   .paybox b{color:var(--brand)}
   .msg{text-align:center;font-size:14px;margin-top:10px;min-height:18px}
 
@@ -262,6 +267,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 <script>
 (function(){
   const SB_URL='https://sfzzswzyoqshlppsturd.supabase.co';
@@ -343,6 +349,42 @@
   $('cyM').onclick=()=>{ cycle='m'; $('cyM').classList.add('on'); $('cyY').classList.remove('on'); sync(); };
   $('cyY').onclick=()=>{ cycle='y'; $('cyY').classList.add('on'); $('cyM').classList.remove('on'); sync(); };
 
+  /* ---- QR พร้อมเพย์ (มาตรฐาน EMVCo / Thai QR) ---- */
+  const PROMPTPAY='0859735367';
+  function crc16(s){
+    let crc=0xFFFF;
+    for(let i=0;i<s.length;i++){
+      crc^=s.charCodeAt(i)<<8;
+      for(let j=0;j<8;j++) crc=(crc&0x8000)?((crc<<1)^0x1021)&0xFFFF:(crc<<1)&0xFFFF;
+    }
+    return crc.toString(16).toUpperCase().padStart(4,'0');
+  }
+  function ppPayload(mobile, amount){
+    const fl=(id,v)=>id+String(v.length).padStart(2,'0')+v;
+    const num='0066'+String(mobile).replace(/\D/g,'').replace(/^0/,'');
+    const acct=fl('00','A000000677010111')+fl('01',num);
+    let p=fl('00','01')+fl('01',amount?'12':'11')+fl('29',acct)+fl('58','TH')+fl('53','764');
+    if(amount) p+=fl('54',Number(amount).toFixed(2));
+    p+='6304';
+    return p+crc16(p);
+  }
+  function drawPP(amount){
+    const cv=$('ppCanvas'); if(!cv) return;
+    const payload=ppPayload(PROMPTPAY, amount);
+    try{
+      if(!window.QRious) throw new Error('no lib');
+      new QRious({element:cv, value:payload, size:196, level:'M', padding:6,
+        foreground:'#0e3a5c', background:'#ffffff'});
+    }catch(e){ qrFallback(cv); }
+  }
+  function qrFallback(cv){
+    const c=cv.getContext('2d');
+    c.fillStyle='#f1f5f9'; c.fillRect(0,0,cv.width,cv.height);
+    c.fillStyle='#5b7186'; c.font='13px Sarabun,sans-serif'; c.textAlign='center';
+    c.fillText('สร้าง QR ไม่สำเร็จ', cv.width/2, cv.height/2-8);
+    c.fillText('กรุณาใช้แท็บ "โอนเข้าบัญชี"', cv.width/2, cv.height/2+12);
+  }
+
   /* ---- กล่องสั่งซื้อ ---- */
   const close=()=>$('bd').classList.remove('on');
   $('mClose').onclick=close;
@@ -376,16 +418,37 @@
       <div class="fld"><label>อีเมล * (ใช้รับใบเสร็จและเปิดใช้งาน)</label><input id="oEmail" type="email" placeholder="you@example.com"></div>
       <div class="fld"><label>เบอร์โทร</label><input id="oPhone" placeholder="08x-xxx-xxxx"></div>
       <div class="paybox">
-        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
-          <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#138f2d;color:#fff;font-weight:800;font-size:13px">K</span>
-          <b>โอนเงิน — ธนาคารกสิกรไทย</b>
+        <div class="pay-tabs">
+          <button type="button" class="pt on" data-pay="qr">📱 พร้อมเพย์ (QR)</button>
+          <button type="button" class="pt" data-pay="bank">🏦 โอนเข้าบัญชี</button>
         </div>
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-          <span style="font-size:20px;font-weight:800;color:var(--brand);letter-spacing:.5px" id="acctNo">008-2-50516-6</span>
-          <button type="button" class="btn ghost" id="copyAcct" style="padding:5px 12px;font-size:13px">📋 คัดลอก</button>
+
+        <div id="payQR" style="text-align:center;padding-top:12px">
+          <div style="display:inline-block;background:#fff;border:1px solid #e6efea;border-radius:14px;padding:12px 12px 8px">
+            <canvas id="ppCanvas" width="196" height="196" style="display:block;border-radius:6px"></canvas>
+            <div style="font-size:11px;color:var(--muted);margin-top:6px">Thai QR Payment · PromptPay</div>
+          </div>
+          <div style="margin-top:10px;font-size:15px">ยอด <b style="color:var(--brand);font-size:19px">${fmt(p)}</b> บาท
+            <span style="color:var(--muted);font-size:13px">(ระบุยอดในคิวอาร์แล้ว)</span></div>
+          <div style="color:var(--muted);font-size:13px;margin-top:3px">พร้อมเพย์ <b>085-973-5367</b></div>
+          <button type="button" class="btn ghost" id="dlQR" style="margin-top:9px;padding:6px 14px;font-size:13px">⬇️ บันทึกรูป QR</button>
         </div>
-        <div style="margin-top:4px">ชื่อบัญชี <b id="acctName">—</b></div>
-        <div style="color:var(--muted);margin-top:7px">โอนแล้วส่งสลิปมาที่อีเมล <b>support@payroll-mtd.com</b> หรือกด "ยืนยันการสั่งซื้อ" ไว้ก่อน แล้วเราจะติดต่อกลับภายใน 1 วันทำการ</div>
+
+        <div id="payBank" style="display:none;padding-top:12px">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#138f2d;color:#fff;font-weight:800;font-size:13px">K</span>
+            <b>ธนาคารกสิกรไทย</b>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span style="font-size:20px;font-weight:800;color:var(--brand);letter-spacing:.5px">008-2-50516-6</span>
+            <button type="button" class="btn ghost" id="copyAcct" style="padding:5px 12px;font-size:13px">📋 คัดลอก</button>
+          </div>
+          <div style="margin-top:4px">ชื่อบัญชี <b id="acctName">—</b></div>
+        </div>
+
+        <div style="color:var(--muted);margin-top:11px;border-top:1px solid #e6efea;padding-top:9px">
+          โอนแล้วส่งสลิปมาที่ <b>support@payroll-mtd.com</b> หรือกด "ยืนยันการสั่งซื้อ" ไว้ก่อน แล้วเราจะติดต่อกลับภายใน 1 วันทำการ
+        </div>
       </div>
       <button class="btn green" id="oSend" style="width:100%;padding:13px;font-size:16px">✅ ยืนยันการสั่งซื้อ</button>
       <div class="msg" id="oMsg"></div>`;
@@ -400,6 +463,20 @@
       $('oName').placeholder=jur?'บริษัท ตัวอย่าง จำกัด':'นาย สมชาย ใจดี';
     });
     $('oTaxId').oninput=e=>{ e.target.value=e.target.value.replace(/\D/g,'').slice(0,13); };
+    // สลับแท็บวิธีชำระเงิน
+    document.querySelectorAll('.pt').forEach(b=>b.onclick=()=>{
+      document.querySelectorAll('.pt').forEach(x=>x.classList.toggle('on',x===b));
+      const qr=b.dataset.pay==='qr';
+      $('payQR').style.display=qr?'block':'none';
+      $('payBank').style.display=qr?'none':'block';
+    });
+    // วาด QR พร้อมเพย์ตามยอดจริง
+    drawPP(p);
+    $('dlQR').onclick=()=>{
+      const a=document.createElement('a');
+      a.href=$('ppCanvas').toDataURL('image/png');
+      a.download=`promptpay-${p}.png`; a.click();
+    };
     const cp=$('copyAcct');
     if(cp) cp.onclick=async()=>{
       const no='0082505166';
