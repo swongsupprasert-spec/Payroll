@@ -126,6 +126,19 @@
   .fld label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:4px}
   .fld input,.fld select{width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:inherit}
   .fld input:focus,.fld select:focus{outline:2px solid var(--accent);border-color:transparent}
+  /* เลือกประเภทผู้ซื้อ */
+  .btype{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .bt{position:relative;border:1.5px solid #e2e8f0;border-radius:12px;padding:12px 10px 11px;cursor:pointer;
+    text-align:center;transition:.16s;background:#fff;display:block}
+  .bt input{position:absolute;opacity:0;pointer-events:none}
+  .bt .bt-ic{font-size:22px;display:block;line-height:1.2}
+  .bt b{display:block;font-size:14.5px;margin-top:3px}
+  .bt small{display:block;color:var(--muted);font-size:11.5px;margin-top:1px}
+  .bt:hover{border-color:#bcd3c8}
+  .bt.on{border-color:var(--accent);background:var(--accent-bg);box-shadow:0 6px 18px rgba(16,185,129,.18)}
+  .bt.on b{color:var(--brand)}
+  .bt.on::after{content:"✓";position:absolute;top:6px;right:9px;color:var(--accent);font-weight:800;font-size:13px}
+
   .paybox{border:1px solid #e6efea;border-radius:13px;padding:14px 16px;margin:14px 0;background:#fbfdfc;font-size:14px}
   .paybox b{color:var(--brand)}
   .msg{text-align:center;font-size:14px;margin-top:10px;min-height:18px}
@@ -346,7 +359,20 @@
         <div class="row"><span>รอบชำระ</span><b>${cycle==='y'?'รายปี (10 เดือน)':'รายเดือน'}</b></div>
         <div class="row total"><span>ยอดชำระ</span><span>${fmt(p)} บาท</span></div>
       </div>
-      <div class="fld"><label>ชื่อบริษัท / ผู้ติดต่อ *</label><input id="oName" placeholder="บริษัท ตัวอย่าง จำกัด"></div>
+      <div class="fld"><label>ออกใบเสร็จ / ใบกำกับภาษีในนาม *</label>
+        <div class="btype">
+          <label class="bt on" data-bt="individual"><input type="radio" name="bt" value="individual" checked>
+            <span class="bt-ic">👤</span><b>บุคคลทั่วไป</b><small>ออกใบเสร็จในชื่อบุคคล</small></label>
+          <label class="bt" data-bt="juristic"><input type="radio" name="bt" value="juristic">
+            <span class="bt-ic">🏢</span><b>นิติบุคคล</b><small>บริษัท / ห้างหุ้นส่วน</small></label>
+        </div></div>
+      <div class="fld"><label id="oNameLab">ชื่อ-นามสกุล *</label><input id="oName" placeholder="นาย สมชาย ใจดี"></div>
+      <div id="jurBox" style="display:none">
+        <div class="fld"><label>เลขประจำตัวผู้เสียภาษี (13 หลัก) *</label><input id="oTaxId" inputmode="numeric" maxlength="13" placeholder="0105561000000"></div>
+        <div class="fld"><label>สำนักงาน</label><select id="oBranch">
+          <option value="สำนักงานใหญ่">สำนักงานใหญ่</option><option value="สาขา">สาขา</option></select></div>
+        <div class="fld"><label>ที่อยู่สำหรับออกใบกำกับภาษี *</label><input id="oAddr" placeholder="เลขที่ ถนน แขวง เขต จังหวัด รหัสไปรษณีย์"></div>
+      </div>
       <div class="fld"><label>อีเมล * (ใช้รับใบเสร็จและเปิดใช้งาน)</label><input id="oEmail" type="email" placeholder="you@example.com"></div>
       <div class="fld"><label>เบอร์โทร</label><input id="oPhone" placeholder="08x-xxx-xxxx"></div>
       <div class="paybox">
@@ -365,6 +391,15 @@
       <div class="msg" id="oMsg"></div>`;
     $('bd').classList.add('on');
     $('oSend').onclick=submitOrder;
+    // สลับบุคคลทั่วไป / นิติบุคคล
+    document.querySelectorAll('.bt').forEach(b=>b.onclick=()=>{
+      document.querySelectorAll('.bt').forEach(x=>x.classList.toggle('on',x===b));
+      const jur=b.dataset.bt==='juristic';
+      $('jurBox').style.display=jur?'block':'none';
+      $('oNameLab').textContent=jur?'ชื่อนิติบุคคล *':'ชื่อ-นามสกุล *';
+      $('oName').placeholder=jur?'บริษัท ตัวอย่าง จำกัด':'นาย สมชาย ใจดี';
+    });
+    $('oTaxId').oninput=e=>{ e.target.value=e.target.value.replace(/\D/g,'').slice(0,13); };
     const cp=$('copyAcct');
     if(cp) cp.onclick=async()=>{
       const no='0082505166';
@@ -379,14 +414,19 @@
   async function submitOrder(){
     const t=tierOf(count), p=priceOf(t);
     const name=$('oName').value.trim(), email=$('oEmail').value.trim(), phone=$('oPhone').value.trim();
-    const m=$('oMsg');
-    if(!name||!email){ m.style.color='#dc2626'; m.textContent='กรุณากรอกชื่อและอีเมล'; return; }
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ m.style.color='#dc2626'; m.textContent='รูปแบบอีเมลไม่ถูกต้อง'; return; }
-    if(!sb){ m.style.color='#dc2626'; m.textContent='เชื่อมต่อไม่ได้ กรุณาลองใหม่'; return; }
+    const btype=document.querySelector('.bt.on').dataset.bt, jur=btype==='juristic';
+    const taxId=jur?$('oTaxId').value.trim():'', branch=jur?$('oBranch').value:'', addr=jur?$('oAddr').value.trim():'';
+    const m=$('oMsg'), bad=t2=>{ m.style.color='#dc2626'; m.textContent=t2; };
+    if(!name||!email) return bad('กรุณากรอกชื่อและอีเมล');
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return bad('รูปแบบอีเมลไม่ถูกต้อง');
+    if(jur && taxId.length!==13) return bad('เลขประจำตัวผู้เสียภาษีต้องมี 13 หลัก');
+    if(jur && !addr) return bad('กรุณากรอกที่อยู่สำหรับออกใบกำกับภาษี');
+    if(!sb) return bad('เชื่อมต่อไม่ได้ กรุณาลองใหม่');
     m.style.color='var(--muted)'; m.textContent='กำลังส่ง...';
     try{
       const {error}=await sb.from('orders').insert({
         company:name, email, phone,
+        buyer_type:btype, tax_id:taxId||null, branch:branch||null, address:addr||null,
         employees:count, plan:label(t), cycle:cycle==='y'?'yearly':'monthly', amount:p, status:'pending'
       });
       if(error) throw error;

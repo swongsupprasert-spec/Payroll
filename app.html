@@ -577,7 +577,11 @@ async function vOrders(v){
   </div>`), panel);
   const rows=data.map(o=>`<tr>
     <td>${esc(fmtDateTime(o.created_at))}</td>
-    <td><strong>${esc(o.company||'-')}</strong><br><span class="muted" style="font-size:12px">${esc(o.email||'')}${o.phone?' · '+esc(o.phone):''}</span></td>
+    <td><strong>${esc(o.company||'-')}</strong>
+      ${o.buyer_type==='juristic'
+        ? '<span class="chip" style="background:#e0e7ff;color:#4338ca">🏢 นิติบุคคล</span>'
+        : '<span class="chip" style="background:#f1f5f9;color:#475569">👤 บุคคล</span>'}
+      <br><span class="muted" style="font-size:12px">${esc(o.email||'')}${o.phone?' · '+esc(o.phone):''}${o.tax_id?'<br>เลขภาษี '+esc(o.tax_id)+(o.branch?' ('+esc(o.branch)+')':''):''}${o.address?'<br>'+esc(o.address):''}</span></td>
     <td>${esc(o.plan||'-')}<br><span class="muted" style="font-size:12px">${num(o.employees||0)} คน · ${o.cycle==='yearly'?'รายปี':'รายเดือน'}</span></td>
     <td class="num"><strong>${money(o.amount)}</strong></td>
     <td><span class="chip" style="background:${sc[o.status]||sc.pending}">${st[o.status]||o.status}</span></td>

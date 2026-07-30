@@ -29,3 +29,11 @@ create policy "admin read orders" on public.orders
 drop policy if exists "admin update orders" on public.orders;
 create policy "admin update orders" on public.orders
   for update using (public.is_admin()) with check (public.is_admin());
+
+-- ============================================================
+--  เพิ่มเติม: ประเภทผู้ซื้อ + ข้อมูลออกใบกำกับภาษี
+-- ============================================================
+alter table public.orders add column if not exists buyer_type text;   -- individual | juristic
+alter table public.orders add column if not exists tax_id     text;   -- เลขผู้เสียภาษี 13 หลัก
+alter table public.orders add column if not exists branch     text;   -- สำนักงานใหญ่ / สาขา
+alter table public.orders add column if not exists address    text;   -- ที่อยู่ออกใบกำกับภาษี
