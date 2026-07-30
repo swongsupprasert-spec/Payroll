@@ -373,7 +373,8 @@
     const payload=ppPayload(PROMPTPAY, amount);
     try{
       if(!window.QRious) throw new Error('no lib');
-      new QRious({element:cv, value:payload, size:196, level:'M', padding:6,
+      // ไม่กำหนด padding — ปล่อยให้ QRious คำนวณ offset จัดกลางเอง
+      new QRious({element:cv, value:payload, size:200, level:'M',
         foreground:'#0e3a5c', background:'#ffffff'});
     }catch(e){ qrFallback(cv); }
   }
@@ -383,6 +384,115 @@
     c.fillStyle='#5b7186'; c.font='13px Sarabun,sans-serif'; c.textAlign='center';
     c.fillText('สร้าง QR ไม่สำเร็จ', cv.width/2, cv.height/2-8);
     c.fillText('กรุณาใช้แท็บ "โอนเข้าบัญชี"', cv.width/2, cv.height/2+12);
+  }
+
+  /* ---- อ่านจำนวนเงินเป็นตัวอักษรไทย ---- */
+  function bahtText(n){
+    n=Math.round((+n||0)*100)/100;
+    const bt=Math.floor(n), st=Math.round((n-bt)*100);
+    const d=['ศูนย์','หนึ่ง','สอง','สาม','สี่','ห้า','หก','เจ็ด','แปด','เก้า'];
+    const pos=['','สิบ','ร้อย','พัน','หมื่น','แสน','ล้าน'];
+    const readInt=s=>{
+      if(s==='0') return '';
+      let out='', L=s.length;
+      for(let i=0;i<L;i++){
+        const dg=+s[i], p=(L-1-i)%6;
+        if(dg!==0){
+          if(p===1&&dg===1) out+='สิบ';
+          else if(p===1&&dg===2) out+='ยี่สิบ';
+          else if(p===0&&dg===1&&L>1&&out!=='') out+='เอ็ด';
+          else out+=d[dg]+pos[p];
+        }
+        if((L-1-i)%6===0 && (L-1-i)!==0) out+='ล้าน';
+      }
+      return out;
+    };
+    return (bt===0?'ศูนย์':readInt(String(bt)))+'บาท'+(st===0?'ถ้วน':readInt(String(st))+'สตางค์');
+  }
+
+  /* ---- ออกเอกสาร (ใบแจ้งชำระเงิน) ---- */
+  let LAST_DOC=null;
+  function openDoc(){
+    const o=LAST_DOC; if(!o) return;
+    const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const dt=o.date, dstr=`${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()+543}`;
+    const jur=o.btype==='juristic';
+    const html=`<!doctype html><html lang="th"><head><meta charset="utf-8">
+<title>${o.docNo}</title>
+<style>
+ *{box-sizing:border-box;margin:0;padding:0}
+ body{font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;color:#0f2438;font-size:13px;line-height:1.55;padding:14mm}
+ .hd{display:flex;align-items:flex-start;gap:14px;border-bottom:2px solid #0e3a5c;padding-bottom:12px;margin-bottom:16px}
+ .bn{font-size:23px;font-weight:800}.bn span{color:#0e3a5c}
+ .hd .r{margin-left:auto;text-align:right}
+ .hd .r h1{font-size:19px;color:#0e3a5c}
+ table{width:100%;border-collapse:collapse;margin-top:12px}
+ th,td{border:1px solid #b9cddb;padding:8px 10px;text-align:left}
+ th{background:#eaf6f1;font-size:12.5px}
+ .tr{text-align:right}
+ .box{border:1px solid #d7e5dd;border-radius:8px;padding:11px 13px;font-size:12.5px}
+ .grid2{display:flex;gap:12px;margin-bottom:6px}.grid2>div{flex:1}
+ .tot{background:#0e3a5c;color:#fff;font-weight:800}
+ .ft{display:flex;gap:14px;margin-top:20px}
+ .sig{flex:1;text-align:center;font-size:12px;padding-top:34px}
+ .sig .ln{border-top:1px dotted #7d95a8;margin-bottom:5px}
+ .note{margin-top:14px;font-size:11.5px;color:#5b7186;border-top:1px solid #e2e8f0;padding-top:9px}
+ @media print{body{padding:0}@page{size:A4;margin:12mm}.noprint{display:none}}
+ .noprint{text-align:center;margin-bottom:14px}
+ .noprint button{padding:10px 22px;border:0;border-radius:9px;background:#0e3a5c;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+</style></head><body>
+<div class="noprint"><button onclick="window.print()">🖨️ พิมพ์ / บันทึกเป็น PDF</button></div>
+<div class="hd">
+  <div><div class="bn">eSim<span>Payroll</span></div>
+    <div style="font-size:12px;color:#5b7186">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย<br>support@payroll-mtd.com</div></div>
+  <div class="r"><h1>ใบแจ้งชำระเงิน</h1>
+    <div style="font-size:11.5px;color:#5b7186">Payment Notice</div>
+    <div style="margin-top:5px">เลขที่ <b>${esc(o.docNo)}</b><br>วันที่ <b>${dstr}</b></div></div>
+</div>
+
+<div class="grid2">
+  <div class="box"><b>ผู้ให้บริการ</b><br>eSimPayroll<br>support@payroll-mtd.com<br>พร้อมเพย์ 085-973-5367</div>
+  <div class="box"><b>ผู้ซื้อ (${jur?'นิติบุคคล':'บุคคลทั่วไป'})</b><br>${esc(o.name)}
+    ${jur&&o.taxId?`<br>เลขประจำตัวผู้เสียภาษี ${esc(o.taxId)}${o.branch?` (${esc(o.branch)})`:''}`:''}
+    ${jur&&o.addr?`<br>${esc(o.addr)}`:''}
+    <br>${esc(o.email)}${o.phone?' · '+esc(o.phone):''}</div>
+</div>
+
+<table>
+  <thead><tr><th style="width:52%">รายการ</th><th style="width:14%">จำนวน</th><th style="width:17%">รอบชำระ</th><th class="tr" style="width:17%">จำนวนเงิน</th></tr></thead>
+  <tbody>
+    <tr><td>ค่าบริการระบบเงินเดือน eSimPayroll<br><span style="font-size:11.5px;color:#5b7186">แพ็กเกจ ${esc(o.plan)}</span></td>
+        <td>${o.employees} คน</td><td>${o.cycle==='y'?'รายปี (10 เดือน)':'รายเดือน'}</td>
+        <td class="tr">${fmt(o.amount)}</td></tr>
+    <tr class="tot"><td colspan="3" class="tr">รวมเป็นเงิน (บาท)</td><td class="tr">${fmt(o.amount)}</td></tr>
+    <tr><td colspan="4">จำนวนเงินตัวอักษร — <b>(${bahtText(o.amount)})</b></td></tr>
+  </tbody>
+</table>
+
+<div class="grid2" style="margin-top:14px">
+  <div class="box"><b>ช่องทางชำระเงิน</b><br>
+    พร้อมเพย์ <b>085-973-5367</b> (สแกน QR ด้านขวา)<br>
+    ธนาคารกสิกรไทย เลขที่ <b>008-2-50516-6</b><br>
+    <span style="color:#5b7186">โอนแล้วส่งสลิปมาที่ support@payroll-mtd.com</span></div>
+  <div style="width:150px;text-align:center">
+    ${o.qr?`<img src="${o.qr}" width="130" height="130" alt="PromptPay QR" style="border:1px solid #d7e5dd;border-radius:8px;padding:4px">`:''}
+    <div style="font-size:10.5px;color:#5b7186;margin-top:3px">Thai QR Payment</div></div>
+</div>
+
+<div class="ft">
+  <div class="sig"><div class="ln"></div>ผู้ชำระเงิน<br>วันที่ ......./......./.......</div>
+  <div class="sig"><div class="ln"></div>ผู้รับเงิน / ผู้มีอำนาจลงนาม<br>วันที่ ......./......./.......</div>
+</div>
+
+<div class="note">
+  * เอกสารนี้เป็น <b>ใบแจ้งชำระเงิน</b> ยังไม่ใช่ใบเสร็จรับเงิน — ใบเสร็จรับเงินจะออกให้หลังได้รับชำระเงินเรียบร้อยแล้ว<br>
+  * กรุณาชำระเงินภายใน 7 วันนับจากวันที่ในเอกสาร เพื่อเปิดใช้งานระบบต่อเนื่อง
+</div>
+<script>window.onload=function(){setTimeout(function(){window.print();},350)}<\/script>
+</body></html>`;
+    const w=window.open('','_blank');
+    if(!w){ alert('เบราว์เซอร์บล็อกป๊อปอัป กรุณาอนุญาตป๊อปอัปแล้วลองอีกครั้ง'); return; }
+    w.document.write(html); w.document.close();
   }
 
   /* ---- กล่องสั่งซื้อ ---- */
@@ -425,7 +535,7 @@
 
         <div id="payQR" style="text-align:center;padding-top:12px">
           <div style="display:inline-block;background:#fff;border:1px solid #e6efea;border-radius:14px;padding:14px;text-align:center">
-            <canvas id="ppCanvas" width="196" height="196" style="display:block;margin:0 auto;border-radius:6px"></canvas>
+            <canvas id="ppCanvas" width="200" height="200" style="display:block;margin:0 auto;border-radius:6px"></canvas>
             <div style="font-size:11px;color:var(--muted);margin-top:8px">Thai QR Payment · PromptPay</div>
           </div>
           <div style="margin-top:10px;font-size:15px">ยอด <b style="color:var(--brand);font-size:19px">${fmt(p)}</b> บาท
@@ -506,14 +616,27 @@
         employees:count, plan:label(t), cycle:cycle==='y'?'yearly':'monthly', amount:p, status:'pending'
       });
       if(error) throw error;
+      // เก็บข้อมูลไว้ออกเอกสาร (พร้อมฝังรูป QR ของยอดนี้)
+      const cv=$('ppCanvas');
+      LAST_DOC={
+        docNo:'INV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(Math.floor(Math.random()*9000)+1000),
+        date:new Date(), name, email, phone, btype, taxId, branch, addr,
+        plan:label(t), employees:count, cycle, amount:p,
+        qr: cv?cv.toDataURL('image/png'):''
+      };
       $('mTitle').textContent='รับคำสั่งซื้อแล้ว';
       $('mBody').innerHTML=`<div style="text-align:center;padding:16px 6px">
         <div style="font-size:52px;line-height:1">✅</div>
         <h3 style="margin:10px 0 6px">ขอบคุณครับ!</h3>
         <p style="color:var(--muted)">เราได้รับคำสั่งซื้อ <b>${label(t)}</b> ยอด <b>${fmt(p)} บาท</b> แล้ว<br>
         ทีมงานจะส่งรายละเอียดการชำระเงินไปที่<br><b>${email}</b> ภายใน 1 วันทำการ</p>
-        <button class="btn primary" style="margin-top:14px" onclick="document.getElementById('bd').classList.remove('on')">ปิด</button>
+        <div style="background:var(--accent-bg);border:1px solid #d6ebe1;border-radius:11px;padding:11px 14px;margin:14px 0;font-size:13px">
+          เลขที่เอกสาร <b>${LAST_DOC.docNo}</b></div>
+        <button class="btn green" id="dlDoc" style="width:100%;padding:12px;font-size:15px">🧾 ดาวน์โหลดใบแจ้งชำระเงิน (PDF)</button>
+        <button class="btn ghost" id="doneBtn" style="width:100%;margin-top:8px">ปิด</button>
       </div>`;
+      $('dlDoc').onclick=openDoc;
+      $('doneBtn').onclick=close;
     }catch(err){ m.style.color='#dc2626'; m.textContent='ส่งไม่สำเร็จ: '+(err.message||'ลองใหม่อีกครั้ง'); }
   }
 
