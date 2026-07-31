@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 44" width="1040" height="176" role="img" aria-label="eSimPayroll">
+  <!-- สำหรับวางบนพื้นสีเข้ม -->
+  <rect width="44" height="44" rx="12" fill="none" stroke="#ffffff" stroke-width="2"/>
+  <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff"
+        stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="56" y="30.5" font-family="Sarabun, 'Segoe UI', Tahoma, system-ui, sans-serif"
+        font-size="25" font-weight="800" letter-spacing="-.4" fill="#ffffff">eSimPayroll</text>
+</svg>

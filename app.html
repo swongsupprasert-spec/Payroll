@@ -97,6 +97,8 @@
   .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:600}
   .field input,.field select,.field textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:#fff}
   .field input:focus,.field select:focus{outline:2px solid var(--brand);border-color:var(--brand)}
+  /* ช่องติ๊ก/ตัวเลือกไม่ต้องยืดเต็มบรรทัดเหมือนช่องกรอก */
+  .field input[type=checkbox],.field input[type=radio]{width:auto;padding:0;margin:0 6px 0 0;vertical-align:-2px}
   .sec-title{font-size:13px;font-weight:700;color:var(--brand-d);margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
   .sec-title:first-child{margin-top:0}
 
@@ -106,6 +108,11 @@
   .search::before{content:"🔍";position:absolute;left:11px;top:9px;opacity:.5}
 
   .empty{text-align:center;padding:40px;color:var(--muted)}
+  /* ช่องกรอกเวลาแบบ 24 ชม. — ทำเอง ไม่พึ่ง locale ของเบราว์เซอร์ */
+  input.t24{width:82px;text-align:center;font-variant-numeric:tabular-nums;letter-spacing:.5px;
+    font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:15px}
+  input.t24::placeholder{letter-spacing:0;font-family:inherit;color:#cbd5e1}
+  input.t24.bad{border-color:#dc2626;background:#fef2f2}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f2438;color:#fff;padding:12px 20px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:100;opacity:0;transition:.3s;pointer-events:none}
   .toast.on{opacity:1}
 
@@ -276,7 +283,7 @@ const MONTHS_EN = ['January','February','March','April','May','June','July','Aug
 let LANG = localStorage.getItem('lang') || 'th';
 const I18N = {
   th:{
-    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_resign:'การลาออก', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
+    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_attend:'เวลาเข้างาน', nav_leave:'ระบบลางาน', nav_resign:'การลาออก', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
     nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
     nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ', nav_feedback:'💬 แจ้งปัญหา/คำแนะนำ', nav_orders:'🧾 คำสั่งซื้อ/ต่ออายุ',
     period:'งวดเดือน',
@@ -291,7 +298,7 @@ const I18N = {
     print:'🖨️ พิมพ์',
   },
   en:{
-    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_resign:'Resignation', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
+    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_attend:'Attendance', nav_leave:'Leave', nav_resign:'Resignation', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
     nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
     nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_admin:'👑 Admin', nav_feedback:'💬 Feedback', nav_orders:'🧾 Orders',
     period:'Period',
@@ -318,6 +325,17 @@ const DEFAULT = {
   otDays:30, otHours:8,        // ฐานคำนวณ OT: เงินเดือน ÷ วัน ÷ ชม./วัน
   workDaysDefault:26,          // วันทำงาน/เดือน (ใช้ประมาณการภาษีพนักงานรายวัน)
   cutoffDay:0,                 // วันตัดรอบเงินเดือน (0 = สิ้นเดือน)
+  workStart:'08:00', workEnd:'17:00', lateGrace:15,   // เวลาทำงานมาตรฐาน + อนุโลมสาย (นาที)
+  shifts:[],     // กะการทำงาน [{id,name,start,end,grace,color}] — สร้างอัตโนมัติครั้งแรก
+  shiftPlan:{},  // สลับกะรายวัน { "YYYY-MM-DD": { empId: shiftId } }
+  otMaxDay:0,    // เพดาน OT ต่อวัน (ชั่วโมง) · 0 = ไม่จำกัด · ตั้งรายคนทับได้ที่ emp.otMaxDay
+  otWeekdays:[true,true,true,true,true,true,true],     // เปิด OT วันไหน (0=อาทิตย์ … 6=เสาร์)
+  otDates:{},                                          // กำหนดเฉพาะวัน { "YYYY-MM-DD": true|false } ทับค่ารายสัปดาห์
+  leaveQuota:{ sick:30, personal:3, vacation:6 },      // โควตาวันลาต่อปี
+  leaveHoursPerDay:8,                                  // ชั่วโมงทำงาน/วัน — ใช้แปลงวันลาเป็นชั่วโมง
+  wfRateDefault:0.25,                                  // กองทุนสงเคราะห์ลูกจ้าง — 0.25% (1 ต.ค.69–30 ก.ย.74) แล้วขึ้นเป็น 0.50%
+  attend:{},     // { "YYYY-MM": { empId: { "YYYY-MM-DD": {i:"08:00", o:"17:00"} } } }
+  leave:[],      // [ {id,empId,type,from,to,days,reason,status} ]
   employees:[],  // {id,code,name,position,dept,payType('monthly'|'daily'),salary,startDate,taxId,bank,bankNo,pvdRate}
   payroll:{}     // { "YYYY-MM": { empId: {earn:{ot,commission,diligence,travel,position,bonus,other}, ded:{tax,sso,pvd,loan,studentloan,other}} } }
 };
@@ -346,12 +364,12 @@ function fmtD(d){ return `${d.getDate()} ${THAI_MONTHS_ABBR[d.getMonth()]} ${d.g
 
 /* ---------- Payroll calc ---------- */
 const EARN_FIELDS = [['ot','ค่าล่วงเวลา (OT)','Overtime (OT)'],['commission','ค่าคอมมิชชั่น','Commission'],['diligence','ค่าเบี้ยขยัน','Diligence Allowance'],['travel','ค่าเดินทาง','Travel Allowance'],['position','ค่าตำแหน่ง','Position Allowance'],['bonus','โบนัส','Bonus'],['other','อื่นๆ','Other']];
-const DED_FIELDS = [['tax','ภาษีเงินได้','Income Tax'],['sso','ประกันสังคม','Social Security'],['pvd','กองทุนสำรองเลี้ยงชีพ','Provident Fund'],['loan','เงินกู้บริษัท','Company Loan'],['studentloan','กยศ.','Student Loan (SLF)'],['other','อื่นๆ','Other']];
+const DED_FIELDS = [['tax','ภาษีเงินได้','Income Tax'],['sso','ประกันสังคม','Social Security'],['pvd','กองทุนสำรองเลี้ยงชีพ','Provident Fund'],['wf','กองทุนสงเคราะห์ลูกจ้าง','Employee Welfare Fund'],['loan','เงินกู้บริษัท','Company Loan'],['studentloan','กยศ.','Student Loan (SLF)'],['absent','หักขาดงาน/ลาไม่รับค่าจ้าง','Unpaid Leave / Absence'],['other','อื่นๆ','Other']];
 // ป้ายรายการตามภาษา (f = [key, th, en])
 function FL(f){ return (LANG==='en' && f[2]) ? f[2] : f[1]; }
 
 function ensurePeriod(p){ if(!DB.payroll[p]) DB.payroll[p]={}; return DB.payroll[p]; }
-function blankRec(){ return { earn:{ot:0,commission:0,diligence:0,travel:0,position:0,bonus:0,other:0}, ded:{tax:0,sso:0,pvd:0,loan:0,studentloan:0,other:0} }; }
+function blankRec(){ return { earn:{ot:0,commission:0,diligence:0,travel:0,position:0,bonus:0,other:0}, ded:{tax:0,sso:0,pvd:0,wf:0,loan:0,studentloan:0,absent:0,other:0} }; }
 // getRec: สำหรับ "แก้ไข" — สร้างเรคคอร์ดจริงถ้ายังไม่มี
 function getRec(p, empId){
   const pp = ensurePeriod(p);
@@ -401,6 +419,8 @@ function autoDeductions(emp, rec){
   const base = basePay(emp, rec, PERIOD);
   if(!m.sso) rec.ded.sso = ssoExempt(emp) ? 0 : autoSSO(ssoWage(emp, rec, PERIOD));   // กรรมการ = ไม่หัก ปกส.
   if(!m.pvd) rec.ded.pvd = Math.round(base * (emp.pvdRate||0)/100);
+  // กองทุนสงเคราะห์ลูกจ้าง — เฉพาะคนที่ไม่มีกองทุนสำรองเลี้ยงชีพ (เลือกได้อย่างใดอย่างหนึ่ง)
+  if(!m.wf)  rec.ded.wf  = (Number(emp.pvdRate)>0) ? 0 : Math.round(base * (emp.wfRate||0)/100);
   if(!m.tax) rec.ded.tax = estTax(emp, +PERIOD.split('-')[0], rec).monthly;           // ภาษีหัก ณ ที่จ่าย/เดือน
   save();
 }
@@ -489,6 +509,19 @@ function periodTotals(p){
 
 /* ---------- UI helpers ---------- */
 let PERIOD = curPeriod();
+const PAGE_KEY = 'payroll_page';
+/* จำหน้าที่เปิดอยู่ไว้ — รีเฟรชแล้วกลับมาหน้าเดิม ไม่เด้งไปแดชบอร์ด */
+function savePage(id){ try{ localStorage.setItem(PAGE_KEY, id); }catch(e){} }
+function restorePage(){
+  let id; try{ id=localStorage.getItem(PAGE_KEY); }catch(e){}
+  if(!id) return 'dashboard';
+  const isNormal = PAGES.some(p=>p[0]===id);
+  const isAdminOnly = ['orders','feedback','admin'].includes(id);
+  if(!isNormal && !isAdminOnly) return 'dashboard';      // ชื่อหน้าไม่รู้จัก
+  if(isAdminOnly && !IS_ADMIN) return 'dashboard';        // ไม่ใช่แอดมินแล้ว
+  if(pageLocked(id)) return 'dashboard';                  // หมดสิทธิ์พรีเมี่ยมแล้ว
+  return id;
+}
 let PAGE = 'dashboard';
 const $ = s => document.querySelector(s);
 const el = (h)=>{ const t=document.createElement('template'); t.innerHTML=h.trim(); return t.content.firstChild; };
@@ -498,6 +531,8 @@ function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&l
 const PAGES = [
   ['dashboard','แดชบอร์ด','📊'],
   ['employees','ข้อมูลพนักงาน','👥'],
+  ['attend','เวลาเข้างาน','⏰'],
+  ['leave','ระบบลางาน','🌴'],
   ['resign','การลาออก','🚪'],
   ['payroll','เงินได้ / เงินหัก','🧮'],
   ['summary','สรุปเงินเดือน','📋'],
@@ -511,7 +546,7 @@ const PAGES = [
 ];
 
 const NAV_COLORS = {
-  dashboard:'#17557f', employees:'#8b5cf6', resign:'#f43f5e', payroll:'#06b6d4', summary:'#10b981',
+  dashboard:'#17557f', employees:'#8b5cf6', attend:'#0891b2', leave:'#84cc16', resign:'#f43f5e', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
   pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', feedback:'#f97316', orders:'#22c55e', admin:'#eab308'
 };
@@ -520,9 +555,16 @@ function renderNav(){
   const items = IS_ADMIN ? [...PAGES, ['orders','คำสั่งซื้อ/ต่ออายุ','🧾'], ['feedback','แจ้งปัญหา/คำแนะนำ','💬'], ['admin','ผู้ดูแลระบบ','👑']] : PAGES;
   items.forEach(([id,label,ico])=>{
     const col = NAV_COLORS[id] || '#17557f';
-    const b = el(`<button data-p="${id}"><span class="ico" style="background:linear-gradient(135deg,${col}cc,${col}77);color:#fff">${ico}</span><span class="t">${tr('nav_'+id)}</span></button>`);
+    const lock = pageLocked(id);
+    const b = el(`<button data-p="${id}" ${lock?'title="ต้องใช้แพ็กเกจพรีเมี่ยม"':''}>
+      <span class="ico" style="background:linear-gradient(135deg,${col}cc,${col}77);color:#fff${lock?';filter:grayscale(.85);opacity:.6':''}">${ico}</span>
+      <span class="t" style="${lock?'opacity:.6':''}">${tr('nav_'+id)}</span>
+      ${lock?'<span style="margin-left:auto;font-size:13px;opacity:.75">🔒</span>':''}</button>`);
     if(id===PAGE) b.classList.add('active');
-    b.onclick = ()=>{ PAGE=id; renderNav(); render(); sideOpen(false); window.scrollTo(0,0); };
+    b.onclick = ()=>{
+      if(pageLocked(id)){ premiumModal(id); sideOpen(false); return; }   // ล็อกอยู่ → ชวนอัปเกรดแทน
+      PAGE=id; savePage(id); renderNav(); render(); sideOpen(false); window.scrollTo(0,0);
+    };
     nav.appendChild(b);
   });
 }
@@ -548,11 +590,13 @@ function render(){
   $('#pageTitle').textContent = tr('nav_'+PAGE);
   const pl=$('#periodLab'); if(pl) pl.textContent=tr('period');
   // หน้าที่ไม่ผูกกับงวดเดือน — ซ่อนตัวเลือกงวดเดือนด้านบน
-  const pbox=$('#periodBox'); if(pbox) pbox.style.display = (PAGE==='resign'||PAGE==='employees') ? 'none' : '';
+  const pbox=$('#periodBox'); if(pbox) pbox.style.display = (PAGE==='resign'||PAGE==='employees'||PAGE==='leave') ? 'none' : '';
   renderPeriodSel();
+  // ถ้าหน้าที่เปิดอยู่ถูกล็อก ให้เด้งกลับแดชบอร์ด
+  if(pageLocked(PAGE)){ PAGE='dashboard'; savePage(PAGE); renderNav(); }
   const v = $('#view'); v.innerHTML='';
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
-  ({dashboard:vDashboard, employees:vEmployees, resign:vResign, payroll:vPayroll, summary:vSummary,
+  ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, leave:vLeave, resign:vResign, payroll:vPayroll, summary:vSummary,
     dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders, admin:vAdmin}[PAGE])(v);
 }
 /* ============ คำสั่งซื้อ / ต่ออายุ (แอดมินเท่านั้น) ============ */
@@ -1228,11 +1272,27 @@ function empForm(id){
       <div class="field"><label>วันที่เริ่มงาน</label><input id="f_startDate" type="date" value="${e.startDate||''}"></div>
       <div class="field"><label>วันที่ลาออก <span style="color:#94a3b8;font-size:11px">(เว้นว่างถ้ายังทำงานอยู่)</span></label><input id="f_resignDate" type="date" value="${e.resignDate||''}"></div>
       <div class="field"><label>เลขบัตรประชาชน (13 หลัก)</label><input id="f_taxId" value="${esc(e.taxId)}" maxlength="13"></div>
-      <div class="field"><label>อัตราสะสม กสล. (%)</label><input id="f_pvdRate" type="number" step="0.5" value="${e.pvdRate||0}"></div>
+      <div class="field"><label>อัตราสะสม กสล. (%)</label>
+        <input id="f_pvdRate" type="number" step="0.5" min="0" value="${e.pvdRate||0}">
+        <div class="muted" style="font-size:11px;margin-top:2px">กองทุนสำรองเลี้ยงชีพ</div></div>
+      <div class="field"><label>กองทุนสงเคราะห์ลูกจ้าง (%)</label>
+        <input id="f_wfRate" type="number" step="0.05" min="0" value="${e.wfRate??''}" placeholder="ไม่เข้ากองทุน">
+        <div class="muted" style="font-size:11px;margin-top:2px">
+          <button type="button" id="f_wfSet" style="background:none;border:0;color:var(--brand);cursor:pointer;padding:0;font:inherit;text-decoration:underline">ใส่ 0.25%</button>
+          · เลือกได้<strong>อย่างใดอย่างหนึ่ง</strong>กับ กสล.</div></div>
+      <div id="f_fundNote" style="grid-column:1/-1;display:none;background:#fff7ed;border:1px solid #fed7aa;
+        border-radius:9px;padding:9px 12px;font-size:12.5px;color:#9a3412;margin-top:-4px"></div>
       <div class="field"><label>ประกันสังคม</label><select id="f_noSSO">
         <option value="0" ${!e.noSSO?'selected':''}>เข้าประกันสังคม (หัก 5%)</option>
         <option value="1" ${e.noSSO?'selected':''}>ยกเว้น — ไม่หัก/ไม่ยื่น (เช่น กรรมการ)</option></select>
         <div class="muted" style="font-size:11px;margin-top:2px">* ตำแหน่งที่มีคำว่า "กรรมการ" ระบบยกเว้นให้อัตโนมัติ</div></div>
+      <div class="field"><label>เพดาน OT ต่อวัน (ชม.)</label>
+        <input type="number" id="f_otMax" min="0" step="0.5" value="${e.otMaxDay||''}" placeholder="ใช้ค่าส่วนกลาง — ${(+DB.otMaxDay||0)? 'วันละ '+num(DB.otMaxDay)+' ชม.' : 'ไม่จำกัด'}">
+        <div class="muted" style="font-size:11px;margin-top:2px">* เว้นว่าง = ใช้ค่าส่วนกลางจากหน้า “เวลาเข้างาน”</div></div>
+      <div class="field"><label>สิทธิ์ค่าล่วงเวลา (OT)</label><select id="f_noOT">
+        <option value="0" ${!e.noOT?'selected':''}>คิด OT ให้ (ปกติ)</option>
+        <option value="1" ${e.noOT?'selected':''}>ไม่คิด OT ให้คนนี้</option></select>
+        <div class="muted" style="font-size:11px;margin-top:2px">* ตั้งเป็นรายคนได้จากหน้า “เวลาเข้างาน” ด้วย</div></div>
       <div class="field"><label>ธนาคาร</label><input id="f_bank" value="${esc(e.bank)}"></div>
       <div class="field"><label>เลขที่บัญชี</label><input id="f_bankNo" value="${esc(e.bankNo)}"></div>
       <div class="field" style="grid-column:1/-1"><label>ที่อยู่ (สำหรับหนังสือรับรองหัก ณ ที่จ่าย 50 ทวิ)</label><input id="f_address" value="${esc(e.address||'')}" placeholder="บ้านเลขที่ หมู่ ถนน ตำบล/แขวง อำเภอ/เขต จังหวัด รหัสไปรษณีย์"></div>
@@ -1246,11 +1306,24 @@ function empForm(id){
     const dup=DB.employees.find(x=>x.id!==id && String(x.code||'').trim().toLowerCase()===code.toLowerCase());
     if(dup){ toast(`รหัส ${code} ซ้ำกับ "${dup.name}" — กรุณาใช้รหัสอื่น`);
       const f=$('#f_code'); if(f){ f.style.borderColor='#dc2626'; f.focus(); f.select(); } return; }
-    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,noSSO:+g('f_noSSO')||0};
+    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,otMaxDay:+g('f_otMax')||0};
     if(id){ Object.assign(e,rec); } else { DB.employees.push({id:uid(),...rec}); }
     save(); closeModal(); drawEmp(); toast('บันทึกแล้ว');
   }]]);
   $('#f_payType').onchange=(ev)=>{ $('#f_salaryLab').textContent = ev.target.value==='daily' ? 'ค่าจ้างต่อวัน (บาท) *' : 'เงินเดือน (บาท) *'; };
+  // กสล. กับ กองทุนสงเคราะห์ลูกจ้าง — เลือกได้อย่างใดอย่างหนึ่ง
+  const syncFunds=()=>{
+    const pv=$('#f_pvdRate'), wf=$('#f_wfRate'), note=$('#f_fundNote'), btn=$('#f_wfSet');
+    if(!pv||!wf) return;
+    const hasPvd=(+pv.value||0)>0, hasWf=(+wf.value||0)>0;
+    wf.disabled=hasPvd; pv.disabled=hasWf;
+    if(btn) btn.disabled=hasPvd;
+    wf.style.background=hasPvd?'#f1f5f9':''; pv.style.background=hasWf?'#f1f5f9':'';
+    if(hasPvd&&!hasWf) note.innerHTML='ℹ️ คนนี้มี<strong>กองทุนสำรองเลี้ยงชีพ</strong>อยู่แล้ว จึงไม่ต้องเข้ากองทุนสงเคราะห์ลูกจ้าง';
+    else if(hasWf&&!hasPvd) note.innerHTML='ℹ️ คนนี้เข้า<strong>กองทุนสงเคราะห์ลูกจ้าง</strong> จึงกรอกอัตรา กสล. ไม่ได้';
+    else note.innerHTML='';
+    note.style.display=(hasPvd||hasWf)?'block':'none';
+  };
   // เตือนทันทีถ้ารหัสซ้ำ (ระหว่างพิมพ์)
   $('#f_code').oninput=(ev)=>{
     const val=ev.target.value.trim().toLowerCase();
@@ -1258,6 +1331,10 @@ function empForm(id){
     ev.target.style.borderColor = dup ? '#dc2626' : '';
     const w=$('#codeWarn'); if(w) w.textContent = dup ? '⚠️ รหัสนี้ถูกใช้แล้ว' : '';
   };
+  ['#f_pvdRate','#f_wfRate'].forEach(s=>{ const n=$(s); if(n) n.addEventListener('input', syncFunds); });
+  const wfSet=$('#f_wfSet');
+  if(wfSet) wfSet.onclick=()=>{ $('#f_wfRate').value=(+DB.wfRateDefault||0.25); syncFunds(); };
+  syncFunds();
 }
 function nextCode(){
   const used=new Set(DB.employees.map(e=>String(e.code||'').trim().toLowerCase()));
@@ -1900,6 +1977,1369 @@ function vSettings(v){
   }
 }
 
+
+/* ============================================================
+   ⏰ เวลาเข้างาน — บันทึกเวลาเข้า/ออก นำเข้าจาก CSV
+   ผูกกับข้อมูลพนักงาน และส่งวันทำงาน/ชั่วโมง OT เข้าหน้าเงินได้-เงินหัก
+   ============================================================ */
+function ensureAttend(p){ if(!DB.attend) DB.attend={}; if(!DB.attend[p]) DB.attend[p]={}; return DB.attend[p]; }
+function attendOf(p, empId){ const a=DB.attend&&DB.attend[p]; return (a&&a[empId])||{}; }
+function hm2min(s){ const m=/^(\d{1,2}):(\d{2})/.exec(String(s||'').trim()); if(!m) return null;
+  const h=+m[1], mi=+m[2]; if(h>23||mi>59) return null; return h*60+mi; }
+function pad2(n){ return String(n).padStart(2,'0'); }
+/* ---------- ช่องกรอกเวลาแบบ 24 ชม. ----------
+   input[type=time] ของเบราว์เซอร์แสดง AM/PM ตาม locale ของเครื่อง บังคับไม่ได้
+   จึงใช้ช่องข้อความที่ควบคุมเอง — เก็บค่าเป็น "HH:MM" 24 ชม. เหมือนเดิมทุกประการ */
+function t24Norm(s){
+  s=String(s??'').trim();
+  if(!s) return '';
+  let d=s.replace(/\D/g,'');
+  if(!d) return null;
+  if(d.length<=2){ const h=+d; return h>23 ? null : pad2(h)+':00'; }   // "8" → 08:00 · "17" → 17:00
+  if(d.length===3) d='0'+d;                                            // "830" → 0830
+  d=d.slice(0,4);
+  const h=+d.slice(0,2), m=+d.slice(2,4);
+  return (h>23||m>59) ? null : pad2(h)+':'+pad2(m);
+}
+function t24(attrs, val, style){
+  return `<input type="text" class="t24" inputmode="numeric" autocomplete="off" maxlength="5"
+    placeholder="--:--" ${attrs||''} value="${esc(val||'')}" style="${style||''}">`;
+}
+function wireT24(root){
+  (root||document).querySelectorAll('input.t24').forEach(inp=>{
+    if(inp._t24) return; inp._t24=1;
+    inp.addEventListener('focus', ()=>setTimeout(()=>inp.select(),0));
+    inp.addEventListener('input', ()=>{
+      const d=inp.value.replace(/\D/g,'').slice(0,4);
+      inp.value = d.length>2 ? d.slice(0,2)+':'+d.slice(2) : d;
+      inp.classList.remove('bad');
+    });
+    inp.addEventListener('blur', ()=>{
+      const n=t24Norm(inp.value);
+      if(n===null){ inp.classList.add('bad'); toast('เวลาไม่ถูกต้อง — กรอกแบบ 24 ชม. เช่น 08:30 หรือ 17:45'); }
+      else { inp.value=n; inp.classList.remove('bad'); }
+    });
+  });
+}
+function min2hm(v){ if(v==null) return ''; return pad2(Math.floor(v/60))+':'+pad2(v%60); }
+function isoOf(d){ return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
+// วันที่ทุกวันในงวด (อิงวันตัดรอบ)
+function periodDates(p){
+  const {from,to}=periodRange(p); const out=[]; const d=new Date(from);
+  while(d<=to){ out.push(isoOf(d)); d.setDate(d.getDate()+1); }
+  return out;
+}
+function inPeriod(iso, p){
+  if(!iso) return false;
+  const {from,to}=periodRange(p);
+  const [y,m,dd]=iso.split('-').map(Number); const D=new Date(y,m-1,dd);
+  return D>=from && D<=to;
+}
+const WD_TH=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+const WD_S=['อา','จ','อ','พ','พฤ','ศ','ส'];
+function weekdayOf(iso){ return new Date(iso+'T00:00:00').getDay(); }
+// วันนี้เปิดให้คิด OT ไหม — กำหนดเฉพาะวัน (ถ้ามี) ทับค่ารายสัปดาห์
+function otAllowed(iso){
+  if(DB.otDates && Object.prototype.hasOwnProperty.call(DB.otDates, iso)) return !!DB.otDates[iso];
+  const arr=DB.otWeekdays;
+  return Array.isArray(arr) ? !!arr[weekdayOf(iso)] : true;   // ยังไม่ตั้งค่า = เปิดทุกวัน
+}
+function otOverridden(iso){ return !!(DB.otDates && Object.prototype.hasOwnProperty.call(DB.otDates, iso)); }
+// พนักงานคนนี้เปิดให้คิด OT ไหม (ไม่ตั้งค่า = เปิด)
+function otPerson(emp){ return !(emp && emp.noOT); }
+// แปลงนาทีที่อยู่เกินเป็นชั่วโมง OT — ปัดลงทีละครึ่งชั่วโมง ไม่ปัดขึ้น
+// 45 นาที → 0.5 · 29 นาที → 0 · 59 นาที → 0.5 · 90 นาที → 1.5
+function otHalfHours(mins){ return Math.max(0, Math.floor((+mins||0)/30)/2); }
+// เพดาน OT ต่อวันของคนนี้ — ตั้งรายคนได้ ถ้าไม่ตั้งใช้ค่าส่วนกลาง (0 = ไม่จำกัด)
+function otCapFor(emp){
+  const own=+((emp&&emp.otMaxDay)||0);
+  return own>0 ? own : (+DB.otMaxDay||0);
+}
+// เปิด OT จริงเมื่อ "คนเปิด" และ "วันเปิด" พร้อมกัน
+function otAllowedFor(emp, iso){ return otPerson(emp) && otAllowed(iso); }
+
+
+/* ============================================================
+   🕐 ระบบกะการทำงาน (Shift)
+   - แต่ละคนมีกะประจำของตัวเอง
+   - สลับกะรายวันได้ (ตารางกะ)
+   - รองรับกะข้ามคืน เช่น 22:00–06:00
+   ============================================================ */
+const SHIFT_COLORS=['#0891b2','#f59e0b','#6366f1','#10b981','#ec4899','#8b5cf6','#ef4444','#64748b'];
+
+// สร้างกะเริ่มต้นจากเวลามาตรฐานเดิม (ผู้ใช้เก่าไม่มีอะไรเปลี่ยน)
+function ensureShifts(){
+  if(!Array.isArray(DB.shifts) || !DB.shifts.length){
+    DB.shifts=[{ id:'sh_def', name:'กะปกติ', start:DB.workStart||'08:00',
+                 end:DB.workEnd||'17:00', grace:+DB.lateGrace||0, color:SHIFT_COLORS[0] }];
+  }
+  if(!DB.shiftPlan || typeof DB.shiftPlan!=='object') DB.shiftPlan={};
+  return DB.shifts;
+}
+function shiftById(id){ const l=ensureShifts(); return l.find(s=>s.id===id)||null; }
+// กะของพนักงานคนนี้ในวันนี้ — ตารางกะรายวัน (ถ้ามี) ทับกะประจำตัว
+function shiftFor(emp, iso){
+  const l=ensureShifts();
+  const plan=DB.shiftPlan[iso];
+  const id=(plan && plan[emp.id]) || emp.shiftId;
+  return l.find(s=>s.id===id) || l[0];
+}
+function shiftPlanned(emp, iso){ const p=DB.shiftPlan&&DB.shiftPlan[iso]; return !!(p && p[emp.id]); }
+function shiftShort(sh){ return sh.short || String(sh.name||'').replace(/^กะ/,'').slice(0,3) || '?'; }
+
+// ช่วงเวลาของกะ (นาทีจากเที่ยงคืน) — กะข้ามคืนจะได้ E > 1440
+function shiftSpan(sh){
+  const S=hm2min(sh.start)??480;
+  const E0=hm2min(sh.end)??1020;
+  const over=E0<=S;                       // เลิกงานเวลาน้อยกว่าหรือเท่าเข้างาน = ข้ามคืน
+  return { S, E0, E:over?E0+1440:E0, over, grace:+sh.grace||0 };
+}
+// ปรับเวลาปั๊มเข้า-ออกให้อยู่บนแกนเดียวกับกะ (รองรับข้ามเที่ยงคืน)
+function punchMinutes(sh, i, o){
+  const sp=shiftSpan(sh);
+  let IM=hm2min(i), OM=hm2min(o);
+  // กะข้ามคืน: ปั๊มเข้าหลังเที่ยงคืน (เช่นกะ 22:00 แต่มาถึง 00:30) → บวกอีกวัน
+  if(IM!=null && sp.over && IM < sp.E0) IM+=1440;
+  if(OM!=null){
+    if(IM!=null){ let g=0; while(OM<IM && g++<2) OM+=1440; }   // ออกงานต้องหลังเข้างานเสมอ
+    else if(sp.over && OM < sp.E0) OM+=1440;
+  }
+  return { IM, OM, ...sp };
+}
+function shiftHours(sh){ const sp=shiftSpan(sh); return Math.round((sp.E-sp.S)/6)/10; }
+
+// สรุปสถิติเวลาเข้างานของพนักงาน 1 คนในงวด
+function attendStats(emp, p){
+  const rec=attendOf(p, emp.id);
+  ensureShifts();
+  let days=0, late=0, lateMin=0, otH=0, skipH=0, skipDays=0, capH=0, capDays=0, early=0, noOut=0;
+  Object.keys(rec).forEach(d=>{
+    if(!inPeriod(d,p)) return;
+    // ใช้กะของคนนี้ในวันนี้ (รองรับสลับกะ + กะข้ามคืน)
+    const sh=shiftFor(emp, d);
+    const {IM:im, OM:om, S:ws, E:we, grace}=punchMinutes(sh, rec[d].i, rec[d].o);
+    if(im==null && om==null) return;
+    days++;
+    if(im!=null && im>ws+grace){ late++; lateMin+=im-(ws+grace); }
+    if(om==null){ noOut++; return; }
+    if(om>we){
+      // ปัดลงทีละครึ่งชั่วโมง "รายวัน" แล้วค่อยรวม
+      // (ถ้ารวมนาทีทั้งเดือนก่อนปัด เศษของวันที่ทำไม่ถึง 30 นาทีจะถูกสะสมกลายเป็น OT)
+      const raw=otHalfHours(om-we);
+      if(raw>0){
+        if(otAllowedFor(emp, d)){
+          const cap=otCapFor(emp);
+          const h=(cap>0 && raw>cap) ? cap : raw;   // เกินเพดานต่อวัน → ตัดเหลือเท่าเพดาน
+          otH+=h;
+          if(h<raw){ capH+=raw-h; capDays++; }
+        }
+        else { skipH+=raw; skipDays++; }          // ปิดที่คนหรือที่วัน → ไม่คิด
+      }
+    }
+    else if(om<we) early++;
+  });
+  return { days, late, lateMin, otHours:Math.round(otH*100)/100,
+           skipHours:Math.round(skipH*100)/100, skipDays,
+           capHours:Math.round(capH*100)/100, capDays, early, noOut,
+           otOff:!otPerson(emp) };
+}
+
+let attendSearch='';
+function vAttend(v){
+  const list=DB.employees.filter(e=>!resignedBefore(e,PERIOD));
+  const q=attendSearch.trim().toLowerCase();
+  const shown=q? list.filter(e=>[e.code,e.name,e.position,e.dept].some(x=>String(x||'').toLowerCase().includes(q))) : list;
+  const stats=new Map(shown.map(e=>[e.id, attendStats(e,PERIOD)]));
+  const T={ days:0, late:0, ot:0, skip:0, cap:0, withData:0 };
+  stats.forEach(s=>{ T.days+=s.days; T.late+=s.late; T.ot+=s.otHours;
+    T.skip+=s.skipHours||0; T.cap+=s.capHours||0; if(s.days) T.withData++; });
+  const {from,to}=periodRange(PERIOD);
+
+  v.appendChild(el(`<div class="cards">
+    <div class="kpi b1"><div class="lab">📅 ช่วงงวด</div><div class="val" style="font-size:17px">${fmtD(from)} – ${fmtD(to)}</div></div>
+    <div class="kpi b2"><div class="lab">✅ มีข้อมูลเวลา</div><div class="val">${num(T.withData)} <span class="muted" style="font-size:14px">/ ${num(shown.length)} คน</span></div></div>
+    <div class="kpi b3"><div class="lab">🕒 รวมวันทำงาน</div><div class="val">${num(T.days)} <span class="muted" style="font-size:14px">วัน</span></div></div>
+    <div class="kpi b4"><div class="lab">⚡ รวม OT</div><div class="val">${num(T.ot)} <span class="muted" style="font-size:14px">ชม.${T.skip?` · ไม่คิด ${num(T.skip)} ชม.`:''}${T.cap?` · เกินเพดาน ${num(T.cap)} ชม.`:''} · สาย ${num(T.late)} ครั้ง</span></div></div>
+  </div>`));
+
+  const bar=el(`<div class="toolbar">
+    <input id="atQ" placeholder="ค้นหา รหัส / ชื่อ / แผนก" value="${esc(attendSearch)}" style="min-width:210px">
+    <button class="btn ghost sm" id="atTpl">📄 เทมเพลต CSV</button>
+    <button class="btn ghost sm" id="atImp">⬆️ นำเข้า CSV</button>
+    <button class="btn ghost sm" id="atExp">⬇️ ส่งออก CSV</button>
+    <button class="btn sm" id="atPush" style="margin-left:auto">➡️ ส่งเข้าเงินได้ / เงินหัก</button>
+  </div>`);
+  v.appendChild(bar);
+  bar.querySelector('#atQ').oninput=(e)=>{ attendSearch=e.target.value; const c=e.target.selectionStart; render();
+    const n=$('#atQ'); if(n){ n.focus(); n.setSelectionRange(c,c); } };
+  bar.querySelector('#atTpl').onclick=attendTemplate;
+  bar.querySelector('#atImp').onclick=importAttendCSV;
+  bar.querySelector('#atExp').onclick=exportAttendCSV;
+  bar.querySelector('#atPush').onclick=pushAttendToPayroll;
+
+  v.appendChild(shiftPanel());
+  const spPanel=shiftPlanPanel(shown);
+  if(spPanel) v.appendChild(spPanel);
+  v.appendChild(otDaysPanel());
+
+  if(!DB.employees.length){ v.appendChild(el(`<div class="panel"><div class="empty">${tr('no_emp_hint')}</div></div>`)); return; }
+  if(!shown.length){ v.appendChild(el(`<div class="panel"><div class="empty">${tr('emp_not_found')}</div></div>`)); return; }
+
+  const rows=shown.map(e=>{
+    const s=stats.get(e.id);
+    return `<tr>
+      <td>${esc(e.code)}</td>
+      <td><strong>${esc(e.name)}</strong><br><span class="muted" style="font-size:12px">${esc(e.dept||'-')}</span></td>
+      <td><span class="chip">${e.payType==='daily'?tr('type_daily'):tr('type_monthly')}</span></td>
+      <td><select data-shsel="${e.id}" style="padding:4px 6px;font-size:12.5px;max-width:130px">
+        ${ensureShifts().map(s=>`<option value="${s.id}" ${(e.shiftId||ensureShifts()[0].id)===s.id?'selected':''}>${esc(s.name)}</option>`).join('')}
+      </select></td>
+      <td><button type="button" data-otp="${e.id}" title="กดเพื่อสลับสิทธิ์ OT ของคนนี้"
+        style="padding:4px 11px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;
+          border:1.5px solid ${otPerson(e)?'#0f766e':'#cbd5e1'};
+          background:${otPerson(e)?'#ccfbf1':'#f8fafc'};color:${otPerson(e)?'#0f766e':'#94a3b8'}">
+        ${otPerson(e)?'⚡ เปิด':'✕ ปิด'}</button></td>
+      <td class="num"><strong>${num(s.days)}</strong></td>
+      <td class="num">${s.late?`<span style="color:#dc2626">${num(s.late)} ครั้ง</span><br><span class="muted" style="font-size:12px">${num(s.lateMin)} นาที</span>`:'<span class="muted">-</span>'}</td>
+      <td class="num">${s.otHours?`<strong style="color:#0d9488">${num(s.otHours)}</strong>`:'<span class="muted">-</span>'}</td>
+      <td class="num">${s.early?num(s.early):'<span class="muted">-</span>'}</td>
+      <td class="num">${s.noOut?`<span style="color:#b45309">${num(s.noOut)}</span>`:'<span class="muted">-</span>'}</td>
+      <td style="text-align:right"><button class="btn ghost sm" data-at-view="${e.id}">📋 รายวัน</button></td>
+    </tr>`;
+  }).join('');
+
+  const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap">
+    <table><thead><tr>
+      <th>${tr('th_code')}</th><th>${tr('th_name')}</th><th>${tr('th_type')}</th>
+      <th title="กะประจำตัว — สลับรายวันได้ที่ตารางกะด้านบน">กะประจำ</th>
+      <th title="เปิด/ปิดสิทธิ์ OT เฉพาะคนนี้">สิทธิ์ OT</th>
+      <th class="num">วันทำงาน</th><th class="num">มาสาย</th><th class="num">OT (ชม.)</th>
+      <th class="num">ออกก่อน</th><th class="num">ไม่ลงเวลาออก</th><th></th>
+    </tr></thead><tbody>${rows}</tbody></table></div></div></div>`);
+  v.appendChild(panel);
+  panel.querySelectorAll('[data-at-view]').forEach(b=>b.onclick=()=>attendDetailModal(b.dataset.atView));
+  panel.querySelectorAll('[data-shsel]').forEach(s=>s.onchange=()=>{
+    const emp=DB.employees.find(x=>x.id===s.dataset.shsel); if(!emp) return;
+    emp.shiftId=s.value; save(); render(); toast(`${emp.name}: ${shiftById(s.value).name}`);
+  });
+  panel.querySelectorAll('[data-otp]').forEach(b=>b.onclick=()=>{
+    const emp=DB.employees.find(x=>x.id===b.dataset.otp); if(!emp) return;
+    if(emp.noOT) delete emp.noOT; else emp.noOT=1;
+    save(); render(); toast(`${emp.name}: ${emp.noOT?'ปิด':'เปิด'} OT`);
+  });
+}
+
+
+/* ---------- แผงจัดการกะ ---------- */
+function shiftPanel(){
+  const list=ensureShifts();
+  const rows=list.map(sh=>{
+    const sp=shiftSpan(sh);
+    const used=DB.employees.filter(e=>(e.shiftId||list[0].id)===sh.id).length;
+    return `<tr>
+      <td><input data-sh-name="${sh.id}" value="${esc(sh.name)}" style="width:120px"></td>
+      <td>${t24(`data-sh-start="${sh.id}"`, sh.start)}</td>
+      <td>${t24(`data-sh-end="${sh.id}"`, sh.end)}</td>
+      <td class="num">${shiftHours(sh)} ชม.${sp.over?'<br><span class="chip" style="background:#ede9fe;color:#6d28d9">ข้ามคืน</span>':''}</td>
+      <td class="num"><input type="number" min="0" data-sh-grace="${sh.id}" value="${+sh.grace||0}" style="width:64px;text-align:center"></td>
+      <td><input type="color" data-sh-color="${sh.id}" value="${esc(sh.color||'#0891b2')}" style="width:44px;height:30px;padding:2px;border:1px solid var(--line);border-radius:6px"></td>
+      <td class="num">${num(used)} คน</td>
+      <td style="text-align:right">${list.length>1?`<button class="btn danger sm" data-sh-del="${sh.id}">🗑️</button>`:'<span class="muted" style="font-size:12px">กะสุดท้าย</span>'}</td>
+    </tr>`;
+  }).join('');
+
+  const p=el(`<div class="panel" style="margin-bottom:16px">
+    <div class="phead" style="padding:12px 16px;font-weight:700">🕐 กะการทำงาน
+      <span class="muted" style="font-weight:400;font-size:13px">— ${num(list.length)} กะ · ใช้ตัดสินว่าสายและ OT ตามกะของแต่ละคน</span></div>
+    <div class="pbody" style="padding:0">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>ชื่อกะ</th><th>เข้างาน</th><th>เลิกงาน</th><th class="num">ชั่วโมง</th>
+          <th class="num">อนุโลมสาย<br><span style="font-weight:400;font-size:11px">(นาที)</span></th>
+          <th>สี</th><th class="num">พนักงาน</th><th></th></tr></thead>
+        <tbody>${rows}</tbody></table></div>
+      <div style="padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line)">
+        <button class="btn ghost sm" id="shAdd">➕ เพิ่มกะ</button>
+        <button class="btn ghost sm" id="shPreset">⚡ ใส่กะมาตรฐาน 3 กะ</button>
+        <button class="btn sm" id="shSave">💾 บันทึกกะ</button>
+        <span class="muted" style="font-size:12.5px">เลิกงานเวลาน้อยกว่าเข้างาน = <strong>กะข้ามคืน</strong> ระบบคิดให้อัตโนมัติ<br>
+          <strong>OT ปัดลงทีละครึ่งชั่วโมง ไม่ปัดขึ้น</strong> — ทำไม่ครบ 30 นาทีไม่คิดให้</span>
+      </div>
+    </div></div>`);
+  wireT24(p);
+
+  const readForm=()=>{
+    list.forEach(sh=>{
+      const g=(sel)=>p.querySelector(`[data-sh-${sel}="${sh.id}"]`);
+      sh.name=(g('name').value||'').trim()||sh.name;
+      sh.start=t24Norm(g('start').value)||sh.start;
+      sh.end=t24Norm(g('end').value)||sh.end;
+      sh.grace=+g('grace').value||0;
+      sh.color=g('color').value||sh.color;
+    });
+  };
+  p.querySelector('#shSave').onclick=()=>{ readForm(); save(); render(); toast('บันทึกกะแล้ว'); };
+  p.querySelector('#shAdd').onclick=()=>{
+    readForm();
+    DB.shifts.push({ id:'sh_'+uid(), name:'กะใหม่ '+(DB.shifts.length+1), start:'08:00', end:'17:00',
+      grace:0, color:SHIFT_COLORS[DB.shifts.length%SHIFT_COLORS.length] });
+    save(); render();
+  };
+  p.querySelector('#shPreset').onclick=()=>openModal('ใส่กะมาตรฐาน 3 กะ',
+    `<p>จะเพิ่มกะเหล่านี้เข้าไป (ของเดิมไม่ถูกลบ):</p>
+     <ul style="margin-left:18px">
+       <li><strong>กะเช้า</strong> 08:00 – 17:00</li>
+       <li><strong>กะบ่าย</strong> 16:00 – 01:00 <span class="muted">(ข้ามคืน)</span></li>
+       <li><strong>กะดึก</strong> 00:00 – 08:00</li>
+     </ul>`,
+    [['ยกเลิก','ghost',closeModal],['เพิ่ม','',()=>{
+      const add=[['กะเช้า','08:00','17:00'],['กะบ่าย','16:00','01:00'],['กะดึก','00:00','08:00']];
+      add.forEach(([name,start,end],i)=>{
+        if(DB.shifts.some(s=>s.name===name)) return;
+        DB.shifts.push({ id:'sh_'+uid(), name, start, end, grace:+DB.lateGrace||0,
+          color:SHIFT_COLORS[(DB.shifts.length+i)%SHIFT_COLORS.length] });
+      });
+      save(); closeModal(); render(); toast('เพิ่มกะมาตรฐานแล้ว');
+    }]]);
+  p.querySelectorAll('[data-sh-del]').forEach(b=>b.onclick=()=>{
+    const sh=shiftById(b.dataset.shDel); if(!sh) return;
+    const used=DB.employees.filter(e=>e.shiftId===sh.id).length;
+    openModal('ลบกะ',
+      `<p>ลบกะ <strong>${esc(sh.name)}</strong> (${esc(sh.start)}–${esc(sh.end)}) ?</p>
+       ${used?`<p style="color:#b45309">มีพนักงาน <strong>${num(used)}</strong> คนใช้กะนี้อยู่ — จะถูกย้ายไปกะแรกให้อัตโนมัติ</p>`:''}`,
+      [['ยกเลิก','ghost',closeModal],['ลบ','danger',()=>{
+        DB.shifts=DB.shifts.filter(s=>s.id!==sh.id);
+        const first=DB.shifts[0];
+        DB.employees.forEach(e=>{ if(e.shiftId===sh.id) e.shiftId=first?first.id:undefined; });
+        Object.keys(DB.shiftPlan||{}).forEach(d=>{
+          Object.keys(DB.shiftPlan[d]).forEach(eid=>{ if(DB.shiftPlan[d][eid]===sh.id) delete DB.shiftPlan[d][eid]; });
+          if(!Object.keys(DB.shiftPlan[d]).length) delete DB.shiftPlan[d];
+        });
+        save(); closeModal(); render(); toast('ลบกะแล้ว');
+      }]]);
+  });
+  return p;
+}
+
+/* ---------- ตารางกะรายวัน (สลับกะ) ---------- */
+function shiftPlanPanel(shown){
+  const list=ensureShifts();
+  if(list.length<2) return null;                 // มีกะเดียวไม่ต้องมีตารางสลับ
+  const dates=periodDates(PERIOD);
+  const head=dates.map(d=>{
+    const wk=weekdayOf(d);
+    return `<th style="min-width:38px;padding:5px 2px;font-size:11px;${wk===0||wk===6?'background:#f1f5f9':''}">
+      ${+d.slice(8)}<br><span style="font-weight:400;color:#94a3b8">${WD_S[wk]}</span></th>`;
+  }).join('');
+  const body=shown.map(e=>{
+    const cells=dates.map(d=>{
+      const sh=shiftFor(e,d), ov=shiftPlanned(e,d);
+      return `<td style="padding:2px">
+        <button type="button" data-sp="${e.id}|${d}" title="${esc(e.name)} · ${d} · ${esc(sh.name)}${ov?' (สลับกะ)':''}"
+          style="width:100%;min-width:34px;padding:4px 0;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;
+            border:1.5px ${ov?'solid':'dashed'} ${sh.color};background:${sh.color}1f;color:${sh.color}">
+          ${esc(shiftShort(sh))}</button></td>`;
+    }).join('');
+    return `<tr><td style="position:sticky;left:0;background:var(--card);white-space:nowrap;padding-right:10px">
+      <strong>${esc(e.name)}</strong><br><span class="muted" style="font-size:11px">${esc(e.code)}</span></td>${cells}</tr>`;
+  }).join('');
+
+  const p=el(`<div class="panel" style="margin-bottom:16px">
+    <div class="phead" style="padding:12px 16px;font-weight:700">🔄 ตารางกะรายวัน — งวด ${esc(periodLabel(PERIOD))}
+      <span class="muted" style="font-weight:400;font-size:13px">— กดที่ช่องเพื่อสลับกะทีละวัน · เส้นทึบ = สลับไว้เอง</span></div>
+    <div class="pbody" style="padding:0">
+      <div style="padding:11px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="btn sm" id="spBulk">📅 ตั้งกะเป็นช่วง</button>
+        <button class="btn ghost sm" id="spSwap">🔁 สลับกะ 2 กลุ่ม</button>
+        <button class="btn ghost sm" id="spRotate">♻️ หมุนเวียนกะ</button>
+        <button class="btn ghost sm" id="spCopy">📋 คัดลอกจากงวดก่อน</button>
+        <button class="btn ghost sm" id="spClear">↺ ล้างการสลับกะ</button>
+        <span style="display:flex;gap:9px;flex-wrap:wrap;margin-left:auto">
+          ${list.map(s=>`<span style="font-size:12px;display:inline-flex;align-items:center;gap:4px">
+            <span style="width:12px;height:12px;border-radius:3px;background:${s.color};display:inline-block"></span>
+            ${esc(s.name)} <span class="muted">${esc(s.start)}–${esc(s.end)}</span></span>`).join('')}
+        </span>
+      </div>
+      <div class="tbl-wrap" style="max-height:340px;overflow:auto">
+        <table style="font-size:12px"><thead><tr>
+          <th style="position:sticky;left:0;background:var(--card);z-index:2">พนักงาน</th>${head}
+        </tr></thead><tbody>${body}</tbody></table></div>
+    </div></div>`);
+
+  // กดช่อง → วนไปกะถัดไป ครบรอบแล้วกลับไปใช้กะประจำตัว
+  p.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{
+    const [eid,d]=b.dataset.sp.split('|');
+    const emp=DB.employees.find(x=>x.id===eid); if(!emp) return;
+    const cur=shiftFor(emp,d);
+    const i=list.findIndex(s=>s.id===cur.id);
+    const next=list[(i+1)%list.length];
+    DB.shiftPlan[d]=DB.shiftPlan[d]||{};
+    if(next.id===(emp.shiftId||list[0].id)) delete DB.shiftPlan[d][eid];   // ตรงกับกะประจำ → ไม่ต้องเก็บ
+    else DB.shiftPlan[d][eid]=next.id;
+    if(!Object.keys(DB.shiftPlan[d]).length) delete DB.shiftPlan[d];
+    save(); render();
+  });
+  p.querySelector('#spClear').onclick=()=>{
+    dates.forEach(d=>delete DB.shiftPlan[d]);
+    save(); render(); toast('ล้างการสลับกะแล้ว');
+  };
+  p.querySelector('#spBulk').onclick=()=>shiftBulkModal(shown);
+  p.querySelector('#spSwap').onclick=()=>shiftSwapModal(shown);
+  p.querySelector('#spRotate').onclick=()=>shiftRotateModal(shown);
+  p.querySelector('#spCopy').onclick=shiftCopyPrev;
+  return p;
+}
+
+
+/* ---------- เครื่องมือจัดกะแบบยกชุด ---------- */
+// เขียนกะลงตาราง — ถ้าตรงกับกะประจำตัวอยู่แล้วก็ไม่ต้องเก็บ (กันข้อมูลบวม)
+function setShiftPlan(iso, emp, shId){
+  const def=emp.shiftId||ensureShifts()[0].id;
+  DB.shiftPlan[iso]=DB.shiftPlan[iso]||{};
+  if(shId===def) delete DB.shiftPlan[iso][emp.id];
+  else DB.shiftPlan[iso][emp.id]=shId;
+  if(!Object.keys(DB.shiftPlan[iso]).length) delete DB.shiftPlan[iso];
+}
+// เขียนแบบดิบ (ใช้ตอนตรึงอดีต — ต้องเก็บแม้ค่าจะตรงกับกะประจำ)
+function setShiftPlanRaw(iso, emp, shId){
+  DB.shiftPlan[iso]=DB.shiftPlan[iso]||{};
+  DB.shiftPlan[iso][emp.id]=shId;
+}
+// ทุกวันที่พนักงานคนนี้มีข้อมูลลงเวลา (ทุกงวด)
+function attendDatesOf(emp){
+  const out=[];
+  Object.keys(DB.attend||{}).forEach(p=>{
+    const m=DB.attend[p] && DB.attend[p][emp.id];
+    if(m) out.push(...Object.keys(m));
+  });
+  return out;
+}
+/* เปลี่ยน "กะประจำ" แบบถาวร โดยไม่ให้กระทบวันที่คำนวณไปแล้ว
+   วันเก่าที่มีข้อมูลลงเวลาและอยู่ก่อนวันเริ่ม จะถูกล็อกกะเดิมไว้ก่อนเปลี่ยน */
+function applyPermanentShift(emps, fromIso, mapFn){
+  // 1) ตรึงอดีต — เฉพาะวันที่มีข้อมูลลงเวลาจริง (วันอื่นไม่มีผลต่อการคำนวณ)
+  emps.forEach(e=>{
+    attendDatesOf(e).forEach(iso=>{
+      if(iso < fromIso && !shiftPlanned(e,iso)) setShiftPlanRaw(iso, e, shiftFor(e,iso).id);
+    });
+  });
+  // 2) จำค่าที่ตั้งไว้รายวันตั้งแต่วันเริ่มเป็นต้นไป แล้วแปลงตามกฎเดียวกัน
+  const pend=[];
+  emps.forEach(e=>{
+    Object.keys(DB.shiftPlan).forEach(iso=>{
+      if(iso < fromIso) return;
+      const cur=DB.shiftPlan[iso][e.id]; if(!cur) return;
+      const next=mapFn(cur); if(next && next!==cur) pend.push([iso,e,next]);
+    });
+  });
+  // 3) เปลี่ยนกะประจำ
+  emps.forEach(e=>{
+    const def=e.shiftId||ensureShifts()[0].id;
+    const next=mapFn(def); if(next) e.shiftId=next;
+  });
+  // 4) เขียนค่าที่ค้าง แล้วเก็บกวาดตัวที่ตรงกับกะประจำใหม่
+  pend.forEach(([iso,e,id])=>setShiftPlan(iso,e,id));
+  emps.forEach(e=>{
+    Object.keys(DB.shiftPlan).forEach(iso=>{
+      if(iso < fromIso) return;
+      if(DB.shiftPlan[iso][e.id]===(e.shiftId||ensureShifts()[0].id)){
+        delete DB.shiftPlan[iso][e.id];
+        if(!Object.keys(DB.shiftPlan[iso]).length) delete DB.shiftPlan[iso];
+      }
+    });
+  });
+}
+
+// วนทุกวันในช่วง เลือกเฉพาะวันในสัปดาห์ที่ติ๊กไว้
+function eachDate(f, t, wds, fn){
+  const [y1,m1,d1]=String(f).split('-').map(Number);
+  const [y2,m2,d2]=String(t).split('-').map(Number);
+  const D=new Date(y1,m1-1,d1), end=new Date(y2,m2-1,d2);
+  let n=0, guard=0;
+  while(D<=end && guard++<800){ if(!wds || wds.has(D.getDay())){ fn(isoOf(D)); n++; } D.setDate(D.getDate()+1); }
+  return n;
+}
+
+/* ช่องเลือกพนักงานแบบมีตัวกรอง — ใช้ร่วมกันทุกเครื่องมือ */
+function empPickerHtml(shown){
+  const list=ensureShifts();
+  const depts=[...new Set(shown.map(e=>e.dept).filter(Boolean))];
+  return `<div class="field" style="margin-top:10px"><label>พนักงาน</label>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin:5px 0 6px">
+      <select id="epDept" style="max-width:150px"><option value="">ทุกแผนก</option>
+        ${depts.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('')}</select>
+      <select id="epShift" style="max-width:180px"><option value="">กะประจำ: ทุกกะ</option>
+        ${list.map(s=>`<option value="${s.id}">กะประจำ: ${esc(s.name)}</option>`).join('')}</select>
+      <button type="button" class="btn ghost sm" id="epAll">เลือกทั้งหมด</button>
+      <button type="button" class="btn ghost sm" id="epNone">ล้าง</button>
+    </div>
+    <div style="max-height:170px;overflow:auto;border:1px solid var(--line);border-radius:9px;padding:8px">
+      ${shown.map(e=>`<label class="epRow" data-dept="${esc(e.dept||'')}" data-shift="${esc(e.shiftId||list[0].id)}"
+        style="display:block;font-size:13px;padding:2px 0">
+        <input type="checkbox" class="epChk" value="${e.id}" checked> ${esc(e.code)} — ${esc(e.name)}
+        ${e.dept?`<span class="muted" style="font-size:11.5px">· ${esc(e.dept)}</span>`:''}</label>`).join('')}
+    </div>
+    <div class="muted" style="font-size:12px;margin-top:5px" id="epCount"></div></div>`;
+}
+function wireEmpPicker(){
+  const rows=[...document.querySelectorAll('.epRow')];
+  const upd=()=>{ const n=document.querySelectorAll('.epChk:checked').length;
+    const c=$('#epCount'); if(c) c.textContent=`เลือกแล้ว ${num(n)} คน`; };
+  const filt=()=>{ const d=$('#epDept').value, s=$('#epShift').value;
+    rows.forEach(r=>{ const ok=(!d||r.dataset.dept===d)&&(!s||r.dataset.shift===s);
+      r.style.display=ok?'block':'none'; r.querySelector('.epChk').checked=ok; });
+    upd(); };
+  const dp=$('#epDept'), sp=$('#epShift');
+  if(dp) dp.onchange=filt;
+  if(sp) sp.onchange=filt;
+  const ba=$('#epAll'), bn=$('#epNone');
+  if(ba) ba.onclick=()=>{ rows.forEach(r=>{ if(r.style.display!=='none') r.querySelector('.epChk').checked=true; }); upd(); };
+  if(bn) bn.onclick=()=>{ rows.forEach(r=>r.querySelector('.epChk').checked=false); upd(); };
+  document.querySelectorAll('.epChk').forEach(x=>x.onchange=upd);
+  upd();
+}
+function pickedEmps(){ return [...document.querySelectorAll('.epChk:checked')]
+  .map(x=>DB.employees.find(e=>e.id===x.value)).filter(Boolean); }
+
+/* ช่องติ๊กเปลี่ยนกะประจำด้วย */
+function permaHtml(label){
+  return `<label style="display:flex;gap:8px;align-items:flex-start;margin-top:12px;background:#fff7ed;
+      border:1px solid #fed7aa;border-radius:9px;padding:10px 12px;cursor:pointer">
+    <input type="checkbox" id="brPerma" style="margin-top:3px">
+    <span style="font-size:13px;color:#9a3412"><strong>${label}</strong><br>
+      คอลัมน์ “กะประจำ” จะเปลี่ยนตามด้วย และมีผลตั้งแต่<strong>วันที่เริ่ม</strong>เป็นต้นไป (ไม่สนใจวันสิ้นสุด)<br>
+      วันก่อนหน้าที่ลงเวลาไว้แล้วจะถูกล็อกกะเดิมไว้ ตัวเลขเดิมไม่เปลี่ยน</span></label>`;
+}
+function isPerma(){ const x=$('#brPerma'); return !!(x && x.checked); }
+
+/* ช่วงวันที่ + วันในสัปดาห์ */
+function dateRangeHtml(){
+  const {from,to}=periodRange(PERIOD);
+  return `<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+      <div class="field"><label>ตั้งแต่วันที่</label><input type="date" id="brFrom" value="${isoOf(from)}"></div>
+      <div class="field"><label>ถึงวันที่</label><input type="date" id="brTo" value="${isoOf(to)}"></div>
+    </div>
+    <div class="field" style="margin-top:10px"><label>เฉพาะวัน</label>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px">
+        ${WD_S.map((w,i)=>`<label style="display:inline-flex;align-items:center;gap:4px;font-size:13px;
+          border:1px solid var(--line);border-radius:8px;padding:5px 9px;cursor:pointer">
+          <input type="checkbox" class="brWd" value="${i}" checked> ${w}</label>`).join('')}
+      </div></div>`;
+}
+function readRange(){
+  const f=$('#brFrom').value, t=$('#brTo').value;
+  if(!f||!t||daysBetween(f,t)===0){ toast('ช่วงวันที่ไม่ถูกต้อง'); return null; }
+  const wds=new Set([...document.querySelectorAll('.brWd:checked')].map(x=>+x.value));
+  if(!wds.size){ toast('ยังไม่ได้เลือกวันในสัปดาห์'); return null; }
+  return {f,t,wds};
+}
+
+/* 1) ตั้งกะเป็นช่วงวันที่ */
+function shiftBulkModal(shown){
+  const list=ensureShifts();
+  openModal('📅 ตั้งกะเป็นช่วงวันที่',
+    `<div class="field"><label>ตั้งเป็นกะ</label><select id="sbShift">
+      ${list.map(s=>`<option value="${s.id}">${esc(s.name)} (${esc(s.start)}–${esc(s.end)})</option>`).join('')}</select></div>
+     ${dateRangeHtml()}${permaHtml('ตั้งเป็นกะประจำถาวร')}${empPickerHtml(shown)}`,
+    [['ยกเลิก','ghost',closeModal],['ตั้งกะ','',()=>{
+      const r=readRange(); if(!r) return;
+      const emps=pickedEmps(); if(!emps.length){ toast('ยังไม่ได้เลือกพนักงาน'); return; }
+      const shId=$('#sbShift').value;
+      if(isPerma()){
+        applyPermanentShift(emps, r.f, ()=>shId);
+        save(); closeModal(); render();
+        toast(`ตั้งกะประจำถาวรแล้ว ${num(emps.length)} คน`);
+        return;
+      }
+      let n=0;
+      eachDate(r.f,r.t,r.wds,iso=>{ emps.forEach(e=>{ setShiftPlan(iso,e,shId); n++; }); });
+      save(); closeModal(); render(); toast(`ตั้งกะแล้ว ${num(n)} รายการ`);
+    }]]);
+  wireEmpPicker();
+}
+
+/* 2) สลับกะ 2 กลุ่ม — A↔B พร้อมกันในครั้งเดียว */
+function shiftSwapModal(shown){
+  const list=ensureShifts();
+  if(list.length<2){ toast('ต้องมีอย่างน้อย 2 กะ'); return; }
+  const opt=(sel)=>list.map((s,i)=>`<option value="${s.id}" ${i===sel?'selected':''}>${esc(s.name)} (${esc(s.start)}–${esc(s.end)})</option>`).join('');
+  openModal('🔁 สลับกะ 2 กลุ่ม',
+    `<p class="muted" style="font-size:13px;margin-bottom:6px">
+       คนที่อยู่ <strong>กะ A</strong> จะย้ายไป <strong>กะ B</strong> และคนที่อยู่ <strong>กะ B</strong> จะย้ายมา <strong>กะ A</strong> — สลับพร้อมกันในครั้งเดียว<br>
+       คนที่อยู่กะอื่นจะไม่ถูกแตะ</p>
+     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+       <div class="field"><label>กะ A</label><select id="swA">${opt(0)}</select></div>
+       <div style="padding-bottom:10px;font-size:20px">🔁</div>
+       <div class="field"><label>กะ B</label><select id="swB">${opt(1)}</select></div>
+     </div>
+     ${dateRangeHtml()}${permaHtml('สลับกะประจำถาวร')}${empPickerHtml(shown)}`,
+    [['ยกเลิก','ghost',closeModal],['สลับกะ','',()=>{
+      const A=$('#swA').value, B=$('#swB').value;
+      if(A===B){ toast('เลือกกะให้ต่างกัน'); return; }
+      const r=readRange(); if(!r) return;
+      const emps=pickedEmps(); if(!emps.length){ toast('ยังไม่ได้เลือกพนักงาน'); return; }
+      const swap=id=> id===A?B : id===B?A : null;
+      if(isPerma()){
+        const affected=emps.filter(e=>{ const d=e.shiftId||list[0].id; return d===A||d===B; });
+        applyPermanentShift(emps, r.f, swap);
+        save(); closeModal(); render();
+        toast(affected.length?`สลับกะประจำถาวรแล้ว ${num(affected.length)} คน`:'ไม่มีใครอยู่ในสองกะนี้');
+        return;
+      }
+      let n=0;
+      eachDate(r.f,r.t,r.wds,iso=>{
+        // อ่านกะเดิมของทุกคนก่อน แล้วค่อยเขียน — กันเขียนทับกันเองระหว่างสลับ
+        const cur=emps.map(e=>[e, shiftFor(e,iso).id]);
+        cur.forEach(([e,id])=>{
+          const nx=swap(id); if(nx){ setShiftPlan(iso,e,nx); n++; }
+        });
+      });
+      save(); closeModal(); render();
+      toast(n?`สลับกะแล้ว ${num(n)} รายการ`:'ไม่มีใครอยู่ในสองกะนี้ในช่วงที่เลือก');
+    }]]);
+  wireEmpPicker();
+}
+
+/* 3) หมุนเวียนกะอัตโนมัติ — วนกะทุก N วัน แต่ละคนเริ่มจากกะประจำตัวเอง (กลุ่มจึงเหลื่อมกันเอง) */
+function shiftRotateModal(shown){
+  const list=ensureShifts();
+  if(list.length<2){ toast('ต้องมีอย่างน้อย 2 กะ'); return; }
+  openModal('♻️ หมุนเวียนกะอัตโนมัติ',
+    `<p class="muted" style="font-size:13px;margin-bottom:8px">
+       สร้างตารางหมุนกะให้ทั้งช่วงในครั้งเดียว — แต่ละคน<strong>เริ่มจากกะประจำตัวเอง</strong>
+       แล้ววนไปกะถัดไปทุก ๆ รอบ กลุ่มที่ตั้งกะประจำต่างกันจึงหมุนเหลื่อมกันโดยอัตโนมัติ</p>
+     <div class="field"><label>กะที่ร่วมหมุนเวียน (ตามลำดับ)</label>
+       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px">
+         ${list.map((s,i)=>`<label style="display:inline-flex;align-items:center;gap:5px;font-size:13px;
+           border:1.5px solid ${s.color};border-radius:8px;padding:5px 10px;cursor:pointer;background:${s.color}14">
+           <input type="checkbox" class="roSh" value="${s.id}" checked> ${i+1}. ${esc(s.name)}</label>`).join('')}
+       </div></div>
+     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+       <div class="field"><label>เปลี่ยนกะทุก ๆ</label>
+         <select id="roEvery">
+           <option value="7" selected>7 วัน (รายสัปดาห์)</option>
+           <option value="1">1 วัน</option>
+           <option value="2">2 วัน</option>
+           <option value="3">3 วัน</option>
+           <option value="14">14 วัน (2 สัปดาห์)</option>
+         </select></div>
+       <div class="field"><label>เริ่มนับรอบจากวันที่</label><input type="date" id="roAnchor" value="${isoOf(periodRange(PERIOD).from)}"></div>
+     </div>
+     ${dateRangeHtml()}${empPickerHtml(shown)}`,
+    [['ยกเลิก','ghost',closeModal],['สร้างตารางหมุนกะ','',()=>{
+      const ids=[...document.querySelectorAll('.roSh:checked')].map(x=>x.value);
+      if(ids.length<2){ toast('เลือกกะที่ร่วมหมุนอย่างน้อย 2 กะ'); return; }
+      const every=+$('#roEvery').value||7;
+      const anchor=$('#roAnchor').value;
+      if(!anchor){ toast('ยังไม่ได้เลือกวันเริ่มนับรอบ'); return; }
+      const r=readRange(); if(!r) return;
+      const emps=pickedEmps(); if(!emps.length){ toast('ยังไม่ได้เลือกพนักงาน'); return; }
+      const [ay,am,ad]=anchor.split('-').map(Number); const A0=new Date(ay,am-1,ad);
+      let n=0;
+      eachDate(r.f,r.t,r.wds,iso=>{
+        const [y,m,d]=iso.split('-').map(Number);
+        const block=Math.floor(Math.round((new Date(y,m-1,d)-A0)/86400000)/every);
+        emps.forEach(e=>{
+          const def=e.shiftId||list[0].id;
+          let start=ids.indexOf(def); if(start<0) start=0;      // กะประจำไม่ได้ร่วมหมุน → เริ่มที่ตัวแรก
+          const idx=(((start+block)%ids.length)+ids.length)%ids.length;
+          setShiftPlan(iso,e,ids[idx]); n++;
+        });
+      });
+      save(); closeModal(); render(); toast(`สร้างตารางหมุนกะแล้ว ${num(n)} รายการ`);
+    }]]);
+  wireEmpPicker();
+}
+
+/* 4) คัดลอกตารางกะจากงวดก่อน (จับคู่ตามลำดับวันในงวด) */
+function shiftCopyPrev(){
+  const [y,m]=PERIOD.split('-').map(Number);
+  const prev=`${m===1?y-1:y}-${pad2(m===1?12:m-1)}`;
+  const src=periodDates(prev), dst=periodDates(PERIOD);
+  let found=0;
+  src.forEach(d=>{ if(DB.shiftPlan[d]) found+=Object.keys(DB.shiftPlan[d]).length; });
+  if(!found){ toast(`งวด ${periodLabel(prev)} ไม่มีการสลับกะให้คัดลอก`); return; }
+  openModal('📋 คัดลอกตารางกะจากงวดก่อน',
+    `<p>คัดลอกการสลับกะจากงวด <strong>${esc(periodLabel(prev))}</strong> (${num(found)} รายการ)
+       มาที่งวด <strong>${esc(periodLabel(PERIOD))}</strong></p>
+     <p class="muted" style="font-size:12.5px">จับคู่ตามลำดับวันในงวด — วันแรกของงวดก่อน → วันแรกของงวดนี้
+       ${src.length!==dst.length?`<br>⚠️ งวดก่อนมี ${src.length} วัน งวดนี้มี ${dst.length} วัน — วันที่เกินจะถูกข้าม`:''}</p>
+     <p style="color:#b45309;font-size:13px">การสลับกะเดิมในงวดนี้จะถูกแทนที่ทั้งหมด</p>`,
+    [['ยกเลิก','ghost',closeModal],['คัดลอก','',()=>{
+      dst.forEach(d=>delete DB.shiftPlan[d]);
+      let n=0;
+      const len=Math.min(src.length,dst.length);
+      for(let i=0;i<len;i++){
+        const s=DB.shiftPlan[src[i]]; if(!s) continue;
+        Object.keys(s).forEach(eid=>{
+          const emp=DB.employees.find(x=>x.id===eid); if(!emp) return;
+          setShiftPlan(dst[i], emp, s[eid]); n++;
+        });
+      }
+      save(); closeModal(); render(); toast(`คัดลอกแล้ว ${num(n)} รายการ`);
+    }]]);
+}
+
+// แผงตั้งค่า "วันไหนเปิด OT" — รายสัปดาห์ + กำหนดเฉพาะวันในงวดนี้
+function otDaysPanel(){
+  if(!Array.isArray(DB.otWeekdays)) DB.otWeekdays=[true,true,true,true,true,true,true];
+  if(!DB.otDates || typeof DB.otDates!=='object') DB.otDates={};
+  const dates=periodDates(PERIOD);
+  const nOpen=dates.filter(otAllowed).length;
+  const nOver=dates.filter(otOverridden).length;
+
+  const wdBtns=WD_TH.map((lab,i)=>{
+    const on=!!DB.otWeekdays[i];
+    return `<button type="button" data-wd="${i}" title="${lab}"
+      style="min-width:52px;padding:8px 10px;border-radius:9px;font-weight:700;font-size:14px;cursor:pointer;
+        border:1.5px solid ${on?'#0f766e':'#e2e8f0'};background:${on?'#ccfbf1':'#fff'};color:${on?'#0f766e':'#94a3b8'}">
+      ${WD_S[i]}</button>`;
+  }).join('');
+
+  const chips=dates.map(d=>{
+    const on=otAllowed(d), ov=otOverridden(d);
+    return `<button type="button" data-otd="${d}" title="${d} (${WD_TH[weekdayOf(d)]}) — ${on?'เปิด OT':'ปิด OT'}${ov?' · กำหนดเอง':''}"
+      style="width:42px;padding:6px 0;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;
+        border:1.5px ${ov?'solid':'dashed'} ${on?'#0f766e':'#cbd5e1'};
+        background:${on?'#ccfbf1':'#f8fafc'};color:${on?'#0f766e':'#94a3b8'}">
+      ${+d.slice(8)}${ov?'<span style="color:#f59e0b">•</span>':''}</button>`;
+  }).join('');
+
+  const panel=el(`<div class="panel" style="margin-bottom:16px">
+    <div class="phead" style="padding:12px 16px;font-weight:700">⚡ วันที่เปิดให้คิด OT
+      <span class="muted" style="font-weight:400;font-size:13px">— งวดนี้เปิด ${num(nOpen)} / ${num(dates.length)} วัน${nOver?` · กำหนดเอง ${num(nOver)} วัน`:''}</span></div>
+    <div class="pbody">
+      <div style="font-size:13.5px;font-weight:700;margin-bottom:7px">เปิด OT ตามวันในสัปดาห์</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">${wdBtns}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <button class="btn ghost sm" id="otAllOn">เปิดทุกวัน</button>
+        <button class="btn ghost sm" id="otWorkOnly">จ–ศ เท่านั้น</button>
+        <button class="btn ghost sm" id="otAllOff">ปิดทุกวัน</button>
+      </div>
+
+      <div style="font-size:13.5px;font-weight:700;margin-bottom:4px">กำหนดเฉพาะวัน — งวด ${esc(periodLabel(PERIOD))}</div>
+      <div class="muted" style="font-size:12.5px;margin-bottom:8px">กดที่วันที่เพื่อสลับเปิด/ปิด (ทับค่ารายสัปดาห์) · จุดสีเหลือง = กำหนดเอง</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap">${chips}</div>
+      ${nOver?`<button class="btn ghost sm" id="otClr" style="margin-top:11px">↺ ล้างที่กำหนดเองในงวดนี้ (${num(nOver)} วัน)</button>`:''}
+
+      <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px">
+        <div style="font-size:13.5px;font-weight:700;margin-bottom:6px">เพดาน OT ต่อวัน</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+          <div class="field" style="max-width:150px"><label>ไม่เกินวันละ (ชม.)</label>
+            <input type="number" id="otCap" min="0" step="0.5" value="${+DB.otMaxDay||0}"></div>
+          <button class="btn ghost sm" id="otCapSave">💾 บันทึกเพดาน</button>
+          <span class="muted" style="font-size:12.5px">ใส่ <strong>0</strong> = ไม่จำกัด · ชั่วโมงที่เกินจะถูกตัดออก ไม่นำไปคิดเงิน<br>
+            ตั้งเฉพาะบางคนต่างจากนี้ได้ที่ฟอร์ม “ข้อมูลพนักงาน”</span>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px">
+        <div style="font-size:13.5px;font-weight:700;margin-bottom:4px">เปิด OT เฉพาะบางคน</div>
+        <div class="muted" style="font-size:12.5px;margin-bottom:8px">
+          ปัจจุบันเปิดให้ <strong>${num(DB.employees.filter(otPerson).length)}</strong> / ${num(DB.employees.length)} คน
+          — กดสลับรายคนได้ที่คอลัมน์ <strong>“สิทธิ์ OT”</strong> ในตารางด้านล่าง</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn ghost sm" id="otpAll">เปิดให้ทุกคน</button>
+          <button class="btn ghost sm" id="otpNone">ปิดทุกคน</button>
+          <button class="btn ghost sm" id="otpDaily">เปิดเฉพาะพนักงานรายวัน</button>
+          <button class="btn ghost sm" id="otpMonthly">เปิดเฉพาะพนักงานรายเดือน</button>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;padding:11px 13px;background:#f8fafc;border-radius:10px;font-size:12.5px;color:var(--muted)">
+        คิด OT ให้เมื่อ <strong>คนนั้นเปิดสิทธิ์</strong> และ <strong>วันนั้นเปิด OT</strong> พร้อมกัน<br>
+        วันที่ <strong>ปิด OT</strong> ระบบจะไม่นำเวลาที่อยู่เกินเวลาเลิกงานมาคิดเป็น OT
+        แต่ยังนับวันทำงาน มาสาย และออกก่อนตามปกติ — ชั่วโมงที่ถูกตัดออกดูรวมได้ที่การ์ด <strong>“รวม OT”</strong> ด้านบน
+      </div>
+    </div></div>`);
+
+  panel.querySelectorAll('[data-wd]').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.wd; DB.otWeekdays[i]=!DB.otWeekdays[i]; save(); render();
+  });
+  panel.querySelector('#otAllOn').onclick=()=>{ DB.otWeekdays=[true,true,true,true,true,true,true]; save(); render(); };
+  panel.querySelector('#otWorkOnly').onclick=()=>{ DB.otWeekdays=[false,true,true,true,true,true,false]; save(); render(); };
+  panel.querySelector('#otAllOff').onclick=()=>{ DB.otWeekdays=[false,false,false,false,false,false,false]; save(); render(); };
+  panel.querySelectorAll('[data-otd]').forEach(b=>b.onclick=()=>{
+    const d=b.dataset.otd, wdDefault=!!DB.otWeekdays[weekdayOf(d)];
+    const next=!otAllowed(d);
+    if(next===wdDefault) delete DB.otDates[d];   // กลับไปตรงกับค่ารายสัปดาห์ → ไม่ต้องเก็บ
+    else DB.otDates[d]=next;
+    save(); render();
+  });
+  const clr=panel.querySelector('#otClr');
+  if(clr) clr.onclick=()=>{ dates.forEach(d=>delete DB.otDates[d]); save(); render(); toast('ล้างที่กำหนดเองแล้ว'); };
+  const setAll=(fn)=>{ DB.employees.forEach(e=>{ if(fn(e)) delete e.noOT; else e.noOT=1; });
+    save(); render(); toast('ตั้งสิทธิ์ OT รายคนแล้ว'); };
+  panel.querySelector('#otCapSave').onclick=()=>{
+    DB.otMaxDay=Math.max(0,+panel.querySelector('#otCap').value||0);
+    save(); render(); toast(DB.otMaxDay? `ตั้งเพดาน OT วันละ ${num(DB.otMaxDay)} ชม.` : 'ยกเลิกเพดาน OT แล้ว');
+  };
+  panel.querySelector('#otpAll').onclick=()=>setAll(()=>true);
+  panel.querySelector('#otpNone').onclick=()=>setAll(()=>false);
+  panel.querySelector('#otpDaily').onclick=()=>setAll(e=>e.payType==='daily');
+  panel.querySelector('#otpMonthly').onclick=()=>setAll(e=>e.payType!=='daily');
+  return panel;
+}
+
+// ตารางเวลารายวันของพนักงาน 1 คน — แก้ไขได้ทีละช่อง
+function attendDetailModal(empId){
+  const emp=DB.employees.find(e=>e.id===empId); if(!emp) return;
+  const rec=attendOf(PERIOD, empId);
+  ensureShifts();
+  const rows=periodDates(PERIOD).map(d=>{
+    const r=rec[d]||{}; const im=hm2min(r.i), om=hm2min(r.o);
+    const dt=new Date(d+'T00:00:00'); const wk=dt.getDay();
+    const sh=shiftFor(emp, d);
+    const {IM:im2, OM:om2, S:ws2, E:we2, grace:gr2}=punchMinutes(sh, r.i, r.o);
+    const isLate=im2!=null && im2>ws2+gr2;
+    const rawOver=(om2!=null&&om2>we2)?otHalfHours(om2-we2):0;
+    const capD=otCapFor(emp);
+    const over=(capD>0 && rawOver>capD) ? capD : rawOver;
+    const capped=over<rawOver;
+    const okOT=otAllowedFor(emp, d);
+    return `<tr style="${wk===0||wk===6?'background:#f8fafc':''}">
+      <td style="white-space:nowrap">${d.slice(8)}/${d.slice(5,7)}<br><span class="muted" style="font-size:11px">${WD_S[wk]}</span></td>
+      <td>${t24(`data-ai="${d}"`, r.i||'', isLate?'color:#dc2626;font-weight:700':'')}</td>
+      <td>${t24(`data-ao="${d}"`, r.o||'')}</td>
+      <td class="num">${!rawOver?'<span class="muted">-</span>'
+        : okOT ? `<strong style="color:#0d9488">${num(over)}</strong>${capped?`<br><span style="font-size:11px;color:#b45309" title="เกินเพดานวันละ ${num(capD)} ชม.">จาก ${num(rawOver)}</span>`:''}`
+               : `<span style="color:#94a3b8;text-decoration:line-through">${num(rawOver)}</span>`}</td>
+      <td><span class="chip" title="${esc(sh.start)}–${esc(sh.end)}"
+        style="background:${sh.color}1f;color:${sh.color}">${esc(sh.name)}</span>
+        ${shiftPlanned(emp,d)?'<br><span class="muted" style="font-size:10.5px">สลับกะ</span>':''}</td>
+      <td>${okOT?'<span class="chip" style="background:#ccfbf1;color:#0f766e">เปิด OT</span>'
+        : !otPerson(emp) ? '<span class="chip" style="background:#fef3c7;color:#b45309">คนนี้ปิด OT</span>'
+        : '<span class="chip" style="background:#f1f5f9;color:#64748b">วันนี้ปิด OT</span>'}</td>
+      <td>${isLate?'<span class="chip" style="background:#fee2e2;color:#dc2626">สาย</span>':(im!=null?'<span class="chip" style="background:#dcfce7;color:#16a34a">ปกติ</span>':'')}</td>
+    </tr>`;
+  }).join('');
+  openModal(`⏰ เวลาเข้างาน — ${emp.name}`,
+    `${!otPerson(emp)?`<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:9px;
+       padding:9px 12px;margin-bottom:10px;font-size:12.5px;color:#9a3412">
+       ⚠️ พนักงานคนนี้<strong>ปิดสิทธิ์ OT</strong> — เวลาที่อยู่เกินจะไม่ถูกคิดเป็น OT ทุกวัน</div>`:''}
+     <div class="tbl-wrap" style="max-height:56vh;overflow:auto"><table>
+      <thead><tr><th>วันที่</th><th>เข้า</th><th>ออก</th><th class="num">OT</th><th>กะ</th><th>OT วันนี้</th><th>สถานะ</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>
+     <p class="muted" style="font-size:12.5px;margin-top:10px">แก้เวลาแล้วกด “บันทึก” · เว้นว่าง = ไม่มาทำงานวันนั้น<br>
+     กรอกแบบ <strong>24 ชั่วโมง</strong> — พิมพ์ตัวเลขติดกันได้เลย เช่น <code>830</code> → 08:30 · <code>1745</code> → 17:45 · <code>20</code> → 20:00</p>`,
+    [['ปิด','ghost',closeModal],['💾 บันทึก','',()=>{
+      const box=ensureAttend(PERIOD); if(!box[empId]) box[empId]={};
+      const map=box[empId];
+      let bad=0;
+      $('#modal').querySelectorAll('[data-ai]').forEach(inp=>{
+        const d=inp.dataset.ai, o=$('#modal').querySelector(`[data-ao="${d}"]`);
+        const i=t24Norm(inp.value), ov=o?t24Norm(o.value):'';
+        if(i===null||ov===null){ bad++; return; }        // ค่าผิด → ข้ามไป ไม่เขียนทับของเดิม
+        if(!i && !ov) delete map[d]; else map[d]={i, o:ov};
+      });
+      if(bad){ toast(`มีเวลาไม่ถูกต้อง ${bad} ช่อง — ช่องนั้นไม่ถูกบันทึก`); }
+      if(!Object.keys(map).length) delete box[empId];
+      save(); closeModal(); render(); toast('บันทึกเวลาแล้ว');
+    }]]);
+}
+
+const ATT_CSV_HEAD=['รหัสพนักงาน','วันที่(ปปปป-ดด-วว)','เวลาเข้า(ชช:นน)','เวลาออก(ชช:นน)'];
+function attendTemplate(){
+  const {from}=periodRange(PERIOD);
+  const e=DB.employees[0];
+  const sample=[
+    [e?e.code:'EMP001', isoOf(from), '08:00','17:00'],
+    [e?e.code:'EMP001', isoOf(new Date(from.getFullYear(),from.getMonth(),from.getDate()+1)), '08:25','18:30'],
+  ];
+  const lines=[ATT_CSV_HEAD.map(csvEsc).join(','), ...sample.map(r=>r.map(csvEsc).join(','))];
+  downloadFile(`attendance_template.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
+  toast('ดาวน์โหลดเทมเพลตแล้ว');
+}
+function exportAttendCSV(){
+  const lines=[ATT_CSV_HEAD.map(csvEsc).join(',')];
+  let n=0;
+  DB.employees.forEach(e=>{
+    const rec=attendOf(PERIOD, e.id);
+    Object.keys(rec).sort().forEach(d=>{
+      if(!inPeriod(d,PERIOD)) return;
+      lines.push([e.code, d, rec[d].i||'', rec[d].o||''].map(csvEsc).join(',')); n++;
+    });
+  });
+  downloadFile(`attendance_${PERIOD}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
+  toast(n?`ส่งออก CSV แล้ว (${n} รายการ)`:'ยังไม่มีข้อมูลเวลาในงวดนี้');
+}
+function importAttendCSV(){
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='.csv,text/csv';
+  inp.onchange=()=>{ const f=inp.files[0]; if(!f) return; const rd=new FileReader();
+    rd.onload=()=>{
+      const rows=parseCSV(String(rd.result).replace(/^﻿/,''));
+      if(rows.length<2){ toast('ไฟล์ CSV ว่างเปล่า'); return; }
+      let ok=0; const bad=[], outside=[], unknown=new Set();
+      for(let r=1;r<rows.length;r++){
+        const c=rows[r]; if(!c||!String(c[0]||'').trim()) continue;
+        const code=String(c[0]).trim();
+        const emp=DB.employees.find(x=>String(x.code).trim()===code);
+        if(!emp){ unknown.add(code); continue; }
+        const d=String(c[1]||'').trim();
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(d)){ bad.push(`บรรทัด ${r+1}: วันที่ "${d}"`); continue; }
+        const i=String(c[2]||'').trim(), o=String(c[3]||'').trim();
+        if(i && hm2min(i)==null){ bad.push(`บรรทัด ${r+1}: เวลาเข้า "${i}"`); continue; }
+        if(o && hm2min(o)==null){ bad.push(`บรรทัด ${r+1}: เวลาออก "${o}"`); continue; }
+        if(!i && !o){ continue; }
+        // เก็บลงงวดที่วันที่นั้นสังกัด (รองรับไฟล์ที่คร่อมหลายงวด)
+        const p = periodOfDate(d);
+        const box=ensureAttend(p); if(!box[emp.id]) box[emp.id]={};
+        box[emp.id][d]={i,o};
+        if(p!==PERIOD) outside.push(p);
+        ok++;
+      }
+      save(); render();
+      let msg=`นำเข้าสำเร็จ ${ok} รายการ`;
+      if(unknown.size) msg+=` · ไม่พบรหัส ${[...unknown].slice(0,3).join(', ')}${unknown.size>3?'…':''}`;
+      if(bad.length) msg+=` · ข้อมูลผิด ${bad.length} บรรทัด`;
+      toast(msg);
+      if(bad.length||unknown.size){
+        openModal('ผลการนำเข้า CSV',
+          `<p>สำเร็จ <strong>${ok}</strong> รายการ${outside.length?` (มี ${new Set(outside).size} งวดอื่นด้วย)`:''}</p>
+           ${unknown.size?`<p style="color:#b45309">ไม่พบรหัสพนักงานเหล่านี้ในระบบ: <strong>${esc([...unknown].join(', '))}</strong><br>
+             <span class="muted" style="font-size:12.5px">ต้องเพิ่มพนักงานในเมนู “ข้อมูลพนักงาน” ให้รหัสตรงกันก่อน</span></p>`:''}
+           ${bad.length?`<p style="color:#dc2626">รูปแบบไม่ถูกต้อง:</p><ul style="margin-left:18px;font-size:13px">${bad.slice(0,12).map(b=>`<li>${esc(b)}</li>`).join('')}</ul>${bad.length>12?`<p class="muted">…และอีก ${bad.length-12} บรรทัด</p>`:''}`:''}`,
+          [['ปิด','ghost',closeModal]]);
+      }
+    };
+    rd.readAsText(f,'utf-8'); };
+  inp.click();
+}
+// งวดที่วันที่นี้สังกัด (อิงวันตัดรอบ)
+function periodOfDate(iso){
+  const [y,m,d]=iso.split('-').map(Number);
+  const cut=+DB.cutoffDay||0;
+  if(!cut) return `${y}-${pad2(m)}`;
+  // ถ้าเลยวันตัดรอบ → นับเป็นงวดเดือนถัดไป
+  if(d>cut){ const nm=m===12?1:m+1, ny=m===12?y+1:y; return `${ny}-${pad2(nm)}`; }
+  return `${y}-${pad2(m)}`;
+}
+// ส่งวันทำงาน + ชั่วโมง OT เข้าหน้าเงินได้/เงินหักของงวดนี้
+function pushAttendToPayroll(){
+  const list=DB.employees.filter(e=>!resignedBefore(e,PERIOD));
+  const targets=list.map(e=>({e, s:attendStats(e,PERIOD)})).filter(x=>x.s.days||x.s.otHours);
+  if(!targets.length){ toast('ยังไม่มีข้อมูลเวลาในงวดนี้'); return; }
+  const nDaily=targets.filter(x=>x.e.payType==='daily').length;
+  const nOT=targets.filter(x=>x.s.otHours>0).length;
+  openModal('➡️ ส่งข้อมูลเข้าเงินได้ / เงินหัก',
+    `<p>จากเวลาเข้างานงวด <strong>${esc(periodLabel(PERIOD))}</strong> จะเขียนข้อมูลลงหน้า “เงินได้ / เงินหัก”:</p>
+     <ul style="margin-left:18px">
+       <li>ตั้ง <strong>จำนวนวันทำงาน</strong> ให้พนักงานรายวัน <strong>${nDaily}</strong> คน</li>
+       <li>ตั้ง <strong>ชั่วโมง OT</strong> ให้ <strong>${nOT}</strong> คน แล้วคำนวณเงิน OT ใหม่ (ตัวคูณเดิม ถ้ายังไม่มีใช้ 1.5)</li>
+     </ul>
+     <p class="muted" style="font-size:12.5px">ค่าที่มีอยู่เดิมในสองช่องนี้จะถูกเขียนทับ ช่องอื่นไม่ถูกแตะ</p>`,
+    [['ยกเลิก','ghost',closeModal],['เขียนข้อมูล','',()=>{
+      let d=0, o=0;
+      targets.forEach(({e,s})=>{
+        const r=getRec(PERIOD, e.id);
+        if(e.payType==='daily'){ r.days=s.days; d++; }
+        if(s.otHours>0){
+          r.earn.otHours=s.otHours;
+          if(!r.earn.otMult) r.earn.otMult=1.5;
+          r.earn.ot=otAmount(e, r.earn.otHours, r.earn.otMult);
+          o++;
+        }
+        autoDeductions(e, r);   // ภาษี/ประกันสังคม/กสล. คำนวณใหม่ตามเงินได้ที่เปลี่ยน
+      });
+      save(); closeModal(); toast(`ส่งข้อมูลแล้ว · วันทำงาน ${d} คน · OT ${o} คน`);
+    }]]);
+}
+
+/* ============================================================
+   🌴 ระบบลางาน — ผูกกับข้อมูลพนักงาน
+   ลาไม่รับค่าจ้าง/ขาดงาน หักเงินเข้าหน้าเงินได้-เงินหักได้
+   ============================================================ */
+const LEAVE_TYPES=[
+  ['sick','ลาป่วย','#ef4444'],
+  ['personal','ลากิจ','#f59e0b'],
+  ['vacation','ลาพักร้อน','#10b981'],
+  ['maternity','ลาคลอด','#ec4899'],
+  ['ordination','ลาอุปสมบท','#8b5cf6'],
+  ['unpaid','ขาดงาน / ลาไม่รับค่าจ้าง','#64748b'],
+];
+const LEAVE_LAB=k=>{ const t=LEAVE_TYPES.find(x=>x[0]===k); return t?t[1]:k; };
+const LEAVE_COL=k=>{ const t=LEAVE_TYPES.find(x=>x[0]===k); return t?t[2]:'#64748b'; };
+const QUOTA_TYPES=['sick','personal','vacation'];
+
+function leaveList(){ if(!Array.isArray(DB.leave)) DB.leave=[]; return DB.leave; }
+// ชั่วโมงทำงานต่อวัน (ใช้แปลงวันลา ↔ ชั่วโมงลา)
+function lvHPD(){ return +DB.leaveHoursPerDay || +DB.otHours || 8; }
+function hrsToDays(h){ return Math.round((+h||0)/lvHPD()*10000)/10000; }
+function daysToHrs(d){ return Math.round((+d||0)*lvHPD()*100)/100; }
+// แสดงจำนวนวันลาให้อ่านง่าย — ถ้าไม่เต็มวันบอกเป็นชั่วโมงกำกับ
+function leaveAmountText(l){
+  const d=Number(l.days||daysBetween(l.from,l.to||l.from)||0);
+  const h=(l.hours!=null && l.hours!=='') ? Number(l.hours) : null;
+  if(h!=null) return `${num(h)} ชม.<br><span class="muted" style="font-size:11.5px">= ${num(Math.round(d*100)/100)} วัน</span>`;
+  return num(d);
+}
+function daysBetween(a,b){
+  if(!a||!b) return 0;
+  const [y1,m1,d1]=a.split('-').map(Number), [y2,m2,d2]=b.split('-').map(Number);
+  const A=new Date(y1,m1-1,d1), B=new Date(y2,m2-1,d2);
+  if(B<A) return 0;
+  return Math.round((B-A)/86400000)+1;
+}
+// จำนวนวันลาของใบลานี้ที่ตกอยู่ในงวด p
+function leaveDaysInPeriod(lv, p){
+  const {from,to}=periodRange(p);
+  const [y1,m1,d1]=lv.from.split('-').map(Number), [y2,m2,d2]=(lv.to||lv.from).split('-').map(Number);
+  let A=new Date(y1,m1-1,d1), B=new Date(y2,m2-1,d2);
+  if(A<from) A=from; if(B>to) B=to;
+  if(A>B) return 0;
+  const span=Math.round((B-A)/86400000)+1;
+  const total=daysBetween(lv.from, lv.to||lv.from) || 1;
+  // ถ้าผู้ใช้ระบุจำนวนวันเอง (เช่นลาครึ่งวัน) เฉลี่ยตามสัดส่วน
+  return Math.round((Number(lv.days||total) * span/total)*100)/100;
+}
+// วันครบ 1 ปีของพนักงาน (วันเริ่มงาน + 1 ปี)
+function anniversary1Y(emp){
+  if(!emp || !emp.startDate) return null;
+  const [y,m,d]=String(emp.startDate).split('-').map(Number);
+  if(!y||!m||!d) return null;
+  return new Date(y+1, m-1, d);
+}
+// สิทธิ์ลาพักร้อนของปีที่ดู: ต้องทำงานครบ 1 ปีแล้ว
+//   ปีที่ผ่านมา/ปีอนาคต → วัดที่สิ้นปีนั้น · ปีปัจจุบัน → วัดที่วันนี้
+function vacationEligible(emp, year){
+  const ann=anniversary1Y(emp);
+  if(!ann) return { ok:false, ann:null, reason:'ไม่ได้ระบุวันเริ่มงาน' };
+  const nowY=new Date().getFullYear();
+  const asOf = (year===nowY) ? new Date() : new Date(year,11,31);
+  return { ok: ann<=asOf, ann, asOf };
+}
+function fmtThaiDate(d){ return d? `${d.getDate()} ${THAI_MONTHS_ABBR[d.getMonth()]} ${d.getFullYear()+543}` : '-'; }
+// อายุงาน ณ วันที่อ้างอิง — คืนข้อความอ่านง่าย
+function serviceText(emp, year){
+  if(!emp.startDate) return '-';
+  const [y,m,d]=String(emp.startDate).split('-').map(Number);
+  const S=new Date(y,m-1,d);
+  const nowY=new Date().getFullYear();
+  const asOf=(year===nowY)?new Date():new Date(year,11,31);
+  if(S>asOf) return 'ยังไม่เริ่มงาน';
+  let yy=asOf.getFullYear()-S.getFullYear();
+  let mm=asOf.getMonth()-S.getMonth();
+  if(asOf.getDate()<S.getDate()) mm--;
+  if(mm<0){ yy--; mm+=12; }
+  return (yy>0? yy+' ปี ':'') + mm + ' เดือน';
+}
+// โควตาที่ได้จริงของพนักงานคนนี้ในปีนี้ (ลาพักร้อนผูกกับอายุงานครบ 1 ปี)
+function quotaFor(emp, type, year){
+  const base=+((DB.leaveQuota||{})[type])||0;
+  if(type!=='vacation') return base;
+  return vacationEligible(emp, year).ok ? base : 0;
+}
+
+function leaveUsed(empId, year, type){
+  return leaveList().filter(l=>l.empId===empId && l.type===type && l.status!=='rejected'
+      && String(l.from||'').slice(0,4)===String(year))
+    .reduce((s,l)=>s+Number(l.days||daysBetween(l.from,l.to||l.from)||0),0);
+}
+function unpaidDeduction(emp, p){
+  if(emp.payType==='daily') return 0;   // รายวันไม่จ่ายวันที่ไม่มา อยู่แล้ว
+  const d=leaveList().filter(l=>l.empId===emp.id && l.type==='unpaid' && l.status!=='rejected')
+    .reduce((s,l)=>s+leaveDaysInPeriod(l,p),0);
+  if(!d) return 0;
+  return Math.round(Number(emp.salary||0)/30*d);
+}
+
+let leaveYear, leaveEmpF='all', leaveTypeF='all';
+function vLeave(v){
+  const lst=leaveList();
+  const py=+PERIOD.split('-')[0];
+  if(leaveYear===undefined) leaveYear=py;
+  const yr=leaveYear;   // null = ทุกปี
+  const inYr=l=>yr===null || String(l.from||'').slice(0,4)===String(yr);
+
+  let rows=lst.filter(inYr);
+  if(leaveEmpF!=='all') rows=rows.filter(l=>l.empId===leaveEmpF);
+  if(leaveTypeF!=='all') rows=rows.filter(l=>l.type===leaveTypeF);
+  rows=rows.slice().sort((a,b)=>String(b.from).localeCompare(String(a.from)));
+
+  const yrAll=lst.filter(inYr);
+  const totDays=yrAll.filter(l=>l.status!=='rejected').reduce((s,l)=>s+Number(l.days||daysBetween(l.from,l.to||l.from)||0),0);
+  const byType={}; LEAVE_TYPES.forEach(([k])=>byType[k]=0);
+  yrAll.filter(l=>l.status!=='rejected').forEach(l=>{ byType[l.type]=(byType[l.type]||0)+Number(l.days||daysBetween(l.from,l.to||l.from)||0); });
+  const pend=yrAll.filter(l=>l.status==='pending').length;
+
+  v.appendChild(el(`<div class="cards">
+    <div class="kpi b1"><div class="lab">📝 ใบลา${yr===null?' (ทุกปี)':' ปี '+(yr+543)}</div><div class="val">${num(yrAll.length)} <span class="muted" style="font-size:14px">ใบ</span></div></div>
+    <div class="kpi b2"><div class="lab">📅 วันลารวม</div><div class="val">${num(totDays)} <span class="muted" style="font-size:14px">วัน</span></div></div>
+    <div class="kpi b3"><div class="lab">⏳ รออนุมัติ</div><div class="val">${num(pend)} <span class="muted" style="font-size:14px">ใบ</span></div></div>
+    <div class="kpi b4"><div class="lab">💸 ขาดงาน/ไม่รับค่าจ้าง</div><div class="val">${num(byType.unpaid||0)} <span class="muted" style="font-size:14px">วัน</span></div></div>
+  </div>`));
+
+  const yset=new Set([py]); lst.forEach(l=>{ if(l.from) yset.add(+String(l.from).slice(0,4)); });
+  const years=[...yset].sort((a,b)=>b-a);
+  const active=DB.employees.filter(e=>!e.resignDate);
+
+  const bar=el(`<div class="toolbar">
+    <button class="btn sm" id="lvAdd">➕ เพิ่มใบลา</button>
+    <button class="btn ghost sm" id="lvExp">⬇️ ส่งออก CSV</button>
+    <button class="btn ghost sm" id="lvImp">⬆️ นำเข้า CSV</button>
+    <button class="btn ghost sm" id="lvPush">➡️ หักเงินขาดงานเข้างวด</button>
+    <div class="field" style="margin-left:auto"><label>พนักงาน</label>
+      <select id="lvEmp"><option value="all">ทั้งหมด</option>
+        ${DB.employees.map(e=>`<option value="${e.id}" ${leaveEmpF===e.id?'selected':''}>${esc(e.code)} — ${esc(e.name)}</option>`).join('')}</select></div>
+    <div class="field"><label>ประเภท</label>
+      <select id="lvType"><option value="all">ทั้งหมด</option>
+        ${LEAVE_TYPES.map(([k,l])=>`<option value="${k}" ${leaveTypeF===k?'selected':''}>${esc(l)}</option>`).join('')}</select></div>
+    <div class="field"><label>ปี (พ.ศ.)</label>
+      <select id="lvYr"><option value="">ทุกปี</option>${years.map(y=>`<option value="${y}" ${yr===y?'selected':''}>${y+543}</option>`).join('')}</select></div>
+  </div>`);
+  v.appendChild(bar);
+  bar.querySelector('#lvAdd').onclick=()=>leaveModal(null);
+  bar.querySelector('#lvExp').onclick=exportLeaveCSV;
+  bar.querySelector('#lvImp').onclick=importLeaveCSV;
+  bar.querySelector('#lvPush').onclick=pushUnpaidToPayroll;
+  bar.querySelector('#lvEmp').onchange=e=>{ leaveEmpF=e.target.value; render(); };
+  bar.querySelector('#lvType').onchange=e=>{ leaveTypeF=e.target.value; render(); };
+  bar.querySelector('#lvYr').onchange=e=>{ leaveYear=e.target.value===''?null:+e.target.value; render(); };
+
+  // โควตาวันลาต่อปี
+  const q=DB.leaveQuota||{};
+  const cfg=el(`<div class="panel" style="margin-bottom:16px"><div class="pbody">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+      ${QUOTA_TYPES.map(k=>`<div class="field"><label>โควตา${LEAVE_LAB(k)} (วัน/ปี)${k==='vacation'?' <span style="color:#b45309">*</span>':''}</label>
+        <input type="number" min="0" step="0.5" id="lq_${k}" value="${q[k]??''}"></div>`).join('')}
+      <div class="field" style="max-width:170px"><label>ชั่วโมงทำงาน/วัน</label>
+        <input type="number" min="1" step="0.5" id="lvHPD" value="${lvHPD()}"></div>
+      <button class="btn ghost sm" id="lvQSave">💾 บันทึกโควตา</button>
+      <span class="muted" style="font-size:12.5px">ตามกฎหมายแรงงาน: ลาป่วย 30 วัน · ลากิจ 3 วัน · ลาพักร้อน 6 วัน<br>
+        <span style="color:#b45309">* ลาพักร้อนให้เฉพาะพนักงานที่ทำงานครบ 1 ปีแล้ว — คนที่ยังไม่ครบจะไม่ได้โควตา</span></span>
+    </div></div></div>`);
+  v.appendChild(cfg);
+  cfg.querySelector('#lvQSave').onclick=()=>{
+    DB.leaveQuota=DB.leaveQuota||{};
+    QUOTA_TYPES.forEach(k=>{ DB.leaveQuota[k]=+cfg.querySelector('#lq_'+k).value||0; });
+    DB.leaveHoursPerDay=Math.max(1,+cfg.querySelector('#lvHPD').value||8);
+    save(); render(); toast('บันทึกโควตาแล้ว');
+  };
+
+  if(!DB.employees.length){ v.appendChild(el(`<div class="panel"><div class="empty">${tr('no_emp_hint')}</div></div>`)); return; }
+
+  // ตารางใบลา
+  const stCol={approved:'#dcfce7;color:#16a34a', pending:'#fef3c7;color:#b45309', rejected:'#fee2e2;color:#dc2626'};
+  const stLab={approved:'อนุมัติ', pending:'รออนุมัติ', rejected:'ไม่อนุมัติ'};
+  const body=rows.length? rows.map(l=>{
+    const e=DB.employees.find(x=>x.id===l.empId);
+    const dd=Number(l.days||daysBetween(l.from,l.to||l.from)||0);
+    return `<tr>
+      <td>${e?`<strong>${esc(e.name)}</strong><br><span class="muted" style="font-size:12px">${esc(e.code)} · ${esc(e.dept||'-')}</span>`
+             :'<span class="muted">— ไม่พบพนักงาน —</span>'}</td>
+      <td><span class="chip" style="background:${LEAVE_COL(l.type)}22;color:${LEAVE_COL(l.type)}">${esc(LEAVE_LAB(l.type))}</span></td>
+      <td style="white-space:nowrap">${esc(l.from||'')}${l.to&&l.to!==l.from?'<br>ถึง '+esc(l.to):''}</td>
+      <td class="num"><strong>${leaveAmountText(l)}</strong></td>
+      <td>${esc(l.reason||'')||'<span class="muted">-</span>'}</td>
+      <td><span class="chip" style="background:${stCol[l.status]||stCol.approved}">${stLab[l.status]||l.status}</span></td>
+      <td style="text-align:right;white-space:nowrap">
+        <button class="btn ghost sm" data-lv-ed="${l.id}">✏️</button>
+        <button class="btn danger sm" data-lv-del="${l.id}">🗑️</button></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="7"><div class="empty">ยังไม่มีใบลา — กด “➕ เพิ่มใบลา”</div></td></tr>`;
+
+  const panel=el(`<div class="panel"><div class="phead" style="padding:12px 16px;font-weight:700">📝 รายการใบลา (${rows.length})</div>
+    <div class="pbody" style="padding:0"><div class="tbl-wrap"><table>
+    <thead><tr><th>พนักงาน</th><th>ประเภท</th><th>วันที่</th><th class="num">วัน</th><th>เหตุผล</th><th>สถานะ</th><th></th></tr></thead>
+    <tbody>${body}</tbody></table></div></div></div>`);
+  v.appendChild(panel);
+  panel.querySelectorAll('[data-lv-ed]').forEach(b=>b.onclick=()=>leaveModal(b.dataset.lvEd));
+  panel.querySelectorAll('[data-lv-del]').forEach(b=>b.onclick=()=>{
+    const l=leaveList().find(x=>x.id===b.dataset.lvDel); if(!l) return;
+    const e=DB.employees.find(x=>x.id===l.empId);
+    openModal('ลบใบลา',`<p>ลบใบลา${esc(LEAVE_LAB(l.type))} ของ <strong>${esc(e?e.name:'-')}</strong> วันที่ ${esc(l.from)} ?</p>`,
+      [['ยกเลิก','ghost',closeModal],['ลบ','danger',()=>{
+        DB.leave=leaveList().filter(x=>x.id!==l.id); save(); closeModal(); render(); toast('ลบใบลาแล้ว');
+      }]]);
+  });
+
+  // สรุปโควตาคงเหลือรายคน
+  if(yr!==null && active.length){
+    const qrows=active.map(e=>{
+      const vac=vacationEligible(e, yr);
+      const cells=QUOTA_TYPES.map(k=>{
+        const used=leaveUsed(e.id, yr, k), quota=quotaFor(e, k, yr);
+        // ลาพักร้อนแต่ยังไม่ครบ 1 ปี → ไม่มีสิทธิ์
+        if(k==='vacation' && !vac.ok){
+          return `<td class="num"><span class="chip" style="background:#f1f5f9;color:#64748b">ยังไม่มีสิทธิ์</span>
+            <br><span class="muted" style="font-size:11.5px">${vac.ann?'ครบ 1 ปี '+fmtThaiDate(vac.ann):esc(vac.reason||'')}</span>
+            ${used?`<br><span style="font-size:12px;color:#dc2626">ใช้ไป ${num(used)} วัน</span>`:''}</td>`;
+        }
+        const left=quota-used, over=quota>0&&left<0;
+        return `<td class="num">${num(used)}${quota?` <span class="muted">/ ${num(quota)}</span>`:''}
+          ${quota?`<br><span style="font-size:12px;color:${over?'#dc2626':'#16a34a'}">${over?'เกิน '+num(-left):'เหลือ '+num(left)}</span>`:''}</td>`;
+      }).join('');
+      const other=LEAVE_TYPES.filter(([k])=>!QUOTA_TYPES.includes(k))
+        .reduce((s,[k])=>s+leaveUsed(e.id,yr,k),0);
+      return `<tr><td>${esc(e.code)}</td><td><strong>${esc(e.name)}</strong>
+        ${e.startDate?`<br><span class="muted" style="font-size:11.5px">เริ่ม ${esc(e.startDate)}</span>`:''}</td>
+        <td class="num">${esc(serviceText(e, yr))}</td>${cells}
+        <td class="num">${other?num(other):'<span class="muted">-</span>'}</td></tr>`;
+    }).join('');
+    const nEligible=active.filter(e=>vacationEligible(e,yr).ok).length;
+    v.appendChild(el(`<div class="panel" style="margin-top:16px">
+      <div class="phead" style="padding:12px 16px;font-weight:700">📊 โควตาวันลาคงเหลือ ปี ${yr+543}</div>
+      <div class="pbody" style="padding:0"><div class="tbl-wrap"><table>
+      <thead><tr><th>${tr('th_code')}</th><th>${tr('th_name')}</th><th class="num">อายุงาน</th>
+        ${QUOTA_TYPES.map(k=>`<th class="num">${esc(LEAVE_LAB(k))}${k==='vacation'?'<br><span style="font-weight:400;font-size:11px">ต้องครบ 1 ปี</span>':''}</th>`).join('')}
+        <th class="num">ลาอื่น ๆ</th></tr></thead>
+      <tbody>${qrows}</tbody></table></div>
+      <div style="padding:11px 16px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)">
+        🌴 <strong>ลาพักร้อน</strong>: มีสิทธิ์เฉพาะผู้ที่ทำงานติดต่อกัน<strong>ครบ 1 ปี</strong>แล้วเท่านั้น
+        (พ.ร.บ.คุ้มครองแรงงาน ม.30) — ปี ${yr+543} มีสิทธิ์ <strong>${num(nEligible)}</strong> / ${num(active.length)} คน
+      </div></div></div>`));
+  }
+}
+
+function leaveModal(id){
+  const lst=leaveList();
+  const cur=id? lst.find(x=>x.id===id) : null;
+  const pool=cur? DB.employees : DB.employees.filter(e=>!e.resignDate);
+  if(!pool.length){ toast('ยังไม่มีพนักงาน'); return; }
+  const {from}=periodRange(PERIOD);
+  const d0=cur?cur.from:isoOf(from);
+  openModal(cur?'✏️ แก้ไขใบลา':'➕ เพิ่มใบลา',
+    `<div class="field"><label>พนักงาน *</label><select id="lvE">
+      ${pool.map(e=>`<option value="${e.id}" ${cur&&cur.empId===e.id?'selected':''}>${esc(e.code)} — ${esc(e.name)}${e.resignDate?' (ลาออกแล้ว)':''}</option>`).join('')}</select></div>
+     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+       <div class="field"><label>ประเภทการลา *</label><select id="lvT">
+         ${LEAVE_TYPES.map(([k,l])=>`<option value="${k}" ${cur&&cur.type===k?'selected':''}>${esc(l)}</option>`).join('')}</select></div>
+       <div class="field"><label>สถานะ</label><select id="lvS">
+         <option value="approved" ${!cur||cur.status==='approved'?'selected':''}>อนุมัติ</option>
+         <option value="pending" ${cur&&cur.status==='pending'?'selected':''}>รออนุมัติ</option>
+         <option value="rejected" ${cur&&cur.status==='rejected'?'selected':''}>ไม่อนุมัติ</option></select></div>
+     </div>
+     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+       <div class="field"><label>ลาตั้งแต่ *</label><input type="date" id="lvF" value="${esc(d0)}"></div>
+       <div class="field"><label>ถึงวันที่ *</label><input type="date" id="lvTo" value="${esc(cur?(cur.to||cur.from):d0)}"></div>
+       <div class="field"><label>จำนวนวัน</label><input type="number" step="0.5" min="0" id="lvD" value="${cur?(cur.days??''):''}" placeholder="อัตโนมัติ"></div>
+       <div class="field"><label>หรือจำนวนชั่วโมง</label><input type="number" step="0.5" min="0" id="lvH" value="${cur&&cur.hours!=null?cur.hours:''}" placeholder="เช่น 2"></div>
+     </div>
+     <div class="field" style="margin-top:10px"><label>เหตุผล</label><input id="lvR" value="${esc(cur?cur.reason||'':'')}" placeholder="เช่น ไปโรงพยาบาล"></div>
+     <div id="lvWarn" style="display:none;margin-top:10px;background:#fff7ed;border:1px solid #fed7aa;
+        border-radius:9px;padding:10px 12px;font-size:12.5px;color:#9a3412"></div>
+     <p class="muted" style="font-size:12.5px;margin-top:10px">เว้นทั้งสองช่องว่างไว้ = นับจากช่วงวันที่ให้เอง · ลาครึ่งวันใส่ 0.5 วัน<br>
+       กรอกช่องไหนอีกช่องคำนวณให้อัตโนมัติ (<strong>${num(lvHPD())} ชม. = 1 วัน</strong> ปรับได้ที่ช่อง “ชั่วโมงทำงาน/วัน”)</p>`,
+    [['ยกเลิก','ghost',closeModal],[cur?'บันทึก':'เพิ่ม','',()=>{
+      const empId=$('#lvE').value, type=$('#lvT').value, status=$('#lvS').value;
+      const f=$('#lvF').value, t=$('#lvTo').value||$('#lvF').value;
+      const manual=$('#lvD').value.trim(), manualH=$('#lvH').value.trim();
+      if(!empId||!f){ toast('กรอกข้อมูลไม่ครบ'); return; }
+      if(daysBetween(f,t)===0){ toast('ช่วงวันที่ไม่ถูกต้อง (วันสิ้นสุดต้องไม่ก่อนวันเริ่ม)'); return; }
+      // กรอกชั่วโมง → แปลงเป็นวันให้ (โควตาและการหักเงินคิดเป็นวันทั้งระบบ)
+      let days, hours=null;
+      if(manualH!==''){ hours=+manualH; days=hrsToDays(hours); }
+      else if(manual!==''){ days=+manual; }
+      else { days=daysBetween(f,t); }
+      if(!(days>0)){ toast(manualH!==''?'จำนวนชั่วโมงต้องมากกว่า 0':'จำนวนวันต้องมากกว่า 0'); return; }
+      const rec={ empId, type, status, from:f, to:t, days, hours, reason:$('#lvR').value.trim() };
+      if(cur) Object.assign(cur, rec); else leaveList().push({ id:uid(), ...rec });
+      save(); closeModal(); render(); toast(cur?'บันทึกใบลาแล้ว':'เพิ่มใบลาแล้ว');
+    }]]);
+  // เตือนถ้าเลือกลาพักร้อนให้คนที่ยังทำงานไม่ครบ 1 ปี
+  const chkVac=()=>{
+    const box=$('#lvWarn'); if(!box) return;
+    const e=DB.employees.find(x=>x.id===$('#lvE').value);
+    const yr=+String($('#lvF').value||'').slice(0,4) || new Date().getFullYear();
+    if($('#lvT').value==='vacation' && e){
+      const vac=vacationEligible(e, yr);
+      if(!vac.ok){
+        box.style.display='block';
+        box.innerHTML=`⚠️ <strong>${esc(e.name)}</strong> ยังทำงานไม่ครบ 1 ปี จึงยังไม่มีสิทธิ์ลาพักร้อน`
+          + (vac.ann? ` — จะครบ 1 ปีวันที่ <strong>${fmtThaiDate(vac.ann)}</strong>` : ` (${esc(vac.reason||'')})`)
+          + `<br>บันทึกได้ แต่จะแสดงเป็น “ใช้เกินสิทธิ์” ในตารางโควตา`;
+        return;
+      }
+    }
+    box.style.display='none';
+  };
+  ['#lvE','#lvT','#lvF'].forEach(s=>{ const n=$(s); if(n) n.addEventListener('change', chkVac); });
+  chkVac();
+  // กรอกช่องไหน อีกช่องคำนวณตาม
+  const dIn=$('#lvD'), hIn=$('#lvH');
+  if(dIn&&hIn){
+    let lock=false;
+    dIn.addEventListener('input',()=>{ if(lock) return; lock=true;
+      hIn.value = dIn.value.trim()===''?'':String(daysToHrs(+dIn.value||0)); lock=false; });
+    hIn.addEventListener('input',()=>{ if(lock) return; lock=true;
+      dIn.value = hIn.value.trim()===''?'':String(Math.round(hrsToDays(+hIn.value||0)*10000)/10000); lock=false; });
+  }
+}
+
+const LV_CSV_HEAD=['รหัสพนักงาน','ประเภท','ลาตั้งแต่(ปปปป-ดด-วว)','ถึงวันที่(ปปปป-ดด-วว)','จำนวนวัน','จำนวนชั่วโมง','เหตุผล','สถานะ'];
+function exportLeaveCSV(){
+  const lines=[LV_CSV_HEAD.map(csvEsc).join(',')];
+  const yr=leaveYear;
+  leaveList().filter(l=>yr===null||yr===undefined||String(l.from||'').slice(0,4)===String(yr)).forEach(l=>{
+    const e=DB.employees.find(x=>x.id===l.empId);
+    lines.push([e?e.code:'', LEAVE_LAB(l.type), l.from||'', l.to||l.from||'',
+      l.days||daysBetween(l.from,l.to||l.from), (l.hours!=null?l.hours:''), l.reason||'',
+      l.status==='pending'?'รออนุมัติ':l.status==='rejected'?'ไม่อนุมัติ':'อนุมัติ'].map(csvEsc).join(','));
+  });
+  downloadFile(`leave_${leaveYear||'all'}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
+  toast(`ส่งออก CSV แล้ว (${lines.length-1} ใบ)`);
+}
+function importLeaveCSV(){
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='.csv,text/csv';
+  inp.onchange=()=>{ const f=inp.files[0]; if(!f) return; const rd=new FileReader();
+    rd.onload=()=>{
+      const rows=parseCSV(String(rd.result).replace(/^﻿/,''));
+      if(rows.length<2){ toast('ไฟล์ CSV ว่างเปล่า'); return; }
+      let ok=0; const unknown=new Set(); const bad=[];
+      for(let r=1;r<rows.length;r++){
+        const c=rows[r]; if(!c||!String(c[0]||'').trim()) continue;
+        const code=String(c[0]).trim();
+        const emp=DB.employees.find(x=>String(x.code).trim()===code);
+        if(!emp){ unknown.add(code); continue; }
+        const tTxt=String(c[1]||'').trim();
+        const t=(LEAVE_TYPES.find(([k,l])=>l===tTxt||k===tTxt)||['unpaid'])[0];
+        const fr=String(c[2]||'').trim(), to=String(c[3]||'').trim()||fr;
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(fr)){ bad.push(`บรรทัด ${r+1}: วันที่ "${fr}"`); continue; }
+        if(daysBetween(fr,to)===0){ bad.push(`บรรทัด ${r+1}: ช่วงวันที่ไม่ถูกต้อง`); continue; }
+        const hTxt=String(c[5]||'').trim();
+        const hours = hTxt!=='' ? +hTxt : null;
+        const days = hours!=null ? hrsToDays(hours) : (+c[4]||daysBetween(fr,to));
+        const stTxt=String(c[7]||'').trim();
+        const status=/รออนุมัติ|pending/i.test(stTxt)?'pending':/ไม่อนุมัติ|reject/i.test(stTxt)?'rejected':'approved';
+        leaveList().push({ id:uid(), empId:emp.id, type:t, from:fr, to, days, hours,
+          reason:String(c[6]||'').trim(), status });
+        ok++;
+      }
+      save(); render();
+      let msg=`นำเข้าใบลา ${ok} ใบ`;
+      if(unknown.size) msg+=` · ไม่พบรหัส ${[...unknown].slice(0,3).join(', ')}`;
+      if(bad.length) msg+=` · ผิดรูปแบบ ${bad.length} บรรทัด`;
+      toast(msg);
+    };
+    rd.readAsText(f,'utf-8'); };
+  inp.click();
+}
+// หักเงินขาดงาน/ลาไม่รับค่าจ้าง เข้าช่อง "หักขาดงาน" ของงวดนี้
+function pushUnpaidToPayroll(){
+  const list=DB.employees.filter(e=>!resignedBefore(e,PERIOD));
+  const targets=list.map(e=>({e, amt:unpaidDeduction(e,PERIOD),
+      d:leaveList().filter(l=>l.empId===e.id&&l.type==='unpaid'&&l.status!=='rejected')
+        .reduce((s,l)=>s+leaveDaysInPeriod(l,PERIOD),0)}))
+    .filter(x=>x.d>0);
+  if(!targets.length){ toast('ไม่มีวันขาดงาน/ลาไม่รับค่าจ้างในงวดนี้'); return; }
+  const rowsHtml=targets.map(({e,amt,d})=>`<tr><td>${esc(e.name)}</td><td class="num">${num(d)}</td>
+    <td class="num">${e.payType==='daily'?'<span class="muted">คิดจากวันทำงานแล้ว</span>':'<strong>'+money(amt)+'</strong>'}</td></tr>`).join('');
+  openModal('➡️ หักเงินขาดงานเข้างวด '+periodLabel(PERIOD),
+    `<div class="tbl-wrap"><table><thead><tr><th>พนักงาน</th><th class="num">วันขาด</th><th class="num">หักเงิน</th></tr></thead>
+      <tbody>${rowsHtml}</tbody></table></div>
+     <p class="muted" style="font-size:12.5px;margin-top:10px">สูตร: เงินเดือน ÷ 30 × จำนวนวันขาด · เขียนลงช่อง “หักขาดงาน/ลาไม่รับค่าจ้าง”<br>
+     พนักงานรายวันไม่ถูกหัก เพราะได้ค่าจ้างตามจำนวนวันที่มาทำงานอยู่แล้ว</p>`,
+    [['ยกเลิก','ghost',closeModal],['เขียนข้อมูล','',()=>{
+      let n=0;
+      targets.forEach(({e,amt})=>{
+        if(e.payType==='daily') return;
+        const r=getRec(PERIOD, e.id);
+        r.ded.absent=amt; n++;
+        autoDeductions(e, r);
+      });
+      save(); closeModal(); toast(`หักเงินขาดงานแล้ว ${n} คน`);
+    }]]);
+}
+
 /* ---------- Import / Export ---------- */
 function exportJSON(){ downloadFile(`payroll_backup_${curPeriod()}.json`, JSON.stringify(DB,null,2),'application/json'); toast('ส่งออกข้อมูลแล้ว'); }
 function importJSON(){
@@ -1915,7 +3355,7 @@ function downloadFile(name, content, type){
 }
 
 /* ---------- นำเข้า/ส่งออก พนักงาน เป็น CSV ---------- */
-const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%'];
+const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%','กองทุนสงเคราะห์%','คิดOT(ใช่/ไม่)','กะประจำ','เพดานOT/วัน'];
 function csvEsc(v){ v=String(v??''); return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
 function parseCSV(text){
   const rows=[]; let field='', row=[], inQ=false; text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
@@ -1937,7 +3377,7 @@ function exportEmpCSV(){
       e.nationality||'', e.position||'', e.dept||'',
       e.payType==='daily'?'รายวัน':'รายเดือน',
       e.salary||0, e.startDate||'', e.resignDate||'', e.taxId||'',
-      e.address||'', e.bank||'', e.bankNo||'', e.pvdRate||0].map(csvEsc).join(','));
+      e.address||'', e.bank||'', e.bankNo||'', e.pvdRate||0, e.wfRate||'', e.noOT?'ไม่':'ใช่', (shiftById(e.shiftId)||ensureShifts()[0]).name, e.otMaxDay||''].map(csvEsc).join(','));
   });
   const tag = empFilter==='daily'?'_รายวัน' : empFilter==='monthly'?'_รายเดือน' : '';
   downloadFile(`employees${tag}_${curPeriod()}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
@@ -1959,7 +3399,11 @@ function importEmpCSV(){
           payType:/วัน|daily/i.test(String(c[6]||''))?'daily':'monthly',
           salary:+c[7]||0, startDate:String(c[8]||'').trim(), resignDate:String(c[9]||'').trim(),
           taxId:String(c[10]||'').trim(), address:String(c[11]||'').trim(),
-          bank:String(c[12]||'').trim(), bankNo:String(c[13]||'').trim(), pvdRate:+c[14]||0
+          bank:String(c[12]||'').trim(), bankNo:String(c[13]||'').trim(), pvdRate:+c[14]||0,
+          wfRate: (+c[14]||0)>0 ? 0 : (+c[15]||0),
+          noOT: c[16]!==undefined && /^(ไม่|no|n|0|false)$/i.test(String(c[16]).trim()) ? 1 : 0,
+          shiftId: (ensureShifts().find(s=>s.name===String(c[17]||'').trim())||{}).id,
+          otMaxDay: +c[18]||0
         };
         const ex=DB.employees.find(x=>x.code===rec.code);
         if(ex){ Object.assign(ex,rec); updated++; } else { DB.employees.push({id:uid(),...rec}); added++; }
@@ -1976,6 +3420,7 @@ function openModal(title, body, buttons){
   m.innerHTML=`<div class="mhead"><h3>${esc(title)}</h3></div><div class="mbody">${body}</div><div class="mfoot"></div>`;
   const foot=m.querySelector('.mfoot');
   (buttons||[['ปิด','ghost',closeModal]]).forEach(([lab,cls,fn])=>{ const b=el(`<button class="btn ${cls}">${esc(lab)}</button>`); b.onclick=fn; foot.appendChild(b); });
+  wireT24(m);                     // ช่องเวลา 24 ชม. ในโมดัลใด ๆ ใช้งานได้ทันที
   $('#backdrop').classList.add('on');
 }
 function closeModal(){ $('#backdrop').classList.remove('on'); }
@@ -2018,21 +3463,35 @@ let _cloudT=null;
 function cloudSaveDebounced(){ if(!sb||!TARGET_UID) return; clearTimeout(_cloudT); _cloudT=setTimeout(cloudSave, 1200); }
 async function cloudSave(){
   try{ if(!TARGET_UID) return;
-    const {error}=await sb.from('payroll_stores').upsert({user_id:TARGET_UID, data:DB});
-    setSync(error?'⚠️ ซิงก์ไม่สำเร็จ':'✓ บันทึกขึ้นคลาวด์แล้ว');
+    const {core, prem}=splitStores(DB);
+    const {error}=await sb.from('payroll_stores').upsert({user_id:TARGET_UID, data:core});
+    if(error){ setSync('⚠️ ซิงก์ไม่สำเร็จ'); return; }
+    // ข้อมูลพรีเมี่ยมเก็บอีกตาราง — ถ้าไม่มีสิทธิ์ ฐานข้อมูลจะปฏิเสธเอง
+    if(hasPremium()){
+      const {error:e2}=await sb.from('premium_stores')
+        .upsert({user_id:TARGET_UID, data:prem, updated_at:new Date().toISOString()});
+      if(e2){ setSync('✓ บันทึกเงินเดือนแล้ว · ⚠️ ข้อมูลพรีเมี่ยมบันทึกไม่ได้'); return; }
+    }
+    setSync('✓ บันทึกขึ้นคลาวด์แล้ว');
   }catch(e){ setSync('⚠️ ซิงก์ไม่สำเร็จ'); }
 }
 async function cloudLoad(uid){
   const {data}=await sb.from('payroll_stores').select('data').eq('user_id',uid).maybeSingle();
-  if(data && data.data && data.data.employees){ localStorage.setItem(LS_KEY, JSON.stringify(data.data)); }
+  let merged = (data && data.data && data.data.employees) ? data.data : null;
+  // ดึงข้อมูลพรีเมี่ยม — ถ้าไม่มีสิทธิ์ RLS จะคืนค่าว่าง (ไม่ error)
+  try{
+    const {data:pd}=await sb.from('premium_stores').select('data').eq('user_id',uid).maybeSingle();
+    if(merged && pd && pd.data) Object.assign(merged, pd.data);
+  }catch(e){ /* ไม่มีสิทธิ์ = ไม่มีข้อมูลพรีเมี่ยม ใช้ค่าเริ่มต้นแทน */ }
+  if(merged){ localStorage.setItem(LS_KEY, JSON.stringify(merged)); }
   else { localStorage.removeItem(LS_KEY); }   // ไม่มีข้อมูลบนคลาวด์ → เริ่มว่าง (กันข้อมูลค้างของคนก่อน)
   DB=load();
 }
-function setSync(t){ const f=$('#userFoot'); if(f&&f._email){ f.innerHTML=`☁️ ${esc(f._email)}${IS_ADMIN?' <span style="color:#fbbf24">👑</span>':''}<br><span style="opacity:.75">${t}</span> · <a href="#" id="logoutBtn" style="color:#a7f3d0">ออกจากระบบ</a>`; const b=$('#logoutBtn'); if(b) b.onclick=async(e)=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); location.reload(); }; } }
+function setSync(t){ const f=$('#userFoot'); if(f&&f._email){ f.innerHTML=`☁️ ${esc(f._email)}${IS_ADMIN?' <span style="color:#fbbf24">👑</span>':''}<br><span style="opacity:.75">${t}</span> · <a href="#" id="logoutBtn" style="color:#a7f3d0">ออกจากระบบ</a>`; const b=$('#logoutBtn'); if(b) b.onclick=async(e)=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); localStorage.removeItem(PAGE_KEY); location.reload(); }; } }
 
 // แอดมิน: เปิดข้อมูลของผู้ใช้คนอื่นเพื่อดู/แก้
-async function adminOpen(uid,email){ TARGET_UID=uid; TARGET_EMAIL=email; await cloudLoad(uid); PAGE='dashboard'; renderNav(); render(); toast('เปิดข้อมูลของ '+email); }
-async function adminBackToMine(){ TARGET_UID=MY_UID; TARGET_EMAIL=MY_EMAIL; await cloudLoad(MY_UID); PAGE='admin'; renderNav(); render(); toast('กลับสู่ข้อมูลของฉัน'); }
+async function adminOpen(uid,email){ TARGET_UID=uid; TARGET_EMAIL=email; await cloudLoad(uid); PAGE='dashboard'; savePage(PAGE); renderNav(); render(); toast('เปิดข้อมูลของ '+email); }
+async function adminBackToMine(){ TARGET_UID=MY_UID; TARGET_EMAIL=MY_EMAIL; await cloudLoad(MY_UID); PAGE='admin'; savePage(PAGE); renderNav(); render(); toast('กลับสู่ข้อมูลของฉัน'); }
 function adminBanner(){
   const b=el(`<div class="panel" style="border:2px solid #d97706;background:#fffbeb"><div class="pbody" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
     <span style="font-size:20px">👑</span><div><strong>โหมดแอดมิน</strong> — กำลังดู/แก้ไขข้อมูลของ <strong>${esc(TARGET_EMAIL)}</strong><br><span class="muted" style="font-size:12px">การแก้ไขจะบันทึกลงบัญชีของผู้ใช้คนนี้</span></div>
@@ -2042,7 +3501,31 @@ function adminBanner(){
 function fmtDateTime(s){ if(!s) return '-'; const d=new Date(s); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()+543} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
 
 function showLogin(msg){ $('#authGate').style.display='flex'; if(msg){ const m=$('#authMsg'); m.style.color='#dc2626'; m.textContent=msg; } }
-let ACCESS={status:'trial',days_left:30};
+let ACCESS={status:'trial',days_left:30,premium:true};
+/* เมนูที่ต้องซื้อแพ็กเกจพรีเมี่ยม (ช่วงทดลอง 30 วันใช้ได้ครบ)
+   ล็อกหน้า "เวลาเข้างาน" = ล็อกระบบกะและกฎ OT ที่อยู่ในหน้านั้นไปด้วย */
+const PREMIUM_PAGES = ['attend','leave'];
+/* ข้อมูลของฟีเจอร์พรีเมี่ยม — เก็บคนละตารางกับข้อมูลเงินเดือน
+   ตาราง premium_stores มี RLS กั้นไว้ คนที่ไม่มีสิทธิ์อ่าน/เขียนไม่ได้จริง ๆ */
+const PREMIUM_KEYS = ['attend','leave','shifts','shiftPlan','otWeekdays','otDates','otMaxDay','leaveQuota','leaveHoursPerDay'];
+function splitStores(db){
+  const core={}, prem={};
+  Object.keys(db).forEach(k=>{ (PREMIUM_KEYS.includes(k)?prem:core)[k]=db[k]; });
+  return {core, prem};
+}
+// ครบสิทธิ์เมื่อ: ยังทดลองอยู่ · เป็นแอดมิน · หรือจ่ายแบบพรีเมี่ยม
+function hasPremium(){
+  if(ACCESS.premium !== undefined) return !!ACCESS.premium;   // ค่าจากเซิร์ฟเวอร์ = ตัวตัดสิน
+  return true;   // เซิร์ฟเวอร์ยังไม่รายงานระดับแพ็กเกจ (ยังไม่รัน SQL) → ไม่ล็อกใคร
+                 // กันเผลอล็อกลูกค้าที่จ่ายเงินแล้ว — การล็อกต้องมาจากเซิร์ฟเวอร์เท่านั้น
+}
+function pageLocked(id){ return PREMIUM_PAGES.includes(id) && !hasPremium(); }
+// หมดสิทธิ์แล้ว → ล้างข้อมูลพรีเมี่ยมที่ค้างในเครื่อง ไม่ให้เห็นของเก่า
+function clearPremiumLocal(){
+  const d=structuredClone(DEFAULT);
+  PREMIUM_KEYS.forEach(k=>{ DB[k]=d[k]; });
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }catch(e){}
+}
 async function afterAuth(user){
   $('#authGate').style.display='none';
   MY_UID=user.id; MY_EMAIL=user.email; TARGET_UID=MY_UID; TARGET_EMAIL=MY_EMAIL;
@@ -2053,9 +3536,31 @@ async function afterAuth(user){
   try{ const {data}=await sb.rpc('my_access'); if(data&&data[0]) ACCESS=data[0]; }catch(e){}
   if(ACCESS.status==='expired'){ showExpired(); return; }
   await cloudLoad(MY_UID);
+  if(!hasPremium()) clearPremiumLocal();
+  PAGE = restorePage();          // กลับไปหน้าที่ค้างไว้ก่อนรีเฟรช
   renderNav(); render(); showTrialBar();
   setSync('พร้อมใช้งาน'); cloudSaveDebounced();
 }
+/* ---------- กล่องชวนอัปเกรดเป็นพรีเมี่ยม ---------- */
+function premiumModal(pageId){
+  const name = tr('nav_'+pageId);
+  openModal('💎 ฟีเจอร์แพ็กเกจพรีเมี่ยม',
+    `<p style="margin-bottom:12px"><strong>${esc(name)}</strong> อยู่ในแพ็กเกจ <strong>พรีเมี่ยม</strong>
+       — แพ็กเกจปัจจุบันของคุณคือ <strong>มาตรฐาน</strong> (ระบบเงินเดือนครบทุกฟีเจอร์)</p>
+     <div style="background:linear-gradient(140deg,#0b1b2b,#0e3a5c 55%,#0f766e);color:#fff;border-radius:14px;padding:16px 18px">
+       <b>อัปเกรดแล้วได้เพิ่ม</b>
+       <div style="display:grid;gap:7px;margin-top:10px;font-size:14px">
+         <span>⏰ ลงเวลาเข้างาน — นำเข้า CSV คิดวันทำงาน/มาสาย/OT ส่งเข้าเงินเดือนอัตโนมัติ</span>
+         <span>🔄 ระบบกะการทำงาน — กะข้ามคืน สลับกะยกชุด หมุนเวียนกะ</span>
+         <span>⚡ กฎการคิด OT — เลือกวันที่คิด OT เปิดรายคน ตั้งเพดานต่อวัน</span>
+         <span>🌴 ระบบลางาน — โควตาวันลา ลาเป็นชั่วโมง หักเงินขาดงาน</span>
+       </div>
+     </div>
+     <p class="muted" style="font-size:12.5px;margin-top:12px">ข้อมูลเงินเดือนเดิมของคุณยังอยู่ครบ ไม่มีอะไรเปลี่ยน</p>`,
+    [['ไว้ก่อน','ghost',closeModal],
+     ['💎 ดูแพ็กเกจพรีเมี่ยม','',()=>{ window.open('pricing.html','_blank','noopener'); closeModal(); }]]);
+}
+
 /* ---------- แถบแจ้งวันทดลองที่เหลือ ---------- */
 function showTrialBar(){
   const old=$('#trialBar'); if(old) old.remove();
@@ -2065,7 +3570,7 @@ function showTrialBar(){
       padding:11px 18px;font-size:14px;border-bottom:1px solid ${warn?'#fcd34d':'#bfe5d3'};
       background:${warn?'#fffbeb':'#eaf6f1'};color:${warn?'#92400e':'#0e3a5c'}">
     <span>${warn?'⚠️':'🎁'} <strong>${ACCESS.status==='trial'?'ทดลองใช้ฟรี':'แพ็กเกจของคุณ'}</strong>
-      เหลืออีก <strong>${d}</strong> วัน${warn?' — ต่ออายุเพื่อใช้งานต่อเนื่อง':''}</span>
+      เหลืออีก <strong>${d}</strong> วัน${warn?' — ต่ออายุเพื่อใช้งานต่อเนื่อง':''}${ACCESS.status==='trial'?' · ช่วงทดลองใช้ได้ครบทุกฟีเจอร์':''}</span>
     <a href="pricing.html" class="btn sm" style="margin-left:auto;background:${warn?'#d97706':'#0e3a5c'};color:#fff">💳 ดูแพ็กเกจ</a>
   </div>`);
   const main=document.querySelector('.main'); main.insertBefore(bar, main.children[1]);
@@ -2092,7 +3597,7 @@ function showExpired(){
     </div></div>`);
   document.body.appendChild(scr);
   scr.querySelector('#reCheck').onclick=e=>{ e.preventDefault(); location.reload(); };
-  scr.querySelector('#expLogout').onclick=async e=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); location.reload(); };
+  scr.querySelector('#expLogout').onclick=async e=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); localStorage.removeItem(PAGE_KEY); location.reload(); };
 }
 function enterGuest(){
   GUEST=true; MY_UID=null; TARGET_UID=null;
