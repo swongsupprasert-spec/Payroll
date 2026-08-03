@@ -94,6 +94,7 @@ Deno.serve(async (req) => {
     p_name: row.buyer_name, p_email: row.buyer_email, p_phone: row.buyer_phone,
     p_btype: row.buyer_type, p_tax_id: row.tax_id, p_branch: row.branch, p_addr: row.address,
     p_slip: null, p_trans_ref: charge.id, p_ptype: row.ptype,
+    p_edition: row.edition ?? 'single',
   });
   if (error) return bad('activate failed: ' + error.message, 500);
 

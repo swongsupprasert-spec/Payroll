@@ -28,19 +28,18 @@ const fail = (code: string, msg_th: string, msg_en: string, status = 400) =>
 
 // ---- ตารางราคา (ต้องตรงกับหน้าเว็บ — คิดราคาฝั่งนี้เท่านั้น) ----
 const TIERS = [
-  { min: 1,  max: 5,   price: 590,  prem: 790 },
-  { min: 6,  max: 10,  price: 990,  prem: 1290 },
-  { min: 11, max: 20,  price: 1590, prem: 2090 },
-  { min: 21, max: 40,  price: 2990, prem: 3890 },
-  { min: 41, max: 60,  price: 4290, prem: 5590 },
-  { min: 61, max: 80,  price: 5590, prem: 7290 },
+  { min: 1,   max: 10,  price: 590,  prem: 790 },
+  { min: 11,  max: 30,  price: 990,  prem: 1590 },
+  { min: 31,  max: 50,  price: 1490, prem: 2490 },
+  { min: 51,  max: 80,  price: 2490, prem: 3490 },
+  { min: 81,  max: 100, price: 2990, prem: 4490 },
 ];
 const YEAR_MONTHS = 10;
 
 // ptype: 'standard' = เงินเดือนอย่างเดียว · 'premium' = + ลงเวลา/ลา/กะ/OT
 function priceFor(employees: number, cycle: string, ptype: string) {
   const t = TIERS.find(t => employees >= t.min && employees <= t.max);
-  if (!t) return null;                                   // เกิน 80 คน → ต้องขอใบเสนอราคา
+  if (!t) return null;                                   // เกิน 100 คน → ต้องขอใบเสนอราคา
   const mo = ptype === 'premium' ? t.prem : t.price;
   return { plan: `${t.min}-${t.max} คน${ptype === 'premium' ? ' · พรีเมี่ยม' : ''}`,
            amount: cycle === 'yearly' ? mo * YEAR_MONTHS : mo };

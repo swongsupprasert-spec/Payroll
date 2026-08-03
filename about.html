@@ -127,12 +127,12 @@
   .ft-h{font-size:13px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.6px;margin-bottom:11px}
   .ft-list{list-style:none;display:grid;gap:8px}
   .ft-list a:hover{color:var(--brand);text-decoration:underline}
-  .ft-line{display:flex;gap:13px;align-items:flex-start}
+  .ft-line{display:flex;gap:13px;align-items:flex-start;flex-wrap:wrap}  /* แคบแล้วให้ตกลงบรรทัดใหม่ ไม่บีบข้อความ */
   .ft-qr{width:88px;height:88px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;padding:4px;flex-shrink:0}
   .ft-lineid{display:inline-flex;align-items:center;gap:6px;background:#06C755;color:#fff;font-weight:800;
     font-size:14px;padding:7px 14px;border-radius:100px;margin-bottom:7px}
   .ft-lineid:hover{background:#05a648}
-  .ft-mail{color:var(--brand);font-weight:700;word-break:break-all}
+  .ft-mail{color:var(--brand);font-weight:700;white-space:nowrap}   /* ห้ามตัดกลางอีเมล */
   .ft-mail:hover{text-decoration:underline}
   .ft-bot{border-top:1px solid #e2e8f0;margin-top:28px;padding-top:18px;display:flex;gap:12px;
     flex-wrap:wrap;align-items:center;justify-content:space-between;font-size:13.5px}
@@ -257,7 +257,7 @@
 <div class="wrap">
   <div class="cta-band">
     <h2 data-en="Ready to get started?">พร้อมเริ่มต้นแล้วหรือยัง?</h2>
-    <p data-en="Free for 30 days. No credit card required.">ทดลองใช้ฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต</p>
+    <p data-en="Free for 30 days.">ทดลองใช้ฟรี 30 วัน</p>
     <a href="app.html#signup" class="btn primary" data-en="🚀 Start your free 30 days">🚀 เริ่มใช้งานฟรี 30 วัน</a>
   </div>
 </div>

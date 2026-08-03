@@ -34,6 +34,7 @@
   .nav button.active{background:linear-gradient(135deg,#17557f,#0f766e);color:#fff;font-weight:600;box-shadow:inset 3px 0 0 var(--accent-l)}
   .nav .ico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
   .nav button.active .ico{box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+  .nav .ico svg{display:block}
   .side .foot{margin-top:auto;padding:14px;font-size:11px;color:#5b7186;border-top:1px solid #1b3550}
 
   .main{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -99,6 +100,11 @@
   .field input:focus,.field select:focus{outline:2px solid var(--brand);border-color:var(--brand)}
   /* ช่องติ๊ก/ตัวเลือกไม่ต้องยืดเต็มบรรทัดเหมือนช่องกรอก */
   .field input[type=checkbox],.field input[type=radio]{width:auto;padding:0;margin:0 6px 0 0;vertical-align:-2px}
+  /* ปุ่มเลือกประเภทการใช้งานในหน้าเข้าสู่ระบบ */
+  .edpick{padding:10px 8px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;
+    font-family:inherit;font-size:13.5px;font-weight:700;color:#5b7186;cursor:pointer;transition:.18s}
+  .edpick:hover{border-color:#cbd5e1;color:var(--ink)}
+  .edpick.on{border-color:var(--brand);background:var(--accent-bg);color:var(--brand)}
   .sec-title{font-size:13px;font-weight:700;color:var(--brand-d);margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
   .sec-title:first-child{margin-top:0}
 
@@ -225,8 +231,18 @@
     <div style="text-align:center;color:#5b7186;margin-bottom:22px">เข้าสู่ระบบเพื่อใช้งาน</div>
     <div class="field" style="margin-bottom:12px"><label>อีเมล</label><input id="authEmail" type="email" autocomplete="username" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
     <div class="field" style="margin-bottom:16px"><label>รหัสผ่าน</label><input id="authPass" type="password" autocomplete="current-password" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
-    <button class="btn" id="authLogin" style="width:100%;justify-content:center;margin-bottom:8px">เข้าสู่ระบบ</button>
-    <button class="btn ghost" id="authSignup" style="width:100%;justify-content:center">สมัครสมาชิกใหม่</button>
+    <button class="btn" id="authLogin" style="width:100%;justify-content:center;margin-bottom:14px">เข้าสู่ระบบ</button>
+
+    <!-- ประเภทการใช้งาน — มีผลตอนสมัครใหม่เท่านั้น ผู้ใช้เดิมยึดตามแพ็กเกจที่ซื้อไว้ -->
+    <div style="border-top:1px solid #e5e7eb;padding-top:14px">
+      <div style="font-size:12.5px;color:#5b7186;margin-bottom:8px;text-align:center">สมัครใหม่ — เลือกประเภทการใช้งาน</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button type="button" id="edPickS" class="edpick on" style="flex:1">🏢 บริษัทเดียว</button>
+        <button type="button" id="edPickF" class="edpick" style="flex:1">🏦 สำนักงานบัญชี</button>
+      </div>
+      <div id="edPickNote" style="font-size:12px;color:#5b7186;text-align:center;margin-bottom:12px;line-height:1.6"></div>
+      <button class="btn ghost" id="authSignup" style="width:100%;justify-content:center">สมัครสมาชิกใหม่</button>
+    </div>
     <div style="display:flex;align-items:center;gap:10px;margin:16px 0;color:#94a3b8;font-size:13px"><div style="flex:1;height:1px;background:#e5e7eb"></div>หรือ / or<div style="flex:1;height:1px;background:#e5e7eb"></div></div>
     <button id="authGoogle" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;border:1px solid #dadce0;border-radius:9px;background:#fff;color:#3c4043;font-weight:600;font-size:15px;cursor:pointer">
       <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
@@ -271,7 +287,25 @@
 /* ============================================================
    ระบบเงินเดือน (Payroll) — single-file app, localStorage
    ============================================================ */
-const LS_KEY = 'payroll_data_v1';
+/* โหมดสาธิต (?demo) — ข้อมูลตัวอย่างสำหรับลองใช้ก่อนซื้อ
+   ใช้คีย์ localStorage คนละตัวกับของจริง จะได้ไม่ทับข้อมูลที่ผู้ใช้กรอกไว้ */
+const DEMO = new URLSearchParams(location.search).has('demo');
+let LS_KEY = DEMO ? 'payroll_demo_v1' : 'payroll_data_v1';
+/* สำนักงานบัญชีเปิดได้หลายบริษัท — ข้อมูลในเครื่องต้องแยกคีย์ต่อบริษัท
+   ถ้าใช้คีย์เดียวกัน ข้อมูลเงินเดือนของลูกค้ารายหนึ่งจะไปโผล่ในอีกรายตอนสลับ */
+function setStoreKey(companyId){
+  LS_KEY = DEMO ? 'payroll_demo_v1'
+         : companyId ? 'payroll_co_' + companyId
+         : 'payroll_data_v1';
+}
+/* ล้างข้อมูลบริษัทที่ค้างในเครื่องทั้งหมด (ตอนออกจากระบบ) */
+function clearAllStores(){
+  try{
+    Object.keys(localStorage)
+      .filter(k=>k===LS_KEY || k==='payroll_data_v1' || k.startsWith('payroll_co_'))
+      .forEach(k=>localStorage.removeItem(k));
+  }catch(e){}
+}
 const THB = new Intl.NumberFormat('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
 const money = n => THB.format(Number(n||0));
 const num = n => new Intl.NumberFormat('th-TH').format(Number(n||0));
@@ -285,7 +319,7 @@ const I18N = {
   th:{
     nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_attend:'เวลาเข้างาน', nav_leave:'ระบบลางาน', nav_resign:'การลาออก', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
     nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
-    nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_admin:'👑 ผู้ดูแลระบบ', nav_feedback:'💬 แจ้งปัญหา/คำแนะนำ', nav_orders:'🧾 คำสั่งซื้อ/ต่ออายุ',
+    nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_companies:'บริษัทลูกค้า', nav_admin:'ผู้ดูแลระบบ', nav_feedback:'แจ้งปัญหา/คำแนะนำ', nav_orders:'คำสั่งซื้อ/ต่ออายุ',
     period:'งวดเดือน',
     kpi_count:'จำนวนพนักงาน', kpi_salary:'เงินเดือนรวม', kpi_income:'เงินได้รวม', kpi_deduct:'เงินหักรวม', kpi_net:'เงินสุทธิรวม',
     male:'ชาย', female:'หญิง', unspec:'ไม่ระบุ', unit_person:'คน',
@@ -300,7 +334,7 @@ const I18N = {
   en:{
     nav_dashboard:'Dashboard', nav_employees:'Employees', nav_attend:'Attendance', nav_leave:'Leave', nav_resign:'Resignation', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
     nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
-    nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_admin:'👑 Admin', nav_feedback:'💬 Feedback', nav_orders:'🧾 Orders',
+    nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_companies:'Client companies', nav_admin:'Admin', nav_feedback:'Feedback', nav_orders:'Orders',
     period:'Period',
     kpi_count:'Employees', kpi_salary:'Total Salary', kpi_income:'Total Earnings', kpi_deduct:'Total Deductions', kpi_net:'Total Net Pay',
     male:'Male', female:'Female', unspec:'N/A', unit_person:'',
@@ -351,6 +385,39 @@ function seed(){
   d.employees = [];
   d.payroll = {};
   return d;
+}
+/* ข้อมูลบริษัทตัวอย่างสำหรับโหมดสาธิต — พนักงาน 5 คน (แพ็กเกจ 1-10 คน เพิ่มได้อีก 5)
+   ครบทุกเคสที่ SME เจอจริง: รายเดือน/รายวัน · มี/ไม่มีกองทุนสำรองเลี้ยงชีพ · เข้างานกลางปี */
+function demoSeed(){
+  const d = structuredClone(DEFAULT);
+  d.company = { name:'ห้างหุ้นส่วนจำกัด ศรีสมบูรณ์ เทรดดิ้ง',
+    address:'88/12 ถนนพระราม 2 แขวงแสมดำ เขตบางขุนเทียน กรุงเทพมหานคร 10150',
+    taxId:'0105558012345', ssoNo:'1010012345', signer:'สมชาย ใจดี' };
+  const E=[
+    {code:'EMP001',name:'สมชาย ใจดี',   position:'ผู้จัดการทั่วไป', dept:'บริหาร',  payType:'monthly', salary:35000, startDate:'2021-03-01', pvdRate:3, spouse:1, children:2},
+    {code:'EMP002',name:'สุดา พงษ์ศรี',  position:'พนักงานบัญชี',   dept:'บัญชี',   payType:'monthly', salary:19000, startDate:'2023-06-15', pvdRate:3, children:1},
+    {code:'EMP003',name:'อนุชา แก้วมณี', position:'พนักงานขาย',     dept:'ขาย',     payType:'monthly', salary:15000, startDate:'2024-01-08', pvdRate:0},
+    {code:'EMP004',name:'มาลี ศรีสุข',    position:'ธุรการ',         dept:'สำนักงาน', payType:'monthly', salary:12000, startDate:'2025-02-03', pvdRate:0},
+    {code:'EMP005',name:'ประยุทธ ทองดี', position:'ช่างซ่อมบำรุง',   dept:'ช่าง',    payType:'daily',   salary:520,   startDate:'2024-09-01', pvdRate:0},
+  ];
+  d.employees = E.map((e,i)=>Object.assign({id:'demo'+(i+1),
+    taxId:'110150001'+(1000+i), bank:'กสิกรไทย', bankNo:'123-4-5678'+i, wfRate:0.25}, e));
+  return d;
+}
+/* เติมเงินได้ของงวดปัจจุบัน แล้วให้ระบบคำนวณเงินหักเอง (ต้องเรียกหลัง PERIOD ถูกตั้งค่า) */
+function demoFillPeriod(){
+  const pp = ensurePeriod(PERIOD);
+  const earns = { demo1:{position:5000,travel:2000}, demo2:{ot:1875,diligence:500},
+                  demo3:{commission:8500,travel:1500}, demo4:{ot:900,diligence:500},
+                  demo5:{ot:1560} };
+  DB.employees.forEach(e=>{
+    if(pp[e.id]) return;                       // มีข้อมูลอยู่แล้ว = ผู้ใช้แก้เอง ไม่เขียนทับ
+    const rec = pp[e.id] = blankRec();
+    Object.assign(rec.earn, earns[e.id] || {});
+    if(e.payType==='daily') rec.days = 24;
+    autoDeductions(e, rec);
+  });
+  save();
 }
 function curPeriod(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
 function periodLabel(p){ const [y,m]=p.split('-'); return LANG==='en' ? `${MONTHS_EN[+m-1]} ${+y}` : `${THAI_MONTHS[+m-1]} ${(+y)+543}`; }
@@ -515,9 +582,9 @@ function savePage(id){ try{ localStorage.setItem(PAGE_KEY, id); }catch(e){} }
 function restorePage(){
   let id; try{ id=localStorage.getItem(PAGE_KEY); }catch(e){}
   if(!id) return 'dashboard';
-  const isNormal = PAGES.some(p=>p[0]===id);
+  const isNormal = pagesForEdition().some(p=>p[0]===id);
   const isAdminOnly = ['orders','feedback','admin'].includes(id);
-  if(!isNormal && !isAdminOnly) return 'dashboard';      // ชื่อหน้าไม่รู้จัก
+  if(!isNormal && !isAdminOnly) return 'dashboard';      // ชื่อหน้าไม่รู้จัก / ไม่มีในบัญชีประเภทนี้
   if(isAdminOnly && !IS_ADMIN) return 'dashboard';        // ไม่ใช่แอดมินแล้ว
   if(pageLocked(id)) return 'dashboard';                  // หมดสิทธิ์พรีเมี่ยมแล้ว
   return id;
@@ -545,21 +612,74 @@ const PAGES = [
   ['settings','ตั้งค่า','⚙️'],
 ];
 
+/* ไอคอนเมนู — วาดเป็น SVG ไม่ใช่อีโมจิ เครื่องที่ไม่มีฟอนต์อีโมจิจะได้ไม่ขึ้นเป็นกรอบสี่เหลี่ยม */
+const ICO=(d)=>'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
+const NAV_ICONS={
+  dashboard: ICO('<path d="M3.5 20.5h17"/><rect x="4.5" y="11" width="3.6" height="7"/><rect x="10.2" y="6.5" width="3.6" height="11.5"/><rect x="15.9" y="14" width="3.6" height="4"/>'),
+  employees: ICO('<circle cx="9" cy="8" r="3.2"/><path d="M2.8 20a6.2 6.2 0 0 1 12.4 0"/><path d="M16.2 5.4a3.2 3.2 0 0 1 0 6.2"/><path d="M17.4 14.3A6.2 6.2 0 0 1 21.2 20"/>'),
+  attend:    ICO('<circle cx="12" cy="12" r="8.6"/><path d="M12 7.2V12l3.2 2"/>'),
+  leave:     ICO('<rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 9.6h17.2M8.2 3v4M15.8 3v4"/><path d="m9 14.6 2.1 2.1 3.9-4"/>'),
+  resign:    ICO('<path d="M14.5 3.5h3.6a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-3.6"/><path d="M10 8 6 12l4 4"/><path d="M6 12h9"/>'),
+  payroll:   ICO('<rect x="4.4" y="2.6" width="15.2" height="18.8" rx="2.4"/><rect x="7.6" y="6" width="8.8" height="3.2"/><path d="M8 13.4h.01M12 13.4h.01M16 13.4h.01M8 17.4h.01M12 17.4h.01M16 17.4h.01"/>'),
+  summary:   ICO('<rect x="5" y="4" width="14" height="17" rx="2.2"/><path d="M9 3h6v3H9z"/><path d="M8.6 11h6.8M8.6 15h4.6"/>'),
+  dept:      ICO('<path d="M3.6 20.6h16.8"/><rect x="5" y="3.6" width="9.4" height="17"/><path d="M14.4 9h4.4v11.6"/><path d="M7.6 7h1M11 7h1M7.6 11h1M11 11h1M7.6 15h1M11 15h1"/>'),
+  detail:    ICO('<path d="M8.4 3.6h8l3.6 3.6v10a2 2 0 0 1-2 2h-9.6a2 2 0 0 1-2-2v-11a2 2 0 0 1 2-2z"/><path d="M16.4 3.6v3.6H20"/><path d="M4.2 7.4v11.8a2.4 2.4 0 0 0 2.4 2.4h9"/><path d="M9.6 12h5.4M9.6 15.4h3.6"/>'),
+  slip:      ICO('<path d="M5.4 2.8h13.2v18.4l-2.2-1.5-2.2 1.5-2.2-1.5-2.2 1.5-2.2-1.5-2.2 1.5z"/><path d="M8.8 8h6.4M8.8 12h6.4"/>'),
+  wht:       ICO('<path d="M8 3.4h8l3.4 3.4v8.4a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5.4a2 2 0 0 1 2-2z"/><path d="M16 3.4v3.4h3.4"/><circle cx="12" cy="19" r="2.4"/><path d="m9.9 20.6-.5 2.6 2.6-1.3 2.6 1.3-.5-2.6"/>'),
+  pnd1:      ICO('<path d="M3.4 7.4a2 2 0 0 1 2-2h3.4l2 2.4h7.8a2 2 0 0 1 2 2v8.8a2 2 0 0 1-2 2H5.4a2 2 0 0 1-2-2z"/><path d="M8.6 13h6.8"/>'),
+  sso:       ICO('<path d="M12 2.8 4.6 5.9v5.4c0 4.6 3.1 8.8 7.4 9.9 4.3-1.1 7.4-5.3 7.4-9.9V5.9z"/><path d="m8.9 11.9 2.2 2.2 4-4.3"/>'),
+  settings:  ICO('<circle cx="12" cy="12" r="3.1"/><path d="M19.2 14.6a1.6 1.6 0 0 0 .3 1.8l.1.1a1.9 1.9 0 1 1-2.7 2.7l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.3a1.9 1.9 0 1 1-3.8 0v-.2a1.6 1.6 0 0 0-2.8-1.1l-.1.1a1.9 1.9 0 1 1-2.7-2.7l.1-.1a1.6 1.6 0 0 0-1.1-2.7h-.3a1.9 1.9 0 1 1 0-3.8h.2a1.6 1.6 0 0 0 1.1-2.8l-.1-.1a1.9 1.9 0 1 1 2.7-2.7l.1.1a1.6 1.6 0 0 0 1.8.3h.1a1.6 1.6 0 0 0 1-1.5v-.3a1.9 1.9 0 1 1 3.8 0v.2a1.6 1.6 0 0 0 2.7 1.1l.1-.1a1.9 1.9 0 1 1 2.7 2.7l-.1.1a1.6 1.6 0 0 0 1.1 2.7h.3a1.9 1.9 0 1 1 0 3.8h-.2a1.6 1.6 0 0 0-1.5 1z"/>'),
+  orders:    ICO('<circle cx="9.4" cy="20" r="1.4"/><circle cx="17.6" cy="20" r="1.4"/><path d="M2.6 3.4h2.8l2.4 11.4h10.4l2.2-8.4H6.2"/>'),
+  feedback:  ICO('<path d="M20.4 12.6a7.4 7.4 0 0 1-8 7.4L4 21.4l1.4-8.4a7.4 7.4 0 1 1 15 -.4z"/><path d="M8.6 11h.01M12 11h.01M15.4 11h.01"/>'),
+  companies: ICO('<rect x="2.8" y="7" width="18.4" height="13.4" rx="2.2"/><path d="M8.6 7V5.2a2 2 0 0 1 2-2h2.8a2 2 0 0 1 2 2V7"/><path d="M2.8 12.4h18.4M10.4 12.4v2.2h3.2v-2.2"/>'),
+  admin:     ICO('<path d="M3 7.4 6.8 11 12 4.6 17.2 11 21 7.4l-1.6 11.2a1.6 1.6 0 0 1-1.6 1.4H6.2a1.6 1.6 0 0 1-1.6-1.4z"/>'),
+};
+const LOCK_ICO='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.6" y="10.4" width="14.8" height="10.4" rx="2.2"/><path d="M8.2 10.4V7.6a3.8 3.8 0 0 1 7.6 0v2.8"/></svg>';
+
 const NAV_COLORS = {
   dashboard:'#17557f', employees:'#8b5cf6', attend:'#0891b2', leave:'#84cc16', resign:'#f43f5e', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
-  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', feedback:'#f97316', orders:'#22c55e', admin:'#eab308'
+  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', companies:'#a855f7', feedback:'#f97316', orders:'#22c55e', admin:'#eab308'
 };
+/* เมนูตามประเภทบัญชี — สำนักงานบัญชีไม่มีลงเวลา/ลางาน แต่มีหน้าบริษัทลูกค้าเพิ่ม */
+function pagesForEdition(){
+  if(!isFirm()) return PAGES;
+  return [['companies','บริษัทลูกค้า','🏢'],
+          ...PAGES.filter(p=>!['attend','leave'].includes(p[0]))];
+}
+function pageAllowed(id){
+  if(['orders','feedback','admin'].includes(id)) return IS_ADMIN;
+  return pagesForEdition().some(p=>p[0]===id);
+}
+/* ตัวสลับบริษัทบนแถบเมนู */
+function renderCoSwitch(){
+  const nav=$('#nav'); if(!nav || !isFirm()) return;
+  const list=activeCos();
+  const box=el(`<div style="padding:10px 12px 12px;border-bottom:1px solid #1b3550;margin-bottom:8px">
+    <div style="font-size:11px;font-weight:800;color:#7c94ac;letter-spacing:.6px;margin-bottom:6px">บริษัทที่กำลังทำ</div>
+    ${list.length ? `<select id="coSel" style="width:100%;padding:9px 10px;border-radius:9px;border:1px solid #24466b;
+        background:#14304d;color:#fff;font-family:inherit;font-size:13.5px;font-weight:600">
+        ${list.map(c=>`<option value="${esc(c.id)}" ${c.id===CUR_CO?'selected':''}>${esc(c.name)}</option>`).join('')}
+      </select>`
+      : `<div style="color:#94a3b8;font-size:12.5px">ยังไม่มีบริษัท — กด “บริษัทลูกค้า” เพื่อเพิ่ม</div>`}
+    <div style="font-size:11px;color:#7c94ac;margin-top:6px">
+      ${list.length} บริษัท${coLimit()!==null?' / สูงสุด '+coLimit():''}</div>
+  </div>`);
+  nav.insertBefore(box, nav.firstChild);
+  const sel=box.querySelector('#coSel');
+  if(sel) sel.onchange=()=>switchCompany(sel.value);
+}
 function renderNav(){
   const nav = $('#nav'); nav.innerHTML='';
-  const items = IS_ADMIN ? [...PAGES, ['orders','คำสั่งซื้อ/ต่ออายุ','🧾'], ['feedback','แจ้งปัญหา/คำแนะนำ','💬'], ['admin','ผู้ดูแลระบบ','👑']] : PAGES;
+  const base = pagesForEdition();
+  const items = IS_ADMIN ? [...base, ['orders','คำสั่งซื้อ/ต่ออายุ','🧾'], ['feedback','แจ้งปัญหา/คำแนะนำ','💬'], ['admin','ผู้ดูแลระบบ','👑']] : base;
   items.forEach(([id,label,ico])=>{
     const col = NAV_COLORS[id] || '#17557f';
     const lock = pageLocked(id);
     const b = el(`<button data-p="${id}" ${lock?'title="ต้องใช้แพ็กเกจพรีเมี่ยม"':''}>
-      <span class="ico" style="background:linear-gradient(135deg,${col}cc,${col}77);color:#fff${lock?';filter:grayscale(.85);opacity:.6':''}">${ico}</span>
+      <span class="ico" style="background:linear-gradient(135deg,${col}cc,${col}77);color:#fff${lock?';filter:grayscale(.85);opacity:.6':''}">${NAV_ICONS[id]||ico}</span>
       <span class="t" style="${lock?'opacity:.6':''}">${tr('nav_'+id)}</span>
-      ${lock?'<span style="margin-left:auto;font-size:13px;opacity:.75">🔒</span>':''}</button>`);
+      ${lock?'<span style="margin-left:auto;opacity:.75;display:flex">'+LOCK_ICO+'</span>':''}</button>`);
     if(id===PAGE) b.classList.add('active');
     b.onclick = ()=>{
       if(pageLocked(id)){ premiumModal(id); sideOpen(false); return; }   // ล็อกอยู่ → ชวนอัปเกรดแทน
@@ -567,6 +687,7 @@ function renderNav(){
     };
     nav.appendChild(b);
   });
+  renderCoSwitch();          // ตัวสลับบริษัท (เฉพาะแบบสำนักงานบัญชี)
 }
 function renderPeriodSel(){
   const [curY, curM] = PERIOD.split('-').map(Number);
@@ -596,9 +717,295 @@ function render(){
   if(pageLocked(PAGE)){ PAGE='dashboard'; savePage(PAGE); renderNav(); }
   const v = $('#view'); v.innerHTML='';
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
+  // สำนักงานบัญชีที่ยังไม่ได้เลือกบริษัท — ให้เพิ่ม/เลือกบริษัทก่อน
+  if(isFirm() && !CUR_CO && PAGE!=='companies' && PAGE!=='admin'){ PAGE='companies'; savePage(PAGE); renderNav(); }
   ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, leave:vLeave, resign:vResign, payroll:vPayroll, summary:vSummary,
-    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders, admin:vAdmin}[PAGE])(v);
+    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders,
+    admin:vAdmin, companies:vCompanies}[PAGE])(v);
 }
+/* ============ เครื่องมือข้ามบริษัท (สำนักงานบัญชี) ============ */
+/* คิดยอดของบริษัทอื่นโดยยืมฟังก์ชันคำนวณชุดเดิมทั้งหมด — สลับ DB ชั่วคราวแล้วคืนค่าเสมอ
+   ทำแบบนี้เพื่อกันตัวเลขสองชุดเพี้ยนจากกัน ถ้าเขียนสูตรใหม่แยกไว้จะหลุดกันวันใดวันหนึ่ง */
+function withDB(d, fn){
+  const keep=DB;
+  try{ DB=d; return fn(); }
+  finally{ DB=keep; }
+}
+/* ดึงข้อมูลของทุกบริษัทมาไว้ในหน่วยความจำ (RLS คืนเฉพาะของเจ้าของอยู่แล้ว) */
+async function loadAllStores(){
+  const {data,error}=await sb.from('firm_stores').select('company_id,data');
+  if(error) return {};
+  const map={};
+  (data||[]).forEach(r=>{ if(r.data && r.data.employees) map[r.company_id]=r.data; });
+  return map;
+}
+/* ตั้งค่าที่ก๊อปข้ามบริษัทได้ — ไม่รวมข้อมูลบริษัท พนักงาน และเงินเดือน */
+const COPY_KEYS=['ssoRate','ssoMaxBase','otDays','otHours','workDaysDefault',
+                 'cutoffDay','workStart','workEnd','lateGrace','wfRateDefault'];
+
+/* ============ บริษัทลูกค้า (เฉพาะแบบสำนักงานบัญชี) ============ */
+async function vCompanies(v){
+  const room=coRoom(), lim=coLimit();
+  const full = room<1;
+
+  v.appendChild(el(`<div class="toolbar">
+    <h2 style="font-size:16px">บริษัทลูกค้าที่ดูแล</h2>
+    <span class="chip" style="background:${full?'#fee2e2':'#eaf6f1'};color:${full?'#dc2626':'#0f766e'};font-weight:700">
+      ${full?'🔒 ':''}${countedCos().length}${lim!==null?' / '+lim:''} บริษัท</span>
+    <button class="btn ghost sm" id="coCopy" style="margin-left:auto">⚙️ ก๊อปตั้งค่าข้ามบริษัท</button>
+    <button class="btn ghost sm" id="coCsv">⬇️ สรุปยื่นภาษีทุกบริษัท</button>
+    <button class="btn" id="addCo" ${full?'disabled style="opacity:.5;cursor:not-allowed"':''}>➕ เพิ่มบริษัท</button>
+  </div>`));
+
+  if(full) v.appendChild(el(`<div class="panel" style="border:2px solid #f59e0b;background:#fffbeb"><div class="pbody"
+    style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+    <span style="font-size:20px">🔒</span>
+    <div><strong>เพิ่มบริษัทไม่ได้ — เต็มโควตาแพ็กเกจแล้ว</strong><br>
+      <span class="muted" style="font-size:13px">${esc(coQuotaMsg())}<br>
+      บริษัทที่เก็บเข้าคลังแล้ว<strong>ยังนับในโควตา</strong> — ถ้าเลิกดูแลถาวรแล้วให้กด 🗑️ ลบ เพื่อคืนโควตา</span></div>
+    <a class="btn sm" href="pricing.html" target="_blank" rel="noopener" style="margin-left:auto">อัปเกรดแพ็กเกจ</a>
+  </div></div>`));
+
+  if(!COMPANIES.length){
+    v.appendChild(el(`<div class="panel"><div class="pbody empty" style="padding:40px 20px;text-align:center">
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">ยังไม่มีบริษัทลูกค้า</div>
+      <div class="muted" style="font-size:13.5px">กด “➕ เพิ่มบริษัท” เพื่อเริ่มต้น<br>
+        แต่ละบริษัทมีข้อมูลพนักงานและเงินเดือนแยกจากกันโดยสิ้นเชิง</div></div></div>`));
+  }else{
+    const panel=el(`<div class="panel"><div class="pbody" style="padding:0">
+      <div class="tbl-wrap" id="coTbl"><div class="empty">กำลังรวมข้อมูลทุกบริษัท…</div></div></div></div>`);
+    v.appendChild(panel);
+  }
+
+  v.appendChild(el(`<div class="panel"><div class="pbody muted" style="font-size:13px;line-height:1.8">
+    💡 ข้อมูลพนักงาน เงินเดือน และเอกสารของแต่ละบริษัทแยกจากกันสมบูรณ์ สลับบริษัทได้จากช่องด้านบนของแถบเมนูซ้าย ·
+    แพ็กเกจสำนักงานบัญชี<strong>ไม่จำกัดจำนวนพนักงาน</strong>ในแต่ละบริษัท<br>
+    📦 <strong>เก็บเข้าคลัง</strong> = ซ่อนจากตัวสลับบริษัท ข้อมูลยังอยู่ครบ ออกเอกสารย้อนหลังได้
+    แต่<strong>ยังนับในโควตา</strong><br>
+    🗑️ <strong>ลบ</strong> = คืนโควตา 1 บริษัท แต่ข้อมูลทั้งหมดของบริษัทนั้นหายถาวร กู้คืนไม่ได้</div></div>`));
+
+  const add=$('#addCo'); if(add && !full) add.onclick=()=>coForm(null);
+  if(!COMPANIES.length) return;
+
+  /* ---- ตารางเดียว: ตัวเลขของงวด + ปุ่มจัดการ อยู่ในแถวเดียวกัน ---- */
+  const stores=await loadAllStores();
+  const box=$('#coTbl'); if(!box) return;
+  let gEmp=0, gGross=0, gTax=0, gNet=0, done=0;
+  const nActive=activeCos().length;
+
+  const rows=COMPANIES.map(co=>{
+    const d=stores[co.id];
+    const t=d ? withDB(d, ()=>periodTotals(PERIOD)) : null;
+    const hasData=d ? withDB(d, ()=>periodHasData(PERIOD)) : false;
+    if(t && !co.archived){ gEmp+=t.count; gGross+=t.gross; gTax+=t.tax; gNet+=t.net; if(hasData) done++; }
+
+    const name=`<strong>${esc(co.name)}</strong>
+      ${co.id===CUR_CO?' <span class="chip" style="background:#dcfce7;color:#16a34a">กำลังทำ</span>':''}
+      ${co.archived?' <span class="chip" style="background:#e2e8f0;color:#64748b">เก็บเข้าคลัง</span>':''}
+      <br><span class="muted" style="font-size:11.5px">${esc(co.tax_id||'ไม่ได้ระบุเลขผู้เสียภาษี')}${co.branch?' · '+esc(co.branch):''}</span>`;
+
+    const figs = t
+      ? `<td class="num">${num(t.count)}</td><td class="num">${money(t.gross)}</td>
+         <td class="num">${money(t.tax)}</td><td class="num"><strong>${money(t.net)}</strong></td>
+         <td class="num">${hasData?'<span class="chip" style="background:#dcfce7;color:#16a34a">ทำแล้ว</span>'
+                                  :'<span class="chip" style="background:#fef3c7;color:#b45309">ยังไม่ได้ทำ</span>'}</td>`
+      : `<td colspan="5" class="muted" style="text-align:center">ยังไม่ได้ใส่ข้อมูลพนักงาน</td>`;
+
+    return `<tr${co.archived?' style="opacity:.55"':''}>
+      <td>${name}</td>${figs}
+      <td class="num" style="white-space:nowrap">
+        ${co.archived
+          ? `<button class="btn ghost sm" data-unarch="${co.id}">↩️ นำกลับมา</button>`
+          : `<button class="btn ghost sm" data-open="${co.id}" ${co.id===CUR_CO?'disabled style="opacity:.45"':''}>เปิดทำงาน</button>
+             <button class="btn ghost sm" data-edit="${co.id}" title="แก้ไขข้อมูลบริษัท">✏️</button>
+             <button class="btn ghost sm" data-arch="${co.id}" title="เก็บเข้าคลัง">📦</button>`}
+        <button class="btn ghost sm" data-del="${co.id}" title="ลบถาวร — คืนโควตา"
+          style="color:#dc2626;border-color:#fecaca">🗑️</button>
+      </td></tr>`;
+  }).join('');
+
+  box.innerHTML=`<table>
+    <thead><tr><th>บริษัท</th><th class="num">พนักงาน</th><th class="num">รายได้รวม</th>
+      <th class="num">ภาษีหัก</th><th class="num">จ่ายสุทธิ</th>
+      <th class="num">งวด ${esc(periodLabel(PERIOD))}</th><th class="num">จัดการ</th></tr></thead>
+    <tbody>${rows}</tbody>
+    <tfoot><tr style="background:#f8fafc;font-weight:800">
+      <td>รวม ${nActive} บริษัทที่ดูแลอยู่</td>
+      <td class="num">${num(gEmp)}</td><td class="num">${money(gGross)}</td>
+      <td class="num">${money(gTax)}</td><td class="num">${money(gNet)}</td>
+      <td class="num">ทำแล้ว ${done}/${nActive}</td><td></td></tr></tfoot></table>`;
+
+  box.querySelectorAll('[data-open]').forEach(b=>b.onclick=async()=>{
+    await switchCompany(b.dataset.open); PAGE='dashboard'; savePage(PAGE); renderNav(); render();
+  });
+  box.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>coForm(COMPANIES.find(x=>x.id===b.dataset.edit)));
+  box.querySelectorAll('[data-arch]').forEach(b=>b.onclick=()=>setArchived(b.dataset.arch,true));
+  box.querySelectorAll('[data-unarch]').forEach(b=>b.onclick=()=>setArchived(b.dataset.unarch,false));
+  box.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>deleteCompany(b.dataset.del));
+
+  /* ---- ส่งออกสรุปสำหรับยื่นภาษีทุกบริษัท ---- */
+  $('#coCsv').onclick=()=>{
+    const head=['บริษัท','เลขผู้เสียภาษี','สาขา','งวด','จำนวนพนักงาน','รายได้รวม','ภาษีหัก ณ ที่จ่าย','ประกันสังคม(ลูกจ้าง)','จ่ายสุทธิ'];
+    const lines=[head.join(',')];
+    activeCos().forEach(co=>{
+      const d=stores[co.id]; if(!d) return;
+      const t=withDB(d, ()=>periodTotals(PERIOD));
+      const sso=withDB(d, ()=>DB.employees.reduce((s,e)=>s+Number(readRec(PERIOD,e.id).ded.sso||0),0));
+      lines.push([co.name, co.tax_id||'', co.branch||'', PERIOD, t.count,
+        t.gross.toFixed(2), t.tax.toFixed(2), sso.toFixed(2), t.net.toFixed(2)]
+        .map(x=>`"${String(x).replace(/"/g,'""')}"`).join(','));
+    });
+    downloadFile(`สรุปยื่นภาษีทุกบริษัท-${PERIOD}.csv`, '\ufeff'+lines.join('\r\n'), 'text/csv;charset=utf-8');
+    toast('ส่งออกสรุป '+activeCos().length+' บริษัทแล้ว');
+  };
+
+  /* ---- ก๊อปตั้งค่าจากบริษัทหนึ่งไปอีกหลายบริษัท ---- */
+  $('#coCopy').onclick=()=>{
+    const list=activeCos();
+    if(list.length<2){ toast('ต้องมีอย่างน้อย 2 บริษัทถึงจะก๊อปได้'); return; }
+    openModal('ก๊อปตั้งค่าข้ามบริษัท', `
+      <div class="field"><label>ก๊อปจากบริษัท</label>
+        <select id="cp_from">${list.map(c=>`<option value="${esc(c.id)}" ${c.id===CUR_CO?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
+      <div class="field"><label>ไปยังบริษัท (เลือกได้หลายบริษัท)</label>
+        <div id="cp_to" style="max-height:200px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:8px">
+          ${list.map(c=>`<label style="display:flex;align-items:center;gap:8px;padding:5px 4px;cursor:pointer">
+            <input type="checkbox" value="${esc(c.id)}"> <span>${esc(c.name)}</span></label>`).join('')}
+        </div></div>
+      <div class="muted" style="font-size:12.5px;line-height:1.7">
+        ก๊อปเฉพาะ<strong>ค่าตั้งต้นการคำนวณ</strong> — อัตราประกันสังคม ฐานคำนวณ OT วันทำงานต่อเดือน
+        วันตัดรอบ เวลาทำงาน และอัตรากองทุนสงเคราะห์<br>
+        <strong>ไม่แตะ</strong>ข้อมูลบริษัท ข้อมูลพนักงาน และเงินเดือนที่ทำไปแล้ว</div>`,
+      [['ยกเลิก','ghost',closeModal],['ก๊อป','',async()=>{
+        const from=$('#cp_from').value;
+        const targets=[...document.querySelectorAll('#cp_to input:checked')].map(i=>i.value).filter(id=>id!==from);
+        if(!targets.length){ toast('ยังไม่ได้เลือกบริษัทปลายทาง'); return; }
+        const src=stores[from];
+        if(!src){ toast('บริษัทต้นทางยังไม่มีข้อมูล'); return; }
+        closeModal();
+        let ok=0;
+        for(const id of targets){
+          const cur=stores[id] || structuredClone(DEFAULT);
+          COPY_KEYS.forEach(k=>{ if(src[k]!==undefined) cur[k]=structuredClone(src[k]); });
+          const {error}=await sb.from('firm_stores')
+            .upsert({company_id:id, data:cur, updated_at:new Date().toISOString()});
+          if(!error){ ok++; stores[id]=cur;
+            if(id===CUR_CO){ COPY_KEYS.forEach(k=>{ if(src[k]!==undefined) DB[k]=structuredClone(src[k]); });
+                             localStorage.setItem(LS_KEY, JSON.stringify(DB)); } }
+        }
+        toast(`ก๊อปตั้งค่าไปแล้ว ${ok}/${targets.length} บริษัท`);
+        render();
+      }]]);
+  };
+}
+function coForm(co){
+  const isNew=!co;
+  openModal(isNew?'เพิ่มบริษัทลูกค้า':'แก้ไขข้อมูลบริษัท', `
+    <div class="field"><label>ชื่อบริษัท *</label>
+      <input id="co_name" value="${esc(co?co.name:'')}" placeholder="บริษัท ตัวอย่าง จำกัด"></div>
+    <div class="field"><label>เลขประจำตัวผู้เสียภาษี *</label>
+      <input id="co_tax" inputmode="numeric" maxlength="13" value="${esc(co?(co.tax_id||''):'')}" placeholder="13 หลัก"></div>
+    <div class="field"><label>สาขา</label>
+      <input id="co_branch" value="${esc(co?(co.branch||''):'')}" placeholder="สำนักงานใหญ่"></div>
+    <div id="co_err" style="font-size:13px;color:#dc2626;min-height:18px;margin-bottom:4px"></div>
+    ${isNew?'<div class="muted" style="font-size:12.5px">เพิ่มแล้วระบบจะเปิดบริษัทนี้ให้ทันที เริ่มจากข้อมูลว่าง</div>':''}`,
+    [['ยกเลิก','ghost',closeModal],['บันทึก','',async()=>{
+      const name=$('#co_name').value.trim();
+      const tax=$('#co_tax').value.replace(/\D/g,'');
+      const branch=$('#co_branch').value.trim();
+      const err=$('#co_err');
+      const bad=(msg,el)=>{ if(err) err.textContent=msg; else toast(msg);
+        if(el){ el.style.borderColor='#dc2626'; el.focus(); } };
+      if(!name) return bad('กรุณากรอกชื่อบริษัท', $('#co_name'));
+      if(!tax)  return bad('กรุณากรอกเลขประจำตัวผู้เสียภาษี', $('#co_tax'));
+      if(tax.length!==13) return bad(`เลขประจำตัวผู้เสียภาษีต้องมี 13 หลัก (ตอนนี้ ${tax.length} หลัก)`, $('#co_tax'));
+      // กันเพิ่มบริษัทเดียวกันซ้ำสองรอบ
+      const dup=COMPANIES.find(x=>x.id!==(co&&co.id) && String(x.tax_id||'')===tax);
+      if(dup) return bad(`เลขนี้ซ้ำกับ "${dup.name}" ที่มีอยู่แล้ว`, $('#co_tax'));
+      closeModal();
+      if(isNew){
+        const created=await createCompany(name, tax, branch);
+        if(!created) return;
+        await openCompany(created.id);
+        PAGE='dashboard'; savePage(PAGE); renderNav(); render();
+        toast('เพิ่ม '+name+' แล้ว');
+      }else{
+        const {error}=await sb.from('firm_companies')
+          .update({name, tax_id:tax||null, branch:branch||null}).eq('id',co.id);
+        if(error){ toast('บันทึกไม่สำเร็จ: '+error.message); return; }
+        Object.assign(co,{name, tax_id:tax||null, branch:branch||null});
+        renderNav(); render(); toast('บันทึกแล้ว');
+      }
+    }]]);
+  // ช่องเลขผู้เสียภาษี — พิมพ์ได้เฉพาะตัวเลข ไม่เกิน 13 หลัก และบอกสถานะระหว่างพิมพ์
+  const tf=$('#co_tax'), ef=$('#co_err');
+  if(tf) tf.oninput=()=>{
+    tf.value=tf.value.replace(/\D/g,'').slice(0,13);
+    tf.style.borderColor='';
+    if(ef) ef.textContent = (tf.value.length && tf.value.length<13)
+      ? `กรอกแล้ว ${tf.value.length}/13 หลัก` : '';
+    if(ef) ef.style.color = tf.value.length===13 ? '#059669' : '#dc2626';
+  };
+  const nf=$('#co_name'); if(nf) nf.oninput=()=>{ nf.style.borderColor=''; if(ef) ef.textContent=''; };
+}
+/* ลบบริษัทถาวร — ทางเดียวที่คืนโควตา และลบข้อมูลเงินเดือนทิ้งด้วย
+   ให้พิมพ์ชื่อบริษัทยืนยัน เพราะกู้คืนไม่ได้ */
+async function deleteCompany(id){
+  const co=COMPANIES.find(x=>x.id===id); if(!co) return;
+  openModal('🗑️ ลบบริษัทถาวร', `
+    <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:11px;padding:13px 15px;margin-bottom:14px">
+      <div style="font-weight:800;color:#b91c1c;margin-bottom:6px">การลบนี้กู้คืนไม่ได้</div>
+      <div style="font-size:13.5px;color:#7f1d1d;line-height:1.75">
+        ข้อมูลของ <strong>${esc(co.name)}</strong> จะถูกลบทิ้งทั้งหมด ได้แก่<br>
+        • ข้อมูลพนักงานทุกคน<br>
+        • เงินเดือนทุกงวดที่ทำไว้<br>
+        • ประวัติสำหรับออก 50 ทวิ / ภ.ง.ด.1 / สปส.1-10 ย้อนหลัง<br><br>
+        ถ้าแค่เลิกดูแลแต่อาจต้องออกเอกสารย้อนหลัง ให้ใช้ <strong>📦 เก็บเข้าคลัง</strong> แทน
+        (ข้อมูลยังอยู่ครบ แต่ยังนับโควตา)
+      </div>
+    </div>
+    <div class="field"><label>พิมพ์ชื่อบริษัทเพื่อยืนยัน</label>
+      <input id="del_name" placeholder="${esc(co.name)}" autocomplete="off"></div>
+    <div class="muted" style="font-size:12.5px">ลบแล้วจะได้โควตาคืน 1 บริษัท</div>`,
+    [['ยกเลิก','ghost',closeModal],['ลบถาวร','',async()=>{
+      if($('#del_name').value.trim()!==co.name){
+        toast('ชื่อบริษัทไม่ตรง — ยังไม่ได้ลบ');
+        const f=$('#del_name'); if(f){ f.style.borderColor='#dc2626'; f.focus(); }
+        return;
+      }
+      closeModal();
+      const {error}=await sb.from('firm_companies').delete().eq('id',id);
+      if(error){ toast('ลบไม่สำเร็จ: '+error.message); return; }
+      COMPANIES=COMPANIES.filter(x=>x.id!==id);
+      try{ localStorage.removeItem('payroll_co_'+id); }catch(e){}   // ล้างข้อมูลที่ค้างในเครื่องด้วย
+      if(id===CUR_CO){
+        const next=activeCos()[0];
+        await openCompany(next?next.id:null);
+      }
+      try{ const {data:q}=await sb.rpc('my_company_quota'); if(q&&q[0]) CO_QUOTA=q[0].max_companies; }catch(e){}
+      renderNav(); render();
+      toast('ลบ '+co.name+' แล้ว · คืนโควตา 1 บริษัท');
+    }]]);
+}
+/* เก็บเข้าคลัง / นำกลับมาดูแล — ไม่ลบข้อมูล ยังออกเอกสารย้อนหลังได้ แต่ยังนับโควตา */
+async function setArchived(id, on){
+  const co=COMPANIES.find(x=>x.id===id); if(!co) return;
+  if(on && !confirm(`เก็บ "${co.name}" เข้าคลัง?\n\nข้อมูลทั้งหมดยังอยู่ครบ นำกลับมาดูแลได้ทุกเมื่อ\n\nหมายเหตุ: ยังนับในโควตาบริษัทอยู่ — ถ้าต้องการคืนโควตาต้องกดลบถาวร`)) return;
+  const {error}=await sb.from('firm_companies').update({archived:on}).eq('id',id);
+  if(error){
+    toast(isCoLimitError(error) ? ('🔒 '+(coQuotaMsg()||'เกินจำนวนบริษัทที่แพ็กเกจรองรับ'))
+                                : ('ไม่สำเร็จ: '+error.message));
+    return;
+  }
+  co.archived=on;
+  // ถ้าเก็บบริษัทที่กำลังเปิดอยู่ ให้สลับไปบริษัทอื่น
+  if(on && id===CUR_CO){
+    const next=activeCos()[0];
+    await openCompany(next?next.id:null);
+  }
+  renderNav(); render();
+  toast(on?'เก็บเข้าคลังแล้ว':'นำกลับมาดูแลแล้ว');
+}
+
 /* ============ คำสั่งซื้อ / ต่ออายุ (แอดมินเท่านั้น) ============ */
 async function vOrders(v){
   v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">🧾 คำสั่งซื้อ / ต่ออายุแพ็กเกจ</h2>
@@ -937,15 +1344,70 @@ function vResign(v){
 }
 function resignedBeforeToday(e){ if(!e.resignDate) return false; const [y,m,d]=e.resignDate.split('-').map(Number); return new Date(y,m-1,d) < new Date(); }
 /* ============ ADMIN — รายชื่อผู้ใช้ทั้งหมด ============ */
+/* จำการเปลี่ยนสิทธิ์ครั้งล่าสุดไว้ เผื่อแอดมินกดผิดแล้วอยากย้อนกลับ */
+let LAST_PLAN=null;
+const isPrem=u=>String(u.plan_type||'standard')==='premium';
+const isFirmU=u=>String(u.edition||'single')==='firm';
+/* ป้ายบอกระดับแพ็กเกจ — ช่วงทดลองใช้ได้ครบทุกฟีเจอร์อยู่แล้ว บอกไว้กันเข้าใจผิด */
+function planBadge(u,s){
+  const prem=isPrem(u);
+  const cap = u.max_employees ? `สูงสุด ${u.max_employees} คน` : 'ไม่จำกัดจำนวนคน';
+  const firm = isFirmU(u);
+  const tag = firm
+    ? '<span class="chip" style="background:#f3e8ff;color:#7e22ce;font-weight:700">🏦 สำนักงานบัญชี</span>'
+    : (prem
+      ? '<span class="chip" style="background:#ede9fe;color:#6d28d9;font-weight:700">💎 พรีเมี่ยม</span>'
+      : '<span class="chip" style="background:#e2e8f0;color:#475569;font-weight:700">มาตรฐาน</span>');
+  const coCap = u.max_companies ? `สูงสุด ${u.max_companies} บริษัท` : 'ไม่จำกัดจำนวนบริษัท';
+  const note = firm
+    ? `<br><span class="muted" style="font-size:11.5px">${coCap} · พนักงานไม่จำกัด</span>`
+    : ((s.t==='ทดลองใช้')
+      ? '<br><span class="muted" style="font-size:11.5px">ช่วงทดลอง — ใช้ได้ครบทุกฟีเจอร์</span>'
+      : `<br><span class="muted" style="font-size:11.5px">${cap}</span>`);
+  return tag+note;
+}
+async function applyPlan(u, patch, msg){
+  const prev={ id:u.id, email:u.email, paid_until:u.paid_until??null, plan:u.plan??null,
+               plan_type:u.plan_type??null, max_employees:u.max_employees??null,
+               edition:u.edition??null, max_companies:u.max_companies??null, msg };
+  const {error}=await sb.from('profiles').update(patch).eq('id',u.id);
+  if(error){ toast('ไม่สำเร็จ: '+error.message); return false; }
+  LAST_PLAN=prev;      // บันทึกค่าเดิม "หลัง" อัปเดตสำเร็จเท่านั้น
+  toast(msg); render(); return true;
+}
 async function vAdmin(v){
   v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">👑 รายชื่อผู้ใช้ที่สมัครทั้งหมด</h2>
     <button class="btn ghost sm" id="refreshUsers" style="margin-left:auto">↻ รีเฟรช</button></div>`));
   const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap" id="usersTbl"><div class="empty">กำลังโหลด…</div></div></div></div>`);
   v.appendChild(panel);
   $('#refreshUsers').onclick=()=>render();
-  const {data,error}=await sb.from('profiles').select('id,email,created_at,paid_until,plan,trial_days').order('created_at',{ascending:false});
+  const {data,error}=await sb.from('profiles')
+    .select('id,email,created_at,paid_until,plan,plan_type,max_employees,edition,max_companies,trial_days')
+    .order('created_at',{ascending:false});
   const box=$('#usersTbl'); if(!box) return;
   if(error){ box.innerHTML=`<div class="empty">โหลดไม่ได้: ${esc(error.message)}</div>`; return; }
+  // แถบย้อนกลับ — โผล่หลังเพิ่งเปลี่ยนสิทธิ์ เผื่อกดผิด
+  if(LAST_PLAN){
+    const before = LAST_PLAN.paid_until ? fmtDate(LAST_PLAN.paid_until.slice(0,10)) : 'ยังไม่เคยชำระเงิน';
+    const bar=el(`<div class="panel" style="border:2px solid #f59e0b;background:#fffbeb;margin-bottom:12px"><div class="pbody"
+      style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <span style="font-size:20px">↩️</span>
+      <div><strong>เพิ่งเปลี่ยนสิทธิ์ของ ${esc(LAST_PLAN.email||'')}</strong><br>
+        <span class="muted" style="font-size:13px">${esc(LAST_PLAN.msg||'')}<br>ค่าเดิมก่อนเปลี่ยน: <b>${esc(before)}</b></span></div>
+      <button class="btn sm" id="undoPlan" style="margin-left:auto">↩️ ย้อนกลับเป็นค่าเดิม</button>
+      <button class="btn ghost sm" id="dismissUndo">ปิด</button>
+    </div></div>`);
+    v.insertBefore(bar, panel);      // ให้อยู่เหนือตาราง จะได้เห็นทันที
+    bar.querySelector('#undoPlan').onclick=async()=>{
+      const p=LAST_PLAN; LAST_PLAN=null;          // ล้างก่อน กันบันทึกการย้อนกลับเป็นรายการใหม่
+      const {error}=await sb.from('profiles').update({paid_until:p.paid_until, plan:p.plan,
+        plan_type:p.plan_type, max_employees:p.max_employees,
+        edition:p.edition, max_companies:p.max_companies}).eq('id',p.id);
+      toast(error ? ('ย้อนกลับไม่สำเร็จ: '+error.message) : `↩️ คืนค่าเดิมของ ${p.email} แล้ว`);
+      render();
+    };
+    bar.querySelector('#dismissUndo').onclick=()=>{ LAST_PLAN=null; render(); };
+  }
   // สถานะสิทธิ์ใช้งานของแต่ละคน
   const FOREVER=Date.now()+3650*864e5;   // เกิน 10 ปี = ถือว่าไม่จำกัด
   const stat=u=>{
@@ -964,32 +1426,99 @@ async function vAdmin(v){
     <td><span class="chip" style="background:${s.c}">${s.t}</span>
       ${s.d?`<br><span class="muted" style="font-size:12px">เหลือ ${s.d} วัน</span>`:''}</td>
     <td>${s.unlimited?'<b style="color:#6d28d9">ตลอดไป</b>':(s.e?esc(fmtDate(s.e.slice(0,10))):'-')}</td>
+    <td>${planBadge(u,s)}</td>
     <td style="text-align:right;white-space:nowrap">
-      <button class="btn ghost sm" data-ext="${u.id}" title="ต่ออายุ 1 เดือน">➕1 เดือน</button>
+      <button class="btn ghost sm" data-ext="${u.id}" data-mo="1" title="ต่ออายุ 1 เดือน">➕1 เดือน</button>
+      <button class="btn ghost sm" data-ext="${u.id}" data-mo="12" title="ต่ออายุ 1 ปี">➕1 ปี</button>
+      <button class="btn ghost sm" data-pt="${u.id}" title="สลับระดับแพ็กเกจ">⇄ ${isPrem(u)?'เป็นมาตรฐาน':'เป็นพรีเมี่ยม'}</button>
       ${s.unlimited
         ? `<button class="btn ghost sm" data-unl="${u.id}" data-off="1" title="ยกเลิกสิทธิ์ไม่จำกัด">↩️ ยกเลิกไม่จำกัด</button>`
         : `<button class="btn ghost sm" data-unl="${u.id}" title="ให้ใช้งานได้ตลอดไป">♾️ ไม่จำกัด</button>`}
-      <button class="btn sm" data-open="${u.id}" data-email="${esc(u.email||'')}">✏️ ดู/แก้</button></td>
+      <button class="btn ghost sm" data-edt="${u.id}" title="แก้ไขสิทธิ์ทั้งหมด">⚙️ แก้สิทธิ์</button>
+      <button class="btn sm" data-open="${u.id}" data-email="${esc(u.email||'')}">✏️ ดูข้อมูล</button></td>
   </tr>`;}).join('');
-  const tbl=el(`<table><thead><tr><th>อีเมล</th><th>สมัครเมื่อ</th><th>สถานะ</th><th>ใช้ได้ถึง</th><th></th></tr></thead>
-    <tbody>${rows||'<tr><td colspan="5" class="empty">ยังไม่มีผู้ใช้</td></tr>'}</tbody></table>`);
+  const tbl=el(`<table><thead><tr><th>อีเมล</th><th>สมัครเมื่อ</th><th>สถานะ</th><th>ใช้ได้ถึง</th><th>แพ็กเกจ</th><th></th></tr></thead>
+    <tbody>${rows||'<tr><td colspan="6" class="empty">ยังไม่มีผู้ใช้</td></tr>'}</tbody></table>`);
   tbl.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>adminOpen(b.dataset.open, b.dataset.email));
   // ♾️ ให้/ยกเลิกสิทธิ์ใช้งานไม่จำกัด
   tbl.querySelectorAll('[data-unl]').forEach(b=>b.onclick=async()=>{
     const u=data.find(x=>x.id===b.dataset.unl), off=b.dataset.off==='1';
-    const val = off ? null : '2099-12-31T23:59:59Z';
-    const {error:e2}=await sb.from('profiles').update({paid_until:val, plan: off?null:'ไม่จำกัด'}).eq('id',u.id);
-    toast(e2 ? ('ไม่สำเร็จ: '+e2.message)
-             : (off ? `ยกเลิกสิทธิ์ไม่จำกัดของ ${u.email} แล้ว` : `♾️ ${u.email} ใช้งานได้ตลอดไปแล้ว`));
-    if(!e2) render();
+    await applyPlan(u, {paid_until: off?null:'2099-12-31T23:59:59Z', plan: off?null:'ไม่จำกัด'},
+      off ? `ยกเลิกสิทธิ์ไม่จำกัดของ ${u.email} แล้ว` : `♾️ ${u.email} ใช้งานได้ตลอดไปแล้ว`);
   });
+  // ➕ ต่ออายุ 1 เดือน / 1 ปี — ต่อจากวันหมดอายุเดิม (ถ้ายังไม่หมด) ไม่ใช่ทับของเดิม
   tbl.querySelectorAll('[data-ext]').forEach(b=>b.onclick=async()=>{
     const u=data.find(x=>x.id===b.dataset.ext);
+    const mo=+b.dataset.mo||1;
     const base=new Date(Math.max(Date.now(), u.paid_until?new Date(u.paid_until).getTime():0));
-    base.setMonth(base.getMonth()+1);
-    const {error:e2}=await sb.from('profiles').update({paid_until:base.toISOString()}).eq('id',u.id);
-    toast(e2?('ต่ออายุไม่สำเร็จ: '+e2.message):`✅ ต่ออายุ ${u.email} ถึง ${fmtDate(base.toISOString().slice(0,10))}`);
-    if(!e2) render();
+    base.setMonth(base.getMonth()+mo);
+    await applyPlan(u, {paid_until: base.toISOString()},
+      `✅ ต่ออายุ ${u.email} อีก ${mo===12?'1 ปี':mo+' เดือน'} → ถึง ${fmtDate(base.toISOString().slice(0,10))}`);
+  });
+  // ⇄ สลับระดับแพ็กเกจเร็ว ๆ (มาตรฐาน ↔ พรีเมี่ยม)
+  tbl.querySelectorAll('[data-pt]').forEach(b=>b.onclick=async()=>{
+    const u=data.find(x=>x.id===b.dataset.pt);
+    const to = isPrem(u) ? 'standard' : 'premium';
+    await applyPlan(u, {plan_type: to},
+      to==='premium' ? `💎 ${u.email} เป็นพรีเมี่ยมแล้ว (ปลดล็อกลงเวลา/ลางาน)`
+                     : `${u.email} เปลี่ยนเป็นมาตรฐานแล้ว (ล็อกลงเวลา/ลางาน)`);
+  });
+  // ⚙️ แก้สิทธิ์ทั้งหมดในที่เดียว — วันหมดอายุ + ระดับแพ็กเกจ + เพดานพนักงาน
+  tbl.querySelectorAll('[data-edt]').forEach(b=>b.onclick=()=>{
+    const u=data.find(x=>x.id===b.dataset.edt);
+    const cur=u.paid_until? u.paid_until.slice(0,10) : '';
+    const prem=isPrem(u);
+    openModal('แก้สิทธิ์ — '+(u.email||''), `
+      <div class="field"><label>ใช้งานได้ถึงวันที่</label>
+        <input type="date" id="pd_date" value="${esc(cur)}"></div>
+      <div class="muted" style="font-size:12.5px;margin:-6px 0 12px">
+        ค่าปัจจุบัน <b>${cur?esc(fmtDate(cur)):'ยังไม่เคยชำระเงิน'}</b> ·
+        <b>เว้นว่าง</b> = ล้างสิทธิ์ที่ชำระแล้ว กลับไปนับช่วงทดลองตามวันสมัคร
+      </div>
+
+      <div class="field"><label>ระดับแพ็กเกจ</label>
+        <select id="pd_type">
+          <option value="standard" ${prem?'':'selected'}>มาตรฐาน — ไม่มีลงเวลาเข้างาน / ลางาน</option>
+          <option value="premium"  ${prem?'selected':''}>💎 พรีเมี่ยม — ใช้ได้ครบทุกฟีเจอร์</option>
+        </select></div>
+
+      <div class="field"><label>ประเภทบัญชี</label>
+        <select id="pd_ed">
+          <option value="single" ${isFirmU(u)?'':'selected'}>บริษัทเดียว — ระบบเดิม</option>
+          <option value="firm"   ${isFirmU(u)?'selected':''}>🏦 สำนักงานบัญชี — หลายบริษัท ไม่จำกัดพนักงาน</option>
+        </select></div>
+
+      <div class="field"><label>จำนวนพนักงานสูงสุด <span style="color:#94a3b8;font-size:11px">(เฉพาะแบบบริษัทเดียว)</span></label>
+        <input type="number" id="pd_max" min="0" step="1" value="${u.max_employees||''}" placeholder="เว้นว่าง = ไม่จำกัด"></div>
+
+      <div class="field"><label>จำนวนบริษัทสูงสุด <span style="color:#94a3b8;font-size:11px">(เฉพาะแบบสำนักงานบัญชี)</span></label>
+        <input type="number" id="pd_co" min="0" step="1" value="${u.max_companies||''}" placeholder="เว้นว่าง = ไม่จำกัด"></div>
+      <div class="muted" style="font-size:12.5px;margin-top:-6px;line-height:1.7">
+        ตามแพ็กเกจปกติ: 10 · 30 · 50 · 80 · 100 คน<br>
+        นับเฉพาะพนักงานที่ยังทำงานอยู่ คนที่ลาออกแล้วไม่กินโควตา
+      </div>`,
+      [['ยกเลิก','ghost',closeModal],['บันทึก','',async()=>{
+        const v=$('#pd_date').value;
+        const t=$('#pd_type').value;
+        const mx=$('#pd_max').value.trim();
+        const ed=$('#pd_ed').value;
+        const mc=$('#pd_co').value.trim();
+        closeModal();
+        const parts=[];
+        if(v!==cur) parts.push(v?('หมดอายุ '+fmtDate(v)):'ล้างสิทธิ์ที่ชำระแล้ว');
+        if(t!==(u.plan_type||'standard')) parts.push(t==='premium'?'เป็นพรีเมี่ยม':'เป็นมาตรฐาน');
+        if(String(mx)!==String(u.max_employees??'')) parts.push('สูงสุด '+(mx?mx+' คน':'ไม่จำกัด'));
+        if(ed!==(u.edition||'single')) parts.push(ed==='firm'?'เป็นสำนักงานบัญชี':'เป็นบริษัทเดียว');
+        if(String(mc)!==String(u.max_companies??'')) parts.push('สูงสุด '+(mc?mc+' บริษัท':'ไม่จำกัดบริษัท'));
+        if(!parts.length){ toast('ไม่มีอะไรเปลี่ยน'); return; }
+        await applyPlan(u, {
+          paid_until: v ? v+'T23:59:59Z' : null,
+          plan_type: t,
+          max_employees: mx==='' ? null : (+mx||null),
+          edition: ed,
+          max_companies: mc==='' ? null : (+mc||null)
+        }, `⚙️ ${u.email}: ${parts.join(' · ')}`);
+      }]]);
   });
   box.innerHTML=''; box.appendChild(tbl);
 }
@@ -1205,7 +1734,34 @@ function vEmployees(v){
     <button class="btn" id="addEmp">${tr('add_emp')}</button>
   </div>`);
   v.appendChild(tb);
-  tb.querySelector('#addEmp').onclick=()=>empForm();
+  // แสดงโควตาที่เหลือ และปิดปุ่มเมื่อเต็มแล้ว
+  {
+    const lim=empLimit();
+    if(lim!==null){
+      const used=empUsed(), full=used>=lim;
+      const chip=el(`<span class="chip" style="margin-left:auto;background:${full?'#fee2e2':'#eaf6f1'};
+        color:${full?'#dc2626':'#0f766e'};font-weight:700">${full?'🔒 ':''}พนักงาน ${used}/${lim} คน</span>`);
+      tb.insertBefore(chip, tb.querySelector('#impBtn'));
+      const add=tb.querySelector('#addEmp');
+      if(full){
+        add.disabled=true; add.style.opacity='.5'; add.style.cursor='not-allowed';
+        add.title=quotaMsg();
+        const note=el(`<div class="panel" style="border:2px solid #f59e0b;background:#fffbeb"><div class="pbody"
+          style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:20px">🔒</span>
+          <div><strong>เพิ่มพนักงานไม่ได้ — เต็มโควตาแพ็กเกจแล้ว</strong><br>
+          <span class="muted" style="font-size:13px">${esc(quotaMsg())}<br>
+          พนักงานที่ลาออกแล้วไม่นับในโควตา ถ้าใครลาออกให้ใส่วันที่ลาออกในหน้า “การลาออก”</span></div>
+          <a class="btn sm" href="pricing.html" target="_blank" rel="noopener" style="margin-left:auto">อัปเกรดแพ็กเกจ</a>
+        </div></div>`);
+        v.appendChild(note);
+      }
+    }
+  }
+  tb.querySelector('#addEmp').onclick=()=>{
+    if(!canAddEmp(1)){ toast('🔒 '+quotaMsg()); return; }
+    empForm();
+  };
   tb.querySelector('#empQ').oninput=(e)=>{ empSearch=e.target.value; drawEmp(); };
   tb.querySelector('#expBtn').onclick=exportEmpCSV;
   tb.querySelector('#impBtn').onclick=importEmpCSV;
@@ -1307,6 +1863,10 @@ function empForm(id){
     if(dup){ toast(`รหัส ${code} ซ้ำกับ "${dup.name}" — กรุณาใช้รหัสอื่น`);
       const f=$('#f_code'); if(f){ f.style.borderColor='#dc2626'; f.focus(); f.select(); } return; }
     const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,otMaxDay:+g('f_otMax')||0};
+    // เพิ่มคนใหม่ หรือปลดสถานะลาออกให้กลับมาทำงาน = กินโควตาเพิ่ม ต้องเช็คก่อน
+    const willCount = !rec.resignDate;
+    const wasCount  = id ? !e.resignDate : false;
+    if(willCount && !wasCount && !canAddEmp(1)){ toast('🔒 '+quotaMsg()); return; }
     if(id){ Object.assign(e,rec); } else { DB.employees.push({id:uid(),...rec}); }
     save(); closeModal(); drawEmp(); toast('บันทึกแล้ว');
   }]]);
@@ -3022,9 +3582,45 @@ function serviceText(emp, year){
   if(mm<0){ yy--; mm+=12; }
   return (yy>0? yy+' ปี ':'') + mm + ' เดือน';
 }
+/* ตั้งโควตาเฉพาะพนักงานคนหนึ่ง — เว้นว่าง = ใช้ค่าส่วนกลาง */
+function empQuotaForm(emp, year){
+  if(!emp) return;
+  const g=DB.leaveQuota||{};
+  const vac=vacationEligible(emp, year);
+  openModal('ตั้งโควตาวันลา — '+emp.name, `
+    <div class="muted" style="font-size:13px;margin-bottom:12px;line-height:1.7">
+      กรอกเฉพาะประเภทที่ต้องการให้ต่างจากคนอื่น · <strong>เว้นว่าง = ใช้ค่าส่วนกลาง</strong><br>
+      อายุงาน ${esc(serviceText(emp, year))}${vac.ann?' · ครบ 1 ปี '+esc(fmtThaiDate(vac.ann)):''}
+    </div>
+    ${QUOTA_TYPES.map(k=>`
+      <div class="field"><label>${esc(LEAVE_LAB(k))} (วัน/ปี)</label>
+        <input type="number" min="0" step="0.5" id="eq_${k}" value="${ownQuota(emp,k)??''}"
+          placeholder="ค่าส่วนกลาง ${num(+g[k]||0)} วัน"></div>`).join('')}
+    ${!vac.ok?`<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 13px;font-size:12.5px;color:#92400e">
+      ⚠️ คนนี้ยังทำงานไม่ครบ 1 ปี — ถึงตั้งโควตาลาพักร้อนไว้ ระบบก็ยังไม่ให้สิทธิ์จนกว่าจะครบตามกฎหมาย</div>`:''}`,
+    [['ยกเลิก','ghost',closeModal],
+     ['ใช้ค่าส่วนกลาง','ghost',()=>{
+       delete emp.quota; save(); closeModal(); render(); toast('กลับไปใช้ค่าส่วนกลางแล้ว');
+     }],
+     ['บันทึก','',()=>{
+       const q={};
+       QUOTA_TYPES.forEach(k=>{ const v=$('#eq_'+k).value.trim(); if(v!=='') q[k]=Math.max(0,+v||0); });
+       if(Object.keys(q).length) emp.quota=q; else delete emp.quota;
+       save(); closeModal(); render();
+       toast(Object.keys(q).length? 'บันทึกโควตาของ '+emp.name+' แล้ว' : 'กลับไปใช้ค่าส่วนกลางแล้ว');
+     }]]);
+}
+/* โควตารายคน — ตั้งทับค่าส่วนกลางได้ (เช่น ลาพักร้อนเพิ่มตามอายุงานหรือตามสัญญาจ้าง)
+   เก็บที่ emp.quota = { sick, personal, vacation } · ค่าว่าง/ไม่ได้ตั้ง = ใช้ค่าส่วนกลาง */
+function ownQuota(emp, type){
+  const v=emp && emp.quota && emp.quota[type];
+  return (v===''||v===null||v===undefined) ? null : (+v||0);
+}
+function hasOwnQuota(emp, type){ return ownQuota(emp,type)!==null; }
 // โควตาที่ได้จริงของพนักงานคนนี้ในปีนี้ (ลาพักร้อนผูกกับอายุงานครบ 1 ปี)
 function quotaFor(emp, type, year){
-  const base=+((DB.leaveQuota||{})[type])||0;
+  const own=ownQuota(emp,type);
+  const base = own!==null ? own : (+((DB.leaveQuota||{})[type])||0);
   if(type!=='vacation') return base;
   return vacationEligible(emp, year).ok ? base : 0;
 }
@@ -3165,7 +3761,9 @@ function vLeave(v){
             ${used?`<br><span style="font-size:12px;color:#dc2626">ใช้ไป ${num(used)} วัน</span>`:''}</td>`;
         }
         const left=quota-used, over=quota>0&&left<0;
+        const own=hasOwnQuota(e,k);
         return `<td class="num">${num(used)}${quota?` <span class="muted">/ ${num(quota)}</span>`:''}
+          ${own?'<span title="ตั้งเฉพาะคนนี้" style="color:#7c3aed;font-weight:800">•</span>':''}
           ${quota?`<br><span style="font-size:12px;color:${over?'#dc2626':'#16a34a'}">${over?'เกิน '+num(-left):'เหลือ '+num(left)}</span>`:''}</td>`;
       }).join('');
       const other=LEAVE_TYPES.filter(([k])=>!QUOTA_TYPES.includes(k))
@@ -3173,20 +3771,27 @@ function vLeave(v){
       return `<tr><td>${esc(e.code)}</td><td><strong>${esc(e.name)}</strong>
         ${e.startDate?`<br><span class="muted" style="font-size:11.5px">เริ่ม ${esc(e.startDate)}</span>`:''}</td>
         <td class="num">${esc(serviceText(e, yr))}</td>${cells}
-        <td class="num">${other?num(other):'<span class="muted">-</span>'}</td></tr>`;
+        <td class="num">${other?num(other):'<span class="muted">-</span>'}</td>
+        <td class="num"><button class="btn ghost sm" data-eq="${e.id}" title="ตั้งโควตาเฉพาะคนนี้">⚙️ ตั้งโควตา</button></td></tr>`;
     }).join('');
     const nEligible=active.filter(e=>vacationEligible(e,yr).ok).length;
-    v.appendChild(el(`<div class="panel" style="margin-top:16px">
+    const nCustom=active.filter(e=>QUOTA_TYPES.some(k=>hasOwnQuota(e,k))).length;
+    const qp=el(`<div class="panel" style="margin-top:16px">
       <div class="phead" style="padding:12px 16px;font-weight:700">📊 โควตาวันลาคงเหลือ ปี ${yr+543}</div>
       <div class="pbody" style="padding:0"><div class="tbl-wrap"><table>
       <thead><tr><th>${tr('th_code')}</th><th>${tr('th_name')}</th><th class="num">อายุงาน</th>
         ${QUOTA_TYPES.map(k=>`<th class="num">${esc(LEAVE_LAB(k))}${k==='vacation'?'<br><span style="font-weight:400;font-size:11px">ต้องครบ 1 ปี</span>':''}</th>`).join('')}
-        <th class="num">ลาอื่น ๆ</th></tr></thead>
+        <th class="num">ลาอื่น ๆ</th><th class="num"></th></tr></thead>
       <tbody>${qrows}</tbody></table></div>
-      <div style="padding:11px 16px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)">
+      <div style="padding:11px 16px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);line-height:1.8">
         🌴 <strong>ลาพักร้อน</strong>: มีสิทธิ์เฉพาะผู้ที่ทำงานติดต่อกัน<strong>ครบ 1 ปี</strong>แล้วเท่านั้น
-        (พ.ร.บ.คุ้มครองแรงงาน ม.30) — ปี ${yr+543} มีสิทธิ์ <strong>${num(nEligible)}</strong> / ${num(active.length)} คน
-      </div></div></div>`));
+        (พ.ร.บ.คุ้มครองแรงงาน ม.30) — ปี ${yr+543} มีสิทธิ์ <strong>${num(nEligible)}</strong> / ${num(active.length)} คน<br>
+        <span style="color:#7c3aed;font-weight:800">•</span> = ตั้งโควตาเฉพาะคนนี้ ไม่ใช้ค่าส่วนกลาง
+        (ตอนนี้ <strong>${num(nCustom)}</strong> คน) — กด <strong>⚙️ ตั้งโควตา</strong> ท้ายแถวเพื่อแก้รายคน
+      </div></div></div>`);
+    v.appendChild(qp);
+    qp.querySelectorAll('[data-eq]').forEach(b=>b.onclick=()=>
+      empQuotaForm(DB.employees.find(x=>x.id===b.dataset.eq), yr));
   }
 }
 
@@ -3389,7 +3994,7 @@ function importEmpCSV(){
     rd.onload=()=>{ try{
       const rows=parseCSV(String(rd.result).replace(/^﻿/,''));
       if(rows.length<2) throw 0;
-      let added=0, updated=0;
+      let added=0, updated=0, skipped=0;
       for(let r=1;r<rows.length;r++){ const c=rows[r]; if(!c || !String(c[0]||'').trim()) continue;
         const rec={
           code:String(c[0]).trim(), name:String(c[1]||'').trim(),
@@ -3406,9 +4011,17 @@ function importEmpCSV(){
           otMaxDay: +c[18]||0
         };
         const ex=DB.employees.find(x=>x.code===rec.code);
-        if(ex){ Object.assign(ex,rec); updated++; } else { DB.employees.push({id:uid(),...rec}); added++; }
+        if(ex){ Object.assign(ex,rec); updated++; }
+        else {
+          // เกินโควตาแพ็กเกจ → หยุดตรงนี้ ไม่นำเข้าต่อ (ที่นำเข้าไปแล้วยังอยู่)
+          if(!canAddEmp(1)){ skipped = rows.length-r; break; }
+          DB.employees.push({id:uid(),...rec}); added++;
+        }
       }
-      save(); drawEmp(); toast(`นำเข้า CSV สำเร็จ: เพิ่ม ${added} · อัปเดต ${updated}`);
+      save(); drawEmp();
+      toast(skipped
+        ? `นำเข้า ${added} คน · อัปเดต ${updated} · 🔒 ข้าม ${skipped} คน เพราะเต็มโควตาแพ็กเกจ (สูงสุด ${empLimit()} คน)`
+        : `นำเข้า CSV สำเร็จ: เพิ่ม ${added} · อัปเดต ${updated}`);
     }catch(e){ toast('ไฟล์ CSV ไม่ถูกต้อง'); } };
     rd.readAsText(f,'utf-8'); };
   inp.click();
@@ -3460,12 +4073,36 @@ try{ sb = window.supabase.createClient(SB_URL, SB_ANON); }catch(e){}
 
 let MY_UID=null, MY_EMAIL='', TARGET_UID=null, TARGET_EMAIL='', IS_ADMIN=false, GUEST=false;
 let _cloudT=null;
-function cloudSaveDebounced(){ if(!sb||!TARGET_UID) return; clearTimeout(_cloudT); _cloudT=setTimeout(cloudSave, 1200); }
+function cloudSaveDebounced(){
+  if(!sb||!TARGET_UID) return;
+  if(isFirm() && !CUR_CO) return;          // ยังไม่ได้เลือกบริษัท = ยังไม่มีที่ให้บันทึก
+  clearTimeout(_cloudT); _cloudT=setTimeout(cloudSave, 1200);
+}
 async function cloudSave(){
+  // ---- สำนักงานบัญชี: บันทึกลงแถวของบริษัทที่เปิดอยู่ ----
+  if(isFirm()){
+    try{
+      if(!CUR_CO) return;
+      const {core}=splitStores(DB);        // ไม่เก็บข้อมูลลงเวลา/ลางาน (ไม่มีในแบบสำนักงานบัญชี)
+      const {error}=await sb.from('firm_stores')
+        .upsert({company_id:CUR_CO, data:core, updated_at:new Date().toISOString()});
+      if(error){ setSync('⚠️ ซิงก์ไม่สำเร็จ'); return; }
+      const c=curCo();
+      setSync('✓ บันทึก '+(c? c.name : '')+' แล้ว');
+    }catch(e){ setSync('⚠️ ซิงก์ไม่สำเร็จ'); }
+    return;
+  }
   try{ if(!TARGET_UID) return;
     const {core, prem}=splitStores(DB);
     const {error}=await sb.from('payroll_stores').upsert({user_id:TARGET_UID, data:core});
-    if(error){ setSync('⚠️ ซิงก์ไม่สำเร็จ'); return; }
+    if(error){
+      // ฐานข้อมูลปฏิเสธเพราะเกินโควตาพนักงาน — บอกให้ชัดว่าเกิดอะไรขึ้น
+      if(isEmpLimitError(error)){
+        setSync('🔒 เกินจำนวนพนักงานของแพ็กเกจ — ยังไม่ได้บันทึกขึ้นคลาวด์');
+        toast('🔒 '+(quotaMsg()||'เกินจำนวนพนักงานที่แพ็กเกจรองรับ'));
+      } else setSync('⚠️ ซิงก์ไม่สำเร็จ');
+      return;
+    }
     // ข้อมูลพรีเมี่ยมเก็บอีกตาราง — ถ้าไม่มีสิทธิ์ ฐานข้อมูลจะปฏิเสธเอง
     if(hasPremium()){
       const {error:e2}=await sb.from('premium_stores')
@@ -3487,7 +4124,61 @@ async function cloudLoad(uid){
   else { localStorage.removeItem(LS_KEY); }   // ไม่มีข้อมูลบนคลาวด์ → เริ่มว่าง (กันข้อมูลค้างของคนก่อน)
   DB=load();
 }
-function setSync(t){ const f=$('#userFoot'); if(f&&f._email){ f.innerHTML=`☁️ ${esc(f._email)}${IS_ADMIN?' <span style="color:#fbbf24">👑</span>':''}<br><span style="opacity:.75">${t}</span> · <a href="#" id="logoutBtn" style="color:#a7f3d0">ออกจากระบบ</a>`; const b=$('#logoutBtn'); if(b) b.onclick=async(e)=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); localStorage.removeItem(PAGE_KEY); location.reload(); }; } }
+
+/* ============================================================
+   ระบบหลายบริษัท — สำนักงานบัญชี
+   ============================================================ */
+async function fetchCompanies(){
+  const {data,error}=await sb.from('firm_companies')
+    .select('id,name,tax_id,branch,note,archived,created_at')
+    .eq('owner_id', TARGET_UID)
+    .order('archived',{ascending:true}).order('created_at',{ascending:true});
+  if(error){ COMPANIES=[]; return error; }
+  COMPANIES=data||[];
+  try{ const {data:q}=await sb.rpc('my_company_quota'); if(q&&q[0]) CO_QUOTA=q[0].max_companies; }catch(e){}
+  return null;
+}
+/* เปิดบริษัทหนึ่งขึ้นมาทำงาน — เปลี่ยนทั้งคีย์ในเครื่องและข้อมูลบนคลาวด์ */
+async function openCompany(id){
+  clearTimeout(_cloudT);                    // ยกเลิกคิวบันทึกของบริษัทก่อนหน้า กันเขียนผิดแถว
+  CUR_CO=id;
+  try{ localStorage.setItem(CO_KEY, id||''); }catch(e){}
+  setStoreKey(id);
+  if(!id){ DB=load(); return; }
+  const {data}=await sb.from('firm_stores').select('data').eq('company_id',id).maybeSingle();
+  const d=(data&&data.data&&data.data.employees)?data.data:null;
+  if(d) localStorage.setItem(LS_KEY, JSON.stringify(d));
+  else  localStorage.removeItem(LS_KEY);    // บริษัทใหม่ = เริ่มจากว่าง ไม่ใช่ข้อมูลบริษัทก่อนหน้า
+  DB=load();
+  // ชื่อบริษัทในระบบให้ตรงกับที่ตั้งไว้ในรายชื่อลูกค้า
+  const c=curCo();
+  if(c){
+    if(!DB.company) DB.company={};
+    if(!DB.company.name || DB.company.name==='บริษัท ตัวอย่าง จำกัด') DB.company.name=c.name;
+    if(c.tax_id && !DB.company.taxId) DB.company.taxId=c.tax_id;
+  }
+}
+async function switchCompany(id){
+  if(id===CUR_CO) return;
+  await openCompany(id);
+  PAGE = pageAllowed(PAGE) ? PAGE : 'dashboard';
+  renderNav(); render();
+  const c=curCo(); toast('เปิด '+(c?c.name:'บริษัท')+' แล้ว');
+}
+async function createCompany(name, taxId, branch){
+  if(coRoom()<1){ toast('🔒 '+coQuotaMsg()); return null; }
+  const {data,error}=await sb.from('firm_companies')
+    .insert({owner_id:TARGET_UID, name, tax_id:taxId||null, branch:branch||null})
+    .select('id,name,tax_id,branch,note,archived,created_at').single();
+  if(error){
+    toast(isCoLimitError(error) ? ('🔒 '+(coQuotaMsg()||'เกินจำนวนบริษัทที่แพ็กเกจรองรับ'))
+                                : ('เพิ่มบริษัทไม่สำเร็จ: '+error.message));
+    return null;
+  }
+  COMPANIES.push(data);
+  return data;
+}
+function setSync(t){ const f=$('#userFoot'); if(f&&f._email){ f.innerHTML=`☁️ ${esc(f._email)}${IS_ADMIN?' <span style="color:#fbbf24">👑</span>':''}<br><span style="opacity:.75">${t}</span> · <a href="#" id="logoutBtn" style="color:#a7f3d0">ออกจากระบบ</a>`; const b=$('#logoutBtn'); if(b) b.onclick=async(e)=>{ e.preventDefault(); await sb.auth.signOut(); clearAllStores(); localStorage.removeItem(PAGE_KEY); localStorage.removeItem(CO_KEY); location.reload(); }; } }
 
 // แอดมิน: เปิดข้อมูลของผู้ใช้คนอื่นเพื่อดู/แก้
 async function adminOpen(uid,email){ TARGET_UID=uid; TARGET_EMAIL=email; await cloudLoad(uid); PAGE='dashboard'; savePage(PAGE); renderNav(); render(); toast('เปิดข้อมูลของ '+email); }
@@ -3502,6 +4193,49 @@ function fmtDateTime(s){ if(!s) return '-'; const d=new Date(s); return `${Strin
 
 function showLogin(msg){ $('#authGate').style.display='flex'; if(msg){ const m=$('#authMsg'); m.style.color='#dc2626'; m.textContent=msg; } }
 let ACCESS={status:'trial',days_left:30,premium:true};
+
+/* ---------- เพดานจำนวนพนักงานตามแพ็กเกจ ----------
+   null = ไม่จำกัด (ช่วงทดลอง / แอดมิน / แพ็กเกจสั่งทำ)
+   ตัวบังคับจริงคือทริกเกอร์ trg_emp_limit ในฐานข้อมูล — ตรงนี้ทำให้ผู้ใช้รู้ตัวก่อนกรอกเสียเที่ยว */
+let EMP_QUOTA = null;
+/* ---------- ระบบหลายบริษัท (สำนักงานบัญชี) ----------
+   edition: single = บริษัทเดียว (ระบบเดิม) · firm = สำนักงานบัญชี
+   แบบ firm ไม่จำกัดจำนวนพนักงาน แต่จำกัดจำนวนบริษัทแทน และไม่มีลงเวลา/ลางาน */
+let EDITION='single';
+const isFirm = ()=> EDITION==='firm';
+let COMPANIES=[];        // บริษัทลูกค้าทั้งหมดของสำนักงานนี้
+let CUR_CO=null;         // id บริษัทที่กำลังเปิดอยู่
+let CO_QUOTA=null;       // เพดานจำนวนบริษัทตามแพ็กเกจ (null = ไม่จำกัด)
+const CO_KEY='payroll_company';
+const curCo = ()=> COMPANIES.find(c=>c.id===CUR_CO) || null;
+const activeCos = ()=> COMPANIES.filter(c=>!c.archived);   // ที่ยังดูแลอยู่ — ใช้แสดงในตัวสลับบริษัท
+/* โควตานับ "ทุกบริษัท" รวมที่เก็บเข้าคลังแล้ว — ต้องลบเท่านั้นถึงจะคืนโควตา */
+const countedCos = ()=> COMPANIES;
+function coLimit(){ return (CO_QUOTA===null||CO_QUOTA===undefined) ? null : +CO_QUOTA; }
+function coRoom(){ const l=coLimit(); return l===null ? Infinity : Math.max(0, l-countedCos().length); }
+function coQuotaMsg(){
+  const l=coLimit();
+  return l===null ? '' : `แพ็กเกจของคุณเพิ่มบริษัทได้สูงสุด ${l} บริษัท (ใช้ไปแล้ว ${countedCos().length} รวมที่เก็บเข้าคลัง) — ลบบริษัทที่ไม่ใช้แล้ว หรืออัปเกรดแพ็กเกจ`;
+}
+function isCoLimitError(err){
+  const m=String((err&&(err.message||err.hint))||'');
+  return m.includes('COMPANY_LIMIT') || m.includes('upgrade_plan');
+}
+
+function empLimit(){ return isFirm() ? null : ((EMP_QUOTA===null || EMP_QUOTA===undefined) ? null : +EMP_QUOTA); }
+function empUsed(){ return DB.employees.filter(e=>!e.resignDate).length; }   // คนที่ลาออกแล้วไม่กินโควตา
+function empRoom(){ const l=empLimit(); return l===null ? Infinity : Math.max(0, l-empUsed()); }
+function canAddEmp(n){ return empRoom() >= (n||1); }
+function quotaMsg(){
+  const l=empLimit();
+  return l===null ? '' : `แพ็กเกจของคุณรองรับพนักงานสูงสุด ${l} คน (ใช้ไปแล้ว ${empUsed()} คน) — กรุณาอัปเกรดแพ็กเกจ`;
+}
+/* แปลงข้อผิดพลาดจากฐานข้อมูลให้เป็นภาษาคน */
+function isEmpLimitError(err){
+  const m=String((err&&(err.message||err.hint))||'');
+  return m.includes('EMP_LIMIT') || m.includes('upgrade_plan');
+}
+
 /* เมนูที่ต้องซื้อแพ็กเกจพรีเมี่ยม (ช่วงทดลอง 30 วันใช้ได้ครบ)
    ล็อกหน้า "เวลาเข้างาน" = ล็อกระบบกะและกฎ OT ที่อยู่ในหน้านั้นไปด้วย */
 const PREMIUM_PAGES = ['attend','leave'];
@@ -3533,10 +4267,28 @@ async function afterAuth(user){
   try{ await sb.from('profiles').upsert({id:user.id, email:user.email}); }catch(e){}   // ให้แอดมินเห็นอีเมล
   try{ const {data}=await sb.rpc('is_admin'); IS_ADMIN=!!data; }catch(e){ IS_ADMIN=false; }
   // เช็คสิทธิ์ใช้งาน (ทดลอง 30 วัน / แพ็กเกจ)
-  try{ const {data}=await sb.rpc('my_access'); if(data&&data[0]) ACCESS=data[0]; }catch(e){}
+  try{ const {data}=await sb.rpc('my_access');
+       if(data&&data[0]){ ACCESS=data[0]; EDITION=ACCESS.edition||'single'; } }catch(e){}
+  // เพิ่งสมัครและเลือก "สำนักงานบัญชี" ไว้ → ตั้งให้แล้วอ่านสิทธิ์ใหม่
+  if(await applyPendingEdition(MY_UID)){
+    try{ const {data}=await sb.rpc('my_access');
+         if(data&&data[0]){ ACCESS=data[0]; EDITION=ACCESS.edition||'single'; } }catch(e){}
+  }
+  // เพดานจำนวนพนักงานตามแพ็กเกจ (ฐานข้อมูลเป็นคนบังคับจริง อันนี้แค่เอามาแสดง/กันไว้ก่อน)
+  try{ const {data}=await sb.rpc('my_emp_quota'); if(data&&data[0]) EMP_QUOTA=data[0].max_employees; }catch(e){}
   if(ACCESS.status==='expired'){ showExpired(); return; }
-  await cloudLoad(MY_UID);
-  if(!hasPremium()) clearPremiumLocal();
+
+  if(isFirm()){
+    // สำนักงานบัญชี — โหลดรายชื่อบริษัท แล้วเปิดบริษัทที่ค้างไว้ก่อนรีเฟรช
+    await fetchCompanies();
+    let want=null; try{ want=localStorage.getItem(CO_KEY); }catch(e){}
+    const pick = activeCos().find(c=>c.id===want) || activeCos()[0] || null;
+    await openCompany(pick ? pick.id : null);
+  }else{
+    setStoreKey(null);
+    await cloudLoad(MY_UID);
+    if(!hasPremium()) clearPremiumLocal();
+  }
   PAGE = restorePage();          // กลับไปหน้าที่ค้างไว้ก่อนรีเฟรช
   renderNav(); render(); showTrialBar();
   setSync('พร้อมใช้งาน'); cloudSaveDebounced();
@@ -3597,7 +4349,7 @@ function showExpired(){
     </div></div>`);
   document.body.appendChild(scr);
   scr.querySelector('#reCheck').onclick=e=>{ e.preventDefault(); location.reload(); };
-  scr.querySelector('#expLogout').onclick=async e=>{ e.preventDefault(); await sb.auth.signOut(); localStorage.removeItem(LS_KEY); localStorage.removeItem(PAGE_KEY); location.reload(); };
+  scr.querySelector('#expLogout').onclick=async e=>{ e.preventDefault(); await sb.auth.signOut(); clearAllStores(); localStorage.removeItem(PAGE_KEY); localStorage.removeItem(CO_KEY); location.reload(); };
 }
 function enterGuest(){
   GUEST=true; MY_UID=null; TARGET_UID=null;
@@ -3606,7 +4358,47 @@ function enterGuest(){
   const f=$('#userFoot'); if(f){ f.innerHTML='🧪 โหมดทดลอง (ไม่ได้ล็อกอิน)<br><span style="opacity:.75">ข้อมูลเก็บในเครื่องนี้เท่านั้น</span> · <a href="app.html" style="color:#a7f3d0">เข้าสู่ระบบ/สมัคร</a>'; }
   renderNav(); render();
 }
+/* โหมดสาธิต: บริษัทตัวอย่าง 5 คน + จำลองระดับแพ็กเกจ
+   ?demo         = แพ็กเกจมาตรฐาน 590 (เวลาเข้างาน/ลางาน ถูกล็อก)
+   ?demo=premium = แพ็กเกจพรีเมี่ยม 790 (ใช้ได้ครบ)                         */
+function enterDemo(){
+  const q = new URLSearchParams(location.search).get('demo');
+  const prem = (q==='premium');
+  GUEST=true; MY_UID=null; TARGET_UID=null;
+  $('#authGate').style.display='none';
+  // ยังไม่มีข้อมูลสาธิต → สร้างใหม่ · มีแล้ว → ใช้ของเดิม (ผู้ใช้ลองแก้ไว้ไม่หาย)
+  let d=null; try{ d=JSON.parse(localStorage.getItem(LS_KEY)); }catch(e){}
+  if(!(d && d.employees && d.employees.length)){ DB=demoSeed(); save(); }
+  DB=load();
+  ACCESS={ status:'active', days_left:365, premium:prem,
+           plan:'1-10 คน', plan_type: prem?'premium':'standard' };
+  EMP_QUOTA = 10;         // แพ็กเกจ 1-10 คน — ให้เห็นการล็อกจำนวนพนักงานเหมือนของจริง
+  demoFillPeriod();
+  const f=$('#userFoot');
+  if(f) f.innerHTML=`🧪 โหมดสาธิต · แพ็กเกจ${prem?'พรีเมี่ยม 790':'มาตรฐาน 590'}<br>`
+    +`<span style="opacity:.75">ข้อมูลตัวอย่าง เก็บในเครื่องนี้เท่านั้น</span>`
+    +` · <a href="#" id="demoReset" style="color:#a7f3d0">เริ่มใหม่</a>`;
+  renderNav(); render();
+  const rb=$('#demoReset');
+  if(rb) rb.onclick=e=>{ e.preventDefault(); clearAllStores(); localStorage.removeItem(PAGE_KEY); localStorage.removeItem(CO_KEY); location.reload(); };
+  demoBanner(prem);
+}
+function demoBanner(prem){
+  if($('#demoBar')) return;
+  const b=el(`<div id="demoBar" style="position:sticky;top:0;z-index:50;background:linear-gradient(120deg,#0e3a5c,#0f766e);
+    color:#fff;padding:9px 16px;font-size:13.5px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+    <strong>🧪 โหมดสาธิต</strong>
+    <span style="opacity:.9">ข้อมูลตัวอย่าง แก้ได้เต็มที่ ไม่กระทบของจริง — กำลังดูแบบ
+      <strong>${prem?'พรีเมี่ยม 790 บาท':'มาตรฐาน 590 บาท'}</strong></span>
+    <span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
+      <a href="app.html?demo=${prem?'':'premium'}" style="background:rgba(255,255,255,.18);padding:5px 12px;border-radius:100px;color:#fff">
+        ${prem?'↩ ดูแบบมาตรฐาน 590':'ดูแบบพรีเมี่ยม 790 →'}</a>
+      <a href="pricing.html" style="background:#fff;color:#0e3a5c;font-weight:700;padding:5px 12px;border-radius:100px">ดูราคา</a>
+    </span></div>`);
+  document.body.insertBefore(b, document.body.firstChild);
+}
 async function boot(){
+  if(DEMO){ enterDemo(); return; }
   const guest = new URLSearchParams(location.search).has('guest') || location.hash==='#guest';
   if(guest){ enterGuest(); return; }
   if(!sb || SB_ANON.indexOf('__PASTE')===0){ showLogin('ยังไม่ได้ตั้งค่า Supabase anon key ในไฟล์ (บรรทัด SB_ANON)'); return; }
@@ -3616,17 +4408,59 @@ async function boot(){
 async function doLogin(){
   const email=$('#authEmail').value.trim(), pass=$('#authPass').value; const m=$('#authMsg');
   m.style.color='#5b7186'; m.textContent='กำลังเข้าสู่ระบบ…';
+  markPendingEdition();          // ถ้าผู้ใช้กดเลือกประเภทไว้ ให้มีผลกับบัญชีที่ยังไม่เคยจ่ายเงิน
   const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
   if(error){ m.style.color='#dc2626'; m.textContent=error.message; return; }
   afterAuth(data.user);
+}
+/* ---------- ประเภทการใช้งานที่เลือกตอนสมัคร ----------
+   มีผลเฉพาะบัญชีใหม่ที่ยังไม่เคยชำระเงิน — ผู้ใช้เดิมยึดตามแพ็กเกจที่ซื้อไว้เสมอ
+   เก็บลง localStorage เพราะการสมัครด้วย Google ต้องออกไปหน้าอื่นแล้วเด้งกลับมา */
+let SIGNUP_ED='single';
+let SIGNUP_ED_TOUCHED=false;      // ผู้ใช้กดเลือกเองหรือยัง — ถ้าไม่ได้กด จะไม่ไปแตะบัญชีเขา
+const PEND_ED='pending_edition';
+function setSignupEd(v, byUser){
+  SIGNUP_ED=v;
+  if(byUser) SIGNUP_ED_TOUCHED=true;
+  const s=$('#edPickS'), f=$('#edPickF'), n=$('#edPickNote');
+  if(s) s.classList.toggle('on', v==='single');
+  if(f) f.classList.toggle('on', v==='firm');
+  if(n) n.textContent = v==='firm'
+    ? 'ดูแลลูกค้าหลายบริษัทในบัญชีเดียว พนักงานไม่จำกัด (ไม่มีระบบลงเวลาและลางาน)'
+    : 'ใช้กับบริษัทของคุณเอง มีครบทั้งลงเวลา ลางาน กะ และ OT';
+}
+/* บันทึกความตั้งใจไว้ก่อน เพราะการสมัครด้วย Google ต้องออกไปหน้าอื่นแล้วเด้งกลับ
+   เขียนเฉพาะตอนที่ผู้ใช้กดเลือกเอง — ถ้าไม่ได้กด ถือว่าไม่ต้องการเปลี่ยนอะไร */
+function markPendingEdition(force){
+  if(!SIGNUP_ED_TOUCHED && !force) return;
+  try{ localStorage.setItem(PEND_ED, JSON.stringify({ed:SIGNUP_ED, at:Date.now()})); }catch(e){}
+}
+/* ตั้งประเภทบัญชีตามที่เลือกไว้ — เปลี่ยนได้ทั้งสองทาง แต่เฉพาะบัญชีที่ยังไม่เคยจ่ายเงิน
+   คนที่ซื้อแพ็กเกจแล้วยึดตามที่ซื้อเสมอ ห้ามเปลี่ยนจากหน้าเข้าสู่ระบบ */
+async function applyPendingEdition(uid){
+  let p=null; try{ p=JSON.parse(localStorage.getItem(PEND_ED)||'null'); }catch(e){}
+  if(!p || !p.ed) return false;
+  const fresh = (Date.now()-(+p.at||0)) < 15*60*1000;      // เกิน 15 นาที ถือว่าไม่ใช่การกดรอบนี้
+  try{ localStorage.removeItem(PEND_ED); }catch(e){}
+  if(!fresh) return false;
+  if(!['single','firm'].includes(p.ed)) return false;
+  if(ACCESS.paid_until) return false;                       // เคยจ่ายแล้ว = ยึดตามแพ็กเกจที่ซื้อ
+  if((ACCESS.edition||'single')===p.ed) return false;       // ตรงกับของเดิมอยู่แล้ว ไม่ต้องเขียน
+  const {error}=await sb.from('profiles').update({edition:p.ed}).eq('id',uid);
+  if(error) return false;
+  EDITION=p.ed; ACCESS.edition=p.ed;
+  return true;
 }
 async function doSignup(){
   const email=$('#authEmail').value.trim(), pass=$('#authPass').value; const m=$('#authMsg');
   if(pass.length<6){ m.style.color='#dc2626'; m.textContent='รหัสผ่านอย่างน้อย 6 ตัวอักษร'; return; }
   m.style.color='#5b7186'; m.textContent='กำลังสมัคร…';
+  markPendingEdition(true);      // สมัครใหม่ = ยึดตามที่เลือกเสมอ
   const {data,error}=await sb.auth.signUp({email,password:pass});
   if(error){ m.style.color='#dc2626'; m.textContent=error.message; return; }
-  if(data.session){ afterAuth(data.user); } else { m.style.color='#059669'; m.textContent='สมัครสำเร็จ! กรุณายืนยันอีเมลก่อน แล้วเข้าสู่ระบบ'; }
+  if(data.session){ afterAuth(data.user); }
+  else { m.style.color='#059669';
+         m.textContent='สมัครสำเร็จ! กรุณายืนยันอีเมลก่อน แล้วเข้าสู่ระบบ'; }
 }
 
 /* ---------- Boot ---------- */
@@ -3641,8 +4475,12 @@ if(langBtn){ langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH';
   langBtn.onclick=()=>{ LANG = LANG==='th'?'en':'th'; localStorage.setItem('lang',LANG); langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH'; renderNav(); render(); }; }
 $('#authLogin').onclick=doLogin;
 $('#authSignup').onclick=doSignup;
+$('#edPickS').onclick=()=>setSignupEd('single',true);
+$('#edPickF').onclick=()=>setSignupEd('firm',true);
+setSignupEd('single');   // ตั้งค่าเริ่มต้น ไม่นับว่าผู้ใช้เลือก
 $('#authGoogle').onclick=async()=>{
   const m=$('#authMsg'); m.style.color='#5b7186'; m.textContent='กำลังเปิดหน้าเข้าสู่ระบบ Google…';
+  markPendingEdition();      // Google ต้องออกไปหน้าอื่นแล้วเด้งกลับ ต้องจำไว้ก่อน
   const {error}=await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.origin + window.location.pathname } });
   if(error){ m.style.color='#dc2626'; m.textContent='เข้าสู่ระบบด้วย Google ไม่สำเร็จ: '+error.message; }
 };
