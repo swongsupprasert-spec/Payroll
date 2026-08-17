@@ -101,7 +101,7 @@ Deno.serve(async (req) => {
   if (!['promptpay', 'card'].includes(method))  return fail('method', 'ช่องทางชำระเงินไม่ถูกต้อง', 'Invalid payment method', 400);
   if (method === 'card' && !cardToken)          return fail('no_card', 'ไม่พบข้อมูลบัตร', 'Card token missing', 400);
   // กันคนส่ง return_uri มั่วเพื่อพาลูกค้าไปเว็บอื่นหลังยืนยัน 3-D Secure
-  if (method === 'card' && returnUri && !/^https:\/\/(payroll-mtd\.vercel\.app|localhost:\d+)\//.test(returnUri))
+  if (method === 'card' && returnUri && !/^https:\/\/((www\.)?esimpayroll\.com|payroll-mtd\.vercel\.app|localhost:\d+)\//.test(returnUri))
     return fail('bad_return', 'ปลายทางหลังชำระเงินไม่ถูกต้อง', 'Invalid return URL', 400);
   if (!['monthly', 'yearly'].includes(cycle))   return fail('cycle', 'รอบชำระไม่ถูกต้อง', 'Invalid billing cycle', 400);
   if (!['standard', 'premium'].includes(ptype)) return fail('ptype', 'ระดับแพ็กเกจไม่ถูกต้อง', 'Invalid plan type', 400);

@@ -4,6 +4,16 @@ package.json
 node_modules
 *.sql
 README.md
-Payroll-tutorial.html
 supabase
 scripts
+
+# ไฟล์ที่ไม่ควรขึ้นเว็บ — เคยเปิดอ่านได้สาธารณะมาก่อน
+.bak-*
+*.bak
+deno.lock
+richmenu-maker.html
+brand/logo-full-*
+brand/logo-mark-*
+brand/line-qr-1024.png
+brand/line-qr.txt
+brand/richmenu-*.png
