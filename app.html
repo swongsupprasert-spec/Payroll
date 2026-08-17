@@ -230,7 +230,16 @@
     <div style="text-align:center;font-size:26px;font-weight:800;margin-bottom:4px">eSim<span style="color:var(--brand)">Payroll</span></div>
     <div style="text-align:center;color:#5b7186;margin-bottom:22px">เข้าสู่ระบบเพื่อใช้งาน</div>
     <div class="field" style="margin-bottom:12px"><label>อีเมล</label><input id="authEmail" type="email" autocomplete="username" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
-    <div class="field" style="margin-bottom:16px"><label>รหัสผ่าน</label><input id="authPass" type="password" autocomplete="current-password" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
+    <div class="field" style="margin-bottom:16px"><label>รหัสผ่าน</label>
+      <div class="pwwrap" style="position:relative">
+        <input id="authPass" type="password" autocomplete="current-password" style="width:100%;padding:11px 44px 11px 11px;border:1px solid #e5e7eb;border-radius:9px">
+        <button type="button" id="pwEye" class="pweye" aria-label="แสดงรหัสผ่าน" aria-pressed="false"
+          style="position:absolute;right:6px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;
+          background:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;color:#6b7280">
+          <svg class="eye-on" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg>
+          <svg class="eye-off" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M2.5 12S6 5.5 12 5.5c1.5 0 2.9.4 4.1 1M21.5 12s-3.5 6.5-9.5 6.5c-1.5 0-2.9-.4-4.1-1"/><path d="M4 4l16 16"/></svg>
+        </button>
+      </div></div>
     <button class="btn" id="authLogin" style="width:100%;justify-content:center;margin-bottom:14px">เข้าสู่ระบบ</button>
 
     <!-- ประเภทการใช้งาน — มีผลตอนสมัครใหม่เท่านั้น ผู้ใช้เดิมยึดตามแพ็กเกจที่ซื้อไว้ -->
@@ -317,7 +326,10 @@ const MONTHS_EN = ['January','February','March','April','May','June','July','Aug
 let LANG = localStorage.getItem('lang') || 'th';
 const I18N = {
   th:{
-    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_attend:'เวลาเข้างาน', nav_leave:'ระบบลางาน', nav_resign:'การลาออก', nav_payroll:'เงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
+    ask_period_t:'เลือกงวดเดือนที่จะทำเงินเดือน', ask_period_q:'ต้องการทำเงินเดือนของเดือนไหน?',
+    ask_period_ok:'เริ่มทำเงินเดือน', ask_period_has:'งวดนี้เคยกรอกข้อมูลไว้แล้ว — เปิดขึ้นมาแก้ไขต่อได้',
+    ask_period_new:'งวดนี้ยังไม่มีข้อมูล — จะเริ่มกรอกใหม่', cancel:'ยกเลิก',
+    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_attend:'เวลาเข้างาน', nav_leave:'ระบบลางาน', nav_resign:'การลาออก', nav_payroll:'คำนวณเงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
     nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
     nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_companies:'บริษัทลูกค้า', nav_admin:'ผู้ดูแลระบบ', nav_feedback:'แจ้งปัญหา/คำแนะนำ', nav_orders:'คำสั่งซื้อ/ต่ออายุ',
     period:'งวดเดือน',
@@ -332,7 +344,10 @@ const I18N = {
     print:'🖨️ พิมพ์',
   },
   en:{
-    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_attend:'Attendance', nav_leave:'Leave', nav_resign:'Resignation', nav_payroll:'Earnings / Deductions', nav_summary:'Payroll Summary',
+    ask_period_t:'Choose the payroll period', ask_period_q:'Which month do you want to run payroll for?',
+    ask_period_ok:'Start payroll', ask_period_has:'This period already has data — you can continue editing it',
+    ask_period_new:'This period is empty — you will start fresh', cancel:'Cancel',
+    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_attend:'Attendance', nav_leave:'Leave', nav_resign:'Resignation', nav_payroll:'Calculate Earnings / Deductions', nav_summary:'Payroll Summary',
     nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
     nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_companies:'Client companies', nav_admin:'Admin', nav_feedback:'Feedback', nav_orders:'Orders',
     period:'Period',
@@ -431,7 +446,7 @@ function fmtD(d){ return `${d.getDate()} ${THAI_MONTHS_ABBR[d.getMonth()]} ${d.g
 
 /* ---------- Payroll calc ---------- */
 const EARN_FIELDS = [['ot','ค่าล่วงเวลา (OT)','Overtime (OT)'],['commission','ค่าคอมมิชชั่น','Commission'],['diligence','ค่าเบี้ยขยัน','Diligence Allowance'],['travel','ค่าเดินทาง','Travel Allowance'],['position','ค่าตำแหน่ง','Position Allowance'],['bonus','โบนัส','Bonus'],['other','อื่นๆ','Other']];
-const DED_FIELDS = [['tax','ภาษีเงินได้','Income Tax'],['sso','ประกันสังคม','Social Security'],['pvd','กองทุนสำรองเลี้ยงชีพ','Provident Fund'],['wf','กองทุนสงเคราะห์ลูกจ้าง','Employee Welfare Fund'],['loan','เงินกู้บริษัท','Company Loan'],['studentloan','กยศ.','Student Loan (SLF)'],['absent','หักขาดงาน/ลาไม่รับค่าจ้าง','Unpaid Leave / Absence'],['other','อื่นๆ','Other']];
+const DED_FIELDS = [['tax','ภาษีเงินได้','Income Tax'],['sso','ประกันสังคม','Social Security'],['pvd','กองทุนสำรองเลี้ยงชีพ','Provident Fund'],['wf','กองทุนสงเคราะห์ลูกจ้าง','Employee Welfare Fund'],['loan','เงินกู้บริษัท','Company Loan'],['studentloan','กยศ.','Student Loan (SLF)'],['absent','หักขาดงาน/ลาไม่รับค่าจ้าง','Unpaid Leave / Absence'],['advance','เบิกล่วงหน้า (กลางเดือน)','Mid-month Advance'],['other','อื่นๆ','Other']];
 // ป้ายรายการตามภาษา (f = [key, th, en])
 function FL(f){ return (LANG==='en' && f[2]) ? f[2] : f[1]; }
 
@@ -463,15 +478,54 @@ function prorate(emp, p){
   if(worked>=total) return {partial:false, factor:1};                 // ทำงานเต็มงวด
   return {partial:true, factor:worked/total, worked, dim:total, from, to};
 }
+/* ---------- ประวัติการขึ้นเงินเดือน ----------
+   emp.salHist = [{from:'YYYY-MM-DD', salary:n}, ...] เรียงจากเก่าไปใหม่
+   ถ้าไม่มีประวัติ = ใช้ emp.salary ตัวเดียวเหมือนเดิมทุกงวด (พฤติกรรมเดิมเป๊ะ)   */
+function salHistOf(emp){ return (Array.isArray(emp.salHist)&&emp.salHist.length)?emp.salHist:null; }
+/* เงินเดือน ณ วันที่ที่ระบุ */
+function salaryOnDate(emp, iso){
+  const h=salHistOf(emp);
+  if(!h) return Number(emp.salary||0);
+  let s=h[0];
+  for(const x of h){ if(x.from<=iso) s=x; else break; }
+  return Number(s.salary||0);
+}
+/* เงินเดือน ณ วันสิ้นงวด — ใช้กับอัตรา OT / ประมาณภาษี / การแสดงผล */
+function salaryFor(emp, p){
+  if(!salHistOf(emp)) return Number(emp.salary||0);
+  return salaryOnDate(emp, isoOf(periodRange(p||PERIOD).to));
+}
+/* บันทึกการขึ้นเงินเดือน (ใช้ลดเงินเดือนก็ได้) */
+function raiseSalary(emp, newSal, fromIso){
+  if(!salHistOf(emp)) emp.salHist=[{from:'0000-01-01', salary:Number(emp.salary||0)}];
+  emp.salHist=emp.salHist.filter(x=>x.from!==fromIso);   // วันเดียวกันซ้ำ = แทนที่
+  emp.salHist.push({from:fromIso, salary:Number(newSal)||0});
+  emp.salHist.sort((a,b)=> a.from<b.from?-1 : a.from>b.from?1 : 0);
+  emp.salary=salaryOnDate(emp, isoOf(new Date()));       // ค่าปัจจุบันไว้แสดงในหน้ารายชื่อ
+  save();
+}
 // ค่าจ้างฐานของงวด: รายเดือน = เงินเดือน (prorate เดือนแรก) · รายวัน = ค่าจ้าง/วัน × จำนวนวันทำงาน
 function basePay(emp, rec, p){
   if(emp.payType==='daily'){
     if(resignedBefore(emp, p)) return 0;                 // ลาออกไปก่อนงวดนี้แล้ว
-    return Number(emp.salary||0) * Number((rec&&rec.days)||0);
+    return salaryFor(emp, p) * Number((rec&&rec.days)||0);
   }
-  const sal=Number(emp.salary||0);
-  const pr=prorate(emp, p);
-  return Math.round(sal*pr.factor*100)/100;
+  if(!salHistOf(emp)){                                   // ไม่มีประวัติ = สูตรเดิมเป๊ะ
+    const sal=Number(emp.salary||0);
+    const pr=prorate(emp, p);
+    return Math.round(sal*pr.factor*100)/100;
+  }
+  /* มีประวัติเงินเดือน: คิดเฉลี่ยรายวัน — วันไหนอัตราไหนได้อัตรานั้น
+     ครอบคลุมทั้งขึ้นเงินเดือนกลางงวด และเข้า/ออกกลางเดือนพร้อมกัน */
+  const {from,to}=periodRange(p||PERIOD);
+  const DAY=86400000, dim=Math.round((to-from)/DAY)+1;
+  let eS=from, eE=to;
+  if(emp.startDate){ const [y,m,d]=emp.startDate.split('-').map(Number); const S=new Date(y,m-1,d); if(S>eS) eS=S; }
+  if(emp.resignDate){ const [y,m,d]=emp.resignDate.split('-').map(Number); const R=new Date(y,m-1,d); if(R<eE) eE=R; }
+  if(eS>eE) return 0;
+  let sum=0;
+  for(let t=eS.getTime(); t<=eE.getTime(); t+=DAY) sum+=salaryOnDate(emp, isoOf(new Date(t)));
+  return Math.round(sum/dim*100)/100;
 }
 // ลาออกก่อนงวดนี้เริ่มหรือไม่ (ทั้งงวดอยู่หลังวันลาออก)
 function resignedBefore(emp, p){
@@ -507,14 +561,14 @@ function ssoExempt(emp){
 }
 // ค่าจ้างต่อเดือนโดยประมาณ (ใช้คำนวณ ปกส./กสล./ภาษี) — รายวันใช้จำนวนวันจริง ถ้าไม่มีใช้ค่าเริ่มต้น
 function monthlyWage(emp, rec){
-  if(emp.payType==='daily'){ const d=Number((rec&&rec.days)||0)||(DB.workDaysDefault||26); return Number(emp.salary||0)*d; }
-  return Number(emp.salary||0);
+  if(emp.payType==='daily'){ const d=Number((rec&&rec.days)||0)||(DB.workDaysDefault||26); return salaryFor(emp, PERIOD)*d; }
+  return salaryFor(emp, PERIOD);
 }
 // อัตรา OT ต่อชั่วโมง: รายเดือน = เงินเดือน÷วัน÷ชม. · รายวัน = ค่าจ้าง/วัน÷ชม.
 function otRate(emp){
   const h=DB.otHours||8;
-  if(emp && emp.payType==='daily') return Number(emp.salary||0)/h;
-  const d=DB.otDays||30; return Number((emp&&emp.salary)||0)/d/h;
+  if(emp && emp.payType==='daily') return salaryFor(emp, PERIOD)/h;
+  const d=DB.otDays||30; return (emp?salaryFor(emp, PERIOD):0)/d/h;
 }
 function otAmount(emp,hours,mult){ return Math.round(otRate(emp)*Number(hours||0)*Number(mult||0)*100)/100; }
 
@@ -538,18 +592,28 @@ function estTax(emp, year, rec){
   const months=monthsEmployedInYear(emp, year);              // เดือนที่ทำงานในปีภาษี
   const earn = (rec && rec.earn) || {};
   const wage = monthlyWage(emp, rec);                        // ค่าจ้าง/เดือน (รายวัน = ค่าจ้าง×วัน)
-  // เงินได้ประจำ (คูณตามเดือน): ค่าจ้างฐาน + OT + คอม + เบี้ยขยัน + ค่าเดินทาง + ค่าตำแหน่ง + อื่นๆ
-  const recurringMonthly = wage
-    + ['ot','commission','diligence','travel','position','other'].reduce((s,k)=>s+Number(earn[k]||0),0);
+  /* ค่าจ้างที่ "ได้รับจริง" ของแต่ละเดือนในปีภาษี — ใช้ basePay ตัวเดียวกับที่จ่ายจริง
+     เดือนที่เข้างานหรือลาออกกลางเดือนถูกหารตามวันทำงาน ภาษีจึงไม่คิดจากเงินที่ยังไม่ได้รับ */
+  let mStart=1, mEnd=12;
+  if(emp.startDate){ const [sy,sm]=emp.startDate.split('-').map(Number); if(sy===year) mStart=sm; }
+  if(emp.resignDate){ const [ry,rm]=emp.resignDate.split('-').map(Number); if(ry===year) mEnd=rm; }
+  const wages=[];
+  for(let m=mStart;m<=mEnd;m++){
+    const mp = year+'-'+String(m).padStart(2,'0');
+    wages.push(emp.payType==='daily' ? wage : basePay(emp, null, mp));
+  }
+  const wageSum = wages.reduce((a,b)=>a+b,0);
+  const extras = ['ot','commission','diligence','travel','position','other'].reduce((s,k)=>s+Number(earn[k]||0),0);
+  const recurringMonthly = (months>0?wageSum/months:wage) + extras;   // เฉลี่ย/เดือน (ไว้แสดงในกล่องวิธีคำนวณ)
   const bonus = Number(earn.bonus||0);                       // โบนัส = จ่ายครั้งเดียว บวกครั้งเดียว
-  const inc=recurringMonthly*months + bonus;                 // เงินได้ทั้งปี (รวมเงินได้ทุกประเภท)
+  const inc=wageSum + extras*months + bonus;                 // เงินได้ทั้งปี (รวมเงินได้ทุกประเภท)
   const expense=Math.min(inc*0.5,100000);                    // ค่าใช้จ่าย 50% สูงสุด 100,000
   const personal=60000;                                      // ลดหย่อนส่วนตัว (ไม่เฉลี่ยตามเดือน)
   const spouse=(+emp.spouse)?60000:0;                        // คู่สมรส
   const children=(Number(emp.children||0))*30000;            // บุตรคนละ 30,000
   const ssoCap=autoSSO(DB.ssoMaxBase)*12;                     // เพดาน ปกส./ปี = 875 × 12 = 10,500
-  const sso=Math.min(autoSSO(wage)*months, ssoCap);          // ประกันสังคม (ตามเดือนจริง)
-  const pvd=Math.min(wage*(emp.pvdRate||0)/100*months,500000); // กสล.
+  const sso=Math.min(wages.reduce((s,w)=>s+autoSSO(w),0), ssoCap);   // ประกันสังคม (คิดจากค่าจ้างจริงรายเดือน)
+  const pvd=Math.min(wageSum*(emp.pvdRate||0)/100,500000);     // กสล.
   const other=Number(emp.otherAllow||0);                     // ลดหย่อนอื่น
   const totalDed=expense+personal+spouse+children+sso+pvd+other;
   const net=Math.max(0,inc-totalDed);                        // เงินได้สุทธิ (ฐานภาษี)
@@ -601,7 +665,8 @@ const PAGES = [
   ['attend','เวลาเข้างาน','⏰'],
   ['leave','ระบบลางาน','🌴'],
   ['resign','การลาออก','🚪'],
-  ['payroll','เงินได้ / เงินหัก','🧮'],
+  ['advance','เบิกล่วงหน้ากลางเดือน','💸'],
+  ['payroll','คำนวณเงินได้ / เงินหัก','🧮'],
   ['summary','สรุปเงินเดือน','📋'],
   ['dept','สรุปตามแผนก','🏢'],
   ['detail','สรุปรายละเอียดทั้งหมด','📑'],
@@ -620,6 +685,7 @@ const NAV_ICONS={
   attend:    ICO('<circle cx="12" cy="12" r="8.6"/><path d="M12 7.2V12l3.2 2"/>'),
   leave:     ICO('<rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 9.6h17.2M8.2 3v4M15.8 3v4"/><path d="m9 14.6 2.1 2.1 3.9-4"/>'),
   resign:    ICO('<path d="M14.5 3.5h3.6a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-3.6"/><path d="M10 8 6 12l4 4"/><path d="M6 12h9"/>'),
+  advance:   ICO('<rect x="2.6" y="5.6" width="18.8" height="12.8" rx="2.4"/><circle cx="12" cy="12" r="2.8"/><path d="M6.2 9.4h.01M17.8 14.6h.01"/>'),
   payroll:   ICO('<rect x="4.4" y="2.6" width="15.2" height="18.8" rx="2.4"/><rect x="7.6" y="6" width="8.8" height="3.2"/><path d="M8 13.4h.01M12 13.4h.01M16 13.4h.01M8 17.4h.01M12 17.4h.01M16 17.4h.01"/>'),
   summary:   ICO('<rect x="5" y="4" width="14" height="17" rx="2.2"/><path d="M9 3h6v3H9z"/><path d="M8.6 11h6.8M8.6 15h4.6"/>'),
   dept:      ICO('<path d="M3.6 20.6h16.8"/><rect x="5" y="3.6" width="9.4" height="17"/><path d="M14.4 9h4.4v11.6"/><path d="M7.6 7h1M11 7h1M7.6 11h1M11 11h1M7.6 15h1M11 15h1"/>'),
@@ -637,7 +703,7 @@ const NAV_ICONS={
 const LOCK_ICO='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.6" y="10.4" width="14.8" height="10.4" rx="2.2"/><path d="M8.2 10.4V7.6a3.8 3.8 0 0 1 7.6 0v2.8"/></svg>';
 
 const NAV_COLORS = {
-  dashboard:'#17557f', employees:'#8b5cf6', attend:'#0891b2', leave:'#84cc16', resign:'#f43f5e', payroll:'#06b6d4', summary:'#10b981',
+  dashboard:'#17557f', employees:'#8b5cf6', attend:'#0891b2', leave:'#84cc16', resign:'#f43f5e', advance:'#f97316', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
   pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', companies:'#a855f7', feedback:'#f97316', orders:'#22c55e', admin:'#eab308'
 };
@@ -683,11 +749,39 @@ function renderNav(){
     if(id===PAGE) b.classList.add('active');
     b.onclick = ()=>{
       if(pageLocked(id)){ premiumModal(id); sideOpen(false); return; }   // ล็อกอยู่ → ชวนอัปเกรดแทน
-      PAGE=id; savePage(id); renderNav(); render(); sideOpen(false); window.scrollTo(0,0);
+      sideOpen(false); window.scrollTo(0,0);
+      if(id==='payroll'){ askPeriodThen(()=>{ PAGE=id; savePage(id); renderNav(); render(); }); return; }
+      PAGE=id; savePage(id); renderNav(); render();
     };
     nav.appendChild(b);
   });
   renderCoSwitch();          // ตัวสลับบริษัท (เฉพาะแบบสำนักงานบัญชี)
+}
+/* ถามงวดเดือนก่อนเข้าหน้าคำนวณเงินได้ — กันทำผิดเดือนโดยไม่รู้ตัว */
+function askPeriodThen(go){
+  const [cy,cm]=PERIOD.split('-').map(Number);
+  const nowY=new Date().getFullYear();
+  const ys=new Set(); for(let y=nowY-5;y<=nowY+1;y++) ys.add(y);
+  Object.keys(DB.payroll).forEach(p=>ys.add(+p.split('-')[0])); ys.add(cy);
+  const years=[...ys].sort((a,b)=>b-a);
+  const MN=(LANG==='en'?MONTHS_EN:THAI_MONTHS);
+  const body=`<p style="margin:0 0 12px">${tr('ask_period_q')}</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <select id="apM" class="inp" style="flex:1;min-width:130px">${MN.map((m,i)=>`<option value="${i+1}" ${i+1===cm?'selected':''}>${m}</option>`).join('')}</select>
+      <select id="apY" class="inp" style="flex:1;min-width:110px">${years.map(y=>`<option value="${y}" ${y===cy?'selected':''}>${LANG==='en'?y:y+543}</option>`).join('')}</select>
+    </div>
+    <p id="apNote" class="muted" style="margin:10px 0 0;font-size:13px"></p>`;
+  const start=()=>{
+    const M=document.getElementById('apM'), Y=document.getElementById('apY');
+    if(M&&Y) PERIOD=`${Y.value}-${String(M.value).padStart(2,'0')}`;
+    closeModal(); go();
+  };
+  openModal(tr('ask_period_t'), body, [[tr('ask_period_ok'),'',start],[tr('cancel')||'ยกเลิก','ghost',closeModal]]);
+  const M=document.getElementById('apM'), Y=document.getElementById('apY'), N=document.getElementById('apNote');
+  const note=()=>{ const p=`${Y.value}-${String(M.value).padStart(2,'0')}`;
+    N.innerHTML = periodHasData(p) ? `✅ ${tr('ask_period_has')}` : `🆕 ${tr('ask_period_new')}`; };
+  if(M&&Y&&N){ M.onchange=note; Y.onchange=note; note();
+    [M,Y].forEach(s=>s.onkeydown=e=>{ if(e.key==='Enter') start(); }); M.focus(); }
 }
 function renderPeriodSel(){
   const [curY, curM] = PERIOD.split('-').map(Number);
@@ -719,7 +813,7 @@ function render(){
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
   // สำนักงานบัญชีที่ยังไม่ได้เลือกบริษัท — ให้เพิ่ม/เลือกบริษัทก่อน
   if(isFirm() && !CUR_CO && PAGE!=='companies' && PAGE!=='admin'){ PAGE='companies'; savePage(PAGE); renderNav(); }
-  ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, leave:vLeave, resign:vResign, payroll:vPayroll, summary:vSummary,
+  ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, leave:vLeave, resign:vResign, advance:vAdvance, payroll:vPayroll, summary:vSummary,
     dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders,
     admin:vAdmin, companies:vCompanies}[PAGE])(v);
 }
@@ -1778,9 +1872,10 @@ function drawEmp(){
     <td>${esc(e.position)}</td>
     <td>${esc(e.dept)}</td>
     <td>${daily?`<span class="chip" style="background:#fef3c7;color:#b45309">${tr('type_daily')}</span>`:`<span class="chip" style="background:#d8f3e6;color:#092942">${tr('type_monthly')}</span>`}</td>
-    <td class="num">${money(e.salary)} <span class="muted" style="font-size:11px">${daily?tr('per_day'):tr('per_month')}</span></td>
+    <td class="num">${money(e.salary)} <span class="muted" style="font-size:11px">${daily?tr('per_day'):tr('per_month')}</span>${salHistOf(e)?` <span class="chip" style="background:#eaf6f1;color:#0b5f58;font-size:10px">${salHistOf(e).length} อัตรา</span>`:''}</td>
     <td>${esc(fmtDate(e.startDate))}</td>
     <td style="text-align:right">
+      <button class="icon-btn" title="ประวัติการขึ้นเงินเดือน" data-sh="${e.id}">📈</button>
       <button class="icon-btn" title="แก้ไข" data-ed="${e.id}">✏️</button>
       <button class="icon-btn" title="ลบ" data-del="${e.id}">🗑️</button>
     </td></tr>`;}).join('');
@@ -1788,11 +1883,56 @@ function drawEmp(){
     <thead><tr><th>${tr('th_code')}</th><th>${tr('th_name')}</th><th>${tr('th_position')}</th><th>${tr('th_dept')}</th><th>${tr('th_type')}</th><th class="num">${tr('th_wage')}</th><th>${tr('th_start')}</th><th></th></tr></thead>
     <tbody>${rows||`<tr><td colspan="8" class="empty">${tr('emp_not_found')}</td></tr>`}</tbody>
   </table>`);
+  tbl.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>salaryHistModal(b.dataset.sh));
   tbl.querySelectorAll('[data-ed]').forEach(b=>b.onclick=()=>empForm(b.dataset.ed));
   tbl.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delEmp(b.dataset.del));
   const box=$('#empTbl'); box.innerHTML=''; box.appendChild(tbl);
 }
 function fmtDate(d){ if(!d) return '-'; const [y,m,dd]=d.split('-'); return `${dd}/${m}/${(+y)+543}`; }
+/* ---------- ประวัติการขึ้นเงินเดือน (โมดัล) ---------- */
+function salaryHistModal(empId){
+  const e=DB.employees.find(x=>x.id===empId); if(!e) return;
+  const unit = e.payType==='daily' ? 'บาท/วัน' : 'บาท/เดือน';
+  const draw=()=>{
+    const h=salHistOf(e);
+    const rows = h ? h.map((x,i)=>{
+      const first = x.from==='0000-01-01';
+      return `<tr>
+        <td>${first?'<span class="muted">ตั้งแต่เริ่มงาน</span>':esc(fmtDate(x.from))}</td>
+        <td class="num"><strong>${money(x.salary)}</strong> <span class="muted" style="font-size:11px">${unit}</span></td>
+        <td style="text-align:right">${h.length>1?`<button class="icon-btn" title="ลบรายการนี้" data-rm="${i}">🗑️</button>`:''}</td>
+      </tr>`;
+    }).join('') : `<tr><td colspan="3" class="empty">ยังไม่มีประวัติ — ใช้อัตราปัจจุบัน ${money(e.salary)} ${unit} ทุกงวด</td></tr>`;
+    const body=`
+      <p class="muted" style="margin:0 0 12px;font-size:13px">
+        บันทึกการขึ้น (หรือลด) เงินเดือนพร้อมวันที่มีผล — <strong>งวดที่ผ่านมาจะยังใช้อัตราเดิม</strong>
+        สลิปและเอกสารย้อนหลังจึงไม่เปลี่ยน · งวดที่ขึ้นกลางเดือนจะคิดเฉลี่ยรายวันให้
+      </p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>มีผลตั้งแต่</th><th class="num">อัตรา</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>
+      <div class="grid2" style="margin-top:14px">
+        <div class="field"><label>อัตราใหม่ (${unit}) *</label><input id="sh_val" type="number" step="0.01" min="0" placeholder="${e.salary||0}"></div>
+        <div class="field"><label>มีผลตั้งแต่วันที่ *</label><input id="sh_from" type="date" value="${isoOf(periodRange(PERIOD).from)}"></div>
+      </div>`;
+    openModal(`ประวัติเงินเดือน — ${e.name}`, body,
+      [['ปิด','ghost',closeModal],['➕ บันทึกอัตราใหม่','',()=>{
+        const v=+($('#sh_val').value||0), from=$('#sh_from').value;
+        if(!(v>0)){ toast('กรุณากรอกอัตราใหม่'); return; }
+        if(!from){ toast('กรุณาเลือกวันที่มีผล'); return; }
+        raiseSalary(e, v, from);
+        closeModal(); draw(); drawEmp(); toast('บันทึกอัตราใหม่แล้ว');
+      }]]);
+    document.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{
+      const i=+b.dataset.rm; e.salHist.splice(i,1);
+      if(e.salHist.length===1 && e.salHist[0].from==='0000-01-01'){ e.salary=e.salHist[0].salary; delete e.salHist; }
+      else e.salary=salaryOnDate(e, isoOf(new Date()));
+      save(); closeModal(); draw(); drawEmp(); toast('ลบรายการแล้ว');
+    });
+  };
+  draw();
+}
 function genderIcon(g){
   if(g==='M') return '<span title="ชาย" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#d8f3e6;color:#0e3a5c;font-weight:700;margin-right:7px;font-size:13px">♂</span>';
   if(g==='F') return '<span title="หญิง" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#fce7f3;color:#db2777;font-weight:700;margin-right:7px;font-size:13px">♀</span>';
@@ -1906,6 +2046,138 @@ function nextCode(){
 
 /* ============ 2. PAYROLL (earnings/deductions per employee) ============ */
 let payrollEmpId=null, payrollFilter='all';
+/* ═══════════ เบิกล่วงหน้ากลางเดือน ═══════════
+   บริษัทที่จ่ายเดือนละ 2 รอบ : รอบกลางเดือนจ่ายล่วงหน้า แล้วหักคืนตอนสิ้นเดือน
+   ยอดเบิกเก็บเป็นรายการหัก 'advance' ของงวดนั้น ภาษี/ประกันสังคมจึงยังคิดเป็นรายเดือนถูกต้องเหมือนเดิม */
+function advPayDate(){
+  const {from,to}=periodRange(PERIOD);
+  const mid=new Date(from.getTime()+Math.floor((to-from)/2));
+  return isoOf(mid);
+}
+function advOf(emp){ return Number(readRec(PERIOD, emp.id).ded.advance||0); }
+function advSet(emp, val){
+  const r=getRec(PERIOD, emp.id);
+  r.manual=r.manual||{}; r.manual.advance=1;          // เป็นตัวเลขที่คนกรอก ไม่ให้ระบบเขียนทับ
+  r.ded.advance=Math.max(0, Math.round(Number(val||0)*100)/100);
+  save();
+}
+function vAdvance(v){
+  const [py,pm]=PERIOD.split('-').map(Number);
+  const list=DB.employees.filter(e=>activeInMonth(e,py,pm));
+  if(!list.length){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ไม่มีพนักงานในงวด ${periodLabel(PERIOD)}</div></div>`)); return; }
+
+  const pct = +(DB.advPct||0) || 40;
+  const rows=list.map(e=>{
+    const c0=calc(e,PERIOD);
+    const adv=advOf(e);
+    const suggest=Math.round(basePay(e, c0.r, PERIOD)*pct/100);
+    return {e, base:basePay(e,c0.r,PERIOD), net:c0.net, adv, suggest};
+  });
+  const totalAdv=rows.reduce((s,x)=>s+x.adv,0);
+  const picked=rows.filter(x=>x.adv>0).length;
+
+  const panel=el(`<div class="panel">
+    <div class="phead"><h2>💸 เบิกล่วงหน้ากลางเดือน — ${periodLabel(PERIOD)}</h2>
+      <div class="sp" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span class="muted" style="font-size:12px">จ่ายวันที่ ${esc(fmtDate(advPayDate()))}</span>
+        <button class="btn ghost sm" id="advFill">⚡ เติมให้ทุกคน ${pct}%</button>
+        <button class="btn ghost sm" id="advClear">ล้างทั้งหมด</button>
+        <button class="btn ghost sm" id="advCsv">⬇️ ส่งออก CSV</button>
+        <button class="btn sm" id="advSheet">🖨️ ใบสรุปยอดโอน</button>
+      </div></div>
+    <div class="pbody" style="padding:0">
+      <div style="padding:12px 16px;background:#fff7ed;border-bottom:1px solid #fed7aa;font-size:13px;color:#9a3412">
+        กรอกยอดที่จ่ายกลางเดือนของแต่ละคน ระบบจะ<strong>หักคืนอัตโนมัติ</strong>ในช่อง “เบิกล่วงหน้า (กลางเดือน)” ของหน้าคำนวณเงินได้ตอนสิ้นเดือน
+        · ภาษีและประกันสังคมยังคิดเป็นรายเดือนตามกฎหมายเหมือนเดิม
+      </div>
+      <div class="tbl-wrap" id="advTbl"></div>
+    </div></div>`);
+  v.appendChild(panel);
+
+  const draw=()=>{
+    const tr2=rows.map(x=>{
+      const daily=x.e.payType==='daily';
+      return `<tr>
+        <td><span class="chip">${esc(x.e.code)}</span></td>
+        <td><strong>${esc(x.e.name)}</strong><div class="muted" style="font-size:11px">${esc(x.e.dept||'-')}</div></td>
+        <td>${daily?'<span class="chip" style="background:#fef3c7;color:#b45309">รายวัน</span>':'<span class="chip" style="background:#d8f3e6;color:#092942">รายเดือน</span>'}</td>
+        <td class="num">${money(x.base)}</td>
+        <td class="num"><input type="number" step="0.01" min="0" class="advIn" data-id="${x.e.id}" value="${x.adv||''}"
+              placeholder="${x.suggest}" style="width:118px;text-align:right"></td>
+        <td class="num muted" style="font-size:12px">${money(Math.max(0,x.net))}</td>
+        <td>${x.e.bank?esc(x.e.bank)+' '+esc(x.e.bankNo||''):'<span class="muted">ยังไม่มีเลขบัญชี</span>'}</td>
+      </tr>`;
+    }).join('');
+    const box=panel.querySelector('#advTbl');
+    box.innerHTML='';
+    box.appendChild(el(`<table>
+      <thead><tr><th>รหัส</th><th>ชื่อ</th><th>ประเภท</th><th class="num">ค่าจ้างฐาน</th>
+        <th class="num">ยอดเบิกกลางเดือน</th><th class="num">คงเหลือปลายเดือน</th><th>บัญชีรับโอน</th></tr></thead>
+      <tbody>${tr2}</tbody>
+      <tfoot><tr><td colspan="4"><strong>รวม ${picked} คน</strong></td>
+        <td class="num"><strong>${money(totalAdv)}</strong></td><td colspan="2"></td></tr></tfoot>
+    </table>`));
+    box.querySelectorAll('.advIn').forEach(inp=>{
+      inp.onchange=()=>{
+        const e=DB.employees.find(x=>x.id===inp.dataset.id);
+        advSet(e, inp.value);
+        render();
+      };
+    });
+  };
+  draw();
+
+  panel.querySelector('#advFill').onclick=()=>{
+    rows.forEach(x=>advSet(x.e, x.suggest));
+    render(); toast(`เติมยอดเบิก ${pct}% ให้ ${rows.length} คนแล้ว`);
+  };
+  panel.querySelector('#advClear').onclick=()=>{
+    rows.forEach(x=>advSet(x.e, 0));
+    render(); toast('ล้างยอดเบิกแล้ว');
+  };
+  panel.querySelector('#advCsv').onclick=()=>{
+    const head=['รหัส','ชื่อ','แผนก','ธนาคาร','เลขที่บัญชี','ยอดโอนกลางเดือน'];
+    const lines=[head.map(csvEsc).join(',')];
+    rows.filter(x=>x.adv>0).forEach(x=>lines.push([x.e.code,x.e.name,x.e.dept||'',x.e.bank||'',x.e.bankNo||'',x.adv].map(csvEsc).join(',')));
+    if(lines.length===1){ toast('ยังไม่มีคนที่มียอดเบิก'); return; }
+    downloadFile(`advance_${PERIOD}.csv`, '\ufeff'+lines.join('\r\n'), 'text/csv;charset=utf-8');
+    toast('ส่งออกแล้ว');
+  };
+  panel.querySelector('#advSheet').onclick=()=>advSheet(rows);
+}
+/* ใบสรุปยอดโอน — เปิดหน้าต่างใหม่สำหรับพิมพ์/ส่งธนาคาร */
+function advSheet(rows){
+  const use=rows.filter(x=>x.adv>0);
+  if(!use.length){ toast('ยังไม่มีคนที่มียอดเบิก'); return; }
+  const total=use.reduce((s,x)=>s+x.adv,0);
+  const co=(DB.company&&DB.company.name)||DB.companyName||'';
+  const w=window.open('','_blank');
+  if(!w){ toast('เบราว์เซอร์บล็อกป๊อปอัป กรุณาอนุญาตแล้วลองอีกครั้ง'); return; }
+  w.document.write(`<!doctype html><html lang="th"><head><meta charset="utf-8">
+    <title>ใบสรุปยอดโอน ${periodLabel(PERIOD)}</title>
+    <style>
+      body{font-family:"Sarabun","Segoe UI",Tahoma,sans-serif;padding:26px;color:#0b1b2b}
+      h1{font-size:19px;margin:0 0 4px}.sub{color:#5b7186;font-size:13px;margin-bottom:16px}
+      table{width:100%;border-collapse:collapse;font-size:13px}
+      th,td{border:1px solid #cbd5e1;padding:7px 9px;text-align:left}
+      th{background:#0e3a5c;color:#fff}
+      td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+      tfoot td{font-weight:800;background:#f1f5f9}
+      .sign{margin-top:34px;display:flex;gap:60px;font-size:13px}
+      .sign div{flex:1;border-top:1px solid #94a3b8;padding-top:6px;text-align:center;color:#5b7186}
+      @media print{@page{size:A4;margin:14mm}}
+    </style></head><body>
+    <h1>ใบสรุปยอดโอนเงินเบิกล่วงหน้ากลางเดือน${co?' — '+co:''}</h1>
+    <div class="sub">งวด ${periodLabel(PERIOD)} · จ่ายวันที่ ${fmtDate(advPayDate())} · จำนวน ${use.length} คน</div>
+    <table><thead><tr><th>ลำดับ</th><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>ธนาคาร</th><th>เลขที่บัญชี</th><th class="num">ยอดโอน (บาท)</th></tr></thead>
+    <tbody>${use.map((x,i)=>`<tr><td>${i+1}</td><td>${x.e.code}</td><td>${x.e.name}</td>
+      <td>${x.e.bank||'-'}</td><td>${x.e.bankNo||'-'}</td><td class="num">${money(x.adv)}</td></tr>`).join('')}</tbody>
+    <tfoot><tr><td colspan="5">รวมทั้งสิ้น</td><td class="num">${money(total)}</td></tr></tfoot></table>
+    <div class="sign"><div>ผู้จัดทำ</div><div>ผู้ตรวจสอบ</div><div>ผู้อนุมัติ</div></div>
+    <script>window.onload=function(){window.print()}<\/script>
+    </body></html>`);
+  w.document.close();
+}
 function vPayroll(v){
   if(DB.employees.length===0){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ยังไม่มีพนักงาน</div></div>`)); return; }
   // เฉพาะพนักงานที่ยังทำงานในงวดนี้ (คนลาออกแล้วไม่แสดง) + กรองตามประเภทการจ้าง
@@ -1935,10 +2207,19 @@ function vPayroll(v){
     </div>
     ${isAll?'':`<button class="btn ghost sm" id="autoTax" style="margin-top:22px">🔍 ดูวิธีคำนวณภาษี</button>`}
     <button class="btn ghost sm" id="peCsv" style="margin-top:22px">⬇️ ส่งออก CSV</button>
+    <button class="btn ghost sm" id="peCsvIn" style="margin-top:22px">⬆️ นำเข้า CSV</button>
+    <input type="file" id="peCsvFile" accept=".csv,text/csv" style="display:none">
   </div>`);
   v.appendChild(tb);
   tb.querySelector('#peSel').onchange=(e)=>{ payrollEmpId=e.target.value; render(); };
   tb.querySelector('#peCsv').onclick=()=>exportPayrollCSV(list);
+  tb.querySelector('#peCsvIn').onclick=()=>tb.querySelector('#peCsvFile').click();
+  tb.querySelector('#peCsvFile').onchange=(ev)=>{
+    const f=ev.target.files&&ev.target.files[0]; if(!f) return;
+    const rd=new FileReader();
+    rd.onload=()=>{ importPayrollCSV(String(rd.result||''), list); ev.target.value=''; };
+    rd.readAsText(f,'utf-8');
+  };
   if(isAll){ vPayrollAll(v, list); return; }
 
   const emp=DB.employees.find(e=>e.id===payrollEmpId);
@@ -2152,6 +2433,78 @@ function exportPayrollCSV(list){
   downloadFile(`payroll${tag}_${PERIOD}.csv`, '﻿'+lines.join('\r\n'),'text/csv;charset=utf-8');
   toast(`ส่งออก CSV แล้ว (${list.length} คน)`);
 }
+/* ---------- นำเข้า CSV หน้าคำนวณเงินได้ ----------
+   ใช้ไฟล์ที่ "ส่งออก CSV" ออกมาได้เลย — จับคู่คนด้วยรหัสพนักงาน และจับช่องด้วยชื่อหัวคอลัมน์
+   ช่องที่คำนวณเอง (ค่าจ้างฐาน/รายได้รวม/หักรวม/เงินสุทธิ) ข้ามไป ไม่เขียนทับ                */
+function parseCSV(text){
+  const rows=[]; let row=[], cur='', q=false;
+  text=text.replace(/^\ufeff/,'');
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(q){
+      if(ch==='"'){ if(text[i+1]==='"'){ cur+='"'; i++; } else q=false; }
+      else cur+=ch;
+    }else{
+      if(ch==='"') q=true;
+      else if(ch===','){ row.push(cur); cur=''; }
+      else if(ch==='\n'){ row.push(cur); rows.push(row); row=[]; cur=''; }
+      else if(ch!=='\r') cur+=ch;
+    }
+  }
+  if(cur!==''||row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(r=>r.some(x=>String(x).trim()!==''));
+}
+function importPayrollCSV(text, list){
+  const rows=parseCSV(text);
+  if(rows.length<2){ toast('ไฟล์ว่างหรืออ่านไม่ได้'); return; }
+  const head=rows[0].map(h=>String(h).trim());
+  const iCode=head.findIndex(h=>/^(รหัส|code)$/i.test(h));
+  if(iCode<0){ toast('ไม่พบคอลัมน์ "รหัส" ในไฟล์'); return; }
+  const iDays=head.findIndex(h=>/^(วันทำงาน|days)$/i.test(h));
+  /* จับคอลัมน์เงินได้/เงินหักจากชื่อป้าย (ทั้งไทยและอังกฤษ) */
+  const mapEarn={}, mapDed={};
+  EARN_FIELDS.forEach(f=>{ const i=head.findIndex(h=>h===f[1]||h===f[2]); if(i>=0) mapEarn[f[0]]=i; });
+  DED_FIELDS.forEach(f=>{ const i=head.findIndex(h=>h===f[1]||h===f[2]); if(i>=0) mapDed[f[0]]=i; });
+  if(!Object.keys(mapEarn).length && !Object.keys(mapDed).length){ toast('ไม่พบคอลัมน์เงินได้หรือเงินหักที่รู้จัก'); return; }
+
+  const byCode={}; DB.employees.forEach(e=>byCode[String(e.code).trim().toLowerCase()]=e);
+  const inList=new Set(list.map(e=>e.id));
+  const numOf=v=>{ const n=Number(String(v??'').replace(/[, ]/g,'')); return isFinite(n)?n:0; };
+  let ok=0, skipped=0, notFound=[];
+
+  for(let i=1;i<rows.length;i++){
+    const r=rows[i];
+    const code=String(r[iCode]??'').trim();
+    if(!code || /^(รวม|total)$/i.test(code)) continue;        // แถวรวมท้ายตาราง
+    const e=byCode[code.toLowerCase()];
+    if(!e){ notFound.push(code); continue; }
+    if(!inList.has(e.id)){ skipped++; continue; }             // ไม่อยู่ในงวด/ตัวกรองนี้
+    const rec=getRec(PERIOD, e.id);
+    rec.manual=rec.manual||{};
+    if(iDays>=0 && e.payType==='daily' && String(r[iDays]??'').trim()!=='') rec.days=numOf(r[iDays]);
+    Object.entries(mapEarn).forEach(([k,idx])=>{ if(String(r[idx]??'').trim()!=='') rec.earn[k]=numOf(r[idx]); });
+    Object.entries(mapDed).forEach(([k,idx])=>{
+      if(String(r[idx]??'').trim()==='') return;
+      const v=numOf(r[idx]);
+      rec.ded[k]=v;
+      /* ช่องที่ระบบคิดเอง (ภาษี/ปกส./กสล./กองทุนสงเคราะห์) — ทำเครื่องหมายว่าคนกรอกเอง
+         เฉพาะเมื่อค่าต่างจากที่ระบบคำนวณ ไม่งั้นปล่อยให้ระบบคิดต่อเหมือนเดิม */
+      if(['tax','sso','pvd','wf'].includes(k)){
+        const auto=JSON.parse(JSON.stringify(rec));
+        autoDeductions(e, auto);
+        if(Math.abs(Number(auto.ded[k]||0)-v)>0.005) rec.manual[k]=1; else delete rec.manual[k];
+        rec.ded[k]=v;
+      } else rec.manual[k]=1;
+    });
+    autoDeductions(e, rec);
+    ok++;
+  }
+  save(); render();
+  let msg=`นำเข้าแล้ว ${ok} คน`;
+  if(skipped) msg+=` · ข้าม ${skipped} คน (ไม่อยู่ในงวดนี้)`;
+  if(notFound.length) msg+=` · ไม่พบรหัส ${notFound.slice(0,3).join(', ')}${notFound.length>3?'…':''}`;
+  toast(msg);
+}
 function drawPeTot(emp){
   const c=calc(emp,PERIOD);
   $('#peTot').innerHTML=`
@@ -2187,11 +2540,12 @@ function taxModal(emp, r){
         <tr><td><strong>ภาษีหัก ณ ที่จ่าย / เดือน (÷ ${t.months} เดือน)</strong></td><td class="num"><strong style="color:var(--brand-d);font-size:16px">${money(t.monthly)}</strong></td></tr>
       </tfoot>
     </table>
-    <p class="muted" style="font-size:12px;margin-top:14px;line-height:1.6">อัตราภาษีขั้นบันได: ${brackets}</p>
-    <p class="muted" style="font-size:12px">* คำนวณจากเงินได้ทั้งหมดในงวดนี้ — รายการประจำ (เงินเดือน/OT/คอม/ค่าตำแหน่งฯ) คูณตามจำนวนเดือนที่ทำงาน + โบนัสบวกครั้งเดียว · ปรับค่าลดหย่อนได้ที่ข้อมูลพนักงาน</p>`;
-  openModal(`คำนวณภาษี — ${emp.name}`, body, [['ปิด','ghost',closeModal],['นำไปใช้ '+money(t.monthly)+' บาท','',()=>{
-    r.ded.tax=t.monthly; save(); closeModal(); render(); toast('ตั้งภาษีหัก ณ ที่จ่ายแล้ว');
-  }]]);
+    <div style="background:#eaf6f1;border:1px solid #a7e3cd;border-radius:8px;padding:9px 12px;margin-top:14px;font-size:13px">
+      ✅ ระบบใส่ยอดนี้ในช่อง <strong>ภาษีเงินได้</strong> ให้อัตโนมัติแล้ว และคิดใหม่เองทุกครั้งที่เงินได้เปลี่ยน — หน้านี้ไว้ดูที่มาของตัวเลขเท่านั้น
+    </div>
+    <p class="muted" style="font-size:12px;margin-top:12px;line-height:1.6">อัตราภาษีขั้นบันได: ${brackets}</p>
+    <p class="muted" style="font-size:12px">* ค่าจ้างรวมทั้งปีคิดจาก<strong>เงินที่ได้รับจริงของแต่ละเดือน</strong> เดือนที่เข้างานหรือลาออกกลางเดือนหารตามวันทำงาน (ตัวเลขข้างบนจึงเป็นค่าเฉลี่ยต่อเดือน) · เงินเพิ่มประจำคูณตามจำนวนเดือนที่ทำงาน โบนัสบวกครั้งเดียว · ปรับค่าลดหย่อนได้ที่ข้อมูลพนักงาน</p>`;
+  openModal(`คำนวณภาษี — ${emp.name}`, body, [['ปิด','ghost',closeModal]]);
 }
 
 /* ============ 3. SUMMARY ============ */
@@ -3208,6 +3562,22 @@ function shiftRotateModal(shown){
       save(); closeModal(); render(); toast(`สร้างตารางหมุนกะแล้ว ${num(n)} รายการ`);
     }]]);
   wireEmpPicker();
+  /* ติ๊กกะออก = กะนั้นไม่ร่วมหมุนเวียน คนที่มีกะประจำเป็นกะนั้นจึงไม่ควรถูกจัดตารางด้วย
+     จึงติ๊กชื่อออกให้อัตโนมัติ และติ๊กกลับให้เมื่อเลือกกะนั้นคืน */
+  (function(){
+    const rows=[...document.querySelectorAll('.epRow')];
+    const refresh=()=>{ const ck=document.querySelector('.epChk'); if(ck) ck.dispatchEvent(new Event('change')); };
+    document.querySelectorAll('.roSh').forEach(sh=>{
+      sh.addEventListener('change', ()=>{
+        rows.forEach(r=>{
+          if(r.dataset.shift!==sh.value) return;
+          if(r.style.display==='none') return;          /* ถูกกรองซ่อนอยู่ ไม่ต้องยุ่ง */
+          const ck=r.querySelector('.epChk'); if(ck) ck.checked=sh.checked;
+        });
+        refresh();
+      });
+    });
+  })();
 }
 
 /* 4) คัดลอกตารางกะจากงวดก่อน (จับคู่ตามลำดับวันในงวด) */
@@ -4028,6 +4398,28 @@ function importEmpCSV(){
 }
 
 /* ---------- Modal ---------- */
+/* ปุ่มเปิด-ปิดตาดูรหัสผ่านหน้าเข้าสู่ระบบ */
+(function(){
+  function wire(){
+    const inp=document.getElementById('authPass'), btn=document.getElementById('pwEye');
+    if(!inp||!btn||btn.dataset.wired) return;
+    btn.dataset.wired='1';
+    btn.onclick=()=>{
+      const show = inp.type==='password';
+      inp.type = show ? 'text' : 'password';
+      btn.setAttribute('aria-pressed', String(show));
+      btn.setAttribute('aria-label', show ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน');
+      const on=btn.querySelector('.eye-on'), off=btn.querySelector('.eye-off');
+      if(on&&off){ on.style.display = show?'none':''; off.style.display = show?'':'none'; }
+      inp.focus();
+      try{ const n=inp.value.length; inp.setSelectionRange(n,n); }catch(e){}
+    };
+  }
+  document.addEventListener('DOMContentLoaded',wire);
+  wire();
+  /* หน้าเข้าสู่ระบบถูกวาดใหม่ได้ จึงเฝ้าดูไว้ด้วย */
+  new MutationObserver(wire).observe(document.documentElement,{childList:true,subtree:true});
+})();
 function openModal(title, body, buttons){
   const m=$('#modal');
   m.innerHTML=`<div class="mhead"><h3>${esc(title)}</h3></div><div class="mbody">${body}</div><div class="mfoot"></div>`;
@@ -4238,7 +4630,7 @@ function isEmpLimitError(err){
 
 /* เมนูที่ต้องซื้อแพ็กเกจพรีเมี่ยม (ช่วงทดลอง 30 วันใช้ได้ครบ)
    ล็อกหน้า "เวลาเข้างาน" = ล็อกระบบกะและกฎ OT ที่อยู่ในหน้านั้นไปด้วย */
-const PREMIUM_PAGES = ['attend','leave'];
+const PREMIUM_PAGES = ['attend','leave','advance'];
 /* ข้อมูลของฟีเจอร์พรีเมี่ยม — เก็บคนละตารางกับข้อมูลเงินเดือน
    ตาราง premium_stores มี RLS กั้นไว้ คนที่ไม่มีสิทธิ์อ่าน/เขียนไม่ได้จริง ๆ */
 const PREMIUM_KEYS = ['attend','leave','shifts','shiftPlan','otWeekdays','otDates','otMaxDay','leaveQuota','leaveHoursPerDay'];
