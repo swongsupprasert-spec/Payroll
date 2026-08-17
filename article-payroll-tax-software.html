@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี | eSimPayroll</title>
+<meta name="description" content="โปรแกรมคำนวณภาษีเงินเดือนใช้ตัวไหนดี เทียบเครื่องคำนวณฟรี Excel และโปรแกรมเงินเดือนครบวงจร พร้อม 5 ข้อทดสอบและตัวอย่างจริงที่แยกโปรแกรมที่คิดถูกออกจากที่คิดผิด">
+<meta name="keywords" content="โปรแกรมคำนวณภาษีเงินเดือน,คำนวณภาษีเงินเดือน,ภาษีหัก ณ ที่จ่าย,โปรแกรมเงินเดือน,คำนวณภาษี พนักงาน,ภ.ง.ด.1">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0e3a5c">
+<link rel="canonical" href="https://esimpayroll.com/article-payroll-tax-software">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="eSimPayroll">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://esimpayroll.com/article-payroll-tax-software">
+<meta property="og:title" content="โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี">
+<meta property="og:description" content="5 ข้อทดสอบที่แยกโปรแกรมคำนวณภาษีเงินเดือนที่คิดถูก ออกจากที่คิดผิด">
+<meta property="og:image" content="https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?w=1200&q=80&auto=format&fit=crop">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?w=1200&q=80&auto=format&fit=crop">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/icon-192.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/icon-96.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/icon-48.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/brand/icon-192.png">
+<link rel="shortcut icon" href="/brand/icon-48.png">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--brand:#0e3a5c;--brand-d:#092942;--ink:#0b1b2b;--muted:#5b7186;--bg:#f7faf9;--accent:#10b981;--accent-l:#6ee7b7;--accent-bg:#eaf6f1;
+    --line:#e8eef4;--r-lg:26px;--r-md:20px;--r-sm:14px;
+    --sh-sm:0 2px 8px rgba(11,27,43,.05);--sh-md:0 12px 32px rgba(11,27,43,.08);--sh-lg:0 28px 70px rgba(11,27,43,.14);
+    --grad:linear-gradient(120deg,#10b981,#0f766e 45%,#17557f)}
+  html{scroll-behavior:smooth}
+  body{font-family:"Sarabun","Segoe UI",Tahoma,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.7}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  .wrap.wide{max-width:1140px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 24px;border-radius:100px;font-weight:700;font-size:15px;cursor:pointer;border:0;font-family:inherit;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,background .2s}
+  .btn.primary{background:var(--grad);color:#fff;box-shadow:0 12px 32px rgba(16,185,129,.35)}
+  .btn.primary:hover{transform:translateY(-3px);box-shadow:0 20px 46px rgba(16,185,129,.45)}
+  .btn.ghost{background:rgba(255,255,255,.7);color:var(--ink);border:1.5px solid var(--line);backdrop-filter:blur(8px)}
+  .btn.ghost:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-2px)}
+
+  header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(232,238,244,.9)}
+  nav{display:flex;align-items:center;gap:14px;height:66px;max-width:1140px;margin:0 auto;padding:0 22px}
+  .logo{font-size:21px;font-weight:800;display:flex;align-items:center;gap:8px}
+  nav .sp{margin-left:auto;display:flex;gap:6px;align-items:center}
+  nav a.link{color:var(--muted);font-weight:600;padding:9px 14px;font-size:15px;border-radius:100px;transition:.18s}
+  nav a.link:hover{color:var(--ink);background:rgba(11,27,43,.05)}
+  nav a.link.active{color:var(--brand);background:var(--accent-bg)}
+
+  .pagehead{position:relative;overflow:hidden;background:
+    radial-gradient(720px 340px at 82% -10%,rgba(110,231,183,.4),transparent),
+    radial-gradient(600px 300px at 8% 4%,rgba(125,211,252,.28),transparent),
+    linear-gradient(180deg,#fff,var(--bg));padding:54px 0 40px;text-align:center}
+  .pagehead .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.85);border:1px solid var(--line);color:var(--brand-d);font-weight:700;font-size:13px;padding:8px 16px;border-radius:100px;box-shadow:var(--sh-sm);margin-bottom:14px}
+  .pagehead h1{font-size:40px;letter-spacing:-.5px;margin-bottom:10px}
+  .pagehead p{color:var(--muted);font-size:18px}
+
+  section{padding:44px 0}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .card{display:block;background:#fff;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+  .card:hover{box-shadow:var(--sh-lg);transform:translateY(-6px)}
+  .card .cover{height:170px;overflow:hidden;background:#eaf6f1;position:relative}
+  .card .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(14,58,92,.22),rgba(16,185,129,.12))}
+  .card .cover img{width:100%;height:100%;object-fit:cover;display:block;transition:.25s}
+  .card:hover .cover img{transform:scale(1.05)}
+  .card .body{padding:20px 22px}
+  .card .tag{font-size:12px;font-weight:700;color:var(--brand-d);background:#eaf6f1;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+  .card h3{font-size:19px;margin-bottom:8px;line-height:1.35}
+  .card p{color:var(--muted);font-size:15px}
+  .card .more{color:var(--brand);font-weight:700;font-size:14px;margin-top:12px;display:inline-block}
+
+  article{border-top:1px solid #eef2f7;padding:44px 0}
+  article .meta{color:var(--muted);font-size:14px;margin-bottom:8px}
+  article h2{font-size:28px;letter-spacing:-.3px;margin-bottom:16px}
+  article h4{font-size:19px;margin:22px 0 8px}
+  article p{margin-bottom:12px;color:#1f2937}
+  article ul{margin:0 0 14px 22px;color:#1f2937}
+  article li{margin-bottom:6px}
+  article .box{background:var(--bg);border:1px solid #e8edf3;border-left:4px solid var(--brand);border-radius:10px;padding:14px 18px;margin:14px 0}
+  article .back{color:var(--brand);font-weight:700;font-size:14px}
+
+  .cta-band{position:relative;overflow:hidden;background:linear-gradient(140deg,#0b1b2b,#0e3a5c 55%,#0f766e);color:#fff;border-radius:30px;padding:52px 36px;text-align:center;margin:40px auto;box-shadow:var(--sh-lg)}
+  .cta-band::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(110,231,183,.3),transparent 70%);top:-190px;right:-110px}
+  .cta-band>*{position:relative;z-index:1}
+  .cta-band h2{font-size:28px;margin-bottom:10px}
+  .cta-band p{opacity:.92;margin-bottom:22px}
+  .cta-band .btn.primary{background:#fff;color:var(--brand-d)}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}.pagehead h1{font-size:30px}article h2{font-size:23px}}
+  @media(max-width:640px){
+    nav{height:auto;padding:10px 0;flex-wrap:wrap;gap:6px}
+    .logo{font-size:18px}
+    nav .sp{width:100%;margin-left:0;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    nav a.link{padding:7px 9px;font-size:14px;white-space:nowrap}
+    nav .sp .btn{white-space:nowrap;flex-shrink:0}
+    .pagehead{padding:36px 0 28px}.pagehead h1{font-size:24px}.pagehead p{font-size:15px}
+    section{padding:30px 0}
+    article{padding:32px 0}article h2{font-size:20px}article h4{font-size:17px}
+    .cta-band{padding:30px 18px;border-radius:18px}.cta-band h2{font-size:21px}
+  }
+
+  /* ---- footer ---- */
+  footer{border-top:1px solid var(--line);background:#fff;padding:44px 0 28px;color:var(--muted);font-size:14.5px}
+  .ft-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px;align-items:start}
+  .ft-brand{font-size:19px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .ft-tag{max-width:290px;line-height:1.65}
+  /* ---------- ไอคอนโซเชียลท้ายเว็บ ---------- */
+  .ft-social{display:flex;gap:10px;margin-top:15px}
+  .soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);background:#fff;color:var(--muted);
+    transition:transform .2s,color .2s,background .2s,border-color .2s}
+  .soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+  .soc.tiktok:hover{background:#000}
+  .soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+  .soc.line:hover{background:#06C755}
+  .soc:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+  .ft-h{font-size:13px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.6px;margin-bottom:11px}
+  .ft-list{list-style:none;display:grid;gap:8px}
+  .ft-list a:hover{color:var(--brand);text-decoration:underline}
+  .ft-line{display:flex;gap:13px;align-items:flex-start;flex-wrap:wrap}  /* แคบแล้วให้ตกลงบรรทัดใหม่ ไม่บีบข้อความ */
+  .ft-qr{width:88px;height:88px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;padding:4px;flex-shrink:0}
+  .ft-lineid{display:inline-flex;align-items:center;gap:6px;background:#06C755;color:#fff;font-weight:800;
+    font-size:14px;padding:7px 14px;border-radius:100px;margin-bottom:7px}
+  .ft-lineid:hover{background:#05a648}
+  .ft-mail{color:var(--brand);font-weight:700;white-space:nowrap}   /* ห้ามตัดกลางอีเมล */
+  .ft-mail:hover{text-decoration:underline}
+  .ft-bot{border-top:1px solid #e2e8f0;margin-top:28px;padding-top:18px;display:flex;gap:12px;
+    flex-wrap:wrap;align-items:center;justify-content:space-between;font-size:13.5px}
+  @media(max-width:760px){
+    .ft-grid{grid-template-columns:1fr;gap:26px}
+    .ft-tag{max-width:none}
+    .ft-bot{justify-content:flex-start}
+  }
+</style>
+<style>
+  /* หน้าบทความเดี่ยว */
+  article{border-top:0;padding:8px 0 44px}
+  article h1{font-size:31px;letter-spacing:-.4px;margin-bottom:16px;line-height:1.3}
+  .backbar{padding:20px 0 0}
+  .backbar a{color:var(--brand);font-weight:700;font-size:14.5px}
+  .backbar a:hover{text-decoration:underline}
+  .more-h{font-size:21px;margin-bottom:18px}
+  @media(max-width:760px){article h1{font-size:23px}}
+  /* ตารางเปรียบเทียบ */
+  .cmpwrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:14px}
+  table.cmp{width:100%;border-collapse:collapse;font-size:14.5px;min-width:520px}
+  table.cmp th,table.cmp td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  table.cmp thead th{background:var(--brand);color:#fff;font-weight:700;font-size:14px;border-bottom:0}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp tbody tr:nth-child(even){background:#f8fbfa}
+  table.cmp td:first-child{font-weight:700;color:var(--brand-d);white-space:nowrap}
+  .yes{color:#059669;font-weight:700}
+  .no{color:#dc2626;font-weight:700}
+  /* กล่องเตือน */
+  article .warn{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;
+    border-radius:10px;padding:14px 18px;margin:16px 0}
+  /* คำถามที่พบบ่อย */
+  .faq details{border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:10px;background:#fff}
+  .faq summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;font-size:15.5px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";float:right;color:var(--accent);font-weight:800}
+  .faq details[open] summary::after{content:"−"}
+  .faq details[open] summary{border-bottom:1px solid var(--line)}
+  .faq details p{padding:14px 18px 4px;margin:0}
+  /* การ์ดฟีเจอร์เรียงเลข */
+  .feat{border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px;margin:0 0 14px;background:#fff;
+    box-shadow:var(--sh-sm);position:relative}
+  .feat > h4{margin:0 0 8px;padding-left:44px;font-size:18px;line-height:1.45;min-height:34px;display:flex;align-items:center}
+  .feat .num{position:absolute;left:20px;top:17px;width:34px;height:34px;border-radius:10px;background:var(--grad);
+    color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 14px rgba(16,185,129,.28)}
+  .feat p{margin-bottom:8px}
+  .feat p:last-child{margin-bottom:0}
+  .chk{background:var(--accent-bg);border-radius:9px;padding:9px 13px;font-size:14px;margin-top:10px}
+  .chk b{color:var(--brand-d)}
+  @media(max-width:640px){
+    .feat{padding:15px 15px 13px}
+    .feat > h4{padding-left:40px;font-size:16.5px}
+    .feat .num{left:15px;top:14px;width:30px;height:30px;font-size:14px}
+  }
+  /* ตัวอย่างคำนวณ */
+  .calcbox{background:var(--accent-bg);border:1px solid #a7e3cd;border-radius:14px;padding:16px 20px;margin:16px 0}
+  .calcbox h4{margin:0 0 10px;font-size:16px;color:var(--brand-d)}
+  .calcbox table{width:100%;border-collapse:collapse;font-size:14.5px}
+  .calcbox td{padding:6px 0;border-bottom:1px solid rgba(15,118,110,.16)}
+  .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
+
+  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
+  .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
+    justify-content:center;background:var(--grad);color:#fff;box-shadow:0 8px 20px rgba(16,185,129,.3);margin-top:2px}
+  .h1ic svg{width:25px;height:25px;display:block}
+  .h1row h1{margin-bottom:0}
+  @media(max-width:640px){
+    .h1ic{width:38px;height:38px;border-radius:11px}
+    .h1ic svg{width:21px;height:21px}
+    .h1row{gap:11px}
+  }
+  /* ภาพหัวบทความ */
+  .hero-img{margin:0 0 26px;border-radius:var(--r-md);overflow:hidden;position:relative;
+    background:#eaf6f1;box-shadow:var(--sh-md);aspect-ratio:16/7}
+  .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero-img::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
+  .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
+  @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
+  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  .artwrap{position:relative}
+  .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
+    scroll-snap-type:x mandatory;padding:6px 2px 14px;
+    cursor:grab;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .cards::-webkit-scrollbar{display:none}
+  .cards.grabbing{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none;user-select:none}
+  .cards.grabbing .card,.cards.grabbing img{pointer-events:none}
+  .cards > .card{flex:0 0 calc((100% - 66px) / 4);scroll-snap-align:start}
+  .cards > .card img{-webkit-user-drag:none;user-select:none}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+    width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.95);
+    backdrop-filter:blur(8px);box-shadow:var(--sh-md);cursor:pointer;font-size:19px;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;transition:.2s;font-family:inherit}
+  .arrow:hover{background:#fff;transform:translateY(-50%) scale(1.08);box-shadow:var(--sh-lg)}
+  .arrow[disabled]{opacity:0;pointer-events:none}
+  .arrow.prev{left:-20px}
+  .arrow.next{right:-20px}
+  @media(max-width:980px){
+    .cards > .card{flex:0 0 calc((100% - 22px) / 2)}
+    .arrow.prev{left:-8px} .arrow.next{right:-8px}
+  }
+  @media(max-width:640px){
+    .cards{gap:14px}
+    .cards > .card{flex:0 0 82%}
+    .arrow{display:none}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี","description":"โปรแกรมคำนวณภาษีเงินเดือนใช้ตัวไหนดี เทียบเครื่องคำนวณฟรี Excel และโปรแกรมเงินเดือนครบวงจร พร้อม 5 ข้อทดสอบและตัวอย่างจริงที่แยกโปรแกรมที่คิดถูกออกจากที่คิดผิด","inLanguage":"th","datePublished":"2026-08-17","dateModified":"2026-08-17","image":"https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?w=1200&q=80&auto=format&fit=crop","author":{"@type":"Organization","name":"eSimPayroll"},"publisher":{"@type":"Organization","name":"eSimPayroll"},"mainEntityOfPage":"https://esimpayroll.com/article-payroll-tax-software"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"หน้าแรก","item":"https://esimpayroll.com/"},{"@type":"ListItem","position":2,"name":"บทความ","item":"https://esimpayroll.com/articles"},{"@type":"ListItem","position":3,"name":"โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี","item":"https://esimpayroll.com/article-payroll-tax-software"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"th","mainEntity":[
+{"@type":"Question","name":"โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี","acceptedAnswer":{"@type":"Answer","text":"ขึ้นอยู่กับว่าต้องการแค่คำนวณ หรือต้องการยื่นเอกสารด้วย ถ้าอยากรู้ตัวเลขคร่าว ๆ ของคนเดียว เครื่องคำนวณภาษีฟรีบนเว็บก็พอ ถ้าต้องทำเงินเดือนให้พนักงานทั้งบริษัททุกเดือนและต้องออกแบบ ภ.ง.ด.1 กับหนังสือรับรอง 50 ทวิ ควรใช้โปรแกรมเงินเดือนที่คำนวณภาษีในตัว เพราะตัวเลขจะไหลจากที่เดียวไปทุกเอกสารโดยไม่ต้องคีย์ซ้ำ"}},
+{"@type":"Question","name":"เครื่องคำนวณภาษีฟรีบนเว็บ ใช้ทำเงินเดือนได้ไหม","acceptedAnswer":{"@type":"Answer","text":"ใช้ประมาณการได้ แต่ไม่เหมาะกับการทำเงินเดือนจริง เพราะคำนวณได้ทีละคน ไม่เก็บประวัติ ไม่รู้ว่าพนักงานเข้างานเดือนไหน ไม่รองรับการขึ้นเงินเดือนกลางปี และออกเอกสารยื่นราชการไม่ได้ ผู้ทำเงินเดือนจึงต้องคีย์ตัวเลขซ้ำเข้าไฟล์อื่นอยู่ดี"}},
+{"@type":"Question","name":"จะรู้ได้อย่างไรว่าโปรแกรมคำนวณภาษีเงินเดือนคิดถูก","acceptedAnswer":{"@type":"Answer","text":"ทดสอบด้วยสองกรณี หนึ่ง ใส่พนักงานที่เริ่มงานกลางปี เช่น เริ่ม 1 กันยายน เงินเดือน 50,000 บาท ระบบต้องคิดเงินได้ทั้งปีเป็น 200,000 บาท ไม่ใช่ 600,000 บาท สอง ใส่การขึ้นเงินเดือนกลางปี ระบบต้องคำนวณภาษีของเดือนก่อนหน้าใหม่ด้วย ถ้าขยับแค่เดือนปัจจุบันแปลว่าคิดผิดวิธี"}},
+{"@type":"Question","name":"ภาษีเงินเดือนคำนวณผิดแล้วเกิดอะไรขึ้น","acceptedAnswer":{"@type":"Answer","text":"หักน้อยเกินไป พนักงานต้องจ่ายเพิ่มตอนยื่นภาษีประจำปีและมักไม่พอใจนายจ้าง ส่วนหักมากเกินไป พนักงานเสียโอกาสใช้เงินทั้งปีแล้วค่อยไปขอคืน ทั้งสองกรณีนายจ้างยังต้องยื่นแบบ ภ.ง.ด.1 แก้ไข ซึ่งเป็นภาระเพิ่มและอาจมีเบี้ยปรับหากยื่นล่าช้า"}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"วิธีทดสอบโปรแกรมคำนวณภาษีเงินเดือนก่อนเลือกใช้","inLanguage":"th","step":[
+{"@type":"HowToStep","position":1,"name":"ทดสอบพนักงานเข้างานกลางปี","text":"เพิ่มพนักงานที่เริ่มงาน 1 กันยายน เงินเดือน 50,000 บาท ระบบต้องคิดเงินได้ทั้งปีเป็น 200,000 บาท และภาษีต้องเป็นศูนย์"},
+{"@type":"HowToStep","position":2,"name":"ทดสอบการขึ้นเงินเดือนกลางปี","text":"บันทึกการขึ้นเงินเดือนกลางปี แล้วดูว่าภาษีของเดือนก่อนหน้าถูกคำนวณใหม่ด้วยหรือไม่"},
+{"@type":"HowToStep","position":3,"name":"ตรวจฐานประกันสังคม","text":"ตรวจว่าค่าล่วงเวลาถูกกันออกจากฐานประกันสังคม และเพดานฐานค่าจ้างแก้ไขเองได้"},
+{"@type":"HowToStep","position":4,"name":"ตรวจค่าลดหย่อน","text":"ใส่คู่สมรสและบุตร แล้วดูว่าภาษีลดลงตามจำนวนค่าลดหย่อนที่กฎหมายกำหนด"},
+{"@type":"HowToStep","position":5,"name":"ตรวจว่าออกเอกสารได้","text":"ดูว่ายอดภาษีไหลไปที่แบบ ภ.ง.ด.1 และหนังสือรับรองการหักภาษี 50 ทวิ ได้เองโดยไม่ต้องคีย์ซ้ำ"}]}
+</script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-05JJT2VDRV"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js",new Date());
+  gtag("config","G-05JJT2VDRV",{anonymize_ip:true});
+</script>
+<style>
+/* ---------- ท้ายเว็บพื้นเข้ม ---------- */
+footer{background:#0b1b2b !important;border-top:0 !important;color:#a9c4d4 !important}
+footer .ft-brand,footer .ft-brand span{color:#fff !important}
+footer .ft-h{color:#6ee7b7 !important}
+footer .ft-list a:hover{color:#6ee7b7 !important}
+footer .ft-bot{border-top:1px solid rgba(255,255,255,.14) !important;color:#8fb0c4}
+footer .ft-mail{color:#6ee7b7 !important}
+/* ---------- ไอคอนโซเชียล ---------- */
+.ft-social{display:flex;gap:10px;margin-top:15px}
+.soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#c2d8e4;
+  transition:transform .2s,color .2s,background .2s,border-color .2s}
+.soc svg{width:19px;height:19px}
+.soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+.soc.tiktok:hover{background:#000}
+.soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+.soc.line:hover{background:#06C755}
+.soc:focus-visible{outline:2px solid #6ee7b7;outline-offset:2px}
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="index.html" class="logo"><svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgNav0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgNav0)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
+    <div class="sp">
+      <a href="features.html" class="link" data-en="Features">ฟีเจอร์</a>
+        <a href="pricing.html" class="link" data-en="Pricing">ราคา</a>
+      <a href="articles.html" class="link active" data-en="Articles">บทความ</a>
+      <a href="about.html" class="link" data-en="About">เกี่ยวกับ</a>
+      <button id="langBtn" class="btn ghost" style="padding:8px 12px;font-size:14px;margin-left:4px">🌐 EN</button>
+        <a href="app.html#signup" class="btn primary" style="padding:9px 18px" data-en="30-day free trial">ทดลองฟรี 30 วัน</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap backbar">
+  <a href="articles.html" data-en="← All articles">← กลับไปหน้าบทความ</a>
+</div>
+
+<div class="wrap">
+<article>
+    <div class="meta" data-en="Payroll · 8 min read">เงินเดือน · อ่าน 8 นาที</div>
+    <div class="h1row">
+      <span class="h1ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" x="4" y="2.6" width="16" height="18.8" rx="2.4"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M7.8 6.8h8.4"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M8 11.4h.01M12 11.4h.01M16 11.4h.01M8 15.2h.01M12 15.2h.01M16 15.2v3.4M8 18.6h4.2"/></svg></span>
+      <h1 data-en="Which payroll tax calculator should you use?">โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี?</h1>
+    </div>
+
+    <figure class="hero-img">
+      <img src="https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?w=1200&q=80&auto=format&fit=crop" alt="เลือกโปรแกรมคำนวณภาษีเงินเดือนสำหรับธุรกิจไทย"
+           data-en-alt="Choosing payroll tax software for a Thai business" width="1200" height="525" fetchpriority="high" decoding="async">
+    </figure>
+
+    <p data-en="A &lt;strong&gt;payroll tax calculator&lt;/strong&gt; works out how much withholding tax to deduct from each employee every month. Sounds simple — but Thai withholding tax is computed from &lt;strong&gt;projected full-year income&lt;/strong&gt;, not from the current month, which is exactly where most free calculators and most spreadsheets go wrong."><strong>โปรแกรมคำนวณภาษีเงินเดือน</strong> คือเครื่องมือที่คิดว่าต้องหักภาษี ณ ที่จ่ายจากพนักงานแต่ละคนเดือนละเท่าไหร่ ฟังดูง่าย แต่ภาษีหัก ณ ที่จ่ายของไทยคำนวณจาก<strong>เงินได้ทั้งปีที่ประมาณการ</strong> ไม่ใช่จากเดือนปัจจุบัน และนั่นคือจุดที่เครื่องคำนวณฟรีส่วนใหญ่กับไฟล์ Excel ส่วนใหญ่พลาด</p>
+
+    <p data-en="This article gives you &lt;strong&gt;two tests&lt;/strong&gt; you can run in about ten minutes that will tell you whether any tool computes Thai payroll tax correctly — then compares the four kinds of options available.">บทความนี้ให้ <strong>ข้อทดสอบ 2 ข้อ</strong> ที่ใช้เวลาประมาณสิบนาที แล้วจะรู้ทันทีว่าเครื่องมือที่กำลังดูอยู่คิดภาษีไทยถูกหรือไม่ จากนั้นค่อยเทียบตัวเลือกทั้ง 4 แบบที่มีในตลาด</p>
+
+    <h2 data-en="Two tests that separate correct from wrong">2 ข้อทดสอบที่แยกโปรแกรมที่คิดถูก ออกจากที่คิดผิด</h2>
+
+    <h4 data-en="Test 1 · An employee who joins mid-year">ทดสอบที่ 1 · พนักงานเข้างานกลางปี</h4>
+    <p data-en="Add an employee starting &lt;strong&gt;1 September&lt;/strong&gt; on a salary of 50,000 baht, single, no children. Then look at the tax.">เพิ่มพนักงานที่เริ่มงาน <strong>1 กันยายน</strong> เงินเดือน 50,000 บาท โสด ไม่มีบุตร แล้วดูตัวเลขภาษี</p>
+    <div class="calcbox">
+      <h4 data-en="What a correct system shows">สิ่งที่ระบบที่ถูกต้องต้องแสดง</h4>
+      <table>
+        <tr><td data-en="Months worked in the tax year">เดือนที่ทำงานในปีภาษี</td><td>4</td></tr>
+        <tr><td data-en="Annual income 50,000 × 4">เงินได้ทั้งปี 50,000 × 4</td><td>200,000.00</td></tr>
+        <tr><td data-en="Less expenses and personal allowance">หักค่าใช้จ่ายและลดหย่อนส่วนตัว</td><td>−160,000.00</td></tr>
+        <tr><td data-en="Below the 150,000 threshold → tax">ต่ำกว่าเกณฑ์ 150,000 → ภาษี</td><td>0.00</td></tr>
+      </table>
+    </div>
+    <div class="warn" data-en="&lt;strong&gt;A wrong system assumes twelve months&lt;/strong&gt; and computes annual income as 600,000 — deducting &lt;strong&gt;1,704.17 baht a month&lt;/strong&gt; from someone who legally owes &lt;strong&gt;nothing&lt;/strong&gt;. If the figure you see is not zero, stop and ask why."><strong>ระบบที่ผิดจะเหมาเอาว่าทำงาน 12 เดือน</strong> คิดเงินได้ทั้งปีเป็น 600,000 บาท แล้วหักภาษี <strong>1,704.17 บาทต่อเดือน</strong> จากคนที่ตามกฎหมาย<strong>ไม่ต้องเสียภาษีเลยสักบาท</strong> ถ้าตัวเลขที่เห็นไม่ใช่ศูนย์ ให้หยุดแล้วถามว่าทำไม</div>
+
+    <h4 data-en="Test 2 · A mid-year pay rise">ทดสอบที่ 2 · ขึ้นเงินเดือนกลางปี</h4>
+    <p data-en="Take an employee on 30,000 baht who is raised to 40,000 from July. The correct annual income is 30,000 × 6 + 40,000 × 6 = 420,000 — not 40,000 × 12.">พนักงานเงินเดือน 30,000 บาท ขึ้นเป็น 40,000 ตั้งแต่เดือนกรกฎาคม เงินได้ทั้งปีที่ถูกต้องคือ 30,000 × 6 + 40,000 × 6 = 420,000 บาท ไม่ใช่ 40,000 × 12</p>
+    <div class="calcbox">
+      <h4 data-en="Correct vs wrong">คิดถูก เทียบกับ คิดผิด</h4>
+      <table>
+        <tr><td data-en="Correct — annual income 420,000 → tax per month">คิดถูก — เงินได้ทั้งปี 420,000 → ภาษี/เดือน</td><td>414.58</td></tr>
+        <tr><td data-en="Wrong — current salary × 12 = 480,000 → tax per month">คิดผิด — เงินเดือนปัจจุบัน × 12 = 480,000 → ภาษี/เดือน</td><td>704.17</td></tr>
+        <tr><td data-en="Over-deducted per month · per year">หักเกินต่อเดือน · ต่อปี</td><td>289.59 · 3,475.08</td></tr>
+      </table>
+    </div>
+    <div class="box" data-en="Every figure in this article was produced by the calculation engine eSimPayroll runs in production, then checked by hand against the progressive brackets.">ตัวเลขทุกบรรทัดในบทความนี้คำนวณด้วยชุดคำสั่งที่ eSimPayroll ใช้งานจริง แล้วตรวจทวนกับอัตราภาษีขั้นบันไดด้วยมืออีกรอบ</div>
+
+    <h2 data-en="Five things the tool must get right">5 ข้อที่โปรแกรมคำนวณภาษีเงินเดือนต้องทำได้</h2>
+    <div class="feat">
+      <span class="num">1</span>
+      <h4 data-en="Annual basis, not monthly">คิดจากเงินได้ทั้งปี ไม่ใช่ทีละเดือน</h4>
+      <p data-en="The single most important one. Everything else follows from it.">ข้อที่สำคัญที่สุด เพราะข้ออื่นตามมาจากข้อนี้ทั้งหมด</p>
+    </div>
+    <div class="feat">
+      <span class="num">2</span>
+      <h4 data-en="Knows how many months were worked">รู้ว่าพนักงานทำงานกี่เดือนในปีภาษี</h4>
+      <p data-en="It must read the start date and resignation date, and divide the annual tax across only the months actually worked.">ต้องอ่านวันเริ่มงานและวันลาออก แล้วหารภาษีทั้งปีเฉพาะเดือนที่ทำงานจริง</p>
+    </div>
+    <div class="feat">
+      <span class="num">3</span>
+      <h4 data-en="Keeps a salary history">เก็บประวัติการขึ้นเงินเดือน</h4>
+      <p data-en="Without it, a raise silently rewrites the whole year — which is Test 2 above.">ถ้าไม่มี การขึ้นเงินเดือนจะเขียนทับทั้งปีแบบเงียบ ๆ ซึ่งก็คือข้อทดสอบที่ 2 ข้างบน</p>
+    </div>
+    <div class="feat">
+      <span class="num">4</span>
+      <h4 data-en="Gets the social security base right">แยกฐานประกันสังคมให้ถูก</h4>
+      <p data-en="Social security paid is itself a tax allowance, so an error there moves the tax figure too. Overtime and bonuses are not part of the base. See &lt;a href=&quot;article-social-security.html&quot;&gt;the social security guide&lt;/a&gt;.">เงินประกันสังคมที่จ่ายเป็นค่าลดหย่อนภาษีด้วย ผิดตรงนี้ตัวเลขภาษีจึงเพี้ยนตาม และค่าล่วงเวลากับโบนัสไม่นับเข้าฐาน ดูเพิ่มที่ <a href="article-social-security.html">ประกันสังคมคิดยังไง</a></p>
+    </div>
+    <div class="feat">
+      <span class="num">5</span>
+      <h4 data-en="Feeds the figures into the forms">ส่งตัวเลขต่อไปยังเอกสารได้</h4>
+      <p data-en="A calculator that gives you a number you then retype into &lt;a href=&quot;article-50tawi-pnd1.html&quot;&gt;PND.1 and the 50 Bis certificate&lt;/a&gt; has only done half the job — and retyping is where errors enter.">เครื่องมือที่ให้ตัวเลขมาแล้วต้องเอาไปคีย์ใหม่ใน <a href="article-50tawi-pnd1.html">ภ.ง.ด.1 และ 50 ทวิ</a> ถือว่าทำงานได้แค่ครึ่งเดียว และการคีย์ซ้ำคือจุดที่ตัวเลขเพี้ยน</p>
+    </div>
+
+    <h2 data-en="The four kinds of options">ตัวเลือกที่มีในไทย 4 แบบ</h2>
+    <div class="cmpwrap">
+      <table class="cmp">
+        <thead><tr><th data-en="Option">ตัวเลือก</th><th data-en="Good for">เหมาะกับ</th><th data-en="Limitation">ข้อจำกัด</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Free online tax calculator">เครื่องคำนวณภาษีฟรีบนเว็บ</td><td data-en="Checking one person&#39;s figure quickly">เช็คตัวเลขของคนเดียวอย่างเร็ว</td><td data-en="One person at a time, no history, no forms">ทีละคน ไม่เก็บประวัติ ออกเอกสารไม่ได้</td></tr>
+          <tr><td data-en="Excel with your own formulas">Excel ที่วางสูตรเอง</td><td data-en="A handful of employees, one careful owner">พนักงานไม่กี่คน มีคนดูแลละเอียดคนเดียว</td><td data-en="Formulas must be rebuilt after every raise or new joiner">ต้องรื้อสูตรทุกครั้งที่ขึ้นเงินเดือนหรือมีคนเข้าใหม่</td></tr>
+          <tr><td data-en="Payroll software with tax built in">โปรแกรมเงินเดือนที่คำนวณภาษีในตัว</td><td data-en="Running payroll every month and filing forms">ทำเงินเดือนทุกเดือนและต้องยื่นเอกสาร</td><td data-en="A monthly fee">มีค่าบริการรายเดือน</td></tr>
+          <tr><td data-en="Outsourcing to an accounting firm">จ้างสำนักงานบัญชีทำให้</td><td data-en="No in-house person to own payroll">ไม่มีคนในองค์กรรับผิดชอบงานนี้</td><td data-en="Highest cost; you still supply the raw data">แพงที่สุด และยังต้องส่งข้อมูลดิบให้อยู่ดี</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 data-en="So which should you use?">แล้วควรใช้ตัวไหน</h2>
+    <ul data-en="&lt;li&gt;&lt;strong&gt;Just want to check one figure&lt;/strong&gt; — a free online calculator is fine&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Under about 5 employees, nobody joins or leaves&lt;/strong&gt; — Excel still works; see &lt;a href=&quot;article-payroll-vs-excel.html&quot;&gt;payroll software vs Excel&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Running payroll monthly, people join and leave, forms to file&lt;/strong&gt; — payroll software with tax built in&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Nobody in-house can own it&lt;/strong&gt; — outsource, but compare the annual cost first&lt;/li&gt;">
+      <li><strong>แค่อยากเช็คตัวเลขคนเดียว</strong> — เครื่องคำนวณฟรีบนเว็บก็พอ</li>
+      <li><strong>พนักงานไม่เกิน 5 คน ไม่มีคนเข้าออก</strong> — Excel ยังไหว ดูเพิ่มที่ <a href="article-payroll-vs-excel.html">โปรแกรมเงินเดือน vs Excel</a></li>
+      <li><strong>ทำเงินเดือนทุกเดือน มีคนเข้าออก ต้องยื่นเอกสาร</strong> — ใช้โปรแกรมเงินเดือนที่คำนวณภาษีในตัว</li>
+      <li><strong>ไม่มีคนในองค์กรรับผิดชอบได้</strong> — จ้างข้างนอก แต่เทียบค่าใช้จ่ายทั้งปีก่อน</li>
+    </ul>
+    <div class="warn" data-en="&lt;strong&gt;Whatever you pick, run the two tests above on it.&lt;/strong&gt; A tool that fails Test 1 will over-withhold from every new joiner, every year, and nobody will notice until an employee files their own return and finds they overpaid."><strong>ไม่ว่าจะเลือกอะไร ให้เอา 2 ข้อทดสอบข้างบนไปลองก่อน</strong> เครื่องมือที่ตกข้อทดสอบที่ 1 จะหักภาษีเกินจากพนักงานใหม่ทุกคน ทุกปี และจะไม่มีใครรู้จนกว่าพนักงานไปยื่นภาษีเองแล้วพบว่าจ่ายเกิน</div>
+
+    <h2 data-en="What eSimPayroll does with these five">eSimPayroll ทำ 5 ข้อนี้อย่างไร</h2>
+    <p data-en="&lt;a href=&quot;index.html&quot;&gt;eSimPayroll&lt;/a&gt; is a &lt;a href=&quot;index.html#covers&quot;&gt;payroll tax calculator&lt;/a&gt; inside a full payroll system: tax is derived from full-year income across only the months actually worked, salary history is kept so a raise recalculates earlier months, the social security base excludes overtime and its ceiling is editable, and the resulting figures flow straight into PND.1 and the 50 Bis certificate without retyping."><a href="index.html">eSimPayroll</a> เป็น<a href="index.html#covers">โปรแกรมคำนวณภาษีเงินเดือน</a>ที่อยู่ในระบบเงินเดือนเต็มรูปแบบ คิดภาษีจากเงินได้ทั้งปีเฉพาะเดือนที่ทำงานจริง เก็บประวัติการขึ้นเงินเดือนไว้จึงคำนวณเดือนก่อนหน้าใหม่ให้ ฐานประกันสังคมกันค่าล่วงเวลาออกและแก้เพดานเองได้ แล้วตัวเลขที่ได้ไหลตรงเข้า ภ.ง.ด.1 และ 50 ทวิ โดยไม่ต้องคีย์ซ้ำ</p>
+    <div class="box" data-en="Do not take that on trust — run Test 1 and Test 2 yourself during the 30-day free trial. Ten minutes will tell you more than this article can.">อย่าเพิ่งเชื่อ ลองเอาข้อทดสอบที่ 1 และ 2 ไปรันเองในช่วงทดลองใช้ฟรี 30 วัน สิบนาทีบอกได้มากกว่าบทความนี้ทั้งบท</div>
+
+    <h2 data-en="Frequently asked questions">คำถามที่พบบ่อย</h2>
+    <div class="faq">
+      <details><summary data-en="Which payroll tax calculator should I use?">โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี</summary>
+        <p data-en="It depends on whether you only need a number or also need to file. For a rough figure for one person, a free web calculator is enough. For running payroll for a whole company every month and producing PND.1 and 50 Bis, use payroll software with tax built in — the figures then flow from one place into every document without retyping.">ขึ้นอยู่กับว่าต้องการแค่ตัวเลข หรือต้องยื่นเอกสารด้วย ถ้าอยากรู้ตัวเลขคร่าว ๆ ของคนเดียว เครื่องคำนวณฟรีบนเว็บก็พอ แต่ถ้าต้องทำเงินเดือนทั้งบริษัททุกเดือนและต้องออก ภ.ง.ด.1 กับ 50 ทวิ ควรใช้<strong>โปรแกรมเงินเดือนที่คำนวณภาษีในตัว</strong> เพราะตัวเลขจะไหลจากที่เดียวไปทุกเอกสารโดยไม่ต้องคีย์ซ้ำ</p></details>
+      <details><summary data-en="Can I run payroll with a free web calculator?">เครื่องคำนวณภาษีฟรีบนเว็บ ใช้ทำเงินเดือนได้ไหม</summary>
+        <p data-en="For estimating, yes. For real payroll, no — it handles one person at a time, keeps no history, does not know when each employee started, does not handle mid-year raises, and cannot produce statutory forms. You end up retyping the numbers into another file anyway.">ใช้ประมาณการได้ แต่ไม่เหมาะกับการทำเงินเดือนจริง เพราะคำนวณทีละคน ไม่เก็บประวัติ ไม่รู้ว่าพนักงานเข้างานเดือนไหน ไม่รองรับการขึ้นเงินเดือนกลางปี และออกเอกสารยื่นราชการไม่ได้ สุดท้ายต้องคีย์ตัวเลขซ้ำเข้าไฟล์อื่นอยู่ดี</p></details>
+      <details><summary data-en="How do I know the calculation is correct?">จะรู้ได้อย่างไรว่าโปรแกรมคิดถูก</summary>
+        <p data-en="Run the two tests in this article. Test 1: an employee starting 1 September on 50,000 baht must show annual income of 200,000 and tax of zero — not 600,000. Test 2: record a mid-year raise and check that the earlier months are recalculated. If only the current month moves, the method is wrong.">ใช้ 2 ข้อทดสอบในบทความนี้ ข้อ 1 พนักงานเริ่มงาน 1 กันยายน เงินเดือน 50,000 ต้องขึ้นเงินได้ทั้งปี 200,000 และภาษีเป็นศูนย์ ไม่ใช่ 600,000 · ข้อ 2 บันทึกการขึ้นเงินเดือนกลางปี แล้วดูว่าเดือนก่อนหน้าถูกคำนวณใหม่ไหม ถ้าขยับแค่เดือนปัจจุบันแปลว่าวิธีคิดผิด</p></details>
+      <details><summary data-en="What happens if payroll tax is wrong?">ภาษีเงินเดือนคำนวณผิดแล้วเกิดอะไรขึ้น</summary>
+        <p data-en="Under-withhold and the employee owes money when filing their annual return — and usually blames the employer. Over-withhold and the employee loses the use of that money all year before claiming it back. Either way the employer may need to file an amended PND.1, and late filings can carry a penalty.">หักน้อยเกินไป พนักงานต้องจ่ายเพิ่มตอนยื่นภาษีประจำปี และมักไม่พอใจนายจ้าง · หักมากเกินไป พนักงานเสียโอกาสใช้เงินทั้งปีแล้วค่อยไปขอคืน ทั้งสองกรณีนายจ้างอาจต้องยื่น ภ.ง.ด.1 แก้ไข และการยื่นล่าช้าอาจมีเบี้ยปรับ</p></details>
+    </div>
+
+    <h2 data-en="In short">สรุป</h2>
+    <p data-en="Choosing a &lt;strong&gt;payroll tax calculator&lt;/strong&gt; is less about comparing feature lists and more about running two tests. Almost every tool can multiply a salary by twelve. Far fewer know that an employee who started in September has four months of income, and that a raise in July changes January&#39;s tax as well.">การเลือก<strong>โปรแกรมคำนวณภาษีเงินเดือน</strong> ไม่ได้อยู่ที่การเทียบรายการฟีเจอร์ แต่อยู่ที่การเอา 2 ข้อทดสอบไปลอง เครื่องมือแทบทุกตัวเอาเงินเดือนคูณ 12 ได้ แต่มีน้อยตัวที่รู้ว่าคนเข้างานเดือนกันยายนมีเงินได้แค่ 4 เดือน และการขึ้นเงินเดือนเดือนกรกฎาคมทำให้ภาษีของเดือนมกราคมเปลี่ยนไปด้วย</p>
+  </article>
+</div>
+
+<section style="background:var(--bg);border-top:1px solid var(--line)">
+  <div class="wrap wide">
+    <h2 class="more-h" data-en="More articles">บทความอื่น ๆ</h2>
+    <div class="artwrap">
+      <button class="arrow prev" id="artPrev" aria-label="เลื่อนซ้าย">‹</button>
+      <button class="arrow next" id="artNext" aria-label="เลื่อนขวา">›</button>
+      <div class="cards">
+      <a href="article-welfare-fund.html" class="card">
+        <div class="cover"><img loading="lazy" alt="กฎหมายใหม่" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="article-withholding-tax.html" class="card">
+        <div class="cover"><img loading="lazy" alt="ภาษี" src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag" data-en="Tax">ภาษี</span>
+          <h3 data-en="ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="article-social-security.html" class="card">
+        <div class="cover"><img loading="lazy" alt="ประกันสังคม" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag" data-en="Social security">ประกันสังคม</span>
+          <h3 data-en="ประกันสังคม 5% เพดาน 875 บาท คิดยังไง">ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="article-50tawi-pnd1.html" class="card">
+        <div class="cover"><img loading="lazy" alt="เอกสาร" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag" data-en="Documents">เอกสาร</span>
+          <h3 data-en="50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่">50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="cta-band">
+    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
+    <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="app.html#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
+      <a href="index.html" class="btn ghost" data-en="See all features">ดูฟีเจอร์ทั้งหมด</a>
+      <a href="pricing.html" class="btn ghost" data-en="See pricing">ดูราคา</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="ft-grid">
+
+      <div>
+        <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+
+        <div class="ft-social">
+          <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener"
+             aria-label="TikTok ของ eSimPayroll" title="TikTok">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 0 1 0-5.18c.27 0 .53.04.77.12v-3.2a5.7 5.7 0 0 0-.77-.05A5.72 5.72 0 0 0 4.14 15.3a5.72 5.72 0 0 0 5.72 5.72 5.72 5.72 0 0 0 5.72-5.72V9.4a7.35 7.35 0 0 0 4.28 1.37V7.68a4.29 4.29 0 0 1-3.26-1.86z"/></svg>
+          </a>
+          <a class="soc ig" href="https://www.instagram.com/esimpayroll" target="_blank" rel="noopener"
+             aria-label="Instagram ของ eSimPayroll" title="Instagram">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.1" cy="6.9" r="1.15" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="soc line" href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener"
+             aria-label="LINE ของ eSimPayroll" title="LINE">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M12 3C6.9 3 2.75 6.36 2.75 10.5c0 3.7 3.29 6.8 7.74 7.39.3.07.71.2.81.46.09.24.06.6.03.85l-.13.79c-.4.24-.19.92.81.5s5.4-3.18 7.37-5.45a6.7 6.7 0 0 0 1.87-4.54C21.25 6.36 17.1 3 12 3zM8.3 12.9H6.4a.4.4 0 0 1-.4-.4V9.06a.4.4 0 1 1 .8 0v3.04h1.5a.4.4 0 1 1 0 .8zm1.66-.4a.4.4 0 1 1-.8 0V9.06a.4.4 0 1 1 .8 0zm4.03 0a.4.4 0 0 1-.72.24l-1.78-2.42v2.18a.4.4 0 1 1-.8 0V9.06a.4.4 0 0 1 .72-.24l1.78 2.42V9.06a.4.4 0 1 1 .8 0zm2.87-2.12a.4.4 0 0 1 0 .8h-1.5v.72h1.5a.4.4 0 1 1 0 .8h-1.9a.4.4 0 0 1-.4-.4V9.06a.4.4 0 0 1 .4-.4h1.9a.4.4 0 1 1 0 .8h-1.5v.72z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Menu">เมนู</div>
+        <ul class="ft-list">
+          <li><a href="index.html#features" data-en="Features">ฟีเจอร์</a></li>
+          <li><a href="pricing.html" data-en="Pricing">แพ็กเกจและราคา</a></li>
+          <li><a href="articles.html" data-en="Articles">บทความ</a></li>
+          <li><a href="about.html" data-en="About us">เกี่ยวกับเรา</a></li>
+          <li><a href="app.html#signup" data-en="30-day free trial">ทดลองฟรี 30 วัน</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Contact">ติดต่อเรา</div>
+        <div class="ft-line">
+          <a href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener">
+            <img src="brand/line-qr-512.png" alt="LINE @748tgael" class="ft-qr" width="88" height="88" loading="lazy">
+          </a>
+          <div>
+            <a href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener" class="ft-lineid" data-en="Add friend">เพิ่มเพื่อน</a>
+            <div style="font-size:12.5px" data-en="Scan the QR or tap the button">สแกน QR หรือกดปุ่มด้านบน</div>
+            <div style="margin-top:9px"><a href="mailto:esimpayroll@gmail.com" class="ft-mail">esimpayroll@gmail.com</a></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ft-bot">
+      <div data-en="© 2026 eSimPayroll · All rights reserved">© 2569 eSimPayroll · สงวนลิขสิทธิ์</div>
+      <div data-en="Made for Thai businesses 🇹🇭">พัฒนาเพื่อธุรกิจไทย 🇹🇭</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var KEY='lang';
+  function apply(l){
+    document.documentElement.lang = (l==='en'?'en':'th');
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      if(!el.hasAttribute('data-th')) el.setAttribute('data-th', el.innerHTML);
+      el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-th');
+    });
+    document.querySelectorAll('[data-en-ph]').forEach(function(el){
+      if(!el.hasAttribute('data-th-ph')) el.setAttribute('data-th-ph', el.placeholder||'');
+      el.placeholder = (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-th-ph');
+    });
+
+  document.querySelectorAll('[data-en-alt]').forEach(function(el){
+    if(!el.hasAttribute('data-th-alt')) el.setAttribute('data-th-alt', el.alt||'');
+    el.alt = (l==='en') ? el.getAttribute('data-en-alt') : el.getAttribute('data-th-alt');
+  });
+    var b=document.getElementById('langBtn'); if(b) b.textContent = (l==='en'?'🌐 TH':'🌐 EN');
+    try{ localStorage.setItem(KEY,l); }catch(e){}
+  }
+  var cur='th'; try{ cur = localStorage.getItem(KEY)||'th'; }catch(e){}
+  window.__setLang=apply;
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(cur);
+    var b=document.getElementById('langBtn');
+    if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); };
+  });
+})();
+</script>
+<script>
+/* แถว "บทความอื่น ๆ" · ลากการ์ดเลื่อนได้ + ปุ่มลูกศรเลื่อนทีละใบ (เหมือนหน้าแรก) */
+(function(){
+  var box=document.querySelector('.cards'), prev=document.getElementById('artPrev'), next=document.getElementById('artNext');
+  if(!box) return;
+  var GAP=parseFloat(getComputedStyle(box).gap)||22;
+  function step(){ var c=box.querySelector('.card'); return c ? c.getBoundingClientRect().width+GAP : 300; }
+  function sync(){
+    if(!prev||!next) return;
+    var max=box.scrollWidth-box.clientWidth-2;
+    prev.disabled = box.scrollLeft<=2;
+    next.disabled = box.scrollLeft>=max;
+  }
+  if(prev) prev.onclick=function(){ box.scrollBy({left:-step(),behavior:'smooth'}); };
+  if(next) next.onclick=function(){ box.scrollBy({left: step(),behavior:'smooth'}); };
+  box.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync);
+  window.addEventListener('load',sync);
+  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
+  setTimeout(sync,60); setTimeout(sync,400); sync();
+
+  var down=false, dragging=false, startX=0, startScroll=0, moved=0, lastX=0, lastT=0, vel=0, glide=0;
+  box.addEventListener('pointerdown', function(e){
+    if(e.pointerType!=='mouse' || e.button!==0) return;
+    cancelAnimationFrame(glide);
+    down=true; dragging=false; moved=0;
+    startX=lastX=e.clientX; startScroll=box.scrollLeft; lastT=e.timeStamp; vel=0;
+  });
+  box.addEventListener('pointermove', function(e){
+    if(!down) return;
+    var dx=e.clientX-startX;
+    if(!dragging){
+      if(Math.abs(dx)<5) return;
+      dragging=true; box.classList.add('grabbing');
+      try{ box.setPointerCapture(e.pointerId); }catch(err){}
+    }
+    e.preventDefault();
+    moved=Math.abs(dx);
+    box.scrollLeft=startScroll-dx;
+    sync();
+    var dt=e.timeStamp-lastT;
+    if(dt>0){ vel=(e.clientX-lastX)/dt; lastX=e.clientX; lastT=e.timeStamp; }
+  });
+  function release(e){
+    if(!down) return;
+    down=false;
+    if(!dragging) return;
+    try{ box.releasePointerCapture(e.pointerId); }catch(err){}
+    box.classList.remove('grabbing'); dragging=false; sync();
+    var v=vel*16;
+    function stop(){ box.style.scrollSnapType=''; box.style.scrollBehavior=''; sync(); }
+    setTimeout(stop, 800);
+    (function slide(){
+      if(Math.abs(v)<0.6){ stop(); return; }
+      box.style.scrollSnapType='none'; box.style.scrollBehavior='auto';
+      box.scrollLeft-=v; v*=0.92; sync();
+      glide=requestAnimationFrame(slide);
+    })();
+  }
+  box.addEventListener('pointerup', release);
+  box.addEventListener('pointercancel', release);
+  box.addEventListener('click', function(e){
+    if(moved>5){ e.preventDefault(); e.stopPropagation(); moved=0; }
+  }, true);
+  box.addEventListener('dragstart', function(e){ e.preventDefault(); });
+})();
+</script>
+</body>
+</html>

@@ -101,14 +101,40 @@
 
   /* การ์ดแพ็กเกจ */
   section{padding:52px 0}
-  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start;padding-top:14px}
+  /* ---- แถบสลับรายเดือน/รายปี เหนือการ์ด ---- */
+  .cycrow{display:flex;gap:8px;justify-content:center;margin:0 0 26px}
+  .cycrow button{font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--line);
+    background:#fff;color:var(--muted);border-radius:100px;padding:10px 22px;transition:.18s;display:inline-flex;gap:8px;align-items:center}
+  .cycrow button:hover{color:var(--ink);border-color:#cbd5e1}
+  .cycrow button.on{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 8px 22px rgba(16,185,129,.32)}
+  .cycrow .sv{background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:100px}
+  /* ---- รายการติ๊กในการ์ด ---- */
+  .p-feat{list-style:none;margin:0 0 18px;padding:14px 0 0;border-top:1px solid var(--line);
+    display:grid;gap:7px;font-size:13.5px;line-height:1.55;color:var(--muted);text-align:left}
+  .p-feat li{display:flex;gap:8px;align-items:flex-start}
+  .p-feat .ck{flex-shrink:0;width:17px;height:17px;border-radius:50%;background:#d1fae5;color:#059669;
+    font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  /* ---- โทนการ์ดตามแบบ ---- */
+  .plan.active{border-color:transparent;background:linear-gradient(160deg,#12456e,#0e3a5c 45%,#092942);
+    box-shadow:0 22px 52px rgba(9,41,66,.4)}
+  .plan.active .p-range{color:#6ee7b7}
+  .plan.active .p-sub,.plan.active .p-per{color:#b9cddb}
+  .plan.active .p-price,.plan.active .p-price small{color:#fff}
+  .plan.active .p-feat{border-top-color:rgba(255,255,255,.22)}
+  .plan.active .p-feat li{color:#cfe0eb}
+  .plan.active .p-feat .ck{background:rgba(110,231,183,.2);color:#6ee7b7}
+  .plan.active .hot{background:var(--grad);color:#fff}
+  .plan.active .btn{background:var(--grad);color:#fff;border:0;
+    box-shadow:0 10px 26px rgba(16,185,129,.42)}
+  .plan.active .btn:hover{filter:brightness(1.06)}
   .plan{background:#fff;border:1.5px solid var(--line);border-radius:var(--r-md);padding:26px 24px;position:relative;
     transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s}
   .plan:hover{transform:translateY(-6px);box-shadow:var(--sh-lg)}
   .plan.active{border-color:var(--accent);box-shadow:0 18px 44px rgba(16,185,129,.22)}
   html[lang="en"] .plan.active::before{content:"✓ Matches your headcount"}
   .plan.active::before{content:"✓ ตรงกับจำนวนพนักงานของคุณ";position:absolute;top:-12px;left:50%;transform:translateX(-50%);
-    background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;white-space:nowrap}
+    background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;white-space:nowrap;box-shadow:0 4px 12px rgba(16,185,129,.35)}
   .plan .p-range{font-size:15px;font-weight:800;color:var(--brand)}
   .plan .p-sub{color:var(--muted);font-size:13px;margin-bottom:12px}
   .plan .p-price{font-size:34px;font-weight:800;letter-spacing:-1px;color:var(--ink)}
@@ -211,6 +237,27 @@
     .ft-bot{justify-content:flex-start}
   }
 </style>
+<style>
+/* ---------- ท้ายเว็บพื้นเข้ม ---------- */
+footer{background:#0b1b2b !important;border-top:0 !important;color:#a9c4d4 !important}
+footer .ft-brand,footer .ft-brand span{color:#fff !important}
+footer .ft-h{color:#6ee7b7 !important}
+footer .ft-list a:hover{color:#6ee7b7 !important}
+footer .ft-bot{border-top:1px solid rgba(255,255,255,.14) !important;color:#8fb0c4}
+footer .ft-mail{color:#6ee7b7 !important}
+/* ---------- ไอคอนโซเชียล ---------- */
+.ft-social{display:flex;gap:10px;margin-top:15px}
+.soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#c2d8e4;
+  transition:transform .2s,color .2s,background .2s,border-color .2s}
+.soc svg{width:19px;height:19px}
+.soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+.soc.tiktok:hover{background:#000}
+.soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+.soc.line:hover{background:#06C755}
+.soc:focus-visible{outline:2px solid #6ee7b7;outline-offset:2px}
+</style>
+<style>.pickrow[hidden]{display:none !important}</style>
 </head>
 <body>
 <header>
@@ -222,7 +269,7 @@
         <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
     <div class="sp">
-      <a href="index.html#features" class="link" data-en="Features">ฟีเจอร์</a>
+      <a href="features.html" class="link" data-en="Features">ฟีเจอร์</a>
       <a href="pricing.html" class="link active" data-en="Pricing">ราคา</a>
       <a href="articles.html" class="link" data-en="Articles">บทความ</a>
       <a href="about.html" class="link" data-en="About">เกี่ยวกับ</a>
@@ -238,15 +285,8 @@
     <h1 data-en="Pay by headcount. No hidden fees.">จ่ายตามจำนวนพนักงาน ไม่มีค่าซ่อนเร้น</h1>
     <p data-en="Slide below to see your price. Standard covers full payroll — Premium adds attendance, leave, shifts and OT rules.">เลื่อนแถบด้านล่างเพื่อดูราคา — มาตรฐานทำเงินเดือนครบ ส่วนพรีเมี่ยมเพิ่มระบบลงเวลา ลางาน กะ และ OT</p>
 
-    <div class="pickrow">
-      <span class="picklab" data-en="Who is this for?">คุณใช้งานแบบไหน</span>
-      <div class="cycle">
-        <button id="edS" class="on" data-en="🏢 One company">🏢 บริษัทเดียว</button>
-        <button id="edF" data-en="🏦 Accounting firm <span class=&quot;save-tag&quot; style=&quot;background:#7e22ce&quot;>many companies</span>">🏦 สำนักงานบัญชี <span class="save-tag" style="background:#7e22ce">หลายบริษัท</span></button>
-      </div>
-    </div>
 
-    <div class="pickrow">
+    <div class="pickrow" hidden>
       <span class="picklab" data-en="1 · Billing cycle">1 · รอบชำระเงิน</span>
       <div class="cycle">
         <button id="cyM" class="on" data-c="m" data-en="Monthly">รายเดือน</button>
@@ -254,16 +294,6 @@
       </div>
     </div>
 
-    <div class="pickrow">
-      <span class="picklab" data-en="2 · Plan level">2 · ระดับแพ็กเกจ</span>
-      <div class="cycle">
-        <button id="ptS" class="on" data-en="Standard">มาตรฐาน</button>
-        <button id="ptP" data-en="💎 Premium <span class=&quot;save-tag&quot; style=&quot;background:#8b5cf6&quot;>+attendance / leave / shifts / OT</span>">💎 พรีเมี่ยม <span class="save-tag" style="background:#8b5cf6">+ลงเวลา / ลา / กะ / OT</span></button>
-      </div>
-    </div>
-    <div id="ptNote" style="font-size:13.5px;margin:14px auto 0;max-width:600px;padding:10px 16px;
-      background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:100px;
-      color:var(--muted);backdrop-filter:blur(8px)"></div>
 
     <div class="calc">
       <div class="calc-top">
@@ -290,7 +320,31 @@
 
 <section>
   <div class="wrap">
-    <div class="sec-head"><h2 data-en="Full price list">ตารางราคาทั้งหมด</h2><p data-en="Monthly price — switch Standard/Premium above to compare.">ราคาต่อเดือน — สลับ มาตรฐาน/พรีเมี่ยม ด้านบนเพื่อเทียบราคา</p></div>
+    <div class="sec-head"><h2 data-en="Choose the plan that fits your business">เลือกแพ็กเกจที่เหมาะกับธุรกิจคุณ</h2><p data-en="30-day free trial · no credit card needed">ทดลองฟรี 30 วัน · ไม่ต้องใช้บัตรเครดิต</p></div>
+    <div class="pickrow">
+      <span class="picklab" data-en="Who is this for?">คุณใช้งานแบบไหน</span>
+      <div class="cycle">
+        <button id="edS" class="on" data-en="🏢 One company">🏢 บริษัทเดียว</button>
+        <button id="edF" data-en="🏦 Accounting firm <span class=&quot;save-tag&quot; style=&quot;background:#7e22ce&quot;>many companies</span>">🏦 สำนักงานบัญชี <span class="save-tag" style="background:#7e22ce">หลายบริษัท</span></button>
+      </div>
+    </div>
+
+    <div class="pickrow">
+      <span class="picklab" data-en="Plan level">ระดับแพ็กเกจ</span>
+      <div class="cycle">
+        <button id="ptS" class="on" data-en="Standard">มาตรฐาน</button>
+        <button id="ptP" data-en="💎 Premium <span class=&quot;save-tag&quot; style=&quot;background:#8b5cf6&quot;>+attendance / leave / shifts / OT</span>">💎 พรีเมี่ยม <span class="save-tag" style="background:#8b5cf6">+ลงเวลา / ลา / กะ / OT</span></button>
+      </div>
+    </div>
+
+    <div id="ptNote" style="font-size:13.5px;margin:14px auto 0;max-width:600px;padding:10px 16px;
+      background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:100px;
+      color:var(--muted);backdrop-filter:blur(8px)"></div>
+
+    <div class="cycrow" role="group" aria-label="รอบชำระเงิน">
+      <button type="button" id="cyM2" class="on" data-en="Monthly">รายเดือน</button>
+      <button type="button" id="cyY2" data-en="Annual &lt;span class=&quot;sv&quot;&gt;save 17%&lt;/span&gt;">รายปี <span class="sv">ประหยัด 17%</span></button>
+    </div>
     <div class="plans" id="plans"></div>
   </div>
 </section>
@@ -339,6 +393,14 @@
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
         <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-social">
+          <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
+          <a class="soc ig" href="https://www.instagram.com/esimpayroll" target="_blank" rel="noopener" aria-label="Instagram eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="4.6"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+          <a class="soc line" href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener" aria-label="LINE eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.1c-5 0-9 3.3-9 7.4 0 3.6 3.2 6.7 7.5 7.3.3.1.7.2.8.5.1.2.1.6 0 .9l-.1.8c0 .2-.2.9.8.5s5.2-3.1 7.1-5.3c1.3-1.4 1.9-2.9 1.9-4.7 0-4.1-4-7.4-9-7.4zM8.5 13H6.9a.5.5 0 0 1-.5-.5V9.4a.5.5 0 0 1 1 0v2.7h1.1a.5.5 0 0 1 0 1zm1.8-.5a.5.5 0 0 1-1 0V9.4a.5.5 0 0 1 1 0zm4.4 0a.5.5 0 0 1-.9.3l-1.6-2.1v1.8a.5.5 0 0 1-1 0V9.4a.5.5 0 0 1 .9-.3l1.6 2.2V9.4a.5.5 0 0 1 1 0zm2.9-2.1a.5.5 0 0 1 0 1h-1.1v.6h1.1a.5.5 0 0 1 0 1H16a.5.5 0 0 1-.5-.5V9.4a.5.5 0 0 1 .5-.5h1.6a.5.5 0 0 1 0 1h-1.1v.5z"/></svg></a>
+        </div>
       </div>
 
       <div>
@@ -414,6 +476,13 @@
     askCo:['🏦 คุณดูแลลูกค้ากี่บริษัท?','🏦 How many client companies do you handle?'],
     firmNote:['สำหรับสำนักงานบัญชี — เพิ่มได้หลายบริษัท พนักงานไม่จำกัดจำนวน (ไม่มีระบบลงเวลาและลางาน)','For accounting firms — multiple client companies, unlimited employees (no attendance or leave modules)'],
     firmNoLimit:['พนักงานไม่จำกัดจำนวน','Unlimited employees'],
+    f_tax:['คำนวณเงินเดือน ภาษี อัตโนมัติ','Automatic salary and tax'],
+    f_sso:['ประกันสังคม & กองทุน','Social security & funds'],
+    f_slip:['สลิปเงินเดือน (พิมพ์/PDF)','Payslips (print / PDF)'],
+    f_form:['50 ทวิ · ภ.ง.ด.1 · สปส.1-10','50 Bis · PND.1 · SSO 1-10'],
+    f_cloud:['ข้อมูลบนคลาวด์ ใช้ได้ทุกอุปกรณ์','Cloud data, any device'],
+    f_prem:['💎 ลงเวลา · ลางาน · จัดกะ · OT','💎 Attendance · leave · shifts · OT'],
+    f_multi:['สลับบริษัทลูกค้าในคลิกเดียว','Switch client companies in one click'],
     bahtYear:['บาท / ปี','THB / year'], bahtMonth:['บาท / เดือน','THB / month'],
     over80note:['พนักงานเกิน 100 คน — ทัก LINE @748tgael รับข้อเสนอพิเศษสำหรับองค์กร','Over 100 employees — chat with us on LINE @748tgael for an enterprise offer'],
     perHead:['บาท/คน/เดือน','THB/employee/month'],
@@ -570,6 +639,12 @@
   const planName=t=>label(t)+((!isFirm()&&ptype==='premium')?' · '+L('premTag'):'');
 
   /* ---- การ์ดแพ็กเกจ ---- */
+  /* รายการในการ์ด — ตามโหมดและระดับแพ็กเกจ ให้ตรงกับสิ่งที่ได้จริง */
+  function featList(){
+    const base=[L('f_tax'),L('f_sso'),L('f_slip'),L('f_form')];
+    if(isFirm()) return base.concat([L('f_multi'),L('firmNoLimit')]);
+    return base.concat([ptype==='premium' ? L('f_prem') : L('f_cloud')]);
+  }
   function drawPlans(){
     const cur=tierOf(count);
     $('plans').innerHTML=curTiers().map(t=>{
@@ -590,6 +665,7 @@
                ? L('firmNoLimit')
                : (ptype==='premium' ? '💎 '+L('premShort')
                                     : L('stdUpsell')+' '+fmt(t.prem)+' '+L('bahtMonth'))}</div>
+             <ul class="p-feat">${featList().map(f=>`<li><span class="ck">✓</span>${f}</li>`).join('')}</ul>
              <button class="btn ${active?'green':'primary'}" data-buy="${t.min}">${active?L('payNow'):L('pickPlan')}</button>`}
       </div>`;
     }).join('');
@@ -709,8 +785,11 @@
 
   $('rng').oninput=()=>{ $('cnt').value=$('rng').value; sync(); };
   $('cnt').oninput=sync;
-  $('cyM').onclick=()=>{ cycle='m'; $('cyM').classList.add('on'); $('cyY').classList.remove('on'); sync(); };
-  $('cyY').onclick=()=>{ cycle='y'; $('cyY').classList.add('on'); $('cyM').classList.remove('on'); sync(); };
+  function cyc2(){ const y=cycle==='y'; const m2=$('cyM2'), y2=$('cyY2');
+    if(m2){ m2.classList.toggle('on',!y); y2.classList.toggle('on',y); } }
+  $('cyM').onclick=()=>{ cycle='m'; $('cyM').classList.add('on'); $('cyY').classList.remove('on'); cyc2(); sync(); };
+  $('cyY').onclick=()=>{ cycle='y'; $('cyY').classList.add('on'); $('cyM').classList.remove('on'); cyc2(); sync(); };
+  if($('cyM2')){ $('cyM2').onclick=()=>$('cyM').onclick(); $('cyY2').onclick=()=>$('cyY').onclick(); cyc2(); }
   $('ptS').onclick=()=>{ ptype='standard'; $('ptS').classList.add('on'); $('ptP').classList.remove('on'); sync(); };
   $('ptP').onclick=()=>{ ptype='premium';  $('ptP').classList.add('on'); $('ptS').classList.remove('on'); sync(); };
 

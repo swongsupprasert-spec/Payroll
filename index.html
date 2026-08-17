@@ -140,36 +140,124 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
     .modepick button{width:100%}
   }
 
-  /* ---------- nav ---------- */
-  header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.72);
-    backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(232,238,244,.9)}
-  nav{display:flex;align-items:center;gap:14px;height:70px}
+  /* ---------- nav : แถบลอยขอบมน ---------- */
+  header{position:sticky;top:0;z-index:40;background:transparent;border:0;padding:0}
+  header .wrap{max-width:none;padding:0}
+  nav{display:flex;align-items:center;gap:14px;height:66px;background:#fff;
+    border-radius:0;padding:0 clamp(16px,3.4vw,46px);box-shadow:0 6px 24px rgba(11,27,43,.14)}
+  header.stuck nav{box-shadow:0 6px 22px rgba(11,27,43,.22)}
+  @media(max-width:900px){
+    nav{height:auto;padding:10px 16px;flex-wrap:wrap}
+  }
   .logo{font-size:21px;font-weight:800;display:flex;align-items:center;gap:9px;letter-spacing:-.3px}
   nav .sp{margin-left:auto;display:flex;gap:4px;align-items:center}
   nav a.link{color:var(--muted);font-weight:600;padding:9px 14px;font-size:15px;border-radius:100px;transition:.18s}
   nav a.link:hover{color:var(--ink);background:rgba(11,27,43,.05)}
 
   /* ---------- hero ---------- */
-  .hero{position:relative;padding:86px 0 78px;overflow:hidden;
-    background:linear-gradient(180deg,#fff 0%,var(--bg) 100%)}
-  .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;pointer-events:none;z-index:0}
+  /* หน้าปกโทนเข้ม */
+  .hero{position:relative;overflow:hidden;margin-top:-78px;padding:142px 0 58px;
+    background:radial-gradient(760px 520px at 22% 18%,#0f766e33 0%,transparent 62%),
+               linear-gradient(115deg,#0b2942 0%,#0a2740 34%,#001f36 62%,#001325 100%)}
+  /* ไม่ไล่สีจางที่ขอบล่าง — ให้สีเข้มเต็มถึงขอบแล้วตัดเข้าส่วนถัดไปคม ๆ */
+  @media(max-width:900px){.hero{margin-top:-72px;padding:116px 0 44px}}
+  .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.22;pointer-events:none;z-index:0;mix-blend-mode:screen}
   .blob.b1{width:520px;height:520px;background:#6ee7b7;top:-190px;right:-90px;animation:float1 18s ease-in-out infinite}
   .blob.b2{width:440px;height:440px;background:#7dd3fc;top:120px;right:280px;opacity:.35;animation:float2 22s ease-in-out infinite}
   .blob.b3{width:380px;height:380px;background:#c7d2fe;bottom:-160px;left:-120px;opacity:.4;animation:float1 26s ease-in-out infinite reverse}
   @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-36px,42px) scale(1.09)}}
   @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(46px,-34px) scale(.93)}}
   @media(prefers-reduced-motion:reduce){.blob{animation:none}}
-  .hero .grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);
+  .hero .grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
     gap:44px;align-items:center}
 
   .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.85);
     border:1px solid var(--line);color:var(--brand-d);font-weight:700;font-size:13px;
     padding:8px 16px;border-radius:100px;margin-bottom:22px;box-shadow:var(--sh-sm);backdrop-filter:blur(8px)}
+  /* ---- ข้อความบนหน้าปกโทนเข้ม ---- */
+  .hero .badge{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.26);color:#d7f3ea}
+  .hero h1{color:#fff}
+  .hero .trust{color:#b6cedd}
+  .hero .trust b{color:#fff}
+  .hero .modepick{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.24)}
+  .hero .modepick button{color:#cfe2ec}
+  .hero .modepick button:hover:not(.on){background:rgba(255,255,255,.16);color:#fff}
+  .hero .modepick button.on{background:#fff;color:#0b1b2b}
+  .hero .modepick button.on.firm{background:linear-gradient(135deg,#a855f7,#7e22ce);color:#fff}
+  .hero .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.45)}
+  .hero .btn.ghost:hover{background:rgba(255,255,255,.14);border-color:#fff;color:#fff}
+  .hero .cancel{color:#9dbccd}
+  .hero .pico{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
+    border-radius:50%;border:1.5px solid rgba(255,255,255,.6);font-size:9px;padding-left:2px}
+  /* หัวข้อสองขนาด */
+  .hero h1 .t1{display:block;font-size:.74em;line-height:1.3;letter-spacing:-.6px;font-weight:800}
+  .hero h1 .t2{display:block;font-size:1.12em;line-height:1.16;letter-spacing:-1.4px;margin-top:2px;
+    background:linear-gradient(100deg,#6ee7b7,#34d399 55%,#10b981);-webkit-background-clip:text;
+    background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+  .hero h1 .t2>span{white-space:nowrap}
+  /* แถวจุดเด่นแบบมีไอคอน */
+  .hpts{display:flex;gap:14px 30px;flex-wrap:wrap;margin-top:28px}
+  .hpt{display:flex;align-items:center;gap:10px;color:#b6cedd;font-size:13.5px;line-height:1.35}
+  .hpt .i{flex-shrink:0;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;
+    justify-content:center;background:rgba(110,231,183,.14);border:1px solid rgba(110,231,183,.3);color:#6ee7b7}
+  .hpt .i svg{width:18px;height:18px}
+  .hpt b{display:block;color:#fff;font-weight:700;font-size:14.5px}
+  /* ---------- ภาพคนบนหน้าปก : เกลี่ยขอบให้กลืนกับพื้นหลัง ---------- */
+  /* ภาพเต็มความสูงหน้าปก ชิดขอบขวา — วางเป็นชั้นพื้นหลัง ข้อความยังอ่านได้เพราะไล่จางขอบซ้าย */
+  .heroimg{position:absolute;top:0;right:0;bottom:0;width:min(58%,940px);z-index:0;pointer-events:none}
+  .heroimg img{display:block;width:100%;height:100%;object-fit:cover;object-position:64% 46%;
+    /* brightness ก่อน contrast : กันส่วนสว่าง (หน้าต่างออฟฟิศ) ไหม้เป็นสีขาวตัน */
+    filter:brightness(.96) contrast(1.14) saturate(1.06);
+    -webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.32) 14%,#000 40%),
+                       linear-gradient(to bottom,#000 0,#000 84%,transparent 100%);
+    mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.32) 14%,#000 40%),
+               linear-gradient(to bottom,#000 0,#000 84%,transparent 100%);
+    -webkit-mask-composite:source-in;mask-composite:intersect}
+  @media(max-width:900px){
+    /* จอแคบ : ให้ hero เรียงเป็นคอลัมน์ ข้อความก่อน แล้วภาพต่อท้าย */
+    .hero{display:flex;flex-direction:column}
+    .hero > .wrap{order:1}
+    .heroimg{order:2;position:relative;width:auto;margin:14px -22px -58px 0;top:auto;right:auto;bottom:auto}
+    .heroimg img{height:auto;object-fit:contain;
+      -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 80%,transparent 100%);
+      mask-image:linear-gradient(to bottom,#000 0,#000 80%,transparent 100%)}
+  }
+  /* ป้ายลอยข้างภาพ */
+  .fpill{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:8px;background:#fff;
+    border-radius:100px;padding:9px 15px;font-size:13.5px;font-weight:700;color:var(--ink);
+    box-shadow:0 12px 30px rgba(11,27,43,.26);white-space:nowrap}
+  .fpill i{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;
+    font-size:12px;color:#fff;flex-shrink:0;font-style:normal}
+  .fpill.p1{left:-46px;top:24%}
+  .fpill.p2{left:-34px;bottom:22%}
+  .fpill.p3{right:-44px;top:13%}
+  .fpill.p4{right:-30px;bottom:30%}
+  /* ช่วงคาบเกี่ยว 1101-1259px : ยังลอยอยู่แต่ดึงเข้ามาไม่ให้ล้นจอ */
+  @media(min-width:1081px) and (max-width:1259px){
+    .fpill{font-size:12.5px;padding:8px 12px}
+    .fpill.p1{left:-8px}
+    .fpill.p2{left:0}
+    .fpill.p3{right:-8px}
+    .fpill.p4{right:0}
+  }
+  @media(max-width:1100px){
+    .fpills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+    .fpill{position:static !important;box-shadow:var(--sh-sm)}
+  }
+  /* กล่องวิดีโอแนะนำ */
+  .vmodal{position:fixed;inset:0;z-index:200;background:rgba(6,16,26,.84);backdrop-filter:blur(6px);
+    display:none;align-items:center;justify-content:center;padding:20px}
+  .vmodal.on{display:flex}
+  .vmodal video{width:min(960px,100%);max-height:82vh;border-radius:18px;background:#000;
+    box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .vclose{position:absolute;top:18px;right:22px;width:44px;height:44px;border-radius:50%;border:0;
+    background:rgba(255,255,255,.16);color:#fff;font-size:22px;cursor:pointer;font-family:inherit}
+  .vclose:hover{background:rgba(255,255,255,.3)}
   .hero h1{font-size:clamp(29px,3.1vw,46px);line-height:1.22;letter-spacing:-1px;
     margin-bottom:18px;font-weight:800}
   .hero h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;color:transparent}
-  .hero p.lead{font-size:17px;color:var(--muted);margin-bottom:26px;max-width:520px;line-height:1.8}
+  .hero p.lead{font-size:17px;color:#cfe2ec;margin-bottom:26px;max-width:520px;line-height:1.8}
   .cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
   .cta-row .btn{white-space:nowrap}
   .trust{margin-top:24px;color:var(--muted);font-size:14px;display:flex;gap:10px 22px;flex-wrap:wrap}
@@ -192,12 +280,12 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
 
   /* ---------- แถบตัวเลข ---------- */
   .statband{background:var(--ink);color:#fff;padding:0}
-  .statband .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-top:44px;padding-bottom:44px}
+  .statband .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding-top:24px;padding-bottom:24px}
   .stat{text-align:center}
-  .stat .n{font-size:38px;font-weight:800;letter-spacing:-1.4px;
+  .stat .n{font-size:33px;font-weight:800;letter-spacing:-1.2px;line-height:1.3;
     background:linear-gradient(120deg,#6ee7b7,#7dd3fc);-webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;color:transparent}
-  .stat .l{font-size:14px;opacity:.72;margin-top:3px}
+  .stat .l{font-size:13.5px;opacity:.75;margin-top:1px;line-height:1.4}
 
   /* ---------- sections ---------- */
   section{padding:96px 0}
@@ -304,7 +392,8 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
   }
   @media(max-width:900px){
     .hero{padding:56px 0 52px}
-    .hero .grid{grid-template-columns:1fr;gap:36px}
+    .hero .grid{grid-template-columns:minmax(0,1fr);gap:36px}
+    .hero .cover,.hero .shots{min-width:0;max-width:100%}
     .hero p.lead{max-width:none}
     .shot{height:340px}
     .cover-card{left:10px;bottom:16px}
@@ -334,7 +423,7 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
     .features{grid-template-columns:1fr;gap:14px}
     .feat{padding:24px 22px}
     .steprow{grid-template-columns:1fr;gap:24px}
-    .statband .wrap{grid-template-columns:repeat(2,1fr);gap:22px;padding-top:34px;padding-bottom:34px}
+    .statband .wrap{grid-template-columns:repeat(2,1fr);gap:18px;padding-top:20px;padding-bottom:20px}
     .stat .n{font-size:30px}
     .cta-band{padding:40px 22px;border-radius:22px}
     .cta-band h2{font-size:24px}.cta-band p{font-size:15px}
@@ -372,6 +461,26 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
     .ft-bot{justify-content:flex-start}
   }
 </style>
+<style>
+/* ---------- ท้ายเว็บพื้นเข้ม ---------- */
+footer{background:#0b1b2b !important;border-top:0 !important;color:#a9c4d4 !important}
+footer .ft-brand,footer .ft-brand span{color:#fff !important}
+footer .ft-h{color:#6ee7b7 !important}
+footer .ft-list a:hover{color:#6ee7b7 !important}
+footer .ft-bot{border-top:1px solid rgba(255,255,255,.14) !important;color:#8fb0c4}
+footer .ft-mail{color:#6ee7b7 !important}
+/* ---------- ไอคอนโซเชียล ---------- */
+.ft-social{display:flex;gap:10px;margin-top:15px}
+.soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#c2d8e4;
+  transition:transform .2s,color .2s,background .2s,border-color .2s}
+.soc svg{width:19px;height:19px}
+.soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+.soc.tiktok:hover{background:#000}
+.soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+.soc.line:hover{background:#06C755}
+.soc:focus-visible{outline:2px solid #6ee7b7;outline-offset:2px}
+</style>
 </head>
 <body>
 <header>
@@ -385,7 +494,7 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
         </svg>
         <span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
       <div class="sp">
-        <a href="#features" class="link" data-en="Features">ฟีเจอร์</a>
+        <a href="features.html" class="link" data-en="Features">ฟีเจอร์</a>
         <a href="pricing.html" class="link" data-en="Pricing">ราคา</a>
         <a href="#how" class="link" data-en="How it works">วิธีใช้งาน</a>
         <a href="articles.html" class="link" data-en="Articles">บทความ</a>
@@ -398,7 +507,17 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
 </header>
 
 <!-- HERO -->
+<div class="vmodal" id="vmodal" role="dialog" aria-modal="true" aria-label="วิดีโอแนะนำ eSimPayroll">
+  <button class="vclose" id="vclose" aria-label="ปิด">✕</button>
+  <video id="introVid" src="/media/intro.mp4" controls playsinline preload="none"></video>
+</div>
+
 <div class="hero">
+  <div class="heroimg">
+    <img src="/media/hero-people.jpg" width="1200" height="800" fetchpriority="high" decoding="async"
+         alt="ทีมงานใช้โปรแกรมเงินเดือนออนไลน์ eSimPayroll ดูสรุปค่าใช้จ่ายเงินเดือนบนแดชบอร์ด"
+         data-en-alt="A team using eSimPayroll online payroll software to review the payroll dashboard">
+  </div>
   <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
   <div class="wrap grid">
     <div>
@@ -408,29 +527,32 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
       </div>
       <span class="badge only-single" data-en="🇹🇭 Built for Thai businesses">🇹🇭 ออกแบบสำหรับธุรกิจไทย</span>
       <span class="badge only-firm" data-en="🏦 For accounting firms">🏦 สำหรับสำนักงานบัญชี</span>
-      <h1 class="only-single" data-en="All your <span class=&quot;hl&quot;>payroll</span><br>in one place">จัดการ<span class="hl">เงินเดือนพนักงาน</span><br>ครบ จบ ในที่เดียว</h1>
-      <h1 class="only-firm" data-en="Every client's <span class=&quot;hl&quot;>payroll</span><br>in one account">ดูแล<span class="hl">เงินเดือนลูกค้าทุกบริษัท</span><br>ในบัญชีเดียว</h1>
-      <p class="lead only-single" data-en="Time attendance, shifts, leave and payroll in one place. Tax, social security and fund contributions calculated to Thai law — payslips, 50 Bis, PND.1 and SSO forms ready to file.">ลงเวลาเข้างาน จัดกะ ระบบลา และทำเงินเดือน จบในที่เดียว คำนวณภาษี ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิป 50 ทวิ ภ.ง.ด.1 และแบบประกันสังคมพร้อมยื่น</p>
+      <h1 class="only-single" data-en="<span class=&quot;t1&quot;>Online payroll software</span><span class=&quot;t2&quot;><span>Everything</span> <span>in one place</span></span>"><span class="t1">โปรแกรมเงินเดือนออนไลน์</span><span class="t2"><span>ครบ จบ</span> <span>ในที่เดียว</span></span></h1>
+      <h1 class="only-firm" data-en="<span class=&quot;t1&quot;>Payroll for every client company</span><span class=&quot;t2&quot;><span>In one</span> <span>account</span></span>"><span class="t1">ทำเงินเดือนลูกค้าทุกบริษัท</span><span class="t2"><span>จบใน</span> <span>บัญชีเดียว</span></span></h1>
+      <p class="lead only-single" data-en="Calculates salary, tax, social security and funds, then produces payslips, 50 Bis, PND.1 and SSO 1-10 automatically. Supports both monthly and daily-wage staff.">คำนวณเงินเดือน ภาษี ประกันสังคม สลิปเงินเดือน 50 ทวิ และ ภ.ง.ด.1 อัตโนมัติ รองรับทั้งพนักงานรายเดือนและรายวัน</p>
       <p class="lead only-firm" data-en="Add every client company to one account and switch between them in a click. Unlimited employees per company. Tax, social security and every official form ready to file.">เพิ่มบริษัทลูกค้าได้หลายบริษัทในบัญชีเดียว สลับไปมาได้ในคลิกเดียว พนักงานไม่จำกัดจำนวนต่อบริษัท คำนวณภาษี ประกันสังคม และออกเอกสารราชการครบ ทั้งสลิป 50 ทวิ ภ.ง.ด.1 และ สปส.1-10</p>
       <div class="cta-row">
-        <a href="app.html#signup" class="btn lime" data-en="🚀 Start 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
-        <a href="#features" class="btn ghost only-single" data-en="See features">ดูฟีเจอร์ทั้งหมด</a>
+        <a href="app.html#signup" class="btn lime" data-en="Start your 30-day free trial →">ทดลองใช้ฟรี 30 วัน →</a>
+        <button type="button" id="playIntro" class="btn ghost" data-en="&lt;span class=&quot;pico&quot;&gt;▶&lt;/span&gt; Watch the intro"><span class="pico">▶</span> ดูวิดีโอแนะนำ</button>
         <a href="pricing.html?for=firm" class="btn ghost only-firm" data-en="See pricing">ดูราคาสำนักงานบัญชี</a>
       </div>
-      <div style="margin-top:10px;color:var(--muted);font-size:13.5px" data-en="Cancel anytime">ยกเลิกได้ทุกเมื่อ</div>
+      <div class="cancel" style="margin-top:10px;font-size:13.5px" data-en="Cancel anytime · No credit card needed">ยกเลิกได้ทุกเมื่อ · ไม่ต้องใช้บัตรเครดิต</div>
       <div class="trust only-firm">
         <span data-en="✅ <b>Many companies</b> in one account">✅ <b>หลายบริษัท</b>ในบัญชีเดียว</span>
         <span data-en="✅ <b>Unlimited</b> employees">✅ พนักงาน<b>ไม่จำกัดจำนวน</b></span>
         <span data-en="✅ <b>30-day free trial</b>">✅ <b>ทดลองฟรี 30 วัน</b></span>
       </div>
-      <div class="trust only-single">
-        <span data-en="✅ Secure on the <b>cloud</b>">✅ ข้อมูลปลอดภัยบน<b>คลาวด์</b></span>
-        <span data-en="✅ Works on any device">✅ ใช้ได้ทุกที่ ทุกอุปกรณ์</span>
-        <span data-en="✅ <b>30-day free trial</b>">✅ <b>ทดลองฟรี 30 วัน</b></span>
+      <div class="hpts only-single">
+        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 4.4 6v6c0 4.4 3.1 7.9 7.6 9.2 4.5-1.3 7.6-4.8 7.6-9.2V6z"/><path d="m8.9 12.2 2.2 2.2 4-4.4"/></svg></span>
+          <span data-en="&lt;b&gt;Easy to use&lt;/b&gt;Nothing to install"><b>ใช้งานง่าย</b>ไม่ต้องติดตั้ง</span></div>
+        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4.4" y="10.4" width="15.2" height="10.4" rx="2.2"/><path d="M8.2 10.4V7.6a3.8 3.8 0 0 1 7.6 0v2.8"/><path d="M12 14.6v2.2"/></svg></span>
+          <span data-en="&lt;b&gt;Data is safe&lt;/b&gt;Encrypted, backed up on the cloud"><b>ข้อมูลปลอดภัย</b>เข้ารหัส สำรองบนคลาวด์</span></div>
+        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.4" r="3.2"/><path d="M2.8 20a6.2 6.2 0 0 1 12.4 0"/><path d="M16.4 5.8a3.2 3.2 0 0 1 0 6"/><path d="M17.6 14.4A6.2 6.2 0 0 1 21.2 20"/></svg></span>
+          <span data-en="&lt;b&gt;Every pay type&lt;/b&gt;Monthly and daily staff"><b>รองรับทุกแบบ</b>ทั้งรายเดือนและรายวัน</span></div>
       </div>
     </div>
     <div class="cover">
-      <div class="shots" id="shots">
+      <div class="shots" id="shots" hidden>
         <div class="shot" role="img" aria-label="ตัวอย่างหน้าสรุปเงินเดือนในระบบ eSimPayroll">
           <div class="shot-side">
             <div class="shot-brand"><i></i>eSimPayroll</div>
@@ -508,15 +630,6 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
           </div>
         </div>
       </div>
-      <div class="shotdots" id="shotdots">
-        <button type="button" class="on" aria-label="สไลด์ที่ 1"></button>
-        <button type="button" aria-label="สไลด์ที่ 2"></button>
-      </div>
-      <div class="cover-card">
-        <div class="cc-row"><span class="cc-l" data-en="💰 Total net pay this month">💰 เงินสุทธิรวมเดือนนี้</span></div>
-        <div class="cc-v">110,010 <span data-en="THB">บาท</span></div>
-      </div>
-      <div class="cover-pill" data-en="✅ Automatic tax calculation">✅ คำนวณภาษีอัตโนมัติ</div>
     </div>
   </div>
 </div>
@@ -532,7 +645,85 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
 </div>
 
 <!-- FEATURES -->
-<section id="features">
+<style>
+  /* ---------- ทำไมต้องเลือก eSimPayroll ---------- */
+  .whysec{background:#fff;border-top:1px solid var(--line);padding-bottom:0;overflow-x:clip}
+  .whys{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:26px}
+  .why{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 18px;text-align:center;
+    box-shadow:var(--sh-sm);transition:transform .22s,box-shadow .22s}
+  .why:hover{transform:translateY(-5px);box-shadow:var(--sh-md)}
+  .why .wi{width:56px;height:56px;margin:0 auto 14px;border-radius:16px;display:flex;align-items:center;
+    justify-content:center;background:var(--accent-bg);color:var(--brand)}
+  .why .wi svg{width:29px;height:29px}
+  .why h3{font-size:16px;margin-bottom:7px;letter-spacing:-.2px;color:var(--brand-d)}
+  .why p{font-size:13px;color:var(--muted);margin:0;line-height:1.65}
+  @media(max-width:1080px){.whys{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:720px){.whys{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:440px){.whys{grid-template-columns:1fr}}
+
+  /* ---------- ภาพรวมเงินเดือนแบบเรียลไทม์ ---------- */
+  .rt{background:var(--bg);border-radius:0;margin:44px calc(50% - 50vw) 0;padding:52px calc(50vw - 50%);
+    display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:34px;align-items:center}
+  .rt-img{min-width:0;border-radius:18px;overflow:hidden;box-shadow:var(--sh-md);background:#0b1b2b}
+  .rt-img .shots{border-radius:18px}
+  .rt h2{font-size:27px;letter-spacing:-.4px;line-height:1.3;margin-bottom:18px}
+  .rtlist{list-style:none;display:grid;gap:13px}
+  .rtlist li{display:flex;align-items:flex-start;gap:11px;font-size:15.5px;color:var(--ink);line-height:1.5}
+  .rtlist .ck{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px}
+  @media(max-width:900px){.rt{grid-template-columns:minmax(0,1fr);padding:34px calc(50vw - 50%);gap:24px}
+    .rt h2{font-size:22px}}
+</style>
+<section class="whysec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="badge" data-en="Why us">ทำไมต้องเลือกเรา</span>
+      <h2 data-en="Why choose eSimPayroll?">ทำไมต้องเลือก eSimPayroll ?</h2>
+    </div>
+    <div class="whys">
+      <div class="why rv">
+        <span class="wi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.2" y="2.8" width="15.6" height="18.4" rx="2.4"/><path d="M7.6 6.4h8.8M7.8 11h.01M12 11h.01M16.2 11h.01M7.8 14.8h.01M12 14.8h.01M16.2 14.8v3.6M7.8 18.4h4.2"/></svg></span>
+        <h3 data-en="Accurate calculations">คำนวณเป๊ะ แม่นยำ</h3>
+        <p data-en="Salary, OT, social security and tax computed to Thai law — the same figures flow into every document.">เงินเดือน OT ประกันสังคม และภาษี คำนวณตามกฎหมายไทย ตัวเลขชุดเดียวไหลไปทุกเอกสาร</p>
+      </div>
+      <div class="why rv">
+        <span class="wi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.6 2.8h12.8v18.4l-2.1-1.5-2.1 1.5-2.2-1.5-2.1 1.5-2.1-1.5-2.2 1.5z"/><path d="M8.8 8h6.4M8.8 12h6.4"/></svg></span>
+        <h3 data-en="Payslips in one click">ออกสลิปเงินเดือน</h3>
+        <p data-en="Print one by one or for the whole company, or save as PDF to send on — with the amount in words, Thai or English.">พิมพ์ทีละคนหรือทั้งบริษัท หรือบันทึกเป็น PDF ส่งต่อได้ พร้อมจำนวนเงินเป็นตัวอักษร ไทย–อังกฤษ</p>
+      </div>
+      <div class="why rv">
+        <span class="wi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.6 2.8h7.2l4 4v14.4H7.6z"/><path d="M14.8 2.8v4h4"/><path d="M10.4 12h6M10.4 16h6"/></svg></span>
+        <h3 data-en="Every official form">เอกสารราชการครบ</h3>
+        <p data-en="50 Bis, PND.1, PND.1 Kor, SSO 1-10 and KT.20 Kor on full A4 government layouts, plus CSV for online filing.">50 ทวิ · ภ.ง.ด.1 · ภ.ง.ด.1ก · สปส.1-10 · กท.20ก ตามแบบราชการเต็มหน้า A4 พร้อมส่งออก CSV ยื่นออนไลน์</p>
+      </div>
+      <div class="why rv">
+        <span class="wi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"/></svg></span>
+        <h3 data-en="Use it anywhere">ใช้งานได้ทุกที่</h3>
+        <p data-en="Runs in a browser on computer, tablet or phone. Nothing to install, nothing to update.">ใช้ผ่านเบราว์เซอร์ทั้งคอมพิวเตอร์ แท็บเล็ต และมือถือ ไม่ต้องติดตั้ง ไม่ต้องคอยอัปเดต</p>
+      </div>
+      <div class="why rv">
+        <span class="wi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 4.4 6v6c0 4.4 3.1 7.9 7.6 9.2 4.5-1.3 7.6-4.8 7.6-9.2V6z"/><path d="m8.9 12.2 2.2 2.2 4-4.4"/></svg></span>
+        <h3 data-en="Safe and dependable">ปลอดภัย มั่นใจได้</h3>
+        <p data-en="Encrypted connection, data separated per company, and automatic cloud backups — a broken laptop loses nothing.">เชื่อมต่อแบบเข้ารหัส แยกข้อมูลรายบริษัท และสำรองบนคลาวด์อัตโนมัติ เครื่องพังก็ไม่หาย</p>
+      </div>
+    </div>
+
+    <div class="rt rv">
+      <div class="rt-img" id="rtimg"></div>
+      <div>
+        <h2 data-en="A real-time view of your payroll">ภาพรวมเงินเดือน<br>แบบเรียลไทม์</h2>
+        <ul class="rtlist">
+          <li><span class="ck">✓</span><span data-en="See the total payroll cost for the period">ดูสรุปค่าใช้จ่ายเงินเดือนของงวด</span></li>
+          <li><span class="ck">✓</span><span data-en="See at a glance which periods have been entered">เห็นได้ทันทีว่างวดไหนกรอกข้อมูลแล้ว</span></li>
+          <li><span class="ck">✓</span><span data-en="Reports broken down by department — or by client company">รายงานแยกตามแผนก และแยกตามบริษัทลูกค้า</span></li>
+          <li><span class="ck">✓</span><span data-en="Export CSV to open in Excel, or print to PDF">ส่งออก CSV เปิดใน Excel ได้ · พิมพ์เป็น PDF</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" style="padding-top:64px">
   <div class="wrap">
     <div class="sec-head rv">
       <span class="badge" data-en="Key features">ฟีเจอร์เด่น</span>
@@ -593,6 +784,49 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
       <button class="arrow prev" id="artPrev" aria-label="เลื่อนซ้าย" data-en="‹">‹</button>
       <button class="arrow next" id="artNext" aria-label="เลื่อนขวา" data-en="›">›</button>
       <div class="arts">
+        <a href="article-payroll-tax-software.html" class="art">
+          <div class="art-cover"><img loading="lazy" alt="โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี" src="https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-body"><span class="art-tag art-new" data-en="Buying guide">เลือกซื้อ</span>
+            <h3>โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี?</h3>
+            <p>5 ข้อทดสอบที่แยกโปรแกรมคำนวณภาษีเงินเดือนที่คิดถูก ออกจากที่คิดผิด</p></div>
+        </a>
+        <a href="article-payroll-for-sme.html" class="art">
+          <div class="art-cover"><img loading="lazy" alt="โปรแกรมเงินเดือน SME เลือกยังไงให้พอดีกับธุรกิจ" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-body"><span class="art-tag art-new" data-en="For SMEs">สำหรับ SME</span>
+            <h3>โปรแกรมเงินเดือน SME เลือกยังไงให้พอดีกับธุรกิจ</h3>
+            <p>SME ควรจ่ายค่าอะไร ไม่ควรจ่ายค่าอะไร พร้อมจุดคุ้มทุนที่คำนวณจริง</p></div>
+        </a>
+        <a href="article-how-to-calculate-salary.html" class="art">
+          <div class="art-cover"><img loading="lazy" alt="วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างหักประกันสังคมและภาษี" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-body"><span class="art-tag art-new" data-en="How-to">วิธีคำนวณ</span>
+            <h3>วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างการหักประกันสังคมและภาษี</h3>
+            <p>คำนวณเงินเดือนทีละขั้นจนถึงเงินเดือนสุทธิ พร้อมตัวอย่างจริงครบทุกบรรทัด</p></div>
+        </a>
+        <a href="article-online-payroll.html" class="art">
+          <div class="art-cover"><img loading="lazy" alt="โปรแกรมเงินเดือนออนไลน์ คืออะไร เหมาะกับธุรกิจแบบไหน" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-body"><span class="art-tag art-new" data-en="Basics">พื้นฐาน</span>
+            <h3>โปรแกรมเงินเดือนออนไลน์ คืออะไร? ช่วยธุรกิจจัดการเงินเดือนได้อย่างไร</h3>
+            <p>ระบบเงินเดือนบนคลาวด์ทำงานยังไง เหมาะกับใคร ไม่เหมาะกับใคร และต้องเช็คอะไรก่อนเลือก</p></div>
+        </a>
+        <a href="article-payroll-features.html" class="art">
+          <div class="art-cover"><img loading="lazy" alt="โปรแกรม Payroll มีอะไรบ้าง 10 ฟีเจอร์ที่ HR ควรมี" src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-body"><span class="art-tag art-new" data-en="Checklist">เช็คลิสต์</span>
+            <h3>โปรแกรม Payroll มีอะไรบ้าง? 10 ฟีเจอร์ที่ HR และฝ่ายบัญชีควรมี</h3>
+            <p>เช็คลิสต์ 10 ฟีเจอร์ที่โปรแกรม Payroll ควรมีครบ ก่อนตัดสินใจเลือกระบบ</p></div>
+        </a>
+        <a href="article-payroll-vs-excel.html" class="art">
+          <div class="art-cover"><img loading="lazy" alt="โปรแกรมเงินเดือน vs Excel แบบไหนเหมาะกับธุรกิจ" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-body"><span class="art-tag art-new" data-en="Comparison">เปรียบเทียบ</span>
+            <h3>โปรแกรมเงินเดือน vs Excel แบบไหนเหมาะกับธุรกิจ?</h3>
+            <p>Excel ทำเงินเดือนได้ แต่พังตรงไหน และเมื่อไหร่ควรเปลี่ยนไปใช้โปรแกรมเงินเดือน</p></div>
+        </a>
+        <a href="article-top10-payroll-thailand.html" class="art">
+          <div class="art-cover"><img loading="lazy" alt="10 อันดับโปรแกรมเงินเดือนออนไลน์ในไทย 2569" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-body"><span class="art-tag art-new" data-en="Buyer’s guide">คู่มือเลือกซื้อ</span>
+            <h3>10 อันดับโปรแกรมเงินเดือนออนไลน์ในประเทศไทยที่ดีที่สุด 2569</h3>
+            <p>เทียบราคา ฟีเจอร์ และความเหมาะสมของ 10 โปรแกรมเงินเดือนออนไลน์ในประเทศไทย</p></div>
+        </a>
+
         <a href="article-welfare-fund.html" class="art">
           <div class="art-cover"><img loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80&auto=format&fit=crop"></div>
           <div class="art-body"><span class="art-tag art-new" data-en="⚡ New law">⚡ กฎหมายใหม่</span>
@@ -639,6 +873,14 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
         <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-social">
+          <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
+          <a class="soc ig" href="https://www.instagram.com/esimpayroll" target="_blank" rel="noopener" aria-label="Instagram eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="4.6"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+          <a class="soc line" href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener" aria-label="LINE eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.1c-5 0-9 3.3-9 7.4 0 3.6 3.2 6.7 7.5 7.3.3.1.7.2.8.5.1.2.1.6 0 .9l-.1.8c0 .2-.2.9.8.5s5.2-3.1 7.1-5.3c1.3-1.4 1.9-2.9 1.9-4.7 0-4.1-4-7.4-9-7.4zM8.5 13H6.9a.5.5 0 0 1-.5-.5V9.4a.5.5 0 0 1 1 0v2.7h1.1a.5.5 0 0 1 0 1zm1.8-.5a.5.5 0 0 1-1 0V9.4a.5.5 0 0 1 1 0zm4.4 0a.5.5 0 0 1-.9.3l-1.6-2.1v1.8a.5.5 0 0 1-1 0V9.4a.5.5 0 0 1 .9-.3l1.6 2.2V9.4a.5.5 0 0 1 1 0zm2.9-2.1a.5.5 0 0 1 0 1h-1.1v.6h1.1a.5.5 0 0 1 0 1H16a.5.5 0 0 1-.5-.5V9.4a.5.5 0 0 1 .5-.5h1.6a.5.5 0 0 1 0 1h-1.1v.5z"/></svg></a>
+        </div>
       </div>
 
       <div>
@@ -933,6 +1175,38 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
     var b=document.getElementById('langBtn');
     if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); };
   });
+})();
+</script>
+<script>
+/* วิดีโอแนะนำ — โหลดเฉพาะตอนกดดู ไม่ถ่วงเวลาโหลดหน้าแรก */
+(function(){
+  var m=document.getElementById('vmodal'), v=document.getElementById('introVid'),
+      open=document.getElementById('playIntro'), x=document.getElementById('vclose');
+  if(!m||!v||!open) return;
+  function show(){ m.classList.add('on'); document.body.style.overflow='hidden';
+    v.preload='auto'; v.load(); v.play().catch(function(){}); }
+  function hide(){ m.classList.remove('on'); document.body.style.overflow=''; try{v.pause();}catch(e){} }
+  open.addEventListener('click', show);
+  if(x) x.addEventListener('click', hide);
+  m.addEventListener('click', function(e){ if(e.target===m) hide(); });
+  addEventListener('keydown', function(e){ if(e.key==='Escape' && m.classList.contains('on')) hide(); });
+})();
+/* เงาเมนูเข้มขึ้นเมื่อเลื่อนลง */
+(function(){ var h=document.querySelector('header'); if(!h) return;
+  var f=function(){ h.classList.toggle('stuck', scrollY>12); }; f();
+  addEventListener('scroll', f, {passive:true});
+})();
+</script>
+<script>
+/* ใช้ภาพแดชบอร์ดชุดเดียวกับหน้าปก โคลนมาวางในส่วนภาพรวมเรียลไทม์
+   ทำด้วยสคริปต์เพื่อไม่ให้มาร์กอัปยาวซ้ำสองที่ และแก้ที่เดียวจบ */
+(function(){
+  var src=document.querySelector('.hero .shots'), box=document.getElementById('rtimg');
+  if(!src||!box) return;
+  src.removeAttribute('hidden');
+  src.removeAttribute('id');
+  src.querySelectorAll('[id]').forEach(function(n){ n.removeAttribute('id'); });
+  box.appendChild(src);                 /* ย้ายมาเลย ไม่โคลน จะได้ไม่มี id ซ้ำ */
 })();
 </script>
 </body>

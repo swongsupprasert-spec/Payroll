@@ -63,10 +63,32 @@
   .stat .n{font-size:34px;font-weight:800;letter-spacing:-1px;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
   .stat .l{color:var(--muted);font-size:14px;margin-top:4px}
 
+  /* ---------- ส่วนบน 2 คอลัมน์ : ข้อความซ้าย รูปขวา ---------- */
+  .abtop{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:44px;align-items:center}
+  .abtop h1{font-size:clamp(27px,3vw,40px);letter-spacing:-.8px;line-height:1.25;margin:10px 0 16px}
+  .abtop .lead{font-size:17px;line-height:1.85;color:var(--ink);margin-bottom:12px}
+  .abtop p{color:var(--muted);line-height:1.85;margin:0}
+  .abimg{min-width:0;border-radius:22px;overflow:hidden;box-shadow:var(--sh-lg)}
+  .abimg img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+  @media(max-width:860px){.abtop{grid-template-columns:minmax(0,1fr);gap:26px}
+    .abimg img{aspect-ratio:16/9}}
+
+  /* ---------- ส่วนบน 2 คอลัมน์ : ข้อความซ้าย รูปขวา ---------- */
+  .abtop{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:44px;align-items:center}
+  .abtop h1{font-size:clamp(27px,3vw,40px);letter-spacing:-.8px;line-height:1.25;margin:10px 0 16px}
+  .abtop .lead{font-size:17px;line-height:1.85;color:var(--ink);margin-bottom:12px}
+  .abtop p{color:var(--muted);line-height:1.85;margin:0}
+  .abimg{min-width:0;border-radius:22px;overflow:hidden;box-shadow:var(--sh-lg)}
+  .abimg img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+  @media(max-width:860px){.abtop{grid-template-columns:minmax(0,1fr);gap:26px}
+    .abimg img{aspect-ratio:16/9}}
+
   .vals{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .val{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:26px 24px;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+  .val{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:28px 22px;text-align:center;
+    box-shadow:var(--sh-sm);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
   .val:hover{transform:translateY(-6px);box-shadow:var(--sh-lg)}
-  .val .ic{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;margin-bottom:14px}
+  .val .ic{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:26px;margin:0 auto 14px;background:var(--accent-bg) !important;color:var(--brand)}
   .val h3{font-size:19px;margin-bottom:7px}
   .val p{color:var(--muted);font-size:15px;margin:0}
 
@@ -142,13 +164,33 @@
     .ft-bot{justify-content:flex-start}
   }
 </style>
+<style>
+/* ---------- ท้ายเว็บพื้นเข้ม ---------- */
+footer{background:#0b1b2b !important;border-top:0 !important;color:#a9c4d4 !important}
+footer .ft-brand,footer .ft-brand span{color:#fff !important}
+footer .ft-h{color:#6ee7b7 !important}
+footer .ft-list a:hover{color:#6ee7b7 !important}
+footer .ft-bot{border-top:1px solid rgba(255,255,255,.14) !important;color:#8fb0c4}
+footer .ft-mail{color:#6ee7b7 !important}
+/* ---------- ไอคอนโซเชียล ---------- */
+.ft-social{display:flex;gap:10px;margin-top:15px}
+.soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#c2d8e4;
+  transition:transform .2s,color .2s,background .2s,border-color .2s}
+.soc svg{width:19px;height:19px}
+.soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+.soc.tiktok:hover{background:#000}
+.soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+.soc.line:hover{background:#06C755}
+.soc:focus-visible{outline:2px solid #6ee7b7;outline-offset:2px}
+</style>
 </head>
 <body>
 <header>
   <nav>
     <a href="index.html" class="logo"><svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgNav1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgNav1)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
     <div class="sp">
-      <a href="index.html#features" class="link" data-en="Features">ฟีเจอร์</a>
+      <a href="features.html" class="link" data-en="Features">ฟีเจอร์</a>
         <a href="pricing.html" class="link" data-en="Pricing">ราคา</a>
       <a href="articles.html" class="link" data-en="Articles">บทความ</a>
       <a href="about.html" class="link active" data-en="About">เกี่ยวกับ</a>
@@ -158,19 +200,22 @@
   </nav>
 </header>
 
-<div class="pagehead">
-  <div class="wrap">
-    <span class="badge" data-en="🏢 About us">🏢 เกี่ยวกับเรา</span>
-    <h1 data-en="Making payroll simple">ทำเรื่องเงินเดือนให้เป็นเรื่องง่าย</h1>
-    <p data-en="We build payroll software that Thai businesses actually use — from small shops to companies.">เราสร้างระบบเงินเดือนที่ธุรกิจไทยใช้งานได้จริง ตั้งแต่ร้านเล็กจนถึงบริษัท</p>
-  </div>
-</div>
-
-<section>
-  <div class="wrap">
-    <h2 data-en="Who we are">เราคือใคร</h2>
-    <p class="lead" data-en="eSimPayroll was built to solve what Thai HR teams and business owners face every single month — calculating salaries, tax and social security, and producing the paperwork that eats up their time.">eSimPayroll เกิดขึ้นเพื่อแก้ปัญหาที่ฝ่ายบุคคลและเจ้าของธุรกิจไทยเจอทุกเดือน — การคำนวณเงินเดือน ภาษี ประกันสังคม และการออกเอกสารที่ยุ่งยากและเสียเวลา</p>
-    <p data-en="We bring it all into one place: automatic calculations that follow Thai law, plus payslips, withholding tax certificates (50 Tawi), P.N.D.1 and social security forms (SSO 1-10) — all from any browser.">เรารวมทุกอย่างไว้ในที่เดียว คำนวณให้อัตโนมัติตามกฎหมายไทย ออกสลิป หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ) แบบ ภ.ง.ด.1 และแบบประกันสังคม (สปส. 1-10) ได้ครบ พร้อมใช้งานได้ทุกที่ผ่านเว็บ</p>
+<section style="padding-top:56px">
+  <div class="wrap wide">
+    <div class="abtop">
+      <div>
+        <span class="badge" data-en="🏢 About us">🏢 เกี่ยวกับเรา</span>
+        <h1 data-en="Making payroll simple">ทำเรื่องเงินเดือนให้เป็นเรื่องง่าย</h1>
+        <p class="lead" data-en="eSimPayroll was built to solve what Thai HR teams and business owners face every single month — calculating salaries, tax and social security, and producing the paperwork that eats up their time.">eSimPayroll เกิดขึ้นเพื่อแก้ปัญหาที่ฝ่ายบุคคลและเจ้าของธุรกิจไทยเจอทุกเดือน — การคำนวณเงินเดือน ภาษี ประกันสังคม และการออกเอกสารที่ยุ่งยากและเสียเวลา</p>
+        <p style="margin-bottom:12px" data-en="We build payroll software that Thai businesses actually use — from small shops to companies — covering tax, social security and every statutory form.">เราสร้าง<strong>โปรแกรมคิดเงินเดือน</strong>ที่ธุรกิจไทยใช้งานได้จริง ตั้งแต่ร้านเล็กจนถึงบริษัท และพัฒนาต่อจนเป็น<strong>โปรแกรมเงินเดือนพนักงาน</strong>ที่ครบทั้งภาษี ประกันสังคม และเอกสารยื่นราชการ</p>
+        <p data-en="We bring it all into one place: automatic calculations that follow Thai law, plus payslips, withholding tax certificates (50 Tawi), P.N.D.1 and social security forms (SSO 1-10) — all from any browser.">เรารวมทุกอย่างไว้ในที่เดียว คำนวณให้อัตโนมัติตามกฎหมายไทย ออกสลิป หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ) แบบ ภ.ง.ด.1 และแบบประกันสังคม (สปส. 1-10) ได้ครบ พร้อมใช้งานได้ทุกที่ผ่านเว็บ</p>
+      </div>
+      <div class="abimg">
+        <img src="/media/hero-people.jpg" width="1200" height="800" loading="eager" decoding="async"
+             alt="ทีมงานใช้โปรแกรมเงินเดือน eSimPayroll ร่วมกันในที่ทำงาน"
+             data-en-alt="A team working together with eSimPayroll payroll software">
+      </div>
+    </div>
   </div>
 </section>
 
@@ -269,6 +314,14 @@
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
         <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-social">
+          <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
+          <a class="soc ig" href="https://www.instagram.com/esimpayroll" target="_blank" rel="noopener" aria-label="Instagram eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="4.6"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+          <a class="soc line" href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener" aria-label="LINE eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.1c-5 0-9 3.3-9 7.4 0 3.6 3.2 6.7 7.5 7.3.3.1.7.2.8.5.1.2.1.6 0 .9l-.1.8c0 .2-.2.9.8.5s5.2-3.1 7.1-5.3c1.3-1.4 1.9-2.9 1.9-4.7 0-4.1-4-7.4-9-7.4zM8.5 13H6.9a.5.5 0 0 1-.5-.5V9.4a.5.5 0 0 1 1 0v2.7h1.1a.5.5 0 0 1 0 1zm1.8-.5a.5.5 0 0 1-1 0V9.4a.5.5 0 0 1 1 0zm4.4 0a.5.5 0 0 1-.9.3l-1.6-2.1v1.8a.5.5 0 0 1-1 0V9.4a.5.5 0 0 1 .9-.3l1.6 2.2V9.4a.5.5 0 0 1 1 0zm2.9-2.1a.5.5 0 0 1 0 1h-1.1v.6h1.1a.5.5 0 0 1 0 1H16a.5.5 0 0 1-.5-.5V9.4a.5.5 0 0 1 .5-.5h1.6a.5.5 0 0 1 0 1h-1.1v.5z"/></svg></a>
+        </div>
       </div>
 
       <div>

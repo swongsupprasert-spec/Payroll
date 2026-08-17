@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="th">
+<head><meta charset="utf-8"><title>สร้างรูปริชเมนู LINE</title>
+<style>
+  body{margin:0;background:#0f2231;color:#fff;font-family:"Sarabun","Leelawadee UI","Noto Sans Thai",sans-serif;padding:20px}
+  canvas{width:100%;max-width:900px;height:auto;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+  p{font-size:14px;color:#9fb3c8}
+</style></head>
+<body>
+<p>ตัวอย่างรูปริชเมนู (ขนาดจริง 2500 × 843 px)</p>
+<canvas id="cv" width="2500" height="843"></canvas>
+<script>
+/* ริชเมนู LINE แบบกะทัดรัด 3 ปุ่ม — 2500 × 843 px
+   ช่องละ 833.33 px แต่ LINE รับพิกัดเป็นจำนวนเต็ม จึงแบ่ง 833 / 834 / 833 */
+const CV=document.getElementById('cv'), X=CV.getContext('2d');
+const W=2500, H=843, CW=[833,834,833];
+
+/* พื้นหลังสีเรียบ 3 ช่อง — ไฟล์เล็ก ขอบคม ไม่มีรอยไล่สีเป็นชั้น */
+const BG=["#0b2338","#0e3a4f","#0f5c57"];
+let px=0;
+for(let i=0;i<3;i++){ X.fillStyle=BG[i]; X.fillRect(px,0,CW[i],H); px+=CW[i]; }
+
+/* เส้นแบ่งช่อง */
+X.strokeStyle="rgba(255,255,255,.16)"; X.lineWidth=3;
+let acc=0;
+for(let i=0;i<2;i++){ acc+=CW[i]; X.beginPath(); X.moveTo(acc,96); X.lineTo(acc,H-96); X.stroke(); }
+
+/* ---- ไอคอนวาดด้วยเส้น (คมทุกขนาด ไม่พึ่งฟอนต์อีโมจิ) ---- */
+function stroke(cb,cx,cy,s,lw){ X.save(); X.translate(cx,cy); X.scale(s,s);
+  X.strokeStyle='#fff'; X.lineWidth=(lw||2)/s; X.lineCap='round'; X.lineJoin='round'; X.fillStyle='none';
+  X.beginPath(); cb(); X.stroke(); X.restore(); }
+
+/* 1) จอ/ระบบ */
+function icoApp(){ X.moveTo(-26,-20); X.lineTo(26,-20); X.moveTo(-30,-16);
+  X.rect(-30,-20,60,42); X.moveTo(-12,22); X.lineTo(-12,30); X.lineTo(12,30); X.lineTo(12,22);
+  X.moveTo(-20,-6); X.lineTo(-6,-6); X.moveTo(-20,4); X.lineTo(8,4); }
+/* 2) ป้ายราคา */
+function icoTag(){ X.moveTo(4,-28); X.lineTo(28,-4); X.lineTo(-4,28); X.lineTo(-28,4); X.closePath();
+  X.moveTo(14,-14); X.arc(14,-14,4,0,Math.PI*2); }
+/* 3) หนังสือ/คู่มือ */
+function icoBook(){ X.moveTo(-26,-26); X.lineTo(-26,26); X.lineTo(0,20); X.lineTo(26,26);
+  X.lineTo(26,-26); X.lineTo(0,-20); X.closePath(); X.moveTo(0,-20); X.lineTo(0,20); }
+
+const CELLS=[
+  {ico:icoApp,  t1:'เข้าใช้งานระบบ', t2:'ทำเงินเดือน · ออกสลิป'},
+  {ico:icoTag,  t1:'แพ็กเกจ & ราคา', t2:'เริ่ม 590 บาท/เดือน'},
+  {ico:icoBook, t1:'คู่มือการใช้งาน', t2:'สอนใช้ทุกเมนู'},
+];
+
+let x=0;
+CELLS.forEach((c,i)=>{
+  const cx=x+CW[i]/2;
+  stroke(c.ico, cx, 300, 2.6, 2.4);
+  X.textAlign='center'; X.fillStyle='#fff';
+  X.font='700 74px "Sarabun","Leelawadee UI","Noto Sans Thai",sans-serif';
+  X.fillText(c.t1, cx, 545);
+  X.fillStyle='rgba(203,230,224,.92)';
+  X.font='400 46px "Sarabun","Leelawadee UI","Noto Sans Thai",sans-serif';
+  X.fillText(c.t2, cx, 625);
+  x+=CW[i];
+});
+
+/* แถบชื่อแบรนด์บาง ๆ ด้านล่าง */
+X.fillStyle='rgba(255,255,255,.10)'; X.fillRect(0,H-64,W,64);
+X.fillStyle='rgba(255,255,255,.72)'; X.textAlign='center';
+X.font='600 34px "Sarabun","Leelawadee UI","Noto Sans Thai",sans-serif';
+X.fillText('eSimPayroll  ·  esimpayroll.com', W/2, H-22);
+
+window.__png = ()=> CV.toDataURL('image/png');
+</script>
+</body></html>

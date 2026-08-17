@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างหักประกันสังคมและภาษี | eSimPayroll</title>
+<meta name="description" content="วิธีคำนวณเงินเดือนพนักงานทีละขั้น ตั้งแต่เงินเดือน ค่าล่วงเวลา เงินเพิ่ม เงินหัก ประกันสังคม ภาษีเงินเดือน จนถึงเงินเดือนสุทธิ พร้อมตัวอย่างคำนวณจริงครบทุกบรรทัด">
+<meta name="keywords" content="วิธีคำนวณเงินเดือนพนักงาน,คำนวณเงินเดือน,เงินเดือนสุทธิ,ภาษีเงินเดือน,ประกันสังคม,คำนวณ OT,วิธีคิดเงินเดือน">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0e3a5c">
+<link rel="canonical" href="https://esimpayroll.com/article-how-to-calculate-salary">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="eSimPayroll">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://esimpayroll.com/article-how-to-calculate-salary">
+<meta property="og:title" content="วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างหักประกันสังคมและภาษี">
+<meta property="og:description" content="คำนวณเงินเดือนทีละขั้นจนถึงเงินเดือนสุทธิ พร้อมตัวอย่างจริงครบทุกบรรทัด">
+<meta property="og:image" content="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80&auto=format&fit=crop">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80&auto=format&fit=crop">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/icon-192.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/icon-96.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/icon-48.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/brand/icon-192.png">
+<link rel="shortcut icon" href="/brand/icon-48.png">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--brand:#0e3a5c;--brand-d:#092942;--ink:#0b1b2b;--muted:#5b7186;--bg:#f7faf9;--accent:#10b981;--accent-l:#6ee7b7;--accent-bg:#eaf6f1;
+    --line:#e8eef4;--r-lg:26px;--r-md:20px;--r-sm:14px;
+    --sh-sm:0 2px 8px rgba(11,27,43,.05);--sh-md:0 12px 32px rgba(11,27,43,.08);--sh-lg:0 28px 70px rgba(11,27,43,.14);
+    --grad:linear-gradient(120deg,#10b981,#0f766e 45%,#17557f)}
+  html{scroll-behavior:smooth}
+  body{font-family:"Sarabun","Segoe UI",Tahoma,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.7}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  .wrap.wide{max-width:1140px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 24px;border-radius:100px;font-weight:700;font-size:15px;cursor:pointer;border:0;font-family:inherit;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,background .2s}
+  .btn.primary{background:var(--grad);color:#fff;box-shadow:0 12px 32px rgba(16,185,129,.35)}
+  .btn.primary:hover{transform:translateY(-3px);box-shadow:0 20px 46px rgba(16,185,129,.45)}
+  .btn.ghost{background:rgba(255,255,255,.7);color:var(--ink);border:1.5px solid var(--line);backdrop-filter:blur(8px)}
+  .btn.ghost:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-2px)}
+
+  header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(232,238,244,.9)}
+  nav{display:flex;align-items:center;gap:14px;height:66px;max-width:1140px;margin:0 auto;padding:0 22px}
+  .logo{font-size:21px;font-weight:800;display:flex;align-items:center;gap:8px}
+  nav .sp{margin-left:auto;display:flex;gap:6px;align-items:center}
+  nav a.link{color:var(--muted);font-weight:600;padding:9px 14px;font-size:15px;border-radius:100px;transition:.18s}
+  nav a.link:hover{color:var(--ink);background:rgba(11,27,43,.05)}
+  nav a.link.active{color:var(--brand);background:var(--accent-bg)}
+
+  .pagehead{position:relative;overflow:hidden;background:
+    radial-gradient(720px 340px at 82% -10%,rgba(110,231,183,.4),transparent),
+    radial-gradient(600px 300px at 8% 4%,rgba(125,211,252,.28),transparent),
+    linear-gradient(180deg,#fff,var(--bg));padding:54px 0 40px;text-align:center}
+  .pagehead .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.85);border:1px solid var(--line);color:var(--brand-d);font-weight:700;font-size:13px;padding:8px 16px;border-radius:100px;box-shadow:var(--sh-sm);margin-bottom:14px}
+  .pagehead h1{font-size:40px;letter-spacing:-.5px;margin-bottom:10px}
+  .pagehead p{color:var(--muted);font-size:18px}
+
+  section{padding:44px 0}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .card{display:block;background:#fff;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+  .card:hover{box-shadow:var(--sh-lg);transform:translateY(-6px)}
+  .card .cover{height:170px;overflow:hidden;background:#eaf6f1;position:relative}
+  .card .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(14,58,92,.22),rgba(16,185,129,.12))}
+  .card .cover img{width:100%;height:100%;object-fit:cover;display:block;transition:.25s}
+  .card:hover .cover img{transform:scale(1.05)}
+  .card .body{padding:20px 22px}
+  .card .tag{font-size:12px;font-weight:700;color:var(--brand-d);background:#eaf6f1;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+  .card h3{font-size:19px;margin-bottom:8px;line-height:1.35}
+  .card p{color:var(--muted);font-size:15px}
+  .card .more{color:var(--brand);font-weight:700;font-size:14px;margin-top:12px;display:inline-block}
+
+  article{border-top:1px solid #eef2f7;padding:44px 0}
+  article .meta{color:var(--muted);font-size:14px;margin-bottom:8px}
+  article h2{font-size:28px;letter-spacing:-.3px;margin-bottom:16px}
+  article h4{font-size:19px;margin:22px 0 8px}
+  article p{margin-bottom:12px;color:#1f2937}
+  article ul{margin:0 0 14px 22px;color:#1f2937}
+  article li{margin-bottom:6px}
+  article .box{background:var(--bg);border:1px solid #e8edf3;border-left:4px solid var(--brand);border-radius:10px;padding:14px 18px;margin:14px 0}
+  article .back{color:var(--brand);font-weight:700;font-size:14px}
+
+  .cta-band{position:relative;overflow:hidden;background:linear-gradient(140deg,#0b1b2b,#0e3a5c 55%,#0f766e);color:#fff;border-radius:30px;padding:52px 36px;text-align:center;margin:40px auto;box-shadow:var(--sh-lg)}
+  .cta-band::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(110,231,183,.3),transparent 70%);top:-190px;right:-110px}
+  .cta-band>*{position:relative;z-index:1}
+  .cta-band h2{font-size:28px;margin-bottom:10px}
+  .cta-band p{opacity:.92;margin-bottom:22px}
+  .cta-band .btn.primary{background:#fff;color:var(--brand-d)}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}.pagehead h1{font-size:30px}article h2{font-size:23px}}
+  @media(max-width:640px){
+    nav{height:auto;padding:10px 0;flex-wrap:wrap;gap:6px}
+    .logo{font-size:18px}
+    nav .sp{width:100%;margin-left:0;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    nav a.link{padding:7px 9px;font-size:14px;white-space:nowrap}
+    nav .sp .btn{white-space:nowrap;flex-shrink:0}
+    .pagehead{padding:36px 0 28px}.pagehead h1{font-size:24px}.pagehead p{font-size:15px}
+    section{padding:30px 0}
+    article{padding:32px 0}article h2{font-size:20px}article h4{font-size:17px}
+    .cta-band{padding:30px 18px;border-radius:18px}.cta-band h2{font-size:21px}
+  }
+
+  /* ---- footer ---- */
+  footer{border-top:1px solid var(--line);background:#fff;padding:44px 0 28px;color:var(--muted);font-size:14.5px}
+  .ft-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px;align-items:start}
+  .ft-brand{font-size:19px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .ft-tag{max-width:290px;line-height:1.65}
+  /* ---------- ไอคอนโซเชียลท้ายเว็บ ---------- */
+  .ft-social{display:flex;gap:10px;margin-top:15px}
+  .soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);background:#fff;color:var(--muted);
+    transition:transform .2s,color .2s,background .2s,border-color .2s}
+  .soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+  .soc.tiktok:hover{background:#000}
+  .soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+  .soc.line:hover{background:#06C755}
+  .soc:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+  .ft-h{font-size:13px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.6px;margin-bottom:11px}
+  .ft-list{list-style:none;display:grid;gap:8px}
+  .ft-list a:hover{color:var(--brand);text-decoration:underline}
+  .ft-line{display:flex;gap:13px;align-items:flex-start;flex-wrap:wrap}  /* แคบแล้วให้ตกลงบรรทัดใหม่ ไม่บีบข้อความ */
+  .ft-qr{width:88px;height:88px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;padding:4px;flex-shrink:0}
+  .ft-lineid{display:inline-flex;align-items:center;gap:6px;background:#06C755;color:#fff;font-weight:800;
+    font-size:14px;padding:7px 14px;border-radius:100px;margin-bottom:7px}
+  .ft-lineid:hover{background:#05a648}
+  .ft-mail{color:var(--brand);font-weight:700;white-space:nowrap}   /* ห้ามตัดกลางอีเมล */
+  .ft-mail:hover{text-decoration:underline}
+  .ft-bot{border-top:1px solid #e2e8f0;margin-top:28px;padding-top:18px;display:flex;gap:12px;
+    flex-wrap:wrap;align-items:center;justify-content:space-between;font-size:13.5px}
+  @media(max-width:760px){
+    .ft-grid{grid-template-columns:1fr;gap:26px}
+    .ft-tag{max-width:none}
+    .ft-bot{justify-content:flex-start}
+  }
+</style>
+<style>
+  /* หน้าบทความเดี่ยว */
+  article{border-top:0;padding:8px 0 44px}
+  article h1{font-size:31px;letter-spacing:-.4px;margin-bottom:16px;line-height:1.3}
+  .backbar{padding:20px 0 0}
+  .backbar a{color:var(--brand);font-weight:700;font-size:14.5px}
+  .backbar a:hover{text-decoration:underline}
+  .more-h{font-size:21px;margin-bottom:18px}
+  @media(max-width:760px){article h1{font-size:23px}}
+  /* ตารางเปรียบเทียบ */
+  .cmpwrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:14px}
+  table.cmp{width:100%;border-collapse:collapse;font-size:14.5px;min-width:520px}
+  table.cmp th,table.cmp td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  table.cmp thead th{background:var(--brand);color:#fff;font-weight:700;font-size:14px;border-bottom:0}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp tbody tr:nth-child(even){background:#f8fbfa}
+  table.cmp td:first-child{font-weight:700;color:var(--brand-d);white-space:nowrap}
+  .yes{color:#059669;font-weight:700}
+  .no{color:#dc2626;font-weight:700}
+  /* กล่องเตือน */
+  article .warn{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;
+    border-radius:10px;padding:14px 18px;margin:16px 0}
+  /* คำถามที่พบบ่อย */
+  .faq details{border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:10px;background:#fff}
+  .faq summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;font-size:15.5px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";float:right;color:var(--accent);font-weight:800}
+  .faq details[open] summary::after{content:"−"}
+  .faq details[open] summary{border-bottom:1px solid var(--line)}
+  .faq details p{padding:14px 18px 4px;margin:0}
+  /* การ์ดฟีเจอร์เรียงเลข */
+  .feat{border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px;margin:0 0 14px;background:#fff;
+    box-shadow:var(--sh-sm);position:relative}
+  .feat > h4{margin:0 0 8px;padding-left:44px;font-size:18px;line-height:1.45;min-height:34px;display:flex;align-items:center}
+  .feat .num{position:absolute;left:20px;top:17px;width:34px;height:34px;border-radius:10px;background:var(--grad);
+    color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 14px rgba(16,185,129,.28)}
+  .feat p{margin-bottom:8px}
+  .feat p:last-child{margin-bottom:0}
+  .chk{background:var(--accent-bg);border-radius:9px;padding:9px 13px;font-size:14px;margin-top:10px}
+  .chk b{color:var(--brand-d)}
+  @media(max-width:640px){
+    .feat{padding:15px 15px 13px}
+    .feat > h4{padding-left:40px;font-size:16.5px}
+    .feat .num{left:15px;top:14px;width:30px;height:30px;font-size:14px}
+  }
+  /* ตัวอย่างคำนวณ */
+  .calcbox{background:var(--accent-bg);border:1px solid #a7e3cd;border-radius:14px;padding:16px 20px;margin:16px 0}
+  .calcbox h4{margin:0 0 10px;font-size:16px;color:var(--brand-d)}
+  .calcbox table{width:100%;border-collapse:collapse;font-size:14.5px}
+  .calcbox td{padding:6px 0;border-bottom:1px solid rgba(15,118,110,.16)}
+  .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
+
+  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
+  .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
+    justify-content:center;background:var(--grad);color:#fff;box-shadow:0 8px 20px rgba(16,185,129,.3);margin-top:2px}
+  .h1ic svg{width:25px;height:25px;display:block}
+  .h1row h1{margin-bottom:0}
+  @media(max-width:640px){
+    .h1ic{width:38px;height:38px;border-radius:11px}
+    .h1ic svg{width:21px;height:21px}
+    .h1row{gap:11px}
+  }
+  /* ภาพหัวบทความ */
+  .hero-img{margin:0 0 26px;border-radius:var(--r-md);overflow:hidden;position:relative;
+    background:#eaf6f1;box-shadow:var(--sh-md);aspect-ratio:16/7}
+  .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero-img::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
+  .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
+  @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
+  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  .artwrap{position:relative}
+  .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
+    scroll-snap-type:x mandatory;padding:6px 2px 14px;
+    cursor:grab;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .cards::-webkit-scrollbar{display:none}
+  .cards.grabbing{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none;user-select:none}
+  .cards.grabbing .card,.cards.grabbing img{pointer-events:none}
+  .cards > .card{flex:0 0 calc((100% - 66px) / 4);scroll-snap-align:start}
+  .cards > .card img{-webkit-user-drag:none;user-select:none}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+    width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.95);
+    backdrop-filter:blur(8px);box-shadow:var(--sh-md);cursor:pointer;font-size:19px;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;transition:.2s;font-family:inherit}
+  .arrow:hover{background:#fff;transform:translateY(-50%) scale(1.08);box-shadow:var(--sh-lg)}
+  .arrow[disabled]{opacity:0;pointer-events:none}
+  .arrow.prev{left:-20px}
+  .arrow.next{right:-20px}
+  @media(max-width:980px){
+    .cards > .card{flex:0 0 calc((100% - 22px) / 2)}
+    .arrow.prev{left:-8px} .arrow.next{right:-8px}
+  }
+  @media(max-width:640px){
+    .cards{gap:14px}
+    .cards > .card{flex:0 0 82%}
+    .arrow{display:none}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างหักประกันสังคมและภาษี","description":"วิธีคำนวณเงินเดือนพนักงานทีละขั้น ตั้งแต่เงินเดือน ค่าล่วงเวลา เงินเพิ่ม เงินหัก ประกันสังคม ภาษีเงินเดือน จนถึงเงินเดือนสุทธิ พร้อมตัวอย่างคำนวณจริงครบทุกบรรทัด","inLanguage":"th","datePublished":"2026-08-16","dateModified":"2026-08-16","image":"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80&auto=format&fit=crop","author":{"@type":"Organization","name":"eSimPayroll"},"publisher":{"@type":"Organization","name":"eSimPayroll"},"mainEntityOfPage":"https://esimpayroll.com/article-how-to-calculate-salary"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"หน้าแรก","item":"https://esimpayroll.com/"},{"@type":"ListItem","position":2,"name":"บทความ","item":"https://esimpayroll.com/articles"},{"@type":"ListItem","position":3,"name":"วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างหักประกันสังคมและภาษี","item":"https://esimpayroll.com/article-how-to-calculate-salary"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"th","mainEntity":[
+{"@type":"Question","name":"เงินเดือนสุทธิ คำนวณยังไง","acceptedAnswer":{"@type":"Answer","text":"เงินเดือนสุทธิ = เงินได้รวม ลบ เงินหักรวม โดยเงินได้รวมคือเงินเดือนฐาน บวกค่าล่วงเวลา บวกเงินเพิ่มทุกรายการ ส่วนเงินหักรวมคือประกันสังคม บวกภาษีหัก ณ ที่จ่าย บวกรายการหักอื่น เช่น เงินกู้บริษัทหรือหักขาดงาน ลำดับสำคัญคือต้องคิดประกันสังคมและภาษีจากฐานที่ถูกต้องก่อน จึงจะได้ยอดสุทธิที่ถูก"}},
+{"@type":"Question","name":"ค่าล่วงเวลาต้องหักประกันสังคมไหม","acceptedAnswer":{"@type":"Answer","text":"ไม่ต้อง ค่าล่วงเวลาไม่นับเป็นค่าจ้างตามนิยามของประกันสังคม เช่นเดียวกับโบนัส ส่วนค่าตอบแทนที่จ่ายประจำ เช่น ค่าตำแหน่ง ค่าเดินทาง เบี้ยขยัน และค่าคอมมิชชั่น นับเป็นค่าจ้างและต้องรวมเข้าฐานคำนวณ การเอาค่าล่วงเวลามารวมด้วยจะทำให้หักประกันสังคมเกิน"}},
+{"@type":"Question","name":"คำนวณ OT ต่อชั่วโมงยังไง","acceptedAnswer":{"@type":"Answer","text":"พนักงานรายเดือนใช้สูตร เงินเดือน หารด้วยจำนวนวันต่อเดือน หารด้วยจำนวนชั่วโมงทำงานต่อวัน ส่วนพนักงานรายวันใช้ ค่าจ้างต่อวัน หารด้วยจำนวนชั่วโมงทำงานต่อวัน แล้วจึงคูณด้วยจำนวนชั่วโมงที่ทำและตัวคูณตามกฎหมาย เช่น 1.5 เท่าสำหรับล่วงเวลาวันทำงาน และ 3 เท่าสำหรับล่วงเวลาวันหยุด"}},
+{"@type":"Question","name":"ภาษีเงินเดือนคิดทีละเดือนหรือคิดทั้งปี","acceptedAnswer":{"@type":"Answer","text":"คิดทั้งปี ภาษีหัก ณ ที่จ่ายของไทยคำนวณจากเงินได้ทั้งปีภาษี หักค่าใช้จ่ายและค่าลดหย่อน แล้วเข้าอัตราภาษีก้าวหน้า จากนั้นจึงหารเฉลี่ยตามจำนวนเดือนที่ทำงาน การคิดแยกทีละเดือนจะได้ตัวเลขผิด และเมื่อมีการขึ้นเงินเดือนหรือจ่ายโบนัส ภาษีของทุกเดือนที่เหลือจะเปลี่ยนตามไปด้วย"}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"วิธีคำนวณเงินเดือนพนักงาน","inLanguage":"th","step":[
+{"@type":"HowToStep","position":1,"name":"หาเงินเดือนฐานของงวด","text":"พนักงานรายเดือนใช้เงินเดือนเต็ม ถ้าเข้างานหรือลาออกกลางเดือนให้คิดตามสัดส่วนวันทำงาน ส่วนพนักงานรายวันใช้ค่าจ้างต่อวันคูณจำนวนวันที่ทำงานจริง"},
+{"@type":"HowToStep","position":2,"name":"คำนวณค่าล่วงเวลา","text":"หาอัตราต่อชั่วโมงจากเงินเดือนหารวันหารชั่วโมง แล้วคูณจำนวนชั่วโมงและตัวคูณตามกฎหมาย"},
+{"@type":"HowToStep","position":3,"name":"รวมเงินเพิ่ม","text":"บวกค่าตำแหน่ง ค่าเดินทาง เบี้ยขยัน ค่าคอมมิชชั่น และโบนัส เข้ากับเงินเดือนฐานและค่าล่วงเวลา"},
+{"@type":"HowToStep","position":4,"name":"รวมเงินหักที่ไม่ใช่ภาษีและประกันสังคม","text":"รวมรายการหักอื่น เช่น หักขาดงาน เงินกู้บริษัท เงินกู้ยืมเพื่อการศึกษา และเงินเบิกล่วงหน้ากลางเดือน"},
+{"@type":"HowToStep","position":5,"name":"คำนวณประกันสังคม","text":"นำค่าจ้างตามนิยามประกันสังคมซึ่งไม่รวมค่าล่วงเวลาและโบนัส มาคูณอัตราที่กฎหมายกำหนด โดยไม่เกินเพดานฐานค่าจ้าง"},
+{"@type":"HowToStep","position":6,"name":"คำนวณภาษีหัก ณ ที่จ่าย","text":"ประมาณเงินได้ทั้งปี หักค่าใช้จ่ายและค่าลดหย่อน คำนวณภาษีตามอัตราก้าวหน้า แล้วหารเฉลี่ยตามจำนวนเดือนที่ทำงาน"},
+{"@type":"HowToStep","position":7,"name":"หาเงินเดือนสุทธิ","text":"เงินได้รวม ลบ เงินหักรวม ได้เป็นยอดที่ต้องโอนให้พนักงาน"}]}
+</script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-05JJT2VDRV"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js",new Date());
+  gtag("config","G-05JJT2VDRV",{anonymize_ip:true});
+</script>
+<style>
+/* ---------- ท้ายเว็บพื้นเข้ม ---------- */
+footer{background:#0b1b2b !important;border-top:0 !important;color:#a9c4d4 !important}
+footer .ft-brand,footer .ft-brand span{color:#fff !important}
+footer .ft-h{color:#6ee7b7 !important}
+footer .ft-list a:hover{color:#6ee7b7 !important}
+footer .ft-bot{border-top:1px solid rgba(255,255,255,.14) !important;color:#8fb0c4}
+footer .ft-mail{color:#6ee7b7 !important}
+/* ---------- ไอคอนโซเชียล ---------- */
+.ft-social{display:flex;gap:10px;margin-top:15px}
+.soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#c2d8e4;
+  transition:transform .2s,color .2s,background .2s,border-color .2s}
+.soc svg{width:19px;height:19px}
+.soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+.soc.tiktok:hover{background:#000}
+.soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+.soc.line:hover{background:#06C755}
+.soc:focus-visible{outline:2px solid #6ee7b7;outline-offset:2px}
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="index.html" class="logo"><svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgNav0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgNav0)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
+    <div class="sp">
+      <a href="features.html" class="link" data-en="Features">ฟีเจอร์</a>
+        <a href="pricing.html" class="link" data-en="Pricing">ราคา</a>
+      <a href="articles.html" class="link active" data-en="Articles">บทความ</a>
+      <a href="about.html" class="link" data-en="About">เกี่ยวกับ</a>
+      <button id="langBtn" class="btn ghost" style="padding:8px 12px;font-size:14px;margin-left:4px">🌐 EN</button>
+        <a href="app.html#signup" class="btn primary" style="padding:9px 18px" data-en="30-day free trial">ทดลองฟรี 30 วัน</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap backbar">
+  <a href="articles.html" data-en="← All articles">← กลับไปหน้าบทความ</a>
+</div>
+
+<div class="wrap">
+<article>
+    <div class="meta" data-en="Payroll · 9 min read">เงินเดือน · อ่าน 9 นาที</div>
+    <div class="h1row">
+      <span class="h1ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" x="4" y="2.6" width="16" height="18.8" rx="2.4"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M7.6 6.6h8.8M7.8 11h.01M12 11h.01M16.2 11h.01M7.8 14.6h.01M12 14.6h.01M16.2 14.6v3.6M7.8 18.2h4.2"/></svg></span>
+      <h1 data-en="How to calculate an employee&#39;s salary, with a worked social security and tax example">วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างการหักประกันสังคมและภาษี</h1>
+    </div>
+
+    <figure class="hero-img">
+      <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80&auto=format&fit=crop" alt="วิธีคำนวณเงินเดือนพนักงาน ประกันสังคม และภาษี"
+           data-en-alt="Calculating employee salary, social security and tax" width="1200" height="525" fetchpriority="high" decoding="async">
+    </figure>
+
+    <p data-en="&lt;strong&gt;Calculating an employee&#39;s salary&lt;/strong&gt; is not one sum — it is seven steps in a fixed order, and the order matters. Get social security or tax computed from the wrong base and the net figure is wrong no matter how careful the rest was."><strong>วิธีคำนวณเงินเดือนพนักงาน</strong> ไม่ใช่การบวกลบครั้งเดียวจบ แต่เป็น 7 ขั้นตอนที่มีลำดับตายตัว และลำดับสำคัญมาก ถ้าคิดประกันสังคมหรือภาษีจากฐานผิด ยอดสุทธิก็ผิดทั้งก้อน ต่อให้ขั้นอื่นละเอียดแค่ไหนก็ตาม</p>
+
+    <p data-en="The order is: &lt;strong&gt;base salary → overtime → allowances → deductions → social security → tax → net pay&lt;/strong&gt;. This article walks through each step, then works one complete example line by line.">ลำดับคือ <strong>เงินเดือน → OT → เงินเพิ่ม → เงินหัก → ประกันสังคม → ภาษี → เงินเดือนสุทธิ</strong> บทความนี้อธิบายทีละขั้น แล้วปิดท้ายด้วยตัวอย่างคำนวณจริงครบทุกบรรทัด</p>
+
+    <h2 data-en="The 7 steps">7 ขั้นตอนของการคำนวณเงินเดือน</h2>
+
+    <div class="feat">
+      <span class="num">1</span>
+      <h4 data-en="Base salary for the period">เงินเดือนฐานของงวด</h4>
+      <p data-en="Monthly staff use the full salary. If someone joined or resigned mid-period, prorate it: salary × days worked ÷ days in the period. Daily staff use daily wage × days actually worked."><strong>พนักงานรายเดือน</strong> ใช้เงินเดือนเต็ม ถ้าเข้างานหรือลาออกกลางงวดให้คิดตามสัดส่วน คือ เงินเดือน × วันที่ทำงาน ÷ วันในงวด ส่วน <strong>พนักงานรายวัน</strong> ใช้ ค่าจ้าง/วัน × จำนวนวันที่ทำงานจริง</p>
+      <div class="chk" data-en="&lt;b&gt;Example:&lt;/b&gt; salary 45,000 starting 16 August (31 days, 16 worked) → 45,000 × 16 ÷ 31 = &lt;strong&gt;23,225.81&lt;/strong&gt;, not 45,000."><b>ตัวอย่าง:</b> เงินเดือน 45,000 เริ่มงาน 16 สิงหาคม (เดือนมี 31 วัน ทำงาน 16 วัน) → 45,000 × 16 ÷ 31 = <strong>23,225.81</strong> ไม่ใช่ 45,000</div>
+    </div>
+
+    <div class="feat">
+      <span class="num">2</span>
+      <h4 data-en="Overtime">ค่าล่วงเวลา (OT)</h4>
+      <p data-en="First find the hourly rate, then multiply by hours and the statutory multiplier.">หาอัตราต่อชั่วโมงก่อน แล้วคูณจำนวนชั่วโมงและตัวคูณตามกฎหมาย</p>
+      <ul data-en="&lt;li&gt;Monthly staff: &lt;strong&gt;salary ÷ days per month ÷ hours per day&lt;/strong&gt;&lt;/li&gt;&lt;li&gt;Daily staff: &lt;strong&gt;daily wage ÷ hours per day&lt;/strong&gt;&lt;/li&gt;&lt;li&gt;Multipliers: 1.5× overtime on a working day, 3× overtime on a holiday&lt;/li&gt;">
+        <li>รายเดือน: <strong>เงินเดือน ÷ วันต่อเดือน ÷ ชั่วโมงต่อวัน</strong></li>
+        <li>รายวัน: <strong>ค่าจ้างต่อวัน ÷ ชั่วโมงต่อวัน</strong></li>
+        <li>ตัวคูณ: 1.5 เท่า ล่วงเวลาวันทำงาน · 3 เท่า ล่วงเวลาวันหยุด</li>
+      </ul>
+    </div>
+
+    <div class="feat">
+      <span class="num">3</span>
+      <h4 data-en="Allowances and additions">เงินเพิ่ม</h4>
+      <p data-en="Position allowance, travel allowance, diligence allowance, commission and bonus. Add them all to the base pay and overtime to get &lt;strong&gt;gross pay&lt;/strong&gt;.">ค่าตำแหน่ง ค่าเดินทาง เบี้ยขยัน ค่าคอมมิชชั่น และโบนัส บวกรวมกับเงินเดือนฐานและค่าล่วงเวลา จะได้ <strong>เงินได้รวม</strong></p>
+      <div class="chk" data-en="&lt;b&gt;Remember this for step 5:&lt;/b&gt; regular allowances count toward the social security wage base. Overtime and bonuses do not."><b>จำไว้ใช้ในขั้นที่ 5:</b> ค่าตอบแทนที่จ่ายประจำนับเข้าฐานประกันสังคม ส่วนค่าล่วงเวลาและโบนัส<strong>ไม่นับ</strong></div>
+    </div>
+
+    <div class="feat">
+      <span class="num">4</span>
+      <h4 data-en="Other deductions">เงินหักอื่น ๆ</h4>
+      <p data-en="Absence deductions, company loans, student loan repayments (KYS) and any mid-month advance already paid out. These are separate from social security and tax, which have their own steps.">หักขาดงานหรือลาไม่รับค่าจ้าง เงินกู้บริษัท กยศ. และเงินเบิกล่วงหน้ากลางเดือนที่จ่ายไปแล้ว รายการเหล่านี้แยกจากประกันสังคมและภาษี ซึ่งมีขั้นตอนของตัวเอง</p>
+    </div>
+
+    <div class="feat">
+      <span class="num">5</span>
+      <h4 data-en="Social security">ประกันสังคม</h4>
+      <p data-en="Deducted at the statutory rate from the &lt;strong&gt;social security wage&lt;/strong&gt;, up to a wage ceiling. The employer contributes a matching amount separately.">หักตามอัตราที่กฎหมายกำหนดจาก <strong>ค่าจ้างตามนิยามประกันสังคม</strong> โดยมีเพดานฐานค่าจ้าง และนายจ้างสมทบอีกส่วนเท่ากันแยกต่างหาก</p>
+      <div class="chk" data-en="&lt;b&gt;The most common mistake:&lt;/b&gt; including overtime in the base. It is not part of the social security wage — neither are bonuses. Including them over-deducts every month. More in &lt;a href=&quot;article-social-security.html&quot;&gt;the social security guide&lt;/a&gt;."><b>ข้อผิดพลาดที่พบบ่อยที่สุด:</b> เอาค่าล่วงเวลาไปรวมในฐาน ทั้งที่ OT ไม่ใช่ค่าจ้างตามนิยามประกันสังคม เช่นเดียวกับโบนัส ถ้ารวมเข้าไปจะหักเกินทุกเดือน อ่านเพิ่มที่ <a href="article-social-security.html">ประกันสังคมคิดยังไง</a></div>
+    </div>
+
+    <div class="feat">
+      <span class="num">6</span>
+      <h4 data-en="Withholding tax">ภาษีหัก ณ ที่จ่าย</h4>
+      <p data-en="This is the step people get wrong most often, because Thai withholding tax is &lt;strong&gt;not computed month by month&lt;/strong&gt;:">ขั้นนี้ผิดกันมากที่สุด เพราะภาษีหัก ณ ที่จ่ายของไทย<strong>ไม่ได้คิดทีละเดือน</strong></p>
+      <ul data-en="&lt;li&gt;Project the &lt;strong&gt;whole year&#39;s income&lt;/strong&gt; from the current pay&lt;/li&gt;&lt;li&gt;Deduct expenses — 50% of income, capped at 100,000&lt;/li&gt;&lt;li&gt;Deduct allowances — 60,000 personal, 60,000 spouse, 30,000 per child, social security paid, provident fund, and others&lt;/li&gt;&lt;li&gt;Apply the progressive brackets to what is left&lt;/li&gt;&lt;li&gt;Divide the annual tax by the months worked&lt;/li&gt;">
+        <li>ประมาณ<strong>เงินได้ทั้งปี</strong>จากค่าจ้างปัจจุบัน</li>
+        <li>หักค่าใช้จ่าย 50% ของเงินได้ สูงสุด 100,000</li>
+        <li>หักค่าลดหย่อน — ส่วนตัว 60,000 · คู่สมรส 60,000 · บุตรคนละ 30,000 · ประกันสังคมที่จ่ายจริง · กองทุนสำรองเลี้ยงชีพ และอื่น ๆ</li>
+        <li>นำส่วนที่เหลือเข้า<strong>อัตราภาษีก้าวหน้า</strong></li>
+        <li>หารภาษีทั้งปีด้วยจำนวนเดือนที่ทำงาน</li>
+      </ul>
+      <div class="chk" data-en="&lt;b&gt;Consequence:&lt;/b&gt; a raise in June or a bonus in December changes the tax for every remaining month. See &lt;a href=&quot;article-withholding-tax.html&quot;&gt;how withholding tax is calculated&lt;/a&gt;."><b>ผลที่ตามมา:</b> ขึ้นเงินเดือนเดือนมิถุนายน หรือจ่ายโบนัสเดือนธันวาคม กระทบภาษีของทุกเดือนที่เหลือ ดูเพิ่มที่ <a href="article-withholding-tax.html">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</a></div>
+    </div>
+
+    <div class="feat">
+      <span class="num">7</span>
+      <h4 data-en="Net pay">เงินเดือนสุทธิ</h4>
+      <p data-en="&lt;strong&gt;Net pay = total earnings − total deductions.&lt;/strong&gt; This is the figure that goes to the bank."><strong>เงินเดือนสุทธิ = เงินได้รวม − เงินหักรวม</strong> นี่คือยอดที่โอนเข้าบัญชีพนักงาน</p>
+    </div>
+
+    <h2 data-en="A complete worked example">ตัวอย่างคำนวณจริง ครบทุกบรรทัด</h2>
+    <p data-en="A monthly employee, single, no children, no provident fund, employed all year. Salary 25,000 baht, worked 10 hours of overtime on working days (1.5×), receives a 2,000 position allowance and a 500 diligence allowance, and repays 1,000 on a company loan.">พนักงานรายเดือน โสด ไม่มีบุตร ไม่มีกองทุนสำรองเลี้ยงชีพ ทำงานเต็มปี เงินเดือน 25,000 บาท ทำ OT วันทำงาน 10 ชั่วโมง (1.5 เท่า) ได้ค่าตำแหน่ง 2,000 เบี้ยขยัน 500 และผ่อนเงินกู้บริษัทเดือนละ 1,000</p>
+
+    <div class="calcbox">
+      <h4 data-en="Step 1-3 · Total earnings">ขั้นที่ 1-3 · เงินได้รวม</h4>
+      <table>
+        <tr><td data-en="Base salary">เงินเดือนฐาน</td><td>25,000.00</td></tr>
+        <tr><td data-en="Overtime 10 hrs (25,000 ÷ 30 ÷ 8 = 104.17 × 1.5 × 10)">ค่าล่วงเวลา 10 ชม. (25,000 ÷ 30 ÷ 8 = 104.17 × 1.5 × 10)</td><td>1,562.50</td></tr>
+        <tr><td data-en="Position allowance">ค่าตำแหน่ง</td><td>2,000.00</td></tr>
+        <tr><td data-en="Diligence allowance">เบี้ยขยัน</td><td>500.00</td></tr>
+        <tr><td data-en="Total earnings">รวมเงินได้</td><td>29,062.50</td></tr>
+      </table>
+    </div>
+
+    <div class="calcbox">
+      <h4 data-en="Step 5 · Social security">ขั้นที่ 5 · ประกันสังคม</h4>
+      <table>
+        <tr><td data-en="Social security wage (salary + position + diligence — no OT)">ค่าจ้างตามนิยาม ปกส. (เงินเดือน + ค่าตำแหน่ง + เบี้ยขยัน — ไม่รวม OT)</td><td>27,500.00</td></tr>
+        <tr><td data-en="Above the wage ceiling → capped">เกินเพดานฐานค่าจ้าง → คิดที่เพดาน</td><td>17,500.00</td></tr>
+        <tr><td data-en="Social security 5% of the capped base">ประกันสังคม 5% ของฐานที่เพดาน</td><td>875.00</td></tr>
+      </table>
+    </div>
+
+    <div class="calcbox">
+      <h4 data-en="Step 6 · Withholding tax (computed over the full year)">ขั้นที่ 6 · ภาษีหัก ณ ที่จ่าย (คิดจากทั้งปี)</h4>
+      <table>
+        <tr><td data-en="Annual income 29,062.50 × 12">เงินได้ทั้งปี 29,062.50 × 12</td><td>348,750.00</td></tr>
+        <tr><td data-en="Less expenses 50%, capped at 100,000">หักค่าใช้จ่าย 50% (เพดาน 100,000)</td><td>−100,000.00</td></tr>
+        <tr><td data-en="Less personal allowance">หักลดหย่อนส่วนตัว</td><td>−60,000.00</td></tr>
+        <tr><td data-en="Less social security paid, 875 × 12">หักประกันสังคมที่จ่ายจริง 875 × 12</td><td>−10,500.00</td></tr>
+        <tr><td data-en="Net taxable income">เงินได้สุทธิ (ฐานภาษี)</td><td>178,250.00</td></tr>
+        <tr><td data-en="First 150,000 exempt · remaining 28,250 × 5%">150,000 แรกยกเว้น · ส่วนเกิน 28,250 × 5%</td><td>1,412.50</td></tr>
+        <tr><td data-en="Monthly tax 1,412.50 ÷ 12">ภาษีต่อเดือน 1,412.50 ÷ 12</td><td>117.71</td></tr>
+      </table>
+    </div>
+
+    <div class="calcbox">
+      <h4 data-en="Step 7 · Net pay">ขั้นที่ 7 · เงินเดือนสุทธิ</h4>
+      <table>
+        <tr><td data-en="Total earnings">เงินได้รวม</td><td>29,062.50</td></tr>
+        <tr><td data-en="Less social security">หักประกันสังคม</td><td>−875.00</td></tr>
+        <tr><td data-en="Less withholding tax">หักภาษี</td><td>−117.71</td></tr>
+        <tr><td data-en="Less company loan">หักเงินกู้บริษัท</td><td>−1,000.00</td></tr>
+        <tr><td data-en="Net pay">เงินเดือนสุทธิ</td><td>27,069.79</td></tr>
+      </table>
+    </div>
+
+    <div class="box" data-en="Every figure above was produced by the same calculation engine eSimPayroll uses in production, then checked by hand — the 150,000 exemption plus 28,250 × 5% = 1,412.50.">ตัวเลขทุกบรรทัดข้างบนคำนวณด้วยชุดคำสั่งเดียวกับที่ eSimPayroll ใช้งานจริง แล้วตรวจทวนด้วยมืออีกรอบ — 150,000 แรกยกเว้น ส่วนเกิน 28,250 × 5% = 1,412.50</div>
+
+    <h2 data-en="Four mistakes that cost real money">4 จุดผิดที่เสียเงินจริง</h2>
+    <div class="cmpwrap">
+      <table class="cmp">
+        <thead><tr><th data-en="Mistake">จุดผิด</th><th data-en="What happens">ผลที่ตามมา</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Overtime included in the social security base">เอา OT รวมในฐานประกันสังคม</td><td data-en="Over-deducts every month; the employee is short-paid">หักเกินทุกเดือน พนักงานได้เงินขาด</td></tr>
+          <tr><td data-en="Tax computed month by month">คิดภาษีแยกทีละเดือน</td><td data-en="Wrong all year; a raise or bonus is never reflected backwards">ผิดทั้งปี ขึ้นเงินเดือนหรือโบนัสไม่ย้อนกลับไปแก้</td></tr>
+          <tr><td data-en="Full salary used for a mid-month joiner">ใช้เงินเดือนเต็มกับคนเข้ากลางเดือน</td><td data-en="Over-withholds tax for the whole year">หักภาษีเกินไปทั้งปี</td></tr>
+          <tr><td data-en="Social security ceiling not applied">ลืมใช้เพดานประกันสังคม</td><td data-en="High earners are deducted far more than the law requires">คนเงินเดือนสูงถูกหักเกินกว่าที่กฎหมายกำหนดมาก</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn" data-en="&lt;strong&gt;Note on the ceiling:&lt;/strong&gt; the social security wage ceiling is set by regulation and changes from time to time. Whatever you use to run payroll, make sure the figure is something you can edit rather than one fixed in the formula."><strong>หมายเหตุเรื่องเพดาน:</strong> เพดานฐานค่าจ้างประกันสังคมกำหนดโดยประกาศ และมีการเปลี่ยนแปลงเป็นระยะ ไม่ว่าจะใช้อะไรทำเงินเดือน ควรให้ตัวเลขนี้<strong>แก้ไขเองได้</strong> ไม่ใช่ฝังตายอยู่ในสูตร</div>
+
+    <h2 data-en="In short">สรุป</h2>
+    <p data-en="&lt;strong&gt;Calculating salary&lt;/strong&gt; is seven steps in a fixed order, and two of them — the social security wage base and the annual tax spread — are where nearly every error starts. Get those two right and the rest is arithmetic."><strong>วิธีคำนวณเงินเดือนพนักงาน</strong> คือ 7 ขั้นตอนที่มีลำดับตายตัว และมีสองขั้นที่เป็นต้นตอของความผิดพลาดเกือบทั้งหมด คือ<strong>ฐานค่าจ้างประกันสังคม</strong>กับ<strong>การเฉลี่ยภาษีทั้งปี</strong> ถ้าสองข้อนี้ถูก ที่เหลือเป็นแค่การบวกลบ</p>
+    <p data-en="If you would rather not do this in Excel, &lt;a href=&quot;index.html&quot;&gt;eSimPayroll&lt;/a&gt; can calculate and manage all of your payroll data in one system — the same engine that produced every figure in this article.">หากไม่อยากคำนวณเงินเดือนด้วย Excel สามารถใช้ <a href="index.html">eSimPayroll</a> ช่วยคำนวณและจัดการข้อมูลเงินเดือนในระบบเดียว — ชุดคำสั่งเดียวกับที่คำนวณตัวเลขทุกบรรทัดในบทความนี้</p>
+
+    <h2 data-en="Frequently asked questions">คำถามที่พบบ่อย</h2>
+    <div class="faq">
+      <details><summary data-en="How is net pay calculated?">เงินเดือนสุทธิ คำนวณยังไง</summary>
+        <p data-en="Net pay = total earnings − total deductions. Total earnings is base pay plus overtime plus every allowance; total deductions is social security plus withholding tax plus other items such as company loans or absence deductions. The order matters: social security and tax must be computed from the correct bases first."><strong>เงินเดือนสุทธิ</strong> = เงินได้รวม − เงินหักรวม โดยเงินได้รวมคือเงินเดือนฐาน + ค่าล่วงเวลา + เงินเพิ่มทุกรายการ ส่วนเงินหักรวมคือประกันสังคม + ภาษี + รายการหักอื่น เช่น เงินกู้บริษัทหรือหักขาดงาน ลำดับสำคัญ ต้องคิดประกันสังคมกับภาษีจากฐานที่ถูกต้องก่อน</p></details>
+      <details><summary data-en="Is overtime subject to social security?">ค่าล่วงเวลาต้องหักประกันสังคมไหม</summary>
+        <p data-en="No. Overtime is not part of the social security wage, and neither are bonuses. Regular allowances — position, travel, diligence, commission — do count and must be included. Including overtime over-deducts every month.">ไม่ต้อง ค่าล่วงเวลาไม่นับเป็นค่าจ้างตามนิยามประกันสังคม เช่นเดียวกับโบนัส ส่วนค่าตอบแทนที่จ่ายประจำ เช่น ค่าตำแหน่ง ค่าเดินทาง เบี้ยขยัน ค่าคอมมิชชั่น นับเป็นค่าจ้างและต้องรวมเข้าฐาน การเอา OT มารวมจะทำให้หักเกินทุกเดือน</p></details>
+      <details><summary data-en="How do I work out the hourly overtime rate?">คำนวณ OT ต่อชั่วโมงยังไง</summary>
+        <p data-en="Monthly staff: salary ÷ days per month ÷ hours per day. Daily staff: daily wage ÷ hours per day. Then multiply by hours worked and the statutory multiplier — 1.5× on a working day, 3× on a holiday.">รายเดือน: เงินเดือน ÷ วันต่อเดือน ÷ ชั่วโมงต่อวัน · รายวัน: ค่าจ้างต่อวัน ÷ ชั่วโมงต่อวัน จากนั้นคูณจำนวนชั่วโมงที่ทำและตัวคูณตามกฎหมาย คือ 1.5 เท่าวันทำงาน และ 3 เท่าวันหยุด</p></details>
+      <details><summary data-en="Is salary tax monthly or annual?">ภาษีเงินเดือนคิดทีละเดือนหรือคิดทั้งปี</summary>
+        <p data-en="Annual. Thai withholding tax is derived from full-year income less expenses and allowances, run through the progressive brackets, then divided across the months worked. Computing it month by month gives the wrong figure, and a raise or bonus changes every remaining month.">คิดทั้งปี ภาษีหัก ณ ที่จ่ายคำนวณจากเงินได้ทั้งปี หักค่าใช้จ่ายและค่าลดหย่อน เข้าอัตราก้าวหน้า แล้วหารเฉลี่ยตามเดือนที่ทำงาน การคิดแยกทีละเดือนจะได้ตัวเลขผิด และเมื่อขึ้นเงินเดือนหรือจ่ายโบนัส ภาษีของทุกเดือนที่เหลือจะเปลี่ยนตาม</p></details>
+    </div>
+  </article>
+</div>
+
+<section style="background:var(--bg);border-top:1px solid var(--line)">
+  <div class="wrap wide">
+    <h2 class="more-h" data-en="More articles">บทความอื่น ๆ</h2>
+    <div class="artwrap">
+      <button class="arrow prev" id="artPrev" aria-label="เลื่อนซ้าย">‹</button>
+      <button class="arrow next" id="artNext" aria-label="เลื่อนขวา">›</button>
+      <div class="cards">
+      <a href="article-welfare-fund.html" class="card">
+        <div class="cover"><img loading="lazy" alt="กฎหมายใหม่" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="article-withholding-tax.html" class="card">
+        <div class="cover"><img loading="lazy" alt="ภาษี" src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag" data-en="Tax">ภาษี</span>
+          <h3 data-en="ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="article-social-security.html" class="card">
+        <div class="cover"><img loading="lazy" alt="ประกันสังคม" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag" data-en="Social security">ประกันสังคม</span>
+          <h3 data-en="ประกันสังคม 5% เพดาน 875 บาท คิดยังไง">ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="article-50tawi-pnd1.html" class="card">
+        <div class="cover"><img loading="lazy" alt="เอกสาร" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80&auto=format&fit=crop"></div>
+        <div class="body"><span class="tag" data-en="Documents">เอกสาร</span>
+          <h3 data-en="50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่">50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="cta-band">
+    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
+    <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="app.html#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
+      <a href="index.html" class="btn ghost" data-en="See all features">ดูฟีเจอร์ทั้งหมด</a>
+      <a href="pricing.html" class="btn ghost" data-en="See pricing">ดูราคา</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="ft-grid">
+
+      <div>
+        <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+
+        <div class="ft-social">
+          <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener"
+             aria-label="TikTok ของ eSimPayroll" title="TikTok">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 0 1 0-5.18c.27 0 .53.04.77.12v-3.2a5.7 5.7 0 0 0-.77-.05A5.72 5.72 0 0 0 4.14 15.3a5.72 5.72 0 0 0 5.72 5.72 5.72 5.72 0 0 0 5.72-5.72V9.4a7.35 7.35 0 0 0 4.28 1.37V7.68a4.29 4.29 0 0 1-3.26-1.86z"/></svg>
+          </a>
+          <a class="soc ig" href="https://www.instagram.com/esimpayroll" target="_blank" rel="noopener"
+             aria-label="Instagram ของ eSimPayroll" title="Instagram">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.1" cy="6.9" r="1.15" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="soc line" href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener"
+             aria-label="LINE ของ eSimPayroll" title="LINE">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M12 3C6.9 3 2.75 6.36 2.75 10.5c0 3.7 3.29 6.8 7.74 7.39.3.07.71.2.81.46.09.24.06.6.03.85l-.13.79c-.4.24-.19.92.81.5s5.4-3.18 7.37-5.45a6.7 6.7 0 0 0 1.87-4.54C21.25 6.36 17.1 3 12 3zM8.3 12.9H6.4a.4.4 0 0 1-.4-.4V9.06a.4.4 0 1 1 .8 0v3.04h1.5a.4.4 0 1 1 0 .8zm1.66-.4a.4.4 0 1 1-.8 0V9.06a.4.4 0 1 1 .8 0zm4.03 0a.4.4 0 0 1-.72.24l-1.78-2.42v2.18a.4.4 0 1 1-.8 0V9.06a.4.4 0 0 1 .72-.24l1.78 2.42V9.06a.4.4 0 1 1 .8 0zm2.87-2.12a.4.4 0 0 1 0 .8h-1.5v.72h1.5a.4.4 0 1 1 0 .8h-1.9a.4.4 0 0 1-.4-.4V9.06a.4.4 0 0 1 .4-.4h1.9a.4.4 0 1 1 0 .8h-1.5v.72z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Menu">เมนู</div>
+        <ul class="ft-list">
+          <li><a href="index.html#features" data-en="Features">ฟีเจอร์</a></li>
+          <li><a href="pricing.html" data-en="Pricing">แพ็กเกจและราคา</a></li>
+          <li><a href="articles.html" data-en="Articles">บทความ</a></li>
+          <li><a href="about.html" data-en="About us">เกี่ยวกับเรา</a></li>
+          <li><a href="app.html#signup" data-en="30-day free trial">ทดลองฟรี 30 วัน</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Contact">ติดต่อเรา</div>
+        <div class="ft-line">
+          <a href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener">
+            <img src="brand/line-qr-512.png" alt="LINE @748tgael" class="ft-qr" width="88" height="88" loading="lazy">
+          </a>
+          <div>
+            <a href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener" class="ft-lineid" data-en="Add friend">เพิ่มเพื่อน</a>
+            <div style="font-size:12.5px" data-en="Scan the QR or tap the button">สแกน QR หรือกดปุ่มด้านบน</div>
+            <div style="margin-top:9px"><a href="mailto:esimpayroll@gmail.com" class="ft-mail">esimpayroll@gmail.com</a></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ft-bot">
+      <div data-en="© 2026 eSimPayroll · All rights reserved">© 2569 eSimPayroll · สงวนลิขสิทธิ์</div>
+      <div data-en="Made for Thai businesses 🇹🇭">พัฒนาเพื่อธุรกิจไทย 🇹🇭</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var KEY='lang';
+  function apply(l){
+    document.documentElement.lang = (l==='en'?'en':'th');
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      if(!el.hasAttribute('data-th')) el.setAttribute('data-th', el.innerHTML);
+      el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-th');
+    });
+    document.querySelectorAll('[data-en-ph]').forEach(function(el){
+      if(!el.hasAttribute('data-th-ph')) el.setAttribute('data-th-ph', el.placeholder||'');
+      el.placeholder = (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-th-ph');
+    });
+
+  document.querySelectorAll('[data-en-alt]').forEach(function(el){
+    if(!el.hasAttribute('data-th-alt')) el.setAttribute('data-th-alt', el.alt||'');
+    el.alt = (l==='en') ? el.getAttribute('data-en-alt') : el.getAttribute('data-th-alt');
+  });
+    var b=document.getElementById('langBtn'); if(b) b.textContent = (l==='en'?'🌐 TH':'🌐 EN');
+    try{ localStorage.setItem(KEY,l); }catch(e){}
+  }
+  var cur='th'; try{ cur = localStorage.getItem(KEY)||'th'; }catch(e){}
+  window.__setLang=apply;
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(cur);
+    var b=document.getElementById('langBtn');
+    if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); };
+  });
+})();
+</script>
+<script>
+/* แถว "บทความอื่น ๆ" · ลากการ์ดเลื่อนได้ + ปุ่มลูกศรเลื่อนทีละใบ (เหมือนหน้าแรก) */
+(function(){
+  var box=document.querySelector('.cards'), prev=document.getElementById('artPrev'), next=document.getElementById('artNext');
+  if(!box) return;
+  var GAP=parseFloat(getComputedStyle(box).gap)||22;
+  function step(){ var c=box.querySelector('.card'); return c ? c.getBoundingClientRect().width+GAP : 300; }
+  function sync(){
+    if(!prev||!next) return;
+    var max=box.scrollWidth-box.clientWidth-2;
+    prev.disabled = box.scrollLeft<=2;
+    next.disabled = box.scrollLeft>=max;
+  }
+  if(prev) prev.onclick=function(){ box.scrollBy({left:-step(),behavior:'smooth'}); };
+  if(next) next.onclick=function(){ box.scrollBy({left: step(),behavior:'smooth'}); };
+  box.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync);
+  window.addEventListener('load',sync);
+  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
+  setTimeout(sync,60); setTimeout(sync,400); sync();
+
+  var down=false, dragging=false, startX=0, startScroll=0, moved=0, lastX=0, lastT=0, vel=0, glide=0;
+  box.addEventListener('pointerdown', function(e){
+    if(e.pointerType!=='mouse' || e.button!==0) return;
+    cancelAnimationFrame(glide);
+    down=true; dragging=false; moved=0;
+    startX=lastX=e.clientX; startScroll=box.scrollLeft; lastT=e.timeStamp; vel=0;
+  });
+  box.addEventListener('pointermove', function(e){
+    if(!down) return;
+    var dx=e.clientX-startX;
+    if(!dragging){
+      if(Math.abs(dx)<5) return;
+      dragging=true; box.classList.add('grabbing');
+      try{ box.setPointerCapture(e.pointerId); }catch(err){}
+    }
+    e.preventDefault();
+    moved=Math.abs(dx);
+    box.scrollLeft=startScroll-dx;
+    sync();
+    var dt=e.timeStamp-lastT;
+    if(dt>0){ vel=(e.clientX-lastX)/dt; lastX=e.clientX; lastT=e.timeStamp; }
+  });
+  function release(e){
+    if(!down) return;
+    down=false;
+    if(!dragging) return;
+    try{ box.releasePointerCapture(e.pointerId); }catch(err){}
+    box.classList.remove('grabbing'); dragging=false; sync();
+    var v=vel*16;
+    function stop(){ box.style.scrollSnapType=''; box.style.scrollBehavior=''; sync(); }
+    setTimeout(stop, 800);
+    (function slide(){
+      if(Math.abs(v)<0.6){ stop(); return; }
+      box.style.scrollSnapType='none'; box.style.scrollBehavior='auto';
+      box.scrollLeft-=v; v*=0.92; sync();
+      glide=requestAnimationFrame(slide);
+    })();
+  }
+  box.addEventListener('pointerup', release);
+  box.addEventListener('pointercancel', release);
+  box.addEventListener('click', function(e){
+    if(moved>5){ e.preventDefault(); e.stopPropagation(); moved=0; }
+  }, true);
+  box.addEventListener('dragstart', function(e){ e.preventDefault(); });
+})();
+</script>
+</body>
+</html>

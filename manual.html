@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>คู่มือการใช้งาน eSimPayroll | โปรแกรมเงินเดือนออนไลน์</title>
+<meta name="description" content="คู่มือการใช้งาน eSimPayroll ครบทุกเมนู ตั้งแต่ตั้งค่าบริษัท เพิ่มพนักงาน คำนวณเงินเดือน จนถึงออกเอกสารยื่นราชการ">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/icon-192.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/icon-96.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/icon-48.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/brand/icon-192.png">
+<link rel="shortcut icon" href="/brand/icon-48.png">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --brand:#0f766e; --brand-d:#0b5f58; --ink:#0f2231; --muted:#64748b;
+    --line:#e2e8f0; --bg:#f6f9fc;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:"Sarabun","Noto Sans Thai",-apple-system,"Segoe UI",sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.75;font-size:15px}
+
+  .bar{position:sticky;top:0;z-index:20;background:#0f2231;color:#fff;
+    padding:11px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .bar b{font-size:14.5px}
+  .bar button{margin-left:auto;background:var(--brand);color:#fff;border:0;border-radius:9px;
+    padding:9px 18px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+  .bar a{background:rgba(255,255,255,.15);color:#fff;border-radius:9px;padding:9px 16px;
+    font-size:14px;font-weight:700;text-decoration:none}
+
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px 60px}
+  .sheet{background:#fff;border-radius:14px;padding:34px 38px;margin-top:20px;
+    box-shadow:0 3px 18px rgba(15,34,49,.07)}
+
+  h1{font-size:29px;letter-spacing:-.7px;margin-bottom:8px;font-weight:800}
+  h2{font-size:21px;color:var(--brand-d);margin:0 0 14px;padding-bottom:8px;
+    border-bottom:2px solid var(--brand);letter-spacing:-.3px}
+  h3{font-size:16.5px;margin:20px 0 7px;letter-spacing:-.2px}
+  h3:first-of-type{margin-top:8px}
+  p{margin-bottom:10px}
+  ul,ol{margin:0 0 11px 22px}
+  li{margin-bottom:5px}
+  .muted{color:var(--muted)}
+  code{background:#f1f5f9;border-radius:5px;padding:1px 6px;font-size:13.5px;
+    font-family:Consolas,monospace}
+
+  /* สารบัญ */
+  .toc{background:#f0fdfa;border:1px solid #99f6e4;border-radius:12px;padding:20px 24px}
+  .toc h3{margin:0 0 12px;color:var(--brand-d)}
+  .toc ol{margin:0;list-style:none;counter-reset:t;
+    columns:2;column-gap:26px}
+  .toc li{counter-increment:t;margin-bottom:7px;break-inside:avoid}
+  .toc li::before{content:counter(t) ". ";color:var(--brand);font-weight:700}
+  .toc a{color:var(--ink);text-decoration:none;border-bottom:1px dotted #94a3b8}
+  .toc a:hover{color:var(--brand)}
+
+  /* ขั้นตอน */
+  .steps{counter-reset:s;list-style:none;margin-left:0}
+  .steps > li{counter-increment:s;position:relative;padding-left:38px;margin-bottom:11px}
+  .steps > li::before{content:counter(s);position:absolute;left:0;top:1px;width:26px;height:26px;
+    border-radius:50%;background:var(--brand);color:#fff;font-size:13px;font-weight:700;
+    display:flex;align-items:center;justify-content:center}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:12px}
+  th,td{padding:9px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}
+  thead th{background:#0f2231;color:#fff;font-weight:700;font-size:13.5px;border-color:#0f2231}
+  tbody tr:nth-child(even){background:#f8fafc}
+
+  .note{background:#f0fdfa;border-left:4px solid var(--brand);border-radius:0 10px 10px 0;
+    padding:13px 17px;margin:12px 0;font-size:14px}
+  .warn{background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;
+    padding:13px 17px;margin:12px 0;font-size:14px}
+  .danger{background:#fef2f2;border-left:4px solid #dc2626;border-radius:0 10px 10px 0;
+    padding:13px 17px;margin:12px 0;font-size:14px}
+  .note b,.warn b,.danger b{display:inline}
+
+  .prem{display:inline-block;background:linear-gradient(135deg,#b45309,#f59e0b);color:#fff;
+    border-radius:100px;padding:2px 11px;font-size:11.5px;font-weight:700;
+    vertical-align:middle;margin-left:6px}
+  .firmtag{display:inline-block;background:#7e22ce;color:#fff;border-radius:100px;
+    padding:2px 11px;font-size:11.5px;font-weight:700;vertical-align:middle;margin-left:6px}
+
+  .ex{background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:15px 18px;margin:12px 0}
+  .ex h4{font-size:14px;color:var(--brand-d);margin-bottom:8px}
+  .ex table{margin:0;font-size:13.5px}
+  .ex table td{border:0;border-bottom:1px solid var(--line);padding:6px 0}
+  .ex table tr:last-child td{border-bottom:0;font-weight:700}
+  .ex .num{text-align:right;font-variant-numeric:tabular-nums}
+
+  .top{display:flex;align-items:center;gap:13px;padding-bottom:16px;
+    border-bottom:2px solid var(--line);margin-bottom:20px}
+  .logo{width:48px;height:48px;border-radius:13px;flex-shrink:0;
+    background:linear-gradient(135deg,#0f766e,#17557f);display:flex;
+    align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px}
+
+
+  /* ---------- กล่องติดต่อ LINE ---------- */
+  .helpbox{display:flex;align-items:center;gap:22px;background:#f0fdfa;
+    border:1px solid #99f6e4;border-radius:14px;padding:20px 24px;margin-top:22px}
+  .qr{width:132px;height:132px;flex-shrink:0;background:#fff;border:1px solid var(--line);
+    border-radius:11px;padding:7px}
+  .qr svg{display:block}
+  .helptxt b{font-size:16px;color:var(--brand-d)}
+  .helptxt p{margin:5px 0 12px;font-size:14px}
+  .linebtn{display:inline-flex;align-items:center;gap:9px;background:#06C755;color:#fff;
+    text-decoration:none;border-radius:100px;padding:10px 20px;font-weight:700;font-size:14.5px;
+    box-shadow:0 6px 16px rgba(6,199,85,.3)}
+  .linebtn .lico{background:rgba(255,255,255,.22);border-radius:6px;padding:1px 7px;
+    font-size:11.5px;font-weight:800;letter-spacing:.4px}
+  .helptxt .muted{display:block;margin-top:9px}
+  .linebtn.sm{padding:6px 14px;font-size:13px;box-shadow:none;margin-left:8px;vertical-align:middle}
+  @media(max-width:560px){ .helpbox{flex-direction:column;text-align:center;gap:16px} }
+  @media print{ .linebtn{box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact} }
+
+  @media print{
+    body{background:#fff;font-size:11.5pt}
+    .bar{display:none}
+    .wrap{max-width:none;padding:0}
+    .sheet{box-shadow:none;border-radius:0;padding:10mm 0;margin:0;
+      page-break-after:always}
+    .sheet:last-child{page-break-after:auto}
+    h2,h3{page-break-after:avoid}
+    table,.ex,.note,.warn,.danger{page-break-inside:avoid}
+    thead th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .toc ol{columns:2}
+    a{color:inherit;text-decoration:none}
+  }
+  @media(max-width:700px){
+    .sheet{padding:22px 18px}
+    .toc ol{columns:1}
+  }
+  @page{size:A4;margin:14mm}
+</style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-05JJT2VDRV"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js",new Date());
+  gtag("config","G-05JJT2VDRV",{anonymize_ip:true});
+</script>
+</head>
+<body>
+
+<div class="bar no-print">
+  <b>📘 คู่มือการใช้งาน eSimPayroll</b>
+  <a href="/brochure">📄 โบรชัวร์</a>
+  <button onclick="window.print()">🖨️ พิมพ์ / บันทึกเป็น PDF</button>
+</div>
+
+<div class="wrap">
+
+<!-- ═══════ ปก + สารบัญ ═══════ -->
+<div class="sheet">
+  <div class="top">
+    <div class="logo">eS</div>
+    <div><h1>คู่มือการใช้งาน</h1>
+      <div class="muted">eSimPayroll — โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย · esimpayroll.com</div></div>
+  </div>
+
+  <p>คู่มือนี้อธิบายการใช้งานทุกเมนูตามลำดับที่ควรทำจริง ตั้งแต่เปิดใช้ครั้งแรกจนถึงพิมพ์เอกสารยื่นราชการ
+     ผู้ที่เพิ่งเริ่มใช้แนะนำให้อ่านตามลำดับหัวข้อ 1–6 ก่อน ส่วนที่เหลืออ่านเมื่อต้องใช้งาน</p>
+
+  <div class="note">
+    เมนูที่มีป้าย <span class="prem">พรีเมี่ยม</span> ใช้ได้เฉพาะแพ็กเกจพรีเมี่ยม
+    (ช่วงทดลองใช้ 30 วันได้ใช้ครบทุกฟีเจอร์) · เมนูที่มีป้าย <span class="firmtag">สำนักงานบัญชี</span>
+    มีเฉพาะบัญชีแบบสำนักงานบัญชี
+  </div>
+
+  <div class="toc">
+    <h3>สารบัญ</h3>
+    <ol>
+      <li><a href="#s1">เริ่มต้นใช้งานครั้งแรก</a></li>
+      <li><a href="#s2">ตั้งค่าบริษัท</a></li>
+      <li><a href="#s3">ข้อมูลพนักงาน</a></li>
+      <li><a href="#s4">คำนวณเงินได้ / เงินหัก</a></li>
+      <li><a href="#s5">สลิปเงินเดือน</a></li>
+      <li><a href="#s6">เอกสารยื่นราชการ</a></li>
+      <li><a href="#s7">แดชบอร์ดและรายงานสรุป</a></li>
+      <li><a href="#s8">การลาออก</a></li>
+      <li><a href="#s9">เวลาเข้างานและกะ</a></li>
+      <li><a href="#s10">ระบบลางาน</a></li>
+      <li><a href="#s11">เบิกล่วงหน้ากลางเดือน</a></li>
+      <li><a href="#s12">สำหรับสำนักงานบัญชี</a></li>
+      <li><a href="#s13">แพ็กเกจและการชำระเงิน</a></li>
+      <li><a href="#s14">ปัญหาที่พบบ่อย</a></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ═══════ 1 ═══════ -->
+<div class="sheet" id="s1">
+  <h2>1 · เริ่มต้นใช้งานครั้งแรก</h2>
+
+  <h3>สมัครใช้งาน</h3>
+  <ol class="steps">
+    <li>เข้า <code>esimpayroll.com</code> แล้วกด <b>เริ่มใช้งานฟรี 30 วัน</b></li>
+    <li>เลือกประเภทบัญชี — <b>บริษัทเดียว</b> หรือ <b>สำนักงานบัญชี</b></li>
+    <li>กรอกอีเมลและตั้งรหัสผ่าน</li>
+    <li>เปิดอีเมลที่ระบบส่งไปแล้วกดยืนยัน</li>
+    <li>เข้าสู่ระบบ เริ่มใช้งานได้ทันที</li>
+  </ol>
+
+  <div class="warn">
+    <b>เลือกประเภทบัญชีให้ถูกตั้งแต่แรก</b> — บัญชี<b>บริษัทเดียว</b>ใช้ทำเงินเดือนของบริษัทตัวเอง
+    มีระบบลงเวลาและระบบลา · บัญชี<b>สำนักงานบัญชี</b>ใช้ดูแลบริษัทลูกค้าหลายราย พนักงานไม่จำกัด
+    แต่ไม่มีระบบลงเวลาและระบบลา หากเลือกผิดสามารถแจ้งทีมงานเปลี่ยนให้ได้ก่อนชำระเงิน
+  </div>
+
+  <h3>หน้าตาของระบบ</h3>
+  <table>
+    <thead><tr><th style="width:26%">ส่วน</th><th>ทำอะไร</th></tr></thead>
+    <tbody>
+      <tr><td><b>แถบเมนูซ้าย</b></td><td>สลับหน้าต่าง ๆ ของระบบ · บนมือถือกดปุ่มขีดสามขีดเพื่อเปิด</td></tr>
+      <tr><td><b>ช่องงวดเดือนด้านบน</b></td><td>เลือกงวดเงินเดือนที่กำลังทำ ทุกหน้าจะแสดงข้อมูลของงวดที่เลือกไว้</td></tr>
+      <tr><td><b>แถบแจ้งวันทดลอง</b></td><td>บอกจำนวนวันที่เหลือของช่วงทดลองใช้ หรือวันหมดอายุแพ็กเกจ</td></tr>
+      <tr><td><b>ปุ่มบันทึก</b></td><td>ระบบบันทึกให้อัตโนมัติทุกครั้งที่แก้ ไม่ต้องกดบันทึกเอง</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <b>ข้อมูลเก็บบนคลาวด์</b> เปิดใช้จากเครื่องไหนก็ได้ด้วยบัญชีเดียวกัน
+    และปิดเบราว์เซอร์ไปแล้วกลับมาก็อยู่หน้าเดิม
+  </div>
+</div>
+
+<!-- ═══════ 2 ═══════ -->
+<div class="sheet" id="s2">
+  <h2>2 · ตั้งค่าบริษัท</h2>
+  <p>เมนู <b>⚙️ ตั้งค่า</b> — ควรทำก่อนเริ่มใช้งานจริง เพราะข้อมูลตรงนี้จะไปแสดงบนสลิปและเอกสารยื่นทุกใบ</p>
+
+  <h3>ข้อมูลบริษัท</h3>
+  <table>
+    <thead><tr><th style="width:30%">ช่อง</th><th>คำอธิบาย</th></tr></thead>
+    <tbody>
+      <tr><td>ชื่อบริษัท</td><td>ชื่อเต็มตามหนังสือรับรอง ใช้แสดงบนสลิปและเอกสารทุกใบ</td></tr>
+      <tr><td>ที่อยู่</td><td>ที่อยู่ตามที่จดทะเบียน</td></tr>
+      <tr><td>เลขประจำตัวผู้เสียภาษี</td><td>13 หลัก ใช้ในแบบ ภ.ง.ด.1 และ 50 ทวิ</td></tr>
+      <tr><td>เลขที่บัญชีนายจ้าง</td><td>เลขทะเบียนประกันสังคม ใช้ในแบบ สปส.1-10</td></tr>
+      <tr><td>ผู้ลงนาม</td><td>ชื่อ/ตำแหน่งผู้มีอำนาจลงนามท้ายเอกสาร</td></tr>
+    </tbody>
+  </table>
+
+  <h3>ค่าคำนวณ</h3>
+  <table>
+    <thead><tr><th style="width:30%">ช่อง</th><th>ค่ามาตรฐาน</th></tr></thead>
+    <tbody>
+      <tr><td>อัตราประกันสังคม</td><td><b>5%</b> ของค่าจ้าง</td></tr>
+      <tr><td>เพดานฐานประกันสังคม</td><td><b>17,500 บาท</b> — สมทบสูงสุด 875 บาท/เดือน</td></tr>
+      <tr><td>ฐานคำนวณ OT</td><td>เงินเดือน ÷ <b>30 วัน</b> ÷ <b>8 ชั่วโมง</b></td></tr>
+      <tr><td>วันทำงาน/เดือน</td><td><b>26 วัน</b> — ใช้ประมาณการภาษีของพนักงานรายวัน</td></tr>
+      <tr><td>กองทุนสงเคราะห์ลูกจ้าง</td><td><b>0.25%</b> (1 ต.ค. 2569 – 30 ก.ย. 2574 แล้วขึ้นเป็น 0.50%)</td></tr>
+      <tr><td>วันตัดรอบเงินเดือน</td><td><b>สิ้นเดือน</b> — เปลี่ยนได้หากบริษัทตัดรอบวันอื่น</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <b>วันตัดรอบเงินเดือน</b> มีผลกับช่วงวันของงวดและการคิดเงินเดือนตามสัดส่วนของพนักงานเข้าใหม่
+    หากบริษัทตัดรอบวันที่ 25 ให้ตั้งเป็น 25 งวดจะกลายเป็นวันที่ 26 เดือนก่อน ถึงวันที่ 25 เดือนปัจจุบัน
+  </div>
+</div>
+
+<!-- ═══════ 3 ═══════ -->
+<div class="sheet" id="s3">
+  <h2>3 · ข้อมูลพนักงาน</h2>
+  <p>เมนู <b>👥 ข้อมูลพนักงาน</b> — เพิ่ม แก้ไข ค้นหา และนำเข้า/ส่งออกรายชื่อ</p>
+
+  <h3>เพิ่มพนักงาน</h3>
+  <ol class="steps">
+    <li>กดปุ่ม <b>➕ เพิ่มพนักงาน</b></li>
+    <li>กรอกข้อมูล รหัสพนักงานระบบตั้งให้อัตโนมัติ แก้เองได้</li>
+    <li>เลือก <b>ประเภทการจ้าง</b> — รายเดือน หรือ รายวัน</li>
+    <li>ใส่ <b>วันเริ่มงาน</b> ให้ครบทุกคน (สำคัญมาก)</li>
+    <li>กด <b>บันทึก</b></li>
+  </ol>
+
+  <div class="danger">
+    <b>ต้องกรอกวันเริ่มงานเสมอ</b> — ระบบใช้วันเริ่มงานและวันที่ลาออกตัดสินว่าเดือนไหนพนักงานคนนั้น
+    ต้องมีสลิป ต้องขึ้นในแบบ ภ.ง.ด.1 และ สปส.1-10 หรือไม่ และใช้คิดเงินเดือนตามสัดส่วนของเดือนแรก
+    <b>ถ้าไม่กรอก ระบบจะถือว่าทำงานอยู่ตลอด</b> ทำให้เอกสารมีชื่อคนที่ยังไม่เข้างาน
+  </div>
+
+  <h3>ช่องข้อมูลที่มีผลต่อการคำนวณ</h3>
+  <table>
+    <thead><tr><th style="width:30%">ช่อง</th><th>มีผลอย่างไร</th></tr></thead>
+    <tbody>
+      <tr><td>เงินเดือน / ค่าจ้างต่อวัน</td><td>ฐานคำนวณทุกอย่าง — เงินเดือน OT ประกันสังคม ภาษี</td></tr>
+      <tr><td>วันเริ่มงาน</td><td>คิดเงินเดือนตามสัดส่วนเดือนแรก และกรองรายชื่อในเอกสาร</td></tr>
+      <tr><td>วันที่ลาออก</td><td>คิดเงินเดือนตามสัดส่วนเดือนสุดท้าย และตัดออกจากเอกสารเดือนถัดไป</td></tr>
+      <tr><td>คู่สมรส / จำนวนบุตร</td><td>ลดหย่อนภาษี คู่สมรส 60,000 · บุตรคนละ 30,000 บาท/ปี</td></tr>
+      <tr><td>อัตรากองทุนสำรองเลี้ยงชีพ</td><td>% ที่หักจากเงินเดือน · ถ้าตั้งมากกว่า 0 ระบบจะไม่หักกองทุนสงเคราะห์ลูกจ้าง</td></tr>
+      <tr><td>ไม่หักประกันสังคม</td><td>ติ๊กสำหรับกรรมการหรือผู้ที่ได้รับยกเว้น — จะถูกแยกออกจากแบบ สปส.1-10</td></tr>
+      <tr><td>ไม่คิด OT</td><td>ติ๊กสำหรับพนักงานระดับบริหารที่ไม่มีสิทธิ์ได้ OT</td></tr>
+      <tr><td>ธนาคาร / เลขที่บัญชี</td><td>ใช้ในใบสรุปยอดโอน</td></tr>
+    </tbody>
+  </table>
+
+  <h3>นำเข้าจากไฟล์ CSV</h3>
+  <p>ถ้ามีรายชื่ออยู่ใน Excel แล้ว ให้กด <b>⬇️ ส่งออก CSV</b> ก่อนเพื่อดูรูปแบบคอลัมน์ที่ระบบต้องการ
+     แล้วจัดข้อมูลให้ตรงกัน จากนั้นกด <b>⬆️ นำเข้า CSV</b></p>
+  <div class="note">ติดปัญหาเรื่องรูปแบบไฟล์ — ทีมงานช่วยจัดให้ฟรี
+    <a class="linebtn sm" href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener">
+      <span class="lico">LINE</span> ทักหาทีมงาน</a></div>
+</div>
+
+<!-- ═══════ 4 ═══════ -->
+<div class="sheet" id="s4">
+  <h2>4 · คำนวณเงินได้ / เงินหัก</h2>
+  <p>เมนู <b>🧮 คำนวณเงินได้ / เงินหัก</b> — หน้าหลักที่ใช้ทำเงินเดือนแต่ละงวด</p>
+
+  <ol class="steps">
+    <li>เลือก <b>งวดเดือน</b> ที่ต้องการทำ จากช่องด้านบนขวา</li>
+    <li>เลือกพนักงานจากช่อง <b>เลือกพนักงาน</b> หรือเลือก <b>— ทั้งหมด —</b> เพื่อกรอกแบบตาราง</li>
+    <li>กรอกรายการเงินได้และเงินหักที่มีในงวดนั้น</li>
+    <li>ตรวจตัวเลข แล้วเปลี่ยนไปทำคนถัดไป — ระบบบันทึกให้เอง</li>
+  </ol>
+
+  <h3>ช่องที่ระบบคำนวณให้อัตโนมัติ</h3>
+  <p>ช่องพื้นหลัง<b>สีเขียว</b>คือช่องที่ระบบคิดให้เอง ได้แก่ <b>ภาษีเงินได้</b>, <b>ประกันสังคม</b>
+     และ <b>กองทุนสำรองเลี้ยงชีพ</b> หากพิมพ์ทับเอง ช่องจะเปลี่ยนเป็น<b>สีเหลือง</b>พร้อมคำว่า (แก้เอง)
+     กด <b>↻ คืนค่าอัตโนมัติ</b> เพื่อให้ระบบคิดใหม่</p>
+
+  <h3>ค่าล่วงเวลา (OT)</h3>
+  <p>กรอกจำนวนชั่วโมงและเลือกตัวคูณ ระบบคูณอัตราต่อชั่วโมงให้เอง หรือจะพิมพ์ยอดรวมเองก็ได้</p>
+  <table>
+    <thead><tr><th>ตัวคูณ</th><th>ใช้เมื่อ</th></tr></thead>
+    <tbody>
+      <tr><td>1 เท่า</td><td>ทำงานวันหยุด (ในเวลาทำงานปกติ)</td></tr>
+      <tr><td>1.5 เท่า</td><td>ล่วงเวลาในวันทำงานปกติ</td></tr>
+      <tr><td>2 เท่า</td><td>ค่าทำงานในวันหยุด</td></tr>
+      <tr><td>3 เท่า</td><td>ล่วงเวลาในวันหยุด</td></tr>
+    </tbody>
+  </table>
+
+  <h3>ตรวจสอบวิธีคำนวณภาษี</h3>
+  <p>กดปุ่ม <b>🔍 ดูวิธีคำนวณภาษี</b> ระบบจะแสดงทีละขั้น ตั้งแต่เงินได้ทั้งปี หักค่าใช้จ่าย
+     ลดหย่อน จนถึงภาษีที่หักต่อเดือน ใช้อธิบายให้พนักงานหรือผู้ตรวจสอบบัญชีดูได้</p>
+
+  <div class="ex">
+    <h4>ตัวอย่าง — พนักงานเงินเดือน 30,000 บาท (โสด ไม่มีบุตร ไม่มีกองทุน)</h4>
+    <table>
+      <tr><td>เงินเดือน</td><td class="num">30,000.00</td></tr>
+      <tr><td>หัก ประกันสังคม 5% (คุมเพดาน 17,500)</td><td class="num">− 875.00</td></tr>
+      <tr><td>หัก ภาษีหัก ณ ที่จ่าย</td><td class="num">− 164.58</td></tr>
+      <tr><td>เงินสุทธิที่ได้รับ</td><td class="num">28,960.42</td></tr>
+    </table>
+  </div>
+
+  <div class="note">
+    <b>พนักงานเข้างานกลางเดือน</b> — ระบบขึ้นกล่องสีเหลืองแสดงว่าคิดจากกี่วันในงวดกี่วัน
+    และคิดเงินเดือนตามสัดส่วนให้เอง ไม่ต้องคำนวณเอง
+  </div>
+  <div class="note">
+    <b>พนักงานรายวัน</b> — ต้องกรอก <b>จำนวนวันทำงาน</b> ก่อน ระบบจึงคิดค่าจ้างฐานให้
+    (ค่าจ้างต่อวัน × จำนวนวัน)
+  </div>
+</div>
+
+<!-- ═══════ 5 ═══════ -->
+<div class="sheet" id="s5">
+  <h2>5 · สลิปเงินเดือน</h2>
+  <p>เมนู <b>🧾 สลิปเงินเดือน</b></p>
+  <ol class="steps">
+    <li>เลือกงวดเดือน</li>
+    <li>เลือก <b>— ทุกคน —</b> เพื่อพิมพ์ทั้งบริษัท หรือเลือกรายชื่อเพื่อพิมพ์เฉพาะคน</li>
+    <li>กด <b>🖨️ พิมพ์สลิป</b></li>
+    <li>ในหน้าต่างพิมพ์ เลือกเครื่องพิมพ์ หรือเลือก <b>Save as PDF</b> เพื่อบันทึกเป็นไฟล์</li>
+  </ol>
+  <div class="note">
+    ระบบแสดงเฉพาะพนักงานที่<b>ทำงานอยู่จริงในงวดนั้น</b> — คนที่ยังไม่เข้างานหรือลาออกไปก่อนหน้าแล้ว
+    จะไม่มีสลิป ส่วนเดือนที่ลาออกพอดียังมีสลิปให้ เพราะเดือนนั้นยังได้รับเงิน
+  </div>
+  <div class="warn">
+    สลิปแสดงเฉพาะรายการที่<b>มีตัวเลขมากกว่าศูนย์</b> รายการที่ไม่ได้กรอกจะไม่ขึ้น
+    ทำให้สลิปสั้นและอ่านง่าย
+  </div>
+</div>
+
+<!-- ═══════ 6 ═══════ -->
+<div class="sheet" id="s6">
+  <h2>6 · เอกสารยื่นราชการ</h2>
+
+  <h3>📄 หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)</h3>
+  <p>ออกให้พนักงานปีละครั้ง หรือเมื่อลาออก แสดงเงินได้ทั้งปีและภาษีที่หักไว้
+     เลือกปีภาษีแล้วกดพิมพ์ ระบบรวมยอดทุกงวดในปีนั้นให้เอง</p>
+
+  <h3>🗂️ แบบ ภ.ง.ด.1</h3>
+  <p>ยื่นกรมสรรพากรทุกเดือน ภายในวันที่ 7 ของเดือนถัดไป (ยื่นออนไลน์ได้ถึงวันที่ 15)</p>
+  <ul>
+    <li>เลือกงวดเดือน แล้วตั้ง <b>วันที่จ่ายเงิน</b> ให้ตรงกับวันที่จ่ายจริง</li>
+    <li>กด <b>🖨️ พิมพ์</b> หรือ <b>⬇️ CSV</b> เพื่อนำไปอัปโหลดในระบบ e-Filing</li>
+  </ul>
+
+  <h3>🛡️ แบบประกันสังคม (สปส.1-10)</h3>
+  <p>ยื่นสำนักงานประกันสังคมทุกเดือน ภายในวันที่ 15 ของเดือนถัดไป</p>
+  <ul>
+    <li>ระบบแยกกรรมการหรือผู้ที่ติ๊ก "ไม่หักประกันสังคม" ออกให้อัตโนมัติ</li>
+    <li>มีทั้งแบบ สปส.1-10 ส่วนที่ 1 และส่วนที่ 2 รวมถึง <b>กท.20ก</b> (กองทุนเงินทดแทน)</li>
+  </ul>
+
+  <div class="note">
+    เอกสารทุกใบแสดงเฉพาะพนักงานที่ทำงานอยู่ในเดือนนั้น
+    <b>ยอดรวมและจำนวนรายที่แจ้งจะตรงกับรายชื่อที่แสดงเสมอ</b>
+  </div>
+
+  <h3>กำหนดเวลายื่นที่ต้องจำ</h3>
+  <table>
+    <thead><tr><th>เอกสาร</th><th>ยื่นที่</th><th>กำหนด</th></tr></thead>
+    <tbody>
+      <tr><td>ภ.ง.ด.1</td><td>กรมสรรพากร</td><td>ภายในวันที่ 7 ของเดือนถัดไป (ออนไลน์ถึงวันที่ 15)</td></tr>
+      <tr><td>สปส.1-10</td><td>สำนักงานประกันสังคม</td><td>ภายในวันที่ 15 ของเดือนถัดไป</td></tr>
+      <tr><td>ภ.ง.ด.1ก</td><td>กรมสรรพากร</td><td>ภายในเดือนกุมภาพันธ์ของปีถัดไป</td></tr>
+      <tr><td>50 ทวิ</td><td>ให้พนักงาน</td><td>ภายในวันที่ 15 กุมภาพันธ์ของปีถัดไป</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════ 7–8 ═══════ -->
+<div class="sheet" id="s7">
+  <h2>7 · แดชบอร์ดและรายงานสรุป</h2>
+  <table>
+    <thead><tr><th style="width:32%">เมนู</th><th>ใช้ดูอะไร</th></tr></thead>
+    <tbody>
+      <tr><td><b>📊 แดชบอร์ด</b></td><td>ภาพรวมของงวด — จำนวนพนักงาน เงินเดือนรวม เงินได้รวม เงินหักรวม เงินสุทธิรวม พร้อมกราฟ</td></tr>
+      <tr><td><b>📋 สรุปเงินเดือน</b></td><td>ตารางรายคน แสดงรายได้รวม หักรวม เงินสุทธิ — ใช้ตรวจก่อนโอนเงิน</td></tr>
+      <tr><td><b>🏢 สรุปตามแผนก</b></td><td>รวมยอดตามแผนก ใช้ดูต้นทุนบุคลากรแต่ละฝ่าย</td></tr>
+      <tr><td><b>📑 สรุปรายละเอียดทั้งหมด</b></td><td>ตารางใหญ่ แจกแจงทุกรายการเงินได้และเงินหักรายคน ส่งออก CSV ให้ฝ่ายบัญชีได้</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    หน้า <b>สรุปเงินเดือน</b> แสดงเฉพาะยอดรวม 3 ช่อง หากต้องการเห็นรายการหักแยกทีละบรรทัด
+    ให้ดูที่ <b>สลิปเงินเดือน</b> หรือ <b>สรุปรายละเอียดทั้งหมด</b>
+  </div>
+
+  <h2 id="s8" style="margin-top:26px">8 · การลาออก</h2>
+  <p>เมนู <b>🚪 การลาออก</b> — บันทึกวันที่ลาออกและดูรายชื่อผู้ที่ลาออกแล้ว</p>
+  <ol class="steps">
+    <li>เลือกพนักงานที่จะลาออก</li>
+    <li>ใส่วันที่ลาออกวันสุดท้ายที่ทำงาน</li>
+    <li>บันทึก</li>
+  </ol>
+  <p>หลังบันทึก ระบบจะคิดเงินเดือนเดือนสุดท้ายตามสัดส่วนวันที่ทำงานให้อัตโนมัติ
+     และตัดชื่อออกจากสลิปกับเอกสารยื่นของเดือนถัดไป <b>ข้อมูลเก่ายังอยู่ครบ</b>
+     ย้อนดูและพิมพ์เอกสารย้อนหลังได้เสมอ</p>
+  <div class="warn">
+    อย่าลบพนักงานที่ลาออกทิ้ง ให้ใส่วันที่ลาออกแทน — เพราะต้องใช้ข้อมูลออก 50 ทวิ
+    และยื่น ภ.ง.ด.1ก ตอนสิ้นปี
+  </div>
+</div>
+
+<!-- ═══════ 9–10 ═══════ -->
+<div class="sheet" id="s9">
+  <h2>9 · เวลาเข้างานและกะ <span class="prem">พรีเมี่ยม</span></h2>
+  <p>เมนู <b>⏰ เวลาเข้างาน</b></p>
+  <ul>
+    <li>บันทึกเวลาเข้า–ออกรายวัน หรือ<b>นำเข้าจากไฟล์ CSV</b> ของเครื่องสแกนนิ้ว</li>
+    <li>ระบบคิด<b>จำนวนวันทำงาน</b> <b>มาสาย</b> และ<b>ชั่วโมง OT</b> ให้</li>
+    <li>กดส่งผลลัพธ์เข้าหน้าเงินได้/เงินหักได้ทันที ไม่ต้องพิมพ์ซ้ำ</li>
+  </ul>
+
+  <h3>ระบบกะการทำงาน</h3>
+  <ul>
+    <li>ตั้งกะได้ไม่จำกัด กำหนดเวลาเข้า–ออกและเวลาอนุโลมสายของแต่ละกะ</li>
+    <li>รองรับ<b>กะข้ามคืน</b> เช่น 22:00 – 06:00</li>
+    <li><b>สลับกะยกชุด</b> — เลือกหลายคนหลายวันแล้วเปลี่ยนกะพร้อมกัน</li>
+  </ul>
+
+  <h3>กฎการคิด OT</h3>
+  <ul>
+    <li>เลือกว่าวันไหนของสัปดาห์คิด OT ได้บ้าง หรือกำหนดเป็นรายวันที่</li>
+    <li>ตั้ง<b>เพดาน OT ต่อวัน</b> ทั้งบริษัทหรือเฉพาะรายคน</li>
+    <li>ปิด OT เฉพาะบางคน เช่น ระดับผู้จัดการ</li>
+    <li>ระบบ<b>ปัดเศษลงทีละครึ่งชั่วโมง</b>เสมอ</li>
+  </ul>
+
+  <h2 id="s10" style="margin-top:26px">10 · ระบบลางาน <span class="prem">พรีเมี่ยม</span></h2>
+  <p>เมนู <b>🌴 ระบบลางาน</b></p>
+  <ol class="steps">
+    <li>กด <b>เพิ่มใบลา</b> เลือกพนักงานและประเภทการลา</li>
+    <li>ใส่ช่วงวันที่ลา บันทึกเป็นวันหรือชั่วโมงก็ได้</li>
+    <li>ระบบตัดโควตาและแสดงวันคงเหลือให้ทันที</li>
+  </ol>
+  <table>
+    <thead><tr><th>ประเภท</th><th>โควตามาตรฐาน</th><th>หมายเหตุ</th></tr></thead>
+    <tbody>
+      <tr><td>ลาป่วย</td><td>30 วัน/ปี</td><td>ตามกฎหมายแรงงาน</td></tr>
+      <tr><td>ลากิจ</td><td>3 วัน/ปี</td><td>ลากิจธุระจำเป็น</td></tr>
+      <tr><td>ลาพักร้อน</td><td>6 วัน/ปี</td><td>ได้สิทธิ์เมื่อทำงานครบ 1 ปี</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>ตั้งโควตาลาพักร้อนเฉพาะรายคนได้</b> — พนักงานอาวุโสที่ได้พักร้อนมากกว่าคนอื่น
+    ให้ไปตั้งในหน้าข้อมูลพนักงาน ระบบจะใช้ค่าเฉพาะคนแทนค่ากลางของบริษัท
+  </div>
+  <p>การลาที่ไม่ได้รับค่าจ้างจะถูกส่งไปเป็นรายการหัก <b>หักขาดงาน/ลาไม่รับค่าจ้าง</b> ในหน้าเงินหักให้อัตโนมัติ</p>
+</div>
+
+<!-- ═══════ 11 ═══════ -->
+<div class="sheet" id="s11">
+  <h2>11 · เบิกล่วงหน้ากลางเดือน <span class="prem">พรีเมี่ยม</span></h2>
+  <p>เมนู <b>💸 เบิกล่วงหน้ากลางเดือน</b> — สำหรับบริษัทที่จ่ายเงินเดือน <b>2 รอบต่อเดือน</b></p>
+
+  <h3>หลักการทำงาน</h3>
+  <table>
+    <thead><tr><th style="width:22%">รอบ</th><th>ทำอะไร</th></tr></thead>
+    <tbody>
+      <tr><td><b>กลางเดือน</b></td><td>จ่ายเงินเบิกล่วงหน้าให้พนักงาน <b>ยังไม่หักภาษีและประกันสังคม</b></td></tr>
+      <tr><td><b>สิ้นเดือน</b></td><td>ระบบคิดเงินเดือน<b>เต็มเดือน</b>ตามปกติ หักภาษี ประกันสังคม กองทุนครบ
+          แล้ว<b>หักยอดที่เบิกไปแล้วออกให้เอง</b></td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>ทำไมวิธีนี้ถูกต้องตามกฎหมาย</b> — ภ.ง.ด.1 และประกันสังคมยื่นเป็นรายเดือนอยู่แล้ว
+    การหักภาษีและประกันสังคมรอบเดียวตอนสิ้นเดือนจากยอดเต็มเดือน คือแบบที่สรรพากรและประกันสังคมต้องการพอดี
+    เอกสารทุกใบจึงยังถูกต้อง ไม่ต้องแก้อะไรเพิ่ม
+  </div>
+
+  <h3>ขั้นตอนใช้งาน</h3>
+  <ol class="steps">
+    <li>เลือกงวดเดือน แล้วตั้ง <b>วันที่จ่ายรอบกลางเดือน</b> (ค่าเริ่มต้นคือวันที่ 15)</li>
+    <li>ตั้ง <b>% เติมอัตโนมัติ</b> เช่น 45% แล้วกด <b>⚡ เติมให้ทุกคน</b>
+        หรือ<b>ติ๊กเลือกรายคน</b>ที่ต้องการ</li>
+    <li>แก้ยอดรายคนได้ตามต้องการ ระบบบันทึกให้ทันที</li>
+    <li>กด <b>🖨️ พิมพ์ใบสรุปโอน</b> เพื่อได้รายการโอนพร้อมชื่อธนาคารและเลขที่บัญชี
+        หรือกด <b>⬇️ CSV</b> เพื่อนำไปอัปโหลดในระบบธนาคาร</li>
+    <li>สิ้นเดือนทำเงินเดือนตามปกติ — ระบบหักยอดเบิกให้เองแล้ว ไม่ต้องกรอกซ้ำ</li>
+  </ol>
+
+  <div class="ex">
+    <h4>ตัวอย่าง — เงินเดือน 30,000 บาท เบิกล่วงหน้า 45%</h4>
+    <table>
+      <tr><td>กลางเดือน (วันที่ 15) — รับเงินเบิกล่วงหน้า</td><td class="num">13,500.00</td></tr>
+      <tr><td>สิ้นเดือน — เงินเดือนเต็มเดือน</td><td class="num">30,000.00</td></tr>
+      <tr><td>&nbsp;&nbsp;หัก ประกันสังคม</td><td class="num">− 875.00</td></tr>
+      <tr><td>&nbsp;&nbsp;หัก ภาษีหัก ณ ที่จ่าย</td><td class="num">− 164.58</td></tr>
+      <tr><td>&nbsp;&nbsp;หัก เบิกล่วงหน้า (กลางเดือน)</td><td class="num">− 13,500.00</td></tr>
+      <tr><td>สิ้นเดือน — รับเพิ่ม</td><td class="num">15,460.42</td></tr>
+      <tr><td>รวมทั้ง 2 รอบ (เท่ากับรับรอบเดียว)</td><td class="num">28,960.42</td></tr>
+    </table>
+  </div>
+
+  <div class="warn">
+    หากกรอกยอดเบิก<b>มากกว่าเงินที่จะได้รับ</b> ระบบจะขึ้นแถบแดงเตือน
+    แต่ยังบันทึกให้ เผื่อกรณีที่มีเหตุผลทางธุรกิจจริง — ควรตรวจก่อนโอนทุกครั้ง
+  </div>
+</div>
+
+<!-- ═══════ 12 ═══════ -->
+<div class="sheet" id="s12">
+  <h2>12 · สำหรับสำนักงานบัญชี <span class="firmtag">สำนักงานบัญชี</span></h2>
+  <p>เมนู <b>🏦 บริษัทลูกค้า</b> — มีเฉพาะบัญชีแบบสำนักงานบัญชี</p>
+
+  <h3>เพิ่มบริษัทลูกค้า</h3>
+  <ol class="steps">
+    <li>กด <b>➕ เพิ่มบริษัท</b></li>
+    <li>กรอกชื่อบริษัทและ<b>เลขประจำตัวผู้เสียภาษี 13 หลัก</b> (บังคับ)</li>
+    <li>บันทึก แล้วกดเข้าไปทำงานในบริษัทนั้นได้เลย</li>
+  </ol>
+
+  <h3>สลับบริษัท</h3>
+  <p>ใช้ช่องเลือกบริษัทที่อยู่<b>บนสุดของแถบเมนูซ้าย</b> เปลี่ยนได้ทันที
+     ข้อมูลของแต่ละบริษัท<b>แยกกันเด็ดขาด</b> ไม่ปนกัน</p>
+
+  <h3>เครื่องมือที่ช่วยประหยัดเวลา</h3>
+  <table>
+    <thead><tr><th style="width:34%">เครื่องมือ</th><th>ใช้ทำอะไร</th></tr></thead>
+    <tbody>
+      <tr><td><b>⚙️ ก๊อปตั้งค่าข้ามบริษัท</b></td>
+          <td>คัดลอกค่าคำนวณ (อัตราประกันสังคม ฐาน OT วันตัดรอบ ฯลฯ) จากบริษัทหนึ่งไปอีกหลายบริษัทพร้อมกัน
+              ไม่รวมข้อมูลพนักงานและเงินเดือน</td></tr>
+      <tr><td><b>⬇️ สรุปยื่นภาษีทุกบริษัท</b></td>
+          <td>ออกไฟล์ CSV รวมยอดภาษีและประกันสังคมของทุกบริษัทในงวดเดียวกัน
+              ใช้วางแผนการยื่นประจำเดือน</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <b>โควตานับทุกบริษัท รวมที่เก็บเข้าคลังแล้ว</b> — การเก็บเข้าคลัง (archive) ใช้ซ่อนบริษัทที่เลิกดูแลแล้ว
+    แต่ยังเก็บข้อมูลไว้ออกเอกสารย้อนหลังได้ <b>ต้องลบทิ้งเท่านั้นจึงจะคืนโควตา</b>
+  </div>
+  <div class="danger">
+    <b>การลบบริษัทลบถาวร</b> ข้อมูลเงินเดือนทั้งหมดของบริษัทนั้นหายทันที กู้คืนไม่ได้
+    หากยังต้องออกเอกสารย้อนหลัง ให้ใช้การเก็บเข้าคลังแทน
+  </div>
+  <p class="muted">บัญชีแบบสำนักงานบัญชี<b>ไม่มี</b>เมนูเวลาเข้างานและระบบลางาน แต่<b>จำนวนพนักงานไม่จำกัด</b></p>
+</div>
+
+<!-- ═══════ 13–14 ═══════ -->
+<div class="sheet" id="s13">
+  <h2>13 · แพ็กเกจและการชำระเงิน</h2>
+  <table>
+    <thead><tr><th style="width:26%">หัวข้อ</th><th>รายละเอียด</th></tr></thead>
+    <tbody>
+      <tr><td><b>ทดลองใช้</b></td><td>30 วัน ใช้ได้ครบทุกฟีเจอร์รวมพรีเมี่ยม ไม่ต้องใส่บัตรเครดิต</td></tr>
+      <tr><td><b>มาตรฐาน</b></td><td>ระบบเงินเดือนครบ ออกเอกสารยื่นราชการได้ทุกใบ</td></tr>
+      <tr><td><b>พรีเมี่ยม</b></td><td>เพิ่ม ลงเวลาเข้างาน · ระบบกะ · กฎ OT · ระบบลางาน · เบิกล่วงหน้ากลางเดือน</td></tr>
+      <tr><td><b>จ่ายรายปี</b></td><td>จ่าย 10 เดือน ใช้ 12 เดือน — ได้ฟรี 2 เดือน</td></tr>
+      <tr><td><b>ช่องทางชำระ</b></td><td>พร้อมเพย์ (สแกน QR) และบัตรเครดิต/เดบิต</td></tr>
+      <tr><td><b>ยกเลิก</b></td><td>ยกเลิกได้ทุกเมื่อ ไม่มีสัญญาผูกมัด</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <b>เพดานจำนวนพนักงาน</b> — แต่ละแพ็กเกจจำกัดจำนวนพนักงานสูงสุด เมื่อเพิ่มเกินระบบจะแจ้งให้อัปเกรด
+    <b>ข้อมูลเดิมยังอยู่ครบ ไม่มีอะไรหาย</b> และยังบันทึกแก้ไขของเดิมได้ตามปกติ
+  </div>
+
+  <h2 id="s14" style="margin-top:26px">14 · ปัญหาที่พบบ่อย</h2>
+  <table>
+    <thead><tr><th style="width:38%">อาการ</th><th>วิธีแก้</th></tr></thead>
+    <tbody>
+      <tr><td><b>พนักงานไม่ขึ้นในสลิป / ภ.ง.ด.1</b></td>
+          <td>ตรวจ<b>วันเริ่มงาน</b>และ<b>วันที่ลาออก</b>ในหน้าข้อมูลพนักงาน
+              ระบบแสดงเฉพาะคนที่ทำงานอยู่ในเดือนนั้น</td></tr>
+      <tr><td><b>เงินเดือนเดือนแรกไม่เต็มจำนวน</b></td>
+          <td>ถูกต้องแล้ว — พนักงานเข้างานกลางเดือน ระบบคิดตามสัดส่วนวันทำงาน
+              ดูรายละเอียดได้ในกล่องสีเหลืองหน้าเงินได้/เงินหัก</td></tr>
+      <tr><td><b>พนักงานรายวันไม่มีค่าจ้าง</b></td>
+          <td>ยังไม่ได้กรอก<b>จำนวนวันทำงาน</b> ในหน้าเงินได้/เงินหัก</td></tr>
+      <tr><td><b>ภาษีคิดได้ไม่ตรงกับที่คำนวณเอง</b></td>
+          <td>กด <b>🔍 ดูวิธีคำนวณภาษี</b> ตรวจทีละขั้น มักเกิดจากยังไม่ได้ใส่ข้อมูลคู่สมรสหรือบุตร</td></tr>
+      <tr><td><b>ประกันสังคมไม่ถึง 5% ของเงินเดือน</b></td>
+          <td>ถูกต้องแล้ว — คุมเพดานฐาน 17,500 บาท สมทบสูงสุด 875 บาท</td></tr>
+      <tr><td><b>กดเมนูแล้วขึ้นกล่องชวนอัปเกรด</b></td>
+          <td>เมนูนั้นเป็นฟีเจอร์พรีเมี่ยม และช่วงทดลองใช้หมดแล้ว</td></tr>
+      <tr><td><b>เพิ่มพนักงานไม่ได้</b></td>
+          <td>จำนวนถึงเพดานของแพ็กเกจแล้ว ต้องอัปเกรดหรือลบพนักงานที่ไม่ใช้แล้ว</td></tr>
+      <tr><td><b>ข้อมูลไม่ตรงกับอีกเครื่อง</b></td>
+          <td>ลองรีเฟรชหน้าจอ ระบบจะดึงข้อมูลล่าสุดจากคลาวด์</td></tr>
+    </tbody>
+  </table>
+
+  <div class="helpbox">
+    <div class="qr"><svg role="img" aria-label="QR code เพิ่มเพื่อน LINE eSimPayroll" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 31 31" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h31v31H0z"/><path stroke="#000000" d="M1 1.5h7m1 0h3m4 0h2m1 0h1m1 0h1m1 0h7M1 2.5h1m5 0h1m3 0h2m1 0h2m1 0h3m3 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h2m1 0h1m2 0h4m1 0h2m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m3 0h1m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h7m1 0h2m3 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h3m4 0h1m4 0h1m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M11 8.5h1m1 0h1m1 0h3m2 0h2M1 9.5h1m1 0h1m3 0h2m3 0h4m3 0h1m1 0h1m2 0h1m2 0h1m1 0h1M1 10.5h4m1 0h1m2 0h2m1 0h4m3 0h2m2 0h1m4 0h2M1 11.5h1m4 0h5m5 0h1m3 0h1m4 0h3m1 0h1M1 12.5h1m3 0h1m2 0h2m4 0h1m4 0h1m3 0h2m1 0h1M1 13.5h3m3 0h4m1 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m4 0h1M2 14.5h1m1 0h3m1 0h2m1 0h3m3 0h1m1 0h3m1 0h2m3 0h2M3 15.5h1m2 0h3m1 0h1m3 0h2m1 0h2m1 0h2m2 0h1m4 0h1M2 16.5h1m5 0h4m3 0h3m3 0h2m1 0h2M2 17.5h1m1 0h1m1 0h4m2 0h1m1 0h2m1 0h1m1 0h2m2 0h2m4 0h1M4 18.5h2m3 0h4m1 0h2m2 0h4m1 0h2m2 0h3M1 19.5h2m4 0h1m1 0h1m2 0h1m3 0h5m2 0h1m1 0h2m2 0h1M5 20.5h2m1 0h1m4 0h2m2 0h1m2 0h3m2 0h1M1 21.5h3m1 0h3m3 0h2m1 0h1m2 0h1m3 0h6m1 0h1M9 22.5h1m3 0h1m2 0h2m1 0h1m1 0h1m3 0h3m1 0h1M1 23.5h7m1 0h3m1 0h4m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1M1 24.5h1m5 0h1m3 0h1m3 0h1m1 0h1m3 0h1m3 0h1M1 25.5h1m1 0h3m1 0h1m3 0h2m1 0h4m2 0h7m1 0h2M1 26.5h1m1 0h3m1 0h1m2 0h1m4 0h3m3 0h1m3 0h3m1 0h1M1 27.5h1m1 0h3m1 0h1m1 0h1m3 0h1m2 0h1m3 0h3m2 0h1m2 0h2M1 28.5h1m5 0h1m3 0h2m1 0h2m3 0h2m1 0h2m2 0h1M1 29.5h7m1 0h2m3 0h4m3 0h1m4 0h1m2 0h1"/></svg></div>
+    <div class="helptxt">
+      <b>ติดปัญหาหรือต้องการคำแนะนำ</b>
+      <p>ทีมงานคนไทย ตอบภายในเวลาทำการ ให้คำปรึกษาฟรี<br>
+         สแกน QR หรือกดปุ่มด้านล่างเพื่อเพิ่มเพื่อน</p>
+      <a class="linebtn" href="https://line.me/R/ti/p/@748tgael" target="_blank" rel="noopener">
+        <span class="lico">LINE</span> เพิ่มเพื่อน</a>
+      <span class="muted" style="font-size:12.5px">หรือใช้ปุ่ม “แจ้งปัญหา / คำแนะนำ” ที่มุมขวาล่างของเว็บไซต์</span>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
