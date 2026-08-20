@@ -329,7 +329,7 @@ const I18N = {
     ask_period_t:'เลือกงวดเดือนที่จะทำเงินเดือน', ask_period_q:'ต้องการทำเงินเดือนของเดือนไหน?',
     ask_period_ok:'เริ่มทำเงินเดือน', ask_period_has:'งวดนี้เคยกรอกข้อมูลไว้แล้ว — เปิดขึ้นมาแก้ไขต่อได้',
     ask_period_new:'งวดนี้ยังไม่มีข้อมูล — จะเริ่มกรอกใหม่', cancel:'ยกเลิก',
-    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_attend:'เวลาเข้างาน', nav_leave:'ระบบลางาน', nav_resign:'การลาออก', nav_payroll:'คำนวณเงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
+    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_attend:'เวลาเข้างาน', nav_leave:'ระบบลางาน', nav_resign:'การลาออก', nav_advance:'เบิกจ่ายล่วงหน้า', nav_payroll:'คำนวณเงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
     nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
     nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_companies:'บริษัทลูกค้า', nav_admin:'ผู้ดูแลระบบ', nav_feedback:'แจ้งปัญหา/คำแนะนำ', nav_orders:'คำสั่งซื้อ/ต่ออายุ',
     period:'งวดเดือน',
@@ -347,7 +347,7 @@ const I18N = {
     ask_period_t:'Choose the payroll period', ask_period_q:'Which month do you want to run payroll for?',
     ask_period_ok:'Start payroll', ask_period_has:'This period already has data — you can continue editing it',
     ask_period_new:'This period is empty — you will start fresh', cancel:'Cancel',
-    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_attend:'Attendance', nav_leave:'Leave', nav_resign:'Resignation', nav_payroll:'Calculate Earnings / Deductions', nav_summary:'Payroll Summary',
+    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_attend:'Attendance', nav_leave:'Leave', nav_resign:'Resignation', nav_advance:'Advance Payment', nav_payroll:'Calculate Earnings / Deductions', nav_summary:'Payroll Summary',
     nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
     nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_companies:'Client companies', nav_admin:'Admin', nav_feedback:'Feedback', nav_orders:'Orders',
     period:'Period',
@@ -446,7 +446,7 @@ function fmtD(d){ return `${d.getDate()} ${THAI_MONTHS_ABBR[d.getMonth()]} ${d.g
 
 /* ---------- Payroll calc ---------- */
 const EARN_FIELDS = [['ot','ค่าล่วงเวลา (OT)','Overtime (OT)'],['commission','ค่าคอมมิชชั่น','Commission'],['diligence','ค่าเบี้ยขยัน','Diligence Allowance'],['travel','ค่าเดินทาง','Travel Allowance'],['position','ค่าตำแหน่ง','Position Allowance'],['bonus','โบนัส','Bonus'],['other','อื่นๆ','Other']];
-const DED_FIELDS = [['tax','ภาษีเงินได้','Income Tax'],['sso','ประกันสังคม','Social Security'],['pvd','กองทุนสำรองเลี้ยงชีพ','Provident Fund'],['wf','กองทุนสงเคราะห์ลูกจ้าง','Employee Welfare Fund'],['loan','เงินกู้บริษัท','Company Loan'],['studentloan','กยศ.','Student Loan (SLF)'],['absent','หักขาดงาน/ลาไม่รับค่าจ้าง','Unpaid Leave / Absence'],['advance','เบิกล่วงหน้า (กลางเดือน)','Mid-month Advance'],['other','อื่นๆ','Other']];
+const DED_FIELDS = [['tax','ภาษีเงินได้','Income Tax'],['sso','ประกันสังคม','Social Security'],['pvd','กองทุนสำรองเลี้ยงชีพ','Provident Fund'],['wf','กองทุนสงเคราะห์ลูกจ้าง','Employee Welfare Fund'],['loan','เงินกู้บริษัท','Company Loan'],['studentloan','กยศ.','Student Loan (SLF)'],['absent','หักขาดงาน/ลาไม่รับค่าจ้าง','Unpaid Leave / Absence'],['advance','เบิกจ่ายล่วงหน้า','Advance Payment'],['other','อื่นๆ','Other']];
 // ป้ายรายการตามภาษา (f = [key, th, en])
 function FL(f){ return (LANG==='en' && f[2]) ? f[2] : f[1]; }
 
@@ -665,7 +665,7 @@ const PAGES = [
   ['attend','เวลาเข้างาน','⏰'],
   ['leave','ระบบลางาน','🌴'],
   ['resign','การลาออก','🚪'],
-  ['advance','เบิกล่วงหน้ากลางเดือน','💸'],
+  ['advance','เบิกจ่ายล่วงหน้า','💸'],
   ['payroll','คำนวณเงินได้ / เงินหัก','🧮'],
   ['summary','สรุปเงินเดือน','📋'],
   ['dept','สรุปตามแผนก','🏢'],
@@ -2046,7 +2046,7 @@ function nextCode(){
 
 /* ============ 2. PAYROLL (earnings/deductions per employee) ============ */
 let payrollEmpId=null, payrollFilter='all';
-/* ═══════════ เบิกล่วงหน้ากลางเดือน ═══════════
+/* ═══════════ เบิกจ่ายล่วงหน้า ═══════════
    บริษัทที่จ่ายเดือนละ 2 รอบ : รอบกลางเดือนจ่ายล่วงหน้า แล้วหักคืนตอนสิ้นเดือน
    ยอดเบิกเก็บเป็นรายการหัก 'advance' ของงวดนั้น ภาษี/ประกันสังคมจึงยังคิดเป็นรายเดือนถูกต้องเหมือนเดิม */
 function advPayDate(){
@@ -2077,7 +2077,7 @@ function vAdvance(v){
   const picked=rows.filter(x=>x.adv>0).length;
 
   const panel=el(`<div class="panel">
-    <div class="phead"><h2>💸 เบิกล่วงหน้ากลางเดือน — ${periodLabel(PERIOD)}</h2>
+    <div class="phead"><h2>💸 เบิกจ่ายล่วงหน้า — ${periodLabel(PERIOD)}</h2>
       <div class="sp" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <span class="muted" style="font-size:12px">จ่ายวันที่ ${esc(fmtDate(advPayDate()))}</span>
         <button class="btn ghost sm" id="advFill">⚡ เติมให้ทุกคน ${pct}%</button>
@@ -2087,7 +2087,7 @@ function vAdvance(v){
       </div></div>
     <div class="pbody" style="padding:0">
       <div style="padding:12px 16px;background:#fff7ed;border-bottom:1px solid #fed7aa;font-size:13px;color:#9a3412">
-        กรอกยอดที่จ่ายกลางเดือนของแต่ละคน ระบบจะ<strong>หักคืนอัตโนมัติ</strong>ในช่อง “เบิกล่วงหน้า (กลางเดือน)” ของหน้าคำนวณเงินได้ตอนสิ้นเดือน
+        กรอกยอดที่จ่ายกลางเดือนของแต่ละคน ระบบจะ<strong>หักคืนอัตโนมัติ</strong>ในช่อง “เบิกจ่ายล่วงหน้า” ของหน้าคำนวณเงินได้ตอนสิ้นเดือน
         · ภาษีและประกันสังคมยังคิดเป็นรายเดือนตามกฎหมายเหมือนเดิม
       </div>
       <div class="tbl-wrap" id="advTbl"></div>
@@ -2167,7 +2167,7 @@ function advSheet(rows){
       .sign div{flex:1;border-top:1px solid #94a3b8;padding-top:6px;text-align:center;color:#5b7186}
       @media print{@page{size:A4;margin:14mm}}
     </style></head><body>
-    <h1>ใบสรุปยอดโอนเงินเบิกล่วงหน้ากลางเดือน${co?' — '+co:''}</h1>
+    <h1>ใบสรุปยอดโอนเงินเบิกจ่ายล่วงหน้า${co?' — '+co:''}</h1>
     <div class="sub">งวด ${periodLabel(PERIOD)} · จ่ายวันที่ ${fmtDate(advPayDate())} · จำนวน ${use.length} คน</div>
     <table><thead><tr><th>ลำดับ</th><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>ธนาคาร</th><th>เลขที่บัญชี</th><th class="num">ยอดโอน (บาท)</th></tr></thead>
     <tbody>${use.map((x,i)=>`<tr><td>${i+1}</td><td>${x.e.code}</td><td>${x.e.name}</td>

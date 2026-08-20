@@ -15,8 +15,8 @@
 <meta property="og:url" content="https://payroll-mtd.vercel.app/">
 <meta property="og:title" content="eSimPayroll — จัดการเงินเดือนพนักงาน ครบ จบ ในที่เดียว">
 <meta property="og:description" content="ลงเวลาเข้างาน จัดกะ ระบบลา และทำเงินเดือน จบในที่เดียว คำนวณภาษี ประกันสังคม ออกเอกสารพร้อมยื่น">
-<meta property="og:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop">
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop">
+<meta property="og:image" content="https://esimpayroll.com/media/covers/social-security-contribution-thailand-hero.jpg">
+<meta name="twitter:image" content="https://esimpayroll.com/media/covers/social-security-contribution-thailand-hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="eSimPayroll">
 <meta name="twitter:description" content="ลงเวลาเข้างาน จัดกะ ระบบลา และทำเงินเดือน สำหรับธุรกิจไทย">
@@ -57,8 +57,8 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
   .btn.primary:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(11,27,43,.3)}
   .btn.ghost{background:rgba(255,255,255,.7);color:var(--ink);border:1.5px solid var(--line);backdrop-filter:blur(8px)}
   .btn.ghost:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-2px)}
-  .btn.lime{background:var(--grad);color:#fff;box-shadow:0 12px 32px rgba(16,185,129,.35)}
-  .btn.lime:hover{transform:translateY(-3px);box-shadow:0 20px 46px rgba(16,185,129,.45)}
+  .btn.lime{background:var(--grad);color:#fff;box-shadow:0 6px 14px rgba(11,27,43,.16)}
+  .btn.lime:hover{transform:translateY(-3px);box-shadow:0 10px 21px rgba(11,27,43,.16)}
 
   /* ---------- ภาพหน้าจอระบบในส่วนหัว ---------- */
   /* กรอบหน้าต่าง = ตัวเลื่อน · ข้างในมีหลายสไลด์ */
@@ -157,10 +157,17 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
   /* ---------- hero ---------- */
   /* หน้าปกโทนเข้ม */
   .hero{position:relative;overflow:hidden;margin-top:-78px;padding:142px 0 58px;
+    min-height:640px;display:flex;align-items:center;
     background:radial-gradient(760px 520px at 22% 18%,#0f766e33 0%,transparent 62%),
                linear-gradient(115deg,#0b2942 0%,#0a2740 34%,#001f36 62%,#001325 100%)}
   /* ไม่ไล่สีจางที่ขอบล่าง — ให้สีเข้มเต็มถึงขอบแล้วตัดเข้าส่วนถัดไปคม ๆ */
-  @media(max-width:900px){.hero{margin-top:-72px;padding:116px 0 44px}}
+  @media(max-width:900px){
+    .hero{margin-top:-72px;padding:116px 0 44px;min-height:0;display:block}
+    /* จองพื้นที่ให้เท่ากันทั้งสองโหมด รูปจะได้ไม่ขยับตอนกดสลับ */
+    .hero .cancel{min-height:45px}
+    .hero p.lead{min-height:0}
+  }
+  @media(min-width:561px){ .hero .hpts{min-height:90px} }
   .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.22;pointer-events:none;z-index:0;mix-blend-mode:screen}
   .blob.b1{width:520px;height:520px;background:#6ee7b7;top:-190px;right:-90px;animation:float1 18s ease-in-out infinite}
   .blob.b2{width:440px;height:440px;background:#7dd3fc;top:120px;right:280px;opacity:.35;animation:float2 22s ease-in-out infinite}
@@ -168,6 +175,7 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
   @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-36px,42px) scale(1.09)}}
   @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(46px,-34px) scale(.93)}}
   @media(prefers-reduced-motion:reduce){.blob{animation:none}}
+  .hero > .wrap{width:100%}
   .hero .grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
     gap:44px;align-items:center}
 
@@ -187,6 +195,8 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
   .hero .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.45)}
   .hero .btn.ghost:hover{background:rgba(255,255,255,.14);border-color:#fff;color:#fff}
   .hero .cancel{color:#9dbccd}
+  .hero .cancel .firmprice{color:#6ee7b7;font-weight:700}
+  .hero .cancel .firmprice:hover{text-decoration:underline}
   .hero .pico{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
     border-radius:50%;border:1.5px solid rgba(255,255,255,.6);font-size:9px;padding-left:2px}
   /* หัวข้อสองขนาด */
@@ -257,7 +267,7 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
     margin-bottom:18px;font-weight:800}
   .hero h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;color:transparent}
-  .hero p.lead{font-size:17px;color:#cfe2ec;margin-bottom:26px;max-width:520px;line-height:1.8}
+  .hero p.lead{font-size:17px;color:#cfe2ec;margin-bottom:26px;max-width:520px;line-height:1.8;min-height:92px}
   .cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
   .cta-row .btn{white-space:nowrap}
   .trust{margin-top:24px;color:var(--muted);font-size:14px;display:flex;gap:10px 22px;flex-wrap:wrap}
@@ -288,8 +298,8 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
   .stat .l{font-size:13.5px;opacity:.75;margin-top:1px;line-height:1.4}
 
   /* ---------- sections ---------- */
-  section{padding:96px 0}
-  .sec-head{text-align:center;max-width:680px;margin:0 auto 52px}
+  section{padding:58px 0}
+  .sec-head{text-align:center;max-width:680px;margin:0 auto 30px}
   .sec-head .badge{margin-bottom:16px}
   .sec-head h2{font-size:42px;letter-spacing:-1.3px;margin-bottom:14px;line-height:1.15;font-weight:800}
   .sec-head p{color:var(--muted);font-size:18px}
@@ -321,7 +331,7 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
   .step{text-align:center;padding:6px;position:relative;z-index:1}
   .step .n{width:54px;height:54px;border-radius:50%;background:#fff;color:var(--brand);
     font-weight:800;font-size:20px;display:flex;align-items:center;justify-content:center;
-    margin:0 auto 16px;border:2px solid var(--accent-l);box-shadow:0 8px 22px rgba(16,185,129,.22)}
+    margin:0 auto 16px;border:2px solid var(--accent-l);box-shadow:0 4px 10px rgba(11,27,43,.16)}
   .step:hover .n{background:var(--grad);color:#fff;border-color:transparent;transform:scale(1.08)}
   .step .n{transition:.22s}
   .step h4{font-size:17px;margin-bottom:7px;letter-spacing:-.2px}
@@ -398,7 +408,7 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
     .shot{height:340px}
     .cover-card{left:10px;bottom:16px}
     .cover-pill{right:8px;top:16px}
-    section{padding:68px 0}
+    section{padding:46px 0}
     .statband .wrap{grid-template-columns:repeat(2,1fr);gap:26px}
     .arts > .art{flex:0 0 calc((100% - 20px) / 2)}
     .arrow.prev{left:-8px} .arrow.next{right:-8px}
@@ -416,7 +426,7 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
     .badge{font-size:12px;padding:7px 13px}
     .btn{width:100%;padding:13px 22px;font-size:15px}
     .trust{gap:9px;font-size:13px;flex-direction:column}
-    section{padding:52px 0}
+    section{padding:38px 0}
     .sec-head{margin-bottom:32px}
     .sec-head h2{font-size:26px;letter-spacing:-.7px}
     .sec-head p{font-size:15.5px}
@@ -530,17 +540,22 @@ footer .ft-mail{color:#6ee7b7 !important}
       <h1 class="only-single" data-en="<span class=&quot;t1&quot;>Online payroll software</span><span class=&quot;t2&quot;><span>Everything</span> <span>in one place</span></span>"><span class="t1">โปรแกรมเงินเดือนออนไลน์</span><span class="t2"><span>ครบ จบ</span> <span>ในที่เดียว</span></span></h1>
       <h1 class="only-firm" data-en="<span class=&quot;t1&quot;>Payroll for every client company</span><span class=&quot;t2&quot;><span>In one</span> <span>account</span></span>"><span class="t1">ทำเงินเดือนลูกค้าทุกบริษัท</span><span class="t2"><span>จบใน</span> <span>บัญชีเดียว</span></span></h1>
       <p class="lead only-single" data-en="Calculates salary, tax, social security and funds, then produces payslips, 50 Bis, PND.1 and SSO 1-10 automatically. Supports both monthly and daily-wage staff.">คำนวณเงินเดือน ภาษี ประกันสังคม สลิปเงินเดือน 50 ทวิ และ ภ.ง.ด.1 อัตโนมัติ รองรับทั้งพนักงานรายเดือนและรายวัน</p>
-      <p class="lead only-firm" data-en="Add every client company to one account and switch between them in a click. Unlimited employees per company. Tax, social security and every official form ready to file.">เพิ่มบริษัทลูกค้าได้หลายบริษัทในบัญชีเดียว สลับไปมาได้ในคลิกเดียว พนักงานไม่จำกัดจำนวนต่อบริษัท คำนวณภาษี ประกันสังคม และออกเอกสารราชการครบ ทั้งสลิป 50 ทวิ ภ.ง.ด.1 และ สปส.1-10</p>
+      <p class="lead only-firm" data-en="Every client company in one account, switched in a click. Unlimited employees, with tax, social security and every statutory form ready to file.">ลูกค้าทุกบริษัทในบัญชีเดียว สลับได้ในคลิกเดียว พนักงานไม่จำกัด คำนวณภาษี ประกันสังคม และออกเอกสารราชการครบ</p>
       <div class="cta-row">
         <a href="app.html#signup" class="btn lime" data-en="Start your 30-day free trial →">ทดลองใช้ฟรี 30 วัน →</a>
         <button type="button" id="playIntro" class="btn ghost" data-en="&lt;span class=&quot;pico&quot;&gt;▶&lt;/span&gt; Watch the intro"><span class="pico">▶</span> ดูวิดีโอแนะนำ</button>
-        <a href="pricing.html?for=firm" class="btn ghost only-firm" data-en="See pricing">ดูราคาสำนักงานบัญชี</a>
       </div>
-      <div class="cancel" style="margin-top:10px;font-size:13.5px" data-en="Cancel anytime · No credit card needed">ยกเลิกได้ทุกเมื่อ · ไม่ต้องใช้บัตรเครดิต</div>
-      <div class="trust only-firm">
-        <span data-en="✅ <b>Many companies</b> in one account">✅ <b>หลายบริษัท</b>ในบัญชีเดียว</span>
-        <span data-en="✅ <b>Unlimited</b> employees">✅ พนักงาน<b>ไม่จำกัดจำนวน</b></span>
-        <span data-en="✅ <b>30-day free trial</b>">✅ <b>ทดลองฟรี 30 วัน</b></span>
+      <div class="cancel" style="margin-top:10px;font-size:13.5px">
+        <span data-en="Cancel anytime · No credit card needed">ยกเลิกได้ทุกเมื่อ · ไม่ต้องใช้บัตรเครดิต</span>
+        <a href="pricing.html?for=firm" class="only-firm firmprice" data-en="· See accounting-firm pricing →">· ดูราคาสำนักงานบัญชี →</a>
+      </div>
+      <div class="hpts only-firm">
+        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="7" width="18.4" height="13.4" rx="2.2"/><path d="M8.6 7V5.2a2 2 0 0 1 2-2h2.8a2 2 0 0 1 2 2V7"/><path d="M2.8 12.4h18.4M10.4 12.4v2.2h3.2v-2.2"/></svg></span>
+          <span data-en="&lt;b&gt;Many companies&lt;/b&gt;All in one account"><b>หลายบริษัท</b>รวมในบัญชีเดียว</span></div>
+        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.4" r="3.2"/><path d="M2.8 20a6.2 6.2 0 0 1 12.4 0"/><path d="M16.4 5.8a3.2 3.2 0 0 1 0 6"/><path d="M17.6 14.4A6.2 6.2 0 0 1 21.2 20"/></svg></span>
+          <span data-en="&lt;b&gt;Unlimited staff&lt;/b&gt;No cap per company"><b>พนักงานไม่จำกัด</b>ต่อหนึ่งบริษัท</span></div>
+        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7.6 2.8h7.2l4 4v14.4H7.6z"/><path d="M14.8 2.8v4h4"/><path d="M10.4 12h6M10.4 16h6"/></svg></span>
+          <span data-en="&lt;b&gt;Every form&lt;/b&gt;Ready to file"><b>เอกสารครบ</b>ยื่นราชการได้ทุกแบบ</span></div>
       </div>
       <div class="hpts only-single">
         <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 4.4 6v6c0 4.4 3.1 7.9 7.6 9.2 4.5-1.3 7.6-4.8 7.6-9.2V6z"/><path d="m8.9 12.2 2.2 2.2 4-4.4"/></svg></span>
@@ -723,7 +738,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   </div>
 </section>
 
-<section id="features" style="padding-top:64px">
+<section id="features">
   <div class="wrap">
     <div class="sec-head rv">
       <span class="badge" data-en="Key features">ฟีเจอร์เด่น</span>
@@ -741,6 +756,56 @@ footer .ft-mail{color:#6ee7b7 !important}
       <div class="feat rv only-single"><div class="ic" style="background:linear-gradient(135deg,#84cc16,#4d7c0f)"><svg viewBox="0 0 24 24" width="27" height="27" aria-hidden="true"><rect fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3.4 9.6h17.2M8.2 3v4M15.8 3v4"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="m9 14.6 2.1 2.1 3.9-4"/></svg></div><h3 data-en="Leave management">ระบบลางาน</h3><p data-en="Sick, personal and annual leave in days or hours — yearly quotas tracked and unpaid leave deducted from pay.">ลาป่วย ลากิจ ลาพักร้อน บันทึกเป็นวันหรือชั่วโมง คุมโควตารายปี และหักเงินขาดงานเข้าเงินเดือนให้</p></div>
       <div class="feat rv only-single"><div class="ic" style="background:linear-gradient(135deg,#6366f1,#4338ca)"><svg viewBox="0 0 24 24" width="27" height="27" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M20.4 11.4a8.4 8.4 0 0 0-14.6-4.6L3 9.6"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 4.2v5.4h5.4"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3.6 12.6a8.4 8.4 0 0 0 14.6 4.6L21 14.4"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M21 19.8v-5.4h-5.4"/></svg></div><h3 data-en="Shifts &amp; OT rules">ระบบกะ &amp; กฎการคิด OT</h3><p data-en="Shifts with overnight support and bulk swapping. Choose which days earn OT, cap OT per day, enable it per employee — always rounded down by the half hour.">ตั้งกะทำงานรวมกะข้ามคืน สลับกะยกชุดได้ · กำหนดวันที่คิด OT เพดาน OT ต่อวัน และเปิด OT เฉพาะบางคน ปัดเศษลงทีละครึ่งชั่วโมงเสมอ</p></div>
     </div>
+  </div>
+</section>
+
+<style>
+  /* ---------- ทดลองแล้วตัดสินเอง (ช่องเดียวกับรีวิวลูกค้าในอนาคต) ---------- */
+  .proofsec{background:var(--bg);border-top:1px solid var(--line)}
+  .proofs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+  .proof{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 22px 20px;
+    box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:12px;
+    transition:transform .22s,box-shadow .22s}
+  .proof:hover{transform:translateY(-4px);box-shadow:var(--sh-md)}
+  .proof .q{font-size:15.5px;line-height:1.7;color:var(--ink);margin:0;flex:1}
+  .proof .q b{color:var(--brand-d)}
+  .proof .who{display:flex;align-items:center;gap:11px;padding-top:12px;border-top:1px solid var(--line)}
+  .proof .ic{flex-shrink:0;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;
+    justify-content:center;background:var(--accent-bg);color:var(--brand)}
+  .proof .ic svg{width:22px;height:22px}
+  .proof .who b{display:block;font-size:14.5px;color:var(--brand-d);line-height:1.35}
+  .proof .who span{font-size:12.5px;color:var(--muted)}
+  @media(max-width:900px){.proofs{grid-template-columns:1fr}}
+</style>
+
+<!-- ทดลองแล้วตัดสินเอง -->
+<section class="proofsec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="badge" data-en="Judge for yourself">พิสูจน์ด้วยตัวเอง</span>
+      <h2 data-en="Do not take our word for it — test it">ไม่ต้องเชื่อเรา ลองทดสอบเอง</h2>
+      <p data-en="Three tests you can run during the free trial. Each one takes minutes and shows whether the numbers are right.">3 ข้อทดสอบที่ทำได้เองในช่วงทดลองใช้ฟรี ใช้เวลาไม่กี่นาที แล้วจะรู้ว่าตัวเลขถูกหรือไม่</p>
+    </div>
+    <div class="proofs">
+      <div class="proof rv">
+        <p class="q" data-en="Enter a month you have &lt;b&gt;already paid&lt;/b&gt; and compare every figure with your own records — salary, tax, social security, net pay. If anything differs, you will see it in minutes.">เอา<b>เดือนที่จ่ายเงินไปแล้วจริง</b> มากรอก แล้วเทียบทุกตัวเลขกับของเดิม ทั้งเงินเดือน ภาษี ประกันสังคม และยอดสุทธิ ถ้ามีอะไรไม่ตรงจะเห็นภายในไม่กี่นาที</p>
+        <div class="who"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.2" y="2.8" width="15.6" height="18.4" rx="2.4"/><path d="M7.6 6.4h8.8M7.8 11h.01M12 11h.01M16.2 11h.01M7.8 14.8h.01M12 14.8h.01M16.2 14.8v3.6M7.8 18.4h4.2"/></svg></span>
+          <div><b data-en="Test with a real month">ทดสอบด้วยเดือนจริง</b><span data-en="Compare against your own numbers">เทียบกับตัวเลขของคุณเอง</span></div></div>
+      </div>
+      <div class="proof rv">
+        <p class="q" data-en="Add someone who &lt;b&gt;started on the 16th&lt;/b&gt;. Their pay must be prorated by days, and the annual income used for tax must use that prorated figure — not the full salary.">เพิ่มพนักงานที่<b>เริ่มงานวันที่ 16</b> ค่าจ้างต้องถูกหารตามวันทำงาน และเงินได้ทั้งปีที่ใช้คิดภาษีต้องใช้ยอดที่หารแล้ว ไม่ใช่เงินเดือนเต็ม</p>
+        <div class="who"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 9.6h17.2M8.2 3v4M15.8 3v4"/><path d="m9 14.6 2.1 2.1 3.9-4"/></svg></span>
+          <div><b data-en="The mid-month joiner test">ทดสอบคนเข้ากลางเดือน</b><span data-en="Where most systems get it wrong">จุดที่ระบบส่วนใหญ่คิดผิด</span></div></div>
+      </div>
+      <div class="proof rv">
+        <p class="q" data-en="Record a &lt;b&gt;mid-year pay rise&lt;/b&gt;. Earlier months must keep the old rate so past payslips never change, and the tax for the whole year must be recalculated.">บันทึก<b>การขึ้นเงินเดือนกลางปี</b> เดือนก่อนหน้าต้องยังใช้อัตราเดิม สลิปย้อนหลังต้องไม่เปลี่ยน และภาษีทั้งปีต้องถูกคำนวณใหม่</p>
+        <div class="who"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5h17"/><path d="m5 16 4.5-5 3.5 3 5.5-7"/><path d="M15 7.5h3.5V11"/></svg></span>
+          <div><b data-en="The pay-rise test">ทดสอบขึ้นเงินเดือน</b><span data-en="Past payslips must stay unchanged">สลิปเก่าต้องไม่เปลี่ยน</span></div></div>
+      </div>
+    </div>
+    <p class="muted rv" style="text-align:center;margin-top:22px;font-size:14px"
+       data-en="30 days free · no credit card · cancel anytime · export your data to CSV whenever you want">
+      ทดลองฟรี 30 วัน · ไม่ต้องใช้บัตรเครดิต · ยกเลิกได้ทุกเมื่อ · ส่งออกข้อมูลเป็น CSV ได้ตลอด</p>
   </div>
 </section>
 
@@ -785,75 +850,75 @@ footer .ft-mail{color:#6ee7b7 !important}
       <button class="arrow next" id="artNext" aria-label="เลื่อนขวา" data-en="›">›</button>
       <div class="arts">
         <a href="article-payroll-tax-software.html" class="art">
-          <div class="art-cover"><img loading="lazy" alt="โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี" src="https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-cover"><img width="760" height="507" loading="lazy" alt="โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี" src="/media/covers/payroll-tax-software-comparison-card.jpg"></div>
           <div class="art-body"><span class="art-tag art-new" data-en="Buying guide">เลือกซื้อ</span>
             <h3>โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี?</h3>
             <p>5 ข้อทดสอบที่แยกโปรแกรมคำนวณภาษีเงินเดือนที่คิดถูก ออกจากที่คิดผิด</p></div>
         </a>
         <a href="article-payroll-for-sme.html" class="art">
-          <div class="art-cover"><img loading="lazy" alt="โปรแกรมเงินเดือน SME เลือกยังไงให้พอดีกับธุรกิจ" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-cover"><img width="760" height="507" loading="lazy" alt="โปรแกรมเงินเดือน SME เลือกยังไงให้พอดีกับธุรกิจ" src="/media/covers/payroll-software-for-sme-card.jpg"></div>
           <div class="art-body"><span class="art-tag art-new" data-en="For SMEs">สำหรับ SME</span>
             <h3>โปรแกรมเงินเดือน SME เลือกยังไงให้พอดีกับธุรกิจ</h3>
             <p>SME ควรจ่ายค่าอะไร ไม่ควรจ่ายค่าอะไร พร้อมจุดคุ้มทุนที่คำนวณจริง</p></div>
         </a>
         <a href="article-how-to-calculate-salary.html" class="art">
-          <div class="art-cover"><img loading="lazy" alt="วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างหักประกันสังคมและภาษี" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-cover"><img width="760" height="507" loading="lazy" alt="วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างหักประกันสังคมและภาษี" src="/media/covers/how-to-calculate-employee-salary-card.jpg"></div>
           <div class="art-body"><span class="art-tag art-new" data-en="How-to">วิธีคำนวณ</span>
             <h3>วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างการหักประกันสังคมและภาษี</h3>
             <p>คำนวณเงินเดือนทีละขั้นจนถึงเงินเดือนสุทธิ พร้อมตัวอย่างจริงครบทุกบรรทัด</p></div>
         </a>
         <a href="article-online-payroll.html" class="art">
-          <div class="art-cover"><img loading="lazy" alt="โปรแกรมเงินเดือนออนไลน์ คืออะไร เหมาะกับธุรกิจแบบไหน" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-cover"><img width="760" height="507" loading="lazy" alt="โปรแกรมเงินเดือนออนไลน์ คืออะไร เหมาะกับธุรกิจแบบไหน" src="/media/covers/online-payroll-software-thailand-card.jpg"></div>
           <div class="art-body"><span class="art-tag art-new" data-en="Basics">พื้นฐาน</span>
             <h3>โปรแกรมเงินเดือนออนไลน์ คืออะไร? ช่วยธุรกิจจัดการเงินเดือนได้อย่างไร</h3>
             <p>ระบบเงินเดือนบนคลาวด์ทำงานยังไง เหมาะกับใคร ไม่เหมาะกับใคร และต้องเช็คอะไรก่อนเลือก</p></div>
         </a>
         <a href="article-payroll-features.html" class="art">
-          <div class="art-cover"><img loading="lazy" alt="โปรแกรม Payroll มีอะไรบ้าง 10 ฟีเจอร์ที่ HR ควรมี" src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-cover"><img width="760" height="507" loading="lazy" alt="โปรแกรม Payroll มีอะไรบ้าง 10 ฟีเจอร์ที่ HR ควรมี" src="/media/covers/payroll-software-features-card.jpg"></div>
           <div class="art-body"><span class="art-tag art-new" data-en="Checklist">เช็คลิสต์</span>
             <h3>โปรแกรม Payroll มีอะไรบ้าง? 10 ฟีเจอร์ที่ HR และฝ่ายบัญชีควรมี</h3>
             <p>เช็คลิสต์ 10 ฟีเจอร์ที่โปรแกรม Payroll ควรมีครบ ก่อนตัดสินใจเลือกระบบ</p></div>
         </a>
         <a href="article-payroll-vs-excel.html" class="art">
-          <div class="art-cover"><img loading="lazy" alt="โปรแกรมเงินเดือน vs Excel แบบไหนเหมาะกับธุรกิจ" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-cover"><img width="760" height="542" loading="lazy" alt="โปรแกรมเงินเดือน vs Excel แบบไหนเหมาะกับธุรกิจ" src="/media/covers/payroll-software-vs-excel-card.jpg"></div>
           <div class="art-body"><span class="art-tag art-new" data-en="Comparison">เปรียบเทียบ</span>
             <h3>โปรแกรมเงินเดือน vs Excel แบบไหนเหมาะกับธุรกิจ?</h3>
             <p>Excel ทำเงินเดือนได้ แต่พังตรงไหน และเมื่อไหร่ควรเปลี่ยนไปใช้โปรแกรมเงินเดือน</p></div>
         </a>
         <a href="article-top10-payroll-thailand.html" class="art">
-          <div class="art-cover"><img loading="lazy" alt="10 อันดับโปรแกรมเงินเดือนออนไลน์ในไทย 2569" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-cover"><img width="760" height="507" loading="lazy" alt="10 อันดับโปรแกรมเงินเดือนออนไลน์ในไทย 2569" src="/media/covers/how-to-calculate-employee-salary-card.jpg"></div>
           <div class="art-body"><span class="art-tag art-new" data-en="Buyer’s guide">คู่มือเลือกซื้อ</span>
             <h3>10 อันดับโปรแกรมเงินเดือนออนไลน์ในประเทศไทยที่ดีที่สุด 2569</h3>
             <p>เทียบราคา ฟีเจอร์ และความเหมาะสมของ 10 โปรแกรมเงินเดือนออนไลน์ในประเทศไทย</p></div>
         </a>
 
         <a href="article-welfare-fund.html" class="art">
-          <div class="art-cover"><img loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80&auto=format&fit=crop"></div>
+          <div class="art-cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
           <div class="art-body"><span class="art-tag art-new" data-en="⚡ New law">⚡ กฎหมายใหม่</span>
             <h3 data-en="Employee Welfare Fund: 0.25% from 1 Oct 2026">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569</h3>
             <p data-en="Who must join, who is exempt, and how to calculate it.">ใครต้องเข้ากองทุน ใครได้รับยกเว้น และคำนวณยังไง</p></div>
         </a>
 
       <a href="article-withholding-tax.html" class="art rv">
-        <div class="art-cover"><img loading="lazy" alt="คำนวณภาษี" src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&q=80&auto=format&fit=crop"></div>
+        <div class="art-cover"><img width="760" height="507" loading="lazy" alt="วิธีคำนวณภาษีหัก ณ ที่จ่ายจากเงินเดือน" src="/media/covers/payroll-withholding-tax-calculation-card.jpg"></div>
         <div class="art-body"><span class="art-tag" data-en="Tax">ภาษี</span>
           <h3 data-en="How is payroll withholding tax calculated?">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง?</h3>
           <p data-en="Understand progressive rates, allowances and monthly averaging.">เข้าใจอัตราภาษีขั้นบันได ค่าลดหย่อน และวิธีเฉลี่ยภาษีรายเดือน</p></div>
       </a>
       <a href="article-social-security.html" class="art rv">
-        <div class="art-cover"><img loading="lazy" alt="ประกันสังคม" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80&auto=format&fit=crop"></div>
+        <div class="art-cover"><img width="760" height="507" loading="lazy" alt="วิธีคำนวณเงินเดือนพนักงาน ประกันสังคม และภาษี" src="/media/covers/how-to-calculate-employee-salary-card.jpg"></div>
         <div class="art-body"><span class="art-tag" data-en="Social security">ประกันสังคม</span>
           <h3 data-en="Social security 5%, capped at THB 875">ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</h3>
           <p data-en="Wage base capped at THB 17,500 — how much does the employer contribute?">ฐานเงินเดือนสูงสุด 17,500 บาท นายจ้างสมทบเท่าไหร่</p></div>
       </a>
       <a href="article-monthly-vs-daily.html" class="art rv">
-        <div class="art-cover"><img loading="lazy" alt="พนักงาน" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&q=80&auto=format&fit=crop"></div>
+        <div class="art-cover"><img width="760" height="498" loading="lazy" alt="เปรียบเทียบพนักงานรายเดือนกับพนักงานรายวัน" src="/media/covers/monthly-vs-daily-employees-card.jpg"></div>
         <div class="art-body"><span class="art-tag" data-en="Payroll">เงินเดือน</span>
           <h3 data-en="Monthly vs daily-wage employees">พนักงานรายเดือน vs รายวัน ต่างกันยังไง</h3>
           <p data-en="How to compute wages, OT and pro-rated salary for mid-month starters.">วิธีคิดค่าจ้าง OT และเงินเดือนตามสัดส่วนเมื่อเข้างานกลางเดือน</p></div>
       </a>
       <a href="article-50tawi-pnd1.html" class="art rv">
-        <div class="art-cover"><img loading="lazy" alt="เอกสารภาษี" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80&auto=format&fit=crop"></div>
+        <div class="art-cover"><img width="760" height="507" loading="lazy" alt="เอกสารภาษี 50 ทวิ และแบบ ภ.ง.ด.1 ที่นายจ้างต้องยื่น" src="/media/covers/50-bis-pnd1-tax-documents-card.jpg"></div>
         <div class="art-body"><span class="art-tag" data-en="Documents">เอกสาร</span>
           <h3 data-en="What are 50 Bis and PND.1, and when to file?">50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</h3>
           <p data-en="Tax documents employers must issue, with filing deadlines.">เอกสารภาษีที่นายจ้างต้องออก พร้อมกำหนดเวลาที่ต้องรู้</p></div>
@@ -918,7 +983,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 </footer>
 
 <!-- ปุ่มแจ้งปัญหา / คำแนะนำ -->
-<button id="fbBtn" title="แจ้งปัญหา / คำแนะนำ" style="position:fixed;right:22px;bottom:22px;z-index:60;background:var(--brand);color:#fff;border:0;border-radius:50px;padding:13px 20px;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 10px 30px rgba(37,99,235,.4);display:flex;gap:8px;align-items:center" data-en="💬 Report an issue / Feedback">💬 แจ้งปัญหา / คำแนะนำ</button>
+<button id="fbBtn" title="แจ้งปัญหา / คำแนะนำ" style="position:fixed;right:22px;bottom:22px;z-index:60;background:var(--brand);color:#fff;border:0;border-radius:50px;padding:13px 20px;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 5px 14px rgba(11,27,43,.16);display:flex;gap:8px;align-items:center" data-en="💬 Report an issue / Feedback">💬 แจ้งปัญหา / คำแนะนำ</button>
 <div id="fbModal" style="position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:70;display:none;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;max-width:440px;width:100%;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
     <div style="display:flex;align-items:center;margin-bottom:14px"><h3 style="font-size:20px;margin:0" data-en="💬 Report an issue / Feedback">💬 แจ้งปัญหา / คำแนะนำ</h3><button id="fbClose" style="margin-left:auto;background:none;border:0;font-size:24px;cursor:pointer;color:#94a3b8;line-height:1">×</button></div>
