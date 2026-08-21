@@ -79,6 +79,21 @@
           "value": "public, max-age=604800"
         }
       ]
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "payroll-mtd.vercel.app"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ],
   "rewrites": [
@@ -89,6 +104,19 @@
     {
       "source": "/favicon.ico",
       "destination": "/brand/icon-48.png"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.esimpayroll.com"
+        }
+      ],
+      "destination": "https://esimpayroll.com/$1",
+      "permanent": true
     }
   ]
 }
