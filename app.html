@@ -571,6 +571,20 @@ function otRate(emp){
   const d=DB.otDays||30; return (emp?salaryFor(emp, PERIOD):0)/d/h;
 }
 function otAmount(emp,hours,mult){ return Math.round(otRate(emp)*Number(hours||0)*Number(mult||0)*100)/100; }
+/* OT หลายแถว — เดือนหนึ่งมี OT หลายแบบปนกัน (วันธรรมดา / วันหยุด / ล่วงเวลาวันหยุด)
+   ของเดิมเก็บได้แถวเดียวใน otHours + otMult จึงย้ายมาเป็นแถวแรกให้อัตโนมัติ */
+const OT_MULTS=[['1','1× ทำงานวันหยุด (ในเวลา)'],['1.5','1.5× ล่วงเวลาวันทำงานปกติ'],['2','2× ค่าทำงานวันหยุด'],['2.5','2.5×'],['3','3× ล่วงเวลาในวันหยุด']];
+function otRowsOf(r){
+  if(!Array.isArray(r.earn.otRows)){
+    const h=Number(r.earn.otHours||0), m=Number(r.earn.otMult||1.5);
+    r.earn.otRows = h>0 ? [{h:h,m:m}] : [{h:0,m:1.5}];
+  }
+  if(!r.earn.otRows.length) r.earn.otRows.push({h:0,m:1.5});
+  return r.earn.otRows;
+}
+function otTotal(emp,r){
+  return Math.round(otRowsOf(r).reduce(function(s,x){ return s+otAmount(emp,x.h,x.m); },0)*100)/100;
+}
 
 // ภาษีเงินได้บุคคลธรรมดา — อัตราก้าวหน้า (ขั้นบันได)
 const TAX_BRACKETS=[[150000,0],[300000,.05],[500000,.10],[750000,.15],[1000000,.20],[2000000,.25],[5000000,.30],[Infinity,.35]];
@@ -835,7 +849,7 @@ async function loadAllStores(){
 }
 /* ตั้งค่าที่ก๊อปข้ามบริษัทได้ — ไม่รวมข้อมูลบริษัท พนักงาน และเงินเดือน */
 const COPY_KEYS=['ssoRate','ssoMaxBase','otDays','otHours','workDaysDefault',
-                 'cutoffDay','workStart','workEnd','lateGrace','wfRateDefault'];
+                 'cutoffDay','workStart','workEnd','lateGrace','wfRateDefault','otMultWeekdays'];
 
 /* ============ บริษัทลูกค้า (เฉพาะแบบสำนักงานบัญชี) ============ */
 async function vCompanies(v){
@@ -1868,7 +1882,7 @@ function drawEmp(){
   const list = empVisibleList();
   const rows = list.map(e=>{ const daily=e.payType==='daily'; return `<tr>
     <td><span class="chip">${esc(e.code)}</span></td>
-    <td>${genderIcon(e.gender)}<strong style="${e.resignDate?'color:#94a3b8;text-decoration:line-through':''}">${esc(e.name)}</strong>${e.resignDate?` <span class="chip" style="background:#fee2e2;color:#dc2626">ลาออก ${esc(fmtDate(e.resignDate))}</span>`:''}</td>
+    <td><span style="display:inline-flex;align-items:center">${empAvatar(e,34)}<span>${genderIcon(e.gender)}<strong style="${e.resignDate?'color:#94a3b8;text-decoration:line-through':''}">${esc(e.name)}</strong>${e.resignDate?` <span class="chip" style="background:#fee2e2;color:#dc2626">ลาออก ${esc(fmtDate(e.resignDate))}</span>`:''}</span></span></td>
     <td>${esc(e.position)}</td>
     <td>${esc(e.dept)}</td>
     <td>${daily?`<span class="chip" style="background:#fef3c7;color:#b45309">${tr('type_daily')}</span>`:`<span class="chip" style="background:#d8f3e6;color:#092942">${tr('type_monthly')}</span>`}</td>
@@ -1947,11 +1961,64 @@ function delEmp(id){
       save(); closeModal(); drawEmp(); toast('ลบพนักงานแล้ว');
     }]]);
 }
+/* ---------- รูปพนักงาน ----------
+   เก็บเป็น data URI ย่อแล้ว (180×180 JPEG) ประมาณ 6–12 KB ต่อคน
+   ครอบตัดตรงกลางเป็นสี่เหลี่ยมจัตุรัสให้อัตโนมัติ ไม่บิดสัดส่วน */
+const EMP_PHOTO_SIZE=180;
+function readEmpPhoto(file, cb){
+  if(!file) return;
+  if(!/^image\//.test(file.type||'')){ toast('ไฟล์นี้ไม่ใช่รูปภาพ'); return; }
+  if(file.size > 12*1024*1024){ toast('ไฟล์ใหญ่เกิน 12 MB — ใช้รูปเล็กกว่านี้'); return; }
+  const fr=new FileReader();
+  fr.onerror=()=>toast('อ่านไฟล์ไม่สำเร็จ');
+  fr.onload=()=>{
+    const img=new Image();
+    img.onerror=()=>toast('เปิดรูปนี้ไม่ได้ — ลองไฟล์ JPG หรือ PNG');
+    img.onload=()=>{
+      try{
+        const S=EMP_PHOTO_SIZE, cv=document.createElement('canvas');
+        cv.width=S; cv.height=S;
+        const cx=cv.getContext('2d');
+        cx.fillStyle='#fff'; cx.fillRect(0,0,S,S);
+        const m=Math.min(img.width,img.height);          // ครอบตัดจัตุรัสจากกลางภาพ
+        cx.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,S,S);
+        cb(cv.toDataURL('image/jpeg',0.72));
+      }catch(err){ toast('ย่อรูปไม่สำเร็จ'); }
+    };
+    img.src=fr.result;
+  };
+  fr.readAsDataURL(file);
+}
+/* วงกลมรูป — ถ้าไม่มีรูปใช้อักษรแรกของชื่อแทน */
+function empAvatar(e, size){
+  const s=size||34;
+  if(e && e.photo)
+    return '<img src="'+e.photo+'" alt="" style="width:'+s+'px;height:'+s+'px;border-radius:50%;object-fit:cover;'
+      +'border:1px solid var(--line);vertical-align:middle;margin-right:8px;flex-shrink:0">';
+  const ini=(e && e.name ? String(e.name).trim().charAt(0) : '?') || '?';
+  return '<span style="display:inline-flex;align-items:center;justify-content:center;width:'+s+'px;height:'+s+'px;'
+    +'border-radius:50%;background:#eaf6f1;color:#0b5f58;font-weight:700;font-size:'+Math.round(s*0.42)+'px;'
+    +'margin-right:8px;vertical-align:middle;flex-shrink:0">'+esc(ini)+'</span>';
+}
+
 function empForm(id){
   const e = id ? DB.employees.find(x=>x.id===id) : {code:nextCode(),name:'',position:'',dept:'',salary:0,startDate:'',payType:'monthly',taxId:'',bank:'',bankNo:'',pvdRate:3};
   const isDaily = e.payType==='daily';
+  let photoData = e.photo || '';
   const body = `
     <div class="grid2">
+      <div class="field" style="grid-column:1/-1;display:flex;gap:14px;align-items:center;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px 14px">
+        <div id="f_photoBox">${empAvatar(e,72)}</div>
+        <div>
+          <label style="font-weight:700">รูปพนักงาน</label>
+          <input type="file" id="f_photo" accept="image/*" style="display:none">
+          <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
+            <button type="button" class="btn ghost sm" id="f_photoPick">📷 เลือกรูป</button>
+            <button type="button" class="btn ghost sm" id="f_photoDel" ${e.photo?'':'style="display:none"'}>ลบรูป</button>
+          </div>
+          <div class="muted" style="font-size:11.5px;margin-top:5px">ย่อเหลือ 180×180 อัตโนมัติ ครอบตัดจากกลางภาพ · ใช้ในหน้ารายชื่อพนักงาน</div>
+        </div>
+      </div>
       <div class="field"><label>รหัสพนักงาน *</label><input id="f_code" value="${esc(e.code)}"><div id="codeWarn" style="color:#dc2626;font-size:12px;min-height:14px;margin-top:2px"></div></div>
       <div class="field"><label>ชื่อ-นามสกุล *</label><input id="f_name" value="${esc(e.name)}"></div>
       <div class="field"><label>เพศ</label><select id="f_gender">
@@ -2002,7 +2069,7 @@ function empForm(id){
     const dup=DB.employees.find(x=>x.id!==id && String(x.code||'').trim().toLowerCase()===code.toLowerCase());
     if(dup){ toast(`รหัส ${code} ซ้ำกับ "${dup.name}" — กรุณาใช้รหัสอื่น`);
       const f=$('#f_code'); if(f){ f.style.borderColor='#dc2626'; f.focus(); f.select(); } return; }
-    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,otMaxDay:+g('f_otMax')||0};
+    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,otMaxDay:+g('f_otMax')||0,photo:photoData||''};
     // เพิ่มคนใหม่ หรือปลดสถานะลาออกให้กลับมาทำงาน = กินโควตาเพิ่ม ต้องเช็คก่อน
     const willCount = !rec.resignDate;
     const wasCount  = id ? !e.resignDate : false;
@@ -2011,6 +2078,19 @@ function empForm(id){
     save(); closeModal(); drawEmp(); toast('บันทึกแล้ว');
   }]]);
   $('#f_payType').onchange=(ev)=>{ $('#f_salaryLab').textContent = ev.target.value==='daily' ? 'ค่าจ้างต่อวัน (บาท) *' : 'เงินเดือน (บาท) *'; };
+  // รูปพนักงาน — เลือก / ลบ
+  const phIn=$('#f_photo'), phBox=$('#f_photoBox'), phDel=$('#f_photoDel');
+  const drawPhoto=()=>{
+    phBox.innerHTML=empAvatar({name:$('#f_name').value, photo:photoData}, 72);
+    phDel.style.display = photoData ? '' : 'none';
+  };
+  $('#f_photoPick').onclick=()=>phIn.click();
+  phIn.onchange=()=>{
+    const f=phIn.files && phIn.files[0];
+    readEmpPhoto(f, (data)=>{ photoData=data; drawPhoto(); toast('เลือกรูปแล้ว — กดบันทึกเพื่อจัดเก็บ'); });
+    phIn.value='';
+  };
+  phDel.onclick=()=>{ photoData=''; drawPhoto(); };
   // กสล. กับ กองทุนสงเคราะห์ลูกจ้าง — เลือกได้อย่างใดอย่างหนึ่ง
   const syncFunds=()=>{
     const pv=$('#f_pvdRate'), wf=$('#f_wfRate'), note=$('#f_fundNote'), btn=$('#f_wfSet');
@@ -2254,16 +2334,10 @@ function vPayroll(v){
   const otRateLabel = isDaily ? `${money(emp.salary)}÷${DB.otHours||8}` : `${money(emp.salary)}÷${DB.otDays||30}÷${DB.otHours||8}`;
   const otBlock=`<div class="field" style="grid-column:1/-1;background:#f6faf8;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px">
     <label style="font-weight:700;color:var(--brand-d)">ค่าล่วงเวลา (OT) — คำนวณรายชั่วโมง</label>
-    <div class="grid3" style="margin-top:8px">
-      <div class="field"><label>อัตรา/ชม. (${otRateLabel})</label><input value="${money(rate)}" readonly style="background:#eaf6f1;font-weight:600"></div>
-      <div class="field"><label>จำนวนชั่วโมง</label><input type="number" step="0.5" id="otHours" value="${r.earn.otHours||0}"></div>
-      <div class="field"><label>ตัวคูณ (เท่า)</label>
-        <select id="otMult">
-          ${[['1','1× ทำงานวันหยุด (ในเวลา)'],['1.5','1.5× ล่วงเวลาวันทำงานปกติ'],['2','2× ค่าทำงานวันหยุด'],['2.5','2.5×'],['3','3× ล่วงเวลาในวันหยุด']].map(([v,t])=>`<option value="${v}" ${(+(r.earn.otMult||1.5)===+v)?'selected':''}>${t}</option>`).join('')}
-        </select>
-      </div>
-    </div>
-    <div style="margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <div class="muted" style="font-size:12px;margin-top:2px">อัตรา/ชม. ${otRateLabel} = ${money(rate)} บาท · เพิ่มได้หลายแถวถ้าเดือนนี้มี OT หลายแบบ</div>
+    <div id="otRows" style="margin-top:8px"></div>
+    <button type="button" id="otAdd" class="btn ghost" style="padding:7px 14px;font-size:13.5px">+ เพิ่มแถว OT</button>
+    <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
       <span class="muted">รวมค่าล่วงเวลา (OT):</span>
       <input type="number" step="0.01" data-earn="ot" id="otAmt" value="${r.earn.ot||0}" style="width:150px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;font-weight:700"> <span class="muted">บาท</span>
       <span class="muted" style="font-size:12px">(แก้ตัวเลขนี้เองได้)</span>
@@ -2319,14 +2393,44 @@ function vPayroll(v){
   panel.querySelectorAll('[data-reauto]').forEach(a=>a.onclick=(ev)=>{
     ev.preventDefault(); clearManualDed(emp,r,a.dataset.reauto); render(); toast('คืนค่าอัตโนมัติแล้ว');
   });
-  // OT auto-calc: อัตรา/ชม. × ชั่วโมง × ตัวคูณ
-  const otH=panel.querySelector('#otHours'), otM=panel.querySelector('#otMult'), otA=panel.querySelector('#otAmt');
+  // OT auto-calc: รวมทุกแถว (อัตรา/ชม. × ชั่วโมง × ตัวคูณ)
+  const otA=panel.querySelector('#otAmt'), otBox=panel.querySelector('#otRows');
   const recalcOT=()=>{
-    r.earn.otHours=+otH.value||0; r.earn.otMult=+otM.value||0;
-    const amt=otAmount(emp, r.earn.otHours, r.earn.otMult);
+    const rows=otRowsOf(r);
+    otBox.querySelectorAll('.otrow').forEach(function(el,i){
+      if(!rows[i]) rows[i]={h:0,m:1.5};
+      rows[i].h=+el.querySelector('.otH').value||0;
+      rows[i].m=+el.querySelector('.otM').value||0;
+      el.querySelector('.otSub').textContent=money(otAmount(emp,rows[i].h,rows[i].m))+' บาท';
+    });
+    const amt=otTotal(emp,r);
     r.earn.ot=amt; otA.value=amt; refreshAutoDed(); save(); drawPeTot(emp);
   };
-  otH.oninput=recalcOT; otM.onchange=recalcOT;
+  const drawOTRows=()=>{
+    const rows=otRowsOf(r);
+    otBox.innerHTML=rows.map(function(row,i){
+      return '<div class="otrow" style="display:grid;grid-template-columns:1fr 1.6fr auto auto;gap:10px;align-items:end;margin-bottom:8px">'
+        +'<div class="field"><label>จำนวนชั่วโมง</label><input type="number" step="0.5" class="otH" value="'+(row.h||0)+'"></div>'
+        +'<div class="field"><label>ตัวคูณ (เท่า)</label><select class="otM">'
+        + OT_MULTS.map(function(o){ return '<option value="'+o[0]+'"'+((+(row.m||1.5)===+o[0])?' selected':'')+'>'+o[1]+'</option>'; }).join('')
+        +'</select></div>'
+        +'<div class="field"><label>เป็นเงิน</label><div class="otSub" style="padding:9px 4px;font-weight:700;color:var(--brand-d);white-space:nowrap">0 บาท</div></div>'
+        +'<button type="button" class="otDel" title="ลบแถวนี้" style="border:1px solid var(--line);background:#fff;color:#dc2626;border-radius:8px;width:36px;height:38px;cursor:pointer;font-size:15px">✕</button>'
+        +'</div>';
+    }).join('');
+    otBox.querySelectorAll('.otH').forEach(function(x){ x.oninput=recalcOT; });
+    otBox.querySelectorAll('.otM').forEach(function(x){ x.onchange=recalcOT; });
+    otBox.querySelectorAll('.otDel').forEach(function(b,i){
+      b.onclick=function(){
+        const rows=otRowsOf(r);
+        if(rows.length<=1) rows[0]={h:0,m:1.5}; else rows.splice(i,1);
+        drawOTRows(); recalcOT();
+      };
+    });
+    recalcOT();
+  };
+  drawOTRows();
+  panel.querySelector('#otAdd').onclick=()=>{ otRowsOf(r).push({h:0,m:1.5}); drawOTRows(); };
   // พนักงานรายวัน: เปลี่ยนจำนวนวัน → อัปเดตค่าจ้างฐาน
   const wd=panel.querySelector('#workDays');
   if(wd) wd.oninput=()=>{ r.days=+wd.value||0; panel.querySelector('#baseShow').value=money(basePay(emp,r));
@@ -2959,6 +3063,19 @@ function otAllowed(iso){
   return Array.isArray(arr) ? !!arr[weekdayOf(iso)] : true;   // ยังไม่ตั้งค่า = เปิดทุกวัน
 }
 function otOverridden(iso){ return !!(DB.otDates && Object.prototype.hasOwnProperty.call(DB.otDates, iso)); }
+/* ตัวคูณ OT ของแต่ละวัน — ตั้งตามวันในสัปดาห์ได้ และกำหนดเฉพาะวันทับได้
+   ไม่ตั้งค่า = 1.5 เท่า (ล่วงเวลาวันทำงานปกติ) */
+const OT_MULT_STEPS=[1,1.5,2,2.5,3];
+function otMultWeekday(i){
+  const a=DB.otMultWeekdays;
+  const v=Array.isArray(a)?+a[i]:0;
+  return v>0?v:1.5;
+}
+function otMultFor(iso){
+  if(DB.otMultDates && DB.otMultDates[iso]!=null){ const v=+DB.otMultDates[iso]; if(v>0) return v; }
+  return otMultWeekday(weekdayOf(iso));
+}
+function otMultOverridden(iso){ return !!(DB.otMultDates && DB.otMultDates[iso]!=null); }
 // พนักงานคนนี้เปิดให้คิด OT ไหม (ไม่ตั้งค่า = เปิด)
 function otPerson(emp){ return !(emp && emp.noOT); }
 // แปลงนาทีที่อยู่เกินเป็นชั่วโมง OT — ปัดลงทีละครึ่งชั่วโมง ไม่ปัดขึ้น
@@ -3023,10 +3140,19 @@ function punchMinutes(sh, i, o){
 function shiftHours(sh){ const sp=shiftSpan(sh); return Math.round((sp.E-sp.S)/6)/10; }
 
 // สรุปสถิติเวลาเข้างานของพนักงาน 1 คนในงวด
+/* ข้อความแยก OT ตามตัวคูณ ใช้ใต้ยอดรวมในตาราง */
+function otByLabel(by){
+  const ks=Object.keys(by||{}).filter(k=>+by[k]>0).sort((a,b)=>a-b);
+  if(!ks.length) return '';
+  return '<br><span class="muted" style="font-size:11.5px;line-height:1.5">'
+    + ks.map(function(k){ return k+'× '+num(Math.round(by[k]*100)/100); }).join('<br>')
+    + '</span>';
+}
 function attendStats(emp, p){
   const rec=attendOf(p, emp.id);
   ensureShifts();
   let days=0, late=0, lateMin=0, otH=0, skipH=0, skipDays=0, capH=0, capDays=0, early=0, noOut=0;
+  const otBy={};                                   // แยกชั่วโมงตามตัวคูณ เช่น {1.5:8, 3:4}
   Object.keys(rec).forEach(d=>{
     if(!inPeriod(d,p)) return;
     // ใช้กะของคนนี้ในวันนี้ (รองรับสลับกะ + กะข้ามคืน)
@@ -3045,6 +3171,8 @@ function attendStats(emp, p){
           const cap=otCapFor(emp);
           const h=(cap>0 && raw>cap) ? cap : raw;   // เกินเพดานต่อวัน → ตัดเหลือเท่าเพดาน
           otH+=h;
+          const mul=otMultFor(d);
+          otBy[mul]=Math.round(((otBy[mul]||0)+h)*100)/100;
           if(h<raw){ capH+=raw-h; capDays++; }
         }
         else { skipH+=raw; skipDays++; }          // ปิดที่คนหรือที่วัน → ไม่คิด
@@ -3052,7 +3180,7 @@ function attendStats(emp, p){
     }
     else if(om<we) early++;
   });
-  return { days, late, lateMin, otHours:Math.round(otH*100)/100,
+  return { days, late, lateMin, otHours:Math.round(otH*100)/100, otBy,
            skipHours:Math.round(skipH*100)/100, skipDays,
            capHours:Math.round(capH*100)/100, capDays, early, noOut,
            otOff:!otPerson(emp) };
@@ -3115,7 +3243,7 @@ function vAttend(v){
         ${otPerson(e)?'⚡ เปิด':'✕ ปิด'}</button></td>
       <td class="num"><strong>${num(s.days)}</strong></td>
       <td class="num">${s.late?`<span style="color:#dc2626">${num(s.late)} ครั้ง</span><br><span class="muted" style="font-size:12px">${num(s.lateMin)} นาที</span>`:'<span class="muted">-</span>'}</td>
-      <td class="num">${s.otHours?`<strong style="color:#0d9488">${num(s.otHours)}</strong>`:'<span class="muted">-</span>'}</td>
+      <td class="num">${s.otHours?`<strong style="color:#0d9488">${num(s.otHours)}</strong>${otByLabel(s.otBy)}`:'<span class="muted">-</span>'}</td>
       <td class="num">${s.early?num(s.early):'<span class="muted">-</span>'}</td>
       <td class="num">${s.noOut?`<span style="color:#b45309">${num(s.noOut)}</span>`:'<span class="muted">-</span>'}</td>
       <td style="text-align:right"><button class="btn ghost sm" data-at-view="${e.id}">📋 รายวัน</button></td>
@@ -3634,6 +3762,24 @@ function otDaysPanel(){
       ${+d.slice(8)}${ov?'<span style="color:#f59e0b">•</span>':''}</button>`;
   }).join('');
 
+  const wdMulBtns=WD_TH.map((lab,i)=>{
+    const cur=otMultWeekday(i);
+    return `<div style="text-align:center">
+      <div class="muted" style="font-size:12px;margin-bottom:3px">${WD_S[i]}</div>
+      <select data-wdm="${i}" style="padding:5px 4px;font-size:12.5px;width:66px">
+        ${OT_MULT_STEPS.map(v=>`<option value="${v}" ${cur===v?'selected':''}>${v}×</option>`).join('')}
+      </select></div>`;
+  }).join('');
+  const nMulOver=dates.filter(otMultOverridden).length;
+  const mulChips=dates.map(d=>{
+    if(!otAllowed(d)) return '';                       // วันที่ปิด OT ไม่ต้องตั้งตัวคูณ
+    const m=otMultFor(d), ov=otMultOverridden(d);
+    return `<button type="button" data-otm="${d}" title="${d} (${WD_TH[weekdayOf(d)]}) — ตัวคูณ ${m}× ${ov?'(กำหนดเอง)':'(ตามวันในสัปดาห์)'} · กดเพื่อเปลี่ยน"
+      style="min-width:50px;padding:5px 3px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;line-height:1.35;
+        border:1.5px ${ov?'solid':'dashed'} #0f766e;background:${ov?'#ccfbf1':'#fff'};color:#0f766e">
+      ${+d.slice(8)}<br><span style="font-size:11px;font-weight:600">${m}×</span></button>`;
+  }).join('');
+
   const panel=el(`<div class="panel" style="margin-bottom:16px">
     <div class="phead" style="padding:12px 16px;font-weight:700">⚡ วันที่เปิดให้คิด OT
       <span class="muted" style="font-weight:400;font-size:13px">— งวดนี้เปิด ${num(nOpen)} / ${num(dates.length)} วัน${nOver?` · กำหนดเอง ${num(nOver)} วัน`:''}</span></div>
@@ -3650,6 +3796,16 @@ function otDaysPanel(){
       <div class="muted" style="font-size:12.5px;margin-bottom:8px">กดที่วันที่เพื่อสลับเปิด/ปิด (ทับค่ารายสัปดาห์) · จุดสีเหลือง = กำหนดเอง</div>
       <div style="display:flex;gap:5px;flex-wrap:wrap">${chips}</div>
       ${nOver?`<button class="btn ghost sm" id="otClr" style="margin-top:11px">↺ ล้างที่กำหนดเองในงวดนี้ (${num(nOver)} วัน)</button>`:''}
+
+      <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px">
+        <div style="font-size:13.5px;font-weight:700;margin-bottom:4px">ตัวคูณ OT — วันไหนคูณเท่าไร</div>
+        <div class="muted" style="font-size:12.5px;margin-bottom:8px">
+          ตั้งตามวันในสัปดาห์ก่อน แล้วกดที่วันที่ด้านล่างเพื่อกำหนดเฉพาะวัน (เช่น วันหยุดนักขัตฤกษ์)</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">${wdMulBtns}</div>
+        <div class="muted" style="font-size:12.5px;margin-bottom:6px">กำหนดเฉพาะวัน — กดที่วันที่เพื่อวนเปลี่ยนตัวคูณ · กรอบทึบ = กำหนดเอง</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">${mulChips}</div>
+        ${nMulOver?`<button class="btn ghost sm" id="otMulClr" style="margin-top:11px">↺ ล้างตัวคูณที่กำหนดเองในงวดนี้ (${num(nMulOver)} วัน)</button>`:''}
+      </div>
 
       <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px">
         <div style="font-size:13.5px;font-weight:700;margin-bottom:6px">เพดาน OT ต่อวัน</div>
@@ -3685,6 +3841,28 @@ function otDaysPanel(){
   panel.querySelectorAll('[data-wd]').forEach(b=>b.onclick=()=>{
     const i=+b.dataset.wd; DB.otWeekdays[i]=!DB.otWeekdays[i]; save(); render();
   });
+  // ตัวคูณตามวันในสัปดาห์
+  panel.querySelectorAll('[data-wdm]').forEach(s=>s.onchange=()=>{
+    if(!Array.isArray(DB.otMultWeekdays)) DB.otMultWeekdays=[1.5,1.5,1.5,1.5,1.5,1.5,1.5];
+    DB.otMultWeekdays[+s.dataset.wdm]=+s.value||1.5; save(); render();
+    toast('ตั้งตัวคูณวัน'+WD_TH[+s.dataset.wdm]+' = '+(+s.value)+'×');
+  });
+  // ตัวคูณเฉพาะวัน — กดวนไปเรื่อย ๆ ถ้าวนมาตรงกับค่ารายสัปดาห์จะล้างการกำหนดเอง
+  panel.querySelectorAll('[data-otm]').forEach(b=>b.onclick=()=>{
+    const d=b.dataset.otm;
+    DB.otMultDates=DB.otMultDates||{};
+    const cur=otMultFor(d);
+    const i=OT_MULT_STEPS.indexOf(cur);
+    const next=OT_MULT_STEPS[(i+1)%OT_MULT_STEPS.length];
+    if(next===otMultWeekday(weekdayOf(d))) delete DB.otMultDates[d];
+    else DB.otMultDates[d]=next;
+    save(); render();
+  });
+  const mulClr=panel.querySelector('#otMulClr');
+  if(mulClr) mulClr.onclick=()=>{
+    dates.forEach(d=>{ if(DB.otMultDates) delete DB.otMultDates[d]; });
+    save(); render(); toast('ล้างตัวคูณที่กำหนดเองแล้ว');
+  };
   panel.querySelector('#otAllOn').onclick=()=>{ DB.otWeekdays=[true,true,true,true,true,true,true]; save(); render(); };
   panel.querySelector('#otWorkOnly').onclick=()=>{ DB.otWeekdays=[false,true,true,true,true,true,false]; save(); render(); };
   panel.querySelector('#otAllOff').onclick=()=>{ DB.otWeekdays=[false,false,false,false,false,false,false]; save(); render(); };
@@ -3850,22 +4028,37 @@ function pushAttendToPayroll(){
   if(!targets.length){ toast('ยังไม่มีข้อมูลเวลาในงวดนี้'); return; }
   const nDaily=targets.filter(x=>x.e.payType==='daily').length;
   const nOT=targets.filter(x=>x.s.otHours>0).length;
+  // รวมชั่วโมงตามตัวคูณของทุกคน เพื่อให้เห็นก่อนกดยืนยัน
+  const sumBy={};
+  targets.forEach(({s})=>Object.keys(s.otBy||{}).forEach(k=>{
+    sumBy[k]=Math.round(((sumBy[k]||0)+ +s.otBy[k])*100)/100;
+  }));
+  const byKeys=Object.keys(sumBy).filter(k=>sumBy[k]>0).sort((a,b)=>a-b);
+  const byLine=byKeys.length
+    ? '<ul style="margin:6px 0 0 18px">'+byKeys.map(k=>'<li><strong>'+k+'×</strong> รวม '+num(sumBy[k])+' ชม.</li>').join('')+'</ul>'
+    : '';
   openModal('➡️ ส่งข้อมูลเข้าเงินได้ / เงินหัก',
     `<p>จากเวลาเข้างานงวด <strong>${esc(periodLabel(PERIOD))}</strong> จะเขียนข้อมูลลงหน้า “เงินได้ / เงินหัก”:</p>
      <ul style="margin-left:18px">
        <li>ตั้ง <strong>จำนวนวันทำงาน</strong> ให้พนักงานรายวัน <strong>${nDaily}</strong> คน</li>
-       <li>ตั้ง <strong>ชั่วโมง OT</strong> ให้ <strong>${nOT}</strong> คน แล้วคำนวณเงิน OT ใหม่ (ตัวคูณเดิม ถ้ายังไม่มีใช้ 1.5)</li>
+       <li>สร้าง <strong>แถว OT แยกตามตัวคูณ</strong> ให้ <strong>${nOT}</strong> คน แล้วคำนวณเงิน OT ใหม่${byLine}</li>
      </ul>
-     <p class="muted" style="font-size:12.5px">ค่าที่มีอยู่เดิมในสองช่องนี้จะถูกเขียนทับ ช่องอื่นไม่ถูกแตะ</p>`,
+     <p class="muted" style="font-size:12.5px">
+       ตัวคูณมาจากที่ตั้งไว้ในหัวข้อ <strong>“ตัวคูณ OT — วันไหนคูณเท่าไร”</strong><br>
+       แถว OT และจำนวนวันทำงานเดิมจะถูกเขียนทับ ช่องอื่นไม่ถูกแตะ</p>`,
     [['ยกเลิก','ghost',closeModal],['เขียนข้อมูล','',()=>{
       let d=0, o=0;
       targets.forEach(({e,s})=>{
         const r=getRec(PERIOD, e.id);
         if(e.payType==='daily'){ r.days=s.days; d++; }
         if(s.otHours>0){
-          r.earn.otHours=s.otHours;
-          if(!r.earn.otMult) r.earn.otMult=1.5;
-          r.earn.ot=otAmount(e, r.earn.otHours, r.earn.otMult);
+          // แยกเป็นแถวละตัวคูณ เรียงจากน้อยไปมาก
+          const by=s.otBy||{};
+          const ks=Object.keys(by).filter(k=>+by[k]>0).sort((a,b)=>a-b);
+          r.earn.otRows = ks.length ? ks.map(k=>({h:+by[k], m:+k}))
+                                    : [{h:s.otHours, m:1.5}];
+          delete r.earn.otHours; delete r.earn.otMult;   // เลิกใช้รูปแบบแถวเดียว
+          r.earn.ot=otTotal(e, r);
           o++;
         }
         autoDeductions(e, r);   // ภาษี/ประกันสังคม/กสล. คำนวณใหม่ตามเงินได้ที่เปลี่ยน
