@@ -1901,7 +1901,10 @@ function vEmployees(v){
 }
 function drawEmp(){
   const list = empVisibleList();
-  const rows = list.map(e=>{ const daily=e.payType==='daily'; return `<tr>
+  const alive=new Set(DB.employees.map(x=>x.id));
+  empSel.forEach(id=>{ if(!alive.has(id)) empSel.delete(id); });   // คนที่ถูกลบไปแล้วไม่ต้องค้าง
+  const rows = list.map(e=>{ const daily=e.payType==='daily'; return `<tr${empSel.has(e.id)?' style="background:#eff6ff"':''}>
+    <td style="width:34px"><input type="checkbox" class="empPick" data-pick="${e.id}" ${empSel.has(e.id)?'checked':''} style="width:16px;height:16px;cursor:pointer" aria-label="เลือก ${esc(e.name)}"></td>
     <td><span class="chip">${esc(e.code)}</span></td>
     <td><span style="display:inline-flex;align-items:center">${empAvatar(e,34)}<span>${genderIcon(e.gender)}<strong style="${e.resignDate?'color:#94a3b8;text-decoration:line-through':''}">${esc(e.name)}</strong>${e.resignDate?` <span class="chip" style="background:#fee2e2;color:#dc2626">ลาออก ${esc(fmtDate(e.resignDate))}</span>`:''}</span></span></td>
     <td>${esc(e.position)}</td>
@@ -1915,13 +1918,44 @@ function drawEmp(){
       <button class="icon-btn" title="ลบ" data-del="${e.id}">🗑️</button>
     </td></tr>`;}).join('');
   const tbl = el(`<table>
-    <thead><tr><th>${tr('th_code')}</th><th>${tr('th_name')}</th><th>${tr('th_position')}</th><th>${tr('th_dept')}</th><th>${tr('th_type')}</th><th class="num">${tr('th_wage')}</th><th>${tr('th_start')}</th><th></th></tr></thead>
-    <tbody>${rows||`<tr><td colspan="8" class="empty">${tr('emp_not_found')}</td></tr>`}</tbody>
+    <thead><tr><th style="width:34px"><input type="checkbox" id="empPickAll" style="width:16px;height:16px;cursor:pointer" title="เลือกทั้งหมดที่เห็น" aria-label="เลือกทั้งหมดที่เห็น"></th><th>${tr('th_code')}</th><th>${tr('th_name')}</th><th>${tr('th_position')}</th><th>${tr('th_dept')}</th><th>${tr('th_type')}</th><th class="num">${tr('th_wage')}</th><th>${tr('th_start')}</th><th></th></tr></thead>
+    <tbody>${rows||`<tr><td colspan="9" class="empty">${tr('emp_not_found')}</td></tr>`}</tbody>
   </table>`);
   tbl.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>salaryHistModal(b.dataset.sh));
   tbl.querySelectorAll('[data-ed]').forEach(b=>b.onclick=()=>empForm(b.dataset.ed));
   tbl.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delEmp(b.dataset.del));
-  const box=$('#empTbl'); box.innerHTML=''; box.appendChild(tbl);
+  // ติ๊กทีละคน
+  tbl.querySelectorAll('[data-pick]').forEach(cb=>cb.onchange=()=>{
+    if(cb.checked) empSel.add(cb.dataset.pick); else empSel.delete(cb.dataset.pick);
+    drawEmp();
+  });
+  // ติ๊กทั้งหมดที่เห็น (นับเฉพาะรายชื่อที่ผ่านการค้นหา/กรองอยู่ตอนนี้)
+  const all=tbl.querySelector('#empPickAll');
+  const nVis=list.filter(e=>empSel.has(e.id)).length;
+  if(all){
+    all.checked = list.length>0 && nVis===list.length;
+    all.indeterminate = nVis>0 && nVis<list.length;
+    all.onchange=()=>{
+      if(all.checked) list.forEach(e=>empSel.add(e.id));
+      else list.forEach(e=>empSel.delete(e.id));
+      drawEmp();
+    };
+  }
+  const box=$('#empTbl'); box.innerHTML='';
+  if(empSel.size){
+    const hidden=empSel.size-nVis;
+    const bar=el(`<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;margin-bottom:12px">
+      <strong style="color:#1d4ed8">เลือกแล้ว ${empSel.size} คน</strong>
+      ${hidden>0?`<span class="muted" style="font-size:12.5px">(${hidden} คนไม่แสดงในรายการที่กรองอยู่)</span>`:''}
+      <span style="flex:1"></span>
+      <button class="btn ghost sm" id="bulkClr">ยกเลิกการเลือก</button>
+      <button class="btn danger sm" id="bulkDel">🗑️ ลบที่เลือก (${empSel.size})</button>
+    </div>`);
+    bar.querySelector('#bulkClr').onclick=()=>{ empSel.clear(); drawEmp(); };
+    bar.querySelector('#bulkDel').onclick=delEmpBulk;
+    box.appendChild(bar);
+  }
+  box.appendChild(tbl);
 }
 function fmtDate(d){ if(!d) return '-'; const [y,m,dd]=d.split('-'); return `${dd}/${m}/${(+y)+543}`; }
 /* ---------- ประวัติการขึ้นเงินเดือน (โมดัล) ---------- */
@@ -1972,6 +2006,31 @@ function genderIcon(g){
   if(g==='M') return '<span title="ชาย" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#d8f3e6;color:#0e3a5c;font-weight:700;margin-right:7px;font-size:13px">♂</span>';
   if(g==='F') return '<span title="หญิง" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#fce7f3;color:#db2777;font-weight:700;margin-right:7px;font-size:13px">♀</span>';
   return '<span title="ไม่ระบุ" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#f1f5f9;color:#94a3b8;margin-right:7px;font-size:13px">–</span>';
+}
+/* ---------- เลือกลบหลายคน ----------
+   เก็บ id ที่เลือกไว้นอกฟังก์ชันวาด เพื่อให้ค้างอยู่ตอนพิมพ์ค้นหาหรือสลับแท็บ */
+const empSel=new Set();
+function delEmpBulk(){
+  const picked=DB.employees.filter(e=>empSel.has(e.id));
+  if(!picked.length){ toast('ยังไม่ได้เลือกใคร'); return; }
+  const show=picked.slice(0,12);
+  openModal('ลบพนักงานที่เลือก',
+    `<p>ต้องการลบพนักงาน <strong style="color:var(--bad)">${picked.length} คน</strong>
+       และข้อมูลเงินเดือนทั้งหมดของคนเหล่านี้หรือไม่?</p>
+     <div style="max-height:230px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:#f8fafc">
+       <ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.9">
+         ${show.map(e=>`<li>${esc(e.name)} <span class="muted">(${esc(e.code)})</span></li>`).join('')}
+       </ul>
+       ${picked.length>show.length?`<div class="muted" style="font-size:12.5px;margin-top:6px">…และอีก ${picked.length-show.length} คน</div>`:''}
+     </div>
+     <p class="muted" style="font-size:12.5px;margin-top:10px">การลบย้อนกลับไม่ได้ — ถ้ายังไม่แน่ใจ กด “ส่งออก CSV” เก็บไว้ก่อน</p>`,
+    [['ยกเลิก','ghost',closeModal],[`ลบ ${picked.length} คน`,'danger',()=>{
+      const gone=new Set(picked.map(e=>e.id));
+      DB.employees=DB.employees.filter(x=>!gone.has(x.id));
+      Object.values(DB.payroll).forEach(pp=>gone.forEach(id=>delete pp[id]));
+      empSel.clear();
+      save(); closeModal(); drawEmp(); toast(`ลบพนักงาน ${gone.size} คนแล้ว`);
+    }]]);
 }
 function delEmp(id){
   const e=DB.employees.find(x=>x.id===id);
