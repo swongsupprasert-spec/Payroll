@@ -670,6 +670,27 @@ function restorePage(){
 let PAGE = 'dashboard';
 const $ = s => document.querySelector(s);
 const el = (h)=>{ const t=document.createElement('template'); t.innerHTML=h.trim(); return t.content.firstChild; };
+/* ---------- ถอดรหัสอักขระไฟล์ที่นำเข้า ----------
+   ไฟล์จากโปรแกรม HR เก่าหรือ Excel ภาษาไทยมักเป็น TIS-620 / Windows-874
+   ถ้าถอดเป็น UTF-8 ตรง ๆ ตัวหนังสือไทยจะกลายเป็น ??? ทั้งหมด
+   วิธีเดา: ดู BOM ก่อน ไม่มีก็ลองถอดเป็น UTF-8 แบบเข้มงวด พังเมื่อไหร่ค่อยใช้ Windows-874
+   (ข้อความไทย TIS-620 เกือบทุกไบต์ผิดกฎ UTF-8 จึงตกมาทางนี้เสมอ ส่วนไฟล์ UTF-8 จริงจะผ่านด่านแรก) */
+function decodeTextBytes(buf){
+  if(typeof buf==='string') return buf.replace(/^\uFEFF/,'');
+  const b=new Uint8Array(buf);
+  const cut=(enc,skip)=>new TextDecoder(enc).decode(b.subarray(skip));
+  if(b.length>=3 && b[0]===0xEF && b[1]===0xBB && b[2]===0xBF) return cut('utf-8',3);
+  if(b.length>=2 && b[0]===0xFF && b[1]===0xFE) return cut('utf-16le',2);
+  if(b.length>=2 && b[0]===0xFE && b[1]===0xFF) return cut('utf-16be',2);
+  let txt;
+  try{ txt=new TextDecoder('utf-8',{fatal:true}).decode(b); }        // ไฟล์ UTF-8 ปกติ
+  catch(e){
+    try{ txt=new TextDecoder('windows-874').decode(b); }             // ไทยแบบเก่า
+    catch(e2){ txt=new TextDecoder('utf-8').decode(b); }
+  }
+  if(txt.indexOf('\uFFFD')>=0) toast('⚠️ ไฟล์มีตัวอักษรที่อ่านไม่ออก — ลองบันทึกใหม่เป็น CSV UTF-8');
+  return txt.replace(/^\uFEFF/,'');
+}
 function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),2200); }
 function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
@@ -2297,8 +2318,8 @@ function vPayroll(v){
   tb.querySelector('#peCsvFile').onchange=(ev)=>{
     const f=ev.target.files&&ev.target.files[0]; if(!f) return;
     const rd=new FileReader();
-    rd.onload=()=>{ importPayrollCSV(String(rd.result||''), list); ev.target.value=''; };
-    rd.readAsText(f,'utf-8');
+    rd.onload=()=>{ importPayrollCSV(decodeTextBytes(rd.result), list); ev.target.value=''; };
+    rd.readAsArrayBuffer(f);
   };
   if(isAll){ vPayrollAll(v, list); return; }
 
@@ -3974,7 +3995,7 @@ function importAttendCSV(){
   const inp=document.createElement('input'); inp.type='file'; inp.accept='.csv,text/csv';
   inp.onchange=()=>{ const f=inp.files[0]; if(!f) return; const rd=new FileReader();
     rd.onload=()=>{
-      const rows=parseCSV(String(rd.result).replace(/^﻿/,''));
+      const rows=parseCSV(decodeTextBytes(rd.result));
       if(rows.length<2){ toast('ไฟล์ CSV ว่างเปล่า'); return; }
       let ok=0; const bad=[], outside=[], unknown=new Set();
       for(let r=1;r<rows.length;r++){
@@ -4009,7 +4030,7 @@ function importAttendCSV(){
           [['ปิด','ghost',closeModal]]);
       }
     };
-    rd.readAsText(f,'utf-8'); };
+    rd.readAsArrayBuffer(f); };
   inp.click();
 }
 // งวดที่วันที่นี้สังกัด (อิงวันตัดรอบ)
@@ -4450,7 +4471,7 @@ function importLeaveCSV(){
   const inp=document.createElement('input'); inp.type='file'; inp.accept='.csv,text/csv';
   inp.onchange=()=>{ const f=inp.files[0]; if(!f) return; const rd=new FileReader();
     rd.onload=()=>{
-      const rows=parseCSV(String(rd.result).replace(/^﻿/,''));
+      const rows=parseCSV(decodeTextBytes(rd.result));
       if(rows.length<2){ toast('ไฟล์ CSV ว่างเปล่า'); return; }
       let ok=0; const unknown=new Set(); const bad=[];
       for(let r=1;r<rows.length;r++){
@@ -4478,7 +4499,7 @@ function importLeaveCSV(){
       if(bad.length) msg+=` · ผิดรูปแบบ ${bad.length} บรรทัด`;
       toast(msg);
     };
-    rd.readAsText(f,'utf-8'); };
+    rd.readAsArrayBuffer(f); };
   inp.click();
 }
 // หักเงินขาดงาน/ลาไม่รับค่าจ้าง เข้าช่อง "หักขาดงาน" ของงวดนี้
@@ -4555,7 +4576,7 @@ function importEmpCSV(){
   const inp=document.createElement('input'); inp.type='file'; inp.accept='.csv,text/csv';
   inp.onchange=()=>{ const f=inp.files[0]; if(!f) return; const rd=new FileReader();
     rd.onload=()=>{ try{
-      const rows=parseCSV(String(rd.result).replace(/^﻿/,''));
+      const rows=parseCSV(decodeTextBytes(rd.result));
       if(rows.length<2) throw 0;
       let added=0, updated=0, skipped=0;
       for(let r=1;r<rows.length;r++){ const c=rows[r]; if(!c || !String(c[0]||'').trim()) continue;
@@ -4586,7 +4607,7 @@ function importEmpCSV(){
         ? `นำเข้า ${added} คน · อัปเดต ${updated} · 🔒 ข้าม ${skipped} คน เพราะเต็มโควตาแพ็กเกจ (สูงสุด ${empLimit()} คน)`
         : `นำเข้า CSV สำเร็จ: เพิ่ม ${added} · อัปเดต ${updated}`);
     }catch(e){ toast('ไฟล์ CSV ไม่ถูกต้อง'); } };
-    rd.readAsText(f,'utf-8'); };
+    rd.readAsArrayBuffer(f); };
   inp.click();
 }
 
