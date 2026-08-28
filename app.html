@@ -263,7 +263,7 @@
 <div class="app">
   <div class="sideOverlay no-print" id="sideOverlay"></div>
   <aside class="side" id="side">
-    <a class="brand" href="index.html" title="กลับหน้าแรก" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
+    <a class="brand" href="/" title="กลับหน้าแรก" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
       <span style="display:flex;align-items:center;gap:9px">
         <svg viewBox="0 0 44 44" width="30" height="30" style="flex-shrink:0" aria-hidden="true">
           <defs><linearGradient id="lgSide" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs>
@@ -892,7 +892,7 @@ async function vCompanies(v){
     <div><strong>เพิ่มบริษัทไม่ได้ — เต็มโควตาแพ็กเกจแล้ว</strong><br>
       <span class="muted" style="font-size:13px">${esc(coQuotaMsg())}<br>
       บริษัทที่เก็บเข้าคลังแล้ว<strong>ยังนับในโควตา</strong> — ถ้าเลิกดูแลถาวรแล้วให้กด 🗑️ ลบ เพื่อคืนโควตา</span></div>
-    <a class="btn sm" href="pricing.html" target="_blank" rel="noopener" style="margin-left:auto">อัปเกรดแพ็กเกจ</a>
+    <a class="btn sm" href="/pricing" target="_blank" rel="noopener" style="margin-left:auto">อัปเกรดแพ็กเกจ</a>
   </div></div>`));
 
   if(!COMPANIES.length){
@@ -1881,7 +1881,7 @@ function vEmployees(v){
           <div><strong>เพิ่มพนักงานไม่ได้ — เต็มโควตาแพ็กเกจแล้ว</strong><br>
           <span class="muted" style="font-size:13px">${esc(quotaMsg())}<br>
           พนักงานที่ลาออกแล้วไม่นับในโควตา ถ้าใครลาออกให้ใส่วันที่ลาออกในหน้า “การลาออก”</span></div>
-          <a class="btn sm" href="pricing.html" target="_blank" rel="noopener" style="margin-left:auto">อัปเกรดแพ็กเกจ</a>
+          <a class="btn sm" href="/pricing" target="_blank" rel="noopener" style="margin-left:auto">อัปเกรดแพ็กเกจ</a>
         </div></div>`);
         v.appendChild(note);
       }
@@ -4988,7 +4988,7 @@ function showTrialBar(){
       background:${warn?'#fffbeb':'#eaf6f1'};color:${warn?'#92400e':'#0e3a5c'}">
     <span>${warn?'⚠️':'🎁'} <strong>${ACCESS.status==='trial'?'ทดลองใช้ฟรี':'แพ็กเกจของคุณ'}</strong>
       เหลืออีก <strong>${d}</strong> วัน${warn?' — ต่ออายุเพื่อใช้งานต่อเนื่อง':''}${ACCESS.status==='trial'?' · ช่วงทดลองใช้ได้ครบทุกฟีเจอร์':''}</span>
-    <a href="pricing.html" class="btn sm" style="margin-left:auto;background:${warn?'#d97706':'#0e3a5c'};color:#fff">💳 ดูแพ็กเกจ</a>
+    <a href="/pricing" class="btn sm" style="margin-left:auto;background:${warn?'#d97706':'#0e3a5c'};color:#fff">💳 ดูแพ็กเกจ</a>
   </div>`);
   const main=document.querySelector('.main'); main.insertBefore(bar, main.children[1]);
 }
@@ -5004,9 +5004,9 @@ function showExpired(){
       <p style="color:#5b7186;margin-bottom:6px">บัญชี <strong>${esc(MY_EMAIL)}</strong></p>
       <p style="color:#5b7186;margin-bottom:22px">ทดลองใช้ฟรี 30 วันสิ้นสุดแล้ว กรุณาเลือกแพ็กเกจเพื่อใช้งานต่อ<br>
         <span style="font-size:13px">ข้อมูลของคุณยังถูกเก็บไว้ครบ และกลับมาใช้ได้ทันทีหลังชำระเงิน</span></p>
-      <a href="pricing.html" class="btn" style="width:100%;justify-content:center;padding:14px;font-size:16px;
+      <a href="/pricing" class="btn" style="width:100%;justify-content:center;padding:14px;font-size:16px;
          background:linear-gradient(135deg,#10b981,#0f766e);color:#fff;margin-bottom:10px">💳 เลือกแพ็กเกจ</a>
-      <a href="index.html" class="btn ghost" style="width:100%;justify-content:center">← กลับหน้าแรก</a>
+      <a href="/" class="btn ghost" style="width:100%;justify-content:center">← กลับหน้าแรก</a>
       <div style="margin-top:16px;font-size:13px;color:#5b7186">
         ชำระเงินแล้ว? <a href="#" id="reCheck" style="color:#0e3a5c;font-weight:700">ตรวจสอบสถานะอีกครั้ง</a>
         · <a href="#" id="expLogout" style="color:#5b7186">ออกจากระบบ</a>
@@ -5020,7 +5020,7 @@ function enterGuest(){
   GUEST=true; MY_UID=null; TARGET_UID=null;
   $('#authGate').style.display='none';
   DB=load();
-  const f=$('#userFoot'); if(f){ f.innerHTML='🧪 โหมดทดลอง (ไม่ได้ล็อกอิน)<br><span style="opacity:.75">ข้อมูลเก็บในเครื่องนี้เท่านั้น</span> · <a href="app.html" style="color:#a7f3d0">เข้าสู่ระบบ/สมัคร</a>'; }
+  const f=$('#userFoot'); if(f){ f.innerHTML='🧪 โหมดทดลอง (ไม่ได้ล็อกอิน)<br><span style="opacity:.75">ข้อมูลเก็บในเครื่องนี้เท่านั้น</span> · <a href="/app" style="color:#a7f3d0">เข้าสู่ระบบ/สมัคร</a>'; }
   renderNav(); render();
 }
 /* โหมดสาธิต: บริษัทตัวอย่าง 5 คน + จำลองระดับแพ็กเกจ
@@ -5056,9 +5056,9 @@ function demoBanner(prem){
     <span style="opacity:.9">ข้อมูลตัวอย่าง แก้ได้เต็มที่ ไม่กระทบของจริง — กำลังดูแบบ
       <strong>${prem?'พรีเมี่ยม 790 บาท':'มาตรฐาน 590 บาท'}</strong></span>
     <span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
-      <a href="app.html?demo=${prem?'':'premium'}" style="background:rgba(255,255,255,.18);padding:5px 12px;border-radius:100px;color:#fff">
+      <a href="/app?demo=${prem?'':'premium'}" style="background:rgba(255,255,255,.18);padding:5px 12px;border-radius:100px;color:#fff">
         ${prem?'↩ ดูแบบมาตรฐาน 590':'ดูแบบพรีเมี่ยม 790 →'}</a>
-      <a href="pricing.html" style="background:#fff;color:#0e3a5c;font-weight:700;padding:5px 12px;border-radius:100px">ดูราคา</a>
+      <a href="/pricing" style="background:#fff;color:#0e3a5c;font-weight:700;padding:5px 12px;border-radius:100px">ดูราคา</a>
     </span></div>`);
   document.body.insertBefore(b, document.body.firstChild);
 }

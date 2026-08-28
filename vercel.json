@@ -45,6 +45,15 @@
       ]
     },
     {
+      "source": "/(brochure|manual|richmenu-maker)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
       "source": "/(index|articles|about).html",
       "headers": [
         {
@@ -107,6 +116,11 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
     {
       "source": "/(.*)",
       "has": [
