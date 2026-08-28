@@ -2107,6 +2107,7 @@ function empForm(id){
         <option value="F" ${e.gender==='F'?'selected':''}>♀ หญิง</option></select></div>
       <div class="field"><label>สัญชาติ</label><input id="f_nationality" value="${esc(e.nationality||'ไทย')}" list="natList"><datalist id="natList"><option value="ไทย"><option value="พม่า"><option value="ลาว"><option value="กัมพูชา"><option value="เวียดนาม"></datalist></div>
       <div class="field"><label>ตำแหน่ง</label><input id="f_position" value="${esc(e.position)}"></div>
+      <div class="field"><label>เบอร์โทร</label><input id="f_phone" value="${esc(e.phone||'')}" inputmode="tel" placeholder="08x-xxx-xxxx"></div>
       <div class="field"><label>แผนก</label><input id="f_dept" value="${esc(e.dept)}" list="deptList"></div>
       <div class="field"><label>ประเภทการจ้าง *</label><select id="f_payType">
         <option value="monthly" ${!isDaily?'selected':''}>รายเดือน</option>
@@ -2149,7 +2150,7 @@ function empForm(id){
     const dup=DB.employees.find(x=>x.id!==id && String(x.code||'').trim().toLowerCase()===code.toLowerCase());
     if(dup){ toast(`รหัส ${code} ซ้ำกับ "${dup.name}" — กรุณาใช้รหัสอื่น`);
       const f=$('#f_code'); if(f){ f.style.borderColor='#dc2626'; f.focus(); f.select(); } return; }
-    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,otMaxDay:+g('f_otMax')||0,photo:photoData||''};
+    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),phone:g('f_phone').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,otMaxDay:+g('f_otMax')||0,photo:photoData||''};
     // เพิ่มคนใหม่ หรือปลดสถานะลาออกให้กลับมาทำงาน = กินโควตาเพิ่ม ต้องเช็คก่อน
     const willCount = !rec.resignDate;
     const wasCount  = id ? !e.resignDate : false;
@@ -4603,7 +4604,7 @@ function downloadFile(name, content, type){
 }
 
 /* ---------- นำเข้า/ส่งออก พนักงาน เป็น CSV ---------- */
-const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%','กองทุนสงเคราะห์%','คิดOT(ใช่/ไม่)','กะประจำ','เพดานOT/วัน'];
+const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','เบอร์โทร','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%','กองทุนสงเคราะห์%','คิดOT(ใช่/ไม่)','กะประจำ','เพดานOT/วัน'];
 function csvEsc(v){ v=String(v??''); return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
 function parseCSV(text){
   const rows=[]; let field='', row=[], inQ=false; text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
@@ -4622,7 +4623,7 @@ function exportEmpCSV(){
   const lines=[EMP_CSV_HEAD.map(csvEsc).join(',')];
   list.forEach(e=>{
     lines.push([e.code, e.name, e.gender==='M'?'ชาย':e.gender==='F'?'หญิง':'',
-      e.nationality||'', e.position||'', e.dept||'',
+      e.nationality||'', e.position||'', e.phone||'', e.dept||'',
       e.payType==='daily'?'รายวัน':'รายเดือน',
       e.salary||0, e.startDate||'', e.resignDate||'', e.taxId||'',
       e.address||'', e.bank||'', e.bankNo||'', e.pvdRate||0, e.wfRate||'', e.noOT?'ไม่':'ใช่', (shiftById(e.shiftId)||ensureShifts()[0]).name, e.otMaxDay||''].map(csvEsc).join(','));
@@ -4631,40 +4632,127 @@ function exportEmpCSV(){
   downloadFile(`employees${tag}_${curPeriod()}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
   toast(`ส่งออก CSV แล้ว (${list.length} คน)`);
 }
+/* ---------- จับคู่คอลัมน์ CSV จากชื่อหัวตาราง ----------
+   เดิมอ่านตามลำดับคอลัมน์ตายตัว ไฟล์ที่เรียงคอลัมน์ต่างออกไปจึงเข้าช่องผิดหมด
+   (เช่น เบอร์โทรไปอยู่ช่องตำแหน่ง) ตอนนี้อ่านชื่อหัวตารางก่อน
+   ถ้าอ่านชื่อไม่ออกเลยค่อยถอยไปใช้ลำดับแบบเดิม */
+const EMP_FIELDS=[
+  ['code','รหัส',            [/^รหัส/,/^เลขที่?พนักงาน/,/\b(emp(loyee)?[ _-]?)?(code|id|no)\b/i]],
+  ['name','ชื่อ-นามสกุล',     [/^ชื่อ/,/^นาม/,/\bname\b/i]],
+  ['gender','เพศ',           [/^เพศ/,/\b(gender|sex)\b/i]],
+  ['nationality','สัญชาติ',   [/^สัญชาติ/,/\bnationality\b/i]],
+  ['position','ตำแหน่ง',      [/^ตำแหน่ง/,/\b(position|job ?title|title)\b/i]],
+  ['phone','เบอร์โทร',        [/เบอร์|โทรศัพท์|^โทร/,/\b(phone|mobile|tel)\b/i]],
+  ['dept','แผนก',            [/^แผนก/,/^ฝ่าย/,/\b(dept|department)\b/i]],
+  ['payType','ประเภท',        [/^ประเภท/,/\b(pay ?type|employment ?type)\b/i]],
+  ['salary','ค่าจ้าง',        [/^ค่าจ้าง/,/^เงินเดือน/,/^ฐานเงินเดือน/,/\b(salary|wage|rate)\b/i]],
+  ['startDate','วันเริ่มงาน',  [/เริ่มงาน|วันที่เริ่ม|วันเข้างาน/,/\b(start|hire)[ _-]?date\b/i]],
+  ['resignDate','วันที่ลาออก', [/ลาออก|สิ้นสุด|พ้นสภาพ/,/\b(resign|end|termination)[ _-]?date\b/i]],
+  ['taxId','เลขบัตรประชาชน',  [/บัตรประชาชน|ประจำตัวประชาชน|^เลขประจำตัว/,/\b(national ?id|id ?card|citizen)\b/i]],
+  ['address','ที่อยู่',        [/^ที่อยู่/,/\baddress\b/i]],
+  ['bank','ธนาคาร',          [/^ธนาคาร/,/\bbank$/i,/\bbank ?name\b/i]],
+  ['bankNo','เลขที่บัญชี',    [/เลขที่?บัญชี|บัญชีธนาคาร/,/\b(account ?(no|number)|bank ?account)\b/i]],
+  ['pvdRate','อัตรากสล.%',    [/กสล|สำรองเลี้ยงชีพ/,/\bpvd\b/i]],
+  ['wfRate','กองทุนสงเคราะห์%',[/สงเคราะห์/,/\bwelfare\b/i]],
+  ['noOT','คิดOT',           [/คิด ?ot/i,/^ot$/i]],
+  ['shift','กะประจำ',        [/^กะ/,/\bshift\b/i]],
+  ['otMaxDay','เพดานOT/วัน',  [/เพดาน ?ot/i,/\bot ?(max|cap)\b/i]]
+];
+const EMP_POS_ORDER=['code','name','gender','nationality','position','dept','payType','salary',
+  'startDate','resignDate','taxId','address','bank','bankNo','pvdRate','wfRate','noOT','shift','otMaxDay'];
+function normHead(s){
+  return String(s||'').replace(/^\uFEFF/,'').replace(/[()（）]/g,' ')
+    .replace(/[\s\u00A0._-]+/g,' ').trim();
+}
+/* คืน {map:{field:ดัชนีคอลัมน์}, unmatched:[ชื่อคอลัมน์ที่ไม่รู้จัก], byName:true/false} */
+function mapEmpColumns(head){
+  const cols=head.map(normHead);
+  const map={}, taken=new Set();
+  EMP_FIELDS.forEach(([field,,pats])=>{
+    for(let i=0;i<cols.length;i++){
+      if(taken.has(i) || !cols[i]) continue;
+      if(pats.some(p=>p.test(cols[i]))){ map[field]=i; taken.add(i); return; }
+    }
+  });
+  // ต้องเจออย่างน้อยรหัสกับชื่อ ถึงจะเชื่อว่าอ่านหัวตารางได้จริง
+  if(map.code===undefined || map.name===undefined){
+    const m={}; EMP_POS_ORDER.forEach((f,i)=>{ if(i<cols.length) m[f]=i; });
+    return { map:m, unmatched:[], byName:false };
+  }
+  const unmatched=cols.map((t,i)=>({t,i})).filter(x=>x.t && !taken.has(x.i)).map(x=>x.t);
+  return { map, unmatched, byName:true };
+}
+function empRecFromRow(c, map){
+  const g=f=> map[f]===undefined ? '' : String(c[map[f]]??'').trim();
+  const num=f=> +String(g(f)).replace(/,/g,'') || 0;
+  const gen=g('gender');
+  const pvd=num('pvdRate');
+  const otTxt=g('noOT');
+  const rec={
+    code:g('code'), name:g('name'),
+    gender:/ชาย|^m(ale)?$/i.test(gen)?'M':/หญิง|^f(emale)?$/i.test(gen)?'F':'',
+    nationality:g('nationality'), position:g('position'), phone:g('phone'), dept:g('dept'),
+    payType:/วัน|daily/i.test(g('payType'))?'daily':'monthly',
+    salary:num('salary'), startDate:g('startDate'), resignDate:g('resignDate'),
+    taxId:g('taxId'), address:g('address'), bank:g('bank'), bankNo:g('bankNo'),
+    pvdRate:pvd, wfRate: pvd>0 ? 0 : num('wfRate'),
+    noOT: otTxt && /^(ไม่|no|n|0|false)$/i.test(otTxt) ? 1 : 0,
+    otMaxDay:num('otMaxDay')
+  };
+  const sh=g('shift');
+  if(sh){ const s=ensureShifts().find(x=>x.name===sh); if(s) rec.shiftId=s.id; }
+  return rec;
+}
 function importEmpCSV(){
   const inp=document.createElement('input'); inp.type='file'; inp.accept='.csv,text/csv';
   inp.onchange=()=>{ const f=inp.files[0]; if(!f) return; const rd=new FileReader();
     rd.onload=()=>{ try{
       const rows=parseCSV(decodeTextBytes(rd.result));
       if(rows.length<2) throw 0;
-      let added=0, updated=0, skipped=0;
-      for(let r=1;r<rows.length;r++){ const c=rows[r]; if(!c || !String(c[0]||'').trim()) continue;
-        const rec={
-          code:String(c[0]).trim(), name:String(c[1]||'').trim(),
-          gender:/ชาย|^m$/i.test(String(c[2]||'').trim())?'M':/หญิง|^f$/i.test(String(c[2]||'').trim())?'F':'',
-          nationality:String(c[3]||'').trim(),
-          position:String(c[4]||'').trim(), dept:String(c[5]||'').trim(),
-          payType:/วัน|daily/i.test(String(c[6]||''))?'daily':'monthly',
-          salary:+c[7]||0, startDate:String(c[8]||'').trim(), resignDate:String(c[9]||'').trim(),
-          taxId:String(c[10]||'').trim(), address:String(c[11]||'').trim(),
-          bank:String(c[12]||'').trim(), bankNo:String(c[13]||'').trim(), pvdRate:+c[14]||0,
-          wfRate: (+c[14]||0)>0 ? 0 : (+c[15]||0),
-          noOT: c[16]!==undefined && /^(ไม่|no|n|0|false)$/i.test(String(c[16]).trim()) ? 1 : 0,
-          shiftId: (ensureShifts().find(s=>s.name===String(c[17]||'').trim())||{}).id,
-          otMaxDay: +c[18]||0
-        };
-        const ex=DB.employees.find(x=>x.code===rec.code);
-        if(ex){ Object.assign(ex,rec); updated++; }
-        else {
-          // เกินโควตาแพ็กเกจ → หยุดตรงนี้ ไม่นำเข้าต่อ (ที่นำเข้าไปแล้วยังอยู่)
-          if(!canAddEmp(1)){ skipped = rows.length-r; break; }
-          DB.employees.push({id:uid(),...rec}); added++;
-        }
+      const { map, unmatched, byName } = mapEmpColumns(rows[0]);
+      const recs=[];
+      for(let r=1;r<rows.length;r++){ const c=rows[r]; if(!c) continue;
+        const rec=empRecFromRow(c, map);
+        if(!rec.code) continue;
+        recs.push(rec);
       }
-      save(); drawEmp();
-      toast(skipped
-        ? `นำเข้า ${added} คน · อัปเดต ${updated} · 🔒 ข้าม ${skipped} คน เพราะเต็มโควตาแพ็กเกจ (สูงสุด ${empLimit()} คน)`
-        : `นำเข้า CSV สำเร็จ: เพิ่ม ${added} · อัปเดต ${updated}`);
+      if(!recs.length){ toast('ไม่พบข้อมูลพนักงานในไฟล์นี้'); return; }
+      const willUpdate=recs.filter(x=>DB.employees.some(e=>e.code===x.code)).length;
+      const willAdd=recs.length-willUpdate;
+      const sample=recs.slice(0,3);
+      const shown=EMP_FIELDS.filter(([f])=>map[f]!==undefined);
+      const missing=EMP_FIELDS.filter(([f])=>map[f]===undefined&&['name','salary','startDate'].includes(f)).map(x=>x[1]);
+      openModal('ตรวจก่อนนำเข้า CSV',
+        `${byName
+           ? '<p>อ่านชื่อคอลัมน์จากหัวตารางได้ — ตรวจว่าจับคู่ถูกต้องก่อนกดยืนยัน</p>'
+           : '<p style="color:var(--bad)"><strong>อ่านชื่อคอลัมน์ไม่ออก</strong> จะใช้ลำดับคอลัมน์แบบมาตรฐานแทน ถ้าไฟล์เรียงคอลัมน์ต่างออกไป ข้อมูลจะเข้าช่องผิด — แนะนำให้กด “ส่งออก CSV” ดูรูปแบบที่ถูกต้องก่อน</p>'}
+         <div class="tbl-wrap" style="max-height:240px;overflow:auto"><table>
+           <thead><tr><th>ช่องในโปรแกรม</th><th>คอลัมน์ในไฟล์</th><th>ตัวอย่าง</th></tr></thead>
+           <tbody>${shown.map(([f,lab])=>`<tr><td>${esc(lab)}</td>
+             <td><span class="chip">${esc(normHead(rows[0][map[f]])||('คอลัมน์ '+(map[f]+1)))}</span></td>
+             <td class="muted">${esc(sample.map(s=>String(s[f]??'')).filter(Boolean).slice(0,2).join(' · ')||'—')}</td></tr>`).join('')}</tbody>
+         </table></div>
+         ${missing.length?`<p style="color:var(--bad);margin-top:10px">⚠️ ไม่พบคอลัมน์: <strong>${missing.map(esc).join(', ')}</strong> ช่องเหล่านี้จะว่างหรือเป็น 0</p>`:''}
+         ${unmatched.length?`<p class="muted" style="font-size:12.5px;margin-top:8px">คอลัมน์ที่ไม่รู้จักและจะถูกข้าม: ${unmatched.map(esc).join(', ')}</p>`:''}
+         <p style="margin-top:12px">พบ <strong>${recs.length}</strong> รายการ —
+           เพิ่มใหม่ <strong>${willAdd}</strong> คน · เขียนทับของเดิม <strong style="color:var(--bad)">${willUpdate}</strong> คน</p>`,
+        [['ยกเลิก','ghost',closeModal],[`นำเข้า ${recs.length} รายการ`,'',()=>{
+          let added=0, updated=0, skipped=0;
+          for(let i=0;i<recs.length;i++){
+            const rec=recs[i];
+            const ex=DB.employees.find(x=>x.code===rec.code);
+            if(ex){ Object.assign(ex,rec); updated++; }
+            else {
+              // เกินโควตาแพ็กเกจ → หยุดตรงนี้ ไม่นำเข้าต่อ (ที่นำเข้าไปแล้วยังอยู่)
+              if(!canAddEmp(1)){ skipped = recs.length-i; break; }
+              DB.employees.push({id:uid(),...rec}); added++;
+            }
+          }
+          save(); closeModal(); drawEmp();
+          toast(skipped
+            ? `นำเข้า ${added} คน · อัปเดต ${updated} · 🔒 ข้าม ${skipped} คน เพราะเต็มโควตาแพ็กเกจ (สูงสุด ${empLimit()} คน)`
+            : `นำเข้า CSV สำเร็จ: เพิ่ม ${added} · อัปเดต ${updated}`);
+        }]]);
     }catch(e){ toast('ไฟล์ CSV ไม่ถูกต้อง'); } };
     rd.readAsArrayBuffer(f); };
   inp.click();
