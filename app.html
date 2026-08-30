@@ -2007,6 +2007,39 @@ function genderIcon(g){
   if(g==='F') return '<span title="หญิง" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#fce7f3;color:#db2777;font-weight:700;margin-right:7px;font-size:13px">♀</span>';
   return '<span title="ไม่ระบุ" style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#f1f5f9;color:#94a3b8;margin-right:7px;font-size:13px">–</span>';
 }
+/* ลบข้อมูลทุกอย่างที่ผูกกับพนักงาน — เดิมลบแค่ตัวพนักงานกับเงินเดือน
+   ใบลา เวลาเข้างาน และตารางกะจึงค้างอยู่ ทำให้การ์ดสรุปนับใบลาของคนที่ไม่มีแล้ว */
+function purgeEmpData(ids){
+  const gone = ids instanceof Set ? ids : new Set(ids);
+  if(!gone.size) return { leave:0, attend:0, shift:0, payroll:0 };
+  const n={leave:0, attend:0, shift:0, payroll:0};
+
+  if(Array.isArray(DB.leave)){
+    const before=DB.leave.length;
+    DB.leave=DB.leave.filter(l=>!gone.has(l.empId));
+    n.leave=before-DB.leave.length;
+  }
+  Object.values(DB.payroll||{}).forEach(function(pp){
+    gone.forEach(function(id){ if(pp[id]!==undefined){ delete pp[id]; n.payroll++; } });
+  });
+  Object.values(DB.attend||{}).forEach(function(pp){
+    gone.forEach(function(id){ if(pp[id]!==undefined){ delete pp[id]; n.attend++; } });
+  });
+  Object.values(DB.shiftPlan||{}).forEach(function(pp){
+    gone.forEach(function(id){ if(pp[id]!==undefined){ delete pp[id]; n.shift++; } });
+  });
+  return n;
+}
+/* บอกว่าลบอะไรไปบ้าง ถ้าไม่มีอะไรนอกจากตัวพนักงานก็ไม่ต้องพูดถึง */
+function purgeSummary(n){
+  const p=[];
+  if(n.leave) p.push('ใบลา '+n.leave+' ใบ');
+  if(n.attend) p.push('เวลาเข้างาน '+n.attend+' รายการ');
+  if(n.payroll) p.push('เงินเดือน '+n.payroll+' งวด');
+  if(n.shift) p.push('ตารางกะ '+n.shift+' รายการ');
+  return p.length ? ' · ลบ'+p.join(' · ') : '';
+}
+
 /* ---------- เลือกลบหลายคน ----------
    เก็บ id ที่เลือกไว้นอกฟังก์ชันวาด เพื่อให้ค้างอยู่ตอนพิมพ์ค้นหาหรือสลับแท็บ */
 const empSel=new Set();
@@ -2015,8 +2048,8 @@ function delEmpBulk(){
   if(!picked.length){ toast('ยังไม่ได้เลือกใคร'); return; }
   const show=picked.slice(0,12);
   openModal('ลบพนักงานที่เลือก',
-    `<p>ต้องการลบพนักงาน <strong style="color:var(--bad)">${picked.length} คน</strong>
-       และข้อมูลเงินเดือนทั้งหมดของคนเหล่านี้หรือไม่?</p>
+    `<p>ต้องการลบพนักงาน <strong style="color:var(--bad)">${picked.length} คน</strong> หรือไม่?</p>
+     <p class="muted" style="font-size:13px;margin-top:-6px">ข้อมูลเงินเดือนทุกงวด ใบลา เวลาเข้างาน และตารางกะของคนเหล่านี้จะถูกลบไปด้วย</p>
      <div style="max-height:230px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:#f8fafc">
        <ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.9">
          ${show.map(e=>`<li>${esc(e.name)} <span class="muted">(${esc(e.code)})</span></li>`).join('')}
@@ -2027,18 +2060,22 @@ function delEmpBulk(){
     [['ยกเลิก','ghost',closeModal],[`ลบ ${picked.length} คน`,'danger',()=>{
       const gone=new Set(picked.map(e=>e.id));
       DB.employees=DB.employees.filter(x=>!gone.has(x.id));
-      Object.values(DB.payroll).forEach(pp=>gone.forEach(id=>delete pp[id]));
+      const n=purgeEmpData(gone);
       empSel.clear();
-      save(); closeModal(); drawEmp(); toast(`ลบพนักงาน ${gone.size} คนแล้ว`);
+      save(); closeModal(); render();
+      toast(`ลบพนักงาน ${gone.size} คนแล้ว`+purgeSummary(n));
     }]]);
 }
 function delEmp(id){
   const e=DB.employees.find(x=>x.id===id);
-  openModal(`ลบพนักงาน`, `<p>ต้องการลบ <strong>${esc(e.name)}</strong> (${esc(e.code)}) และข้อมูลเงินเดือนทั้งหมดของพนักงานคนนี้หรือไม่?</p>`,
+  openModal(`ลบพนักงาน`,
+    `<p>ต้องการลบ <strong>${esc(e.name)}</strong> (${esc(e.code)}) หรือไม่?</p>
+     <p class="muted" style="font-size:13px">ข้อมูลเงินเดือนทุกงวด ใบลา เวลาเข้างาน และตารางกะของคนนี้จะถูกลบไปด้วย</p>`,
     [['ยกเลิก','ghost',closeModal],['ลบ','danger',()=>{
       DB.employees=DB.employees.filter(x=>x.id!==id);
-      Object.values(DB.payroll).forEach(pp=>delete pp[id]);
-      save(); closeModal(); drawEmp(); toast('ลบพนักงานแล้ว');
+      const n=purgeEmpData([id]);
+      save(); closeModal(); render();
+      toast('ลบพนักงานแล้ว'+purgeSummary(n));
     }]]);
 }
 /* ---------- รูปพนักงาน ----------
@@ -4284,7 +4321,9 @@ function unpaidDeduction(emp, p){
 
 let leaveYear, leaveEmpF='all', leaveTypeF='all';
 function vLeave(v){
-  const lst=leaveList();
+  // ไม่นับใบลาของพนักงานที่ถูกลบไปแล้ว (ข้อมูลเก่าก่อนแก้เรื่องเก็บกวาด)
+  const alive=new Set(DB.employees.map(e=>e.id));
+  const lst=leaveList().filter(l=>alive.has(l.empId));
   const py=+PERIOD.split('-')[0];
   if(leaveYear===undefined) leaveYear=py;
   const yr=leaveYear;   // null = ทุกปี
