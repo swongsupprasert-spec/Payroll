@@ -542,6 +542,9 @@ function autoDeductions(emp, rec){
   if(!m.pvd) rec.ded.pvd = Math.round(base * (emp.pvdRate||0)/100);
   // กองทุนสงเคราะห์ลูกจ้าง — เฉพาะคนที่ไม่มีกองทุนสำรองเลี้ยงชีพ (เลือกได้อย่างใดอย่างหนึ่ง)
   if(!m.wf)  rec.ded.wf  = (Number(emp.pvdRate)>0) ? 0 : Math.round(base * (emp.wfRate||0)/100);
+  // ลาไม่รับค่าจ้าง/ขาดงาน — ดึงจากใบลาของงวดนี้ให้อัตโนมัติ (เงินเดือน ÷ 30 × วันที่ลา)
+  // พนักงานรายวันคืน 0 เพราะได้ค่าจ้างตามวันที่มาทำงานอยู่แล้ว
+  if(!m.absent) rec.ded.absent = unpaidDeduction(emp, PERIOD);
   if(!m.tax) rec.ded.tax = estTax(emp, +PERIOD.split('-')[0], rec).monthly;           // ภาษีหัก ณ ที่จ่าย/เดือน
   save();
 }
@@ -2485,15 +2488,25 @@ function vPayroll(v){
       <span class="muted" style="font-size:12px">(แก้ตัวเลขนี้เองได้)</span>
     </div>
   </div>`;
-  const AUTO_DED={sso:1,pvd:1,tax:1};   // ช่องคำนวณอัตโนมัติ (แก้ทับเองได้)
+  const AUTO_DED={sso:1,pvd:1,tax:1,absent:1};   // ช่องคำนวณอัตโนมัติ (แก้ทับเองได้)
+  const uDays=unpaidDays(emp, PERIOD);
   const dedRows=DED_FIELDS.map(([k,l])=>{
     const auto=AUTO_DED[k], man=r.manual&&r.manual[k];
     const tag = !auto ? ''
       : man ? ` <span style="color:#d97706;font-size:11px">(แก้เอง)</span> <a href="#" data-reauto="${k}" style="font-size:11px;color:var(--brand)">↻ คืนค่าอัตโนมัติ</a>`
             : ' <span style="color:#059669;font-size:11px">(อัตโนมัติ)</span>';
     const bg = auto ? (man?'background:#fffbeb':'background:#f0fdf4') : '';
+    // บอกที่มาของยอดหักขาดงาน ให้ตรวจย้อนไปที่ใบลาได้
+    let note='';
+    if(k==='absent'){
+      note = isDaily
+        ? '<div class="muted" style="font-size:11px;margin-top:3px">พนักงานรายวันไม่ถูกหัก — ได้ค่าจ้างตามวันที่มาทำงานอยู่แล้ว</div>'
+        : uDays>0
+          ? `<div class="muted" style="font-size:11px;margin-top:3px">จากใบลาไม่รับค่าจ้าง <strong>${num(uDays)}</strong> วันในงวดนี้ · ${money(emp.salary||0)} ÷ 30 × ${num(uDays)}</div>`
+          : '<div class="muted" style="font-size:11px;margin-top:3px">งวดนี้ไม่มีใบลาไม่รับค่าจ้าง</div>';
+    }
     return `<div class="field"><label>${l}${tag}</label>
-      <input type="number" step="0.01" data-ded="${k}" id="ded_${k}" value="${r.ded[k]||0}" style="${bg}"></div>`;
+      <input type="number" step="0.01" data-ded="${k}" id="ded_${k}" value="${r.ded[k]||0}" style="${bg}">${note}</div>`;
   }).join('');
 
   const panel=el(`<div class="panel">
@@ -2628,7 +2641,7 @@ function vPayrollAll(v, list){
     q(`[data-ded="${id}"]`).textContent=money(c.dedTotal);
     q(`[data-net="${id}"]`).innerHTML=`<strong>${money(c.net)}</strong>`;
     // อัปเดตช่องอัตโนมัติที่ยังไม่ได้แก้เอง (ไม่ทับค่าที่ผู้ใช้พิมพ์)
-    ['tax','sso','pvd'].forEach(k=>{ if(r.manual&&r.manual[k]) return;
+    ['tax','sso','pvd','absent'].forEach(k=>{ if(r.manual&&r.manual[k]) return;
       const f=q(`input[data-a="${k}"][data-id="${id}"]`);
       if(f && document.activeElement!==f) f.value=r.ded[k];
     });
@@ -4335,10 +4348,15 @@ function leaveUsed(empId, year, type){
       && String(l.from||'').slice(0,4)===String(year))
     .reduce((s,l)=>s+Number(l.days||daysBetween(l.from,l.to||l.from)||0),0);
 }
+/* จำนวนวันลาไม่รับค่าจ้าง/ขาดงานที่ตกอยู่ในงวดนี้ (ใบที่ไม่อนุมัติไม่นับ) */
+function unpaidDays(emp, p){
+  if(!Array.isArray(DB.leave)) return 0;
+  return Math.round(DB.leave.filter(l=>l.empId===emp.id && l.type==='unpaid' && l.status!=='rejected')
+    .reduce((s,l)=>s+leaveDaysInPeriod(l,p),0)*100)/100;
+}
 function unpaidDeduction(emp, p){
   if(emp.payType==='daily') return 0;   // รายวันไม่จ่ายวันที่ไม่มา อยู่แล้ว
-  const d=leaveList().filter(l=>l.empId===emp.id && l.type==='unpaid' && l.status!=='rejected')
-    .reduce((s,l)=>s+leaveDaysInPeriod(l,p),0);
+  const d=unpaidDays(emp, p);
   if(!d) return 0;
   return Math.round(Number(emp.salary||0)/30*d);
 }
