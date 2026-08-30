@@ -870,7 +870,7 @@ async function loadAllStores(){
 }
 /* ตั้งค่าที่ก๊อปข้ามบริษัทได้ — ไม่รวมข้อมูลบริษัท พนักงาน และเงินเดือน */
 const COPY_KEYS=['ssoRate','ssoMaxBase','otDays','otHours','workDaysDefault',
-                 'cutoffDay','workStart','workEnd','lateGrace','wfRateDefault','otMultWeekdays'];
+                 'cutoffDay','workStart','workEnd','lateGrace','wfRateDefault','otMultWeekdays','advPct'];
 
 /* ============ บริษัทลูกค้า (เฉพาะแบบสำนักงานบัญชี) ============ */
 async function vCompanies(v){
@@ -2247,6 +2247,18 @@ let payrollEmpId=null, payrollFilter='all';
 /* ═══════════ เบิกจ่ายล่วงหน้า ═══════════
    บริษัทที่จ่ายเดือนละ 2 รอบ : รอบกลางเดือนจ่ายล่วงหน้า แล้วหักคืนตอนสิ้นเดือน
    ยอดเบิกเก็บเป็นรายการหัก 'advance' ของงวดนั้น ภาษี/ประกันสังคมจึงยังคิดเป็นรายเดือนถูกต้องเหมือนเดิม */
+/* เปอร์เซ็นต์ที่ใช้เติมยอดเบิกกลางเดือนให้ทุกคน — ตั้งได้ต่อบริษัท ไม่ตั้งใช้ 40%
+   จำกัด 1–100 เพราะเบิกเกินค่าจ้างของงวดไม่มีเงินเหลือให้หักคืนตอนสิ้นเดือน */
+function advPct(){
+  const v=+(DB.advPct||0);
+  return v>0 ? Math.min(100, v) : 40;
+}
+function setAdvPct(v){
+  const n=Math.round(+v||0);
+  if(!(n>0)) return false;
+  DB.advPct=Math.min(100, n);
+  return true;
+}
 function advPayDate(){
   const {from,to}=periodRange(PERIOD);
   const mid=new Date(from.getTime()+Math.floor((to-from)/2));
@@ -2264,7 +2276,7 @@ function vAdvance(v){
   const list=DB.employees.filter(e=>activeInMonth(e,py,pm));
   if(!list.length){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ไม่มีพนักงานในงวด ${periodLabel(PERIOD)}</div></div>`)); return; }
 
-  const pct = +(DB.advPct||0) || 40;
+  const pct = advPct();
   const rows=list.map(e=>{
     const c0=calc(e,PERIOD);
     const adv=advOf(e);
@@ -2278,7 +2290,14 @@ function vAdvance(v){
     <div class="phead"><h2>💸 เบิกจ่ายล่วงหน้า — ${periodLabel(PERIOD)}</h2>
       <div class="sp" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <span class="muted" style="font-size:12px">จ่ายวันที่ ${esc(fmtDate(advPayDate()))}</span>
-        <button class="btn ghost sm" id="advFill">⚡ เติมให้ทุกคน ${pct}%</button>
+        <span style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);
+              border-radius:8px;padding:3px 4px 3px 9px;background:var(--card,#fff)">
+          <label for="advPct" class="muted" style="font-size:12px">เติมที่</label>
+          <input type="number" id="advPct" min="1" max="100" step="1" value="${pct}"
+                 style="width:56px;text-align:right;padding:4px 6px;font-weight:700" title="เปอร์เซ็นต์ของค่าจ้างฐาน (1–100)">
+          <span class="muted" style="font-size:12px;padding-right:4px">%</span>
+        </span>
+        <button class="btn ghost sm" id="advFill">⚡ เติมให้ทุกคน</button>
         <button class="btn ghost sm" id="advClear">ล้างทั้งหมด</button>
         <button class="btn ghost sm" id="advCsv">⬇️ ส่งออก CSV</button>
         <button class="btn sm" id="advSheet">🖨️ ใบสรุปยอดโอน</button>
@@ -2325,6 +2344,11 @@ function vAdvance(v){
   };
   draw();
 
+  const pctIn=panel.querySelector('#advPct');
+  pctIn.onchange=()=>{
+    if(!setAdvPct(pctIn.value)){ pctIn.value=pct; toast('เปอร์เซ็นต์ต้องอยู่ระหว่าง 1–100'); return; }
+    save(); render(); toast(`ตั้งเป็น ${advPct()}% แล้ว — ตัวเลขที่แนะนำในตารางอัปเดตให้แล้ว`);
+  };
   panel.querySelector('#advFill').onclick=()=>{
     rows.forEach(x=>advSet(x.e, x.suggest));
     render(); toast(`เติมยอดเบิก ${pct}% ให้ ${rows.length} คนแล้ว`);
