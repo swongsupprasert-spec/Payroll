@@ -4502,10 +4502,11 @@ function leaveModal(id){
        <div class="field"><label>จำนวนวัน</label><input type="number" step="0.5" min="0" id="lvD" value="${cur?(cur.days??''):''}" placeholder="อัตโนมัติ"></div>
        <div class="field"><label>หรือจำนวนชั่วโมง</label><input type="number" step="0.5" min="0" id="lvH" value="${cur&&cur.hours!=null?cur.hours:''}" placeholder="เช่น 2"></div>
      </div>
+     <div id="lvAuto" class="muted" style="display:none;font-size:12px;margin-top:6px;color:var(--brand-d)"></div>
      <div class="field" style="margin-top:10px"><label>เหตุผล</label><input id="lvR" value="${esc(cur?cur.reason||'':'')}" placeholder="เช่น ไปโรงพยาบาล"></div>
      <div id="lvWarn" style="display:none;margin-top:10px;background:#fff7ed;border:1px solid #fed7aa;
         border-radius:9px;padding:10px 12px;font-size:12.5px;color:#9a3412"></div>
-     <p class="muted" style="font-size:12.5px;margin-top:10px">เว้นทั้งสองช่องว่างไว้ = นับจากช่วงวันที่ให้เอง · ลาครึ่งวันใส่ 0.5 วัน<br>
+     <p class="muted" style="font-size:12.5px;margin-top:10px">จำนวนวันเติมให้อัตโนมัติจากช่วงวันที่ · ลาครึ่งวันพิมพ์ทับเป็น 0.5 · ล้างทั้งสองช่องเพื่อให้นับใหม่<br>
        กรอกช่องไหนอีกช่องคำนวณให้อัตโนมัติ (<strong>${num(lvHPD())} ชม. = 1 วัน</strong> ปรับได้ที่ช่อง “ชั่วโมงทำงาน/วัน”)</p>`,
     [['ยกเลิก','ghost',closeModal],[cur?'บันทึก':'เพิ่ม','',()=>{
       const empId=$('#lvE').value, type=$('#lvT').value, status=$('#lvS').value;
@@ -4542,14 +4543,37 @@ function leaveModal(id){
   };
   ['#lvE','#lvT','#lvF'].forEach(s=>{ const n=$(s); if(n) n.addEventListener('change', chkVac); });
   chkVac();
-  // กรอกช่องไหน อีกช่องคำนวณตาม
-  const dIn=$('#lvD'), hIn=$('#lvH');
+  // กรอกช่องไหน อีกช่องคำนวณตาม + เติมจำนวนวันจากช่วงวันที่ให้เอง
+  const dIn=$('#lvD'), hIn=$('#lvH'), fIn=$('#lvF'), tIn=$('#lvTo'), note=$('#lvAuto');
   if(dIn&&hIn){
     let lock=false;
+    // โหมดอัตโนมัติ = ผู้ใช้ยังไม่ได้พิมพ์จำนวนวัน/ชั่วโมงเอง
+    // ใบลาเดิมที่มีตัวเลขบันทึกไว้แล้วถือว่ากรอกเอง จะได้ไม่ถูกเขียนทับตอนเปิดแก้ไข
+    let auto = !(cur && (cur.days!=null || cur.hours!=null));
+    const showNote=(txt)=>{ if(note){ note.textContent=txt||''; note.style.display=txt?'':'none'; } };
+    const syncFromDates=()=>{
+      if(!auto) return;
+      const f=fIn?fIn.value:'', t=(tIn&&tIn.value)||f;
+      const d=daysBetween(f,t);
+      if(d>0){
+        lock=true; dIn.value=String(d); hIn.value=''; lock=false;
+        showNote('นับจากช่วงวันที่ให้ — พิมพ์ทับได้ถ้าลาไม่เต็มวัน');
+      }else{
+        lock=true; dIn.value=''; hIn.value=''; lock=false;
+        showNote('');
+      }
+    };
+    const markManual=()=>{
+      // ล้างทั้งสองช่อง = กลับไปให้ระบบนับให้เหมือนเดิม
+      if(dIn.value.trim()==='' && hIn.value.trim()===''){ auto=true; syncFromDates(); return; }
+      auto=false; showNote('');
+    };
     dIn.addEventListener('input',()=>{ if(lock) return; lock=true;
-      hIn.value = dIn.value.trim()===''?'':String(daysToHrs(+dIn.value||0)); lock=false; });
+      hIn.value = dIn.value.trim()===''?'':String(daysToHrs(+dIn.value||0)); lock=false; markManual(); });
     hIn.addEventListener('input',()=>{ if(lock) return; lock=true;
-      dIn.value = hIn.value.trim()===''?'':String(Math.round(hrsToDays(+hIn.value||0)*10000)/10000); lock=false; });
+      dIn.value = hIn.value.trim()===''?'':String(Math.round(hrsToDays(+hIn.value||0)*10000)/10000); lock=false; markManual(); });
+    [fIn,tIn].forEach(n=>{ if(n){ n.addEventListener('change',syncFromDates); n.addEventListener('input',syncFromDates); } });
+    syncFromDates();
   }
 }
 
