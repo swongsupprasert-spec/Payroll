@@ -4507,8 +4507,11 @@ function leaveModal(id){
   const cur=id? lst.find(x=>x.id===id) : null;
   const pool=cur? DB.employees : DB.employees.filter(e=>!e.resignDate);
   if(!pool.length){ toast('ยังไม่มีพนักงาน'); return; }
-  const {from}=periodRange(PERIOD);
-  const d0=cur?cur.from:isoOf(from);
+  const {from,to}=periodRange(PERIOD);
+  // เปิดฟอร์มใหม่ให้ตั้งเป็นวันนี้ ถ้าวันนี้ไม่อยู่ในงวดที่เลือกอยู่ค่อยใช้วันแรกของงวด
+  const today=new Date(); today.setHours(0,0,0,0);
+  const inPeriod = today>=from && today<=to;
+  const d0=cur?cur.from:isoOf(inPeriod?today:from);
   openModal(cur?'✏️ แก้ไขใบลา':'➕ เพิ่มใบลา',
     `<div class="field"><label>พนักงาน *</label><select id="lvE">
       ${pool.map(e=>`<option value="${e.id}" ${cur&&cur.empId===e.id?'selected':''}>${esc(e.code)} — ${esc(e.name)}${e.resignDate?' (ลาออกแล้ว)':''}</option>`).join('')}</select></div>
@@ -4530,8 +4533,10 @@ function leaveModal(id){
      <div class="field" style="margin-top:10px"><label>เหตุผล</label><input id="lvR" value="${esc(cur?cur.reason||'':'')}" placeholder="เช่น ไปโรงพยาบาล"></div>
      <div id="lvWarn" style="display:none;margin-top:10px;background:#fff7ed;border:1px solid #fed7aa;
         border-radius:9px;padding:10px 12px;font-size:12.5px;color:#9a3412"></div>
-     <p class="muted" style="font-size:12.5px;margin-top:10px">จำนวนวันเติมให้อัตโนมัติจากช่วงวันที่ · ลาครึ่งวันพิมพ์ทับเป็น 0.5 · ล้างทั้งสองช่องเพื่อให้นับใหม่<br>
-       กรอกช่องไหนอีกช่องคำนวณให้อัตโนมัติ (<strong>${num(lvHPD())} ชม. = 1 วัน</strong> ปรับได้ที่ช่อง “ชั่วโมงทำงาน/วัน”)</p>`,
+     <p class="muted" style="font-size:12.5px;margin-top:10px">
+       <strong>ลาเป็นวัน</strong> — เลือกช่วงวันที่ จำนวนวันเติมให้เอง (ลาครึ่งวันพิมพ์ทับเป็น 0.5)<br>
+       <strong>ลาเป็นชั่วโมง</strong> — ลบจำนวนวันทิ้ง แล้วพิมพ์ชั่วโมงในช่องถัดไป
+       (<strong>${num(lvHPD())} ชม. = 1 วัน</strong> ปรับได้ที่ช่อง “ชั่วโมงทำงาน/วัน”)</p>`,
     [['ยกเลิก','ghost',closeModal],[cur?'บันทึก':'เพิ่ม','',()=>{
       const empId=$('#lvE').value, type=$('#lvT').value, status=$('#lvS').value;
       const f=$('#lvF').value, t=$('#lvTo').value||$('#lvF').value;
@@ -4587,16 +4592,21 @@ function leaveModal(id){
         showNote('');
       }
     };
+    // แตะช่องไหนก็ตาม (รวมถึงลบทิ้ง) = ผู้ใช้คุมเอง ระบบจะไม่เติมกลับ
+    // จำเป็นสำหรับการลาเป็นชั่วโมง — ต้องลบจำนวนวันทิ้งก่อนแล้วพิมพ์ชั่วโมง
     const markManual=()=>{
-      // ล้างทั้งสองช่อง = กลับไปให้ระบบนับให้เหมือนเดิม
-      if(dIn.value.trim()==='' && hIn.value.trim()===''){ auto=true; syncFromDates(); return; }
-      auto=false; showNote('');
+      auto=false;
+      showNote(dIn.value.trim()==='' && hIn.value.trim()===''
+        ? 'ลบจำนวนวันแล้ว — พิมพ์จำนวนชั่วโมงในช่องถัดไป หรือเปลี่ยนวันที่เพื่อให้นับใหม่'
+        : '');
     };
     dIn.addEventListener('input',()=>{ if(lock) return; lock=true;
       hIn.value = dIn.value.trim()===''?'':String(daysToHrs(+dIn.value||0)); lock=false; markManual(); });
     hIn.addEventListener('input',()=>{ if(lock) return; lock=true;
       dIn.value = hIn.value.trim()===''?'':String(Math.round(hrsToDays(+hIn.value||0)*10000)/10000); lock=false; markManual(); });
-    [fIn,tIn].forEach(n=>{ if(n){ n.addEventListener('change',syncFromDates); n.addEventListener('input',syncFromDates); } });
+    // เลือกวันที่ใหม่ = ตั้งใจลาเป็นวัน ให้กลับมานับให้อัตโนมัติ
+    const onDate=()=>{ auto=true; syncFromDates(); };
+    [fIn,tIn].forEach(n=>{ if(n){ n.addEventListener('change',onDate); n.addEventListener('input',onDate); } });
     syncFromDates();
   }
 }
