@@ -1455,6 +1455,15 @@ function vResign(v){
       <td>${esc(fmtDate(e.startDate))}</td>
       <td>${isOut?'<span class="chip" style="background:#fee2e2;color:#dc2626">ลาออกแล้ว</span>':'<span class="chip" style="background:#dcfce7;color:#16a34a">ทำงานอยู่</span>'}</td>
       <td><input type="date" data-resign="${e.id}" value="${e.resignDate||''}" style="padding:6px 8px;border:1px solid var(--line);border-radius:7px"></td>
+      <td>
+        <select data-rsn="${e.id}" ${isOut?'':'disabled'} style="padding:6px 8px;border:1px solid var(--line);border-radius:7px;min-width:150px;${isOut?'':'background:#f8fafc;color:#94a3b8'}">
+          <option value="">${isOut?'— เลือกเหตุผล —':'ใส่วันที่ลาออกก่อน'}</option>
+          ${RESIGN_REASONS.map(([k,l])=>`<option value="${k}" ${e.resignReason===k?'selected':''}>${l}</option>`).join('')}
+        </select>
+        ${isOut&&e.resignReason?`<input data-rsnote="${e.id}" value="${esc(e.resignNote||'')}" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)"
+              style="display:block;margin-top:5px;width:100%;padding:5px 8px;border:1px solid var(--line);border-radius:7px;font-size:12.5px">`:''}
+        ${isOut&&resignNeedsSeverance(e.resignReason)?'<div class="muted" style="font-size:11px;margin-top:4px;color:#b45309">⚠️ กรณีนี้อาจต้องจ่ายค่าชดเชย</div>':''}
+      </td>
       <td style="text-align:right">${isOut?`<button class="btn ghost sm" data-clear="${e.id}">↩️ ยกเลิกลาออก</button>`:''}</td>
     </tr>`;
   }).join('');
@@ -1462,17 +1471,57 @@ function vResign(v){
   const panel=el(`<div class="panel"><div class="phead"><h2>บันทึกการลาออก — ใส่วันที่ลาออกได้เลย</h2>
       <div class="sp"><span class="muted" style="font-size:12px">แสดง ${scope} · ${list.length} คน</span></div></div>
     <div class="pbody" style="padding:0"><div class="tbl-wrap"><table>
-      <thead><tr><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>แผนก</th><th>วันเริ่มงาน</th><th>สถานะ</th><th>วันที่ลาออก</th><th></th></tr></thead>
-      <tbody>${rows||'<tr><td colspan="7" class="empty">ไม่พบพนักงานตามเงื่อนไขที่เลือก</td></tr>'}</tbody>
+      <thead><tr><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>แผนก</th><th>วันเริ่มงาน</th><th>สถานะ</th><th>วันที่ลาออก</th><th>เหตุผลในการลาออก</th><th></th></tr></thead>
+      <tbody>${rows||'<tr><td colspan="8" class="empty">ไม่พบพนักงานตามเงื่อนไขที่เลือก</td></tr>'}</tbody>
     </table></div></div></div>`);
   v.appendChild(panel);
   panel.querySelectorAll('input[data-resign]').forEach(i=>i.onchange=()=>{
-    const emp=DB.employees.find(x=>x.id===i.dataset.resign); emp.resignDate=i.value; save(); render(); toast(i.value?'บันทึกวันลาออกแล้ว':'ล้างวันลาออกแล้ว');
+    const emp=DB.employees.find(x=>x.id===i.dataset.resign);
+    emp.resignDate=i.value;
+    if(!i.value){ delete emp.resignReason; delete emp.resignNote; }   // ไม่ลาออกแล้วก็ไม่ต้องมีเหตุผล
+    save(); render(); toast(i.value?'บันทึกวันลาออกแล้ว — เลือกเหตุผลในช่องถัดไป':'ล้างวันลาออกแล้ว');
+  });
+  panel.querySelectorAll('select[data-rsn]').forEach(s=>s.onchange=()=>{
+    const emp=DB.employees.find(x=>x.id===s.dataset.rsn);
+    emp.resignReason=s.value;
+    if(!s.value) delete emp.resignNote;         // ล้างเหตุผล = ล้างรายละเอียดด้วย
+    save(); render();
+    toast(s.value?('บันทึกเหตุผล: '+resignReasonLabel(s.value)):'ล้างเหตุผลแล้ว');
+  });
+  panel.querySelectorAll('input[data-rsnote]').forEach(i=>i.onchange=()=>{
+    const emp=DB.employees.find(x=>x.id===i.dataset.rsnote);
+    emp.resignNote=i.value.trim(); save(); toast('บันทึกรายละเอียดแล้ว');
   });
   panel.querySelectorAll('[data-clear]').forEach(b=>b.onclick=()=>{
-    const emp=DB.employees.find(x=>x.id===b.dataset.clear); emp.resignDate=''; save(); render(); toast('ยกเลิกการลาออกแล้ว');
+    const emp=DB.employees.find(x=>x.id===b.dataset.clear);
+    emp.resignDate=''; delete emp.resignReason; delete emp.resignNote;
+    save(); render(); toast('ยกเลิกการลาออกแล้ว');
   });
-  v.appendChild(el(`<div class="panel"><div class="pbody muted" style="font-size:13px">💡 เมื่อใส่วันที่ลาออก ระบบจะคิดเงินเดือนเดือนที่ลาออกตามสัดส่วนวันทำงานจริง และหยุดจ่ายในเดือนถัดไปอัตโนมัติ — มีผลกับสลิป, ภาษี, ภ.ง.ด.1 และแดชบอร์ดทั้งหมด</div></div>`));
+  v.appendChild(el(`<div class="panel"><div class="pbody muted" style="font-size:13px">💡 เมื่อใส่วันที่ลาออก ระบบจะคิดเงินเดือนเดือนที่ลาออกตามสัดส่วนวันทำงานจริง และหยุดจ่ายในเดือนถัดไปอัตโนมัติ — มีผลกับสลิป, ภาษี, ภ.ง.ด.1 และแดชบอร์ดทั้งหมด<br>
+      📌 <strong>เหตุผลในการลาออก</strong> ใช้กรอกในแบบ สปส.6-09 (แจ้งลูกจ้างออกจากงาน) และเป็นตัวชี้ว่าต้องจ่ายค่าชดเชยหรือไม่ — <strong>ลาออกเอง</strong>ไม่ต้องจ่าย ส่วน<strong>เลิกจ้าง</strong>ต้องจ่ายตามอายุงาน (พ.ร.บ.คุ้มครองแรงงาน ม.118)</div></div>`));
+}
+/* ---------- เหตุผลการลาออก ----------
+   แยกเป็นรหัสคงที่ เพราะมีผลต่างกันทางกฎหมาย:
+   ลาออกเอง = ไม่ต้องจ่ายค่าชดเชย · เลิกจ้าง = ต้องจ่ายตามอายุงาน (ม.118)
+   ใช้กรอกเหตุผลออกจากงานในแบบ สปส.6-09 ได้ด้วย */
+const RESIGN_REASONS=[
+  ['voluntary',  'ลาออกเอง',              false],
+  ['contract',   'สิ้นสุดสัญญาจ้าง',        false],
+  ['retire',     'เกษียณอายุ',             true ],
+  ['layoff',     'เลิกจ้าง',               true ],
+  ['redundancy', 'เลิกจ้างเพราะยุบหน่วยงาน', true ],
+  ['misconduct', 'ให้ออกเพราะกระทำผิด',     false],
+  ['death',      'เสียชีวิต',              true ],
+  ['other',      'อื่น ๆ',                 false]
+];
+function resignReasonLabel(code){
+  const r=RESIGN_REASONS.find(x=>x[0]===code);
+  return r?r[1]:'';
+}
+/* ต้องจ่ายค่าชดเชยไหม — ใช้เตือนบนหน้าจอเท่านั้น ไม่ได้คำนวณเงินให้ */
+function resignNeedsSeverance(code){
+  const r=RESIGN_REASONS.find(x=>x[0]===code);
+  return !!(r && r[2]);
 }
 function resignedBeforeToday(e){ if(!e.resignDate) return false; const [y,m,d]=e.resignDate.split('-').map(Number); return new Date(y,m-1,d) < new Date(); }
 /* ============ ADMIN — รายชื่อผู้ใช้ทั้งหมด ============ */
@@ -4719,7 +4768,7 @@ function downloadFile(name, content, type){
 }
 
 /* ---------- นำเข้า/ส่งออก พนักงาน เป็น CSV ---------- */
-const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','เบอร์โทร','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%','กองทุนสงเคราะห์%','คิดOT(ใช่/ไม่)','กะประจำ','เพดานOT/วัน'];
+const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','เบอร์โทร','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เหตุผลในการลาออก','รายละเอียดการลาออก','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%','กองทุนสงเคราะห์%','คิดOT(ใช่/ไม่)','กะประจำ','เพดานOT/วัน'];
 function csvEsc(v){ v=String(v??''); return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
 function parseCSV(text){
   const rows=[]; let field='', row=[], inQ=false; text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
@@ -4740,7 +4789,8 @@ function exportEmpCSV(){
     lines.push([e.code, e.name, e.gender==='M'?'ชาย':e.gender==='F'?'หญิง':'',
       e.nationality||'', e.position||'', e.phone||'', e.dept||'',
       e.payType==='daily'?'รายวัน':'รายเดือน',
-      e.salary||0, e.startDate||'', e.resignDate||'', e.taxId||'',
+      e.salary||0, e.startDate||'', e.resignDate||'',
+      resignReasonLabel(e.resignReason), e.resignNote||'', e.taxId||'',
       e.address||'', e.bank||'', e.bankNo||'', e.pvdRate||0, e.wfRate||'', e.noOT?'ไม่':'ใช่', (shiftById(e.shiftId)||ensureShifts()[0]).name, e.otMaxDay||''].map(csvEsc).join(','));
   });
   const tag = empFilter==='daily'?'_รายวัน' : empFilter==='monthly'?'_รายเดือน' : '';
@@ -4763,6 +4813,8 @@ const EMP_FIELDS=[
   ['salary','ค่าจ้าง',        [/^ค่าจ้าง/,/^เงินเดือน/,/^ฐานเงินเดือน/,/\b(salary|wage|rate)\b/i]],
   ['startDate','วันเริ่มงาน',  [/เริ่มงาน|วันที่เริ่ม|วันเข้างาน/,/\b(start|hire)[ _-]?date\b/i]],
   ['resignDate','วันที่ลาออก', [/ลาออก|สิ้นสุด|พ้นสภาพ/,/\b(resign|end|termination)[ _-]?date\b/i]],
+  ['resignReason','เหตุผลในการลาออก',[/เหตุผล.*ลาออก|สาเหตุ.*ออก/,/\b(resign|leaving|termination) ?reason\b/i]],
+  ['resignNote','รายละเอียดการลาออก',[/รายละเอียด.*ลาออก/,/\bresign ?note\b/i]],
   ['taxId','เลขบัตรประชาชน',  [/บัตรประชาชน|ประจำตัวประชาชน|^เลขประจำตัว/,/\b(national ?id|id ?card|citizen)\b/i]],
   ['address','ที่อยู่',        [/^ที่อยู่/,/\baddress\b/i]],
   ['bank','ธนาคาร',          [/^ธนาคาร/,/\bbank$/i,/\bbank ?name\b/i]],
@@ -4810,6 +4862,8 @@ function empRecFromRow(c, map){
     payType:/วัน|daily/i.test(g('payType'))?'daily':'monthly',
     salary:num('salary'), startDate:g('startDate'), resignDate:g('resignDate'),
     taxId:g('taxId'), address:g('address'), bank:g('bank'), bankNo:g('bankNo'),
+    resignReason:(RESIGN_REASONS.find(r=>r[1]===g('resignReason'))||[])[0]||'',
+    resignNote:g('resignNote'),
     pvdRate:pvd, wfRate: pvd>0 ? 0 : num('wfRate'),
     noOT: otTxt && /^(ไม่|no|n|0|false)$/i.test(otTxt) ? 1 : 0,
     otMaxDay:num('otMaxDay')
