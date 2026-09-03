@@ -4968,7 +4968,19 @@ function openModal(title, body, buttons){
   $('#backdrop').classList.add('on');
 }
 function closeModal(){ $('#backdrop').classList.remove('on'); }
-$('#backdrop').addEventListener('click',e=>{ if(e.target.id==='backdrop') closeModal(); });
+/* โมดัลที่มีช่องให้กรอก = ปิดด้วยการคลิกพื้นที่ว่างไม่ได้ กันข้อมูลหายจากการเผลอคลิก */
+function modalHasInput(){
+  const m=$('#modal');
+  return !!(m && m.querySelector('input:not([type=hidden]), select, textarea'));
+}
+$('#backdrop').addEventListener('click',e=>{
+  if(e.target.id!=='backdrop') return;
+  if(modalHasInput()){
+    toast('กด “ยกเลิก” หรือ “บันทึก” เพื่อปิด — กันข้อมูลที่กรอกไว้หาย');
+    return;
+  }
+  closeModal();
+});
 
 /* ---------- Baht text (อ่านจำนวนเงินเป็นไทย) ---------- */
 function bahtText(n){
