@@ -1462,7 +1462,7 @@ function vResign(v){
         </select>
         ${isOut&&e.resignReason?`<input data-rsnote="${e.id}" value="${esc(e.resignNote||'')}" placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)"
               style="display:block;margin-top:5px;width:100%;padding:5px 8px;border:1px solid var(--line);border-radius:7px;font-size:12.5px">`:''}
-        ${isOut&&resignNeedsSeverance(e.resignReason)?'<div class="muted" style="font-size:11px;margin-top:4px;color:#b45309">⚠️ กรณีนี้อาจต้องจ่ายค่าชดเชย</div>':''}
+        ${isOut&&resignNeedsSeverance(e.resignReason)?`<div class="muted" style="font-size:11px;margin-top:4px;color:#b45309;line-height:1.5">⚠️ ${esc(resignSeveranceNote(e.resignReason))}</div>`:''}
       </td>
       <td style="text-align:right">${isOut?`<button class="btn ghost sm" data-clear="${e.id}">↩️ ยกเลิกลาออก</button>`:''}</td>
     </tr>`;
@@ -1498,7 +1498,8 @@ function vResign(v){
     save(); render(); toast('ยกเลิกการลาออกแล้ว');
   });
   v.appendChild(el(`<div class="panel"><div class="pbody muted" style="font-size:13px">💡 เมื่อใส่วันที่ลาออก ระบบจะคิดเงินเดือนเดือนที่ลาออกตามสัดส่วนวันทำงานจริง และหยุดจ่ายในเดือนถัดไปอัตโนมัติ — มีผลกับสลิป, ภาษี, ภ.ง.ด.1 และแดชบอร์ดทั้งหมด<br>
-      📌 <strong>เหตุผลในการลาออก</strong> ใช้กรอกในแบบ สปส.6-09 (แจ้งลูกจ้างออกจากงาน) และเป็นตัวชี้ว่าต้องจ่ายค่าชดเชยหรือไม่ — <strong>ลาออกเอง</strong>ไม่ต้องจ่าย ส่วน<strong>เลิกจ้าง</strong>ต้องจ่ายตามอายุงาน (พ.ร.บ.คุ้มครองแรงงาน ม.118)</div></div>`));
+      📌 <strong>เหตุผลในการลาออก</strong> ใช้กรอกในแบบ สปส.6-09 (แจ้งลูกจ้างออกจากงาน) และเป็นตัวชี้ว่าต้องจ่ายค่าชดเชยหรือไม่ — <strong>ลาออกเอง</strong>ไม่ต้องจ่าย ส่วน<strong>เลิกจ้าง</strong>ต้องจ่ายตามอายุงาน (พ.ร.บ.คุ้มครองแรงงาน ม.118)<br>
+      ⚠️ <strong>ไม่ผ่านทดลองงาน</strong> ไม่ได้แปลว่าไม่ต้องจ่ายค่าชดเชย — ถ้าทำงานครบ <strong>120 วัน</strong> แล้วยังต้องจ่ายตามกฎหมาย ช่วงทดลองงานไม่ใช่ข้อยกเว้น</div></div>`));
 }
 /* ---------- เหตุผลการลาออก ----------
    แยกเป็นรหัสคงที่ เพราะมีผลต่างกันทางกฎหมาย:
@@ -1507,6 +1508,8 @@ function vResign(v){
 const RESIGN_REASONS=[
   ['voluntary',  'ลาออกเอง',              false],
   ['contract',   'สิ้นสุดสัญญาจ้าง',        false],
+  ['probation',  'ไม่ผ่านทดลองงาน',        true,
+    'ทำงานครบ 120 วันแล้วต้องจ่ายค่าชดเชย แม้ยังอยู่ในช่วงทดลองงาน — ไม่ครบ 120 วันไม่ต้องจ่าย'],
   ['retire',     'เกษียณอายุ',             true ],
   ['layoff',     'เลิกจ้าง',               true ],
   ['redundancy', 'เลิกจ้างเพราะยุบหน่วยงาน', true ],
@@ -1522,6 +1525,12 @@ function resignReasonLabel(code){
 function resignNeedsSeverance(code){
   const r=RESIGN_REASONS.find(x=>x[0]===code);
   return !!(r && r[2]);
+}
+/* บางกรณีมีเงื่อนไขเฉพาะ ใช้ข้อความของตัวเอง ถ้าไม่มีก็ใช้ข้อความกลาง */
+function resignSeveranceNote(code){
+  const r=RESIGN_REASONS.find(x=>x[0]===code);
+  if(!r || !r[2]) return '';
+  return r[3] || 'กรณีนี้อาจต้องจ่ายค่าชดเชย';
 }
 function resignedBeforeToday(e){ if(!e.resignDate) return false; const [y,m,d]=e.resignDate.split('-').map(Number); return new Date(y,m-1,d) < new Date(); }
 /* ============ ADMIN — รายชื่อผู้ใช้ทั้งหมด ============ */
