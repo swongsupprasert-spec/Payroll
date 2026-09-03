@@ -86,6 +86,12 @@
   .pos{color:var(--good)} .neg{color:var(--bad)}
 
   /* Forms / modal */
+  /* รายละเอียดใต้ตัวเลขรวมในแดชบอร์ด */
+  .kpi-brk{margin-top:9px;padding-top:8px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:3px}
+  .kpi-brk-row{display:flex;justify-content:space-between;gap:8px;font-size:12px;line-height:1.5}
+  .kpi-brk-lab{color:#5b6a7e;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .kpi-brk-val{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600;color:#1e293b}
+  .kpi-pct{font-weight:400;color:#94a3b8;font-size:11px}
   .backdrop{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:flex-start;justify-content:center;z-index:50;padding:30px 16px;overflow:auto}
   .backdrop.on{display:flex}
   .modal{background:#fff;border-radius:14px;width:100%;max-width:640px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
@@ -650,9 +656,19 @@ function calc(emp, p){
 function periodTotals(p){
   const [py,pm]=p.split('-').map(Number);
   let salary=0, earn=0, gross=0, ded=0, net=0, tax=0, count=0;
-  DB.employees.forEach(e=>{ const c=calc(e,p); salary+=c.base; earn+=c.earnTotal; gross+=c.gross; ded+=c.dedTotal; net+=c.net; tax+=Number(readRec(p,e.id).ded.tax||0);
-    if(activeInMonth(e,py,pm)) count++; });   // นับเฉพาะพนักงานที่ยังทำงานในงวดนี้
-  return {count, salary, earn, gross, ded, net, tax};
+  // แยกยอดรายรายการ เพื่อบอกในแดชบอร์ดว่าตัวเลขรวมมาจากอะไร
+  const earnBy={}, dedBy={};
+  let salMonthly=0, salDaily=0, nMonthly=0, nDaily=0;
+  DB.employees.forEach(e=>{ const c=calc(e,p); const r=readRec(p,e.id);
+    salary+=c.base; earn+=c.earnTotal; gross+=c.gross; ded+=c.dedTotal; net+=c.net; tax+=Number(r.ded.tax||0);
+    EARN_FIELDS.forEach(([k])=>{ earnBy[k]=(earnBy[k]||0)+Number(r.earn[k]||0); });
+    DED_FIELDS.forEach(([k])=>{ dedBy[k]=(dedBy[k]||0)+Number(r.ded[k]||0); });
+    if(activeInMonth(e,py,pm)){
+      count++;
+      if(e.payType==='daily'){ salDaily+=c.base; nDaily++; } else { salMonthly+=c.base; nMonthly++; }
+    }
+  });
+  return {count, salary, earn, gross, ded, net, tax, earnBy, dedBy, salMonthly, salDaily, nMonthly, nDaily};
 }
 
 /* ---------- UI helpers ---------- */
@@ -1729,12 +1745,16 @@ function monthCompute(year, m){
   const p=`${year}-${String(m).padStart(2,'0')}`;
   const emps=DB.employees.filter(e=>activeInMonth(e,year,m));
   let salary=0,earn=0,gross=0,ded=0,net=0,tax=0;
-  const depts={};
-  emps.forEach(e=>{ const c=calc(e,p);
-    salary+=c.base; earn+=c.earnTotal; gross+=c.gross; ded+=c.dedTotal; net+=c.net; tax+=Number(readRec(p,e.id).ded.tax||0);
+  const depts={}; const earnBy={}, dedBy={};
+  let salMonthly=0, salDaily=0;
+  emps.forEach(e=>{ const c=calc(e,p); const r=readRec(p,e.id);
+    salary+=c.base; earn+=c.earnTotal; gross+=c.gross; ded+=c.dedTotal; net+=c.net; tax+=Number(r.ded.tax||0);
+    if(e.payType==='daily') salDaily+=c.base; else salMonthly+=c.base;
+    EARN_FIELDS.forEach(([k])=>{ earnBy[k]=(earnBy[k]||0)+Number(r.earn[k]||0); });
+    DED_FIELDS.forEach(([k])=>{ dedBy[k]=(dedBy[k]||0)+Number(r.ded[k]||0); });
     const d=e.dept||'(ไม่ระบุ)'; const o=depts[d]=depts[d]||{dept:d,count:0,salary:0,gross:0,ded:0,net:0};
     o.count++; o.salary+=c.base; o.gross+=c.gross; o.ded+=c.dedTotal; o.net+=c.net; });
-  return {p, count:emps.length, salary, earn, gross, ded, net, tax, depts};
+  return {p, count:emps.length, salary, earn, gross, ded, net, tax, depts, earnBy, dedBy, salMonthly, salDaily};
 }
 function monthSeries(year, curM){
   const out=[];
@@ -1745,11 +1765,18 @@ function monthSeries(year, curM){
 }
 function yearTotals(year){
   let salary=0,earn=0,gross=0,ded=0,net=0,tax=0,entered=0;
+  const earnBy={}, dedBy={};
+  let salMonthly=0, salDaily=0;
   for(let m=1;m<=12;m++){ const mc=monthCompute(year,m);
     salary+=mc.salary; earn+=mc.earn; gross+=mc.gross; ded+=mc.ded; net+=mc.net; tax+=mc.tax;
+    salMonthly+=mc.salMonthly||0; salDaily+=mc.salDaily||0;
+    EARN_FIELDS.forEach(([k])=>{ earnBy[k]=(earnBy[k]||0)+Number((mc.earnBy||{})[k]||0); });
+    DED_FIELDS.forEach(([k])=>{ dedBy[k]=(dedBy[k]||0)+Number((mc.dedBy||{})[k]||0); });
     if(periodHasData(mc.p)) entered++; }
-  const count=DB.employees.filter(e=>activeInMonth(e,year,12)).length;
-  return {count, salary, earn, gross, ded, net, tax, entered};
+  const dec=DB.employees.filter(e=>activeInMonth(e,year,12));
+  return {count:dec.length, salary, earn, gross, ded, net, tax, entered, earnBy, dedBy,
+    salMonthly, salDaily,
+    nMonthly:dec.filter(e=>e.payType!=='daily').length, nDaily:dec.filter(e=>e.payType==='daily').length};
 }
 function deptSummaryYear(year){
   const map={};
@@ -1809,6 +1836,21 @@ function legend(items){
     </div>`).join('')}</div>`;
 }
 
+/* รายละเอียดใต้ตัวเลขรวมในแดชบอร์ด — โชว์เฉพาะรายการที่ไม่เป็นศูนย์
+   เรียงจากมากไปน้อย เกิน 4 รายการยุบเป็น "อื่น ๆ" รวมกัน กันการ์ดยาวเกิน */
+function kpiBreak(by, fields, total){
+  const rows=fields.map(([k,lab])=>({lab, v:Number((by||{})[k]||0)}))
+    .filter(x=>Math.abs(x.v)>=0.005)
+    .sort((a,b)=>b.v-a.v);
+  if(!rows.length) return '<div class="kpi-brk muted">ยังไม่มีรายการ</div>';
+  const top=rows.slice(0,4);
+  const rest=rows.slice(4);
+  if(rest.length) top.push({lab:'อื่น ๆ ('+rest.length+' รายการ)', v:rest.reduce((s,x)=>s+x.v,0)});
+  const pct=v=>total>0?' <span class="kpi-pct">'+Math.round(v/total*100)+'%</span>':'';
+  return '<div class="kpi-brk">'+top.map(x=>
+    '<div class="kpi-brk-row"><span class="kpi-brk-lab">'+esc(x.lab)+'</span>'+
+    '<span class="kpi-brk-val">'+money(x.v)+pct(x.v)+'</span></div>').join('')+'</div>';
+}
 function vDashboard(v){
   const [curY,curM]=PERIOD.split('-').map(Number);
   const isYear = dashMode==='year';
@@ -1836,10 +1878,21 @@ function vDashboard(v){
         <span style="color:#db2777">♀ ${tr('female')} ${num(fCount)}</span>
         ${uCount?`<span class="muted">– ${tr('unspec')} ${num(uCount)}</span>`:''}
       </div></div>
-    <div class="kpi b2"><div class="lab">💼 ${tr('kpi_salary')}</div><div class="val money">${money(t.salary)}</div></div>
-    <div class="kpi b3"><div class="lab">➕ ${tr('kpi_income')}</div><div class="val money">${money(t.gross)}</div></div>
-    <div class="kpi b4"><div class="lab">➖ ${tr('kpi_deduct')}</div><div class="val money">${money(t.ded)}</div></div>
-    <div class="kpi b5"><div class="lab">💰 ${tr('kpi_net')}</div><div class="val money">${money(t.net)}</div></div>
+    <div class="kpi b2"><div class="lab">💼 ${tr('kpi_salary')}</div><div class="val money">${money(t.salary)}</div>
+      ${kpiBreak({monthly:t.salMonthly, daily:t.salDaily},
+        [['monthly','รายเดือน ('+num(t.nMonthly||0)+' คน)'],['daily','รายวัน ('+num(t.nDaily||0)+' คน)']], t.salary)}</div>
+    <div class="kpi b3"><div class="lab">➕ ${tr('kpi_income')}</div><div class="val money">${money(t.gross)}</div>
+      ${kpiBreak(Object.assign({_base:t.salary}, t.earnBy),
+        [['_base','ค่าจ้างฐาน']].concat(EARN_FIELDS.map(f=>[f[0],FL(f)])), t.gross)}</div>
+    <div class="kpi b4"><div class="lab">➖ ${tr('kpi_deduct')}</div><div class="val money">${money(t.ded)}</div>
+      ${kpiBreak(t.dedBy, DED_FIELDS.map(f=>[f[0],FL(f)]), t.ded)}</div>
+    <div class="kpi b5"><div class="lab">💰 ${tr('kpi_net')}</div><div class="val money">${money(t.net)}</div>
+      <div class="kpi-brk">
+        <div class="kpi-brk-row"><span class="kpi-brk-lab">เงินได้รวม</span><span class="kpi-brk-val">${money(t.gross)}</span></div>
+        <div class="kpi-brk-row"><span class="kpi-brk-lab">หัก เงินหักรวม</span><span class="kpi-brk-val" style="color:var(--bad)">− ${money(t.ded)}</span></div>
+        <div class="kpi-brk-row" style="border-top:1px solid var(--line);padding-top:3px;margin-top:1px">
+          <span class="kpi-brk-lab">ยอดโอนจริง</span><span class="kpi-brk-val">${money(t.net)}</span></div>
+      </div></div>
   </div>`));
 
   if(DB.employees.length===0){
