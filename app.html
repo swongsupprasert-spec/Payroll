@@ -2263,8 +2263,23 @@ function empForm(id){
       <div class="field"><label>ประเภทการจ้าง *</label><select id="f_payType">
         <option value="monthly" ${!isDaily?'selected':''}>รายเดือน</option>
         <option value="daily" ${isDaily?'selected':''}>รายวัน</option></select></div>
-      <div class="field"><label id="f_salaryLab">${isDaily?'ค่าจ้างต่อวัน (บาท) *':'เงินเดือน (บาท) *'}</label><input id="f_salary" type="number" step="0.01" value="${e.salary||0}"></div>
+      <div class="field"><label id="f_salaryLab">${isDaily?'ค่าจ้างต่อวัน (บาท) *':'เงินเดือน (บาท) *'}</label><input id="f_salary" type="number" step="0.01" value="${e.salary||0}">
+        <div class="muted" style="font-size:11px;margin-top:3px">อัตราปัจจุบัน · แก้ตรงนี้จะเปลี่ยนย้อนหลังทุกงวด</div></div>
       <div class="field"><label>วันที่เริ่มงาน</label><input id="f_startDate" type="date" value="${e.startDate||''}"></div>
+      <!-- ปรับอัตราใหม่ในฟอร์มเดียวกัน ไม่ต้องไปกดปุ่ม 📈 แยก -->
+      <div class="field" style="grid-column:1/-1;background:#f6faf8;border:1px solid var(--line);border-radius:10px;padding:12px 14px">
+        <label style="font-weight:700;color:var(--brand-d)">📈 ปรับอัตราใหม่ (ขึ้น/ลดเงินเดือน) — ไม่บังคับ</label>
+        <div class="grid2" style="margin-top:8px">
+          <div class="field"><label>อัตราใหม่ (บาท)</label>
+            <input id="f_newSal" type="number" step="0.01" min="0" placeholder="${e.salary||0}"></div>
+          <div class="field"><label>มีผลตั้งแต่วันที่</label>
+            <input id="f_newFrom" type="date" value="${isoOf(periodRange(PERIOD).from)}"></div>
+        </div>
+        <div id="f_newHint" class="muted" style="font-size:11.5px;margin-top:6px">
+          กรอกทั้งสองช่องแล้วกดบันทึก — <strong>งวดที่ผ่านมาจะยังใช้อัตราเดิม</strong> สลิปย้อนหลังไม่เปลี่ยน
+          ${salHistOf(e)?` · ตอนนี้มีประวัติ <strong>${salHistOf(e).length} อัตรา</strong>`:''}
+        </div>
+      </div>
       <div class="field"><label>วันที่ลาออก <span style="color:#94a3b8;font-size:11px">(เว้นว่างถ้ายังทำงานอยู่)</span></label><input id="f_resignDate" type="date" value="${e.resignDate||''}"></div>
       <div class="field"><label>เลขบัตรประชาชน (13 หลัก)</label><input id="f_taxId" value="${esc(e.taxId)}" maxlength="13"></div>
       <div class="field"><label>อัตราสะสม กสล. (%)</label>
@@ -2306,10 +2321,41 @@ function empForm(id){
     const willCount = !rec.resignDate;
     const wasCount  = id ? !e.resignDate : false;
     if(willCount && !wasCount && !canAddEmp(1)){ toast('🔒 '+quotaMsg()); return; }
-    if(id){ Object.assign(e,rec); } else { DB.employees.push({id:uid(),...rec}); }
-    save(); closeModal(); drawEmp(); toast('บันทึกแล้ว');
+    // อัตราใหม่ — ต้องกรอกครบทั้งจำนวนและวันที่ ถ้ากรอกมาแค่ช่องเดียวถือว่ากรอกไม่ครบ
+    const nsRaw=$('#f_newSal').value.trim(), nfRaw=$('#f_newFrom').value;
+    if(nsRaw!=='' && !nfRaw){ toast('กรอกวันที่มีผลของอัตราใหม่ด้วย'); return; }
+    if(nsRaw==='' && nfRaw && $('#f_newSal')===document.activeElement){ /* ปล่อยผ่าน ยังไม่พิมพ์ตัวเลข */ }
+    const newSal=nsRaw===''?null:(+nsRaw||0);
+    if(newSal!==null && !(newSal>0)){ toast('อัตราใหม่ต้องมากกว่า 0'); return; }
+
+    const target = id ? e : {id:uid(),...rec};
+    if(id) Object.assign(e,rec); else DB.employees.push(target);
+
+    let msg='บันทึกแล้ว';
+    if(newSal!==null){
+      // raiseSalary เก็บอัตราเดิมเป็นชั้นแรกให้เอง งวดเก่าจึงไม่เปลี่ยน
+      raiseSalary(target, newSal, nfRaw);
+      msg=`บันทึกแล้ว · ปรับอัตราเป็น ${money(newSal)} มีผล ${fmtDate(nfRaw)}`;
+    }
+    save(); closeModal(); render(); toast(msg);
   }]]);
   $('#f_payType').onchange=(ev)=>{ $('#f_salaryLab').textContent = ev.target.value==='daily' ? 'ค่าจ้างต่อวัน (บาท) *' : 'เงินเดือน (บาท) *'; };
+  // แสดงส่วนต่างสด ๆ ให้เห็นว่าขึ้นเท่าไร กี่เปอร์เซ็นต์ ก่อนกดบันทึก
+  const nsIn=$('#f_newSal'), nfIn=$('#f_newFrom'), nHint=$('#f_newHint');
+  const baseHint=nHint.innerHTML;
+  const showDiff=()=>{
+    const cur=+$('#f_salary').value||0, nv=+nsIn.value||0;
+    if(!nsIn.value.trim() || !(nv>0)){ nHint.innerHTML=baseHint; return; }
+    const d=nv-cur;
+    const pct=cur>0 ? Math.round(d/cur*1000)/10 : 0;
+    const col=d>0?'var(--good,#15803d)':d<0?'var(--bad)':'inherit';
+    const sign=d>0?'+':'';
+    nHint.innerHTML=`<span style="color:${col};font-weight:700">${sign}${money(d)}`
+      + (cur>0?` (${sign}${pct}%)`:'')+'</span>'
+      + ` จาก ${money(cur)} → <strong>${money(nv)}</strong>`
+      + (nfIn.value?` มีผล ${fmtDate(nfIn.value)}`:' — ยังไม่ได้เลือกวันที่มีผล');
+  };
+  [nsIn,nfIn,$('#f_salary')].forEach(x=>{ if(x){ x.addEventListener('input',showDiff); x.addEventListener('change',showDiff); } });
   // รูปพนักงาน — เลือก / ลบ
   const phIn=$('#f_photo'), phBox=$('#f_photoBox'), phDel=$('#f_photoDel');
   const drawPhoto=()=>{
