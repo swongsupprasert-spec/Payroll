@@ -1772,24 +1772,27 @@ function lastRealMonth(year){
    ทำให้เช็คว่า "มีข้อมูล" อย่างเดียวไม่พอ */
 function monthSeries(year, curM, range){
   const out=[];
-  const lim=lastRealMonth(year);
   const a=range&&range.from?range.from:1, b=range&&range.to?range.to:12;
-  for(let m=1;m<=12;m++){
-    if(m>lim) continue;                       // เดือนที่ยังมาไม่ถึง — ไม่แสดงไม่ว่ากรณีใด
-    if(m<a||m>b) continue;                    // นอกช่วงเดือนที่ผู้ใช้เลือก
-    const p=`${year}-${String(m).padStart(2,'0')}`;
-    if(!periodHasData(p)) continue;           // เดือนที่ผ่านมาแล้วแต่ยังไม่ได้ทำเงินเดือน
+  for(let m=a;m<=b;m++){
+    /* เดือนที่ยังไม่ได้ทำเงินเดือน ยังขึ้นช่องไว้ให้เห็นว่าเลือกถึงตรงนี้ แต่เป็นแท่งจางค่า 0 */
+    if(!monthIsReal(year,m)){
+      out.push({label:THAI_MONTHS_ABBR[m-1], value:0, gross:0, ded:0, salary:0, active:m===curM, has:false, entered:false, mon:m});
+      continue;
+    }
     const mc=monthCompute(year,m);
     out.push({label:THAI_MONTHS_ABBR[m-1], value:mc.net, gross:mc.gross, ded:mc.ded, salary:mc.salary, active:m===curM, has:mc.count>0, entered:true, mon:m});
   }
   return out;
 }
 /* เดือนที่ทำเงินเดือนแล้วจริงของปีนั้น คืนเป็นเลขเดือน 1-12 */
+/* เดือนที่มีเงินเดือนจริง = มาถึงแล้ว และทำเงินเดือนแล้ว
+   ใช้เป็นเกณฑ์เดียวกันทั้งกราฟและยอดรวม ตัวเลขจะได้ไม่ขัดกัน */
+function monthIsReal(year, m){
+  return m<=lastRealMonth(year) && periodHasData(`${year}-${String(m).padStart(2,'0')}`);
+}
 function monthsWithData(year){
   const out=[], lim=lastRealMonth(year);
-  for(let m=1;m<=lim;m++){
-    if(periodHasData(`${year}-${String(m).padStart(2,'0')}`)) out.push(m);
-  }
+  for(let m=1;m<=lim;m++){ if(monthIsReal(year,m)) out.push(m); }
   return out;
 }
 function yearTotals(year){
@@ -1814,8 +1817,8 @@ function rangeTotals(year, a, b){
   const earnBy={}, dedBy={};
   let salMonthly=0, salDaily=0;
   for(let m=a;m<=b;m++){
+    if(!monthIsReal(year,m)) continue;
     const p=`${year}-${String(m).padStart(2,'0')}`;
-    if(!periodHasData(p)) continue;
     const t=periodTotals(p);
     months++; lastM=m;
     salary+=t.salary; earn+=t.earn; gross+=t.gross; ded+=t.ded; net+=t.net; tax+=t.tax;
@@ -1830,8 +1833,7 @@ function rangeTotals(year, a, b){
 function deptSummaryRange(year, a, b){
   const map={};
   for(let m=a;m<=b;m++){
-    const p=`${year}-${String(m).padStart(2,'0')}`;
-    if(!periodHasData(p)) continue;
+    if(!monthIsReal(year,m)) continue;
     const mc=monthCompute(year,m);
     Object.values(mc.depts).forEach(d=>{ const o=map[d.dept]=map[d.dept]||{dept:d.dept,count:0,salary:0,gross:0,ded:0,net:0};
       o.gross+=d.gross; o.ded+=d.ded; o.net+=d.net; o.salary+=d.salary; o.count=Math.max(o.count,d.count); });
@@ -1942,7 +1944,7 @@ function vDashboard(v){
       <span class="muted" style="font-size:13px">ถึง</span>
       <select id="chTo" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">${opts(ct)}</select>
       ${rangeAll?'':`<button class="btn ghost sm" id="chAll">↺ ทั้งปี</button>`}`:''}
-    <span class="muted" style="margin-left:6px">แสดงข้อมูล: <strong>${scopeLabel}</strong>${isYear?` · ประมาณการครบ 12 เดือน (กรอกจริง ${t.entered} เดือน)`:t.months>1?` · รวม ${num(t.months)} เดือน`:''}</span>
+    <span class="muted" style="margin-left:6px">แสดงข้อมูล: <strong>${scopeLabel}</strong>${isYear?` · ประมาณการครบ 12 เดือน (กรอกจริง ${t.entered} เดือน)`:t.months>1?` · รวม ${num(t.months)} เดือนที่ทำแล้ว${(ct-cf+1)>t.months?` (เลือกไว้ ${num(ct-cf+1)} เดือน)`:''}`:''}</span>
   </div>`);
   v.appendChild(tb);
   tb.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ dashMode=b.dataset.m; render(); });
