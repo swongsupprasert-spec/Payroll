@@ -659,14 +659,14 @@ function periodTotals(p){
   // แยกยอดรายรายการ เพื่อบอกในแดชบอร์ดว่าตัวเลขรวมมาจากอะไร
   const earnBy={}, dedBy={};
   let salMonthly=0, salDaily=0, nMonthly=0, nDaily=0;
-  DB.employees.forEach(e=>{ const c=calc(e,p); const r=readRec(p,e.id);
+  /* นับเฉพาะคนที่อยู่ในงวดนี้ ให้ตรงกับรายชื่อในหน้า "คำนวณเงินได้/เงินหัก" เป๊ะ ๆ
+     เดิมรวมเงินของทุกคนในระบบ ยอดรวมจึงไม่เท่ากับผลบวกของตารางที่ผู้ใช้เห็น */
+  DB.employees.filter(e=>activeInMonth(e,py,pm)).forEach(e=>{ const c=calc(e,p); const r=readRec(p,e.id);
     salary+=c.base; earn+=c.earnTotal; gross+=c.gross; ded+=c.dedTotal; net+=c.net; tax+=Number(r.ded.tax||0);
     EARN_FIELDS.forEach(([k])=>{ earnBy[k]=(earnBy[k]||0)+Number(r.earn[k]||0); });
     DED_FIELDS.forEach(([k])=>{ dedBy[k]=(dedBy[k]||0)+Number(r.ded[k]||0); });
-    if(activeInMonth(e,py,pm)){
-      count++;
-      if(e.payType==='daily'){ salDaily+=c.base; nDaily++; } else { salMonthly+=c.base; nMonthly++; }
-    }
+    count++;
+    if(e.payType==='daily'){ salDaily+=c.base; nDaily++; } else { salMonthly+=c.base; nMonthly++; }
   });
   return {count, salary, earn, gross, ded, net, tax, earnBy, dedBy, salMonthly, salDaily, nMonthly, nDaily};
 }
