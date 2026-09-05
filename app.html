@@ -1756,10 +1756,21 @@ function monthCompute(year, m){
     o.count++; o.salary+=c.base; o.gross+=c.gross; o.ded+=c.dedTotal; o.net+=c.net; });
   return {p, count:emps.length, salary, earn, gross, ded, net, tax, depts, earnBy, dedBy, salMonthly, salDaily};
 }
+/* เดือนสุดท้ายที่ถือว่า "เกิดขึ้นจริง" แล้วในปีนั้น — ปีที่ผ่านมาคือ 12, ปีอนาคตคือ 0 */
+function lastRealMonth(year){
+  const now=new Date(), y=now.getFullYear();
+  if(year<y) return 12;
+  if(year>y) return 0;
+  return now.getMonth()+1;
+}
 function monthSeries(year, curM){
   const out=[];
+  const lim=lastRealMonth(year);
   for(let m=1;m<=12;m++){ const mc=monthCompute(year,m);
-    out.push({label:THAI_MONTHS_ABBR[m-1], value:mc.net, gross:mc.gross, ded:mc.ded, salary:mc.salary, active:m===curM, has:mc.count>0, entered:periodHasData(mc.p)});
+    const entered=periodHasData(mc.p);
+    /* ข้ามเดือนอนาคตที่ยังไม่ได้กรอกข้อมูล — แต่เดือนที่เลือกอยู่ยังคงแสดงเสมอ */
+    if(m>lim && !entered && m!==curM) continue;
+    out.push({label:THAI_MONTHS_ABBR[m-1], value:mc.net, gross:mc.gross, ded:mc.ded, salary:mc.salary, active:m===curM, has:mc.count>0, entered, mon:m});
   }
   return out;
 }
@@ -1902,12 +1913,13 @@ function vDashboard(v){
 
   // Bar chart: net pay per month across the year
   const series=monthSeries(curY, isYear?-1:curM);
-  const barPanel=el(`<div class="panel"><div class="phead"><h2>💰 เงินเดือนสุทธิรายเดือน — ปี ${curY+543}</h2>
+  const barPanel=el(`<div class="panel"><div class="phead"><h2>💰 เงินเดือนสุทธิรายเดือน — ปี ${curY+543}</h2>${series.length&&series.length<12?`<span class="muted" style="font-size:12px;margin-left:8px">แสดง ${series[0].label}–${series[series.length-1].label} (ยังไม่ถึงเดือนถัดไป)</span>`:''}
     <div class="sp"><span class="muted" style="font-size:12px">💡 คลิกที่แท่งเดือนเพื่อดูรายละเอียดเดือนนั้น</span></div></div>
-    <div class="pbody">${barChart(series,{color:C.brandL,clickable:true,height:300})}</div></div>`);
+    <div class="pbody">${series.length?barChart(series,{color:C.brandL,clickable:true,height:300}):'<div class="empty">ยังไม่ถึงปีนี้ และยังไม่มีข้อมูลที่กรอกล่วงหน้าไว้</div>'}</div></div>`);
   v.appendChild(barPanel);
   barPanel.querySelectorAll('rect[data-i]').forEach(rc=>rc.onclick=()=>{
-    const m=+rc.dataset.i+1; PERIOD=`${curY}-${String(m).padStart(2,'0')}`; dashMode='month'; render();
+    const m=(series[+rc.dataset.i]||{}).mon; if(!m) return;
+    PERIOD=`${curY}-${String(m).padStart(2,'0')}`; dashMode='month'; render();
   });
 
   // Two columns: donut (income split) + dept bar
