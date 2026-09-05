@@ -1764,14 +1764,17 @@ function lastRealMonth(year){
   if(year>y) return 0;
   return now.getMonth()+1;
 }
-/* แสดงเฉพาะเดือนที่ "ทำเงินเดือนไปแล้วจริง" เท่านั้น
-   เดือนที่ยังไม่ได้ทำ calc() จะคิดค่าจ้างฐานให้อัตโนมัติอยู่แล้ว
-   ถ้าเอาตัวเลขนั้นมาขึ้นกราฟจะดูเหมือนจ่ายไปแล้ว ทั้งที่ยังไม่ได้ทำ */
+/* กราฟแสดงเฉพาะเดือนที่เกิดขึ้นจริงแล้ว และทำเงินเดือนไปแล้วเท่านั้น
+   ต้องเช็คปฏิทินด้วย เพราะแค่เปิดดูหน้าคำนวณเงินเดือนของเดือนอนาคต
+   ระบบก็สร้างเรคคอร์ดพร้อมหักภาษี/ปกส. อัตโนมัติไว้แล้ว
+   ทำให้เช็คว่า "มีข้อมูล" อย่างเดียวไม่พอ */
 function monthSeries(year, curM){
   const out=[];
+  const lim=lastRealMonth(year);
   for(let m=1;m<=12;m++){
+    if(m>lim) continue;                       // เดือนที่ยังมาไม่ถึง — ไม่แสดงไม่ว่ากรณีใด
     const p=`${year}-${String(m).padStart(2,'0')}`;
-    if(!periodHasData(p)) continue;
+    if(!periodHasData(p)) continue;           // เดือนที่ผ่านมาแล้วแต่ยังไม่ได้ทำเงินเดือน
     const mc=monthCompute(year,m);
     out.push({label:THAI_MONTHS_ABBR[m-1], value:mc.net, gross:mc.gross, ded:mc.ded, salary:mc.salary, active:m===curM, has:mc.count>0, entered:true, mon:m});
   }
@@ -1918,7 +1921,7 @@ function vDashboard(v){
   const series=monthSeries(curY, isYear?-1:curM);
   const barPanel=el(`<div class="panel"><div class="phead"><h2>💰 เงินเดือนสุทธิรายเดือน — ปี ${curY+543}</h2>${series.length&&series.length<12?`<span class="muted" style="font-size:12px;margin-left:8px">แสดงเฉพาะ ${num(series.length)} เดือนที่ทำเงินเดือนแล้ว</span>`:''}
     <div class="sp"><span class="muted" style="font-size:12px">💡 คลิกที่แท่งเดือนเพื่อดูรายละเอียดเดือนนั้น</span></div></div>
-    <div class="pbody">${series.length?barChart(series,{color:C.brandL,clickable:true,height:300}):`<div class="empty">ยังไม่ได้ทำเงินเดือนของปี ${curY+543} เลยสักเดือน — ไปที่หน้า “คำนวณเงินเดือน” เพื่อเริ่มทำงวดแรก</div>`}</div></div>`);
+    <div class="pbody">${series.length?barChart(series,{color:C.brandL,clickable:true,height:300}):`<div class="empty">${lastRealMonth(curY)?`ยังไม่ได้ทำเงินเดือนของปี ${curY+543} เลยสักเดือน — ไปที่หน้า “คำนวณเงินเดือน” เพื่อเริ่มทำงวดแรก`:`ปี ${curY+543} ยังมาไม่ถึง`}</div>`}</div></div>`);
   v.appendChild(barPanel);
   barPanel.querySelectorAll('rect[data-i]').forEach(rc=>rc.onclick=()=>{
     const m=(series[+rc.dataset.i]||{}).mon; if(!m) return;
