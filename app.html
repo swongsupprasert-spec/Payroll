@@ -1927,6 +1927,7 @@ function vDashboard(v){
     : cf===ct ? periodLabel(`${curY}-${String(cf).padStart(2,'0')}`)
     : `${THAI_MONTHS_ABBR[cf-1]} – ${THAI_MONTHS_ABBR[ct-1]} ${curY+543}`;
   const scopeLabel = isYear ? `ปี ${curY+543}` : rangeLabel;
+  const opts=(sel)=>avail.map(m=>`<option value="${m}" ${m===sel?'selected':''}>${THAI_MONTHS_ABBR[m-1]}</option>`).join('');
 
   // mode toggle
   const tb=el(`<div class="toolbar" style="margin-bottom:18px">
@@ -1934,10 +1935,19 @@ function vDashboard(v){
       <button class="segbtn ${!isYear?'on':''}" data-m="month">📅 รายเดือน</button>
       <button class="segbtn ${isYear?'on':''}" data-m="year">📆 รายปี</button>
     </div>
+    ${(!isYear&&avail.length)?`<span class="muted" style="margin-left:10px;font-size:13px">ช่วงเดือน</span>
+      <select id="chFrom" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">${opts(cf)}</select>
+      <span class="muted" style="font-size:13px">ถึง</span>
+      <select id="chTo" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">${opts(ct)}</select>
+      ${rangeAll?'':`<button class="btn ghost sm" id="chAll">↺ ทั้งปี</button>`}`:''}
     <span class="muted" style="margin-left:6px">แสดงข้อมูล: <strong>${scopeLabel}</strong>${isYear?` · ประมาณการครบ 12 เดือน (กรอกจริง ${t.entered} เดือน)`:t.months>1?` · รวม ${num(t.months)} เดือน`:''}</span>
   </div>`);
   v.appendChild(tb);
   tb.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ dashMode=b.dataset.m; render(); });
+  { const f=tb.querySelector('#chFrom'), t2=tb.querySelector('#chTo'), a=tb.querySelector('#chAll');
+    if(f) f.onchange=()=>{ chartFrom=+f.value; if(chartTo!=null&&chartTo<chartFrom) chartTo=chartFrom; render(); };
+    if(t2) t2.onchange=()=>{ chartTo=+t2.value; if(chartFrom!=null&&chartFrom>chartTo) chartFrom=chartTo; render(); };
+    if(a) a.onclick=()=>{ chartFrom=null; chartTo=null; render(); }; }
 
   // KPI cards — นับเฉพาะพนักงานที่ทำงานอยู่ในงวดนี้ (ไม่รวมคนลาออก)
   const refM = isYear ? 12 : (t.lastM || curM);
@@ -1974,26 +1984,12 @@ function vDashboard(v){
 
   // Bar chart: net pay per month across the year
   const series=monthSeries(curY, isYear?-1:curM, {from:cf,to:ct});
-  const opts=(sel)=>avail.map(m=>`<option value="${m}" ${m===sel?'selected':''}>${THAI_MONTHS_ABBR[m-1]}</option>`).join('');
   /* ยอดรวมของช่วงที่เลือก คิดจากแท่งที่แสดงอยู่จริง */
   
   const barPanel=el(`<div class="panel"><div class="phead"><h2>💰 เงินเดือนสุทธิรายเดือน — ปี ${curY+543}</h2>
     <div class="sp"><span class="muted" style="font-size:12px">💡 คลิกที่แท่งเดือนเพื่อดูรายละเอียดเดือนนั้น</span></div></div>
-    ${avail.length?`<div class="pbody" style="padding-bottom:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px">
-      <span class="muted" style="font-size:13px">ช่วงเดือน</span>
-      <select id="chFrom" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">${opts(cf)}</select>
-      <span class="muted" style="font-size:13px">ถึง</span>
-      <select id="chTo" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">${opts(ct)}</select>
-      ${rangeAll?'':`<button class="btn ghost sm" id="chAll">↺ ทั้งปี</button>`}
-      <span style="flex:1"></span>
-      <span class="muted" style="font-size:13px">การ์ดสรุปด้านบนเปลี่ยนตามช่วงนี้ด้วย</span>
-    </div>`:''}
     <div class="pbody">${series.length?barChart(series,{color:C.brandL,clickable:true,height:300}):`<div class="empty">${avail.length?'ไม่มีเดือนที่ทำเงินเดือนแล้วในช่วงที่เลือก':lastRealMonth(curY)?`ยังไม่ได้ทำเงินเดือนของปี ${curY+543} เลยสักเดือน — ไปที่หน้า “คำนวณเงินเดือน” เพื่อเริ่มทำงวดแรก`:`ปี ${curY+543} ยังมาไม่ถึง`}</div>`}</div></div>`);
   v.appendChild(barPanel);
-  { const f=barPanel.querySelector('#chFrom'), t2=barPanel.querySelector('#chTo'), a=barPanel.querySelector('#chAll');
-    if(f) f.onchange=()=>{ chartFrom=+f.value; if(chartTo!=null&&chartTo<chartFrom) chartTo=chartFrom; render(); };
-    if(t2) t2.onchange=()=>{ chartTo=+t2.value; if(chartFrom!=null&&chartFrom>chartTo) chartFrom=chartTo; render(); };
-    if(a) a.onclick=()=>{ chartFrom=null; chartTo=null; render(); }; }
   barPanel.querySelectorAll('rect[data-i]').forEach(rc=>rc.onclick=()=>{
     const m=(series[+rc.dataset.i]||{}).mon; if(!m) return;
     PERIOD=`${curY}-${String(m).padStart(2,'0')}`; dashMode='month'; render();
