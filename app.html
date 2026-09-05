@@ -1757,6 +1757,7 @@ function monthCompute(year, m){
   return {p, count:emps.length, salary, earn, gross, ded, net, tax, depts, earnBy, dedBy, salMonthly, salDaily};
 }
 /* เดือนสุดท้ายที่ถือว่า "เกิดขึ้นจริง" แล้วในปีนั้น — ปีที่ผ่านมาคือ 12, ปีอนาคตคือ 0 */
+function lastRealYear(){ return new Date().getFullYear(); }
 function lastRealMonth(year){
   const now=new Date(), y=now.getFullYear();
   if(year<y) return 12;
@@ -2603,8 +2604,11 @@ function vPayroll(v){
     <button class="btn ghost sm" id="peCsv" style="margin-top:22px">⬇️ ส่งออก CSV</button>
     <button class="btn ghost sm" id="peCsvIn" style="margin-top:22px">⬆️ นำเข้า CSV</button>
     <input type="file" id="peCsvFile" accept=".csv,text/csv" style="display:none">
+    <span style="flex:1"></span>
+    ${periodHasData(PERIOD)?`<button class="btn danger sm" id="peClear" style="margin-top:22px">🗑️ ล้างข้อมูลงวดนี้</button>`:''}
   </div>`);
   v.appendChild(tb);
+  { const b=tb.querySelector('#peClear'); if(b) b.onclick=()=>clearPeriodModal(PERIOD); }
   tb.querySelector('#peSel').onchange=(e)=>{ payrollEmpId=e.target.value; render(); };
   tb.querySelector('#peCsv').onclick=()=>exportPayrollCSV(list);
   tb.querySelector('#peCsvIn').onclick=()=>tb.querySelector('#peCsvFile').click();
@@ -2763,6 +2767,40 @@ function vPayroll(v){
 }
 /* ---------- มุมมอง "ทั้งหมด" : ตารางกรอกเงินได้/เงินหักทุกคน ---------- */
 const MANUAL_DED=['loan','studentloan','other'];        // ช่องหักที่กรอกเอง
+/* ---------- ล้างข้อมูลเงินเดือนทั้งงวด (เช่น เผลอทำเงินเดือนเดือนที่ยังไม่ถึง) ---------- */
+function clearPeriodModal(p){
+  const pp=DB.payroll[p]||{};
+  const ids=Object.keys(pp);
+  if(!ids.length){ toast('งวด '+periodLabel(p)+' ยังไม่มีข้อมูลให้ล้าง'); return; }
+  /* สรุปให้เห็นก่อนว่ากำลังจะลบอะไร */
+  let gross=0, net=0, named=[];
+  ids.forEach(id=>{
+    const e=DB.employees.find(x=>x.id===id); if(!e) return;
+    const cc=calc(e,p); gross+=cc.gross; net+=cc.net;
+    named.push(esc(e.code)+' — '+esc(e.name));
+  });
+  const [py,pm]=p.split('-').map(Number);
+  const future = py>lastRealYear() || (py===lastRealYear() && pm>lastRealMonth(py));
+  const body=`
+    ${future?'<div style="background:#fef3c7;color:#92400e;border-radius:8px;padding:9px 12px;margin-bottom:12px;font-size:13px">⚠️ งวดนี้เป็นเดือนที่ยังมาไม่ถึง</div>':''}
+    <p>กำลังจะลบข้อมูลเงินเดือนของงวด <strong>${periodLabel(p)}</strong> ทั้งหมด</p>
+    <div class="tbl-wrap" style="max-height:190px;overflow:auto;margin:10px 0">
+      <table style="font-size:13px"><tbody>
+        ${named.map(n=>'<tr><td>'+n+'</td></tr>').join('')}
+      </tbody></table></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px"><span>พนักงาน</span><strong>${num(ids.length)} คน</strong></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px"><span>เงินได้รวม</span><strong>${money(gross)}</strong></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px"><span>เงินสุทธิรวม</span><strong>${money(net)}</strong></div>
+    <p class="muted" style="font-size:12px;margin-top:12px">ข้อมูลพนักงาน การลา และเวลาเข้างาน <strong>จะไม่ถูกลบ</strong> — ลบเฉพาะตัวเลขเงินเดือนของงวดนี้เท่านั้น</p>`;
+  openModal('ล้างข้อมูลงวด '+periodLabel(p), body, [
+    ['ยกเลิก','ghost',closeModal],
+    ['ลบข้อมูลงวดนี้','danger',()=>{
+      delete DB.payroll[p];
+      save(); closeModal(); render();
+      toast('ล้างข้อมูลงวด '+periodLabel(p)+' แล้ว ('+num(ids.length)+' คน)');
+    }]
+  ]);
+}
 function vPayrollAll(v, list){
   const panel=el(`<div class="panel">
     <div class="phead"><h2>เงินได้ / เงินหัก ทุกคน — ${periodLabel(PERIOD)}</h2>
