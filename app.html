@@ -1807,6 +1807,37 @@ function yearTotals(year){
     salMonthly, salDaily,
     nMonthly:dec.filter(e=>e.payType!=='daily').length, nDaily:dec.filter(e=>e.payType==='daily').length};
 }
+/* ยอดรวมของช่วงเดือน a..b นับเฉพาะเดือนที่ทำเงินเดือนแล้วจริง
+   จำนวนพนักงานใช้ของเดือนสุดท้ายในช่วง เพราะเป็นภาพปัจจุบันที่สุด */
+function rangeTotals(year, a, b){
+  let salary=0,earn=0,gross=0,ded=0,net=0,tax=0,months=0,lastM=null;
+  const earnBy={}, dedBy={};
+  let salMonthly=0, salDaily=0;
+  for(let m=a;m<=b;m++){
+    const p=`${year}-${String(m).padStart(2,'0')}`;
+    if(!periodHasData(p)) continue;
+    const t=periodTotals(p);
+    months++; lastM=m;
+    salary+=t.salary; earn+=t.earn; gross+=t.gross; ded+=t.ded; net+=t.net; tax+=t.tax;
+    salMonthly+=t.salMonthly||0; salDaily+=t.salDaily||0;
+    EARN_FIELDS.forEach(([k])=>{ earnBy[k]=(earnBy[k]||0)+Number(t.earnBy[k]||0); });
+    DED_FIELDS.forEach(([k])=>{ dedBy[k]=(dedBy[k]||0)+Number(t.dedBy[k]||0); });
+  }
+  const ref = lastM===null ? null : periodTotals(`${year}-${String(lastM).padStart(2,'0')}`);
+  return {months, salary, earn, gross, ded, net, tax, earnBy, dedBy, salMonthly, salDaily,
+          count: ref?ref.count:0, nMonthly: ref?ref.nMonthly:0, nDaily: ref?ref.nDaily:0, lastM};
+}
+function deptSummaryRange(year, a, b){
+  const map={};
+  for(let m=a;m<=b;m++){
+    const p=`${year}-${String(m).padStart(2,'0')}`;
+    if(!periodHasData(p)) continue;
+    const mc=monthCompute(year,m);
+    Object.values(mc.depts).forEach(d=>{ const o=map[d.dept]=map[d.dept]||{dept:d.dept,count:0,salary:0,gross:0,ded:0,net:0};
+      o.gross+=d.gross; o.ded+=d.ded; o.net+=d.net; o.salary+=d.salary; o.count=Math.max(o.count,d.count); });
+  }
+  return Object.values(map).sort((a2,b2)=>a2.dept.localeCompare(b2.dept,'th'));
+}
 function deptSummaryYear(year){
   const map={};
   for(let m=1;m<=12;m++){ const mc=monthCompute(year,m);
@@ -1883,8 +1914,19 @@ function kpiBreak(by, fields, total){
 function vDashboard(v){
   const [curY,curM]=PERIOD.split('-').map(Number);
   const isYear = dashMode==='year';
-  const t = isYear ? yearTotals(curY) : periodTotals(PERIOD);
-  const scopeLabel = isYear ? `ปี ${curY+543}` : periodLabel(PERIOD);
+  /* ── ช่วงเดือน: ต้องรู้ก่อนวาดการ์ด KPI เพราะทั้งหน้าอิงช่วงนี้ ── */
+  const avail=monthsWithData(curY);
+  if(chartRangeY!==curY){ chartRangeY=curY; chartFrom=null; chartTo=null; }
+  const lo=avail.length?avail[0]:1, hi=avail.length?avail[avail.length-1]:12;
+  let cf=chartFrom==null?lo:Math.min(Math.max(chartFrom,lo),hi);
+  let ct=chartTo==null?hi:Math.min(Math.max(chartTo,lo),hi);
+  if(cf>ct){ const s=cf; cf=ct; ct=s; }
+  const rangeAll = cf===lo && ct===hi;
+  const t = isYear ? yearTotals(curY) : rangeTotals(curY, cf, ct);
+  const rangeLabel = !avail.length ? `ปี ${curY+543}`
+    : cf===ct ? periodLabel(`${curY}-${String(cf).padStart(2,'0')}`)
+    : `${THAI_MONTHS_ABBR[cf-1]} – ${THAI_MONTHS_ABBR[ct-1]} ${curY+543}`;
+  const scopeLabel = isYear ? `ปี ${curY+543}` : rangeLabel;
 
   // mode toggle
   const tb=el(`<div class="toolbar" style="margin-bottom:18px">
@@ -1892,13 +1934,14 @@ function vDashboard(v){
       <button class="segbtn ${!isYear?'on':''}" data-m="month">📅 รายเดือน</button>
       <button class="segbtn ${isYear?'on':''}" data-m="year">📆 รายปี</button>
     </div>
-    <span class="muted" style="margin-left:6px">แสดงข้อมูล: <strong>${scopeLabel}</strong>${isYear?` · ประมาณการครบ 12 เดือน (กรอกจริง ${t.entered} เดือน)`:''}</span>
+    <span class="muted" style="margin-left:6px">แสดงข้อมูล: <strong>${scopeLabel}</strong>${isYear?` · ประมาณการครบ 12 เดือน (กรอกจริง ${t.entered} เดือน)`:t.months>1?` · รวม ${num(t.months)} เดือน`:''}</span>
   </div>`);
   v.appendChild(tb);
   tb.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ dashMode=b.dataset.m; render(); });
 
   // KPI cards — นับเฉพาะพนักงานที่ทำงานอยู่ในงวดนี้ (ไม่รวมคนลาออก)
-  const actives=DB.employees.filter(e=>activeInMonth(e,curY,isYear?12:curM));
+  const refM = isYear ? 12 : (t.lastM || curM);
+  const actives=DB.employees.filter(e=>activeInMonth(e,curY,refM));
   const mCount=actives.filter(e=>e.gender==='M').length, fCount=actives.filter(e=>e.gender==='F').length, uCount=actives.filter(e=>!e.gender).length;
   v.appendChild(el(`<div class="cards">
     <div class="kpi b1"><div class="lab">👥 ${tr('kpi_count')}</div><div class="val">${num(actives.length)} <span class="muted" style="font-size:14px">${tr('unit_person')}</span></div>
@@ -1930,19 +1973,10 @@ function vDashboard(v){
   }
 
   // Bar chart: net pay per month across the year
-  const avail=monthsWithData(curY);
-  /* เปลี่ยนปีเมื่อไหร่ ให้รีเซ็ตช่วงกลับเป็นทั้งปี จะได้ไม่ค้างช่วงของปีเก่า */
-  if(chartRangeY!==curY){ chartRangeY=curY; chartFrom=null; chartTo=null; }
-  const lo=avail.length?avail[0]:1, hi=avail.length?avail[avail.length-1]:12;
-  /* ตัดค่าที่เลือกไว้ให้อยู่ในเดือนที่มีข้อมูลเสมอ กันเลือกค้างเดือนที่หายไป */
-  let cf=chartFrom==null?lo:Math.min(Math.max(chartFrom,lo),hi);
-  let ct=chartTo==null?hi:Math.min(Math.max(chartTo,lo),hi);
-  if(cf>ct) { const s=cf; cf=ct; ct=s; }
   const series=monthSeries(curY, isYear?-1:curM, {from:cf,to:ct});
-  const rangeAll = cf===lo && ct===hi;
   const opts=(sel)=>avail.map(m=>`<option value="${m}" ${m===sel?'selected':''}>${THAI_MONTHS_ABBR[m-1]}</option>`).join('');
   /* ยอดรวมของช่วงที่เลือก คิดจากแท่งที่แสดงอยู่จริง */
-  const sum=series.reduce((o,s)=>({gross:o.gross+s.gross, ded:o.ded+s.ded, net:o.net+s.value}),{gross:0,ded:0,net:0});
+  
   const barPanel=el(`<div class="panel"><div class="phead"><h2>💰 เงินเดือนสุทธิรายเดือน — ปี ${curY+543}</h2>
     <div class="sp"><span class="muted" style="font-size:12px">💡 คลิกที่แท่งเดือนเพื่อดูรายละเอียดเดือนนั้น</span></div></div>
     ${avail.length?`<div class="pbody" style="padding-bottom:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px">
@@ -1952,7 +1986,7 @@ function vDashboard(v){
       <select id="chTo" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">${opts(ct)}</select>
       ${rangeAll?'':`<button class="btn ghost sm" id="chAll">↺ ทั้งปี</button>`}
       <span style="flex:1"></span>
-      <span class="muted" style="font-size:13px">รวม ${num(series.length)} เดือน · เงินได้ ${money(sum.gross)} · หัก ${money(sum.ded)} · <strong style="color:var(--ink)">สุทธิ ${money(sum.net)}</strong></span>
+      <span class="muted" style="font-size:13px">การ์ดสรุปด้านบนเปลี่ยนตามช่วงนี้ด้วย</span>
     </div>`:''}
     <div class="pbody">${series.length?barChart(series,{color:C.brandL,clickable:true,height:300}):`<div class="empty">${avail.length?'ไม่มีเดือนที่ทำเงินเดือนแล้วในช่วงที่เลือก':lastRealMonth(curY)?`ยังไม่ได้ทำเงินเดือนของปี ${curY+543} เลยสักเดือน — ไปที่หน้า “คำนวณเงินเดือน” เพื่อเริ่มทำงวดแรก`:`ปี ${curY+543} ยังมาไม่ถึง`}</div>`}</div></div>`);
   v.appendChild(barPanel);
@@ -1967,7 +2001,7 @@ function vDashboard(v){
 
   // Two columns: donut (income split) + dept bar
   const dsplit=[{label:'เงินสุทธิ (Net)',value:t.net,color:C.green},{label:'เงินหัก (ภาษี/ปกส./อื่นๆ)',value:t.ded,color:C.red}];
-  const depts = isYear ? deptSummaryYear(curY) : deptSummary(PERIOD);
+  const depts = isYear ? deptSummaryYear(curY) : deptSummaryRange(curY, cf, ct);
   const deptItems = depts.map((d,i)=>({label:d.dept,value:d.net,has:true,color:[C.brand,C.green,C.purple,C.warn,C.slate][i%5]}));
   const row=el(`<div style="display:grid;grid-template-columns:1fr 1.4fr;gap:20px;margin-bottom:20px" class="dash2"></div>`);
   row.appendChild(el(`<div class="panel" style="margin:0"><div class="phead"><h2>โครงสร้างรายได้</h2></div>
