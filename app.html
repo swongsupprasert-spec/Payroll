@@ -1917,17 +1917,19 @@ function vDashboard(v){
   /* ── ช่วงเดือน: ต้องรู้ก่อนวาดการ์ด KPI เพราะทั้งหน้าอิงช่วงนี้ ── */
   const avail=monthsWithData(curY);
   if(chartRangeY!==curY){ chartRangeY=curY; chartFrom=null; chartTo=null; }
+  /* ค่าเริ่มต้นคือช่วงที่มีข้อมูลจริง แต่ผู้ใช้เลือกได้ครบทั้ง 12 เดือน */
   const lo=avail.length?avail[0]:1, hi=avail.length?avail[avail.length-1]:12;
-  let cf=chartFrom==null?lo:Math.min(Math.max(chartFrom,lo),hi);
-  let ct=chartTo==null?hi:Math.min(Math.max(chartTo,lo),hi);
+  let cf=chartFrom==null?lo:Math.min(Math.max(chartFrom,1),12);
+  let ct=chartTo==null?hi:Math.min(Math.max(chartTo,1),12);
   if(cf>ct){ const s=cf; cf=ct; ct=s; }
   const rangeAll = cf===lo && ct===hi;
   const t = isYear ? yearTotals(curY) : rangeTotals(curY, cf, ct);
-  const rangeLabel = !avail.length ? `ปี ${curY+543}`
-    : cf===ct ? periodLabel(`${curY}-${String(cf).padStart(2,'0')}`)
+  const rangeLabel = cf===ct ? periodLabel(`${curY}-${String(cf).padStart(2,'0')}`)
     : `${THAI_MONTHS_ABBR[cf-1]} – ${THAI_MONTHS_ABBR[ct-1]} ${curY+543}`;
   const scopeLabel = isYear ? `ปี ${curY+543}` : rangeLabel;
-  const opts=(sel)=>avail.map(m=>`<option value="${m}" ${m===sel?'selected':''}>${THAI_MONTHS_ABBR[m-1]}</option>`).join('');
+  /* เดือนที่ยังไม่ได้ทำเงินเดือนใส่จุดนำหน้าไว้ จะได้รู้ก่อนเลือกว่ายังไม่มีข้อมูล */
+  const opts=(sel)=>Array.from({length:12},(_,i)=>i+1).map(m=>
+    `<option value="${m}" ${m===sel?'selected':''}>${avail.includes(m)?'':'· '}${THAI_MONTHS_ABBR[m-1]}</option>`).join('');
 
   // mode toggle
   const tb=el(`<div class="toolbar" style="margin-bottom:18px">
