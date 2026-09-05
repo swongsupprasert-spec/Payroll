@@ -137,6 +137,12 @@
     .doc{box-shadow:none!important;border:0!important;margin:0!important;page-break-after:always}
     .doc:last-child{page-break-after:auto}
     @page{size:A4;margin:12mm}
+    /* ตารางกว้างอยู่ในกรอบเลื่อนแนวนอน ถ้าไม่คลายออก คอลัมน์ที่ยังไม่ได้เลื่อนไปเห็นจะหายไปตอนพิมพ์ */
+    .tbl-wrap{overflow:visible!important;max-height:none!important}
+    .panel{box-shadow:none!important;border:0!important;margin:0!important}
+    .panel table{width:100%!important;font-size:8pt!important}
+    .panel table th,.panel table td{padding:2px 4px!important;white-space:nowrap;line-height:1.25}
+    .chip{background:none!important;padding:0!important;font-size:8pt!important}
   }
   .print-area .doc{max-width:800px;margin:0 auto 24px;border:1px solid var(--line);box-shadow:var(--shadow);padding:34px 40px;border-radius:6px}
   /* เอกสารขนาด A4 เต็มหน้า (เช่น 50 ทวิ) */
@@ -3094,7 +3100,7 @@ function taxModal(emp, r){
 function vSummary(v){
   const t=periodTotals(PERIOD);
   v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">สรุปเงินเดือน — ${periodLabel(PERIOD)}</h2>
-    <button class="btn ghost sm" style="margin-left:auto" onclick="window.print()">🖨️ พิมพ์</button></div>`));
+    <button class="btn ghost sm" style="margin-left:auto" onclick="printWide()">🖨️ พิมพ์</button></div>`));
   const rows=DB.employees.map(e=>{ const c=calc(e,PERIOD); return `<tr>
     <td><span class="chip">${esc(e.code)}</span></td><td>${esc(e.name)}</td>
     <td class="num pos">${money(c.gross)}</td><td class="num neg">${money(c.dedTotal)}</td><td class="num"><strong>${money(c.net)}</strong></td></tr>`;}).join('');
@@ -3111,7 +3117,7 @@ function vSummary(v){
 function vDept(v){
   const t=periodTotals(PERIOD); const depts=deptSummary(PERIOD);
   v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">สรุปตามแผนก — ${periodLabel(PERIOD)}</h2>
-    <button class="btn ghost sm" style="margin-left:auto" onclick="window.print()">🖨️ พิมพ์</button></div>`));
+    <button class="btn ghost sm" style="margin-left:auto" onclick="printWide()">🖨️ พิมพ์</button></div>`));
   const rows=depts.map(d=>`<tr><td><strong>${esc(d.dept)}</strong></td><td class="num">${num(d.count)}</td><td class="num">${money(d.salary)}</td><td class="num pos">${money(d.gross)}</td><td class="num neg">${money(d.ded)}</td><td class="num">${money(d.net)}</td></tr>`).join('');
   const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap"></div></div></div>`);
   panel.querySelector('.tbl-wrap').appendChild(el(`<table>
@@ -3126,7 +3132,7 @@ function vDept(v){
 function vDetail(v){
   v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">สรุปรายละเอียดทั้งหมด — ${periodLabel(PERIOD)}</h2>
     <button class="btn ghost sm" style="margin-left:auto" id="csvBtn">⬇️ CSV</button>
-    <button class="btn ghost sm" onclick="window.print()">🖨️ พิมพ์</button></div>`));
+    <button class="btn ghost sm" onclick="printWide()">🖨️ พิมพ์</button></div>`));
   const head = ['รหัส','ชื่อ','แผนก','ค่าจ้างฐาน',...EARN_FIELDS.map(f=>f[1]),'รายได้รวม',...DED_FIELDS.map(f=>f[1]),'หักรวม','สุทธิ'];
   const tot = {}; head.forEach(h=>tot[h]=0);
   const bodyRows = DB.employees.map(e=>{
@@ -5240,6 +5246,18 @@ function openModal(title, body, buttons){
   (buttons||[['ปิด','ghost',closeModal]]).forEach(([lab,cls,fn])=>{ const b=el(`<button class="btn ${cls}">${esc(lab)}</button>`); b.onclick=fn; foot.appendChild(b); });
   wireT24(m);                     // ช่องเวลา 24 ชม. ในโมดัลใด ๆ ใช้งานได้ทันที
   $('#backdrop').classList.add('on');
+}
+/* พิมพ์ตารางกว้างแบบแนวนอน — เพิ่ม @page ชั่วคราวแล้วถอดออกเมื่อพิมพ์เสร็จ
+   ทำแบบนี้เพราะ @page เปลี่ยนตาม element ไม่ได้ ต้องสลับที่ระดับเอกสาร */
+function printWide(){
+  const s=document.createElement('style');
+  s.id='printWideCss';
+  s.textContent='@media print{@page{size:A4 landscape;margin:8mm}}';
+  document.head.appendChild(s);
+  const cleanup=()=>{ s.remove(); window.removeEventListener('afterprint',cleanup); };
+  window.addEventListener('afterprint',cleanup);
+  window.print();
+  setTimeout(cleanup,1000);   // เผื่อเบราว์เซอร์ไม่ยิง afterprint
 }
 function closeModal(){ $('#backdrop').classList.remove('on'); }
 /* โมดัลที่มีช่องให้กรอก = ปิดด้วยการคลิกพื้นที่ว่างไม่ได้ กันข้อมูลหายจากการเผลอคลิก */
