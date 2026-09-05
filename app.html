@@ -3138,6 +3138,21 @@ function vDetail(v){
     <button class="btn ghost sm" onclick="printWide()">🖨️ พิมพ์</button></div>`));
   const head = ['รหัส','ชื่อ','แผนก','ค่าจ้างฐาน',...EARN_FIELDS.map(f=>f[1]),'รายได้รวม',...DED_FIELDS.map(f=>f[1]),'หักรวม','สุทธิ'];
   const tot = {}; head.forEach(h=>tot[h]=0);
+
+  /* คอลัมน์เงินที่เป็นศูนย์ทุกคน — ซ่อนเฉพาะตอนพิมพ์ ไม่งั้นตารางกว้างเกินหน้ากระดาษ
+     บนจอยังเห็นครบทุกคอลัมน์เหมือนเดิม
+     ต้องคำนวณก่อนสร้างแถว เพราะแถวเรียกใช้ zc() */
+  const zeroCol=head.map(()=>false);
+  const colVals=head.map(()=>0);
+  DB.employees.forEach(e=>{
+    const c2=calc(e,PERIOD), r2=readRec(PERIOD,e.id);
+    const vals=[0,0,0,c2.base,...EARN_FIELDS.map(([k])=>+r2.earn[k]||0),c2.gross,...DED_FIELDS.map(([k])=>+r2.ded[k]||0),c2.dedTotal,c2.net];
+    vals.forEach((x,i)=>{ colVals[i]+=Math.abs(x); });
+  });
+  for(let i=4;i<head.length;i++) zeroCol[i] = colVals[i]<0.005;      // เริ่มที่ 4 เพื่อคง "ค่าจ้างฐาน" ไว้เสมอ
+  const zc=i=>zeroCol[i]?' zcol':'';
+  const nZero=zeroCol.filter(Boolean).length;
+
   const bodyRows = DB.employees.map(e=>{
     const c=calc(e,PERIOD); const r=c.r;
     const cells=[
@@ -3156,19 +3171,6 @@ function vDetail(v){
   const sums = {salary:0}; EARN_FIELDS.forEach(([k])=>sums['e_'+k]=0); DED_FIELDS.forEach(([k])=>sums['d_'+k]=0);
   DB.employees.forEach(e=>{ const c=calc(e,PERIOD); const r=readRec(PERIOD,e.id); sums.salary+=c.base; EARN_FIELDS.forEach(([k])=>sums['e_'+k]+=+r.earn[k]||0); DED_FIELDS.forEach(([k])=>sums['d_'+k]+=+r.ded[k]||0); });
   const footCells=['รวม','','',money(sums.salary),...EARN_FIELDS.map(([k])=>money(sums['e_'+k])),money(t.gross),...DED_FIELDS.map(([k])=>money(sums['d_'+k])),money(t.ded),money(t.net)];
-
-  /* คอลัมน์เงินที่เป็นศูนย์ทุกคน — ซ่อนเฉพาะตอนพิมพ์ ไม่งั้นตารางกว้างเกินหน้ากระดาษ
-     บนจอยังเห็นครบทุกคอลัมน์เหมือนเดิม */
-  const zeroCol=head.map((_,i)=>false);
-  const colVals=head.map(()=>0);
-  DB.employees.forEach(e=>{
-    const c2=calc(e,PERIOD), r2=readRec(PERIOD,e.id);
-    const vals=[0,0,0,c2.base,...EARN_FIELDS.map(([k])=>+r2.earn[k]||0),c2.gross,...DED_FIELDS.map(([k])=>+r2.ded[k]||0),c2.dedTotal,c2.net];
-    vals.forEach((x,i)=>{ colVals[i]+=Math.abs(x); });
-  });
-  for(let i=4;i<head.length;i++) zeroCol[i] = colVals[i]<0.005;      // เริ่มที่ 4 เพื่อคง "ค่าจ้างฐาน" ไว้เสมอ
-  const zc=i=>zeroCol[i]?' zcol':'';
-  const nZero=zeroCol.filter(Boolean).length;
 
   const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap"></div></div></div>`);
   panel.querySelector('.tbl-wrap').appendChild(el(`<table style="font-size:13px">
