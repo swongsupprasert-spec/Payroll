@@ -1731,6 +1731,8 @@ async function vAdmin(v){
 
 /* ============ 0. DASHBOARD ============ */
 let dashMode = 'month'; // 'month' | 'year'
+/* ช่วงเดือนของกราฟบนแดชบอร์ด — null = ใช้ทั้งปีเท่าที่มีข้อมูล */
+let chartFrom = null, chartTo = null, chartRangeY = null;
 const C = {brand:'#0e3a5c',brandL:'#a7f3d0',green:'#059669',greenL:'#6ee7b7',red:'#dc2626',warn:'#d97706',purple:'#7c3aed',slate:'#94a3b8'};
 
 function periodHasData(p){ const pp=DB.payroll[p]; return !!(pp && Object.keys(pp).length); }
@@ -1768,15 +1770,25 @@ function lastRealMonth(year){
    ต้องเช็คปฏิทินด้วย เพราะแค่เปิดดูหน้าคำนวณเงินเดือนของเดือนอนาคต
    ระบบก็สร้างเรคคอร์ดพร้อมหักภาษี/ปกส. อัตโนมัติไว้แล้ว
    ทำให้เช็คว่า "มีข้อมูล" อย่างเดียวไม่พอ */
-function monthSeries(year, curM){
+function monthSeries(year, curM, range){
   const out=[];
   const lim=lastRealMonth(year);
+  const a=range&&range.from?range.from:1, b=range&&range.to?range.to:12;
   for(let m=1;m<=12;m++){
     if(m>lim) continue;                       // เดือนที่ยังมาไม่ถึง — ไม่แสดงไม่ว่ากรณีใด
+    if(m<a||m>b) continue;                    // นอกช่วงเดือนที่ผู้ใช้เลือก
     const p=`${year}-${String(m).padStart(2,'0')}`;
     if(!periodHasData(p)) continue;           // เดือนที่ผ่านมาแล้วแต่ยังไม่ได้ทำเงินเดือน
     const mc=monthCompute(year,m);
     out.push({label:THAI_MONTHS_ABBR[m-1], value:mc.net, gross:mc.gross, ded:mc.ded, salary:mc.salary, active:m===curM, has:mc.count>0, entered:true, mon:m});
+  }
+  return out;
+}
+/* เดือนที่ทำเงินเดือนแล้วจริงของปีนั้น คืนเป็นเลขเดือน 1-12 */
+function monthsWithData(year){
+  const out=[], lim=lastRealMonth(year);
+  for(let m=1;m<=lim;m++){
+    if(periodHasData(`${year}-${String(m).padStart(2,'0')}`)) out.push(m);
   }
   return out;
 }
@@ -1918,11 +1930,36 @@ function vDashboard(v){
   }
 
   // Bar chart: net pay per month across the year
-  const series=monthSeries(curY, isYear?-1:curM);
-  const barPanel=el(`<div class="panel"><div class="phead"><h2>💰 เงินเดือนสุทธิรายเดือน — ปี ${curY+543}</h2>${series.length&&series.length<12?`<span class="muted" style="font-size:12px;margin-left:8px">แสดงเฉพาะ ${num(series.length)} เดือนที่ทำเงินเดือนแล้ว</span>`:''}
+  const avail=monthsWithData(curY);
+  /* เปลี่ยนปีเมื่อไหร่ ให้รีเซ็ตช่วงกลับเป็นทั้งปี จะได้ไม่ค้างช่วงของปีเก่า */
+  if(chartRangeY!==curY){ chartRangeY=curY; chartFrom=null; chartTo=null; }
+  const lo=avail.length?avail[0]:1, hi=avail.length?avail[avail.length-1]:12;
+  /* ตัดค่าที่เลือกไว้ให้อยู่ในเดือนที่มีข้อมูลเสมอ กันเลือกค้างเดือนที่หายไป */
+  let cf=chartFrom==null?lo:Math.min(Math.max(chartFrom,lo),hi);
+  let ct=chartTo==null?hi:Math.min(Math.max(chartTo,lo),hi);
+  if(cf>ct) { const s=cf; cf=ct; ct=s; }
+  const series=monthSeries(curY, isYear?-1:curM, {from:cf,to:ct});
+  const rangeAll = cf===lo && ct===hi;
+  const opts=(sel)=>avail.map(m=>`<option value="${m}" ${m===sel?'selected':''}>${THAI_MONTHS_ABBR[m-1]}</option>`).join('');
+  /* ยอดรวมของช่วงที่เลือก คิดจากแท่งที่แสดงอยู่จริง */
+  const sum=series.reduce((o,s)=>({gross:o.gross+s.gross, ded:o.ded+s.ded, net:o.net+s.value}),{gross:0,ded:0,net:0});
+  const barPanel=el(`<div class="panel"><div class="phead"><h2>💰 เงินเดือนสุทธิรายเดือน — ปี ${curY+543}</h2>
     <div class="sp"><span class="muted" style="font-size:12px">💡 คลิกที่แท่งเดือนเพื่อดูรายละเอียดเดือนนั้น</span></div></div>
-    <div class="pbody">${series.length?barChart(series,{color:C.brandL,clickable:true,height:300}):`<div class="empty">${lastRealMonth(curY)?`ยังไม่ได้ทำเงินเดือนของปี ${curY+543} เลยสักเดือน — ไปที่หน้า “คำนวณเงินเดือน” เพื่อเริ่มทำงวดแรก`:`ปี ${curY+543} ยังมาไม่ถึง`}</div>`}</div></div>`);
+    ${avail.length?`<div class="pbody" style="padding-bottom:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+      <span class="muted" style="font-size:13px">ช่วงเดือน</span>
+      <select id="chFrom" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">${opts(cf)}</select>
+      <span class="muted" style="font-size:13px">ถึง</span>
+      <select id="chTo" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">${opts(ct)}</select>
+      ${rangeAll?'':`<button class="btn ghost sm" id="chAll">↺ ทั้งปี</button>`}
+      <span style="flex:1"></span>
+      <span class="muted" style="font-size:13px">รวม ${num(series.length)} เดือน · เงินได้ ${money(sum.gross)} · หัก ${money(sum.ded)} · <strong style="color:var(--ink)">สุทธิ ${money(sum.net)}</strong></span>
+    </div>`:''}
+    <div class="pbody">${series.length?barChart(series,{color:C.brandL,clickable:true,height:300}):`<div class="empty">${avail.length?'ไม่มีเดือนที่ทำเงินเดือนแล้วในช่วงที่เลือก':lastRealMonth(curY)?`ยังไม่ได้ทำเงินเดือนของปี ${curY+543} เลยสักเดือน — ไปที่หน้า “คำนวณเงินเดือน” เพื่อเริ่มทำงวดแรก`:`ปี ${curY+543} ยังมาไม่ถึง`}</div>`}</div></div>`);
   v.appendChild(barPanel);
+  { const f=barPanel.querySelector('#chFrom'), t2=barPanel.querySelector('#chTo'), a=barPanel.querySelector('#chAll');
+    if(f) f.onchange=()=>{ chartFrom=+f.value; if(chartTo!=null&&chartTo<chartFrom) chartTo=chartFrom; render(); };
+    if(t2) t2.onchange=()=>{ chartTo=+t2.value; if(chartFrom!=null&&chartFrom>chartTo) chartFrom=chartTo; render(); };
+    if(a) a.onclick=()=>{ chartFrom=null; chartTo=null; render(); }; }
   barPanel.querySelectorAll('rect[data-i]').forEach(rc=>rc.onclick=()=>{
     const m=(series[+rc.dataset.i]||{}).mon; if(!m) return;
     PERIOD=`${curY}-${String(m).padStart(2,'0')}`; dashMode='month'; render();
