@@ -1746,6 +1746,12 @@ const C = {brand:'#0e3a5c',brandL:'#a7f3d0',green:'#059669',greenL:'#6ee7b7',red
 
 function periodHasData(p){ const pp=DB.payroll[p]; return !!(pp && Object.keys(pp).length); }
 // พนักงานคนนี้ทำงานอยู่ในเดือนนี้หรือไม่ (ตามวันเริ่มงาน)
+/* รายชื่อพนักงานที่อยู่ในงวด p — ใช้ให้ทุกหน้าสรุป/สลิป/ส่งออก กรองเหมือนกันหมด
+   ไม่งั้นบางหน้าแสดงคนที่ลาออกไปแล้วเป็น 0.00 ปนกับคนปัจจุบัน */
+function activeEmps(p){
+  const [y,m]=String(p||PERIOD).split('-').map(Number);
+  return DB.employees.filter(e=>activeInMonth(e,y,m));
+}
 function activeInMonth(emp, year, month){
   if(emp.startDate){ const [sy,sm]=emp.startDate.split('-').map(Number); if(sy>year||(sy===year&&sm>month)) return false; }
   if(emp.resignDate){ const [ry,rm]=emp.resignDate.split('-').map(Number); if(ry<year||(ry===year&&rm<month)) return false; }
@@ -2034,7 +2040,7 @@ function vDashboard(v){
 }
 function deptSummary(p){
   const map={};
-  DB.employees.forEach(e=>{ const c=calc(e,p); const d=e.dept||'(ไม่ระบุ)';
+  activeEmps(p).forEach(e=>{ const c=calc(e,p); const d=e.dept||'(ไม่ระบุ)';
     map[d] = map[d]||{dept:d,count:0,salary:0,gross:0,ded:0,net:0};
     map[d].count++; map[d].salary+=c.base; map[d].gross+=c.gross; map[d].ded+=c.dedTotal; map[d].net+=c.net;
   });
@@ -3104,7 +3110,7 @@ function vSummary(v){
   const t=periodTotals(PERIOD);
   v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">สรุปเงินเดือน — ${periodLabel(PERIOD)}</h2>
     <button class="btn ghost sm" style="margin-left:auto" onclick="printWide()">🖨️ พิมพ์</button></div>`));
-  const rows=DB.employees.map(e=>{ const c=calc(e,PERIOD); return `<tr>
+  const rows=activeEmps(PERIOD).map(e=>{ const c=calc(e,PERIOD); return `<tr>
     <td><span class="chip">${esc(e.code)}</span></td><td>${esc(e.name)}</td>
     <td class="num pos">${money(c.gross)}</td><td class="num neg">${money(c.dedTotal)}</td><td class="num"><strong>${money(c.net)}</strong></td></tr>`;}).join('');
   const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap"></div></div></div>`);
@@ -3138,13 +3144,14 @@ function vDetail(v){
     <button class="btn ghost sm" onclick="printWide()">🖨️ พิมพ์</button></div>`));
   const head = ['รหัส','ชื่อ','แผนก','ค่าจ้างฐาน',...EARN_FIELDS.map(f=>f[1]),'รายได้รวม',...DED_FIELDS.map(f=>f[1]),'หักรวม','สุทธิ'];
   const tot = {}; head.forEach(h=>tot[h]=0);
+  const list=activeEmps(PERIOD);   // เฉพาะคนที่อยู่ในงวดนี้ ให้ตรงกับหน้าคำนวณและแดชบอร์ด
 
   /* คอลัมน์เงินที่เป็นศูนย์ทุกคน — ซ่อนเฉพาะตอนพิมพ์ ไม่งั้นตารางกว้างเกินหน้ากระดาษ
      บนจอยังเห็นครบทุกคอลัมน์เหมือนเดิม
      ต้องคำนวณก่อนสร้างแถว เพราะแถวเรียกใช้ zc() */
   const zeroCol=head.map(()=>false);
   const colVals=head.map(()=>0);
-  DB.employees.forEach(e=>{
+  list.forEach(e=>{
     const c2=calc(e,PERIOD), r2=readRec(PERIOD,e.id);
     const vals=[0,0,0,c2.base,...EARN_FIELDS.map(([k])=>+r2.earn[k]||0),c2.gross,...DED_FIELDS.map(([k])=>+r2.ded[k]||0),c2.dedTotal,c2.net];
     vals.forEach((x,i)=>{ colVals[i]+=Math.abs(x); });
@@ -3153,7 +3160,7 @@ function vDetail(v){
   const zc=i=>zeroCol[i]?' zcol':'';
   const nZero=zeroCol.filter(Boolean).length;
 
-  const bodyRows = DB.employees.map(e=>{
+  const bodyRows = list.map(e=>{
     const c=calc(e,PERIOD); const r=c.r;
     const cells=[
       `<span class="chip">${esc(e.code)}</span>`, esc(e.name), esc(e.dept),
@@ -3169,7 +3176,7 @@ function vDetail(v){
   // footer totals
   const t=periodTotals(PERIOD);
   const sums = {salary:0}; EARN_FIELDS.forEach(([k])=>sums['e_'+k]=0); DED_FIELDS.forEach(([k])=>sums['d_'+k]=0);
-  DB.employees.forEach(e=>{ const c=calc(e,PERIOD); const r=readRec(PERIOD,e.id); sums.salary+=c.base; EARN_FIELDS.forEach(([k])=>sums['e_'+k]+=+r.earn[k]||0); DED_FIELDS.forEach(([k])=>sums['d_'+k]+=+r.ded[k]||0); });
+  list.forEach(e=>{ const c=calc(e,PERIOD); const r=readRec(PERIOD,e.id); sums.salary+=c.base; EARN_FIELDS.forEach(([k])=>sums['e_'+k]+=+r.earn[k]||0); DED_FIELDS.forEach(([k])=>sums['d_'+k]+=+r.ded[k]||0); });
   const footCells=['รวม','','',money(sums.salary),...EARN_FIELDS.map(([k])=>money(sums['e_'+k])),money(t.gross),...DED_FIELDS.map(([k])=>money(sums['d_'+k])),money(t.ded),money(t.net)];
 
   const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap"></div></div></div>`);
@@ -3181,11 +3188,11 @@ function vDetail(v){
   if(nZero) panel.querySelector('.pbody').insertAdjacentHTML('afterbegin',
     `<div class="no-print muted" style="padding:8px 12px;font-size:12px;border-bottom:1px solid var(--line)">🖨️ ตอนพิมพ์จะซ่อน ${num(nZero)} คอลัมน์ที่เป็น 0 ทุกคน เพื่อให้พอดีหน้ากระดาษ (บนจอยังเห็นครบ)</div>`);
   v.appendChild(panel);
-  $('#csvBtn').onclick=()=>exportCSV(head, bodyRows);
+  $('#csvBtn').onclick=()=>exportCSV(head, list);
 }
-function exportCSV(head){
+function exportCSV(head, list){
   const lines=[head.join(',')];
-  DB.employees.forEach(e=>{ const c=calc(e,PERIOD); const r=c.r;
+  (list||activeEmps(PERIOD)).forEach(e=>{ const c=calc(e,PERIOD); const r=c.r;
     const row=[e.code,`"${e.name}"`,`"${e.dept}"`,c.base,...EARN_FIELDS.map(([k])=>r.earn[k]||0),c.gross,...DED_FIELDS.map(([k])=>r.ded[k]||0),c.dedTotal,c.net];
     lines.push(row.join(','));
   });
@@ -3198,12 +3205,12 @@ let slipEmpId='ALL';
 function vSlip(v){
   v.appendChild(el(`<div class="toolbar no-print">
     <div class="field" style="min-width:260px"><label>เลือกพนักงาน</label>
-      <select id="slipSel"><option value="ALL">— ทุกคน —</option>${DB.employees.map(e=>`<option value="${e.id}" ${e.id===slipEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}</option>`).join('')}</select></div>
+      <select id="slipSel"><option value="ALL">— ทุกคน —</option>${activeEmps(PERIOD).map(e=>`<option value="${e.id}" ${e.id===slipEmpId?'selected':''}>${esc(e.code)} — ${esc(e.name)}</option>`).join('')}</select></div>
     <button class="btn" style="margin-top:22px" onclick="window.print()">🖨️ พิมพ์สลิป</button>
   </div>`));
   $('#slipSel').onchange=(e)=>{ slipEmpId=e.target.value; render(); };
   const area=el(`<div class="print-area"></div>`); v.appendChild(area);
-  const list = slipEmpId==='ALL'?DB.employees:DB.employees.filter(e=>e.id===slipEmpId);
+  const list = slipEmpId==='ALL'?activeEmps(PERIOD):DB.employees.filter(e=>e.id===slipEmpId);
   if(list.length===0){ area.appendChild(el(`<div class="empty">ไม่มีข้อมูล</div>`)); return; }
   list.forEach(e=>area.appendChild(slipDoc(e)));
 }
