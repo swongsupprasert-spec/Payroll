@@ -112,7 +112,7 @@
     },
     {
       "source": "/favicon.ico",
-      "destination": "/brand/icon-48.png"
+      "destination": "/brand/favicon-48.png"
     }
   ],
   "redirects": [

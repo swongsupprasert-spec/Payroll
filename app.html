@@ -7,7 +7,6 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#0e3a5c">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='12' fill='%230e3a5c'/><path d='M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14' fill='none' stroke='%236ee7b7' stroke-width='3.6' stroke-linecap='round'/></svg>">
 <style>
   :root{
     --bg:#f4f6fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
@@ -232,6 +231,19 @@
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-05JJT2VDRV"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js",new Date());
+  gtag("config","G-05JJT2VDRV",{anonymize_ip:true});
+</script>
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png?v=2">
+<link rel="icon" type="image/png" sizes="144x144" href="/brand/favicon-144.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
+<link rel="shortcut icon" href="/brand/favicon-48.png?v=2">
+<link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 </head>
 <body>
 <div id="authGate" style="position:fixed;inset:0;background:#ffffff;display:none;align-items:center;justify-content:center;z-index:200;padding:20px">
@@ -243,9 +255,9 @@
         <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg></div>
     <div style="text-align:center;font-size:26px;font-weight:800;margin-bottom:4px">eSim<span style="color:var(--brand)">Payroll</span></div>
-    <div style="text-align:center;color:#5b7186;margin-bottom:22px">เข้าสู่ระบบเพื่อใช้งาน</div>
+    <div style="text-align:center;color:#5b7186;margin-bottom:22px">สมัครใช้งานฟรี 30 วัน · ไม่ต้องใช้บัตรเครดิต</div>
     <div class="field" style="margin-bottom:12px"><label>อีเมล</label><input id="authEmail" type="email" autocomplete="username" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
-    <div class="field" style="margin-bottom:16px"><label>รหัสผ่าน</label>
+    <div class="field" style="margin-bottom:16px"><label>ตั้งรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)</label>
       <div class="pwwrap" style="position:relative">
         <input id="authPass" type="password" autocomplete="current-password" style="width:100%;padding:11px 44px 11px 11px;border:1px solid #e5e7eb;border-radius:9px">
         <button type="button" id="pwEye" class="pweye" aria-label="แสดงรหัสผ่าน" aria-pressed="false"
@@ -255,8 +267,7 @@
           <svg class="eye-off" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M2.5 12S6 5.5 12 5.5c1.5 0 2.9.4 4.1 1M21.5 12s-3.5 6.5-9.5 6.5c-1.5 0-2.9-.4-4.1-1"/><path d="M4 4l16 16"/></svg>
         </button>
       </div></div>
-    <button class="btn" id="authLogin" style="width:100%;justify-content:center;margin-bottom:14px">เข้าสู่ระบบ</button>
-
+    
     <!-- ประเภทการใช้งาน — มีผลตอนสมัครใหม่เท่านั้น ผู้ใช้เดิมยึดตามแพ็กเกจที่ซื้อไว้ -->
     <div style="border-top:1px solid #e5e7eb;padding-top:14px">
       <div style="font-size:12.5px;color:#5b7186;margin-bottom:8px;text-align:center">สมัครใหม่ — เลือกประเภทการใช้งาน</div>
@@ -265,13 +276,14 @@
         <button type="button" id="edPickF" class="edpick" style="flex:1">🏦 สำนักงานบัญชี</button>
       </div>
       <div id="edPickNote" style="font-size:12px;color:#5b7186;text-align:center;margin-bottom:12px;line-height:1.6"></div>
-      <button class="btn ghost" id="authSignup" style="width:100%;justify-content:center">สมัครสมาชิกใหม่</button>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;margin:16px 0;color:#94a3b8;font-size:13px"><div style="flex:1;height:1px;background:#e5e7eb"></div>หรือ / or<div style="flex:1;height:1px;background:#e5e7eb"></div></div>
-    <button id="authGoogle" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;border:1px solid #dadce0;border-radius:9px;background:#fff;color:#3c4043;font-weight:600;font-size:15px;cursor:pointer">
+      <button class="btn" id="authSignup" style="width:100%;justify-content:center">สมัครสมาชิกใหม่</button>
+<button id="authGoogle" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;border:1px solid #dadce0;border-radius:9px;background:#fff;color:#3c4043;font-weight:600;font-size:15px;cursor:pointer;margin-bottom:10px">
       <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-      Continue with Google
+      สมัครด้วย Google — ใช้เวลา 10 วินาที
     </button>
+    </div>
+<div style="text-align:center;margin-top:18px;font-size:14px;color:#5b7186">มีบัญชีอยู่แล้ว? <button type="button" id="authLogin" style="background:none;border:0;padding:0;font:inherit;color:var(--brand);font-weight:700;cursor:pointer;text-decoration:underline">เข้าสู่ระบบ</button></div>
+    
     <div id="authMsg" style="font-size:13px;margin-top:12px;text-align:center;min-height:18px;color:#dc2626"></div>
   </div>
 </div>
@@ -300,7 +312,7 @@
       </div>
       <button class="btn ghost sm no-print" id="langToggle">🌐 EN</button>
     </header>
-    <div class="content" id="view"></div>
+    <div class="content" id="view"><div id="bootLoad" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:50vh;color:#5b7186"><div style="width:38px;height:38px;border:4px solid #d7e6ee;border-top-color:#10b981;border-radius:50%;animation:bootspin .8s linear infinite"></div><div>กำลังโหลดข้อมูล…</div></div><style>@keyframes bootspin{to{transform:rotate(360deg)}}</style></div>
   </div>
 </div>
 
@@ -5375,13 +5387,14 @@ async function cloudSave(){
   }catch(e){ setSync('⚠️ ซิงก์ไม่สำเร็จ'); }
 }
 async function cloudLoad(uid){
-  const {data}=await sb.from('payroll_stores').select('data').eq('user_id',uid).maybeSingle();
+  // ดึงสองตารางพร้อมกัน — ข้อมูลพรีเมี่ยมถ้าไม่มีสิทธิ์ RLS จะคืนค่าว่าง (ไม่ error)
+  const [r1,r2]=await Promise.all([
+    sb.from('payroll_stores').select('data').eq('user_id',uid).maybeSingle(),
+    Promise.resolve(sb.from('premium_stores').select('data').eq('user_id',uid).maybeSingle()).catch(()=>({}))
+  ]);
+  const data=r1&&r1.data, pd=r2&&r2.data;
   let merged = (data && data.data && data.data.employees) ? data.data : null;
-  // ดึงข้อมูลพรีเมี่ยม — ถ้าไม่มีสิทธิ์ RLS จะคืนค่าว่าง (ไม่ error)
-  try{
-    const {data:pd}=await sb.from('premium_stores').select('data').eq('user_id',uid).maybeSingle();
-    if(merged && pd && pd.data) Object.assign(merged, pd.data);
-  }catch(e){ /* ไม่มีสิทธิ์ = ไม่มีข้อมูลพรีเมี่ยม ใช้ค่าเริ่มต้นแทน */ }
+  if(merged && pd && pd.data) Object.assign(merged, pd.data);
   if(merged){ localStorage.setItem(LS_KEY, JSON.stringify(merged)); }
   else { localStorage.removeItem(LS_KEY); }   // ไม่มีข้อมูลบนคลาวด์ → เริ่มว่าง (กันข้อมูลค้างของคนก่อน)
   DB=load();
@@ -5391,13 +5404,17 @@ async function cloudLoad(uid){
    ระบบหลายบริษัท — สำนักงานบัญชี
    ============================================================ */
 async function fetchCompanies(){
-  const {data,error}=await sb.from('firm_companies')
-    .select('id,name,tax_id,branch,note,archived,created_at')
-    .eq('owner_id', TARGET_UID)
-    .order('archived',{ascending:true}).order('created_at',{ascending:true});
+  const [r,rq]=await Promise.all([
+    sb.from('firm_companies')
+      .select('id,name,tax_id,branch,note,archived,created_at')
+      .eq('owner_id', TARGET_UID)
+      .order('archived',{ascending:true}).order('created_at',{ascending:true}),
+    Promise.resolve(sb.rpc('my_company_quota')).catch(()=>({}))
+  ]);
+  if(rq&&rq.data&&rq.data[0]) CO_QUOTA=rq.data[0].max_companies;
+  const {data,error}=r;
   if(error){ COMPANIES=[]; return error; }
   COMPANIES=data||[];
-  try{ const {data:q}=await sb.rpc('my_company_quota'); if(q&&q[0]) CO_QUOTA=q[0].max_companies; }catch(e){}
   return null;
 }
 /* เปิดบริษัทหนึ่งขึ้นมาทำงาน — เปลี่ยนทั้งคีย์ในเครื่องและข้อมูลบนคลาวด์ */
@@ -5526,18 +5543,21 @@ async function afterAuth(user){
   $('#authGate').style.display='none';
   MY_UID=user.id; MY_EMAIL=user.email; TARGET_UID=MY_UID; TARGET_EMAIL=MY_EMAIL;
   const f=$('#userFoot'); if(f) f._email=user.email;
-  try{ await sb.from('profiles').upsert({id:user.id, email:user.email}); }catch(e){}   // ให้แอดมินเห็นอีเมล
-  try{ const {data}=await sb.rpc('is_admin'); IS_ADMIN=!!data; }catch(e){ IS_ADMIN=false; }
+  sb.from('profiles').upsert({id:user.id, email:user.email}).then(()=>{},()=>{});   // ให้แอดมินเห็นอีเมล (ไม่ต้องรอ)
+  // ยิงพร้อมกัน ไม่ต่อคิวทีละตัว — เดิมรอทีละคำขอทำให้หน้าว่างนาน
+  const q=p=>Promise.resolve(p).then(r=>r,()=>({}));
+  const [rAdmin,rAccess,rQuota]=await Promise.all([q(sb.rpc('is_admin')), q(sb.rpc('my_access')), q(sb.rpc('my_emp_quota'))]);
+  IS_ADMIN=!!(rAdmin&&rAdmin.data);
   // เช็คสิทธิ์ใช้งาน (ทดลอง 30 วัน / แพ็กเกจ)
-  try{ const {data}=await sb.rpc('my_access');
-       if(data&&data[0]){ ACCESS=data[0]; EDITION=ACCESS.edition||'single'; } }catch(e){}
+  if(rAccess&&rAccess.data&&rAccess.data[0]){ ACCESS=rAccess.data[0]; EDITION=ACCESS.edition||'single'; }
+  if(rQuota&&rQuota.data&&rQuota.data[0]) EMP_QUOTA=rQuota.data[0].max_employees;
   // เพิ่งสมัครและเลือก "สำนักงานบัญชี" ไว้ → ตั้งให้แล้วอ่านสิทธิ์ใหม่
   if(await applyPendingEdition(MY_UID)){
     try{ const {data}=await sb.rpc('my_access');
          if(data&&data[0]){ ACCESS=data[0]; EDITION=ACCESS.edition||'single'; } }catch(e){}
+    try{ const {data}=await sb.rpc('my_emp_quota'); if(data&&data[0]) EMP_QUOTA=data[0].max_employees; }catch(e){}
   }
   // เพดานจำนวนพนักงานตามแพ็กเกจ (ฐานข้อมูลเป็นคนบังคับจริง อันนี้แค่เอามาแสดง/กันไว้ก่อน)
-  try{ const {data}=await sb.rpc('my_emp_quota'); if(data&&data[0]) EMP_QUOTA=data[0].max_employees; }catch(e){}
   if(ACCESS.status==='expired'){ showExpired(); return; }
 
   if(isFirm()){
