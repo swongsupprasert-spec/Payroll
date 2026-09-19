@@ -4,57 +4,80 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>แพ็กเกจและราคา — eSimPayroll</title>
-<meta name="description" content="ราคาแพ็กเกจ eSimPayroll คิดตามจำนวนพนักงาน เริ่มต้น 590 บาท/เดือน สำหรับ 1-5 คน จ่ายรายปีประหยัด 2 เดือน ต่ออายุออนไลน์ได้ทันที">
+<meta name="description" content="ราคาแพ็กเกจ eSimPayroll คิดตามจำนวนพนักงาน เริ่มต้น 590 บาท/เดือน สำหรับ 1-10 คน จ่ายรายปีประหยัด 2 เดือน ต่ออายุออนไลน์ได้ทันที">
 <meta name="keywords" content="ราคาโปรแกรมเงินเดือน,แพ็กเกจ payroll,ค่าบริการโปรแกรม HR,โปรแกรมเงินเดือนรายเดือน">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0e3a5c">
-<link rel="canonical" href="https://payroll-mtd.vercel.app/pricing">
+<link rel="canonical" href="https://esimpayroll.com/pricing">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="eSimPayroll">
 <meta property="og:locale" content="th_TH">
-<meta property="og:url" content="https://payroll-mtd.vercel.app/pricing">
+<meta property="og:url" content="https://esimpayroll.com/pricing">
 <meta property="og:title" content="แพ็กเกจและราคา — eSimPayroll">
 <meta property="og:description" content="คิดราคาตามจำนวนพนักงาน เริ่มต้น 590 บาท/เดือน จ่ายรายปีประหยัด 2 เดือน">
-<meta property="og:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop">
+<meta property="og:image" content="https://esimpayroll.com/media/covers/social-security-contribution-thailand-hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='12' fill='%230e3a5c'/><path d='M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14' fill='none' stroke='%236ee7b7' stroke-width='3.6' stroke-linecap='round'/></svg>">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  :root{--brand:#0e3a5c;--brand-d:#092942;--ink:#0f2438;--muted:#5b7186;--bg:#f6faf8;--accent:#10b981;--accent-l:#6ee7b7;--accent-bg:#eaf6f1}
+  :root{--brand:#0e3a5c;--brand-d:#092942;--ink:#0b1b2b;--muted:#5b7186;--bg:#f7faf9;--accent:#10b981;--accent-l:#6ee7b7;--accent-bg:#eaf6f1;
+    --line:#e8eef4;--r-lg:26px;--r-md:20px;--r-sm:14px;
+    --sh-sm:0 2px 8px rgba(11,27,43,.05);--sh-md:0 12px 32px rgba(11,27,43,.08);--sh-lg:0 28px 70px rgba(11,27,43,.14);
+    --grad:linear-gradient(120deg,#10b981,#0f766e 45%,#17557f)}
   html{scroll-behavior:smooth}
   body{font-family:"Sarabun","Segoe UI",Tahoma,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.65}
   a{text-decoration:none;color:inherit}
   .wrap{max-width:1140px;margin:0 auto;padding:0 22px}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:11px;font-weight:700;font-size:15px;cursor:pointer;border:0;transition:.18s;font-family:inherit}
-  .btn.primary{background:var(--brand);color:#fff;box-shadow:0 8px 24px rgba(14,58,92,.3)}
-  .btn.primary:hover{background:var(--brand-d);transform:translateY(-2px)}
-  .btn.ghost{background:#fff;color:var(--ink);border:1.5px solid #e2e8f0}
-  .btn.ghost:hover{border-color:var(--brand);color:var(--brand)}
-  .btn.green{background:linear-gradient(135deg,#10b981,#0f766e);color:#fff;box-shadow:0 8px 24px rgba(16,185,129,.35)}
-  .btn.green:hover{transform:translateY(-2px)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 24px;border-radius:100px;font-weight:700;font-size:15px;cursor:pointer;border:0;font-family:inherit;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,background .2s}
+  .btn.primary{background:var(--ink);color:#fff;box-shadow:0 10px 28px rgba(11,27,43,.24)}
+  .btn.primary:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(11,27,43,.3)}
+  .btn.ghost{background:rgba(255,255,255,.7);color:var(--ink);border:1.5px solid var(--line);backdrop-filter:blur(8px)}
+  .btn.ghost:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-2px)}
+  .btn.green{background:var(--grad);color:#fff;box-shadow:0 6px 14px rgba(11,27,43,.16)}
+  .btn.line{background:#06C755;color:#fff;box-shadow:0 12px 32px rgba(6,199,85,.35)}
+  .btn.line:hover{background:#05a648;transform:translateY(-3px)}
+  .btn.green:hover{transform:translateY(-3px);box-shadow:0 10px 21px rgba(11,27,43,.16)}
 
-  header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid #eef2f7}
+  header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(232,238,244,.9)}
   nav{display:flex;align-items:center;gap:14px;height:66px;max-width:1140px;margin:0 auto;padding:0 22px}
   .logo{font-size:21px;font-weight:800;display:flex;align-items:center;gap:8px}
   nav .sp{margin-left:auto;display:flex;gap:6px;align-items:center}
-  nav a.link{color:var(--muted);font-weight:600;padding:8px 12px;font-size:15px}
-  nav a.link:hover{color:var(--ink)}
-  nav a.link.active{color:var(--brand)}
+  nav a.link{color:var(--muted);font-weight:600;padding:9px 14px;font-size:15px;border-radius:100px;transition:.18s}
+  nav a.link:hover{color:var(--ink);background:rgba(11,27,43,.05)}
+  nav a.link.active{color:var(--brand);background:var(--accent-bg)}
 
-  .pagehead{background:radial-gradient(1000px 400px at 70% -20%,#d8f3e6,transparent),linear-gradient(180deg,#fff,#f6faf8);padding:52px 0 30px;text-align:center}
-  .badge{display:inline-block;background:var(--accent-bg);color:var(--brand-d);font-weight:700;font-size:13px;padding:6px 14px;border-radius:20px;margin-bottom:14px}
+  .pagehead{position:relative;overflow:hidden;background:
+    radial-gradient(720px 340px at 82% -10%,rgba(110,231,183,.4),transparent),
+    radial-gradient(600px 300px at 8% 4%,rgba(125,211,252,.28),transparent),
+    linear-gradient(180deg,#fff,var(--bg));padding:52px 0 30px;text-align:center}
+  .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.85);border:1px solid var(--line);color:var(--brand-d);font-weight:700;font-size:13px;padding:8px 16px;border-radius:100px;box-shadow:var(--sh-sm);margin-bottom:14px}
   .pagehead h1{font-size:40px;letter-spacing:-.6px;margin-bottom:10px}
   .pagehead p{color:var(--muted);font-size:18px;max-width:620px;margin:0 auto}
 
   /* ตัวเลือกรอบบิล */
-  .cycle{display:inline-flex;background:#eef4f1;border-radius:12px;padding:4px;margin:22px auto 6px;position:relative}
-  .cycle button{background:none;border:0;padding:9px 22px;border-radius:9px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;font-family:inherit;transition:.18s}
-  .cycle button.on{background:#fff;color:var(--brand);box-shadow:0 3px 10px rgba(14,58,92,.12)}
-  .save-tag{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;margin-left:6px}
+  /* กลุ่มปุ่มเลือก — มีป้ายกำกับว่ากำลังเลือกอะไร */
+  .pickrow{display:flex;flex-direction:column;align-items:center;gap:7px;margin:20px auto 0}
+  .picklab{font-size:12.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
+  .cycle{display:inline-flex;background:#e8eef4;border:1px solid #dbe5ee;border-radius:100px;padding:5px;position:relative;gap:4px;max-width:100%;flex-wrap:wrap;justify-content:center}
+  .cycle button{background:none;border:0;padding:11px 24px;border-radius:100px;font-weight:700;font-size:15px;
+    color:#64748b;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:7px;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1),background .2s,color .2s,box-shadow .2s}
+  .cycle button:hover:not(.on){background:rgba(255,255,255,.7);color:var(--ink)}
+  .cycle button.on{background:linear-gradient(135deg,#0e3a5c,#0f766e);color:#fff;
+    box-shadow:0 8px 20px rgba(14,58,92,.28);transform:translateY(-1px)}
+  .cycle button.on::before{content:"✓";font-weight:900;font-size:13px;opacity:.95}
+  .save-tag{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:800;
+    padding:3px 9px;border-radius:100px;white-space:nowrap}
+  .cycle button.on .save-tag{background:rgba(255,255,255,.22)}
+  @media(max-width:560px){
+    .cycle{width:100%}
+    .cycle button{flex:1;justify-content:center;padding:10px 12px;font-size:14px}
+    .save-tag{font-size:10px;padding:2px 7px}
+  }
 
   /* สไลเดอร์เลือกจำนวนคน */
-  .calc{background:#fff;border:1px solid #e6efea;border-radius:22px;padding:28px 30px;margin:26px auto 0;
-    box-shadow:0 20px 50px rgba(14,58,92,.10);max-width:820px}
+  .calc{background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.8);border-radius:var(--r-lg);
+    padding:30px 32px;margin:26px auto 0;box-shadow:var(--sh-lg);max-width:820px}
   .calc-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
   .calc-top .lbl{font-weight:700;font-size:16px}
   .cnt-box{margin-left:auto;display:flex;align-items:center;gap:8px}
@@ -66,8 +89,8 @@
     background:#fff;border:4px solid var(--accent);cursor:pointer;box-shadow:0 3px 10px rgba(14,58,92,.28)}
   input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--accent);cursor:pointer}
   .ticks{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:18px}
-  .result{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:linear-gradient(135deg,#0e3a5c,#0f766e);
-    border-radius:16px;padding:20px 24px;color:#fff}
+  .result{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:linear-gradient(140deg,#0b1b2b,#0e3a5c 55%,#0f766e);
+    border-radius:var(--r-md);padding:22px 26px;color:#fff;box-shadow:var(--sh-md)}
   .result .r-l{font-size:13px;opacity:.85}
   .result .r-pkg{font-size:18px;font-weight:800}
   .result .r-price{margin-left:auto;text-align:right}
@@ -77,12 +100,40 @@
 
   /* การ์ดแพ็กเกจ */
   section{padding:52px 0}
-  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .plan{background:#fff;border:1.5px solid #e6efea;border-radius:18px;padding:24px 22px;position:relative;transition:.2s}
-  .plan:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(14,58,92,.14)}
-  .plan.active{border-color:var(--accent);box-shadow:0 18px 44px rgba(16,185,129,.22)}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start;padding-top:14px}
+  /* ---- แถบสลับรายเดือน/รายปี เหนือการ์ด ---- */
+  .cycrow{display:flex;gap:8px;justify-content:center;margin:0 0 26px}
+  .cycrow button{font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--line);
+    background:#fff;color:var(--muted);border-radius:100px;padding:10px 22px;transition:.18s;display:inline-flex;gap:8px;align-items:center}
+  .cycrow button:hover{color:var(--ink);border-color:#cbd5e1}
+  .cycrow button.on{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 4px 10px rgba(11,27,43,.16)}
+  .cycrow .sv{background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:100px}
+  /* ---- รายการติ๊กในการ์ด ---- */
+  .p-feat{list-style:none;margin:0 0 18px;padding:14px 0 0;border-top:1px solid var(--line);
+    display:grid;gap:7px;font-size:13.5px;line-height:1.55;color:var(--muted);text-align:left}
+  .p-feat li{display:flex;gap:8px;align-items:flex-start}
+  .p-feat .ck{flex-shrink:0;width:17px;height:17px;border-radius:50%;background:#d1fae5;color:#059669;
+    font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  /* ---- โทนการ์ดตามแบบ ---- */
+  .plan.active{border-color:transparent;background:linear-gradient(160deg,#12456e,#0e3a5c 45%,#092942);
+    box-shadow:0 22px 52px rgba(9,41,66,.4)}
+  .plan.active .p-range{color:#6ee7b7}
+  .plan.active .p-sub,.plan.active .p-per{color:#b9cddb}
+  .plan.active .p-price,.plan.active .p-price small{color:#fff}
+  .plan.active .p-feat{border-top-color:rgba(255,255,255,.22)}
+  .plan.active .p-feat li{color:#cfe0eb}
+  .plan.active .p-feat .ck{background:rgba(110,231,183,.2);color:#6ee7b7}
+  .plan.active .hot{background:var(--grad);color:#fff}
+  .plan.active .btn{background:var(--grad);color:#fff;border:0;
+    box-shadow:0 5px 12px rgba(11,27,43,.16)}
+  .plan.active .btn:hover{filter:brightness(1.06)}
+  .plan{background:#fff;border:1.5px solid var(--line);border-radius:var(--r-md);padding:26px 24px;position:relative;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s}
+  .plan:hover{transform:translateY(-6px);box-shadow:var(--sh-lg)}
+  .plan.active{border-color:var(--accent);box-shadow:0 9px 20px rgba(11,27,43,.16)}
+  html[lang="en"] .plan.active::before{content:"✓ Matches your headcount"}
   .plan.active::before{content:"✓ ตรงกับจำนวนพนักงานของคุณ";position:absolute;top:-12px;left:50%;transform:translateX(-50%);
-    background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;white-space:nowrap}
+    background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;white-space:nowrap;box-shadow:0 2px 5px rgba(11,27,43,.16)}
   .plan .p-range{font-size:15px;font-weight:800;color:var(--brand)}
   .plan .p-sub{color:var(--muted);font-size:13px;margin-bottom:12px}
   .plan .p-price{font-size:34px;font-weight:800;letter-spacing:-1px;color:var(--ink)}
@@ -104,7 +155,8 @@
   .sec-head p{color:var(--muted)}
 
   .faq{max-width:820px;margin:0 auto}
-  .faq details{background:#fff;border:1px solid #e6efea;border-radius:13px;padding:15px 18px;margin-bottom:10px}
+  .faq details{background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 19px;margin-bottom:10px;transition:box-shadow .2s}
+  .faq details[open]{box-shadow:var(--sh-md)}
   .faq summary{font-weight:700;cursor:pointer;list-style:none}
   .faq summary::-webkit-details-marker{display:none}
   .faq summary::before{content:"＋ ";color:var(--accent);font-weight:800}
@@ -135,7 +187,7 @@
   .bt b{display:block;font-size:14.5px;margin-top:3px}
   .bt small{display:block;color:var(--muted);font-size:11.5px;margin-top:1px}
   .bt:hover{border-color:#bcd3c8}
-  .bt.on{border-color:var(--accent);background:var(--accent-bg);box-shadow:0 6px 18px rgba(16,185,129,.18)}
+  .bt.on{border-color:var(--accent);background:var(--accent-bg);box-shadow:0 3px 8px rgba(11,27,43,.16)}
   .bt.on b{color:var(--brand)}
   .bt.on::after{content:"✓";position:absolute;top:6px;right:9px;color:var(--accent);font-weight:800;font-size:13px}
 
@@ -147,8 +199,6 @@
   .pay-tabs .pt.on{background:#fff;color:var(--brand);box-shadow:0 3px 9px rgba(14,58,92,.12)}
   .paybox b{color:var(--brand)}
   .msg{text-align:center;font-size:14px;margin-top:10px;min-height:18px}
-
-  footer{padding:34px 0;border-top:1px solid #eef2f7;color:var(--muted);font-size:14px;text-align:center}
   @media(max-width:900px){.plans{grid-template-columns:1fr 1fr}.incl ul{grid-template-columns:1fr 1fr}}
   @media(max-width:640px){
     nav{height:auto;padding:10px 0;flex-wrap:wrap;gap:6px}
@@ -162,24 +212,90 @@
     .plans,.incl ul{grid-template-columns:1fr}
     section{padding:34px 0}.sec-head h2{font-size:22px}
   }
+
+  /* ---- footer ---- */
+  footer{border-top:1px solid var(--line);background:#fff;padding:44px 0 28px;color:var(--muted);font-size:14.5px}
+  .ft-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px;align-items:start}
+  .ft-brand{font-size:19px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .ft-tag{max-width:290px;line-height:1.65}
+  .ft-h{font-size:13px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.6px;margin-bottom:11px}
+  .ft-list{list-style:none;display:grid;gap:8px}
+  .ft-list a:hover{color:var(--brand);text-decoration:underline}
+  .ft-line{display:flex;gap:13px;align-items:flex-start;flex-wrap:wrap}  /* แคบแล้วให้ตกลงบรรทัดใหม่ ไม่บีบข้อความ */
+  .ft-qr{width:88px;height:88px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;padding:4px;flex-shrink:0}
+  .ft-lineid{display:inline-flex;align-items:center;gap:6px;background:#06C755;color:#fff;font-weight:800;
+    font-size:14px;padding:7px 14px;border-radius:100px;margin-bottom:7px}
+  .ft-lineid:hover{background:#05a648}
+  .ft-mail{color:var(--brand);font-weight:700;white-space:nowrap}   /* ห้ามตัดกลางอีเมล */
+  .ft-mail:hover{text-decoration:underline}
+  .ft-bot{border-top:1px solid #e2e8f0;margin-top:28px;padding-top:18px;display:flex;gap:12px;
+    flex-wrap:wrap;align-items:center;justify-content:space-between;font-size:13.5px}
+  @media(max-width:760px){
+    .ft-grid{grid-template-columns:1fr;gap:26px}
+    .ft-tag{max-width:none}
+    .ft-bot{justify-content:flex-start}
+  }
 </style>
+<style>
+/* ---------- ท้ายเว็บพื้นเข้ม ---------- */
+footer{background:#0b1b2b !important;border-top:0 !important;color:#a9c4d4 !important}
+footer .ft-brand,footer .ft-brand span{color:#fff !important}
+footer .ft-h{color:#6ee7b7 !important}
+footer .ft-list a:hover{color:#6ee7b7 !important}
+footer .ft-bot{border-top:1px solid rgba(255,255,255,.14) !important;color:#8fb0c4}
+footer .ft-mail{color:#6ee7b7 !important}
+/* ---------- ไอคอนโซเชียล ---------- */
+.ft-social{display:flex;gap:10px;margin-top:15px}
+.soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#c2d8e4;
+  transition:transform .2s,color .2s,background .2s,border-color .2s}
+.soc svg{width:19px;height:19px}
+.soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+.soc.tiktok:hover{background:#000}
+.soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+.soc.fb:hover{background:#1877F2}
+.soc.yt:hover{background:#FF0000}
+.soc.line:hover{background:#06C755}
+.soc:focus-visible{outline:2px solid #6ee7b7;outline-offset:2px}
+</style>
+<style>.pickrow[hidden]{display:none !important}</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Product","name":"eSimPayroll","description":"โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุน ออกสลิป 50 ทวิ ภ.ง.ด.1 และ สปส.1-10","brand":{"@type":"Brand","name":"eSimPayroll"},"offers":{"@type":"AggregateOffer","priceCurrency":"THB","lowPrice":"590","highPrice":"9900","offerCount":"8","availability":"https://schema.org/InStock","url":"https://esimpayroll.com/pricing"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"หน้าแรก","item":"https://esimpayroll.com/"},{"@type":"ListItem","position":2,"name":"แพ็กเกจและราคา","item":"https://esimpayroll.com/pricing"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-05JJT2VDRV"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js",new Date());
+  gtag("config","G-05JJT2VDRV",{anonymize_ip:true});
+</script>
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png?v=2">
+<link rel="icon" type="image/png" sizes="144x144" href="/brand/favicon-144.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
+<link rel="shortcut icon" href="/brand/favicon-48.png?v=2">
+<link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 </head>
 <body>
 <header>
   <nav>
-    <a href="index.html" class="logo">
+    <a href="/" class="logo">
       <svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true">
         <defs><linearGradient id="lgP" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs>
         <rect width="44" height="44" rx="12" fill="url(#lgP)"/>
         <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
     <div class="sp">
-      <a href="index.html#features" class="link" data-en="Features">ฟีเจอร์</a>
-      <a href="pricing.html" class="link active" data-en="Pricing">ราคา</a>
-      <a href="articles.html" class="link" data-en="Articles">บทความ</a>
-      <a href="about.html" class="link" data-en="About">เกี่ยวกับ</a>
+      <a href="/features" class="link" data-en="Features">ฟีเจอร์</a>
+      <a href="/pricing" class="link active" data-en="Pricing">ราคา</a>
+      <a href="/articles" class="link" data-en="Articles">บทความ</a>
+      <a href="/tax-calculator" class="link" data-en="Free tax calculator">คำนวณภาษีฟรี</a>
+      <a href="/about" class="link" data-en="About">เกี่ยวกับ</a>
       <button id="langBtn" class="btn ghost" style="padding:8px 12px;font-size:14px;margin-left:4px">🌐 EN</button>
-        <a href="app.html#signup" class="btn primary" style="padding:9px 18px" data-en="30-day free trial">ทดลองฟรี 30 วัน</a>
+        <a href="/app#signup" class="btn primary" style="padding:9px 18px" data-en="30-day free trial">ทดลองฟรี 30 วัน</a>
     </div>
   </nav>
 </header>
@@ -188,24 +304,29 @@
   <div class="wrap">
     <span class="badge" data-en="💎 Plans &amp; pricing">💎 แพ็กเกจและราคา</span>
     <h1 data-en="Pay by headcount. No hidden fees.">จ่ายตามจำนวนพนักงาน ไม่มีค่าซ่อนเร้น</h1>
-    <p data-en="Slide below to see the price that fits your business — all features included, unlimited documents.">เลื่อนแถบด้านล่างเพื่อดูราคาที่ตรงกับธุรกิจคุณ — ใช้ได้ทุกฟีเจอร์ ไม่จำกัดการออกเอกสาร</p>
+    <p data-en="Slide below to see your price. Standard covers full payroll — Premium adds attendance, leave, shifts and OT rules.">เลื่อนแถบด้านล่างเพื่อดูราคา — มาตรฐานทำเงินเดือนครบ ส่วนพรีเมี่ยมเพิ่มระบบลงเวลา ลางาน กะ และ OT</p>
 
-    <div class="cycle">
-      <button id="cyM" class="on" data-c="m" data-en="Monthly">รายเดือน</button>
-      <button id="cyY" data-c="y">รายปี <span class="save-tag">ประหยัด 2 เดือน</span></button>
+
+    <div class="pickrow" hidden>
+      <span class="picklab" data-en="1 · Billing cycle">1 · รอบชำระเงิน</span>
+      <div class="cycle">
+        <button id="cyM" class="on" data-c="m" data-en="Monthly">รายเดือน</button>
+        <button id="cyY" data-c="y" data-en="Annual <span class=&quot;save-tag&quot;>save 2 months</span>">รายปี <span class="save-tag">ประหยัด 2 เดือน</span></button>
+      </div>
     </div>
+
 
     <div class="calc">
       <div class="calc-top">
-        <span class="lbl" data-en="👥 How many employees do you have?">👥 บริษัทคุณมีพนักงานกี่คน?</span>
-        <span class="cnt-box"><input type="number" id="cnt" min="1" max="200" value="8"><span>คน</span></span>
+        <span class="lbl" id="calcLab" data-en="👥 How many employees do you have?">👥 บริษัทคุณมีพนักงานกี่คน?</span>
+        <span class="cnt-box"><input type="number" id="cnt" min="1" max="500" value="15"><span id="cntUnit" data-en="employees">คน</span></span>
       </div>
-      <input type="range" id="rng" min="1" max="100" value="8">
-      <div class="ticks"><span>1</span><span>20</span><span>40</span><span>60</span><span>80</span><span>100+</span></div>
+      <input type="range" id="rng" min="1" max="120" value="15">
+      <div class="ticks" id="ticks"><span>1</span><span>20</span><span>40</span><span>60</span><span>80</span><span>100+</span></div>
       <div class="result">
         <div>
-          <div class="r-l">แพ็กเกจที่เหมาะกับคุณ</div>
-          <div class="r-pkg" id="rPkg">6-10 คน</div>
+          <div class="r-l" data-en="Recommended plan">แพ็กเกจที่เหมาะกับคุณ</div>
+          <div class="r-pkg" id="rPkg">11-30 คน</div>
         </div>
         <div class="r-price">
           <b id="rPrice">990</b> <small id="rUnit">บาท / เดือน</small>
@@ -220,25 +341,56 @@
 
 <section>
   <div class="wrap">
-    <div class="sec-head"><h2 data-en="Full price list">ตารางราคาทั้งหมด</h2><p data-en="Monthly price. Every plan includes all features.">ราคาต่อเดือน ใช้งานได้ทุกฟีเจอร์เท่ากันทุกแพ็กเกจ</p></div>
+    <div class="sec-head"><h2 data-en="Choose the plan that fits your business">เลือกแพ็กเกจที่เหมาะกับธุรกิจคุณ</h2><p data-en="30-day free trial · no credit card needed">ทดลองฟรี 30 วัน · ไม่ต้องใช้บัตรเครดิต</p></div>
+    <div class="pickrow">
+      <span class="picklab" data-en="Who is this for?">คุณใช้งานแบบไหน</span>
+      <div class="cycle">
+        <button id="edS" class="on" data-en="🏢 One company">🏢 บริษัทเดียว</button>
+        <button id="edF" data-en="🏦 Accounting firm <span class=&quot;save-tag&quot; style=&quot;background:#7e22ce&quot;>many companies</span>">🏦 สำนักงานบัญชี <span class="save-tag" style="background:#7e22ce">หลายบริษัท</span></button>
+      </div>
+    </div>
+
+    <div class="pickrow">
+      <span class="picklab" data-en="Plan level">ระดับแพ็กเกจ</span>
+      <div class="cycle">
+        <button id="ptS" class="on" data-en="Standard">มาตรฐาน</button>
+        <button id="ptP" data-en="💎 Premium <span class=&quot;save-tag&quot; style=&quot;background:#8b5cf6&quot;>+attendance / leave / shifts / OT</span>">💎 พรีเมี่ยม <span class="save-tag" style="background:#8b5cf6">+ลงเวลา / ลา / กะ / OT</span></button>
+      </div>
+    </div>
+
+    <div id="ptNote" style="font-size:13.5px;margin:14px auto 0;max-width:600px;padding:10px 16px;
+      background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:100px;
+      color:var(--muted);backdrop-filter:blur(8px)"></div>
+
+    <div class="cycrow" role="group" aria-label="รอบชำระเงิน">
+      <button type="button" id="cyM2" class="on" data-en="Monthly">รายเดือน</button>
+      <button type="button" id="cyY2" data-en="Annual &lt;span class=&quot;sv&quot;&gt;save 17%&lt;/span&gt;">รายปี <span class="sv">ประหยัด 17%</span></button>
+    </div>
     <div class="plans" id="plans"></div>
   </div>
 </section>
 
 <section class="incl">
   <div class="wrap">
-    <div class="sec-head"><h2 data-en="Every plan includes everything">ทุกแพ็กเกจได้ครบเหมือนกัน</h2><p data-en="No feature gating, no per-document charges.">ไม่ล็อกฟีเจอร์ ไม่คิดเพิ่มรายเอกสาร</p></div>
+    <div class="sec-head"><h2 data-en="What each plan includes">แต่ละแพ็กเกจได้อะไรบ้าง</h2><p data-en="Standard covers everything below. Premium adds four more modules.">มาตรฐานได้ครบทุกข้อด้านล่าง · พรีเมี่ยมเพิ่มอีก 4 ระบบ</p></div>
     <ul>
-      <li><span class="ck">✓</span> คำนวณภาษีหัก ณ ที่จ่ายอัตโนมัติ</li>
-      <li><span class="ck">✓</span> ประกันสังคม &amp; กองทุนสำรองเลี้ยงชีพ</li>
-      <li><span class="ck">✓</span> พนักงานรายเดือน และ รายวัน</li>
-      <li><span class="ck">✓</span> สลิปเงินเดือน (พิมพ์/PDF)</li>
-      <li><span class="ck">✓</span> หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)</li>
-      <li><span class="ck">✓</span> แบบ ภ.ง.ด.1 · สปส.1-10 · กท.20ก</li>
-      <li><span class="ck">✓</span> แดชบอร์ดและกราฟสรุป</li>
-      <li><span class="ck">✓</span> นำเข้า/ส่งออก CSV</li>
-      <li><span class="ck">✓</span> ข้อมูลบนคลาวด์ ใช้ได้ทุกอุปกรณ์</li>
+      <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; Automatic withholding tax calculation"><span class="ck">✓</span> คำนวณภาษีหัก ณ ที่จ่ายอัตโนมัติ</li>
+      <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; Social security &amp;amp; provident fund"><span class="ck">✓</span> ประกันสังคม &amp; กองทุนสำรองเลี้ยงชีพ</li>
+      <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; Monthly and daily employees"><span class="ck">✓</span> พนักงานรายเดือน และ รายวัน</li>
+      <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; Payslips (print / PDF)"><span class="ck">✓</span> สลิปเงินเดือน (พิมพ์/PDF)</li>
+      <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; Withholding tax certificate (50 Tawi)"><span class="ck">✓</span> หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)</li>
+      <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; P.N.D.1 · SSO 1-10 · KT.20 Kor"><span class="ck">✓</span> แบบ ภ.ง.ด.1 · สปส.1-10 · กท.20ก</li>
+      <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; Dashboard and summary charts"><span class="ck">✓</span> แดชบอร์ดและกราฟสรุป</li>
+      <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; CSV import and export"><span class="ck">✓</span> นำเข้า/ส่งออก CSV</li>
+      <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; Cloud data, usable on any device"><span class="ck">✓</span> ข้อมูลบนคลาวด์ ใช้ได้ทุกอุปกรณ์</li>
     </ul>
+    <div style="margin-top:22px;background:linear-gradient(140deg,#0b1b2b,#0e3a5c 55%,#0f766e);color:#fff;border-radius:20px;padding:24px 26px;box-shadow:var(--sh-md)"
+      data-en="&lt;b style=&quot;font-size:17px&quot;&gt;💎 Premium adds&lt;/b&gt;&lt;div style=&quot;display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:15px&quot;&gt;&lt;span&gt;📱 Face check-in on mobile&lt;/span&gt;&lt;span&gt;⏰ Time attendance&lt;/span&gt;&lt;span&gt;🌴 Leave management&lt;/span&gt;&lt;span&gt;🔄 Shift management&lt;/span&gt;&lt;span&gt;⚡ OT rules &amp;amp; caps&lt;/span&gt;&lt;/div&gt;">
+      <b style="font-size:17px">💎 แพ็กเกจพรีเมี่ยมได้เพิ่ม</b>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:15px">
+        <span>📱 สแกนใบหน้าลงเวลาผ่านมือถือ</span><span>⏰ ลงเวลาเข้างาน</span><span>🌴 ระบบลางาน</span><span>🔄 ระบบกะการทำงาน</span><span>⚡ กฎ OT &amp; เพดาน OT</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -246,17 +398,71 @@
   <div class="wrap">
     <div class="sec-head"><h2 data-en="Frequently asked questions">คำถามที่พบบ่อย</h2></div>
     <div class="faq">
-      <details open><summary>นับจำนวนพนักงานอย่างไร?</summary><p>นับจากจำนวนพนักงานที่ยังทำงานอยู่ในระบบ (ไม่นับคนที่บันทึกลาออกแล้ว) หากเดือนไหนพนักงานเกินแพ็กเกจ ระบบจะแจ้งให้อัปเกรด</p></details>
-      <details><summary>ถ้าพนักงานเพิ่มระหว่างรอบ ต้องจ่ายเพิ่มไหม?</summary><p>อัปเกรดได้ทุกเมื่อ โดยจ่ายเฉพาะส่วนต่างตามจำนวนวันที่เหลือของรอบบิลปัจจุบัน</p></details>
-      <details><summary>จ่ายรายปีคุ้มกว่าอย่างไร?</summary><p>จ่ายรายปีคิดเพียง 10 เดือน เท่ากับใช้ฟรี 2 เดือน (ประหยัดประมาณ 17%)</p></details>
-      <details><summary>ยกเลิกได้ไหม?</summary><p>ยกเลิกได้ทุกเมื่อ ไม่มีสัญญาผูกมัด ใช้งานได้จนครบรอบบิลที่ชำระไว้ และดาวน์โหลดข้อมูลออกเป็น CSV/JSON ได้เสมอ</p></details>
-      <details><summary>มีพนักงานเกิน 80 คน ทำอย่างไร?</summary><p>ติดต่อขอใบเสนอราคาพิเศษ เรามีแพ็กเกจสำหรับองค์กรขนาดใหญ่พร้อมบริการช่วยตั้งค่าเริ่มต้น</p></details>
+      <details open><summary data-en="How are employees counted?">นับจำนวนพนักงานอย่างไร?</summary><p data-en="We count the employees still active in the system — anyone marked as resigned is excluded. If a month exceeds your plan, the system prompts you to upgrade.">นับจากจำนวนพนักงานที่ยังทำงานอยู่ในระบบ (ไม่นับคนที่บันทึกลาออกแล้ว) หากเดือนไหนพนักงานเกินแพ็กเกจ ระบบจะแจ้งให้อัปเกรด</p></details>
+      <details><summary data-en="Do I pay more if I add employees mid-cycle?">ถ้าพนักงานเพิ่มระหว่างรอบ ต้องจ่ายเพิ่มไหม?</summary><p data-en="You can upgrade at any time and pay only the difference, prorated over the days left in the current billing cycle.">อัปเกรดได้ทุกเมื่อ โดยจ่ายเฉพาะส่วนต่างตามจำนวนวันที่เหลือของรอบบิลปัจจุบัน</p></details>
+      <details><summary data-en="How is annual billing better value?">จ่ายรายปีคุ้มกว่าอย่างไร?</summary><p data-en="Annual billing charges only 10 months — two months free, a saving of about 17%.">จ่ายรายปีคิดเพียง 10 เดือน เท่ากับใช้ฟรี 2 เดือน (ประหยัดประมาณ 17%)</p></details>
+      <details><summary data-en="Can I cancel?">ยกเลิกได้ไหม?</summary><p data-en="Cancel whenever you like — no contract. You keep access until the end of the cycle you paid for, and you can always export your data as CSV.">ยกเลิกได้ทุกเมื่อ ไม่มีสัญญาผูกมัด ใช้งานได้จนครบรอบบิลที่ชำระไว้ และดาวน์โหลดข้อมูลออกเป็น CSV ได้เสมอ</p></details>
+      <details><summary data-en="What if I have more than 100 employees?">มีพนักงานเกิน 100 คน ทำอย่างไร?</summary><p data-en="Contact us for a custom quote. We have enterprise plans that include hands-on setup assistance.">ติดต่อขอใบเสนอราคาพิเศษ เรามีแพ็กเกจสำหรับองค์กรขนาดใหญ่พร้อมบริการช่วยตั้งค่าเริ่มต้น</p></details>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap" data-en="<strong>eSim<span style=&quot;color:var(--brand)&quot;>Payroll</span></strong> · Payroll software for Thai businesses<br>© 2026 · All rights reserved"><strong>eSim<span style="color:var(--brand)">Payroll</span></strong> · จัดการเงินเดือนสำหรับธุรกิจไทย<br>© 2569 · สงวนลิขสิทธิ์</div>
+  <div class="wrap">
+    <div class="ft-grid">
+
+      <div>
+        <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-social">
+          <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
+          <a class="soc fb" href="https://www.facebook.com/people/esimpayroll/61593817897037/" target="_blank" rel="noopener" aria-label="Facebook eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg></a>
+          <a class="soc yt" href="https://www.youtube.com/@esimpayroll" target="_blank" rel="noopener" aria-label="YouTube eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.75-1.77C18.3 5 12 5 12 5s-6.3 0-7.85.43A2.5 2.5 0 0 0 2.4 7.2C2 8.77 2 12 2 12s0 3.23.4 4.8a2.5 2.5 0 0 0 1.75 1.77C5.7 19 12 19 12 19s6.3 0 7.85-.43a2.5 2.5 0 0 0 1.75-1.77C22 15.23 22 12 22 12s0-3.23-.4-4.8zM10 15.02V8.98L15.2 12 10 15.02z"/></svg></a>
+          <a class="soc ig" href="https://www.instagram.com/esimpayroll" target="_blank" rel="noopener" aria-label="Instagram eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="4.6"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+          <a class="soc line" href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener" aria-label="LINE eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.1c-5 0-9 3.3-9 7.4 0 3.6 3.2 6.7 7.5 7.3.3.1.7.2.8.5.1.2.1.6 0 .9l-.1.8c0 .2-.2.9.8.5s5.2-3.1 7.1-5.3c1.3-1.4 1.9-2.9 1.9-4.7 0-4.1-4-7.4-9-7.4zM8.5 13H6.9a.5.5 0 0 1-.5-.5V9.4a.5.5 0 0 1 1 0v2.7h1.1a.5.5 0 0 1 0 1zm1.8-.5a.5.5 0 0 1-1 0V9.4a.5.5 0 0 1 1 0zm4.4 0a.5.5 0 0 1-.9.3l-1.6-2.1v1.8a.5.5 0 0 1-1 0V9.4a.5.5 0 0 1 .9-.3l1.6 2.2V9.4a.5.5 0 0 1 1 0zm2.9-2.1a.5.5 0 0 1 0 1h-1.1v.6h1.1a.5.5 0 0 1 0 1H16a.5.5 0 0 1-.5-.5V9.4a.5.5 0 0 1 .5-.5h1.6a.5.5 0 0 1 0 1h-1.1v.5z"/></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Menu">เมนู</div>
+        <ul class="ft-list">
+          <li><a href="/#features" data-en="Features">ฟีเจอร์</a></li>
+          <li><a href="/pricing" data-en="Pricing">แพ็กเกจและราคา</a></li>
+          <li><a href="/articles" data-en="Articles">บทความ</a></li>
+          <li><a href="/about" data-en="About us">เกี่ยวกับเรา</a></li>
+          <li><a href="/app#signup" data-en="30-day free trial">ทดลองฟรี 30 วัน</a></li>
+          <li><a href="/contact" data-en="Contact us">ติดต่อเรา</a></li>
+          <li><a href="/refund" data-en="Cancellation &amp; refunds">การยกเลิกและคืนเงิน</a></li>
+          <li><a href="/privacy" data-en="Privacy policy">นโยบายความเป็นส่วนตัว</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Contact">ติดต่อเรา</div>
+        <div class="ft-line">
+          <a href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener">
+            <img src="/brand/line-qr-512.png?v=3" alt="LINE @esimpayroll" class="ft-qr" width="88" height="88" loading="lazy">
+          </a>
+          <div>
+            <a href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener" class="ft-lineid" data-en="Add friend">เพิ่มเพื่อน</a>
+            <div style="font-size:12.5px" data-en="Scan the QR or tap the button">สแกน QR หรือกดปุ่มด้านบน</div>
+            <div style="margin-top:9px"><a href="mailto:hello@esimpayroll.com" class="ft-mail">hello@esimpayroll.com</a></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ft-bot">
+      <div data-en="© 2026 eSimPayroll · All rights reserved">© 2569 eSimPayroll · สงวนลิขสิทธิ์</div>
+      <div data-en="Made for Thai businesses 🇹🇭">พัฒนาเพื่อธุรกิจไทย 🇹🇭</div>
+    </div>
+  </div>
 </footer>
 
 <!-- กล่องสั่งซื้อ -->
@@ -267,6 +473,7 @@
   </div>
 </div>
 
+<script src="https://cdn.omise.co/omise.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 <script>
@@ -274,118 +481,345 @@
   const SB_URL='https://sfzzswzyoqshlppsturd.supabase.co';
   const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenpzd3p5b3FzaGxwcHN0dXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4OTE1ODAsImV4cCI6MjEwMDQ2NzU4MH0.5IVEuvp6JM-JZUKGfCEoVgQ_CwiLLsU8tUJxbW85eac';
   let sb=null; try{ sb=window.supabase.createClient(SB_URL,SB_ANON); }catch(e){}
+  let ME=null;   // ผู้ใช้ที่ล็อกอินอยู่ — ระบบจะต่ออายุให้บัญชีนี้
   const $=id=>document.getElementById(id);
   const fmt=n=>n.toLocaleString('th-TH');
 
+  /* ---- คำแปล TH/EN ---- */
+  var TX={
+    ppl:['คน','employees'], baht:['บาท','THB'], over80:['มากกว่า 100 คน','More than 100'],
+    popular:['ยอดนิยม','Popular'], enterprise:['องค์กรขนาดใหญ่','Large organisation'],
+    upTo:['พนักงานสูงสุด','Up to'], contactQuote:['ราคาพิเศษ','Custom pricing'],
+    customPrice:['คิดตามจำนวนพนักงานและระดับแพ็กเกจ','Based on headcount and plan level'],
+    askQuote:['💬 ทัก LINE ขอใบเสนอราคา','💬 Chat on LINE for a quote'],
+    perYear:['ต่อปี','per year'], perMonth:['ต่อเดือน','per month'], avg:['เฉลี่ย','avg'],
+    pickPlan:['เลือกแพ็กเกจนี้','Choose this plan'], payNow:['💳 ชำระเงิน','💳 Pay now'],
+    payRenew:['💳 ชำระเงิน / ต่ออายุ','💳 Pay / Renew'],
+    quoteOnly:['ขอใบเสนอราคา','Quote on request'],
+    coUnit:['บริษัท','companies'],
+    overCo:['มากกว่า 30 บริษัท','More than 30'],
+    overCoNote:['ดูแลเกิน 30 บริษัท — ทัก LINE @esimpayroll รับข้อเสนอสำหรับสำนักงานบัญชีขนาดใหญ่','Over 30 companies — chat with us on LINE @esimpayroll'],
+    perCo:['ต่อบริษัท/เดือน','per company / mo'],
+    askPpl:['👥 บริษัทคุณมีพนักงานกี่คน?','👥 How many employees do you have?'],
+    askCo:['🏦 คุณดูแลลูกค้ากี่บริษัท?','🏦 How many client companies do you handle?'],
+    firmNote:['สำหรับสำนักงานบัญชี — เพิ่มได้หลายบริษัท พนักงานไม่จำกัดจำนวน (ไม่มีระบบลงเวลาและลางาน)','For accounting firms — multiple client companies, unlimited employees (no attendance or leave modules)'],
+    firmNoLimit:['พนักงานไม่จำกัดจำนวน','Unlimited employees'],
+    f_tax:['คำนวณเงินเดือน ภาษี อัตโนมัติ','Automatic salary and tax'],
+    f_sso:['ประกันสังคม & กองทุน','Social security & funds'],
+    f_slip:['สลิปเงินเดือน (พิมพ์/PDF)','Payslips (print / PDF)'],
+    f_form:['50 ทวิ · ภ.ง.ด.1 · สปส.1-10','50 Bis · PND.1 · SSO 1-10'],
+    f_cloud:['ข้อมูลบนคลาวด์ ใช้ได้ทุกอุปกรณ์','Cloud data, any device'],
+    f_prem:['💎 สแกนใบหน้า · ลงเวลา · ลางาน · จัดกะ · OT','💎 Face check-in · attendance · leave · shifts · OT'],
+    f_multi:['สลับบริษัทลูกค้าในคลิกเดียว','Switch client companies in one click'],
+    bahtYear:['บาท / ปี','THB / year'], bahtMonth:['บาท / เดือน','THB / month'],
+    over80note:['พนักงานเกิน 100 คน — ทัก LINE @esimpayroll รับข้อเสนอพิเศษสำหรับองค์กร','Over 100 employees — chat with us on LINE @esimpayroll for an enterprise offer'],
+    perHead:['บาท/คน/เดือน','THB/employee/month'],
+    saveYear:['จ่ายรายปีประหยัด','Annual billing saves'],
+    switchYear:['เปลี่ยนเป็นรายปีประหยัด','Switch to annual and save'],
+    /* ระดับแพ็กเกจ */
+    premTag:['พรีเมี่ยม','Premium'],
+    premShort:['รวมสแกนใบหน้า · ลงเวลา · ลางาน · กะ · OT','Incl. face check-in · attendance · leave · shifts · OT'],
+    premNote:['💎 พรีเมี่ยม = ระบบเงินเดือนครบ + สแกนใบหน้าลงเวลาผ่านมือถือ + ลงเวลาเข้างาน + ระบบลางาน + ระบบกะ + กฎ OT','💎 Premium = full payroll + mobile face check-in + time attendance + leave + shifts + OT rules'],
+    stdNote:['มาตรฐาน = ระบบเงินเดือนครบทุกฟีเจอร์ (ไม่รวมระบบลงเวลา/ลา/กะ/OT)','Standard = complete payroll (excludes attendance / leave / shifts / OT)'],
+    stdUpsell:['💎 พรีเมี่ยมเพียง','💎 Premium from'],
+    /* กล่องสั่งซื้อ */
+    orderTitle:['ยืนยันการสั่งซื้อ','Confirm your order'],
+    fPlan:['แพ็กเกจ','Plan'], fCount:['จำนวนพนักงาน','Employees'], fCycle:['รอบชำระ','Billing cycle'],
+    fTotal:['ยอดชำระ','Total'], cyYear:['รายปี (10 เดือน)','Annual (10 months)'], cyMonth:['รายเดือน','Monthly'],
+    fInvoiceTo:['ออกใบเสร็จ / ใบกำกับภาษีในนาม *','Issue receipt / tax invoice to *'],
+    btIndiv:['บุคคลทั่วไป','Individual'], btIndivSub:['ออกใบเสร็จในชื่อบุคคล','Receipt in a personal name'],
+    btJur:['นิติบุคคล','Company'], btJurSub:['บริษัท / ห้างหุ้นส่วน','Company / partnership'],
+    fName:['ชื่อ-นามสกุล *','Full name *'], fNameJur:['ชื่อนิติบุคคล *','Company name *'],
+    phName:['นาย สมชาย ใจดี','John Smith'], phNameJur:['บริษัท ตัวอย่าง จำกัด','Example Co., Ltd.'],
+    fTaxId:['เลขประจำตัวผู้เสียภาษี (13 หลัก) *','Tax ID (13 digits) *'],
+    fBranch:['สำนักงาน','Office'], brHQ:['สำนักงานใหญ่','Head office'], brBr:['สาขา','Branch'],
+    fAddr:['ที่อยู่สำหรับออกใบกำกับภาษี *','Address for tax invoice *'],
+    phAddr:['เลขที่ ถนน แขวง เขต จังหวัด รหัสไปรษณีย์','Street, district, province, postal code'],
+    fEmail:['อีเมล * (ใช้รับใบเสร็จและเปิดใช้งาน)','Email * (for receipt and activation)'],
+    fPhone:['เบอร์โทร','Phone'],
+    tabQR:['📱 พร้อมเพย์ (QR)','📱 PromptPay (QR)'], tabBank:['🏦 โอนเข้าบัญชี','🏦 Bank transfer'],
+    qrAmt:['ยอด','Amount'], qrNote:['(ระบุยอดในคิวอาร์แล้ว)','(amount encoded in the QR)'],
+    dlQR:['⬇️ บันทึกรูป QR','⬇️ Save QR image'],
+    bankName:['ธนาคารกสิกรไทย','Kasikorn Bank'], acctName:['ชื่อบัญชี','Account name'],
+    copy:['📋 คัดลอก','📋 Copy'], copied:['✅ คัดลอกแล้ว','✅ Copied'],
+    /* เลือกช่องทางชำระเงิน */
+    mQr:['📱 พร้อมเพย์ QR','📱 PromptPay QR'],
+    mCard:['💳 บัตรเครดิต/เดบิต','💳 Credit / debit card'],
+    cardNo:['หมายเลขบัตร','Card number'],
+    cardName:['ชื่อบนบัตร','Name on card'],
+    cardExp:['วันหมดอายุ (ดด/ปป)','Expiry (MM/YY)'],
+    cardCvc:['รหัสหลังบัตร','Security code'],
+    cardSafe:['🔒 ข้อมูลบัตรส่งตรงถึง Omise ไม่ผ่านเซิร์ฟเวอร์ของเรา','🔒 Card details go straight to Omise — they never touch our server'],
+    card3ds:['กำลังพาไปยืนยันกับธนาคาร...','Redirecting you to your bank...'],
+    cardBad:['ข้อมูลบัตรไม่ถูกต้อง','Invalid card details'],
+    cardChecking:['กำลังตรวจสอบบัตร...','Checking your card...'],
+    payBackWait:['กำลังตรวจผลการชำระเงิน...','Checking your payment...'],
+    /* ชำระผ่าน Omise (พร้อมเพย์) */
+    payPrep:['กำลังเตรียมการชำระเงิน...','Preparing your payment...'],
+    payTitle:['สแกนจ่ายด้วยพร้อมเพย์','Scan to pay with PromptPay'],
+    payHint:['เปิดแอปธนาคาร สแกน QR แล้วโอนตามยอด — หน้าจอจะเปลี่ยนเองเมื่อจ่ายสำเร็จ','Open your banking app, scan the QR and pay — this screen updates itself once payment clears.'],
+    payWaiting:['⏳ กำลังรอการชำระเงิน...','⏳ Waiting for payment...'],
+    payGotIt:['✅ ได้รับเงินแล้ว กำลังเปิดใช้งาน...','✅ Payment received — activating...'],
+    payTimeout:['หมดเวลารอ — ถ้าโอนแล้วระบบจะเปิดใช้งานให้อัตโนมัติภายในไม่กี่นาที หรือกดตรวจสอบอีกครั้ง','Timed out. If you have paid, activation happens automatically within a few minutes — or check again.'],
+    payCheck:['🔄 ตรวจสอบอีกครั้ง','🔄 Check again'],
+    payAmount:['ยอดที่ต้องชำระ','Amount due'],
+    payFailed:['รายการนี้ถูกยกเลิกหรือหมดอายุแล้ว กรุณาเริ่มใหม่','This payment was cancelled or has expired. Please start again.'],
+    /* แนบสลิป + เปิดใช้งานทันที */
+    slipTitle:['📎 แนบสลิปการโอนเงิน','📎 Attach your transfer slip'],
+    slipHint:['โอนแล้วแนบสลิป ระบบจะ<b>ตรวจกับธนาคารจริง</b>แล้วต่ออายุให้ทันที','Transfer, attach the slip — we <b>verify it with the bank</b> and extend your plan instantly'],
+    slipSafe:['🔐 ตรวจยอด บัญชีปลายทาง และเลขอ้างอิงกับธนาคาร · สลิปหนึ่งใบใช้ได้ครั้งเดียว','🔐 Amount, receiving account and reference are checked with the bank · each slip works once'],
+    transRef:['เลขอ้างอิงธนาคาร','Bank reference'],
+    pickSlip:['เลือกรูปสลิป','Choose slip image'],
+    slipReady:['✅ แนบแล้ว','✅ Attached'],
+    activate:['⚡ เปิดใช้งานทันที','⚡ Activate now'],
+    activating:['กำลังตรวจสลิปกับธนาคาร...','Verifying the slip with the bank...'],
+    eSlip:['กรุณาแนบสลิปการโอนเงินก่อน','Please attach your transfer slip first'],
+    eSlipType:['ต้องเป็นไฟล์รูปภาพ (JPG/PNG)','Must be an image file (JPG/PNG)'],
+    eSlipSize:['ไฟล์ใหญ่เกิน 4 MB','File is larger than 4 MB'],
+    needLogin:['เปิดใช้งานอัตโนมัติได้เมื่อเข้าสู่ระบบแล้ว — ระบบจะต่ออายุให้บัญชีที่ล็อกอินอยู่','Automatic activation requires sign-in — we extend the account you are signed in to'],
+    loginBtn:['เข้าสู่ระบบ / สมัครใช้งาน','Sign in / Sign up'],
+    signedInAs:['จะต่ออายุให้บัญชี','Extending the account'],
+    okActive:['เปิดใช้งานเรียบร้อย','Your account is active'],
+    okActiveBody:['ต่ออายุแพ็กเกจ','Renewed your'],
+    okUntil:['ใช้งานได้ถึง','Active until'],
+    goApp:['🚀 เข้าใช้งานโปรแกรม','🚀 Open the app'],
+    dlReceipt:['🧾 ดาวน์โหลดใบเสร็จ (PDF)','🧾 Download receipt (PDF)'],
+    /* ตรวจสอบ */
+    eName:['กรุณากรอกชื่อและอีเมล','Please enter your name and email'],
+    eEmail:['รูปแบบอีเมลไม่ถูกต้อง','Invalid email format'],
+    eTax:['เลขประจำตัวผู้เสียภาษีต้องมี 13 หลัก','Tax ID must be 13 digits'],
+    eAddr:['กรุณากรอกที่อยู่สำหรับออกใบกำกับภาษี','Please enter the address for the tax invoice'],
+    eConn:['เชื่อมต่อไม่ได้ กรุณาลองใหม่','Connection failed. Please try again'],
+    sending:['กำลังส่ง...','Sending...'], failed:['ส่งไม่สำเร็จ: ','Failed: '],
+    /* สำเร็จ */
+    okTitle:['รับคำสั่งซื้อแล้ว','Order received'], thanks:['ขอบคุณครับ!','Thank you!'],
+    okBody:['เราได้รับคำสั่งซื้อ','We have received your order for'],
+    okAmt:['ยอด','totalling'], okSent:['ทีมงานจะส่งรายละเอียดการชำระเงินไปที่','Our team will send payment details to'],
+    okWithin:['ภายใน 1 วันทำการ','within 1 business day'],
+    docNo:['เลขที่เอกสาร','Document no.'],
+    dlDoc:['🧾 ดาวน์โหลดใบเสร็จ (PDF)','🧾 Download receipt (PDF)'],
+    close:['ปิด','Close'],
+    /* เอกสาร */
+    dTitle:['ใบเสร็จรับเงิน','Receipt'], dNo:['เลขที่','No.'], dDate:['วันที่','Date'],
+    dSeller:['ผู้ให้บริการ','Service provider'], dBuyer:['ผู้ซื้อ','Customer'],
+    dTaxIdLbl:['เลขประจำตัวผู้เสียภาษี','Tax ID'],
+    dItem:['รายการ','Description'], dQty:['จำนวน','Qty'], dCycle:['รอบชำระ','Cycle'], dAmt:['จำนวนเงิน','Amount'],
+    dService:['ค่าบริการระบบเงินเดือน eSimPayroll','eSimPayroll payroll service'], dPlanLbl:['แพ็กเกจ','Plan'],
+    dSum:['รวมเป็นเงิน (บาท)','Total (THB)'], dWords:['จำนวนเงินตัวอักษร','Amount in words'],
+    dPayCh:['ชำระผ่านช่องทาง','Paid via'],
+    dPPay:['พร้อมเพย์ (Omise)','PromptPay (Omise)'], dCard:['บัตรเครดิต/เดบิต (Omise)','Credit/debit card (Omise)'],
+    dPaid:['ชำระเงินเรียบร้อยแล้ว ระบบเปิดใช้งานอัตโนมัติ','Payment received — the account was activated automatically.'],
+    payDown:['ขออภัย ระบบชำระเงินขัดข้องชั่วคราว กรุณาติดต่อทีมงานเพื่อชำระเงิน','Sorry, the payment system is temporarily unavailable. Please contact us to complete your purchase.'],
+    payDownBtn:['💬 ติดต่อทางไลน์','💬 Contact us on LINE'],
+    dPayer:['ผู้ชำระเงิน','Payer'], dReceiver:['ผู้รับเงิน / ผู้มีอำนาจลงนาม','Receiver / Authorised signatory'],
+    dDateLine:['วันที่ ......./......./.......','Date ......./......./.......'],
+    dNote1:['* เอกสารนี้ออกโดยระบบอัตโนมัติเมื่อเปิดใช้งานแพ็กเกจ ใช้เป็นหลักฐานการชำระเงินได้',
+            '* This document is generated automatically when the plan is activated and serves as proof of payment.'],
+    dNote2:['* หากยอดโอนไม่ตรงกับที่ระบุ ทีมงานขอสงวนสิทธิ์ในการติดต่อเพื่อปรับปรุงสิทธิ์การใช้งาน',
+            '* If the transferred amount does not match, we reserve the right to contact you and adjust your access.'],
+    dPrint:['🖨️ พิมพ์ / บันทึกเป็น PDF','🖨️ Print / Save as PDF'],
+    dTagline:['ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย','Online payroll for Thai businesses'],
+    popupBlocked:['เบราว์เซอร์บล็อกป๊อปอัป กรุณาอนุญาตป๊อปอัปแล้วลองอีกครั้ง','Pop-up blocked. Please allow pop-ups and try again.']
+  };
+  function LANG(){ try{ return localStorage.getItem('lang')==='en'?1:0; }catch(e){ return 0; } }
+  function L(k){ var v=TX[k]; return v?v[LANG()]:k; }
+
   /* ---- แพ็กเกจ ---- */
   const TIERS=[
-    {min:1,  max:5,   price:590},
-    {min:6,  max:10,  price:990,  hot:true},
-    {min:11, max:20,  price:1590},
-    {min:21, max:40,  price:2990},
-    {min:41, max:60,  price:4290},
-    {min:61, max:80,  price:5590},
-    {min:81, max:Infinity, price:null}   // ขอใบเสนอราคา
+    {min:1,   max:10,  price:590,  prem:790},
+    {min:11,  max:30,  price:990,  prem:1590, hot:true},
+    {min:31,  max:50,  price:1490, prem:2490},
+    {min:51,  max:80,  price:2490, prem:3490},
+    {min:81,  max:100, price:2990, prem:4490},
+    {min:101, max:Infinity, price:null, prem:null}   // ขอใบเสนอราคา
+  ];
+  /* แพ็กเกจสำนักงานบัญชี — คิดตามจำนวนบริษัทลูกค้า พนักงานไม่จำกัด ไม่มีระดับพรีเมี่ยม */
+  const FIRM_TIERS=[
+    {min:1,  max:10,  price:4900, hot:true},
+    {min:11, max:30,  price:9900},
+    {min:31, max:Infinity, price:null}      // ขอใบเสนอราคา
   ];
   const YEAR_MONTHS=10;                   // จ่ายรายปี = 10 เดือน (ฟรี 2 เดือน)
-  let cycle='m', count=8;
+  let cycle='m', count=15;
+  let ptype='standard';                   // standard | premium
+  /* single = บริษัทเดียว · firm = สำนักงานบัญชี — จำไว้ทั้งใน URL และในเครื่อง */
+  let edition='single';
+  try{
+    const q=new URLSearchParams(location.search).get('for');
+    edition = (q==='firm') ? 'firm' : (q==='single' ? 'single' : (localStorage.getItem('pricing_for')||'single'));
+  }catch(e){}
+  const isFirm=()=>edition==='firm';
 
-  const tierOf=n=>TIERS.find(t=>n>=t.min&&n<=t.max);
-  const label=t=>t.price===null?'มากกว่า 80 คน':`${t.min}-${t.max} คน`;
-  const priceOf=t=>t.price===null?null:(cycle==='y'?t.price*YEAR_MONTHS:t.price);
+  /* ขอใบเสนอราคา = ทัก LINE (ไม่ต้องพึ่งโปรแกรมเมลของลูกค้า) */
+  const OMISE_PUBLIC_KEY='pkey_test_68it1dwj5rlyg99e6xw';
+  const LINE_OA='@esimpayroll';
+  const LINE_URL='https://line.me/R/ti/p/'+LINE_OA;
+  function openQuote(){ const w=window.open(LINE_URL,'_blank','noopener'); if(!w) location.href=LINE_URL; }
+
+  const curTiers=()=>isFirm()?FIRM_TIERS:TIERS;
+  const unitWord=()=>isFirm()?L('coUnit'):L('ppl');
+  const tierOf=n=>curTiers().find(t=>n>=t.min&&n<=t.max);
+  const label=t=>t.price===null
+    ? (isFirm()?L('overCo'):L('over80'))
+    : `${t.min}-${t.max} ${unitWord()}`;
+  const baseOf=t=>isFirm()?t.price:(ptype==='premium'?t.prem:t.price);
+  const priceOf=t=>baseOf(t)==null?null:(cycle==='y'?baseOf(t)*YEAR_MONTHS:baseOf(t));
+  const planName=t=>label(t)+((!isFirm()&&ptype==='premium')?' · '+L('premTag'):'');
 
   /* ---- การ์ดแพ็กเกจ ---- */
+  /* รายการในการ์ด — ตามโหมดและระดับแพ็กเกจ ให้ตรงกับสิ่งที่ได้จริง */
+  function featList(){
+    const base=[L('f_tax'),L('f_sso'),L('f_slip'),L('f_form')];
+    if(isFirm()) return base.concat([L('f_multi'),L('firmNoLimit')]);
+    return base.concat([ptype==='premium' ? L('f_prem') : L('f_cloud')]);
+  }
   function drawPlans(){
     const cur=tierOf(count);
-    $('plans').innerHTML=TIERS.map(t=>{
+    $('plans').innerHTML=curTiers().map(t=>{
       const quote=t.price===null;
       const p=priceOf(t);
       const active=(t===cur)?' active':'';
       return `<div class="plan${quote?' quote':''}${active}">
-        ${t.hot?'<span class="hot">ยอดนิยม</span>':''}
+        ${t.hot?'<span class="hot">'+L('popular')+'</span>':''}
         <div class="p-range">${label(t)}</div>
-        <div class="p-sub">${quote?'องค์กรขนาดใหญ่':'พนักงานสูงสุด '+t.max+' คน'}</div>
+        <div class="p-sub">${quote?L('enterprise'):L('upTo')+' '+t.max+' '+unitWord()}</div>
         ${quote
-          ? `<div class="p-price" style="font-size:22px">ติดต่อขอใบเสนอราคา</div><div class="p-per">ราคาพิเศษตามจำนวนพนักงาน</div>
-             <a class="btn ghost" style="width:100%;background:transparent;color:#fff;border-color:rgba(255,255,255,.5)" href="mailto:support@payroll-mtd.com?subject=ขอใบเสนอราคา eSimPayroll">✉️ ขอใบเสนอราคา</a>`
-          : `<div class="p-price">${fmt(p)} <small>บาท</small></div>
-             <div class="p-per">${cycle==='y'?'ต่อปี (เฉลี่ย '+fmt(t.price)+' บาท/เดือน)':'ต่อเดือน'}</div>
-             <button class="btn ${active?'green':'primary'}" data-buy="${t.min}">${active?'💳 ชำระเงิน':'เลือกแพ็กเกจนี้'}</button>`}
+          ? `<div class="p-price" style="font-size:22px">${L('contactQuote')}</div><div class="p-per">${L('customPrice')}</div>
+             <a class="btn line" style="width:100%"
+                href="${LINE_URL}" target="_blank" rel="noopener">${L('askQuote')}</a>`
+          : `<div class="p-price">${fmt(p)} <small>${L('baht')}</small></div>
+             <div class="p-per">${cycle==='y'?L('perYear')+' ('+L('avg')+' '+fmt(baseOf(t))+' '+L('bahtMonth')+')':L('perMonth')}</div>
+             <div class="p-per" style="margin-top:-10px">${isFirm()
+               ? L('firmNoLimit')
+               : (ptype==='premium' ? '💎 '+L('premShort')
+                                    : L('stdUpsell')+' '+fmt(t.prem)+' '+L('bahtMonth'))}</div>
+             <ul class="p-feat">${featList().map(f=>`<li><span class="ck">✓</span>${f}</li>`).join('')}</ul>
+             <button class="btn ${active?'green':'primary'}" data-buy="${t.min}">${active?L('payNow'):L('pickPlan')}</button>`}
       </div>`;
     }).join('');
     $('plans').querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{
       const t=TIERS.find(x=>x.min==b.dataset.buy);
-      count=Math.max(t.min,Math.min(t.max===Infinity?100:t.max,count));
+      count=Math.max(t.min,Math.min(t.max===Infinity?120:t.max,count));
       if(count<t.min||count>t.max) count=t.min;
-      sync(); openOrder();
+      /* ---------- กลับมาจากหน้ายืนยัน 3-D Secure ของธนาคาร ----------
+     ธนาคารส่งลูกค้ากลับมาที่หน้านี้ · เราเช็คสถานะจากตาราง payments เอง
+     (ไม่เชื่อว่า "กลับมาถึง = จ่ายสำเร็จ" เพราะผู้ใช้พิมพ์ URL เองได้) */
+  async function resume3DS(){
+    let chg=null; try{ chg=sessionStorage.getItem('pendingChg'); }catch(e){}
+    if(!chg || !sb) return;
+    try{ sessionStorage.removeItem('pendingChg'); }catch(e){}
+
+    open3DSWait();
+    let tries=0;
+    const check=async()=>{
+      tries++;
+      try{
+        const {data}=await sb.from('payments')
+          .select('status,paid_until,amount,plan,employees,cycle,ptype,buyer_name,buyer_email,buyer_phone,buyer_type,tax_id,branch,address')
+          .eq('charge_id',chg).maybeSingle();
+        if(data && data.status==='successful' && data.paid_until){
+          count=data.employees||count; cycle=data.cycle==='yearly'?'y':'m'; ptype=data.ptype||ptype; sync();
+          showSuccess({ paidUntil:data.paid_until, transRef:chg,
+            t:tierOf(count), p:Number(data.amount),
+            name:data.buyer_name, email:data.buyer_email, phone:data.buyer_phone,
+            btype:data.buyer_type, taxId:data.tax_id, branch:data.branch, addr:data.address });
+          return;
+        }
+        if(data && ['failed','expired'].includes(data.status)){
+          const s=$('payStat'); if(s){ s.style.color='#dc2626'; s.textContent=L('payFailed'); }
+          return;
+        }
+      }catch(e){}
+      if(tries>=40){                                  // ~2 นาที
+        const s=$('payStat'); if(s){ s.style.color='#b45309'; s.textContent=L('payTimeout'); }
+        return;
+      }
+      setTimeout(check, 3000);
+    };
+    setTimeout(check, 1200);
+  }
+  function open3DSWait(){
+    $('mTitle').textContent=L('payTitle');
+    $('mBody').innerHTML=`<div style="text-align:center;padding:26px 8px">
+      <div style="font-size:44px">⏳</div>
+      <div id="payStat" style="margin-top:12px;font-size:15px;font-weight:700;color:var(--brand)">${L('payBackWait')}</div>
+      <button class="btn ghost" id="payClose" style="width:100%;margin-top:18px">${L('close')}</button>
+    </div>`;
+    const pc=$('payClose'); if(pc) pc.onclick=close;
+    $('bd').classList.add('on');
+  }
+
+  sync();
+  resume3DS(); openOrder();
     });
   }
 
   /* ---- อัปเดตผลลัพธ์ ---- */
   function sync(){
-    count=Math.max(1,Math.min(200,+$('cnt').value||1));
+    const cap=isFirm()?40:120;
+    count=Math.max(1,Math.min(isFirm()?200:500,+$('cnt').value||1));
     $('cnt').value=count;
-    $('rng').value=Math.min(100,count);
-    const pct=(Math.min(100,count)-1)/99*100;
+    $('rng').value=Math.min(cap,count);
+    const pct=(Math.min(cap,count)-1)/(cap-1)*100;
     $('rng').style.background=`linear-gradient(90deg,var(--accent) ${pct}%,#dbe7e1 ${pct}%)`;
     const t=tierOf(count), p=priceOf(t);
-    $('rPkg').textContent=label(t);
+    $('rPkg').textContent=planName(t);
+    const pn=$('ptNote'); if(pn) pn.textContent=isFirm()?L('firmNote'):(ptype==='premium'?L('premNote'):L('stdNote'));
     if(p===null){
-      $('rPrice').textContent='—'; $('rUnit').textContent='ขอใบเสนอราคา';
-      $('rSub').textContent=''; $('rNote').textContent='พนักงานเกิน 80 คน — ติดต่อรับข้อเสนอพิเศษสำหรับองค์กร';
-      $('buyNow').textContent='✉️ ขอใบเสนอราคา';
+      $('rPrice').textContent='—'; $('rUnit').textContent=L('quoteOnly');
+      $('rSub').textContent=''; $('rNote').textContent=isFirm()?L('overCoNote'):L('over80note');
+      $('buyNow').textContent=L('askQuote');
+      $('buyNow').classList.add('line'); $('buyNow').classList.remove('green');
     }else{
       $('rPrice').textContent=fmt(p);
-      $('rUnit').textContent=cycle==='y'?'บาท / ปี':'บาท / เดือน';
-      $('rSub').textContent=cycle==='y'?`เฉลี่ย ${fmt(t.price)} บาท/เดือน`:'';
-      const perHead=Math.round(t.price/count);
-      $('rNote').textContent=`≈ ${fmt(perHead)} บาท/คน/เดือน · ${cycle==='y'?'จ่ายรายปีประหยัด '+fmt(t.price*2)+' บาท':'เปลี่ยนเป็นรายปีประหยัด '+fmt(t.price*2)+' บาท'}`;
-      $('buyNow').textContent='💳 ชำระเงิน / ต่ออายุ';
+      $('rUnit').textContent=cycle==='y'?L('bahtYear'):L('bahtMonth');
+      const mo=baseOf(t);
+      $('rSub').textContent=cycle==='y'?`${L('avg')} ${fmt(mo)} ${L('bahtMonth')}`:'';
+      const perHead=Math.round(mo/count);
+      $('rNote').textContent=isFirm()
+        ? `≈ ${fmt(perHead)} ${L('perCo')} · ${(cycle==='y'?L('saveYear'):L('switchYear'))+' '+fmt(mo*2)+' '+L('baht')}`
+        : (ptype==='premium'?L('premShort')+' · ':'')
+          +`≈ ${fmt(perHead)} ${L('perHead')} · ${(cycle==='y'?L('saveYear'):L('switchYear'))+' '+fmt(mo*2)+' '+L('baht')}`;
+      $('buyNow').textContent=L('payRenew');
+      $('buyNow').classList.remove('line'); $('buyNow').classList.add('green');
     }
     drawPlans();
   }
 
+  /* เปลี่ยนหน้าจอให้เข้ากับโหมดที่เลือก */
+  function applyEdition(){
+    const firm=isFirm();
+    $('edS').classList.toggle('on',!firm);
+    $('edF').classList.toggle('on', firm);
+    // สำนักงานบัญชีไม่มีมาตรฐาน/พรีเมี่ยม เพราะไม่มีระบบลงเวลาและลางาน
+    const lvl=$('ptS').closest('.pickrow'); if(lvl) lvl.style.display=firm?'none':'';
+    $('calcLab').innerHTML = firm ? L('askCo') : L('askPpl');
+    $('cntUnit').textContent = firm ? L('coUnit') : L('ppl');
+    $('rng').max = firm ? 40 : 120;
+    $('cnt').max = firm ? 200 : 500;
+    $('ticks').innerHTML = firm
+      ? '<span>1</span><span>10</span><span>20</span><span>30</span><span>30+</span>'
+      : '<span>1</span><span>20</span><span>40</span><span>60</span><span>80</span><span>100+</span>';
+    if(firm && count>40) count=10;
+    if(!firm && count>120) count=15;
+    $('cnt').value = firm ? Math.min(count,40) : count;
+    try{ localStorage.setItem('pricing_for', edition); }catch(e){}
+    sync();
+  }
+  $('edS').onclick=()=>{ edition='single'; count=15; applyEdition(); };
+  $('edF').onclick=()=>{ edition='firm';   count=10; applyEdition(); };
+
+  applyEdition();                    // ตั้งค่าหน้าจอตามโหมดตอนเปิดหน้า
+
   $('rng').oninput=()=>{ $('cnt').value=$('rng').value; sync(); };
   $('cnt').oninput=sync;
-  $('cyM').onclick=()=>{ cycle='m'; $('cyM').classList.add('on'); $('cyY').classList.remove('on'); sync(); };
-  $('cyY').onclick=()=>{ cycle='y'; $('cyY').classList.add('on'); $('cyM').classList.remove('on'); sync(); };
-
-  /* ---- QR พร้อมเพย์ (มาตรฐาน EMVCo / Thai QR) ---- */
-  const PROMPTPAY='0859735367';
-  function crc16(s){
-    let crc=0xFFFF;
-    for(let i=0;i<s.length;i++){
-      crc^=s.charCodeAt(i)<<8;
-      for(let j=0;j<8;j++) crc=(crc&0x8000)?((crc<<1)^0x1021)&0xFFFF:(crc<<1)&0xFFFF;
-    }
-    return crc.toString(16).toUpperCase().padStart(4,'0');
-  }
-  function ppPayload(mobile, amount){
-    const fl=(id,v)=>id+String(v.length).padStart(2,'0')+v;
-    const num='0066'+String(mobile).replace(/\D/g,'').replace(/^0/,'');
-    const acct=fl('00','A000000677010111')+fl('01',num);
-    let p=fl('00','01')+fl('01',amount?'12':'11')+fl('29',acct)+fl('58','TH')+fl('53','764');
-    if(amount) p+=fl('54',Number(amount).toFixed(2));
-    p+='6304';
-    return p+crc16(p);
-  }
-  function drawPP(amount){
-    const cv=$('ppCanvas'); if(!cv) return;
-    const payload=ppPayload(PROMPTPAY, amount);
-    try{
-      if(!window.QRious) throw new Error('no lib');
-      // ไม่กำหนด padding — ปล่อยให้ QRious คำนวณ offset จัดกลางเอง
-      new QRious({element:cv, value:payload, size:200, level:'M',
-        foreground:'#0e3a5c', background:'#ffffff'});
-    }catch(e){ qrFallback(cv); }
-  }
-  function qrFallback(cv){
-    const c=cv.getContext('2d');
-    c.fillStyle='#f1f5f9'; c.fillRect(0,0,cv.width,cv.height);
-    c.fillStyle='#5b7186'; c.font='13px Sarabun,sans-serif'; c.textAlign='center';
-    c.fillText('สร้าง QR ไม่สำเร็จ', cv.width/2, cv.height/2-8);
-    c.fillText('กรุณาใช้แท็บ "โอนเข้าบัญชี"', cv.width/2, cv.height/2+12);
-  }
+  function cyc2(){ const y=cycle==='y'; const m2=$('cyM2'), y2=$('cyY2');
+    if(m2){ m2.classList.toggle('on',!y); y2.classList.toggle('on',y); } }
+  $('cyM').onclick=()=>{ cycle='m'; $('cyM').classList.add('on'); $('cyY').classList.remove('on'); cyc2(); sync(); };
+  $('cyY').onclick=()=>{ cycle='y'; $('cyY').classList.add('on'); $('cyM').classList.remove('on'); cyc2(); sync(); };
+  if($('cyM2')){ $('cyM2').onclick=()=>$('cyM').onclick(); $('cyY2').onclick=()=>$('cyY').onclick(); cyc2(); }
+  $('ptS').onclick=()=>{ ptype='standard'; $('ptS').classList.add('on'); $('ptP').classList.remove('on'); sync(); };
+  $('ptP').onclick=()=>{ ptype='premium';  $('ptP').classList.add('on'); $('ptS').classList.remove('on'); sync(); };
 
   /* ---- อ่านจำนวนเงินเป็นตัวอักษรไทย ---- */
   function bahtText(n){
@@ -416,9 +850,9 @@
   function openDoc(){
     const o=LAST_DOC; if(!o) return;
     const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-    const dt=o.date, dstr=`${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()+543}`;
+    const dt=o.date, dstr=`${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()+(LANG()?0:543)}`;
     const jur=o.btype==='juristic';
-    const html=`<!doctype html><html lang="th"><head><meta charset="utf-8">
+    const html=`<!doctype html><html lang="${LANG()?'en':'th'}"><head><meta charset="utf-8">
 <title>${o.docNo}</title>
 <style>
  *{box-sizing:border-box;margin:0;padding:0}
@@ -442,59 +876,53 @@
  .noprint{text-align:center;margin-bottom:14px}
  .noprint button{padding:10px 22px;border:0;border-radius:9px;background:#0e3a5c;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
 </style></head><body>
-<div class="noprint"><button onclick="window.print()">🖨️ พิมพ์ / บันทึกเป็น PDF</button></div>
+<div class="noprint"><button onclick="window.print()">${L('dPrint')}</button></div>
 <div class="hd">
   <div><div class="bn">eSim<span>Payroll</span></div>
-    <div style="font-size:12px;color:#5b7186">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย<br>support@payroll-mtd.com</div></div>
-  <div class="r"><h1>ใบแจ้งชำระเงิน</h1>
+    <div style="font-size:12px;color:#5b7186">${L('dTagline')}<br>hello@esimpayroll.com</div></div>
+  <div class="r"><h1>${L('dTitle')}</h1>
     <div style="font-size:11.5px;color:#5b7186">Payment Notice</div>
-    <div style="margin-top:5px">เลขที่ <b>${esc(o.docNo)}</b><br>วันที่ <b>${dstr}</b></div></div>
+    <div style="margin-top:5px">${L('dNo')} <b>${esc(o.docNo)}</b><br>${L('dDate')} <b>${dstr}</b></div></div>
 </div>
 
 <div class="grid2">
-  <div class="box"><b>ผู้ให้บริการ</b><br>eSimPayroll<br>support@payroll-mtd.com<br>พร้อมเพย์ 085-973-5367</div>
-  <div class="box"><b>ผู้ซื้อ (${jur?'นิติบุคคล':'บุคคลทั่วไป'})</b><br>${esc(o.name)}
-    ${jur&&o.taxId?`<br>เลขประจำตัวผู้เสียภาษี ${esc(o.taxId)}${o.branch?` (${esc(o.branch)})`:''}`:''}
+  <div class="box"><b>${L('dSeller')}</b><br>eSimPayroll<br>hello@esimpayroll.com</div>
+  <div class="box"><b>${L('dBuyer')} (${jur?L('btJur'):L('btIndiv')})</b><br>${esc(o.name)}
+    ${jur&&o.taxId?`<br>${L('dTaxIdLbl')} ${esc(o.taxId)}${o.branch?` (${o.branch==='สาขา'?L('brBr'):L('brHQ')})`:''}`:''}
     ${jur&&o.addr?`<br>${esc(o.addr)}`:''}
     <br>${esc(o.email)}${o.phone?' · '+esc(o.phone):''}</div>
 </div>
 
 <table>
-  <thead><tr><th style="width:52%">รายการ</th><th style="width:14%">จำนวน</th><th style="width:17%">รอบชำระ</th><th class="tr" style="width:17%">จำนวนเงิน</th></tr></thead>
+  <thead><tr><th style="width:52%">${L('dItem')}</th><th style="width:14%">${L('dQty')}</th><th style="width:17%">${L('dCycle')}</th><th class="tr" style="width:17%">${L('dAmt')}</th></tr></thead>
   <tbody>
-    <tr><td>ค่าบริการระบบเงินเดือน eSimPayroll<br><span style="font-size:11.5px;color:#5b7186">แพ็กเกจ ${esc(o.plan)}</span></td>
-        <td>${o.employees} คน</td><td>${o.cycle==='y'?'รายปี (10 เดือน)':'รายเดือน'}</td>
+    <tr><td>${L('dService')}<br><span style="font-size:11.5px;color:#5b7186">${L('dPlanLbl')} ${esc(o.plan)}</span></td>
+        <td>${o.employees} ${L('ppl')}</td><td>${o.cycle==='y'?L('cyYear'):L('cyMonth')}</td>
         <td class="tr">${fmt(o.amount)}</td></tr>
-    <tr class="tot"><td colspan="3" class="tr">รวมเป็นเงิน (บาท)</td><td class="tr">${fmt(o.amount)}</td></tr>
-    <tr><td colspan="4">จำนวนเงินตัวอักษร — <b>(${bahtText(o.amount)})</b></td></tr>
+    <tr class="tot"><td colspan="3" class="tr">${L('dSum')}</td><td class="tr">${fmt(o.amount)}</td></tr>
+    <tr><td colspan="4">${L('dWords')} — <b>(${bahtText(o.amount)})</b></td></tr>
   </tbody>
 </table>
 
-<div class="grid2" style="margin-top:14px">
-  <div class="box"><b>ช่องทางชำระเงิน</b><br>
-    พร้อมเพย์ <b>085-973-5367</b> (สแกน QR ด้านขวา)<br>
-    ธนาคารกสิกรไทย เลขที่ <b>008-2-50516-6</b><br>
-    <span style="color:#5b7186">โอนแล้วส่งสลิปมาที่ support@payroll-mtd.com</span></div>
-  <div style="width:150px;text-align:center">
-    ${o.qr?`<img src="${o.qr}" width="130" height="130" alt="PromptPay QR" style="border:1px solid #d7e5dd;border-radius:8px;padding:4px">`:''}
-    <div style="font-size:10.5px;color:#5b7186;margin-top:3px">Thai QR Payment</div></div>
+<div style="margin-top:14px">
+  <div class="box"><b>${L('dPayCh')}</b> ${o.method==='card'?L('dCard'):L('dPPay')}<br>
+    <span style="color:#5b7186">${o.transRef?L('transRef')+' <b>'+esc(o.transRef)+'</b><br>':''}${L('dPaid')}</span></div>
 </div>
 
 <div class="ft">
-  <div class="sig"><div class="ln"></div>ผู้ชำระเงิน<br>วันที่ ......./......./.......</div>
-  <div class="sig"><div class="ln"></div>ผู้รับเงิน / ผู้มีอำนาจลงนาม<br>วันที่ ......./......./.......</div>
+  <div class="sig"><div class="ln"></div>${L('dPayer')}<br>${L('dDateLine')}</div>
+  <div class="sig"><div class="ln"></div>${L('dReceiver')}<br>${L('dDateLine')}</div>
 </div>
 
 <div class="note">
-  * เอกสารนี้เป็น <b>ใบแจ้งชำระเงิน</b> ยังไม่ใช่ใบเสร็จรับเงิน — ใบเสร็จรับเงินจะออกให้หลังได้รับชำระเงินเรียบร้อยแล้ว<br>
-  * กรุณาชำระเงินภายใน 7 วันนับจากวันที่ในเอกสาร เพื่อเปิดใช้งานระบบต่อเนื่อง
+  ${L('dNote1')}<br>
+  ${L('dNote2')}
 </div>
 <script>window.onload=function(){setTimeout(function(){window.print();},350)}<\/script>
 
-
 </body></html>`;
     const w=window.open('','_blank');
-    if(!w){ alert('เบราว์เซอร์บล็อกป๊อปอัป กรุณาอนุญาตป๊อปอัปแล้วลองอีกครั้ง'); return; }
+    if(!w){ alert(L('popupBlocked')); return; }
     w.document.write(html); w.document.close();
   }
 
@@ -505,100 +933,226 @@
 
   function openOrder(){
     const t=tierOf(count), p=priceOf(t);
-    if(p===null){ location.href='mailto:support@payroll-mtd.com?subject=ขอใบเสนอราคา eSimPayroll (พนักงาน '+count+' คน)'; return; }
-    $('mTitle').textContent='ยืนยันการสั่งซื้อ';
+    if(p===null){ openQuote(); return; }
+    $('mTitle').textContent=L('orderTitle');
     $('mBody').innerHTML=`
       <div class="sum">
-        <div class="row"><span>แพ็กเกจ</span><b>${label(t)}</b></div>
-        <div class="row"><span>จำนวนพนักงาน</span><b>${count} คน</b></div>
-        <div class="row"><span>รอบชำระ</span><b>${cycle==='y'?'รายปี (10 เดือน)':'รายเดือน'}</b></div>
-        <div class="row total"><span>ยอดชำระ</span><span>${fmt(p)} บาท</span></div>
+        <div class="row"><span>${L('fPlan')}</span><b>${planName(t)}</b></div>
+        <div class="row"><span>${L('fCount')}</span><b>${count} ${L('ppl')}</b></div>
+        <div class="row"><span>${L('fCycle')}</span><b>${cycle==='y'?L('cyYear'):L('cyMonth')}</b></div>
+        <div class="row total"><span>${L('fTotal')}</span><span>${fmt(p)} ${L('baht')}</span></div>
       </div>
-      <div class="fld"><label>ออกใบเสร็จ / ใบกำกับภาษีในนาม *</label>
+      <div class="fld"><label>${L('fInvoiceTo')}</label>
         <div class="btype">
           <label class="bt on" data-bt="individual"><input type="radio" name="bt" value="individual" checked>
-            <span class="bt-ic">👤</span><b>บุคคลทั่วไป</b><small>ออกใบเสร็จในชื่อบุคคล</small></label>
+            <span class="bt-ic">👤</span><b>${L('btIndiv')}</b><small>${L('btIndivSub')}</small></label>
           <label class="bt" data-bt="juristic"><input type="radio" name="bt" value="juristic">
-            <span class="bt-ic">🏢</span><b>นิติบุคคล</b><small>บริษัท / ห้างหุ้นส่วน</small></label>
+            <span class="bt-ic">🏢</span><b>${L('btJur')}</b><small>${L('btJurSub')}</small></label>
         </div></div>
-      <div class="fld"><label id="oNameLab">ชื่อ-นามสกุล *</label><input id="oName" placeholder="นาย สมชาย ใจดี"></div>
+      <div class="fld"><label id="oNameLab">${L('fName')}</label><input id="oName" placeholder="${L('phName')}"></div>
       <div id="jurBox" style="display:none">
-        <div class="fld"><label>เลขประจำตัวผู้เสียภาษี (13 หลัก) *</label><input id="oTaxId" inputmode="numeric" maxlength="13" placeholder="0105561000000"></div>
-        <div class="fld"><label>สำนักงาน</label><select id="oBranch">
-          <option value="สำนักงานใหญ่">สำนักงานใหญ่</option><option value="สาขา">สาขา</option></select></div>
-        <div class="fld"><label>ที่อยู่สำหรับออกใบกำกับภาษี *</label><input id="oAddr" placeholder="เลขที่ ถนน แขวง เขต จังหวัด รหัสไปรษณีย์"></div>
+        <div class="fld"><label>${L('fTaxId')}</label><input id="oTaxId" inputmode="numeric" maxlength="13" placeholder="0105561000000"></div>
+        <div class="fld"><label>${L('fBranch')}</label><select id="oBranch">
+          <option value="สำนักงานใหญ่">${L('brHQ')}</option><option value="สาขา">${L('brBr')}</option></select></div>
+        <div class="fld"><label>${L('fAddr')}</label><input id="oAddr" placeholder="${L('phAddr')}"></div>
       </div>
-      <div class="fld"><label>อีเมล * (ใช้รับใบเสร็จและเปิดใช้งาน)</label><input id="oEmail" type="email" placeholder="you@example.com"></div>
-      <div class="fld"><label>เบอร์โทร</label><input id="oPhone" placeholder="08x-xxx-xxxx"></div>
-      <div class="paybox">
-        <div class="pay-tabs">
-          <button type="button" class="pt on" data-pay="qr">📱 พร้อมเพย์ (QR)</button>
-          <button type="button" class="pt" data-pay="bank">🏦 โอนเข้าบัญชี</button>
+      <div class="fld"><label>${L('fEmail')}</label><input id="oEmail" type="email" placeholder="you@example.com"></div>
+      <div class="fld"><label>${L('fPhone')}</label><input id="oPhone" placeholder="08x-xxx-xxxx"></div>
+      <div id="payMethods" style="border-top:1px solid #e6efea;margin-top:14px;padding-top:13px;display:none">
+        <div class="paytab" style="display:flex;gap:6px;background:#eef4f1;border-radius:11px;padding:4px;margin-bottom:12px">
+          <button type="button" class="pm on" data-pm="promptpay" style="flex:1;background:#fff;border:0;padding:9px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit">${L('mQr')}</button>
+          <button type="button" class="pm" data-pm="card" style="flex:1;background:none;border:0;padding:9px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;color:var(--muted);font-family:inherit">${L('mCard')}</button>
         </div>
-
-        <div id="payQR" style="text-align:center;padding-top:12px">
-          <div style="display:inline-block;background:#fff;border:1px solid #e6efea;border-radius:14px;padding:14px;text-align:center">
-            <canvas id="ppCanvas" width="200" height="200" style="display:block;margin:0 auto;border-radius:6px"></canvas>
-            <div style="font-size:11px;color:var(--muted);margin-top:8px">Thai QR Payment · PromptPay</div>
+        <div id="cardBox" style="display:none">
+          <div class="fld"><label>${L('cardNo')}</label>
+            <input id="cNum" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="4242 4242 4242 4242"></div>
+          <div class="fld"><label>${L('cardName')}</label>
+            <input id="cName" autocomplete="cc-name" placeholder="SOMCHAI JAIDEE"></div>
+          <div style="display:flex;gap:10px">
+            <div class="fld" style="flex:1"><label>${L('cardExp')}</label>
+              <input id="cExp" inputmode="numeric" autocomplete="cc-exp" maxlength="5" placeholder="12/28"></div>
+            <div class="fld" style="flex:1"><label>${L('cardCvc')}</label>
+              <input id="cCvc" inputmode="numeric" autocomplete="cc-csc" maxlength="4" placeholder="123"></div>
           </div>
-          <div style="margin-top:10px;font-size:15px">ยอด <b style="color:var(--brand);font-size:19px">${fmt(p)}</b> บาท
-            <span style="color:var(--muted);font-size:13px">(ระบุยอดในคิวอาร์แล้ว)</span></div>
-          <button type="button" class="btn ghost" id="dlQR" style="margin-top:9px;padding:6px 14px;font-size:13px">⬇️ บันทึกรูป QR</button>
-        </div>
-
-        <div id="payBank" style="display:none;padding-top:12px">
-          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
-            <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#138f2d;color:#fff;font-weight:800;font-size:13px">K</span>
-            <b>ธนาคารกสิกรไทย</b>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-size:20px;font-weight:800;color:var(--brand);letter-spacing:.5px">008-2-50516-6</span>
-            <button type="button" class="btn ghost" id="copyAcct" style="padding:5px 12px;font-size:13px">📋 คัดลอก</button>
-          </div>
-          <div style="margin-top:4px">ชื่อบัญชี <b id="acctName">—</b></div>
-        </div>
-
-        <div style="color:var(--muted);margin-top:11px;border-top:1px solid #e6efea;padding-top:9px">
-          โอนแล้วส่งสลิปมาที่ <b>support@payroll-mtd.com</b> หรือกด "ยืนยันการสั่งซื้อ" ไว้ก่อน แล้วเราจะติดต่อกลับภายใน 1 วันทำการ
+          <div style="font-size:12.5px;color:var(--muted);margin-top:2px">${L('cardSafe')}</div>
         </div>
       </div>
-      <button class="btn green" id="oSend" style="width:100%;padding:13px;font-size:16px">✅ ยืนยันการสั่งซื้อ</button>
+
+      <div id="omiseDown" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13.5px;color:#b91c1c">
+        ${L('payDown')}
+        <a href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener" class="btn primary" style="width:100%;margin-top:9px;padding:10px;font-size:14px">${L('payDownBtn')}</a>
+      </div>
+
+      <div id="loginNote" style="display:none;background:#fff7ed;border:1px solid #fed7aa;border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13.5px;color:#9a3412">
+        ${L('needLogin')}
+        <a href="/app#signup" class="btn primary" style="width:100%;margin-top:9px;padding:10px;font-size:14px">${L('loginBtn')}</a>
+      </div>
+      <div id="whoNote" style="display:none;font-size:13px;color:var(--muted);margin-top:10px"></div>
+
+      <button class="btn green" id="oSend" style="width:100%;padding:13px;font-size:16px;margin-top:12px">${L('activate')}</button>
       <div class="msg" id="oMsg"></div>`;
     $('bd').classList.add('on');
     $('oSend').onclick=submitOrder;
+    // สลับช่องทางชำระเงิน
+    document.querySelectorAll('.pm').forEach(b=>b.onclick=()=>{
+      PAY_METHOD=b.dataset.pm;
+      document.querySelectorAll('.pm').forEach(x=>{
+        const on=x===b;
+        x.classList.toggle('on',on);
+        x.style.background=on?'#fff':'none';
+        x.style.color=on?'var(--ink)':'var(--muted)';
+        x.style.boxShadow=on?'0 3px 10px rgba(14,58,92,.12)':'none';
+      });
+      $('cardBox').style.display=PAY_METHOD==='card'?'block':'none';
+    });
+    // จัดรูปแบบระหว่างพิมพ์ให้อ่านง่าย
+    const cn=$('cNum'); if(cn) cn.oninput=()=>{
+      cn.value=cn.value.replace(/\D/g,'').slice(0,19).replace(/(.{4})/g,'$1 ').trim(); };
+    const ce=$('cExp'); if(ce) ce.oninput=()=>{
+      let v=ce.value.replace(/\D/g,'').slice(0,4);
+      ce.value = v.length>2 ? v.slice(0,2)+'/'+v.slice(2) : v; };
+    const cc=$('cCvc'); if(cc) cc.oninput=()=>{ cc.value=cc.value.replace(/\D/g,'').slice(0,4); };
+
+    // ตรวจสถานะล็อกอิน — ต่ออายุให้บัญชีที่ล็อกอินอยู่
+    (async()=>{
+      let u=null; try{ const {data}=await sb.auth.getUser(); u=data&&data.user; }catch(e){}
+      ME=u||null;
+      // ชำระเงินผ่าน Omise เท่านั้น (พร้อมเพย์ QR / บัตรเครดิต)
+      if(window.Omise){
+        $('payMethods').style.display='block';
+      }else{
+        // สคริปต์ Omise โหลดไม่ขึ้น — บอกให้ชัด อย่าปล่อยให้กดสั่งซื้อแล้วเงียบ
+        $('omiseDown').style.display='block';
+        const b=$('oSend'); if(b) b.disabled=true;
+      }
+      if(u){
+        $('whoNote').style.display='block';
+        $('whoNote').textContent=L('signedInAs')+' '+(u.email||'');
+        if(!$('oEmail').value) $('oEmail').value=u.email||'';
+      }else{
+        $('loginNote').style.display='block';
+      }
+    })();
     // สลับบุคคลทั่วไป / นิติบุคคล
     document.querySelectorAll('.bt').forEach(b=>b.onclick=()=>{
       document.querySelectorAll('.bt').forEach(x=>x.classList.toggle('on',x===b));
       const jur=b.dataset.bt==='juristic';
       $('jurBox').style.display=jur?'block':'none';
-      $('oNameLab').textContent=jur?'ชื่อนิติบุคคล *':'ชื่อ-นามสกุล *';
-      $('oName').placeholder=jur?'บริษัท ตัวอย่าง จำกัด':'นาย สมชาย ใจดี';
+      $('oNameLab').textContent=jur?L('fNameJur'):L('fName');
+      $('oName').placeholder=jur?L('phNameJur'):L('phName');
     });
     $('oTaxId').oninput=e=>{ e.target.value=e.target.value.replace(/\D/g,'').slice(0,13); };
-    // สลับแท็บวิธีชำระเงิน
-    document.querySelectorAll('.pt').forEach(b=>b.onclick=()=>{
-      document.querySelectorAll('.pt').forEach(x=>x.classList.toggle('on',x===b));
-      const qr=b.dataset.pay==='qr';
-      $('payQR').style.display=qr?'block':'none';
-      $('payBank').style.display=qr?'none':'block';
-    });
-    // วาด QR พร้อมเพย์ตามยอดจริง
-    drawPP(p);
-    $('dlQR').onclick=()=>{
-      const a=document.createElement('a');
-      a.href=$('ppCanvas').toDataURL('image/png');
-      a.download=`promptpay-${p}.png`; a.click();
-    };
-    const cp=$('copyAcct');
-    if(cp) cp.onclick=async()=>{
-      const no='0082505166';
-      try{ await navigator.clipboard.writeText(no); }
-      catch(e){ const ta=document.createElement('textarea'); ta.value=no; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
-      cp.textContent='✅ คัดลอกแล้ว';
-      setTimeout(()=>cp.textContent='📋 คัดลอก',1600);
-    };
   }
   $('buyNow').onclick=openOrder;
+
+  let PAY_METHOD='promptpay';
+
+  /* สร้าง token จากข้อมูลบัตรในเบราว์เซอร์ — ข้อมูลบัตรไม่ผ่านเซิร์ฟเวอร์เรา */
+  function cardToken(){
+    return new Promise((resolve)=>{
+      if(!window.Omise) return resolve({error:L('cardBad')});
+      const num=($('cNum').value||'').replace(/\s/g,'');
+      const nm=($('cName').value||'').trim();
+      const exp=($('cExp').value||'').split('/');
+      const cvc=($('cCvc').value||'').trim();
+      if(num.length<13 || !nm || exp.length!==2 || !cvc) return resolve({error:L('cardBad')});
+      const mm=+exp[0], yy=+exp[1];
+      if(!(mm>=1 && mm<=12) || !(yy>=0)) return resolve({error:L('cardBad')});
+      try{ Omise.setPublicKey(OMISE_PUBLIC_KEY); }catch(e){ return resolve({error:L('cardBad')}); }
+      Omise.createToken('card',{
+        number:num, name:nm,
+        expiration_month:mm, expiration_year:2000+yy,
+        security_code:cvc
+      }, (status, res)=>{
+        if(status===200 && res && res.id) resolve({token:res.id});
+        else resolve({error:(res&&res.message)||L('cardBad')});
+      });
+    });
+  }
+
+  /* ---------- ชำระผ่าน Omise (พร้อมเพย์ QR) ----------
+     ลองเรียกก่อนเสมอ · ถ้ายังไม่ได้ตั้งค่า (503/404) จะคืน notReady
+     แล้วให้ระบบถอยไปใช้การแนบสลิปแบบเดิม */
+  async function tryOmise(buyer){
+    try{
+      const {data:sess}=await sb.auth.getSession();
+      const token=sess&&sess.session&&sess.session.access_token;
+      if(!token) return {notReady:true};
+      const res=await fetch(SB_URL+'/functions/v1/omise-charge',{
+        method:'POST',
+        headers:{ Authorization:'Bearer '+token, apikey:SB_ANON, 'Content-Type':'application/json' },
+        body:JSON.stringify({
+          method:buyer.method||'promptpay', card_token:buyer.cardToken||'',
+          return_uri:location.origin+location.pathname,
+          employees:count, cycle:cycle==='y'?'yearly':'monthly', ptype, edition,
+          name:buyer.name, email:buyer.email, phone:buyer.phone,
+          btype:buyer.btype, tax_id:buyer.taxId, branch:buyer.branch, addr:buyer.addr })
+      });
+      if(res.status===404 || res.status===503) return {notReady:true};   // ยังไม่ได้ deploy/ตั้งค่า
+      const out=await res.json().catch(()=>({}));
+      if(!res.ok || !out.ok){
+        if(out.code==='not_configured') return {notReady:true};
+        return {error:(LANG()?out.message_en:out.message)||L('failed')};
+      }
+      if(!out.qr_uri) return {notReady:true};
+      return {ok:true, ...out};
+    }catch(e){ return {notReady:true}; }   // เรียกไม่ได้ → ถอยไปใช้สลิป
+  }
+
+  /* หน้าจอ QR + รอผลการชำระเงิน */
+  function showQrScreen(pay, buyer, t, p){
+    let stop=false, tries=0;
+    const draw=(statusHtml)=>{
+      $('mTitle').textContent=L('payTitle');
+      $('mBody').innerHTML=`<div style="text-align:center;padding:8px 4px">
+        <div style="background:#fff;border:1px solid #e6efea;border-radius:16px;padding:16px;display:inline-block">
+          <img src="${pay.qr_uri}" alt="PromptPay QR" width="230" height="230"
+               style="display:block;width:230px;height:230px;object-fit:contain">
+          <div style="font-size:12px;color:var(--muted);margin-top:6px">Thai QR Payment · PromptPay</div>
+        </div>
+        <div style="margin-top:12px;font-size:15px">${L('payAmount')}
+          <b style="color:var(--brand);font-size:21px">${fmt(p)}</b> ${L('baht')}</div>
+        <div style="color:var(--muted);font-size:13px;margin-top:6px">${planName(t)} · ${count} ${L('ppl')}</div>
+        <div style="color:var(--muted);font-size:13px;margin:12px 0 4px">${L('payHint')}</div>
+        <div id="payStat" style="margin-top:10px;font-size:14px;font-weight:700;color:var(--brand)">${statusHtml}</div>
+        <button class="btn ghost" id="payClose" style="width:100%;margin-top:14px">${L('close')}</button>
+      </div>`;
+      const pc=$('payClose'); if(pc) pc.onclick=()=>{ stop=true; close(); };
+    };
+    draw(L('payWaiting'));
+
+    const finish=(row)=>{
+      stop=true;
+      $('payStat') && ($('payStat').textContent=L('payGotIt'));
+      showSuccess({ paidUntil:row.paid_until, transRef:pay.charge_id, t, p,
+        name:buyer.name, email:buyer.email, phone:buyer.phone,
+        btype:buyer.btype, taxId:buyer.taxId, branch:buyer.branch, addr:buyer.addr });
+    };
+
+    const poll=async()=>{
+      if(stop) return;
+      tries++;
+      try{
+        const {data}=await sb.from('payments').select('status,paid_until')
+          .eq('charge_id', pay.charge_id).maybeSingle();
+        if(data && data.status==='successful' && data.paid_until){ finish(data); return; }
+        if(data && ['failed','expired'].includes(data.status)){
+          stop=true; const s=$('payStat');
+          if(s){ s.style.color='#dc2626'; s.textContent=L('payFailed'); }
+          return;
+        }
+      }catch(e){}
+      if(tries>=100){                       // ~5 นาที
+        const s=$('payStat');
+        if(s){ s.style.color='#b45309';
+          s.innerHTML=L('payTimeout')+' <button class="btn ghost sm" id="payAgain" style="margin-top:8px">'+L('payCheck')+'</button>'; }
+        const pa=$('payAgain'); if(pa) pa.onclick=()=>{ tries=0; s.style.color='var(--brand)'; s.textContent=L('payWaiting'); setTimeout(poll,300); };
+        return;
+      }
+      setTimeout(poll, 3000);
+    };
+    setTimeout(poll, 2500);
+  }
 
   async function submitOrder(){
     const t=tierOf(count), p=priceOf(t);
@@ -606,44 +1160,118 @@
     const btype=document.querySelector('.bt.on').dataset.bt, jur=btype==='juristic';
     const taxId=jur?$('oTaxId').value.trim():'', branch=jur?$('oBranch').value:'', addr=jur?$('oAddr').value.trim():'';
     const m=$('oMsg'), bad=t2=>{ m.style.color='#dc2626'; m.textContent=t2; };
-    if(!name||!email) return bad('กรุณากรอกชื่อและอีเมล');
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return bad('รูปแบบอีเมลไม่ถูกต้อง');
-    if(jur && taxId.length!==13) return bad('เลขประจำตัวผู้เสียภาษีต้องมี 13 หลัก');
-    if(jur && !addr) return bad('กรุณากรอกที่อยู่สำหรับออกใบกำกับภาษี');
-    if(!sb) return bad('เชื่อมต่อไม่ได้ กรุณาลองใหม่');
-    m.style.color='var(--muted)'; m.textContent='กำลังส่ง...';
-    try{
-      const {error}=await sb.from('orders').insert({
-        company:name, email, phone,
-        buyer_type:btype, tax_id:taxId||null, branch:branch||null, address:addr||null,
-        employees:count, plan:label(t), cycle:cycle==='y'?'yearly':'monthly', amount:p, status:'pending'
-      });
-      if(error) throw error;
-      // เก็บข้อมูลไว้ออกเอกสาร (พร้อมฝังรูป QR ของยอดนี้)
-      const cv=$('ppCanvas');
+    if(!name||!email) return bad(L('eName'));
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return bad(L('eEmail'));
+    if(jur && taxId.length!==13) return bad(L('eTax'));
+    if(jur && !addr) return bad(L('eAddr'));
+    if(!sb) return bad(L('eConn'));
+    if(!ME) return bad(L('needLogin'));
+
+    // ---- ลองชำระผ่าน Omise ก่อน ----
+    const buyer={name, email, phone, btype, taxId, branch, addr, method:PAY_METHOD};
+    m.style.color='var(--muted)'; $('oSend').disabled=true;
+    if(PAY_METHOD==='card'){
+      m.textContent=L('cardChecking');
+      const tk=await cardToken();
+      if(tk.error){ $('oSend').disabled=false; return bad(tk.error); }
+      buyer.cardToken=tk.token;
+    }
+    m.textContent=L('payPrep');
+    const omise=await tryOmise(buyer);
+    if(omise.ok){
+      if(omise.authorize_uri){                       // บัตรต้องยืนยัน 3-D Secure
+        m.textContent=L('card3ds');
+        try{ sessionStorage.setItem('pendingChg', omise.charge_id); }catch(e){}
+        location.href=omise.authorize_uri; return;
+      }
+      showQrScreen(omise, buyer, t, p); return;      // พร้อมเพย์ หรือบัตรที่จ่ายจบแล้ว
+    }
+    if(omise.error){ $('oSend').disabled=false; return bad(omise.error); }
+    // ---- Omise ใช้ไม่ได้ → ไม่มีช่องทางสำรองแล้ว บอกให้ติดต่อทีมงาน ----
+    $('oSend').disabled=false;
+    m.style.color='#dc2626'; m.textContent=L('payDown');
+    return;
+  }
+
+  /* หน้าจอ "เปิดใช้งานแล้ว" — ชำระผ่าน Omise (พร้อมเพย์ / บัตร) */
+  function showSuccess({paidUntil, transRef, t, p, name, email, phone, btype, taxId, branch, addr}){
       LAST_DOC={
         docNo:'INV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(Math.floor(Math.random()*9000)+1000),
         date:new Date(), name, email, phone, btype, taxId, branch, addr,
-        plan:label(t), employees:count, cycle, amount:p,
-        qr: cv?cv.toDataURL('image/png'):''
+        plan:planName(t), employees:count, cycle, amount:p, transRef,
+        method:PAY_METHOD
       };
-      $('mTitle').textContent='รับคำสั่งซื้อแล้ว';
+      const dUntil=new Date(paidUntil);
+      const untilStr=String(dUntil.getDate()).padStart(2,'0')+'/'+String(dUntil.getMonth()+1).padStart(2,'0')+'/'+(dUntil.getFullYear()+(LANG()?0:543));
+      $('mTitle').textContent=L('okActive');
       $('mBody').innerHTML=`<div style="text-align:center;padding:16px 6px">
-        <div style="font-size:52px;line-height:1">✅</div>
-        <h3 style="margin:10px 0 6px">ขอบคุณครับ!</h3>
-        <p style="color:var(--muted)">เราได้รับคำสั่งซื้อ <b>${label(t)}</b> ยอด <b>${fmt(p)} บาท</b> แล้ว<br>
-        ทีมงานจะส่งรายละเอียดการชำระเงินไปที่<br><b>${email}</b> ภายใน 1 วันทำการ</p>
-        <div style="background:var(--accent-bg);border:1px solid #d6ebe1;border-radius:11px;padding:11px 14px;margin:14px 0;font-size:13px">
-          เลขที่เอกสาร <b>${LAST_DOC.docNo}</b></div>
-        <button class="btn green" id="dlDoc" style="width:100%;padding:12px;font-size:15px">🧾 ดาวน์โหลดใบแจ้งชำระเงิน (PDF)</button>
-        <button class="btn ghost" id="doneBtn" style="width:100%;margin-top:8px">ปิด</button>
+        <div style="font-size:52px;line-height:1">🎉</div>
+        <h3 style="margin:10px 0 6px">${L('thanks')}</h3>
+        <p style="color:var(--muted)">${L('okActiveBody')} <b>${planName(t)}</b> ${L('okAmt')} <b>${fmt(p)} ${L('baht')}</b></p>
+        <div style="background:var(--accent-bg);border:1px solid #d6ebe1;border-radius:11px;padding:13px 14px;margin:14px 0">
+          <div style="font-size:13px;color:var(--muted)">${L('okUntil')}</div>
+          <div style="font-size:24px;font-weight:800;color:var(--brand)">${untilStr}</div>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:6px">${L('docNo')} <b>${LAST_DOC.docNo}</b></div>
+          ${transRef?`<div style="font-size:12.5px;color:var(--muted)">${L('transRef')} <b>${transRef}</b></div>`:''}
+        </div>
+        <a href="/app" class="btn green" style="width:100%;padding:12px;font-size:15px">${L('goApp')}</a>
+        <button class="btn ghost" id="dlDoc" style="width:100%;margin-top:8px;padding:11px">${L('dlReceipt')}</button>
+        <button class="btn ghost" id="doneBtn" style="width:100%;margin-top:8px">${L('close')}</button>
       </div>`;
       $('dlDoc').onclick=openDoc;
       $('doneBtn').onclick=close;
-    }catch(err){ m.style.color='#dc2626'; m.textContent='ส่งไม่สำเร็จ: '+(err.message||'ลองใหม่อีกครั้ง'); }
+  }
+
+  /* ---------- กลับมาจากหน้ายืนยัน 3-D Secure ของธนาคาร ----------
+     ธนาคารส่งลูกค้ากลับมาที่หน้านี้ · เราเช็คสถานะจากตาราง payments เอง
+     (ไม่เชื่อว่า "กลับมาถึง = จ่ายสำเร็จ" เพราะผู้ใช้พิมพ์ URL เองได้) */
+  async function resume3DS(){
+    let chg=null; try{ chg=sessionStorage.getItem('pendingChg'); }catch(e){}
+    if(!chg || !sb) return;
+    try{ sessionStorage.removeItem('pendingChg'); }catch(e){}
+
+    open3DSWait();
+    let tries=0;
+    const check=async()=>{
+      tries++;
+      try{
+        const {data}=await sb.from('payments')
+          .select('status,paid_until,amount,plan,employees,cycle,ptype,buyer_name,buyer_email,buyer_phone,buyer_type,tax_id,branch,address')
+          .eq('charge_id',chg).maybeSingle();
+        if(data && data.status==='successful' && data.paid_until){
+          count=data.employees||count; cycle=data.cycle==='yearly'?'y':'m'; ptype=data.ptype||ptype; sync();
+          showSuccess({ paidUntil:data.paid_until, transRef:chg,
+            t:tierOf(count), p:Number(data.amount),
+            name:data.buyer_name, email:data.buyer_email, phone:data.buyer_phone,
+            btype:data.buyer_type, taxId:data.tax_id, branch:data.branch, addr:data.address });
+          return;
+        }
+        if(data && ['failed','expired'].includes(data.status)){
+          const s=$('payStat'); if(s){ s.style.color='#dc2626'; s.textContent=L('payFailed'); }
+          return;
+        }
+      }catch(e){}
+      if(tries>=40){                                  // ~2 นาที
+        const s=$('payStat'); if(s){ s.style.color='#b45309'; s.textContent=L('payTimeout'); }
+        return;
+      }
+      setTimeout(check, 3000);
+    };
+    setTimeout(check, 1200);
+  }
+  function open3DSWait(){
+    $('mTitle').textContent=L('payTitle');
+    $('mBody').innerHTML=`<div style="text-align:center;padding:26px 8px">
+      <div style="font-size:44px">⏳</div>
+      <div id="payStat" style="margin-top:12px;font-size:15px;font-weight:700;color:var(--brand)">${L('payBackWait')}</div>
+      <button class="btn ghost" id="payClose" style="width:100%;margin-top:18px">${L('close')}</button>
+    </div>`;
+    const pc=$('payClose'); if(pc) pc.onclick=close;
+    $('bd').classList.add('on');
   }
 
   sync();
+  resume3DS();
 })();
 </script>
 <script>

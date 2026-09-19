@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>พนักงานรายเดือน vs รายวัน ต่างกันยังไง — ค่าจ้าง วันหยุด โอที ประกันสังคม และภาษี ปี 2569 | eSimPayroll</title>
+<meta name="description" content="เปรียบเทียบพนักงานรายเดือนกับรายวันครบทุกมิติ: วิธีคิดค่าจ้างและเข้างานกลางเดือน ค่าจ้างวันหยุด ลาป่วย โอที 1.5×/2×/3× พร้อมตัวเลขจริง ประกันสังคม ภาษีหัก ณ ที่จ่าย ค่าชดเชย และควรจ้างแบบไหน">
+<meta name="keywords" content="พนักงานรายเดือน,พนักงานรายวัน,รายเดือน vs รายวัน,คิดค่าจ้างรายวัน,ค่าจ้างวันหยุด รายวัน,โอที รายวัน,โอที รายเดือน,ประกันสังคม รายวัน,เข้างานกลางเดือน คิดเงินเดือน,prorate เงินเดือน">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0e3a5c">
+<link rel="canonical" href="https://esimpayroll.com/article-monthly-vs-daily">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="eSimPayroll">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://esimpayroll.com/article-monthly-vs-daily">
+<meta property="og:title" content="พนักงานรายเดือน vs รายวัน ต่างกันยังไง — ค่าจ้าง วันหยุด โอที ประกันสังคม และภาษี ปี 2569">
+<meta property="og:description" content="เปรียบเทียบพนักงานรายเดือนกับรายวันครบทุกมิติ: วิธีคิดค่าจ้างและเข้างานกลางเดือน ค่าจ้างวันหยุด ลาป่วย โอที 1.5×/2×/3× พร้อมตัวเลขจริง ประกันสังคม ภาษีหัก ณ ที่จ่าย ค่าชดเชย และควรจ้างแบบไหน">
+<meta property="og:image" content="https://esimpayroll.com/media/covers/monthly-vs-daily-employees-hero.jpg">
+<meta name="twitter:image" content="https://esimpayroll.com/media/covers/monthly-vs-daily-employees-hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--brand:#0e3a5c;--brand-d:#092942;--ink:#0b1b2b;--muted:#5b7186;--bg:#f7faf9;--accent:#10b981;--accent-l:#6ee7b7;--accent-bg:#eaf6f1;
+    --line:#e8eef4;--r-lg:26px;--r-md:20px;--r-sm:14px;
+    --sh-sm:0 2px 8px rgba(11,27,43,.05);--sh-md:0 12px 32px rgba(11,27,43,.08);--sh-lg:0 28px 70px rgba(11,27,43,.14);
+    --grad:linear-gradient(120deg,#10b981,#0f766e 45%,#17557f)}
+  html{scroll-behavior:smooth}
+  body{font-family:"Sarabun","Segoe UI",Tahoma,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.7}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  .wrap.wide{max-width:1140px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 24px;border-radius:100px;font-weight:700;font-size:15px;cursor:pointer;border:0;font-family:inherit;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,background .2s}
+  .btn.primary{background:var(--grad);color:#fff;box-shadow:0 6px 14px rgba(11,27,43,.16)}
+  .btn.primary:hover{transform:translateY(-3px);box-shadow:0 10px 21px rgba(11,27,43,.16)}
+  .btn.ghost{background:rgba(255,255,255,.7);color:var(--ink);border:1.5px solid var(--line);backdrop-filter:blur(8px)}
+  .btn.ghost:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-2px)}
+
+  header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(232,238,244,.9)}
+  nav{display:flex;align-items:center;gap:14px;height:66px;max-width:1140px;margin:0 auto;padding:0 22px}
+  .logo{font-size:21px;font-weight:800;display:flex;align-items:center;gap:8px}
+  nav .sp{margin-left:auto;display:flex;gap:6px;align-items:center}
+  nav a.link{color:var(--muted);font-weight:600;padding:9px 14px;font-size:15px;border-radius:100px;transition:.18s}
+  nav a.link:hover{color:var(--ink);background:rgba(11,27,43,.05)}
+  nav a.link.active{color:var(--brand);background:var(--accent-bg)}
+
+  .pagehead{position:relative;overflow:hidden;background:
+    radial-gradient(720px 340px at 82% -10%,rgba(110,231,183,.4),transparent),
+    radial-gradient(600px 300px at 8% 4%,rgba(125,211,252,.28),transparent),
+    linear-gradient(180deg,#fff,var(--bg));padding:54px 0 40px;text-align:center}
+  .pagehead .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.85);border:1px solid var(--line);color:var(--brand-d);font-weight:700;font-size:13px;padding:8px 16px;border-radius:100px;box-shadow:var(--sh-sm);margin-bottom:14px}
+  .pagehead h1{font-size:40px;letter-spacing:-.5px;margin-bottom:10px}
+  .pagehead p{color:var(--muted);font-size:18px}
+
+  section{padding:44px 0}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .card{display:block;background:#fff;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+  .card:hover{box-shadow:var(--sh-lg);transform:translateY(-6px)}
+  .card .cover{height:170px;overflow:hidden;background:#eaf6f1;position:relative}
+  .card .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(14,58,92,.22),rgba(16,185,129,.12))}
+  .card .cover img{width:100%;height:100%;object-fit:cover;display:block;transition:.25s}
+  .card:hover .cover img{transform:scale(1.05)}
+  .card .body{padding:20px 22px}
+  .card .tag{font-size:12px;font-weight:700;color:var(--brand-d);background:#eaf6f1;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+  .card h3{font-size:19px;margin-bottom:8px;line-height:1.35}
+  .card p{color:var(--muted);font-size:15px}
+  .card .more{color:var(--brand);font-weight:700;font-size:14px;margin-top:12px;display:inline-block}
+
+  article{border-top:1px solid #eef2f7;padding:44px 0}
+  article .meta{color:var(--muted);font-size:14px;margin-bottom:8px}
+  article h2{font-size:28px;letter-spacing:-.3px;margin-bottom:16px}
+  article h4{font-size:19px;margin:22px 0 8px}
+  article p{margin-bottom:12px;color:#1f2937}
+  article ul{margin:0 0 14px 22px;color:#1f2937}
+  article li{margin-bottom:6px}
+  article .box{background:var(--bg);border:1px solid #e8edf3;border-left:4px solid var(--brand);border-radius:10px;padding:14px 18px;margin:14px 0}
+  article .back{color:var(--brand);font-weight:700;font-size:14px}
+
+  .cta-band{position:relative;overflow:hidden;background:linear-gradient(140deg,#0b1b2b,#0e3a5c 55%,#0f766e);color:#fff;border-radius:30px;padding:52px 36px;text-align:center;margin:40px auto;box-shadow:var(--sh-lg)}
+  .cta-band::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(110,231,183,.3),transparent 70%);top:-190px;right:-110px}
+  .cta-band>*{position:relative;z-index:1}
+  .cta-band h2{font-size:28px;margin-bottom:10px}
+  .cta-band p{color:#dcefe9;opacity:1;margin-bottom:22px;max-width:58ch;margin-left:auto;margin-right:auto}
+  .cta-band .btn.primary{background:#fff;color:var(--brand-d)}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}.pagehead h1{font-size:30px}article h2{font-size:23px}}
+  @media(max-width:640px){
+    nav{height:auto;padding:10px 0;flex-wrap:wrap;gap:6px}
+    .logo{font-size:18px}
+    nav .sp{width:100%;margin-left:0;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    nav a.link{padding:7px 9px;font-size:14px;white-space:nowrap}
+    nav .sp .btn{white-space:nowrap;flex-shrink:0}
+    .pagehead{padding:36px 0 28px}.pagehead h1{font-size:24px}.pagehead p{font-size:15px}
+    section{padding:30px 0}
+    article{padding:32px 0}article h2{font-size:20px}article h4{font-size:17px}
+    .cta-band{padding:30px 18px;border-radius:18px}.cta-band h2{font-size:21px}
+  }
+
+  /* ---- footer ---- */
+  footer{border-top:1px solid var(--line);background:#fff;padding:44px 0 28px;color:var(--muted);font-size:14.5px}
+  .ft-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px;align-items:start}
+  .ft-brand{font-size:19px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .ft-tag{max-width:290px;line-height:1.65}
+  /* ---------- ไอคอนโซเชียลท้ายเว็บ ---------- */
+  .ft-social{display:flex;gap:10px;margin-top:15px}
+  .soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);background:#fff;color:var(--muted);
+    transition:transform .2s,color .2s,background .2s,border-color .2s}
+  .soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+  .soc.tiktok:hover{background:#000}
+  .soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+  .soc.fb:hover{background:#1877F2}
+.soc.yt:hover{background:#FF0000}
+.soc.line:hover{background:#06C755}
+  .soc:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+  .ft-h{font-size:13px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.6px;margin-bottom:11px}
+  .ft-list{list-style:none;display:grid;gap:8px}
+  .ft-list a:hover{color:var(--brand);text-decoration:underline}
+  .ft-line{display:flex;gap:13px;align-items:flex-start;flex-wrap:wrap}  /* แคบแล้วให้ตกลงบรรทัดใหม่ ไม่บีบข้อความ */
+  .ft-qr{width:88px;height:88px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;padding:4px;flex-shrink:0}
+  .ft-lineid{display:inline-flex;align-items:center;gap:6px;background:#06C755;color:#fff;font-weight:800;
+    font-size:14px;padding:7px 14px;border-radius:100px;margin-bottom:7px}
+  .ft-lineid:hover{background:#05a648}
+  .ft-mail{color:var(--brand);font-weight:700;white-space:nowrap}   /* ห้ามตัดกลางอีเมล */
+  .ft-mail:hover{text-decoration:underline}
+  .ft-bot{border-top:1px solid #e2e8f0;margin-top:28px;padding-top:18px;display:flex;gap:12px;
+    flex-wrap:wrap;align-items:center;justify-content:space-between;font-size:13.5px}
+  @media(max-width:760px){
+    .ft-grid{grid-template-columns:1fr;gap:26px}
+    .ft-tag{max-width:none}
+    .ft-bot{justify-content:flex-start}
+  }
+</style>
+<style>
+  /* หน้าบทความเดี่ยว */
+  article{border-top:0;padding:8px 0 44px}
+  article h1{font-size:31px;letter-spacing:-.4px;margin-bottom:16px;line-height:1.3}
+  .backbar{padding:20px 0 0}
+  .backbar a{color:var(--brand);font-weight:700;font-size:14.5px}
+  .backbar a:hover{text-decoration:underline}
+  .more-h{font-size:21px;margin-bottom:18px}
+  @media(max-width:760px){article h1{font-size:23px}}
+
+  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
+  .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
+    justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
+  .h1ic svg{width:25px;height:25px;display:block}
+  .h1row h1{margin-bottom:0}
+  @media(max-width:640px){
+    .h1ic{width:38px;height:38px;border-radius:11px}
+    .h1ic svg{width:21px;height:21px}
+    .h1row{gap:11px}
+  }
+  /* ภาพหัวบทความ */
+  .hero-img{margin:0 0 26px;border-radius:var(--r-md);overflow:hidden;position:relative;
+    background:#eaf6f1;box-shadow:var(--sh-md);aspect-ratio:16/7}
+  .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero-img::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
+  .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
+  @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
+  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  .artwrap{position:relative}
+  .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
+    scroll-snap-type:x mandatory;padding:6px 2px 14px;
+    cursor:grab;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .cards::-webkit-scrollbar{display:none}
+  .cards.grabbing{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none;user-select:none}
+  .cards.grabbing .card,.cards.grabbing img{pointer-events:none}
+  .cards > .card{flex:0 0 calc((100% - 66px) / 4);scroll-snap-align:start}
+  .cards > .card img{-webkit-user-drag:none;user-select:none}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+    width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.95);
+    backdrop-filter:blur(8px);box-shadow:var(--sh-md);cursor:pointer;font-size:19px;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;transition:.2s;font-family:inherit}
+  .arrow:hover{background:#fff;transform:translateY(-50%) scale(1.08);box-shadow:var(--sh-lg)}
+  .arrow[disabled]{opacity:0;pointer-events:none}
+  .arrow.prev{left:-20px}
+  .arrow.next{right:-20px}
+  @media(max-width:980px){
+    .cards > .card{flex:0 0 calc((100% - 22px) / 2)}
+    .arrow.prev{left:-8px} .arrow.next{right:-8px}
+  }
+  @media(max-width:640px){
+    .cards{gap:14px}
+    .cards > .card{flex:0 0 82%}
+    .arrow{display:none}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"พนักงานรายเดือน vs รายวัน ต่างกันยังไง — ค่าจ้าง วันหยุด โอที ประกันสังคม และภาษี ปี 2569","description":"เปรียบเทียบพนักงานรายเดือนกับรายวันครบทุกมิติ: วิธีคิดค่าจ้างและเข้างานกลางเดือน ค่าจ้างวันหยุด ลาป่วย โอที 1.5×/2×/3× พร้อมตัวเลขจริง ประกันสังคม ภาษีหัก ณ ที่จ่าย ค่าชดเชย และควรจ้างแบบไหน","inLanguage":"th","datePublished":"2026-07-31","dateModified":"2026-09-17","image":"https://esimpayroll.com/media/covers/monthly-vs-daily-employees-hero.jpg","author":{"@type":"Organization","name":"eSimPayroll"},"publisher":{"@type":"Organization","name":"eSimPayroll"},"mainEntityOfPage":"https://esimpayroll.com/article-monthly-vs-daily"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"หน้าแรก","item":"https://esimpayroll.com/"},{"@type":"ListItem","position":2,"name":"บทความ","item":"https://esimpayroll.com/articles"},{"@type":"ListItem","position":3,"name":"พนักงานรายเดือน vs รายวัน ต่างกันยังไง","item":"https://esimpayroll.com/article-monthly-vs-daily"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"th","mainEntity":[{"@type":"Question","name":"พนักงานรายวันได้ค่าจ้างวันหยุดไหม","acceptedAnswer":{"@type":"Answer","text":"ไม่ได้ค่าจ้างในวันหยุดประจำสัปดาห์ (เช่นวันอาทิตย์) แต่กฎหมายคุ้มครองแรงงานกำหนดให้นายจ้างจ่ายค่าจ้างในวันหยุดตามประเพณี (อย่างน้อยปีละ 13 วัน) และวันหยุดพักผ่อนประจำปี (อย่างน้อย 6 วันเมื่อทำงานครบ 1 ปี) ให้ลูกจ้างรายวันด้วย"}},{"@type":"Question","name":"เข้างานกลางเดือน คิดเงินเดือนยังไง","acceptedAnswer":{"@type":"Answer","text":"พนักงานรายเดือนคิดตามสัดส่วนวันที่ทำงานต่อวันในเดือนนั้น เช่นเงินเดือน 30,000 บาท เริ่มวันที่ 16 กันยายน ซึ่งมี 30 วัน ได้ 30,000 คูณ 15 หาร 30 เท่ากับ 15,000 บาท ถ้าเริ่มวันที่ 16 ตุลาคม ซึ่งมี 31 วัน ได้ 30,000 คูณ 16 หาร 31 เท่ากับ 15,483.87 บาท ส่วนพนักงานรายวันคิดจากจำนวนวันที่ทำงานจริงคูณค่าจ้างต่อวัน"}},{"@type":"Question","name":"โอทีพนักงานรายเดือนคิดจากอะไร","acceptedAnswer":{"@type":"Answer","text":"อัตราต่อชั่วโมง = เงินเดือน หาร 30 หาร 8 เช่นเงินเดือน 30,000 ได้ชั่วโมงละ 125 บาท ทำงานล่วงเวลาวันธรรมดาได้ 1.5 เท่า = 187.50 บาท ทำงานในวันหยุดได้ 2 เท่า = 250 บาท ล่วงเวลาในวันหยุดได้ 3 เท่า = 375 บาท"}},{"@type":"Question","name":"โอทีพนักงานรายวันคิดจากอะไร","acceptedAnswer":{"@type":"Answer","text":"อัตราต่อชั่วโมง = ค่าจ้างต่อวัน หาร 8 เช่นวันละ 400 บาท ได้ชั่วโมงละ 50 บาท ล่วงเวลาวันธรรมดา 1.5 เท่า = 75 บาท ทำงานวันหยุด 2 เท่า = 100 บาท ล่วงเวลาวันหยุด 3 เท่า = 150 บาท"}},{"@type":"Question","name":"พนักงานรายวันต้องเข้าประกันสังคมไหม","acceptedAnswer":{"@type":"Answer","text":"ต้อง ลูกจ้างทุกประเภทที่อายุ 15–60 ปีต้องขึ้นทะเบียนเป็นผู้ประกันตนมาตรา 33 เงินสมทบคิดจากค่าจ้างที่ได้จริงในเดือนนั้นคูณร้อยละ 5 ยอดจึงเปลี่ยนตามจำนวนวันที่ทำงาน"}},{"@type":"Question","name":"พนักงานรายวันได้ค่าชดเชยเมื่อเลิกจ้างไหม","acceptedAnswer":{"@type":"Answer","text":"ได้ กฎหมายคุ้มครองแรงงานไม่แยกประเภทการจ้าง ลูกจ้างรายวันที่ทำงานครบ 120 วันมีสิทธิได้ค่าชดเชยตามอายุงานเหมือนลูกจ้างรายเดือน โดยใช้ค่าจ้างอัตราสุดท้ายเป็นฐาน"}},{"@type":"Question","name":"ควรจ้างแบบรายเดือนหรือรายวัน","acceptedAnswer":{"@type":"Answer","text":"งานที่ต้องการความต่อเนื่อง มีความรับผิดชอบคงที่ และต้องการรักษาคนไว้ เหมาะกับรายเดือน งานที่ปริมาณผันผวนตามฤดูกาลหรือคำสั่งซื้อ เช่นสายการผลิต ก่อสร้าง เหมาะกับรายวัน แต่สิทธิตามกฎหมายเท่ากัน ต่างเพียงวิธีคิดค่าจ้าง"}}]}
+</script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-05JJT2VDRV"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js",new Date());
+  gtag("config","G-05JJT2VDRV",{anonymize_ip:true});
+</script>
+<style>
+/* ---------- ท้ายเว็บพื้นเข้ม ---------- */
+footer{background:#0b1b2b !important;border-top:0 !important;color:#a9c4d4 !important}
+footer .ft-brand,footer .ft-brand span{color:#fff !important}
+footer .ft-h{color:#6ee7b7 !important}
+footer .ft-list a:hover{color:#6ee7b7 !important}
+footer .ft-bot{border-top:1px solid rgba(255,255,255,.14) !important;color:#8fb0c4}
+footer .ft-mail{color:#6ee7b7 !important}
+/* ---------- ไอคอนโซเชียล ---------- */
+.ft-social{display:flex;gap:10px;margin-top:15px}
+.soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#c2d8e4;
+  transition:transform .2s,color .2s,background .2s,border-color .2s}
+.soc svg{width:19px;height:19px}
+.soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+.soc.tiktok:hover{background:#000}
+.soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+.soc.fb:hover{background:#1877F2}
+.soc.yt:hover{background:#FF0000}
+.soc.line:hover{background:#06C755}
+.soc:focus-visible{outline:2px solid #6ee7b7;outline-offset:2px}
+</style>
+<style>
+  /* ---------- ตาราง / กล่องข้อความ ในเนื้อบทความ ---------- */
+  .tbl-wrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:14px;background:#fff}
+  .tbl-wrap table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:480px}
+  .tbl-wrap th,.tbl-wrap td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  .tbl-wrap thead th{background:var(--brand);color:#fff;font-weight:700;font-size:14px;border-bottom:0;white-space:nowrap}
+  .tbl-wrap tbody tr:last-child td{border-bottom:0}
+  .tbl-wrap tbody tr:nth-child(even){background:#f8fbfa}
+  .tbl-wrap th.num,.tbl-wrap td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .tbl-wrap tfoot td{font-weight:700;background:var(--accent-bg);border-top:2px solid var(--line)}
+  article .note{background:var(--accent-bg);border:1px solid #cfe9dd;border-radius:14px;padding:16px 20px;margin:18px 0}
+  article .note h3{font-size:18px;margin:0 0 8px;color:var(--brand-d)}
+  article .note p:last-child{margin-bottom:0}
+  article .warn{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:10px;padding:14px 18px;margin:16px 0}
+  article h3{font-size:20px;margin:22px 0 8px}
+  article ol{margin:0 0 14px 22px;color:#1f2937}
+  article ol li{margin-bottom:6px}
+  .faq details{border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:10px;background:#fff}
+  .faq summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;font-size:15.5px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";float:right;color:var(--accent);font-weight:800}
+  .faq details[open] summary::after{content:"−"}
+  .faq details[open] summary{border-bottom:1px solid var(--line)}
+  .faq details p{padding:14px 18px 4px;margin:0}
+  .feat{border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px;margin:0 0 14px;background:#fff;box-shadow:var(--sh-sm);position:relative}
+  .feat > h4{margin:0 0 8px;padding-left:44px;font-size:18px;line-height:1.45;min-height:34px;display:flex;align-items:center}
+  .feat .num{position:absolute;left:20px;top:17px;width:34px;height:34px;border-radius:10px;background:var(--grad);color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 6px rgba(11,27,43,.16)}
+  .feat p{margin-bottom:8px}
+  .feat p:last-child{margin-bottom:0}
+  @media(max-width:640px){.tbl-wrap table{font-size:13.5px}.tbl-wrap th,.tbl-wrap td{padding:9px 10px}}
+</style>
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png?v=2">
+<link rel="icon" type="image/png" sizes="144x144" href="/brand/favicon-144.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
+<link rel="shortcut icon" href="/brand/favicon-48.png?v=2">
+<link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="/" class="logo"><svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgNav0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgNav0)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
+    <div class="sp">
+      <a href="/features" class="link" data-en="Features">ฟีเจอร์</a>
+        <a href="/pricing" class="link" data-en="Pricing">ราคา</a>
+      <a href="/articles" class="link active" data-en="Articles">บทความ</a>
+      <a href="/tax-calculator" class="link" data-en="Free tax calculator">คำนวณภาษีฟรี</a>
+      <a href="/about" class="link" data-en="About">เกี่ยวกับ</a>
+      <button id="langBtn" class="btn ghost" style="padding:8px 12px;font-size:14px;margin-left:4px">🌐 EN</button>
+        <a href="/app#signup" class="btn primary" style="padding:9px 18px" data-en="30-day free trial">ทดลองฟรี 30 วัน</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap backbar">
+  <a href="/articles" data-en="← All articles">← กลับไปหน้าบทความ</a>
+</div>
+
+<div class="wrap">
+<article>
+    <div class="meta" data-en="Payroll · Updated 17 September 2026 · 10 min read">เงินเดือน · อัปเดต 17 กันยายน 2569 · อ่าน 10 นาที</div>
+    <div class="h1row">
+      <span class="h1ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M3.5 19.5c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="9.5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.9"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M15.8 14.6c2.6.2 4.7 2.1 4.7 4.9"/></svg></span>
+      <h1 data-en="Monthly vs daily-wage employees in Thailand — pay, holidays, overtime, social security and tax (2026)">พนักงานรายเดือน vs รายวัน ต่างกันยังไง — ค่าจ้าง วันหยุด โอที ประกันสังคม และภาษี ปี 2569</h1>
+    </div>
+
+    <figure class="hero-img">
+      <img src="/media/covers/monthly-vs-daily-employees-hero.jpg"
+           alt="พนักงานรายเดือนและรายวันในที่ทำงาน" data-en-alt="Monthly and daily-wage employees at work" width="1200" height="525" fetchpriority="high" decoding="async">
+    </figure>
+
+    <p data-en="Most Thai businesses have both kinds of staff — &lt;strong&gt;monthly&lt;/strong&gt; employees on a fixed salary and &lt;strong&gt;daily-wage&lt;/strong&gt; employees paid for the days they work. The difference goes well beyond &quot;how they are paid&quot;: it reaches holidays, overtime, social security, tax and how mid-month joiners and leavers are handled. Get one rule wrong and you under- or over-pay every month. This page sets the two side by side, topic by topic, with real numbers.">ธุรกิจไทยส่วนใหญ่มีพนักงานทั้งสองแบบ — <strong>รายเดือน</strong> ที่ได้เงินเดือนคงที่ และ <strong>รายวัน</strong> ที่ได้ค่าจ้างตามวันที่มาทำงาน ความต่างไม่ได้อยู่แค่ "จ่ายยังไง" แต่ลามไปถึงวันหยุด โอที ประกันสังคม ภาษี และวิธีคิดตอนเข้า-ออกกลางเดือน ทำผิดข้อเดียวคือจ่ายขาดหรือจ่ายเกินทุกเดือน หน้านี้วางทั้งสองแบบเทียบกันทีละเรื่อง พร้อมตัวเลขจริงที่เอาไปใช้ได้</p>
+
+    <div class="note">
+      <h3>สรุปใน 30 วินาที</h3>
+      <p data-en="&lt;strong&gt;Legal rights are identical; the pay base differs.&lt;/strong&gt; Monthly = salary ÷ days in the month (for partial months) and ÷ 30 ÷ 8 for overtime · Daily = rate × days actually worked, and ÷ 8 for overtime · Daily staff are not paid for weekly rest days but &lt;strong&gt;are paid for traditional holidays and annual leave&lt;/strong&gt; · Social security and tax follow the same rules on a different base."><strong>สิทธิตามกฎหมายเท่ากัน ต่างกันที่ฐานคิดเงิน</strong> รายเดือน = เงินเดือน ÷ วันในเดือน (เมื่อเข้า-ออกกลางเดือน) และ ÷ 30 ÷ 8 สำหรับโอที · รายวัน = ค่าจ้าง/วัน × วันที่ทำงานจริง และ ÷ 8 สำหรับโอที · รายวันไม่ได้ค่าจ้างวันหยุดประจำสัปดาห์ แต่ <strong>ได้วันหยุดตามประเพณีและพักร้อน</strong> · ประกันสังคมและภาษีใช้กติกาเดียวกัน แค่ฐานต่างกัน</p>
+    </div>
+
+    <h2 data-en="Ten things HR needs to know, side by side">ตารางเปรียบเทียบ 10 เรื่องที่ HR ต้องรู้</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="Topic">เรื่อง</th><th data-en="Monthly">รายเดือน</th><th data-en="Daily">รายวัน</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ค่าจ้าง</strong></td><td>คงที่ทุกเดือน ไม่ว่ามีกี่วัน</td><td>ค่าจ้าง/วัน × วันที่ทำงานจริง</td></tr>
+          <tr><td><strong>เข้า/ออกกลางเดือน</strong></td><td>คิดตามสัดส่วนวัน (prorate)</td><td>นับวันที่ทำงานตามจริง ไม่ต้อง prorate</td></tr>
+          <tr><td><strong>วันหยุดประจำสัปดาห์</strong></td><td><strong style="color:#15803d">ได้ค่าจ้าง (รวมในเงินเดือน)</strong></td><td><span style="color:#b91c1c">ไม่ได้ค่าจ้าง</span></td></tr>
+          <tr><td><strong>วันหยุดตามประเพณี (≥13 วัน/ปี)</strong></td><td><strong style="color:#15803d">ได้</strong></td><td><strong style="color:#15803d">ได้</strong></td></tr>
+          <tr><td><strong>วันหยุดพักผ่อนประจำปี (≥6 วัน)</strong></td><td><strong style="color:#15803d">ได้</strong></td><td><strong style="color:#15803d">ได้ เมื่อทำงานครบ 1 ปี</strong></td></tr>
+          <tr><td><strong>ลาป่วย (จ่ายไม่เกิน 30 วัน/ปี)</strong></td><td><strong style="color:#15803d">ได้</strong></td><td><strong style="color:#15803d">ได้</strong></td></tr>
+          <tr><td><strong>อัตราโอทีต่อชั่วโมง</strong></td><td>เงินเดือน ÷ 30 ÷ 8</td><td>ค่าจ้าง/วัน ÷ 8</td></tr>
+          <tr><td><strong>ประกันสังคม</strong></td><td>คงที่ (ส่วนใหญ่ชนเพดาน 875)</td><td>เปลี่ยนตามวันที่ทำงาน</td></tr>
+          <tr><td><strong>ภาษีหัก ณ ที่จ่าย</strong></td><td>ประมาณจากเงินเดือน × เดือน</td><td>ประมาณจาก ค่าจ้าง/วัน × วัน × เดือน (ส่วนใหญ่ไม่ถึงเกณฑ์)</td></tr>
+          <tr><td><strong>ค่าชดเชยเมื่อเลิกจ้าง</strong></td><td><strong style="color:#15803d">ได้ตามอายุงาน</strong></td><td><strong style="color:#15803d">ได้ตามอายุงาน (ครบ 120 วัน)</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 data-en="Pay calculation: full months, and joining or leaving mid-month">วิธีคิดค่าจ้าง: เต็มเดือน และเข้า-ออกกลางเดือน</h2>
+    <h3 data-en="Monthly — fixed, but pro-rated for partial months">รายเดือน — คงที่ แต่ต้อง prorate เมื่อทำงานไม่เต็มเดือน</h3>
+    <p data-en="Monthly employees receive the same amount whether the month has 28 or 31 days. The complication is joining or leaving mid-month, when pay must be pro-rated. The correct formula is &lt;strong&gt;salary × days worked ÷ days in that month&lt;/strong&gt; — not a fixed ÷ 30.">พนักงานรายเดือนได้เงินเดือนเท่ากันทุกเดือน ไม่ว่าเดือนนั้นมี 28 หรือ 31 วัน ปัญหาเกิดตอนเข้าหรือออกกลางเดือน ต้องคิดตามสัดส่วน สูตรที่ถูกต้องคือ <strong>เงินเดือน × วันที่ทำงาน ÷ จำนวนวันในเดือนนั้น</strong> ไม่ใช่หาร 30 ตายตัว</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="Salary 30,000, starting on the 16th">เงินเดือน 30,000 เริ่มวันที่ 16 ของเดือน</th><th class="num" data-en="Days in month">วันในเดือน</th><th class="num" data-en="Days worked">วันที่ทำงาน</th><th class="num" data-en="First-month pay">ค่าจ้างเดือนแรก</th></tr></thead>
+        <tbody>
+          <tr><td>กันยายน</td><td class="num">30</td><td class="num">15</td><td class="num"><strong>15,000.00</strong></td></tr>
+          <tr><td>ตุลาคม</td><td class="num">31</td><td class="num">16</td><td class="num"><strong>15,483.87</strong></td></tr>
+          <tr><td>กุมภาพันธ์</td><td class="num">28</td><td class="num">13</td><td class="num"><strong>13,928.57</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-en="Same start date, different pay, because the months have different lengths. Divide by a fixed 30 and October is overpaid by 516 baht while February is underpaid by 928. A proper payroll system knows the real length of each month.">เริ่มวันที่ 16 เหมือนกัน แต่ได้ไม่เท่ากัน เพราะจำนวนวันในเดือนต่างกัน ถ้าหาร 30 ตายตัว เดือนตุลาคมจะจ่ายเกิน 516 บาท เดือนกุมภาพันธ์จะจ่ายขาด 928 บาท — ระบบเงินเดือนที่ดีต้องรู้จำนวนวันจริงของแต่ละเดือน</p>
+    <h3 data-en="Daily — count the days worked, done">รายวัน — นับวันที่มาทำงาน จบ</h3>
+    <p data-en="Daily staff need no pro-rating, because pay is already &lt;strong&gt;daily rate × days actually worked&lt;/strong&gt;. Join mid-month, count from day one; leave mid-month, count to the last day. The difficulty is &lt;em&gt;counting the days correctly&lt;/em&gt; — which needs a reliable time-attendance record.">พนักงานรายวันไม่มี prorate เพราะค่าจ้างคือ <strong>อัตราต่อวัน × วันที่ทำงานจริง</strong> อยู่แล้ว เข้ากลางเดือนก็นับวันตั้งแต่วันแรก ลาออกกลางเดือนก็นับถึงวันสุดท้าย ความยากอยู่ที่ <em>การนับวันให้ถูก</em> — ต้องมีระบบลงเวลาที่เชื่อถือได้</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="400 baht a day">ค่าจ้าง 400 บาท/วัน</th><th class="num" data-en="Days">วันทำงาน</th><th class="num" data-en="Pay this month">ค่าจ้างเดือนนี้</th></tr></thead>
+        <tbody>
+          <tr><td>เดือนปกติ</td><td class="num">26</td><td class="num">10,400</td></tr>
+          <tr><td>เดือนที่มีวันหยุดยาว</td><td class="num">22</td><td class="num">8,800</td></tr>
+          <tr><td>เข้างานกลางเดือน</td><td class="num">13</td><td class="num">5,200</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 data-en="Holidays and leave: where employers most often go wrong">วันหยุดและวันลา: จุดที่นายจ้างมักเข้าใจผิดที่สุด</h2>
+    <p data-en="The classic misconception is &quot;daily staff don't work, don't get paid, end of story&quot; — which is &lt;strong&gt;only half right&lt;/strong&gt;. The Labour Protection Act does not distinguish between types of employee, so holiday and leave rights belong to everyone. The one difference is that a daily worker's weekly rest day is unpaid.">ความเข้าใจผิดคลาสสิกคือ "รายวัน ไม่มาไม่ได้เงิน จบ" ซึ่ง <strong>ถูกแค่ครึ่งเดียว</strong> พระราชบัญญัติคุ้มครองแรงงานไม่ได้แยกประเภทลูกจ้าง สิทธิเรื่องวันหยุดและวันลาจึงเป็นของลูกจ้างทุกคน ต่างกันเพียงว่าวันหยุดประจำสัปดาห์ของรายวันไม่มีค่าจ้าง</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="Day type">ประเภทวัน</th><th data-en="Monthly">รายเดือน</th><th data-en="Daily">รายวัน</th><th data-en="Note">หมายเหตุ</th></tr></thead>
+        <tbody>
+          <tr><td>วันหยุดประจำสัปดาห์</td><td><strong style="color:#15803d">ได้ค่าจ้าง</strong></td><td><span style="color:#b91c1c">ไม่ได้ค่าจ้าง</span></td><td>อย่างน้อยสัปดาห์ละ 1 วัน</td></tr>
+          <tr><td>วันหยุดตามประเพณี</td><td><strong style="color:#15803d">ได้ค่าจ้าง</strong></td><td><strong style="color:#15803d">ได้ค่าจ้าง</strong></td><td>อย่างน้อยปีละ 13 วัน รวมวันแรงงาน</td></tr>
+          <tr><td>วันหยุดพักผ่อนประจำปี</td><td><strong style="color:#15803d">ได้ค่าจ้าง</strong></td><td><strong style="color:#15803d">ได้ค่าจ้าง</strong></td><td>อย่างน้อยปีละ 6 วัน เมื่อทำงานครบ 1 ปี</td></tr>
+          <tr><td>ลาป่วย</td><td><strong style="color:#15803d">ได้ค่าจ้าง ≤ 30 วัน/ปี</strong></td><td><strong style="color:#15803d">ได้ค่าจ้าง ≤ 30 วัน/ปี</strong></td><td>ลาเกิน 3 วันขอใบรับรองแพทย์ได้</td></tr>
+          <tr><td>ลากิจ</td><td><strong style="color:#15803d">ได้ค่าจ้าง ≤ 3 วัน/ปี</strong></td><td><strong style="color:#15803d">ได้ค่าจ้าง ≤ 3 วัน/ปี</strong></td><td>ตามกฎหมายปี 2562</td></tr>
+          <tr><td>ลาคลอด</td><td><strong style="color:#15803d">ได้ค่าจ้าง 45 วัน</strong></td><td><strong style="color:#15803d">ได้ค่าจ้าง 45 วัน</strong></td><td>ลาได้ 98 วัน นายจ้างจ่าย 45 วัน ประกันสังคมจ่ายส่วนที่เหลือ</td></tr>
+          <tr><td>ขาดงาน / ลาไม่รับค่าจ้าง</td><td><span style="color:#b91c1c">หักตามวัน</span></td><td><span style="color:#b91c1c">ไม่ได้ค่าจ้างวันนั้น</span></td><td>รายเดือนดูวิธีหักที่ <a href="/article-unpaid-leave">ลาไม่รับเงินเดือน (LWOP)</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn"><p style="margin:0" data-en="&lt;strong&gt;Traditional holidays for daily staff&lt;/strong&gt; are the most-inspected, most-complained-about item. If the company announces 13 holidays this year, daily workers must be paid for all 13 even though they do not come in."><strong>วันหยุดตามประเพณีของพนักงานรายวัน</strong> คือจุดที่ถูกตรวจสอบและร้องเรียนบ่อยที่สุด ถ้าปีนี้บริษัทประกาศวันหยุด 13 วัน พนักงานรายวันต้องได้ค่าจ้าง 13 วันนั้นเต็ม ๆ แม้ไม่ได้มาทำงาน</p></div>
+
+    <h2 data-en="Overtime: same multipliers, different base">โอที: ตัวคูณเท่ากัน ฐานต่างกัน</h2>
+    <p data-en="The law sets the same multipliers for both — &lt;strong&gt;1.5×&lt;/strong&gt; for overtime on a working day · &lt;strong&gt;2×&lt;/strong&gt; for normal hours on a holiday · &lt;strong&gt;3×&lt;/strong&gt; for overtime on a holiday. What differs is how the &quot;hourly rate&quot; is found.">กฎหมายกำหนดตัวคูณเหมือนกันทั้งสองแบบ — <strong>1.5 เท่า</strong> ล่วงเวลาในวันทำงาน · <strong>2 เท่า</strong> ทำงานในวันหยุด (ชั่วโมงปกติ) · <strong>3 เท่า</strong> ล่วงเวลาในวันหยุด ต่างกันที่วิธีหา "อัตราต่อชั่วโมง"</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en=""></th><th class="num" data-en="Hourly">อัตรา/ชม.</th><th class="num" data-en="Weekday OT 1.5×">OT วันทำงาน 1.5×</th><th class="num" data-en="Holiday work 2×">ทำงานวันหยุด 2×</th><th class="num" data-en="Holiday OT 3×">OT วันหยุด 3×</th></tr></thead>
+        <tbody>
+          <tr><td><strong>รายเดือน</strong> 15,000 (÷30÷8)</td><td class="num">62.50</td><td class="num">93.75</td><td class="num">125.00</td><td class="num">187.50</td></tr>
+          <tr><td><strong>รายเดือน</strong> 20,000</td><td class="num">83.33</td><td class="num">125.00</td><td class="num">166.67</td><td class="num">250.00</td></tr>
+          <tr><td><strong>รายเดือน</strong> 30,000</td><td class="num">125.00</td><td class="num">187.50</td><td class="num">250.00</td><td class="num">375.00</td></tr>
+          <tr><td><strong>รายเดือน</strong> 45,000</td><td class="num">187.50</td><td class="num">281.25</td><td class="num">375.00</td><td class="num">562.50</td></tr>
+          <tr><td><strong>รายวัน</strong> 400 (÷8)</td><td class="num">50.00</td><td class="num">75.00</td><td class="num">100.00</td><td class="num">150.00</td></tr>
+          <tr><td><strong>รายวัน</strong> 500</td><td class="num">62.50</td><td class="num">93.75</td><td class="num">125.00</td><td class="num">187.50</td></tr>
+          <tr><td><strong>รายวัน</strong> 600</td><td class="num">75.00</td><td class="num">112.50</td><td class="num">150.00</td><td class="num">225.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-en="Notice that monthly 15,000 and daily 500 give exactly the same overtime rate (62.50/hr), because 15,000 ÷ 30 = 500. To compare the cost of the two types, compare the &quot;daily rate&quot;, not the salary number.">สังเกตว่ารายเดือน 15,000 กับรายวัน 500 ได้อัตราโอทีเท่ากันพอดี (62.50/ชม.) เพราะ 15,000 ÷ 30 = 500 — ถ้าอยากเทียบว่าจ้างแบบไหนแพงกว่า ให้เทียบ "ค่าจ้างต่อวัน" ไม่ใช่ตัวเลขเงินเดือน</p>
+    <p data-en="Overtime conditions, maximum hours and more examples are in &lt;a href=&quot;/article-overtime-pay&quot;&gt;how to calculate overtime pay&lt;/a&gt;.">รายละเอียดเงื่อนไขโอที ชั่วโมงสูงสุด และตัวอย่างเพิ่มเติมอยู่ที่ <a href="/article-overtime-pay">วิธีคำนวณค่าล่วงเวลา (OT)</a></p>
+
+    <h2 data-en="Social security: steady for monthly, variable for daily">ประกันสังคม: รายเดือนนิ่ง รายวันแกว่ง</h2>
+    <p data-en="Both must be registered under Section 33 and deducted 5% on a 1,650–17,500 base. The outcomes differ a lot: most monthly salaries exceed 17,500, so the deduction is &lt;strong&gt;a flat 875 every month&lt;/strong&gt;; daily staff are assessed on wages actually earned, so the amount &lt;strong&gt;changes each month with the days worked&lt;/strong&gt;.">ทั้งสองแบบต้องขึ้นทะเบียนมาตรา 33 และหัก 5% บนฐาน 1,650–17,500 บาทเหมือนกัน แต่ผลลัพธ์ต่างกันมาก: พนักงานรายเดือนส่วนใหญ่เงินเดือนเกิน 17,500 จึง <strong>หัก 875 คงที่ทุกเดือน</strong> ส่วนรายวันคิดจากค่าจ้างที่ได้จริง ยอดจึง <strong>เปลี่ยนทุกเดือนตามวันที่มาทำงาน</strong></p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en=""></th><th class="num" data-en="Wage this month">ค่าจ้างเดือนนี้</th><th class="num" data-en="SSO deduction">หักประกันสังคม</th></tr></thead>
+        <tbody>
+          <tr><td>รายเดือน 30,000</td><td class="num">30,000 → ใช้ 17,500</td><td class="num"><strong>875</strong> (เท่ากันทุกเดือน)</td></tr>
+          <tr><td>รายวัน 400 × 26 วัน</td><td class="num">10,400</td><td class="num"><strong>520</strong></td></tr>
+          <tr><td>รายวัน 400 × 20 วัน</td><td class="num">8,000</td><td class="num"><strong>400</strong></td></tr>
+          <tr><td>รายวัน 750 × 26 วัน</td><td class="num">19,500 → ใช้ 17,500</td><td class="num"><strong>875</strong> (ชนเพดาน)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-en="The wage base, which income counts, and remittance deadlines are covered in &lt;a href=&quot;/article-social-security&quot;&gt;social security 5% capped at 875&lt;/a&gt;.">ฐานค่าจ้าง เงินได้ที่เข้า/ไม่เข้าฐาน และกำหนดนำส่ง อ่านเต็มที่ <a href="/article-social-security">ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</a></p>
+
+    <h2 data-en="Withholding tax: most daily staff are below the line">ภาษีหัก ณ ที่จ่าย: รายวันส่วนใหญ่ไม่ถึงเกณฑ์</h2>
+    <p data-en="The tax formula is identical at every step; only the annual-income estimate differs. Monthly = salary × months worked · Daily = &lt;strong&gt;daily rate × working days per month (usually 26) × months worked&lt;/strong&gt;.">สูตรภาษีเหมือนกันทุกขั้น ต่างที่การประมาณเงินได้ทั้งปี รายเดือน = เงินเดือน × เดือนที่ทำงาน · รายวัน = <strong>ค่าจ้าง/วัน × วันทำงานต่อเดือน (ปกติ 26) × เดือนที่ทำงาน</strong></p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en=""></th><th class="num" data-en="Income/yr">เงินได้/ปี</th><th class="num" data-en="Net income">เงินได้สุทธิ</th><th class="num" data-en="Tax/yr">ภาษี/ปี</th><th class="num" data-en="Withhold/month">หัก/เดือน</th></tr></thead>
+        <tbody>
+          <tr><td>รายเดือน 30,000</td><td class="num">360,000</td><td class="num">189,500</td><td class="num">1,975</td><td class="num"><strong>164.58</strong></td></tr>
+          <tr style="background:#f0fdf4"><td>รายวัน 400 × 26</td><td class="num">124,800</td><td class="num">0</td><td class="num">0</td><td class="num"><strong style="color:#15803d">ไม่หัก</strong></td></tr>
+          <tr style="background:#f0fdf4"><td>รายวัน 600 × 26</td><td class="num">187,200</td><td class="num">24,240</td><td class="num">0</td><td class="num"><strong style="color:#15803d">ไม่หัก</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-en="At 600 a day, annual income is 187,200; after expenses, the personal allowance and social security, net income is 24,240 — far below the 150,000 line — so nothing is withheld. But the employee &lt;strong&gt;must still file PND.91&lt;/strong&gt; because income exceeds 120,000, and the employer must still issue a 50 Bis. Full working in &lt;a href=&quot;/article-withholding-tax&quot;&gt;how payroll withholding tax is calculated&lt;/a&gt;.">รายวัน 600 บาท มีเงินได้ 187,200 บาทต่อปี หักค่าใช้จ่าย ลดหย่อนส่วนตัว และประกันสังคมแล้วเหลือสุทธิ 24,240 ห่างจากเกณฑ์ 150,000 มาก จึงไม่ถูกหัก แต่ <strong>ยังต้องยื่น ภ.ง.ด.91</strong> เพราะเงินได้เกิน 120,000 และนายจ้างยังต้องออก 50 ทวิ ให้ วิธีคำนวณเต็มอยู่ที่ <a href="/article-withholding-tax">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</a></p>
+
+    <h2 data-en="Severance and termination rights: identical">ค่าชดเชยและสิทธิเมื่อเลิกจ้าง: เท่ากัน</h2>
+    <p data-en="A daily-wage employee who has worked 120 days is entitled to severance by length of service exactly like a monthly employee (from 30 up to 400 days of final wages), plus pay in lieu of notice. The base is &lt;strong&gt;the final wage rate&lt;/strong&gt; — for daily staff, the daily rate × the number of days due.">ลูกจ้างรายวันที่ทำงานครบ 120 วันมีสิทธิได้ค่าชดเชยตามอายุงานเหมือนรายเดือนทุกประการ (ตั้งแต่ 30 วันจนถึง 400 วันของค่าจ้างอัตราสุดท้าย) รวมถึงค่าจ้างแทนการบอกกล่าวล่วงหน้า ฐานที่ใช้คือ <strong>ค่าจ้างอัตราสุดท้าย</strong> — รายวันก็คือค่าจ้างต่อวัน × จำนวนวันตามสิทธิ</p>
+
+    <h2 data-en="Which should you use?">ควรจ้างแบบไหน</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="Go monthly when">จ้างรายเดือนเมื่อ</th><th data-en="Go daily when">จ้างรายวันเมื่อ</th></tr></thead>
+        <tbody>
+          <tr><td>งานต่อเนื่อง ความรับผิดชอบคงที่ ต้องการรักษาคน</td><td>ปริมาณงานผันผวนตามฤดูกาล คำสั่งซื้อ หรือโครงการ</td></tr>
+          <tr><td>ตำแหน่งสำนักงาน หัวหน้างาน ผู้เชี่ยวชาญ</td><td>สายการผลิต ก่อสร้าง คลังสินค้า งานตามกะ</td></tr>
+          <tr><td>อยากให้งบค่าจ้างคาดการณ์ได้</td><td>อยากให้ต้นทุนแปรตามงานจริง</td></tr>
+          <tr><td>ยอมรับต้นทุนวันหยุดประจำสัปดาห์</td><td>ต้องมีระบบลงเวลาที่เชื่อถือได้ ไม่งั้นนับวันผิด</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-en="What you should &lt;strong&gt;not&lt;/strong&gt; do is use daily hiring to avoid legal rights — because it doesn't. Traditional holidays, sick leave, social security and severance all apply equally. The only differences are the pay base and the cost of weekly rest days.">สิ่งที่ <strong>ไม่ควร</strong> ทำคือใช้การจ้างรายวันเพื่อเลี่ยงสิทธิตามกฎหมาย — เพราะเลี่ยงไม่ได้ วันหยุดตามประเพณี ลาป่วย ประกันสังคม ค่าชดเชย ตามมาครบเหมือนกัน ที่ต่างคือฐานคำนวณและต้นทุนวันหยุดประจำสัปดาห์เท่านั้น</p>
+
+    <h2 data-en="Five common misconceptions">ความเข้าใจผิดที่พบบ่อย 5 ข้อ</h2>
+    <div class="feat"><span class="num">1</span><h4 data-en="&quot;Daily staff: no show, no pay, no exceptions.&quot;">"รายวัน ไม่มาไม่ได้เงิน ทุกกรณี"</h4>
+      <p data-en="Half wrong. Traditional holidays, annual leave, sick leave, personal leave and maternity leave are all paid by law.">ผิดครึ่งหนึ่ง วันหยุดตามประเพณี วันหยุดพักผ่อนประจำปี ลาป่วย ลากิจ ลาคลอด ต้องจ่ายค่าจ้างตามกฎหมาย</p></div>
+    <div class="feat"><span class="num">2</span><h4 data-en="&quot;Mid-month starters: always divide by 30.&quot;">"เข้างานกลางเดือน หาร 30 เสมอ"</h4>
+      <p data-en="Divide by the actual days in that month (28, 30 or 31), or every non-30-day month is wrong.">ต้องหารด้วยจำนวนวันจริงของเดือนนั้น (28, 30 หรือ 31) ไม่งั้นจ่ายผิดทุกเดือนที่ไม่มี 30 วัน</p></div>
+    <div class="feat"><span class="num">3</span><h4 data-en="&quot;Monthly overtime is salary ÷ 22 working days.&quot;">"โอทีรายเดือนคิดจากเงินเดือน ÷ 22 วันทำงาน"</h4>
+      <p data-en="The law uses ÷ 30 (days in a month) ÷ 8 hours. Dividing by 22 overstates the rate by about 36%.">กฎหมายให้ใช้ ÷ 30 (วันในเดือน) ÷ 8 ชั่วโมง การหาร 22 ทำให้อัตราสูงเกินจริงประมาณ 36%</p></div>
+    <div class="feat"><span class="num">4</span><h4 data-en="&quot;Daily staff don't need social security.&quot;">"รายวันไม่ต้องเข้าประกันสังคม"</h4>
+      <p data-en="They must be registered within 30 days like everyone else, assessed on the month's actual wages.">ต้องขึ้นทะเบียนเหมือนกันภายใน 30 วัน คิดจากค่าจ้างจริงของเดือน</p></div>
+    <div class="feat"><span class="num">5</span><h4 data-en="&quot;An employer can switch someone from monthly to daily at will.&quot;">"เปลี่ยนรายเดือนเป็นรายวันได้ตามใจนายจ้าง"</h4>
+      <p data-en="That is an adverse change to terms of employment and needs the employee's consent.">เป็นการเปลี่ยนสภาพการจ้างที่ไม่เป็นคุณ ต้องได้รับความยินยอมจากลูกจ้าง</p></div>
+
+    <h2 data-en="One system for both types">ให้โปรแกรมรองรับทั้งสองแบบในระบบเดียว</h2>
+    <p data-en="eSimPayroll lets you set the &lt;strong&gt;pay type&lt;/strong&gt; per employee — monthly staff are pro-rated on the real days in the month and their start/end dates, daily staff are multiplied by days entered or pulled from time attendance, overtime uses the right base for each type (÷30÷8 or ÷8), social security and tax are estimated on the type's actual wages, and the dashboard shows monthly and daily totals separately.">eSimPayroll ให้กำหนด <strong>ประเภทการจ้าง</strong> รายคน — รายเดือนคิด prorate จากจำนวนวันจริงของเดือนและวันเริ่ม/วันออก รายวันคูณจากจำนวนวันที่กรอกหรือดึงจากระบบลงเวลา อัตราโอทีคำนวณตามฐานที่ถูกต้องของแต่ละแบบ (÷30÷8 หรือ ÷8) ประกันสังคมและภาษีประมาณจากค่าจ้างจริงของประเภทนั้น และแดชบอร์ดแยกยอดรายเดือน/รายวันให้เห็นชัด</p>
+    <div class="note">
+      <h3 data-en="Try both types">ลองใส่ทั้งสองแบบดู</h3>
+      <p data-en="Add one monthly and one daily employee and compare their payslips. Free for 30 days, no credit card.">เพิ่มพนักงานรายเดือนหนึ่งคน รายวันหนึ่งคน แล้วดูสลิปเทียบกัน ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต</p>
+      <p style="margin-top:12px"><a href="/app#signup" class="btn primary" data-en="Start the free trial">เริ่มทดลองใช้ฟรี</a></p>
+    </div>
+
+    <div class="note sources">
+      <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
+      <ul style="margin:6px 0 0 18px">
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
+      </ul>
+      <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
+    </div>
+
+    <h2 data-en="Frequently asked questions">คำถามที่พบบ่อย</h2>
+    <div class="faq">
+      <details><summary>พนักงานรายวันได้ค่าจ้างวันหยุดไหม</summary><p>ไม่ได้ค่าจ้างในวันหยุดประจำสัปดาห์ (เช่นวันอาทิตย์) แต่กฎหมายคุ้มครองแรงงานกำหนดให้นายจ้างจ่ายค่าจ้างในวันหยุดตามประเพณี (อย่างน้อยปีละ 13 วัน) และวันหยุดพักผ่อนประจำปี (อย่างน้อย 6 วันเมื่อทำงานครบ 1 ปี) ให้ลูกจ้างรายวันด้วย</p></details>
+      <details><summary>เข้างานกลางเดือน คิดเงินเดือนยังไง</summary><p>พนักงานรายเดือนคิดตามสัดส่วนวันที่ทำงานต่อวันในเดือนนั้น เช่นเงินเดือน 30,000 บาท เริ่มวันที่ 16 กันยายน ซึ่งมี 30 วัน ได้ 30,000 คูณ 15 หาร 30 เท่ากับ 15,000 บาท ถ้าเริ่มวันที่ 16 ตุลาคม ซึ่งมี 31 วัน ได้ 30,000 คูณ 16 หาร 31 เท่ากับ 15,483.87 บาท ส่วนพนักงานรายวันคิดจากจำนวนวันที่ทำงานจริงคูณค่าจ้างต่อวัน</p></details>
+      <details><summary>โอทีพนักงานรายเดือนคิดจากอะไร</summary><p>อัตราต่อชั่วโมง = เงินเดือน หาร 30 หาร 8 เช่นเงินเดือน 30,000 ได้ชั่วโมงละ 125 บาท ทำงานล่วงเวลาวันธรรมดาได้ 1.5 เท่า = 187.50 บาท ทำงานในวันหยุดได้ 2 เท่า = 250 บาท ล่วงเวลาในวันหยุดได้ 3 เท่า = 375 บาท</p></details>
+      <details><summary>โอทีพนักงานรายวันคิดจากอะไร</summary><p>อัตราต่อชั่วโมง = ค่าจ้างต่อวัน หาร 8 เช่นวันละ 400 บาท ได้ชั่วโมงละ 50 บาท ล่วงเวลาวันธรรมดา 1.5 เท่า = 75 บาท ทำงานวันหยุด 2 เท่า = 100 บาท ล่วงเวลาวันหยุด 3 เท่า = 150 บาท</p></details>
+      <details><summary>พนักงานรายวันต้องเข้าประกันสังคมไหม</summary><p>ต้อง ลูกจ้างทุกประเภทที่อายุ 15–60 ปีต้องขึ้นทะเบียนเป็นผู้ประกันตนมาตรา 33 เงินสมทบคิดจากค่าจ้างที่ได้จริงในเดือนนั้นคูณร้อยละ 5 ยอดจึงเปลี่ยนตามจำนวนวันที่ทำงาน</p></details>
+      <details><summary>พนักงานรายวันได้ค่าชดเชยเมื่อเลิกจ้างไหม</summary><p>ได้ กฎหมายคุ้มครองแรงงานไม่แยกประเภทการจ้าง ลูกจ้างรายวันที่ทำงานครบ 120 วันมีสิทธิได้ค่าชดเชยตามอายุงานเหมือนลูกจ้างรายเดือน โดยใช้ค่าจ้างอัตราสุดท้ายเป็นฐาน</p></details>
+      <details><summary>ควรจ้างแบบรายเดือนหรือรายวัน</summary><p>งานที่ต้องการความต่อเนื่อง มีความรับผิดชอบคงที่ และต้องการรักษาคนไว้ เหมาะกับรายเดือน งานที่ปริมาณผันผวนตามฤดูกาลหรือคำสั่งซื้อ เช่นสายการผลิต ก่อสร้าง เหมาะกับรายวัน แต่สิทธิตามกฎหมายเท่ากัน ต่างเพียงวิธีคิดค่าจ้าง</p></details>
+    </div>
+  </article>
+</div>
+
+<section style="background:var(--bg);border-top:1px solid var(--line)">
+  <div class="wrap wide">
+    <h2 class="more-h" data-en="More articles">บทความอื่น ๆ</h2>
+    <div class="artwrap">
+      <button class="arrow prev" id="artPrev" aria-label="เลื่อนซ้าย">‹</button>
+      <button class="arrow next" id="artNext" aria-label="เลื่อนขวา">›</button>
+      <div class="cards">
+      <a href="/article-welfare-fund" class="card">
+        <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="/article-withholding-tax" class="card">
+        <div class="cover"><img width="760" height="507" loading="lazy" alt="วิธีคำนวณภาษีหัก ณ ที่จ่ายจากเงินเดือน" src="/media/covers/payroll-withholding-tax-calculation-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="Tax">ภาษี</span>
+          <h3 data-en="ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="/article-social-security" class="card">
+        <div class="cover"><img width="760" height="507" loading="lazy" alt="วิธีคำนวณเงินเดือนพนักงาน ประกันสังคม และภาษี" src="/media/covers/social-security-contribution-thailand-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="Social security">ประกันสังคม</span>
+          <h3 data-en="ประกันสังคม 5% เพดาน 875 บาท คิดยังไง">ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="/article-50tawi-pnd1" class="card">
+        <div class="cover"><img width="760" height="507" loading="lazy" alt="เอกสารภาษี 50 ทวิ และแบบ ภ.ง.ด.1 ที่นายจ้างต้องยื่น" src="/media/covers/50-bis-pnd1-tax-documents-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="Documents">เอกสาร</span>
+          <h3 data-en="50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่">50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="cta-band">
+    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
+    <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
+      <a href="/" class="btn ghost" data-en="See all features">ดูฟีเจอร์ทั้งหมด</a>
+      <a href="/pricing" class="btn ghost" data-en="See pricing">ดูราคา</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="ft-grid">
+
+      <div>
+        <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+
+        <div class="ft-social">
+          <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener"
+             aria-label="TikTok ของ eSimPayroll" title="TikTok">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 0 1 0-5.18c.27 0 .53.04.77.12v-3.2a5.7 5.7 0 0 0-.77-.05A5.72 5.72 0 0 0 4.14 15.3a5.72 5.72 0 0 0 5.72 5.72 5.72 5.72 0 0 0 5.72-5.72V9.4a7.35 7.35 0 0 0 4.28 1.37V7.68a4.29 4.29 0 0 1-3.26-1.86z"/></svg>
+          </a>
+          <a class="soc fb" href="https://www.facebook.com/people/esimpayroll/61593817897037/" target="_blank" rel="noopener" aria-label="Facebook eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg></a>
+          <a class="soc yt" href="https://www.youtube.com/@esimpayroll" target="_blank" rel="noopener" aria-label="YouTube eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.75-1.77C18.3 5 12 5 12 5s-6.3 0-7.85.43A2.5 2.5 0 0 0 2.4 7.2C2 8.77 2 12 2 12s0 3.23.4 4.8a2.5 2.5 0 0 0 1.75 1.77C5.7 19 12 19 12 19s6.3 0 7.85-.43a2.5 2.5 0 0 0 1.75-1.77C22 15.23 22 12 22 12s0-3.23-.4-4.8zM10 15.02V8.98L15.2 12 10 15.02z"/></svg></a>
+          <a class="soc ig" href="https://www.instagram.com/esimpayroll" target="_blank" rel="noopener"
+             aria-label="Instagram ของ eSimPayroll" title="Instagram">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.1" cy="6.9" r="1.15" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="soc line" href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener"
+             aria-label="LINE ของ eSimPayroll" title="LINE">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M12 3C6.9 3 2.75 6.36 2.75 10.5c0 3.7 3.29 6.8 7.74 7.39.3.07.71.2.81.46.09.24.06.6.03.85l-.13.79c-.4.24-.19.92.81.5s5.4-3.18 7.37-5.45a6.7 6.7 0 0 0 1.87-4.54C21.25 6.36 17.1 3 12 3zM8.3 12.9H6.4a.4.4 0 0 1-.4-.4V9.06a.4.4 0 1 1 .8 0v3.04h1.5a.4.4 0 1 1 0 .8zm1.66-.4a.4.4 0 1 1-.8 0V9.06a.4.4 0 1 1 .8 0zm4.03 0a.4.4 0 0 1-.72.24l-1.78-2.42v2.18a.4.4 0 1 1-.8 0V9.06a.4.4 0 0 1 .72-.24l1.78 2.42V9.06a.4.4 0 1 1 .8 0zm2.87-2.12a.4.4 0 0 1 0 .8h-1.5v.72h1.5a.4.4 0 1 1 0 .8h-1.9a.4.4 0 0 1-.4-.4V9.06a.4.4 0 0 1 .4-.4h1.9a.4.4 0 1 1 0 .8h-1.5v.72z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Menu">เมนู</div>
+        <ul class="ft-list">
+          <li><a href="/#features" data-en="Features">ฟีเจอร์</a></li>
+          <li><a href="/pricing" data-en="Pricing">แพ็กเกจและราคา</a></li>
+          <li><a href="/articles" data-en="Articles">บทความ</a></li>
+          <li><a href="/about" data-en="About us">เกี่ยวกับเรา</a></li>
+          <li><a href="/app#signup" data-en="30-day free trial">ทดลองฟรี 30 วัน</a></li>
+          <li><a href="/contact" data-en="Contact us">ติดต่อเรา</a></li>
+          <li><a href="/refund" data-en="Cancellation &amp; refunds">การยกเลิกและคืนเงิน</a></li>
+          <li><a href="/privacy" data-en="Privacy policy">นโยบายความเป็นส่วนตัว</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Contact">ติดต่อเรา</div>
+        <div class="ft-line">
+          <a href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener">
+            <img src="/brand/line-qr-512.png?v=3" alt="LINE @esimpayroll" class="ft-qr" width="88" height="88" loading="lazy">
+          </a>
+          <div>
+            <a href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener" class="ft-lineid" data-en="Add friend">เพิ่มเพื่อน</a>
+            <div style="font-size:12.5px" data-en="Scan the QR or tap the button">สแกน QR หรือกดปุ่มด้านบน</div>
+            <div style="margin-top:9px"><a href="mailto:hello@esimpayroll.com" class="ft-mail">hello@esimpayroll.com</a></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ft-bot">
+      <div data-en="© 2026 eSimPayroll · All rights reserved">© 2569 eSimPayroll · สงวนลิขสิทธิ์</div>
+      <div data-en="Made for Thai businesses 🇹🇭">พัฒนาเพื่อธุรกิจไทย 🇹🇭</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var KEY='lang';
+  function apply(l){
+    document.documentElement.lang = (l==='en'?'en':'th');
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      if(!el.hasAttribute('data-th')) el.setAttribute('data-th', el.innerHTML);
+      el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-th');
+    });
+    document.querySelectorAll('[data-en-ph]').forEach(function(el){
+      if(!el.hasAttribute('data-th-ph')) el.setAttribute('data-th-ph', el.placeholder||'');
+      el.placeholder = (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-th-ph');
+    });
+
+  document.querySelectorAll('[data-en-alt]').forEach(function(el){
+    if(!el.hasAttribute('data-th-alt')) el.setAttribute('data-th-alt', el.alt||'');
+    el.alt = (l==='en') ? el.getAttribute('data-en-alt') : el.getAttribute('data-th-alt');
+  });
+    var b=document.getElementById('langBtn'); if(b) b.textContent = (l==='en'?'🌐 TH':'🌐 EN');
+    try{ localStorage.setItem(KEY,l); }catch(e){}
+  }
+  var cur='th'; try{ cur = localStorage.getItem(KEY)||'th'; }catch(e){}
+  window.__setLang=apply;
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(cur);
+    var b=document.getElementById('langBtn');
+    if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); };
+  });
+})();
+</script>
+<script>
+/* แถว "บทความอื่น ๆ" · ลากการ์ดเลื่อนได้ + ปุ่มลูกศรเลื่อนทีละใบ (เหมือนหน้าแรก) */
+(function(){
+  var box=document.querySelector('.cards'), prev=document.getElementById('artPrev'), next=document.getElementById('artNext');
+  if(!box) return;
+  var GAP=parseFloat(getComputedStyle(box).gap)||22;
+  function step(){ var c=box.querySelector('.card'); return c ? c.getBoundingClientRect().width+GAP : 300; }
+  function sync(){
+    if(!prev||!next) return;
+    var max=box.scrollWidth-box.clientWidth-2;
+    prev.disabled = box.scrollLeft<=2;
+    next.disabled = box.scrollLeft>=max;
+  }
+  if(prev) prev.onclick=function(){ box.scrollBy({left:-step(),behavior:'smooth'}); };
+  if(next) next.onclick=function(){ box.scrollBy({left: step(),behavior:'smooth'}); };
+  box.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync);
+  window.addEventListener('load',sync);
+  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
+  setTimeout(sync,60); setTimeout(sync,400); sync();
+
+  var down=false, dragging=false, startX=0, startScroll=0, moved=0, lastX=0, lastT=0, vel=0, glide=0;
+  box.addEventListener('pointerdown', function(e){
+    if(e.pointerType!=='mouse' || e.button!==0) return;
+    cancelAnimationFrame(glide);
+    down=true; dragging=false; moved=0;
+    startX=lastX=e.clientX; startScroll=box.scrollLeft; lastT=e.timeStamp; vel=0;
+  });
+  box.addEventListener('pointermove', function(e){
+    if(!down) return;
+    var dx=e.clientX-startX;
+    if(!dragging){
+      if(Math.abs(dx)<5) return;
+      dragging=true; box.classList.add('grabbing');
+      try{ box.setPointerCapture(e.pointerId); }catch(err){}
+    }
+    e.preventDefault();
+    moved=Math.abs(dx);
+    box.scrollLeft=startScroll-dx;
+    sync();
+    var dt=e.timeStamp-lastT;
+    if(dt>0){ vel=(e.clientX-lastX)/dt; lastX=e.clientX; lastT=e.timeStamp; }
+  });
+  function release(e){
+    if(!down) return;
+    down=false;
+    if(!dragging) return;
+    try{ box.releasePointerCapture(e.pointerId); }catch(err){}
+    box.classList.remove('grabbing'); dragging=false; sync();
+    var v=vel*16;
+    function stop(){ box.style.scrollSnapType=''; box.style.scrollBehavior=''; sync(); }
+    setTimeout(stop, 800);
+    (function slide(){
+      if(Math.abs(v)<0.6){ stop(); return; }
+      box.style.scrollSnapType='none'; box.style.scrollBehavior='auto';
+      box.scrollLeft-=v; v*=0.92; sync();
+      glide=requestAnimationFrame(slide);
+    })();
+  }
+  box.addEventListener('pointerup', release);
+  box.addEventListener('pointercancel', release);
+  box.addEventListener('click', function(e){
+    if(moved>5){ e.preventDefault(); e.stopPropagation(); moved=0; }
+  }, true);
+  box.addEventListener('dragstart', function(e){ e.preventDefault(); });
+})();
+</script>
+</body>
+</html>

@@ -7,3 +7,7 @@ node_modules/
 Thumbs.db
 
 .vercel
+deno.lock
+
+# ไฟล์สถานะของ Supabase CLI (เฉพาะเครื่องนี้)
+supabase/.temp/

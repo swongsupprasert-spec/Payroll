@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เงินเดือนเท่าไหร่ถึงเสียภาษี ตารางคำนวณปี 2569 | eSimPayroll</title>
+<meta name="description" content="เงินเดือนเท่าไหร่ถึงโดนหักภาษี คำตอบคือประมาณ 26,700 บาทต่อเดือน พร้อมตารางภาษีทุกช่วงเงินเดือน สูตรคำนวณ และเหตุผลที่หลายคนคิดผิด">
+<meta name="keywords" content="เงินเดือนเท่าไหร่ถึงเสียภาษี,เงินเดือนเท่าไหร่โดนหักภาษี,ภาษีเงินเดือน,ภาษีหัก ณ ที่จ่าย เงินเดือน,คำนวณภาษีเงินเดือน,ตารางภาษี 2569,เงินเดือนไม่เสียภาษี">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0e3a5c">
+<link rel="canonical" href="https://esimpayroll.com/article-salary-tax-threshold">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="eSimPayroll">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://esimpayroll.com/article-salary-tax-threshold">
+<meta property="og:title" content="เงินเดือนเท่าไหร่ถึงเสียภาษี ตารางคำนวณปี 2569">
+<meta property="og:description" content="ประมาณ 26,700 บาท/เดือนคือจุดเริ่มเสียภาษี พร้อมตารางทุกช่วงเงินเดือนและสูตรคำนวณ">
+<meta property="og:image" content="https://esimpayroll.com/media/covers/salary-tax-threshold-hero.jpg?v=2">
+<meta name="twitter:image" content="https://esimpayroll.com/media/covers/salary-tax-threshold-hero.jpg?v=2">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--brand:#0e3a5c;--brand-d:#092942;--ink:#0b1b2b;--muted:#5b7186;--bg:#f7faf9;--accent:#10b981;--accent-l:#6ee7b7;--accent-bg:#eaf6f1;
+    --line:#e8eef4;--r-lg:26px;--r-md:20px;--r-sm:14px;
+    --sh-sm:0 2px 8px rgba(11,27,43,.05);--sh-md:0 12px 32px rgba(11,27,43,.08);--sh-lg:0 28px 70px rgba(11,27,43,.14);
+    --grad:linear-gradient(120deg,#10b981,#0f766e 45%,#17557f)}
+  html{scroll-behavior:smooth}
+  body{font-family:"Sarabun","Segoe UI",Tahoma,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.7}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  .wrap.wide{max-width:1140px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 24px;border-radius:100px;font-weight:700;font-size:15px;cursor:pointer;border:0;font-family:inherit;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,background .2s}
+  .btn.primary{background:var(--grad);color:#fff;box-shadow:0 6px 14px rgba(11,27,43,.16)}
+  .btn.primary:hover{transform:translateY(-3px);box-shadow:0 10px 21px rgba(11,27,43,.16)}
+  .btn.ghost{background:rgba(255,255,255,.7);color:var(--ink);border:1.5px solid var(--line);backdrop-filter:blur(8px)}
+  .btn.ghost:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-2px)}
+
+  header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(232,238,244,.9)}
+  nav{display:flex;align-items:center;gap:14px;height:66px;max-width:1140px;margin:0 auto;padding:0 22px}
+  .logo{font-size:21px;font-weight:800;display:flex;align-items:center;gap:8px}
+  nav .sp{margin-left:auto;display:flex;gap:6px;align-items:center}
+  nav a.link{color:var(--muted);font-weight:600;padding:9px 14px;font-size:15px;border-radius:100px;transition:.18s}
+  nav a.link:hover{color:var(--ink);background:rgba(11,27,43,.05)}
+  nav a.link.active{color:var(--brand);background:var(--accent-bg)}
+
+  .pagehead{position:relative;overflow:hidden;background:
+    radial-gradient(720px 340px at 82% -10%,rgba(110,231,183,.4),transparent),
+    radial-gradient(600px 300px at 8% 4%,rgba(125,211,252,.28),transparent),
+    linear-gradient(180deg,#fff,var(--bg));padding:54px 0 40px;text-align:center}
+  .pagehead .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.85);border:1px solid var(--line);color:var(--brand-d);font-weight:700;font-size:13px;padding:8px 16px;border-radius:100px;box-shadow:var(--sh-sm);margin-bottom:14px}
+  .pagehead h1{font-size:40px;letter-spacing:-.5px;margin-bottom:10px}
+  .pagehead p{color:var(--muted);font-size:18px}
+
+  section{padding:44px 0}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .card{display:block;background:#fff;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+  .card:hover{box-shadow:var(--sh-lg);transform:translateY(-6px)}
+  .card .cover{height:170px;overflow:hidden;background:#eaf6f1;position:relative}
+  .card .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(14,58,92,.22),rgba(16,185,129,.12))}
+  .card .cover img{width:100%;height:100%;object-fit:cover;display:block;transition:.25s}
+  .card:hover .cover img{transform:scale(1.05)}
+  .card .body{padding:20px 22px}
+  .card .tag{font-size:12px;font-weight:700;color:var(--brand-d);background:#eaf6f1;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+  .card h3{font-size:19px;margin-bottom:8px;line-height:1.35}
+  .card p{color:var(--muted);font-size:15px}
+  .card .more{color:var(--brand);font-weight:700;font-size:14px;margin-top:12px;display:inline-block}
+
+  article{border-top:1px solid #eef2f7;padding:44px 0}
+  article .meta{color:var(--muted);font-size:14px;margin-bottom:8px}
+  article h2{font-size:28px;letter-spacing:-.3px;margin-bottom:16px}
+  article h4{font-size:19px;margin:22px 0 8px}
+  article p{margin-bottom:12px;color:#1f2937}
+  article ul{margin:0 0 14px 22px;color:#1f2937}
+  article li{margin-bottom:6px}
+  article .box{background:var(--bg);border:1px solid #e8edf3;border-left:4px solid var(--brand);border-radius:10px;padding:14px 18px;margin:14px 0}
+  article .back{color:var(--brand);font-weight:700;font-size:14px}
+
+  .cta-band{position:relative;overflow:hidden;background:linear-gradient(140deg,#0b1b2b,#0e3a5c 55%,#0f766e);color:#fff;border-radius:30px;padding:52px 36px;text-align:center;margin:40px auto;box-shadow:var(--sh-lg)}
+  .cta-band::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(110,231,183,.3),transparent 70%);top:-190px;right:-110px}
+  .cta-band>*{position:relative;z-index:1}
+  .cta-band h2{font-size:28px;margin-bottom:10px}
+  .cta-band p{color:#dcefe9;opacity:1;margin-bottom:22px;max-width:58ch;margin-left:auto;margin-right:auto}
+  .cta-band .btn.primary{background:#fff;color:var(--brand-d)}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}.pagehead h1{font-size:30px}article h2{font-size:23px}}
+  @media(max-width:640px){
+    nav{height:auto;padding:10px 0;flex-wrap:wrap;gap:6px}
+    .logo{font-size:18px}
+    nav .sp{width:100%;margin-left:0;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    nav a.link{padding:7px 9px;font-size:14px;white-space:nowrap}
+    nav .sp .btn{white-space:nowrap;flex-shrink:0}
+    .pagehead{padding:36px 0 28px}.pagehead h1{font-size:24px}.pagehead p{font-size:15px}
+    section{padding:30px 0}
+    article{padding:32px 0}article h2{font-size:20px}article h4{font-size:17px}
+    .cta-band{padding:30px 18px;border-radius:18px}.cta-band h2{font-size:21px}
+  }
+
+  /* ---- footer ---- */
+  footer{border-top:1px solid var(--line);background:#fff;padding:44px 0 28px;color:var(--muted);font-size:14.5px}
+  .ft-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px;align-items:start}
+  .ft-brand{font-size:19px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .ft-tag{max-width:290px;line-height:1.65}
+  /* ---------- ไอคอนโซเชียลท้ายเว็บ ---------- */
+  .ft-social{display:flex;gap:10px;margin-top:15px}
+  .soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);background:#fff;color:var(--muted);
+    transition:transform .2s,color .2s,background .2s,border-color .2s}
+  .soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+  .soc.tiktok:hover{background:#000}
+  .soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+  .soc.fb:hover{background:#1877F2}
+.soc.yt:hover{background:#FF0000}
+.soc.line:hover{background:#06C755}
+  .soc:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+  .ft-h{font-size:13px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.6px;margin-bottom:11px}
+  .ft-list{list-style:none;display:grid;gap:8px}
+  .ft-list a:hover{color:var(--brand);text-decoration:underline}
+  .ft-line{display:flex;gap:13px;align-items:flex-start;flex-wrap:wrap}  /* แคบแล้วให้ตกลงบรรทัดใหม่ ไม่บีบข้อความ */
+  .ft-qr{width:88px;height:88px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;padding:4px;flex-shrink:0}
+  .ft-lineid{display:inline-flex;align-items:center;gap:6px;background:#06C755;color:#fff;font-weight:800;
+    font-size:14px;padding:7px 14px;border-radius:100px;margin-bottom:7px}
+  .ft-lineid:hover{background:#05a648}
+  .ft-mail{color:var(--brand);font-weight:700;white-space:nowrap}   /* ห้ามตัดกลางอีเมล */
+  .ft-mail:hover{text-decoration:underline}
+  .ft-bot{border-top:1px solid #e2e8f0;margin-top:28px;padding-top:18px;display:flex;gap:12px;
+    flex-wrap:wrap;align-items:center;justify-content:space-between;font-size:13.5px}
+  @media(max-width:760px){
+    .ft-grid{grid-template-columns:1fr;gap:26px}
+    .ft-tag{max-width:none}
+    .ft-bot{justify-content:flex-start}
+  }
+</style>
+<style>
+  /* หน้าบทความเดี่ยว */
+  article{border-top:0;padding:8px 0 44px}
+  article h1{font-size:31px;letter-spacing:-.4px;margin-bottom:16px;line-height:1.3}
+  .backbar{padding:20px 0 0}
+  .backbar a{color:var(--brand);font-weight:700;font-size:14.5px}
+  .backbar a:hover{text-decoration:underline}
+  .more-h{font-size:21px;margin-bottom:18px}
+  @media(max-width:760px){article h1{font-size:23px}}
+  /* ตารางเปรียบเทียบ */
+  .cmpwrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:14px}
+  table.cmp{width:100%;border-collapse:collapse;font-size:14.5px;min-width:520px}
+  table.cmp th,table.cmp td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  table.cmp thead th{background:var(--brand);color:#fff;font-weight:700;font-size:14px;border-bottom:0}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp tbody tr:nth-child(even){background:#f8fbfa}
+  table.cmp td:first-child{font-weight:700;color:var(--brand-d);white-space:nowrap}
+  .yes{color:#059669;font-weight:700}
+  .no{color:#dc2626;font-weight:700}
+  /* กล่องเตือน */
+  article .warn{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;
+    border-radius:10px;padding:14px 18px;margin:16px 0}
+  /* คำถามที่พบบ่อย */
+  .faq details{border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:10px;background:#fff}
+  .faq summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;font-size:15.5px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";float:right;color:var(--accent);font-weight:800}
+  .faq details[open] summary::after{content:"−"}
+  .faq details[open] summary{border-bottom:1px solid var(--line)}
+  .faq details p{padding:14px 18px 4px;margin:0}
+  /* การ์ดฟีเจอร์เรียงเลข */
+  .feat{border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px;margin:0 0 14px;background:#fff;
+    box-shadow:var(--sh-sm);position:relative}
+  .feat > h4{margin:0 0 8px;padding-left:44px;font-size:18px;line-height:1.45;min-height:34px;display:flex;align-items:center}
+  .feat .num{position:absolute;left:20px;top:17px;width:34px;height:34px;border-radius:10px;background:var(--grad);
+    color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 3px 6px rgba(11,27,43,.16)}
+  .feat p{margin-bottom:8px}
+  .feat p:last-child{margin-bottom:0}
+  .chk{background:var(--accent-bg);border-radius:9px;padding:9px 13px;font-size:14px;margin-top:10px}
+  .chk b{color:var(--brand-d)}
+  @media(max-width:640px){
+    .feat{padding:15px 15px 13px}
+    .feat > h4{padding-left:40px;font-size:16.5px}
+    .feat .num{left:15px;top:14px;width:30px;height:30px;font-size:14px}
+  }
+  /* ตัวอย่างคำนวณ */
+  .calcbox{background:var(--accent-bg);border:1px solid #a7e3cd;border-radius:14px;padding:16px 20px;margin:16px 0}
+  .calcbox h4{margin:0 0 10px;font-size:16px;color:var(--brand-d)}
+  .calcbox table{width:100%;border-collapse:collapse;font-size:14.5px}
+  .calcbox td{padding:6px 0;border-bottom:1px solid rgba(15,118,110,.16)}
+  .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
+
+  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
+  .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
+    justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
+  .h1ic svg{width:25px;height:25px;display:block}
+  .h1row h1{margin-bottom:0}
+  @media(max-width:640px){
+    .h1ic{width:38px;height:38px;border-radius:11px}
+    .h1ic svg{width:21px;height:21px}
+    .h1row{gap:11px}
+  }
+  /* ภาพหัวบทความ */
+  .hero-img{margin:0 0 26px;border-radius:var(--r-md);overflow:hidden;position:relative;
+    background:#eaf6f1;box-shadow:var(--sh-md);aspect-ratio:16/7}
+  .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero-img::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
+  .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
+  @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
+  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  .artwrap{position:relative}
+  .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
+    scroll-snap-type:x mandatory;padding:6px 2px 14px;
+    cursor:grab;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .cards::-webkit-scrollbar{display:none}
+  .cards.grabbing{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none;user-select:none}
+  .cards.grabbing .card,.cards.grabbing img{pointer-events:none}
+  .cards > .card{flex:0 0 calc((100% - 66px) / 4);scroll-snap-align:start}
+  .cards > .card img{-webkit-user-drag:none;user-select:none}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+    width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.95);
+    backdrop-filter:blur(8px);box-shadow:var(--sh-md);cursor:pointer;font-size:19px;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;transition:.2s;font-family:inherit}
+  .arrow:hover{background:#fff;transform:translateY(-50%) scale(1.08);box-shadow:var(--sh-lg)}
+  .arrow[disabled]{opacity:0;pointer-events:none}
+  .arrow.prev{left:-20px}
+  .arrow.next{right:-20px}
+  @media(max-width:980px){
+    .cards > .card{flex:0 0 calc((100% - 22px) / 2)}
+    .arrow.prev{left:-8px} .arrow.next{right:-8px}
+  }
+  @media(max-width:640px){
+    .cards{gap:14px}
+    .cards > .card{flex:0 0 82%}
+    .arrow{display:none}
+  }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"เงินเดือนเท่าไหร่ถึงเสียภาษี ตารางคำนวณปี 2569","description":"จุดที่เริ่มเสียภาษีเงินได้บุคคลธรรมดาอยู่ที่ประมาณ 26,700 บาทต่อเดือนสำหรับคนโสดที่ไม่มีลดหย่อนอื่น พร้อมตารางภาษีทุกช่วงเงินเดือนและสูตรคำนวณทีละขั้น","inLanguage":"th","datePublished":"2026-09-05","dateModified":"2026-09-17","image":"https://esimpayroll.com/media/covers/salary-tax-threshold-hero.jpg?v=2","author":{"@type":"Organization","name":"eSimPayroll"},"publisher":{"@type":"Organization","name":"eSimPayroll"},"mainEntityOfPage":"https://esimpayroll.com/article-salary-tax-threshold"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"หน้าแรก","item":"https://esimpayroll.com/"},{"@type":"ListItem","position":2,"name":"บทความ","item":"https://esimpayroll.com/articles"},{"@type":"ListItem","position":3,"name":"เงินเดือนเท่าไหร่ถึงเสียภาษี","item":"https://esimpayroll.com/article-salary-tax-threshold"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"th","mainEntity":[{"@type":"Question","name":"เงินเดือนเท่าไหร่ถึงเริ่มเสียภาษี","acceptedAnswer":{"@type":"Answer","text":"สำหรับคนโสดที่ไม่มีค่าลดหย่อนอื่นนอกจากลดหย่อนส่วนตัวและเงินสมทบประกันสังคม จุดที่เริ่มเสียภาษีอยู่ที่ประมาณ 26,700 บาทต่อเดือน หรือ 320,500 บาทต่อปี เพราะเงินได้ระดับนี้เมื่อหักค่าใช้จ่าย 100,000 บาท ลดหย่อนส่วนตัว 60,000 บาท และเงินสมทบประกันสังคมทั้งปีแล้ว จะเหลือเงินได้สุทธิพอดี 150,000 บาท ซึ่งเป็นเพดานของช่วงที่ได้รับยกเว้นภาษี หากมีค่าลดหย่อนอื่นเช่นประกันชีวิต กองทุนรวมเพื่อการเลี้ยงชีพ หรือดอกเบี้ยบ้าน จุดนี้จะสูงขึ้นไปอีก"}},{"@type":"Question","name":"เงินเดือน 30,000 บาท เสียภาษีเท่าไหร่","acceptedAnswer":{"@type":"Answer","text":"เงินเดือน 30,000 บาท คิดเป็นเงินได้ทั้งปี 360,000 บาท หักค่าใช้จ่าย 100,000 บาท ลดหย่อนส่วนตัว 60,000 บาท และประกันสังคม 10,500 บาท เหลือเงินได้สุทธิ 189,500 บาท เสียภาษีในอัตรา 5 เปอร์เซ็นต์เฉพาะส่วนที่เกิน 150,000 บาท คือ 39,500 บาท คิดเป็นภาษีทั้งปี 1,975 บาท หรือประมาณ 165 บาทต่อเดือน กรณีไม่มีค่าลดหย่อนอื่น"}},{"@type":"Question","name":"ทำไมเงินเดือน 30,000 ถึงเสียภาษีแค่เดือนละ 165 บาท","acceptedAnswer":{"@type":"Answer","text":"เพราะภาษีเงินได้บุคคลธรรมดาของไทยเป็นอัตราก้าวหน้าแบบขั้นบันได ไม่ได้คิดจากเงินเดือนทั้งก้อน เงินได้ 150,000 บาทแรกของเงินได้สุทธิได้รับยกเว้นภาษี อัตรา 5 เปอร์เซ็นต์ใช้เฉพาะส่วนที่เกิน 150,000 ขึ้นไปจนถึง 300,000 เท่านั้น คนที่เข้าใจว่าเงินเดือน 30,000 ต้องเสียภาษี 5 เปอร์เซ็นต์ของ 360,000 คือ 18,000 บาท กำลังเข้าใจผิด"}},{"@type":"Question","name":"เงินเดือนไม่ถึงเกณฑ์ต้องยื่นภาษีไหม","acceptedAnswer":{"@type":"Answer","text":"ต้องยื่น ผู้มีเงินได้จากการจ้างแรงงานที่เป็นโสดและมีเงินได้เกิน 120,000 บาทต่อปี หรือสมรสและมีเงินได้รวมกันเกิน 220,000 บาทต่อปี มีหน้าที่ยื่นแบบแสดงรายการภาษี แม้คำนวณแล้วภาษีที่ต้องชำระจะเป็นศูนย์ก็ตาม การยื่นยังเป็นช่องทางขอคืนภาษีที่ถูกหัก ณ ที่จ่ายไว้เกินด้วย"}},{"@type":"Question","name":"โบนัสกับโอทีนำมารวมคำนวณภาษีด้วยไหม","acceptedAnswer":{"@type":"Answer","text":"รวมทั้งหมด เงินได้จากการจ้างแรงงานตามมาตรา 40 วรรคหนึ่ง (1) รวมถึงเงินเดือน ค่าล่วงเวลา โบนัส ค่าคอมมิชชั่น เบี้ยขยัน ค่าตำแหน่ง และเงินอื่นที่นายจ้างจ่ายให้ ดังนั้นคนที่เงินเดือนไม่ถึงเกณฑ์แต่ได้โบนัสหรือโอทีมาก อาจถูกดันขึ้นไปถึงเกณฑ์เสียภาษีได้"}},{"@type":"Question","name":"แต่งงานมีลูกแล้ว เงินเดือนเท่าไหร่ถึงเสียภาษี","acceptedAnswer":{"@type":"Answer","text":"ถ้าคู่สมรสไม่มีเงินได้และมีบุตร 2 คน ค่าลดหย่อนเพิ่มอีก 120,000 บาทต่อปี เกณฑ์เริ่มเสียภาษีจะขยับขึ้นไปราว 36,700 บาทต่อเดือน เงินเดือน 40,000 ในกรณีนี้เสียภาษีเพียง 1,975 บาทต่อปี จากเดิม 8,450 บาทถ้าเป็นโสด"}},{"@type":"Question","name":"เดือนที่ได้โบนัส ทำไมถูกหักภาษีเยอะ","acceptedAnswer":{"@type":"Answer","text":"นายจ้างส่วนใหญ่คิดภาษีส่วนที่เพิ่มขึ้นจากโบนัสแล้วหักรวมในเดือนที่จ่าย เดือนนั้นจึงถูกหักมากกว่าปกติ แต่ยอดทั้งปีจะถูกคำนวณใหม่ตอนยื่น ภ.ง.ด.91 ถ้าหักเกินก็ขอคืนได้"}},{"@type":"Question","name":"เริ่มงานกลางปี ภาษีคิดยังไง","acceptedAnswer":{"@type":"Answer","text":"ภาษีคิดจากเงินได้ที่ได้รับจริงในปีนั้น คนที่เริ่มงานเดือนกรกฎาคมเงินเดือน 40,000 บาท มีเงินได้ทั้งปี 240,000 บาท หักค่าใช้จ่าย ลดหย่อนส่วนตัว และประกันสังคมแล้วเหลือเงินได้สุทธิ 74,750 บาท จึงไม่เสียภาษี ถ้าบริษัทหักไว้โดยคิดเหมือนทำงานครบ 12 เดือน ขอคืนได้ตอนยื่นภาษี"}},{"@type":"Question","name":"ย้ายงานระหว่างปี ต้องทำยังไง","acceptedAnswer":{"@type":"Answer","text":"ขอหนังสือรับรอง 50 ทวิ จากนายจ้างทุกแห่งที่ทำงานในปีนั้น แล้วรวมเงินได้และภาษีที่ถูกหักจากทุกฉบับลงใน ภ.ง.ด.91 ฉบับเดียว เพราะภาษีคิดจากเงินได้รวมทั้งปี ไม่ได้แยกตามนายจ้าง"}},{"@type":"Question","name":"ซื้อประกันชีวิตช่วยลดภาษีได้เท่าไหร่","acceptedAnswer":{"@type":"Answer","text":"ขึ้นกับขั้นภาษีที่อยู่ คนโสดเงินเดือน 50,000 บาทที่จ่ายเบี้ยประกันชีวิต 100,000 บาท เงินได้สุทธิลดจาก 429,500 เหลือ 329,500 บาท ภาษีลดจาก 20,450 เหลือ 10,450 บาท ประหยัดได้ 10,000 บาทต่อปี คนที่ยังไม่ถึงเกณฑ์เสียภาษีจะไม่ได้ประโยชน์จากลดหย่อนเพิ่ม"}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"วิธีคำนวณว่าเงินเดือนของคุณต้องเสียภาษีเท่าไหร่","inLanguage":"th","step":[{"@type":"HowToStep","position":1,"name":"รวมเงินได้ทั้งปี","text":"เอาเงินเดือนคูณจำนวนเดือนที่ทำงาน แล้วบวกค่าล่วงเวลา โบนัส ค่าคอมมิชชั่น และเงินอื่นที่นายจ้างจ่ายให้ทั้งหมด"},{"@type":"HowToStep","position":2,"name":"หักค่าใช้จ่าย","text":"หักได้ร้อยละ 50 ของเงินได้ แต่ไม่เกิน 100,000 บาท ใครมีเงินได้ตั้งแต่ 200,000 บาทต่อปีขึ้นไปจะหักได้เต็มเพดาน"},{"@type":"HowToStep","position":3,"name":"หักค่าลดหย่อน","text":"ลดหย่อนส่วนตัว 60,000 บาท เงินสมทบประกันสังคมตามที่จ่ายจริง คู่สมรสที่ไม่มีเงินได้ 60,000 บาท บุตรคนละ 30,000 บาท และลดหย่อนอื่นเช่นประกันชีวิตหรือกองทุน"},{"@type":"HowToStep","position":4,"name":"ได้เงินได้สุทธิ","text":"เงินได้ทั้งปีลบค่าใช้จ่ายลบค่าลดหย่อน คือเงินได้สุทธิที่จะนำไปเข้าตารางอัตราภาษี"},{"@type":"HowToStep","position":5,"name":"คิดภาษีแบบขั้นบันได","text":"นำเงินได้สุทธิเข้าตารางทีละขั้น 150,000 บาทแรกยกเว้น ส่วนที่เกินจนถึง 300,000 คิด 5 เปอร์เซ็นต์ ส่วนถัดไปจนถึง 500,000 คิด 10 เปอร์เซ็นต์ ไล่ขึ้นไปตามขั้น"},{"@type":"HowToStep","position":6,"name":"หารเป็นรายเดือน","text":"เอาภาษีทั้งปีหารด้วยจำนวนเดือนที่ทำงาน ได้เป็นยอดภาษีหัก ณ ที่จ่ายที่นายจ้างต้องหักในแต่ละเดือน"}]}
+</script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-05JJT2VDRV"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js",new Date());
+  gtag("config","G-05JJT2VDRV",{anonymize_ip:true});
+</script>
+<style>
+/* ---------- ท้ายเว็บพื้นเข้ม ---------- */
+footer{background:#0b1b2b !important;border-top:0 !important;color:#a9c4d4 !important}
+footer .ft-brand,footer .ft-brand span{color:#fff !important}
+footer .ft-h{color:#6ee7b7 !important}
+footer .ft-list a:hover{color:#6ee7b7 !important}
+footer .ft-bot{border-top:1px solid rgba(255,255,255,.14) !important;color:#8fb0c4}
+footer .ft-mail{color:#6ee7b7 !important}
+/* ---------- ไอคอนโซเชียล ---------- */
+.ft-social{display:flex;gap:10px;margin-top:15px}
+.soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#c2d8e4;
+  transition:transform .2s,color .2s,background .2s,border-color .2s}
+.soc svg{width:19px;height:19px}
+.soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+.soc.tiktok:hover{background:#000}
+.soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+.soc.fb:hover{background:#1877F2}
+.soc.yt:hover{background:#FF0000}
+.soc.line:hover{background:#06C755}
+.soc:focus-visible{outline:2px solid #6ee7b7;outline-offset:2px}
+</style>
+<style>
+  /* ---------- ตาราง / กล่องข้อความ ในเนื้อบทความ ---------- */
+  .tbl-wrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:14px;background:#fff}
+  .tbl-wrap table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:480px}
+  .tbl-wrap th,.tbl-wrap td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  .tbl-wrap thead th{background:var(--brand);color:#fff;font-weight:700;font-size:14px;border-bottom:0;white-space:nowrap}
+  .tbl-wrap tbody tr:last-child td{border-bottom:0}
+  .tbl-wrap tbody tr:nth-child(even){background:#f8fbfa}
+  .tbl-wrap th.num,.tbl-wrap td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .tbl-wrap tfoot td{font-weight:700;background:var(--accent-bg);border-top:2px solid var(--line)}
+  article .note{background:var(--accent-bg);border:1px solid #cfe9dd;border-radius:14px;padding:16px 20px;margin:18px 0}
+  article .note h3{font-size:18px;margin:0 0 8px;color:var(--brand-d)}
+  article .note p:last-child{margin-bottom:0}
+  article .warn{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:10px;padding:14px 18px;margin:16px 0}
+  article h3{font-size:20px;margin:22px 0 8px}
+  article ol{margin:0 0 14px 22px;color:#1f2937}
+  article ol li{margin-bottom:6px}
+  .faq details{border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:10px;background:#fff}
+  .faq summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;font-size:15.5px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";float:right;color:var(--accent);font-weight:800}
+  .faq details[open] summary::after{content:"−"}
+  .faq details[open] summary{border-bottom:1px solid var(--line)}
+  .faq details p{padding:14px 18px 4px;margin:0}
+  @media(max-width:640px){.tbl-wrap table{font-size:13.5px}.tbl-wrap th,.tbl-wrap td{padding:9px 10px}}
+</style>
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png?v=2">
+<link rel="icon" type="image/png" sizes="144x144" href="/brand/favicon-144.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
+<link rel="shortcut icon" href="/brand/favicon-48.png?v=2">
+<link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="/" class="logo"><svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgNav0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgNav0)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
+    <div class="sp">
+      <a href="/features" class="link" data-en="Features">ฟีเจอร์</a>
+        <a href="/pricing" class="link" data-en="Pricing">ราคา</a>
+      <a href="/articles" class="link active" data-en="Articles">บทความ</a>
+      <a href="/tax-calculator" class="link" data-en="Free tax calculator">คำนวณภาษีฟรี</a>
+      <a href="/about" class="link" data-en="About">เกี่ยวกับ</a>
+      <button id="langBtn" class="btn ghost" style="padding:8px 12px;font-size:14px;margin-left:4px">🌐 EN</button>
+        <a href="/app#signup" class="btn primary" style="padding:9px 18px" data-en="30-day free trial">ทดลองฟรี 30 วัน</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap backbar">
+  <a href="/articles" data-en="← All articles">← กลับไปหน้าบทความ</a>
+</div>
+
+<div class="wrap">
+<article>
+    <div class="meta" data-en="Payroll basics · Updated 17 September 2026 · 8 min read">พื้นฐานเงินเดือน · อัปเดต 17 กันยายน 2569 · อ่าน 8 นาที</div>
+    <div class="h1row">
+      <span class="h1ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M4 20V9m5 11V5m5 15v-7m5 7V11"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M3 20h18"/></svg></span>
+      <h1 data-en="What salary do you start paying tax at? A 2026 table">เงินเดือนเท่าไหร่ถึงเสียภาษี — ตารางคำนวณปี 2569</h1>
+    </div>
+
+    <figure class="hero-img">
+      <img src="/media/covers/salary-tax-threshold-hero.jpg?v=2" alt="ตารางแสดงว่าเงินเดือนเท่าไหร่ถึงเริ่มเสียภาษีเงินได้บุคคลธรรมดา"
+           data-en-alt="Table showing the salary level at which Thai personal income tax starts" width="1200" height="525" fetchpriority="high" decoding="async">
+    </figure>
+
+    <p data-en="&lt;strong&gt;About 26,700 baht a month.&lt;/strong&gt; That is where personal income tax starts for a single person with no deductions beyond the personal allowance and social security. Below that you pay nothing. This page shows where that number comes from, what you actually pay at every salary level, and the one misunderstanding that makes people panic about their first tax deduction."><strong>ประมาณ 26,700 บาทต่อเดือน</strong> คือจุดที่เริ่มเสียภาษี สำหรับคนโสดที่ไม่มีค่าลดหย่อนอื่นนอกจากลดหย่อนส่วนตัวและประกันสังคม ต่ำกว่านั้นไม่เสียเลย หน้านี้อธิบายว่าตัวเลขนี้มาจากไหน แต่ละช่วงเงินเดือนเสียเท่าไหร่จริง ๆ และความเข้าใจผิดข้อเดียวที่ทำให้คนตกใจตอนโดนหักภาษีครั้งแรก</p>
+
+    <h2 data-en="The short answer">คำตอบสั้น ๆ</h2>
+    <div class="note" style="background:#dcfce7;border-color:#16a34a">
+      <h3 style="color:#15803d">เงินเดือนไม่เกิน 26,708 บาท = ไม่เสียภาษี</h3>
+      <p style="margin-bottom:0">เงื่อนไข: โสด · ไม่มีค่าลดหย่อนอื่น · หักประกันสังคมเต็มเพดาน · ไม่มีโบนัสหรือโอที<br>
+      ถ้ามีลดหย่อนอื่นเช่นประกันชีวิต กองทุน หรือดอกเบี้ยบ้าน <strong>ตัวเลขนี้จะสูงขึ้นไปอีก</strong></p>
+    </div>
+
+    <h2 data-en="Where 26,708 comes from">26,708 มาจากไหน</h2>
+    <p data-en="Tax is never charged on your salary. It is charged on &lt;strong&gt;net income&lt;/strong&gt; — what is left after expenses and allowances. And the first 150,000 baht of net income is exempt. So the question becomes: what salary produces exactly 150,000 baht of net income?">ภาษีไม่เคยคิดจากเงินเดือน แต่คิดจาก <strong>เงินได้สุทธิ</strong> คือเงินที่เหลือหลังหักค่าใช้จ่ายและค่าลดหย่อนแล้ว และเงินได้สุทธิ <strong>150,000 บาทแรกได้รับยกเว้น</strong> คำถามจึงกลายเป็นว่า เงินเดือนเท่าไหร่ถึงจะเหลือเงินได้สุทธิพอดี 150,000</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="Step">ขั้น</th><th class="num" data-en="Amount (THB)">จำนวน (บาท)</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Annual income (26,708 × 12)">เงินได้ทั้งปี (26,708 × 12)</td><td class="num">320,496</td></tr>
+          <tr><td data-en="Less expenses (50%, capped at 100,000)">หัก ค่าใช้จ่าย (50% สูงสุด 100,000)</td><td class="num" style="color:#b91c1c">− 100,000</td></tr>
+          <tr><td data-en="Less personal allowance">หัก ลดหย่อนส่วนตัว</td><td class="num" style="color:#b91c1c">− 60,000</td></tr>
+          <tr><td data-en="Less social security (875 × 12)">หัก ประกันสังคม (875 × 12)</td><td class="num" style="color:#b91c1c">− 10,500</td></tr>
+          <tr><td data-en="&lt;strong&gt;Net income&lt;/strong&gt;"><strong>เงินได้สุทธิ</strong></td><td class="num"><strong>149,996</strong></td></tr>
+          <tr><td data-en="Tax due (under the 150,000 exemption)">ภาษีที่ต้องเสีย (ยังไม่ถึง 150,000)</td><td class="num"><strong style="color:#15803d">0</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-en="Add one more baht of salary and you cross into the 5% band — but only that one baht is taxed at 5%, not the whole salary. That is the part most people get wrong.">เพิ่มเงินเดือนอีก 1 บาทก็ข้ามเข้าช่วง 5% — แต่<strong>เฉพาะบาทที่เกินเท่านั้น</strong>ที่โดน 5% ไม่ใช่ทั้งเงินเดือน ตรงนี้คือจุดที่คนเข้าใจผิดกันมากที่สุด</p>
+
+    <h2 data-en="What you actually pay at each salary">แต่ละเงินเดือนเสียเท่าไหร่จริง ๆ</h2>
+    <p data-en="Single, no other deductions, no bonus or overtime. Green rows pay nothing.">คนโสด ไม่มีลดหย่อนอื่น ไม่มีโบนัสหรือโอที แถวสีเขียวคือไม่เสียภาษี</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="Monthly salary">เงินเดือน</th><th class="num" data-en="Annual income">เงินได้ทั้งปี</th><th class="num" data-en="Net income">เงินได้สุทธิ</th><th class="num" data-en="Tax per year">ภาษี/ปี</th><th class="num" data-en="Tax per month">ภาษี/เดือน</th></tr></thead>
+        <tbody>
+          <tr style="background:#f0fdf4"><td>15,000</td><td class="num">180,000</td><td class="num">21,000</td><td class="num"><strong style="color:#15803d">ไม่เสีย</strong></td><td class="num">—</td></tr>
+          <tr style="background:#f0fdf4"><td>20,000</td><td class="num">240,000</td><td class="num">69,500</td><td class="num"><strong style="color:#15803d">ไม่เสีย</strong></td><td class="num">—</td></tr>
+          <tr style="background:#f0fdf4"><td>25,000</td><td class="num">300,000</td><td class="num">129,500</td><td class="num"><strong style="color:#15803d">ไม่เสีย</strong></td><td class="num">—</td></tr>
+          <tr><td>30,000</td><td class="num">360,000</td><td class="num">189,500</td><td class="num">1,975</td><td class="num"><strong>164.58</strong></td></tr>
+          <tr><td>35,000</td><td class="num">420,000</td><td class="num">249,500</td><td class="num">4,975</td><td class="num"><strong>414.58</strong></td></tr>
+          <tr><td>40,000</td><td class="num">480,000</td><td class="num">309,500</td><td class="num">8,450</td><td class="num"><strong>704.17</strong></td></tr>
+          <tr><td>50,000</td><td class="num">600,000</td><td class="num">429,500</td><td class="num">20,450</td><td class="num"><strong>1,704.17</strong></td></tr>
+          <tr><td>60,000</td><td class="num">720,000</td><td class="num">549,500</td><td class="num">34,925</td><td class="num"><strong>2,910.42</strong></td></tr>
+          <tr><td>80,000</td><td class="num">960,000</td><td class="num">789,500</td><td class="num">72,900</td><td class="num"><strong>6,075</strong></td></tr>
+          <tr><td>100,000</td><td class="num">1,200,000</td><td class="num">1,029,500</td><td class="num">122,375</td><td class="num"><strong>10,197.92</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <h3>ดูตัวเลขนี้ให้ดี</h3>
+      <p style="margin-bottom:0">เงินเดือน <strong>30,000</strong> เสียภาษีเดือนละ <strong>165 บาท</strong> ไม่ใช่หลักพัน<br>
+      เงินเดือน <strong>50,000</strong> เสียเดือนละ <strong>1,704 บาท</strong> คิดเป็น <strong>3.4%</strong> ของเงินเดือน ไม่ใช่ 15% ตามที่ชื่อขั้นบอก</p>
+    </div>
+
+    <h2 data-en="The misunderstanding that causes the panic">ความเข้าใจผิดที่ทำให้ตกใจ</h2>
+    <p data-en="Many people think that crossing into a tax band means the whole salary is taxed at that rate. It does not work that way anywhere in Thai tax law.">หลายคนเข้าใจว่าพอเข้าขั้นภาษีไหน เงินเดือนทั้งก้อนจะโดนอัตรานั้น ซึ่ง<strong>ไม่ใช่</strong> กฎหมายภาษีไทยไม่ได้ทำงานแบบนั้น</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="Belief">ที่คิดกัน</th><th data-en="Reality">ความจริง</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Salary 30,000 → income 360,000 → 5% → tax 18,000 per year">เงินเดือน 30,000 → เงินได้ 360,000 → 5% → เสีย <strong style="color:#b91c1c">18,000/ปี</strong></td><td data-en="Only the 39,500 baht above the exemption is taxed at 5% → 1,975 per year">เก็บ 5% เฉพาะ 39,500 บาทที่เกินยกเว้น → <strong style="color:#15803d">1,975/ปี</strong></td></tr>
+          <tr><td data-en="Getting a raise into the next band means taking home less">ขึ้นเงินเดือนแล้วข้ามขั้น เงินเหลือน้อยลง</td><td data-en="Impossible. Only the portion inside the new band is taxed higher, so take-home always rises.">เป็นไปไม่ได้ อัตราใหม่ใช้เฉพาะส่วนที่อยู่ในขั้นนั้น เงินสุทธิจึง<strong>เพิ่มขึ้นเสมอ</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 data-en="The tax bands in full">ตารางขั้นบันไดภาษีเต็ม</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="Net income (THB)">เงินได้สุทธิ (บาท)</th><th class="num" data-en="Rate">อัตรา</th><th class="num" data-en="Max tax in this band">ภาษีสูงสุดในขั้นนี้</th></tr></thead>
+        <tbody>
+          <tr style="background:#f0fdf4"><td>0 – 150,000</td><td class="num"><strong style="color:#15803d">ยกเว้น</strong></td><td class="num">0</td></tr>
+          <tr><td>150,001 – 300,000</td><td class="num">5%</td><td class="num">7,500</td></tr>
+          <tr><td>300,001 – 500,000</td><td class="num">10%</td><td class="num">20,000</td></tr>
+          <tr><td>500,001 – 750,000</td><td class="num">15%</td><td class="num">37,500</td></tr>
+          <tr><td>750,001 – 1,000,000</td><td class="num">20%</td><td class="num">50,000</td></tr>
+          <tr><td>1,000,001 – 2,000,000</td><td class="num">25%</td><td class="num">250,000</td></tr>
+          <tr><td>2,000,001 – 5,000,000</td><td class="num">30%</td><td class="num">900,000</td></tr>
+          <tr><td data-en="Over 5,000,000">เกิน 5,000,000</td><td class="num">35%</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure style="margin:26px 0">
+      <img src="/media/covers/salary-tax-threshold-full.jpg?v=4" width="1086" height="1448" loading="lazy"
+        style="width:100%;height:auto;border-radius:14px;border:1px solid #e2e8f0"
+        alt="อินโฟกราฟิกสรุปอัตราภาษีเงินได้บุคคลธรรมดาทุกขั้น พร้อมค่าลดหย่อนที่ควรรู้"
+        data-en-alt="Infographic summarising every Thai personal income tax band and the main allowances">
+      <figcaption style="text-align:center;font-size:14px;color:#64748b;margin-top:10px"
+        data-en="Save or share this summary — every band, plus the allowances that matter.">
+        บันทึกหรือแชร์ภาพนี้ไว้ดูได้เลย — ครบทุกขั้น พร้อมค่าลดหย่อนที่ควรรู้</figcaption>
+    </figure>
+
+    <h2 data-en="Things that raise your threshold">อะไรทำให้เกณฑ์สูงขึ้น</h2>
+    <p data-en="Every extra allowance pushes the point at which you start paying tax further up.">ค่าลดหย่อนทุกตัวจะดันจุดที่เริ่มเสียภาษีให้สูงขึ้น</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="Allowance">ค่าลดหย่อน</th><th class="num" data-en="Amount">จำนวน</th><th data-en="Effect on the threshold">ผลต่อเกณฑ์</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Spouse with no income">คู่สมรสไม่มีเงินได้</td><td class="num">60,000</td><td data-en="Roughly +5,000 baht of monthly salary">เกณฑ์ขยับขึ้นราว <strong>+5,000</strong> บาท/เดือน</td></tr>
+          <tr><td data-en="Each child">บุตร (คนละ)</td><td class="num">30,000</td><td data-en="Roughly +2,500 baht per child">ขยับขึ้นราว <strong>+2,500</strong> บาท/เดือน ต่อคน</td></tr>
+          <tr><td data-en="Life insurance premiums">เบี้ยประกันชีวิต</td><td class="num" data-en="Up to 100,000">สูงสุด 100,000</td><td data-en="Up to about +8,300 baht">สูงสุดราว <strong>+8,300</strong> บาท/เดือน</td></tr>
+          <tr><td data-en="Provident fund">กองทุนสำรองเลี้ยงชีพ</td><td class="num" data-en="As contributed">ตามที่จ่ายจริง</td><td data-en="Deducted before tax, so it lowers taxable income directly">หักก่อนคิดภาษี ลดฐานภาษีโดยตรง</td></tr>
+          <tr><td data-en="Home loan interest">ดอกเบี้ยเงินกู้ซื้อบ้าน</td><td class="num" data-en="Up to 100,000">สูงสุด 100,000</td><td data-en="Up to about +8,300 baht">สูงสุดราว <strong>+8,300</strong> บาท/เดือน</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <h3>อย่าลืมโบนัสกับโอที</h3>
+      <p style="margin-bottom:0">ภาษีคิดจาก<strong>เงินได้ทั้งปี</strong> ไม่ใช่แค่เงินเดือน — ค่าล่วงเวลา โบนัส ค่าคอมมิชชั่น เบี้ยขยัน ค่าตำแหน่ง นับรวมหมด<br>
+      คนที่เงินเดือน 25,000 (ต่ำกว่าเกณฑ์) แต่ได้โบนัส 2 เดือน จะมีเงินได้ทั้งปี 350,000 <strong>ซึ่งเกินเกณฑ์แล้ว</strong></p>
+    </div>
+
+    <h2 data-en="Three real-life cases">3 กรณีที่เจอบ่อย คิดให้ดูทีละบรรทัด</h2>
+    <p>ตารางด้านบนเป็นกรณีคนโสดทำงานครบปี แต่ชีวิตจริงมีครอบครัว มีโบนัส และเข้างานกลางปี ตัวเลขเลยเปลี่ยนไปมาก</p>
+
+    <h3 data-en="Case 1: married with two children, salary 40,000">กรณีที่ 1 — แต่งงาน คู่สมรสไม่มีรายได้ ลูก 2 คน เงินเดือน 40,000</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>รายการ</th><th class="num">โสด</th><th class="num">มีครอบครัว</th></tr></thead>
+        <tbody>
+          <tr><td>เงินได้ทั้งปี</td><td class="num">480,000</td><td class="num">480,000</td></tr>
+          <tr><td>หักค่าใช้จ่าย</td><td class="num">−100,000</td><td class="num">−100,000</td></tr>
+          <tr><td>ลดหย่อนส่วนตัว</td><td class="num">−60,000</td><td class="num">−60,000</td></tr>
+          <tr><td>ลดหย่อนคู่สมรส</td><td class="num">—</td><td class="num">−60,000</td></tr>
+          <tr><td>ลดหย่อนบุตร 2 คน</td><td class="num">—</td><td class="num">−60,000</td></tr>
+          <tr><td>ประกันสังคม</td><td class="num">−10,500</td><td class="num">−10,500</td></tr>
+          <tr><td><strong>เงินได้สุทธิ</strong></td><td class="num"><strong>309,500</strong></td><td class="num"><strong>189,500</strong></td></tr>
+          <tr><td><strong>ภาษีทั้งปี</strong></td><td class="num"><strong>8,450</strong></td><td class="num"><strong style="color:#15803d">1,975</strong></td></tr>
+          <tr><td>ภาษีต่อเดือน</td><td class="num">704.17</td><td class="num">164.58</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>เงินเดือนเท่ากัน แต่คนมีครอบครัวเสียภาษี<strong>น้อยกว่าราว 4 เท่า</strong> เกณฑ์เริ่มเสียภาษีของกรณีนี้ขยับขึ้นไปอยู่ราว <strong>36,700 บาท/เดือน</strong> — ข้อสำคัญคือพนักงานต้อง<strong>แจ้งข้อมูลลดหย่อนให้ฝ่ายบุคคล</strong> (แบบ ล.ย.01) ไม่งั้นบริษัทจะหักภาษีแบบคนโสดไปทั้งปี แล้วต้องไปขอคืนเอง</p>
+
+    <h3 data-en="Case 2: salary 25,000 plus a two-month bonus">กรณีที่ 2 — เงินเดือน 25,000 ได้โบนัส 2 เดือน</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>รายการ</th><th class="num">ไม่มีโบนัส</th><th class="num">มีโบนัส 50,000</th></tr></thead>
+        <tbody>
+          <tr><td>เงินได้ทั้งปี</td><td class="num">300,000</td><td class="num">350,000</td></tr>
+          <tr><td>หักค่าใช้จ่าย + ลดหย่อน + ประกันสังคม</td><td class="num">−170,500</td><td class="num">−170,500</td></tr>
+          <tr><td><strong>เงินได้สุทธิ</strong></td><td class="num"><strong>129,500</strong></td><td class="num"><strong>179,500</strong></td></tr>
+          <tr><td><strong>ภาษีทั้งปี</strong></td><td class="num"><strong style="color:#15803d">0</strong></td><td class="num"><strong>1,475</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>เดือนปกติไม่ถูกหักภาษีเลย แต่<strong>เดือนที่ได้โบนัสจะถูกหักรวดเดียว 1,475 บาท</strong> เพราะวิธีที่นายจ้างส่วนใหญ่ใช้คือ คิดภาษีทั้งปีแบบรวมโบนัส ลบด้วยภาษีแบบไม่รวมโบนัส แล้วหักส่วนต่างในเดือนที่จ่าย พนักงานหลายคนตกใจเดือนนั้น แต่ยอดทั้งปีถูกต้องแล้ว</p>
+
+    <h3 data-en="Case 3: started in July, salary 40,000">กรณีที่ 3 — เริ่มงานเดือนกรกฎาคม เงินเดือน 40,000</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>รายการ</th><th class="num">จำนวน (บาท)</th></tr></thead>
+        <tbody>
+          <tr><td>เงินได้ทั้งปี (6 เดือน)</td><td class="num">240,000</td></tr>
+          <tr><td>หักค่าใช้จ่าย (50% ไม่เกิน 100,000)</td><td class="num">−100,000</td></tr>
+          <tr><td>ลดหย่อนส่วนตัว</td><td class="num">−60,000</td></tr>
+          <tr><td>ประกันสังคม (875 × 6)</td><td class="num">−5,250</td></tr>
+          <tr><td><strong>เงินได้สุทธิ</strong></td><td class="num"><strong>74,750</strong></td></tr>
+          <tr><td><strong>ภาษีทั้งปี</strong></td><td class="num"><strong style="color:#15803d">0</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>เงินเดือน 40,000 ปกติต้องเสียเดือนละ 704 บาท แต่ปีแรกที่เข้างานกลางปี<strong>ไม่ต้องเสียเลย</strong> ถ้าบริษัทคิดภาษีเหมือนทำงานครบ 12 เดือน จะหักเกินไปรวม 4,225 บาท ซึ่งพนักงานต้องไปขอคืนตอนยื่น ภ.ง.ด.91 — ระบบเงินเดือนที่ดีควร<strong>เฉลี่ยตามจำนวนเดือนที่จ่ายจริงในปีนั้น</strong> ตั้งแต่แรก</p>
+    <div class="note">
+      <p style="margin-bottom:0"><strong>ถ้าย้ายมาจากที่ทำงานเดิมในปีเดียวกัน</strong> เงินได้จากทั้งสองที่ต้องรวมกันตอนยื่นภาษี กรณีนี้อาจต้องเสียภาษีเพิ่มตอนยื่น เพราะแต่ละบริษัทคิดภาษีจากเงินที่ตัวเองจ่ายเท่านั้น เก็บ 50 ทวิ จากทุกที่ไว้ให้ครบ</p>
+    </div>
+
+    <h2 data-en="Allowances: how much tax each one really saves">ลดหย่อนแต่ละตัว ประหยัดภาษีได้จริงเท่าไหร่</h2>
+    <p>ลดหย่อน 10,000 บาท ไม่ได้ประหยัดภาษี 10,000 บาท — ประหยัดประมาณ<strong>ลดหย่อน × อัตราภาษีขั้นสูงสุดที่คุณอยู่</strong></p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>เงินเดือน (โสด)</th><th class="num">ขั้นภาษีสูงสุด</th><th class="num">ลดหย่อน 10,000 ประหยัดได้</th><th class="num">ลดหย่อน 100,000 ประหยัดได้</th></tr></thead>
+        <tbody>
+          <tr><td>25,000</td><td class="num">ยกเว้น</td><td class="num">0</td><td class="num">0</td></tr>
+          <tr><td>30,000</td><td class="num">5%</td><td class="num">500</td><td class="num">1,975 *</td></tr>
+          <tr><td>50,000</td><td class="num">10%</td><td class="num">1,000</td><td class="num">10,000</td></tr>
+          <tr><td>60,000</td><td class="num">15%</td><td class="num">1,500</td><td class="num">12,475</td></tr>
+          <tr><td>80,000</td><td class="num">20%</td><td class="num">2,000</td><td class="num">16,975</td></tr>
+          <tr><td>100,000</td><td class="num">25%</td><td class="num">2,500</td><td class="num">21,475</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:14px;color:var(--muted)">* ประหยัดได้ไม่เกินภาษีที่เสียอยู่ทั้งหมด · ลดหย่อนก้อนใหญ่ประหยัดได้น้อยกว่า "× อัตราสูงสุด" เล็กน้อย เพราะส่วนหนึ่งตกลงไปขั้นที่ต่ำกว่า</p>
+    <p>ข้อสรุป: <strong>คนที่ยังไม่ถึงเกณฑ์ไม่ต้องรีบซื้อประกันหรือกองทุนเพื่อลดภาษี</strong> เพราะไม่มีภาษีให้ลด ส่วนคนที่อยู่ขั้น 10% ขึ้นไป ลดหย่อนเริ่มคุ้มค่าชัดเจน</p>
+
+    <h2 data-en="Checklist for employees">เช็กลิสต์สำหรับพนักงาน</h2>
+    <ul>
+      <li>แจ้งสถานะสมรส จำนวนบุตร และลดหย่อนอื่นให้ฝ่ายบุคคลตั้งแต่ต้นปี</li>
+      <li>ดูสลิปเดือนแรก ๆ ว่าถูกหักภาษีสอดคล้องกับตารางในหน้านี้หรือไม่</li>
+      <li>เดือนที่ได้โบนัส ถูกหักเยอะกว่าปกติเป็นเรื่องปกติ</li>
+      <li>ขอ 50 ทวิ จากนายจ้างทุกแห่ง (ออกให้ภายใน 15 กุมภาพันธ์ หรือภายใน 1 เดือนหลังลาออก)</li>
+      <li>ยื่น ภ.ง.ด.91 ภายใน 31 มีนาคม แม้ไม่ต้องเสียภาษี — และขอคืนถ้าถูกหักเกิน</li>
+    </ul>
+
+    <h2 data-en="Below the threshold? You still have to file">ไม่ถึงเกณฑ์ก็ยังต้องยื่น</h2>
+    <p data-en="Paying no tax and not having to file are different things.">การ<strong>ไม่เสียภาษี</strong> กับการ<strong>ไม่ต้องยื่น</strong> เป็นคนละเรื่องกัน</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th data-en="Status">สถานะ</th><th class="num" data-en="Must file if annual income exceeds">ต้องยื่นเมื่อเงินได้ทั้งปีเกิน</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Single">โสด</td><td class="num">120,000</td></tr>
+          <tr><td data-en="Married (combined)">สมรส (รวมกัน)</td><td class="num">220,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-en="Filing is also how you claim back withholding tax that was over-deducted during the year — for many people the refund is the whole point.">การยื่นยังเป็นช่องทาง<strong>ขอคืนภาษี</strong>ที่ถูกหัก ณ ที่จ่ายไว้เกินระหว่างปีด้วย สำหรับหลายคนนี่คือเหตุผลหลักที่ต้องยื่น</p>
+
+    <div class="note" style="background:#0e3a5c;color:#fff;border-color:#0e3a5c">
+      <p style="margin:0;color:#fff">🧮 <strong>อยากรู้ตัวเลขของตัวเอง?</strong> ใช้ <a href="/tax-calculator" style="color:#6ee7b7;font-weight:700">เครื่องคำนวณภาษีเงินเดือนฟรี</a> ใส่เงินเดือนและค่าลดหย่อน รู้ผลทันที</p>
+    </div>
+
+    <div class="note sources">
+      <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
+      <ul style="margin:6px 0 0 18px">
+        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
+      </ul>
+      <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
+    </div>
+
+    <h2 data-en="Frequently asked questions">คำถามที่พบบ่อย</h2>
+    <div class="faq">
+      <details><summary>เงินเดือนเท่าไหร่ถึงเริ่มเสียภาษี</summary><p>คนโสดที่มีแค่ลดหย่อนส่วนตัวและประกันสังคม เริ่มเสียภาษีเมื่อเงินเดือนเกินประมาณ 26,708 บาท หรือเงินได้ทั้งปีราว 320,500 บาท ถ้ามีค่าลดหย่อนอื่นจุดนี้จะสูงขึ้น</p></details>
+      <details><summary>เงินเดือน 30,000 บาท เสียภาษีเท่าไหร่</summary><p>เงินได้ทั้งปี 360,000 หักค่าใช้จ่าย 100,000 ลดหย่อนส่วนตัว 60,000 และประกันสังคม 10,500 เหลือเงินได้สุทธิ 189,500 เสีย 5% ของส่วนที่เกิน 150,000 คือ 1,975 บาทต่อปี หรือราว 165 บาทต่อเดือน</p></details>
+      <details><summary>ทำไมเงินเดือน 30,000 ถึงเสียภาษีแค่เดือนละ 165 บาท</summary><p>เพราะภาษีเป็นขั้นบันได 150,000 บาทแรกของเงินได้สุทธิยกเว้น อัตรา 5% ใช้เฉพาะส่วนที่เกินเท่านั้น ไม่ได้คิด 5% จากเงินได้ทั้งก้อน</p></details>
+      <details><summary>เงินเดือนไม่ถึงเกณฑ์ต้องยื่นภาษีไหม</summary><p>ต้องยื่น คนโสดที่มีเงินเดือนทั้งปีเกิน 120,000 บาท หรือสมรสมีเงินได้รวมเกิน 220,000 บาท ต้องยื่นแบบแม้ภาษีเป็นศูนย์ และใช้ขอคืนภาษีที่ถูกหักเกินได้</p></details>
+      <details><summary>โบนัสกับโอทีนำมารวมคำนวณภาษีด้วยไหม</summary><p>รวมทั้งหมด เงินเดือน โอที โบนัส ค่าคอมมิชชั่น เบี้ยขยัน และค่าตำแหน่ง เป็นเงินได้ประเภทเดียวกัน คนที่เงินเดือนไม่ถึงเกณฑ์อาจเกินเกณฑ์ได้เพราะโบนัสหรือโอที</p></details>
+      <details><summary>แต่งงานมีลูกแล้ว เงินเดือนเท่าไหร่ถึงเสียภาษี</summary><p>ถ้าคู่สมรสไม่มีเงินได้และมีบุตร 2 คน ค่าลดหย่อนเพิ่มอีก 120,000 บาทต่อปี เกณฑ์เริ่มเสียภาษีจะขยับขึ้นไปราว 36,700 บาทต่อเดือน เงินเดือน 40,000 ในกรณีนี้เสียภาษีเพียง 1,975 บาทต่อปี จากเดิม 8,450 บาทถ้าเป็นโสด</p></details>
+      <details><summary>เดือนที่ได้โบนัส ทำไมถูกหักภาษีเยอะ</summary><p>นายจ้างส่วนใหญ่คิดภาษีส่วนที่เพิ่มขึ้นจากโบนัสแล้วหักรวมในเดือนที่จ่าย เดือนนั้นจึงถูกหักมากกว่าปกติ แต่ยอดทั้งปีจะถูกคำนวณใหม่ตอนยื่น ภ.ง.ด.91 ถ้าหักเกินก็ขอคืนได้</p></details>
+      <details><summary>เริ่มงานกลางปี ภาษีคิดยังไง</summary><p>ภาษีคิดจากเงินได้ที่ได้รับจริงในปีนั้น คนที่เริ่มงานเดือนกรกฎาคมเงินเดือน 40,000 บาท มีเงินได้ทั้งปี 240,000 บาท หักค่าใช้จ่าย ลดหย่อนส่วนตัว และประกันสังคมแล้วเหลือเงินได้สุทธิ 74,750 บาท จึงไม่เสียภาษี ถ้าบริษัทหักไว้โดยคิดเหมือนทำงานครบ 12 เดือน ขอคืนได้ตอนยื่นภาษี</p></details>
+      <details><summary>ย้ายงานระหว่างปี ต้องทำยังไง</summary><p>ขอหนังสือรับรอง 50 ทวิ จากนายจ้างทุกแห่งที่ทำงานในปีนั้น แล้วรวมเงินได้และภาษีที่ถูกหักจากทุกฉบับลงใน ภ.ง.ด.91 ฉบับเดียว เพราะภาษีคิดจากเงินได้รวมทั้งปี ไม่ได้แยกตามนายจ้าง</p></details>
+      <details><summary>ซื้อประกันชีวิตช่วยลดภาษีได้เท่าไหร่</summary><p>ขึ้นกับขั้นภาษีที่อยู่ คนโสดเงินเดือน 50,000 บาทที่จ่ายเบี้ยประกันชีวิต 100,000 บาท เงินได้สุทธิลดจาก 429,500 เหลือ 329,500 บาท ภาษีลดจาก 20,450 เหลือ 10,450 บาท ประหยัดได้ 10,000 บาทต่อปี คนที่ยังไม่ถึงเกณฑ์เสียภาษีจะไม่ได้ประโยชน์จากลดหย่อนเพิ่ม</p></details>
+    </div>
+
+    <div class="note">
+      <p style="margin-bottom:0"><strong>ตัวเลขในหน้านี้คำนวณจากอัตราภาษีเงินได้บุคคลธรรมดาและค่าลดหย่อนมาตรฐาน</strong> ใช้เป็นแนวทางประมาณการ กรณีที่มีเงินได้หลายประเภท มีลดหย่อนเฉพาะ หรือต้องการความแม่นยำเพื่อยื่นจริง ควรตรวจสอบกับกรมสรรพากรหรือผู้ทำบัญชีอีกครั้ง</p>
+    </div>
+
+    <div class="cta-band">
+      <h2 data-en="Let the payroll do the tax">ให้ระบบคิดภาษีให้</h2>
+      <p data-en="eSimPayroll works out the progressive tax for every employee from their actual annual income — salary, overtime, bonus and allowances included — deducts social security and provident fund first, then spreads the tax evenly across the months worked. It produces the 50 Bis certificate and form P.N.D.1 ready to file. 30 days free, no credit card.">eSimPayroll คิดภาษีขั้นบันไดให้พนักงานทุกคนจากเงินได้ทั้งปีจริง — รวมเงินเดือน โอที โบนัส และเงินเพิ่มทุกประเภท หักประกันสังคมกับกองทุนก่อน แล้วเฉลี่ยภาษีตามเดือนที่ทำงาน พร้อมออกหนังสือรับรอง 50 ทวิ และแบบ ภ.ง.ด.1 ให้ยื่นได้เลย ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต</p>
+      <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มทดลองฟรี 30 วัน</a>
+        <a href="/features" class="btn ghost" data-en="See all features">ดูฟีเจอร์ทั้งหมด</a>
+      </div>
+    </div>
+
+  </article>
+</div>
+
+<section style="background:var(--bg);border-top:1px solid var(--line)">
+  <div class="wrap wide">
+    <h2 class="more-h" data-en="More articles">บทความอื่น ๆ</h2>
+    <div class="artwrap">
+      <button class="arrow prev" id="artPrev" aria-label="เลื่อนซ้าย">‹</button>
+      <button class="arrow next" id="artNext" aria-label="เลื่อนขวา">›</button>
+      <div class="cards">
+      <a href="/article-how-to-calculate-salary" class="card">
+        <div class="cover"><img width="760" height="507" loading="lazy" alt="วิธีคำนวณเงินเดือนพนักงาน ประกันสังคม และภาษี" src="/media/covers/unpaid-leave-deduction-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="How-to">วิธีคำนวณ</span>
+          <h3 data-en="วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างจริง">วิธีคำนวณเงินเดือนพนักงาน พร้อมตัวอย่างจริง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="/article-monthly-vs-daily" class="card">
+        <div class="cover"><img width="760" height="507" loading="lazy" alt="เปรียบเทียบพนักงานรายเดือนกับพนักงานรายวัน" src="/media/covers/monthly-vs-daily-employees-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="Pay types">ประเภทการจ้าง</span>
+          <h3 data-en="พนักงานรายเดือน vs รายวัน ต่างกันยังไง">พนักงานรายเดือน vs รายวัน ต่างกันยังไง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="/article-withholding-tax" class="card">
+        <div class="cover"><img width="760" height="507" loading="lazy" alt="วิธีคำนวณภาษีหัก ณ ที่จ่ายจากเงินเดือน" src="/media/covers/payroll-withholding-tax-calculation-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="Tax">ภาษี</span>
+          <h3 data-en="ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="/article-online-payslip" class="card">
+        <div class="cover"><img width="760" height="507" loading="lazy" alt="โปรแกรมสลิปเงินเดือนออนไลน์ ออกสลิปให้พนักงาน" src="/media/covers/online-payslip-software-thailand-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="Payslip">สลิปเงินเดือน</span>
+          <h3 data-en="โปรแกรมสลิปเงินเดือนออนไลน์ ออกสลิปยังไงให้ครบถูกต้อง">โปรแกรมสลิปเงินเดือนออนไลน์ ออกสลิปยังไงให้ครบถูกต้อง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+      
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="cta-band">
+    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
+    <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
+      <a href="/" class="btn ghost" data-en="See all features">ดูฟีเจอร์ทั้งหมด</a>
+      <a href="/pricing" class="btn ghost" data-en="See pricing">ดูราคา</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="ft-grid">
+
+      <div>
+        <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+
+        <div class="ft-social">
+          <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener"
+             aria-label="TikTok ของ eSimPayroll" title="TikTok">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 0 1 0-5.18c.27 0 .53.04.77.12v-3.2a5.7 5.7 0 0 0-.77-.05A5.72 5.72 0 0 0 4.14 15.3a5.72 5.72 0 0 0 5.72 5.72 5.72 5.72 0 0 0 5.72-5.72V9.4a7.35 7.35 0 0 0 4.28 1.37V7.68a4.29 4.29 0 0 1-3.26-1.86z"/></svg>
+          </a>
+          <a class="soc fb" href="https://www.facebook.com/people/esimpayroll/61593817897037/" target="_blank" rel="noopener" aria-label="Facebook eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg></a>
+          <a class="soc yt" href="https://www.youtube.com/@esimpayroll" target="_blank" rel="noopener" aria-label="YouTube eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.75-1.77C18.3 5 12 5 12 5s-6.3 0-7.85.43A2.5 2.5 0 0 0 2.4 7.2C2 8.77 2 12 2 12s0 3.23.4 4.8a2.5 2.5 0 0 0 1.75 1.77C5.7 19 12 19 12 19s6.3 0 7.85-.43a2.5 2.5 0 0 0 1.75-1.77C22 15.23 22 12 22 12s0-3.23-.4-4.8zM10 15.02V8.98L15.2 12 10 15.02z"/></svg></a>
+          <a class="soc ig" href="https://www.instagram.com/esimpayroll" target="_blank" rel="noopener"
+             aria-label="Instagram ของ eSimPayroll" title="Instagram">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.1" cy="6.9" r="1.15" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="soc line" href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener"
+             aria-label="LINE ของ eSimPayroll" title="LINE">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M12 3C6.9 3 2.75 6.36 2.75 10.5c0 3.7 3.29 6.8 7.74 7.39.3.07.71.2.81.46.09.24.06.6.03.85l-.13.79c-.4.24-.19.92.81.5s5.4-3.18 7.37-5.45a6.7 6.7 0 0 0 1.87-4.54C21.25 6.36 17.1 3 12 3zM8.3 12.9H6.4a.4.4 0 0 1-.4-.4V9.06a.4.4 0 1 1 .8 0v3.04h1.5a.4.4 0 1 1 0 .8zm1.66-.4a.4.4 0 1 1-.8 0V9.06a.4.4 0 1 1 .8 0zm4.03 0a.4.4 0 0 1-.72.24l-1.78-2.42v2.18a.4.4 0 1 1-.8 0V9.06a.4.4 0 0 1 .72-.24l1.78 2.42V9.06a.4.4 0 1 1 .8 0zm2.87-2.12a.4.4 0 0 1 0 .8h-1.5v.72h1.5a.4.4 0 1 1 0 .8h-1.9a.4.4 0 0 1-.4-.4V9.06a.4.4 0 0 1 .4-.4h1.9a.4.4 0 1 1 0 .8h-1.5v.72z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Menu">เมนู</div>
+        <ul class="ft-list">
+          <li><a href="/#features" data-en="Features">ฟีเจอร์</a></li>
+          <li><a href="/pricing" data-en="Pricing">แพ็กเกจและราคา</a></li>
+          <li><a href="/articles" data-en="Articles">บทความ</a></li>
+          <li><a href="/about" data-en="About us">เกี่ยวกับเรา</a></li>
+          <li><a href="/app#signup" data-en="30-day free trial">ทดลองฟรี 30 วัน</a></li>
+          <li><a href="/contact" data-en="Contact us">ติดต่อเรา</a></li>
+          <li><a href="/refund" data-en="Cancellation &amp; refunds">การยกเลิกและคืนเงิน</a></li>
+          <li><a href="/privacy" data-en="Privacy policy">นโยบายความเป็นส่วนตัว</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Contact">ติดต่อเรา</div>
+        <div class="ft-line">
+          <a href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener">
+            <img src="/brand/line-qr-512.png?v=3" alt="LINE @esimpayroll" class="ft-qr" width="88" height="88" loading="lazy">
+          </a>
+          <div>
+            <a href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener" class="ft-lineid" data-en="Add friend">เพิ่มเพื่อน</a>
+            <div style="font-size:12.5px" data-en="Scan the QR or tap the button">สแกน QR หรือกดปุ่มด้านบน</div>
+            <div style="margin-top:9px"><a href="mailto:hello@esimpayroll.com" class="ft-mail">hello@esimpayroll.com</a></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ft-bot">
+      <div data-en="© 2026 eSimPayroll · All rights reserved">© 2569 eSimPayroll · สงวนลิขสิทธิ์</div>
+      <div data-en="Made for Thai businesses 🇹🇭">พัฒนาเพื่อธุรกิจไทย 🇹🇭</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var KEY='lang';
+  function apply(l){
+    document.documentElement.lang = (l==='en'?'en':'th');
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      if(!el.hasAttribute('data-th')) el.setAttribute('data-th', el.innerHTML);
+      el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-th');
+    });
+    document.querySelectorAll('[data-en-ph]').forEach(function(el){
+      if(!el.hasAttribute('data-th-ph')) el.setAttribute('data-th-ph', el.placeholder||'');
+      el.placeholder = (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-th-ph');
+    });
+
+  document.querySelectorAll('[data-en-alt]').forEach(function(el){
+    if(!el.hasAttribute('data-th-alt')) el.setAttribute('data-th-alt', el.alt||'');
+    el.alt = (l==='en') ? el.getAttribute('data-en-alt') : el.getAttribute('data-th-alt');
+  });
+    var b=document.getElementById('langBtn'); if(b) b.textContent = (l==='en'?'🌐 TH':'🌐 EN');
+    try{ localStorage.setItem(KEY,l); }catch(e){}
+  }
+  var cur='th'; try{ cur = localStorage.getItem(KEY)||'th'; }catch(e){}
+  window.__setLang=apply;
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(cur);
+    var b=document.getElementById('langBtn');
+    if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); };
+  });
+})();
+</script>
+<script>
+/* แถว "บทความอื่น ๆ" · ลากการ์ดเลื่อนได้ + ปุ่มลูกศรเลื่อนทีละใบ (เหมือนหน้าแรก) */
+(function(){
+  var box=document.querySelector('.cards'), prev=document.getElementById('artPrev'), next=document.getElementById('artNext');
+  if(!box) return;
+  var GAP=parseFloat(getComputedStyle(box).gap)||22;
+  function step(){ var c=box.querySelector('.card'); return c ? c.getBoundingClientRect().width+GAP : 300; }
+  function sync(){
+    if(!prev||!next) return;
+    var max=box.scrollWidth-box.clientWidth-2;
+    prev.disabled = box.scrollLeft<=2;
+    next.disabled = box.scrollLeft>=max;
+  }
+  if(prev) prev.onclick=function(){ box.scrollBy({left:-step(),behavior:'smooth'}); };
+  if(next) next.onclick=function(){ box.scrollBy({left: step(),behavior:'smooth'}); };
+  box.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync);
+  window.addEventListener('load',sync);
+  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
+  setTimeout(sync,60); setTimeout(sync,400); sync();
+
+  var down=false, dragging=false, startX=0, startScroll=0, moved=0, lastX=0, lastT=0, vel=0, glide=0;
+  box.addEventListener('pointerdown', function(e){
+    if(e.pointerType!=='mouse' || e.button!==0) return;
+    cancelAnimationFrame(glide);
+    down=true; dragging=false; moved=0;
+    startX=lastX=e.clientX; startScroll=box.scrollLeft; lastT=e.timeStamp; vel=0;
+  });
+  box.addEventListener('pointermove', function(e){
+    if(!down) return;
+    var dx=e.clientX-startX;
+    if(!dragging){
+      if(Math.abs(dx)<5) return;
+      dragging=true; box.classList.add('grabbing');
+      try{ box.setPointerCapture(e.pointerId); }catch(err){}
+    }
+    e.preventDefault();
+    moved=Math.abs(dx);
+    box.scrollLeft=startScroll-dx;
+    sync();
+    var dt=e.timeStamp-lastT;
+    if(dt>0){ vel=(e.clientX-lastX)/dt; lastX=e.clientX; lastT=e.timeStamp; }
+  });
+  function release(e){
+    if(!down) return;
+    down=false;
+    if(!dragging) return;
+    try{ box.releasePointerCapture(e.pointerId); }catch(err){}
+    box.classList.remove('grabbing'); dragging=false; sync();
+    var v=vel*16;
+    function stop(){ box.style.scrollSnapType=''; box.style.scrollBehavior=''; sync(); }
+    setTimeout(stop, 800);
+    (function slide(){
+      if(Math.abs(v)<0.6){ stop(); return; }
+      box.style.scrollSnapType='none'; box.style.scrollBehavior='auto';
+      box.scrollLeft-=v; v*=0.92; sync();
+      glide=requestAnimationFrame(slide);
+    })();
+  }
+  box.addEventListener('pointerup', release);
+  box.addEventListener('pointercancel', release);
+  box.addEventListener('click', function(e){
+    if(moved>5){ e.preventDefault(); e.stopPropagation(); moved=0; }
+  }, true);
+  box.addEventListener('dragstart', function(e){ e.preventDefault(); });
+})();
+</script>
+</body>
+</html>

@@ -2,6 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /app
 Disallow: /app.html
-Disallow: /Payroll-tutorial.html
 
-Sitemap: https://payroll-mtd.vercel.app/sitemap.xml
+Sitemap: https://esimpayroll.com/sitemap.xml
