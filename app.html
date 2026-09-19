@@ -911,8 +911,9 @@ async function ckLoad(){
   const fromTs=new Date(CK_STATE.from+'T00:00:00+07:00').toISOString(), toTs=new Date(CK_STATE.to+'T23:59:59+07:00').toISOString();
   const [c,u,p]=await Promise.all([
     sb.from('checkin_config').select('*').eq('owner_id',MY_UID).maybeSingle(),
-    sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at,face_photo,face_enrolled_at').eq('owner_id',MY_UID)
-      .then(x=>x.error&&/face_/.test(x.error.message)?sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at').eq('owner_id',MY_UID):x),
+    sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at,role,dept,position,face_photo,face_enrolled_at').eq('owner_id',MY_UID)
+      .then(x=>x.error&&/position/.test(x.error.message)?sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at,role,dept,face_photo,face_enrolled_at').eq('owner_id',MY_UID):x)
+      .then(x=>x.error&&/face_|role|dept/.test(x.error.message)?sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at').eq('owner_id',MY_UID):x),
     sb.from('punches').select('*')
       .eq('owner_id',MY_UID).gte('ts',fromTs).lte('ts',toTs).order('ts',{ascending:false}).limit(2000)
   ]);
@@ -920,6 +921,14 @@ async function ckLoad(){
   if(e){ CK_STATE.err=/relation|does not exist|schema cache/i.test(e.message)?'nosql':e.message; }
   CK_STATE.cfg=c.data||null; CK_STATE.users=u.data||[]; CK_STATE.punches=p.data||[]; CK_STATE.loaded=true;
 }
+/* ระดับของพนักงานในระบบลงเวลา/สายอนุมัติ — ตั้งเองในข้อมูลพนักงาน หรือเดาจากตำแหน่ง/แผนก */
+function guessRole(e){
+  const t=((e&&e.position)||'')+' | '+((e&&e.dept)||'');
+  if(/ceo|cfo|coo|cto|\bmd\b|managing director|president|owner|กรรมการ|ประธาน|ผู้บริหารระดับสูง|ผู้อำนวยการ|เจ้าของ|ผู้บริหาร/i.test(t)) return 'exec';
+  if(/หัวหน้า|ผู้จัดการ|ผจก|manager|supervisor|ซุปเปอร์ไวเซอร์|ซูเปอร์ไวเซอร์|\blead\b|\bhead\b|foreman|โฟร์แมน/i.test(t)) return 'head';
+  return 'staff';
+}
+function empRole(e){ return (e&&e.ckRole) || guessRole(e); }
 function vCheckin(v){
   ckAutoMerge(); ckLeaveSync();
   if(!CK_STATE.loaded){ v.appendChild(el(`<div class="panel"><div class="empty">กำลังโหลด…</div></div>`));
@@ -941,7 +950,7 @@ function vCheckin(v){
   const todayIso=ckBkk(new Date().toISOString())[0];
   const hm=t=>{ const m=/^(\d{1,2}):(\d{2})/.exec(t||''); return m?(+m[1])*60+(+m[2]):null; };
   const dayList=[]; { const {from,to}=periodRange(PERIOD); for(let d=new Date(from); d<=to; d.setDate(d.getDate()+1)){ const iso=isoOf(d); if(iso>todayIso) break; dayList.push(iso); } }
-  const tracked=staff.filter(e=>{ const u=byEmp.get(e.id); return u&&u.active; });
+  const tracked=staff.filter(e=>{ const u=byEmp.get(e.id); return u&&u.active&&u.role!=='exec'; });   // ผู้บริหารไม่ต้องลงเวลา
   const byEmpDay=new Map();   // empId|day -> {in:'HH:MM' เร็วสุด}
   S.punches.forEach(p=>{ const [d,t]=ckBkk(p.ts); const k=p.emp_id+'|'+d; const o=byEmpDay.get(k)||{};
     if(p.kind==='in'){ if(!o.in||t<o.in) o.in=t; } else o.out=t; byEmpDay.set(k,o); });
@@ -1151,13 +1160,17 @@ function vCheckin(v){
     ระบบเก็บรหัสผ่านแบบเข้ารหัส — ดูย้อนหลังไม่ได้ ถ้าลืมให้ตั้งใหม่</p>
     <button class="btn sm" id="ckBulk" ${cfg.code?'':'disabled title="บันทึกการตั้งค่าบริษัทก่อน"'}>🔑 สร้างบัญชีให้ทุกคนที่ยังไม่มี (รหัสผ่านสุ่ม)</button>
   </div>
-  <div class="tbl-wrap"><table><thead><tr><th>รหัส</th><th>ชื่อ</th><th>ชื่อผู้ใช้</th><th>ใบหน้า</th><th>สถานะ</th><th></th></tr></thead><tbody>
+  <div class="tbl-wrap"><table><thead><tr><th>รหัส</th><th>ชื่อ</th><th>ชื่อผู้ใช้</th><th>ประเภทบัญชี</th><th>ใบหน้า</th><th>สถานะ</th><th></th></tr></thead><tbody>
   ${staff.map(e=>{ const u=byEmp.get(e.id);
     const st=!u?'<span class="chip" style="background:#f1f5f9;color:#64748b">ยังไม่มีบัญชี</span>'
       : !u.active?'<span class="chip" style="background:#fee2e2;color:#b91c1c">ปิดใช้งาน</span>'
       : (u.locked_until&&new Date(u.locked_until)>new Date())?'<span class="chip" style="background:#fef3c7;color:#b45309">ล็อก 15 นาที (รหัสผิด)</span>'
       : '<span class="chip" style="background:#dcfce7;color:#16a34a">ใช้งานได้</span>';
     return `<tr><td>${esc(e.code)}</td><td>${esc(e.name)}</td><td><strong>${u?esc(u.emp_code):'<span class="muted">-</span>'}</strong></td>
+      <td>${u?`<select data-role="${u.id}" style="font-size:13px;padding:4px 6px">
+        <option value="staff" ${(u.role||'staff')==='staff'?'selected':''}>พนักงาน</option>
+        <option value="head" ${u.role==='head'?'selected':''}>หัวหน้า/ผู้จัดการ</option>
+        <option value="exec" ${u.role==='exec'?'selected':''}>ผู้บริหาร/CEO (อนุมัติอย่างเดียว)</option></select>`:'<span class="muted">-</span>'}</td>
       <td>${u&&u.face_enrolled_at?`<img src="${u.face_photo||''}" data-face="${u.id}" alt="" title="ลงทะเบียนเมื่อ ${esc(ckBkk(u.face_enrolled_at).join(' '))}" style="width:36px;height:36px;object-fit:cover;border-radius:50%;cursor:zoom-in;vertical-align:middle;border:2px solid #10b981">`
         :(u?'<span class="muted" style="font-size:12px">ลงทะเบียนตอนลงเวลาครั้งแรก</span>':'<span class="muted">-</span>')}</td><td>${st}</td>
       <td style="text-align:right;white-space:nowrap">
@@ -1203,6 +1216,18 @@ function vCheckin(v){
     if(!u) $('#caPw').value=ckPin();
   });
   accP.querySelectorAll('[data-link]').forEach(b=>b.onclick=()=>copy(userLink(b.dataset.link)));
+  accP.querySelectorAll('[data-role]').forEach(s=>s.onchange=async()=>{
+    const {error}=await sb.from('checkin_users').update({role:s.value}).eq('id',s.dataset.role);
+    { const u=S.users.find(x=>x.id===s.dataset.role), e=u&&DB.employees.find(x=>x.id===u.emp_id); if(e&&!error){ e.ckRole=s.value; save(); } }
+    if(error){ toast(/role/.test(error.message)?'ยังไม่ได้รัน supabase-checkin-8.sql':('ไม่สำเร็จ: '+error.message)); render(); return; }
+    toast(s.value==='exec'?'เปลี่ยนเป็นผู้บริหาร — ลิงก์จะมีแค่รายการอนุมัติ':s.value==='head'?'เปลี่ยนเป็นหัวหน้า — ลงเวลาได้และอนุมัติใบลาได้':'เปลี่ยนเป็นพนักงาน'); });
+  /* แผนกในบัญชีลงเวลาให้ตรงกับข้อมูลพนักงานเสมอ (ใช้เลือกผู้อนุมัติของแผนก) */
+  { const fix=S.users.filter(u=>{ const e=DB.employees.find(x=>x.id===u.emp_id); if(!e || u.dept===undefined) return false;
+      if(!e.ckRole && u.role && u.role!=='staff'){ e.ckRole=u.role; save(); }        // ข้อมูลเดิมที่ตั้งจากหน้านี้ → เก็บเข้าข้อมูลพนักงาน
+      return (u.dept||'')!==((e.dept||'').trim()) || empRole(e)!==(u.role||'staff') || u.emp_name!==e.name || (u.position!==undefined && (u.position||'')!==((e.position||'').trim())); });
+    fix.forEach(u=>{ const e=DB.employees.find(x=>x.id===u.emp_id); u.role=empRole(e);
+      const sel=accP.querySelector('[data-role="'+u.id+'"]'); if(sel) sel.value=u.role;
+      sb.from('checkin_users').update(Object.assign({dept:(e.dept||'').trim(),emp_name:e.name,role:empRole(e)},u.position!==undefined?{position:(e.position||'').trim()}:{})).eq('id',u.id).then(()=>{}); }); }
   accP.querySelectorAll('[data-face]').forEach(im=>im.onclick=()=>{ const u=S.users.find(x=>x.id===im.dataset.face);
     openModal('🙂 ใบหน้าที่ลงทะเบียน — '+esc(u.emp_name||u.emp_code),`<img src="${u.face_photo}" alt="" style="width:100%;max-width:320px;border-radius:14px;display:block;margin:0 auto">
       <p class="muted" style="text-align:center;margin-top:8px;font-size:13px">ลงทะเบียนเมื่อ ${esc(ckBkk(u.face_enrolled_at).join(' '))}</p>`,[['ปิด','',closeModal]]); });
@@ -1228,6 +1253,118 @@ function vCheckin(v){
     }
     if(skip) toast(`ข้าม ${skip} คน (รหัสพนักงานใช้เป็นชื่อผู้ใช้ไม่ได้ — ตั้งเองทีละคน)`);
     if(out.length) showCreds(out); else render();
+  };
+
+  /* ---- ผู้บริหาร/CEO ที่ไม่อยู่ในรายชื่อพนักงาน (อนุมัติอย่างเดียว) ---- */
+  const extUsers=S.users.filter(u=>String(u.emp_id).startsWith('ext:'));
+  const exP=el(`<div class="panel"><div style="padding:16px 18px">
+    <h3 style="margin-bottom:4px">👔 ผู้บริหาร / CEO (อนุมัติใบลาอย่างเดียว)</h3>
+    <p class="muted" style="font-size:13px;margin-bottom:10px">สำหรับผู้อนุมัติที่<strong>ไม่ได้อยู่ในรายชื่อพนักงาน</strong> (เช่น กรรมการ) — ลิงก์มีแค่รายการอนุมัติ ไม่มีลงเวลา/ใบลา
+    · ถ้าผู้บริหารเป็นพนักงานอยู่แล้ว ให้เปลี่ยน “ประเภทบัญชี” ในตารางด้านบนเป็น “ผู้บริหาร/CEO” แทน</p>
+    ${extUsers.length?`<div class="tbl-wrap"><table><thead><tr><th>ชื่อ</th><th>ชื่อผู้ใช้</th><th>สถานะ</th><th></th></tr></thead><tbody>
+      ${extUsers.map(u=>`<tr><td>${esc(u.emp_name)}</td><td><strong>${esc(u.emp_code)}</strong></td>
+        <td>${u.active?'<span class="chip" style="background:#dcfce7;color:#16a34a">ใช้งานได้</span>':'<span class="chip" style="background:#fee2e2;color:#b91c1c">ปิดใช้งาน</span>'}</td>
+        <td style="text-align:right;white-space:nowrap"><button class="btn ghost sm" data-xedit="${u.id}">✏️ รหัสผ่าน</button>
+          <button class="btn ghost sm" data-link="${esc(u.emp_code)}">🔗 คัดลอกลิงก์</button>
+          <button class="btn ghost sm" data-act="${u.id}" data-on="${u.active?0:1}">${u.active?'ปิด':'เปิด'}</button></td></tr>`).join('')}
+    </tbody></table></div>`:''}
+    <button class="btn sm" id="ckAddExec" style="margin-top:10px" ${cfg.code?'':'disabled'}>➕ เพิ่มผู้บริหาร / CEO</button>
+  </div></div>`);
+  v.appendChild(exP);
+  const execModal=(u)=>{
+    openModal(u?'✏️ ตั้งรหัสผ่านผู้บริหาร':'➕ เพิ่มผู้บริหาร / CEO',
+      `<div class="field"><label>ชื่อ-นามสกุล</label><input id="xName" value="${esc(u?u.emp_name:'')}" ${u?'readonly':''}></div>
+       <div class="field" style="margin-top:10px"><label>ชื่อผู้ใช้ (a-z, 0-9, จุด, ขีด · 3–30 ตัว)</label><input id="xLogin" value="${esc(u?u.emp_code:'')}" style="text-transform:uppercase" autocomplete="off"></div>
+       <div class="field" style="margin-top:10px"><label>รหัสผ่าน (4–32 ตัวอักษร)</label>
+         <div style="display:flex;gap:6px"><input id="xPw" type="text" autocomplete="new-password" style="flex:1" value="${ckPin()}"><button class="btn ghost sm" id="xGen">🎲 สุ่ม</button></div></div>`,
+      [['ยกเลิก','ghost',closeModal],['💾 บันทึก','',async()=>{
+        const name=$('#xName').value.trim(), login=$('#xLogin').value.trim().toUpperCase(), pw=$('#xPw').value;
+        if(name.length<2){ toast('ใส่ชื่อ'); return; }
+        if(!/^[A-Z0-9._-]{3,30}$/.test(login)){ toast(ERRS.bad_login); return; }
+        if(pw.length<4||pw.length>32){ toast(ERRS.bad_pin); return; }
+        const empId=u?u.emp_id:'ext:'+crypto.randomUUID().slice(0,12);
+        const {data:id,error}=await sb.rpc('checkin_set_user',{p_emp_id:empId,p_emp_code:login,p_emp_name:name,p_pin:pw});
+        if(error){ toast('ไม่สำเร็จ: '+errMsg(error)); return; }
+        const {error:e2}=await sb.from('checkin_users').update({role:'exec'}).eq('id',id||(u&&u.id));
+        if(e2){ toast(/role/.test(e2.message)?'ยังไม่ได้รัน supabase-checkin-8.sql':('ตั้งประเภทบัญชีไม่สำเร็จ: '+e2.message)); return; }
+        showCreds([{name,login,pw}]);
+      }]]);
+    $('#xGen').onclick=()=>{ $('#xPw').value=ckPin(); };
+  };
+  exP.querySelector('#ckAddExec').onclick=()=>execModal(null);
+  exP.querySelectorAll('[data-xedit]').forEach(b=>b.onclick=()=>execModal(S.users.find(x=>x.id===b.dataset.xedit)));
+  exP.querySelectorAll('[data-link]').forEach(b=>b.onclick=()=>copy(userLink(b.dataset.link)));
+  exP.querySelectorAll('[data-act]').forEach(b=>b.onclick=async()=>{
+    const {error}=await sb.from('checkin_users').update({active:b.dataset.on==='1'}).eq('id',b.dataset.act);
+    if(error){ toast('ไม่สำเร็จ: '+error.message); return; } render(); });
+
+  /* ---- สายอนุมัติใบลา (ขั้นเดียว) ---- */
+  const A=Object.assign({enabled:false,ceo:'',depts:{},overrides:{},delegates:[]}, cfg.approval||{});
+  const actU=S.users.filter(u=>u.active);
+  const uName=id=>{ const u=S.users.find(x=>x.id===id); return u?u.emp_name+(u.role==='exec'?' (ผู้บริหาร)':u.role==='head'?' (หัวหน้า)':''):''; };
+  const uOpts=(sel,extra)=>`${extra||''}${actU.slice().sort((a,b)=>(b.role>a.role?1:-1)).map(u=>`<option value="${u.id}" ${sel===u.id?'selected':''}>${esc(uName(u.id))}</option>`).join('')}`;
+  const depts=[...new Set(DB.employees.map(e=>(e.dept||'').trim()).filter(Boolean))].sort();
+  const apP=el(`<div class="panel"><div style="padding:16px 18px">
+    <h3 style="margin-bottom:4px">🧭 สายอนุมัติใบลา</h3>
+    <p class="muted" style="font-size:13px;margin-bottom:10px">อนุมัติขั้นเดียว — ผู้อนุมัติกดแล้วจบ ใบลาเข้าระบบลางานทันที · HR แก้ในหน้าระบบลางานได้เสมอ<br>
+    ใบลาไปหา: ข้อยกเว้นรายคน → ผู้อนุมัติของแผนก → ผู้อนุมัติสูงสุด · ผู้อนุมัติของแผนกลาเอง → ผู้อนุมัติสูงสุด · ผู้อนุมัติสูงสุดลาเอง → HR</p>
+    <label style="display:flex;gap:8px;align-items:center;font-weight:700"><input type="checkbox" id="apOn" ${A.enabled?'checked':''} style="width:18px;height:18px"> เปิดใช้สายอนุมัติ (ปิด = ใบลาไปที่ HR อย่างเดียว)</label>
+    <div class="field" style="margin-top:12px;max-width:420px"><label>👔 ผู้อนุมัติสูงสุด (CEO / ผู้บริหาร)</label>
+      <select id="apCeo">${uOpts(A.ceo,'<option value="">— ยังไม่เลือก (ไปที่ HR) —</option>')}</select></div>
+
+    <h4 style="margin:16px 0 6px">ผู้อนุมัติของแต่ละแผนก</h4>
+    ${depts.length?`<div class="tbl-wrap"><table><thead><tr><th>แผนก</th><th>ผู้อนุมัติ</th></tr></thead><tbody>
+      ${depts.map(d=>`<tr><td>${esc(d)}</td><td><select data-apd="${esc(d)}">${uOpts(A.depts[d],'<option value="">— ไม่มี (ไปที่ผู้อนุมัติสูงสุด) —</option>')}</select></td></tr>`).join('')}
+    </tbody></table></div>`:'<p class="muted" style="font-size:13px">ยังไม่มีแผนกในข้อมูลพนักงาน — ใส่แผนกในหน้าข้อมูลพนักงานก่อน</p>'}
+
+    <h4 style="margin:16px 0 6px">ข้อยกเว้นรายคน</h4>
+    <div id="apOv"></div><button class="btn ghost sm" id="apOvAdd">＋ เพิ่มข้อยกเว้น</button>
+
+    <h4 style="margin:16px 0 6px">ผู้อนุมัติแทน (ชั่วคราว)</h4>
+    <p class="muted" style="font-size:12.5px;margin-bottom:6px">เช่น หัวหน้าลาพักร้อน ให้อีกคนอนุมัติแทนในช่วงวันที่นี้ (ใช้กับใบลาที่ยื่นเข้ามาในช่วงนั้น)</p>
+    <div id="apDel"></div><button class="btn ghost sm" id="apDelAdd">＋ เพิ่มผู้อนุมัติแทน</button>
+
+    <div style="margin-top:16px"><button class="btn" id="apSave">💾 บันทึกสายอนุมัติ</button></div>
+  </div></div>`);
+  v.appendChild(apP);
+  const staffAll=DB.employees.filter(e=>!e.resignDate);
+  const ov=Object.entries(A.overrides||{}).map(([emp,to])=>({emp,to}));
+  const dl=(A.delegates||[]).map(x=>({...x}));
+  const drawOv=()=>{ const box=apP.querySelector('#apOv'); box.innerHTML=ov.length?'':'<div class="muted" style="font-size:13px">ไม่มี</div>';
+    ov.forEach((o,i)=>{ const r=el(`<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
+      <select data-k="emp">${'<option value="">— พนักงาน —</option>'+staffAll.map(e=>`<option value="${e.id}" ${o.emp===e.id?'selected':''}>${esc(e.code)} ${esc(e.name)}</option>`).join('')}</select>
+      <span>→</span><select data-k="to">${uOpts(o.to,`<option value="ceo" ${o.to==='ceo'?'selected':''}>ผู้อนุมัติสูงสุด (CEO)</option>`)}</select>
+      <button class="btn ghost sm" data-x style="color:#dc2626">ลบ</button></div>`);
+      r.querySelectorAll('select').forEach(s=>s.onchange=()=>{ o[s.dataset.k]=s.value; });
+      r.querySelector('[data-x]').onclick=()=>{ ov.splice(i,1); drawOv(); }; box.appendChild(r); }); };
+  const drawDl=()=>{ const box=apP.querySelector('#apDel'); box.innerHTML=dl.length?'':'<div class="muted" style="font-size:13px">ไม่มี</div>';
+    dl.forEach((o,i)=>{ const r=el(`<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
+      <select data-k="from_user">${uOpts(o.from_user,'<option value="">— ผู้อนุมัติ —</option>')}</select><span>ให้</span>
+      <select data-k="to_user">${uOpts(o.to_user,'<option value="">— อนุมัติแทน —</option>')}</select>
+      <input type="date" data-k="from" value="${o.from||''}"><span>ถึง</span><input type="date" data-k="to" value="${o.to||''}">
+      <button class="btn ghost sm" data-x style="color:#dc2626">ลบ</button></div>`);
+      r.querySelectorAll('select,input').forEach(s=>s.onchange=()=>{ o[s.dataset.k]=s.value; });
+      r.querySelector('[data-x]').onclick=()=>{ dl.splice(i,1); drawDl(); }; box.appendChild(r); }); };
+  drawOv(); drawDl();
+  apP.querySelector('#apOvAdd').onclick=()=>{ ov.push({emp:'',to:'ceo'}); drawOv(); };
+  apP.querySelector('#apDelAdd').onclick=()=>{ dl.push({from_user:'',to_user:'',from:ckBkk(new Date().toISOString())[0],to:''}); drawDl(); };
+  apP.querySelector('#apSave').onclick=async()=>{
+    if(!cfg.code){ toast('บันทึกการตั้งค่าบริษัทก่อน'); return; }
+    const depMap={}; apP.querySelectorAll('[data-apd]').forEach(s=>{ if(s.value) depMap[s.dataset.apd]=s.value; });
+    const ovMap={}; ov.forEach(o=>{ if(o.emp&&o.to) ovMap[o.emp]=o.to; });
+    const dels=dl.filter(o=>o.from_user&&o.to_user&&o.from&&o.to&&o.to>=o.from&&o.from_user!==o.to_user);
+    if(dels.length!==dl.length){ toast('ผู้อนุมัติแทนบางแถวยังกรอกไม่ครบหรือวันที่ไม่ถูกต้อง'); return; }
+    const on=apP.querySelector('#apOn').checked, ceo=apP.querySelector('#apCeo').value;
+    if(on && !ceo && !Object.keys(depMap).length){ toast('เลือกผู้อนุมัติสูงสุด หรือผู้อนุมัติของแผนกอย่างน้อย 1 แผนก'); return; }
+    const approval={enabled:on, ceo, depts:depMap, overrides:ovMap, delegates:dels};
+    const {error}=await sb.from('checkin_config').update({approval, updated_at:new Date().toISOString()}).eq('owner_id',MY_UID);
+    if(error){ toast(/approval/.test(error.message)?'ยังไม่ได้รัน supabase-checkin-8.sql':('บันทึกไม่สำเร็จ: '+error.message)); return; }
+    // ผู้อนุมัติของแผนกที่ยังเป็นบัญชีพนักงานธรรมดา → เปลี่ยนเป็นหัวหน้า (ให้เห็นปุ่มอนุมัติ)
+    const heads=[...new Set([...Object.values(depMap),...Object.values(ovMap).filter(x=>x!=='ceo'),...dels.map(d=>d.to_user)])]
+      .filter(id=>{ const u=S.users.find(x=>x.id===id); return u&&(u.role||'staff')==='staff'; });
+    if(heads.length){ await sb.from('checkin_users').update({role:'head'}).in('id',heads);
+      heads.forEach(id=>{ const u=S.users.find(x=>x.id===id), e=u&&DB.employees.find(x=>x.id===u.emp_id); if(e) e.ckRole='head'; }); save(); }
+    toast('บันทึกสายอนุมัติแล้ว'); render();
   };
 
   /* ---- 3) บันทึกการลงเวลา ---- */
@@ -1356,27 +1493,38 @@ async function ckLeaveSync(force){
     (news||[]).forEach(q=>{
       done.push(q.id);
       if(!known.has(q.emp_id) || L.some(l=>l.reqId===q.id)) return;
-      if(q.status!=='pending') return;                   // ยกเลิกก่อนแอดมินเห็น ไม่ต้องเพิ่ม
+      if(q.status==='cancelled') return;                 // ยกเลิกก่อนแอดมินเห็น ไม่ต้องเพิ่ม
       const hours=q.hours!=null?+q.hours:null;
-      L.push({ id:uid(), reqId:q.id, empId:q.emp_id, type:q.type, status:'pending', from:q.from_date, to:q.to_date,
+      const by=q.decided_by_name?` · ${q.status==='approved'?'อนุมัติ':'ไม่อนุมัติ'}โดย ${q.decided_by_name}${q.decide_note?' ('+q.decide_note+')':''}`:(q.approver_name?` · ผู้อนุมัติ ${q.approver_name}`:'');
+      L.push({ id:uid(), reqId:q.id, reqStatus:q.status, files:Array.isArray(q.attachments)?q.attachments.length:0, empId:q.emp_id, type:q.type, status:q.status, from:q.from_date, to:q.to_date,
                days: hours!=null?hrsToDays(hours):leaveDaysCount(q.from_date,q.to_date), hours,
-               reason:(q.reason?q.reason+' · ':'')+'ยื่นจากมือถือ' });
+               reason:(q.reason?q.reason+' · ':'')+'ยื่นจากมือถือ'+by });
       added++; changed=true;
     });
     if(done.length) await sb.from('leave_requests').update({synced:true}).in('id',done);
     // 2) ส่งสถานะกลับ + รับการยกเลิกจากพนักงาน
     const mine=L.filter(l=>l.reqId);
     if(mine.length){
-      const {data:rs}=await sb.from('leave_requests').select('id,status').in('id',mine.map(l=>l.reqId));
-      const st=new Map((rs||[]).map(x=>[x.id,x.status]));
+      const {data:rs}=await sb.from('leave_requests').select('id,status,decided_by_name,decide_note').in('id',mine.map(l=>l.reqId));
+      const st=new Map((rs||[]).map(x=>[x.id,x]));
       for(const l of mine){
-        const s=st.get(l.reqId); if(!s) continue;
+        const q=st.get(l.reqId); if(!q) continue; const s=q.status;
         if(s==='cancelled'){ if(l.status==='pending'){ L.splice(L.indexOf(l),1); changed=true; } continue; }
+        const known=l.reqStatus||'pending';
+        if(s!==known){                                   // ผู้อนุมัติตัดสินในมือถือ → ใช้ค่าจากเซิร์ฟเวอร์
+          l.status=s; l.reqStatus=s; changed=true;
+          if(q.decided_by_name && !String(l.reason||'').includes('โดย '+q.decided_by_name))
+            l.reason=(l.reason||'')+` · ${s==='approved'?'อนุมัติ':'ไม่อนุมัติ'}โดย ${q.decided_by_name}${q.decide_note?' ('+q.decide_note+')':''}`;
+          continue;
+        }
         const want=['pending','approved','rejected'].includes(l.status)?l.status:'approved';
-        if(s!==want) await sb.from('leave_requests').update({status:want, decided_at:new Date().toISOString()}).eq('id',l.reqId);
+        if(s!==want){                                    // HR แก้ในระบบลางาน → ส่งกลับให้พนักงานเห็น
+          await sb.from('leave_requests').update({status:want, decided_at:new Date().toISOString(), decided_by_name:'ฝ่ายบุคคล (HR)'}).eq('id',l.reqId);
+          l.reqStatus=want; changed=true;
+        }
       }
     }
-    if(changed){ save(); if(added) toast(`📱 มีใบลาใหม่จากมือถือ ${num(added)} ใบ — รออนุมัติในระบบลางาน`); if(['leave','attend','checkin'].includes(PAGE)) render(); }
+    if(changed){ save(); if(added) toast(`📱 มีใบลาใหม่จากมือถือ ${num(added)} ใบ`); if(['leave','attend','checkin'].includes(PAGE)) render(); }
   }catch(e){} finally{ _lvSyncBusy=false; }
 }
 
@@ -2862,7 +3010,7 @@ function empForm(id){
         <option value="F" ${e.gender==='F'?'selected':''}>♀ หญิง</option></select></div>
       <div class="field"><label>สัญชาติ</label><input id="f_nationality" value="${esc(e.nationality||'ไทย')}" list="natList"><datalist id="natList"><option value="ไทย"><option value="พม่า"><option value="ลาว"><option value="กัมพูชา"><option value="เวียดนาม"></datalist></div>
       <div class="field"><label>ตำแหน่ง</label><input id="f_position" value="${esc(e.position)}"></div>
-      <div class="field"><label>เบอร์โทร</label><input id="f_phone" value="${esc(e.phone||'')}" inputmode="tel" placeholder="08x-xxx-xxxx"></div>
+      <div class="field"><label>เบอร์โทร</label><input id="f_phone" value="${esc(e.phone||'')}" inputmode="numeric" maxlength="10" placeholder="08xxxxxxxx (10 หลัก)" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10);this.style.borderColor=(this.value&&this.value.length<9)?'#f59e0b':''"></div>
       <div class="field"><label>แผนก</label><input id="f_dept" value="${esc(e.dept)}" list="deptList"></div>
       <div class="field"><label>ประเภทการจ้าง *</label><select id="f_payType">
         <option value="monthly" ${!isDaily?'selected':''}>รายเดือน</option>
@@ -2885,7 +3033,7 @@ function empForm(id){
         </div>
       </div>
       <div class="field"><label>วันที่ลาออก <span style="color:#94a3b8;font-size:11px">(เว้นว่างถ้ายังทำงานอยู่)</span></label><input id="f_resignDate" type="date" value="${e.resignDate||''}"></div>
-      <div class="field"><label>เลขบัตรประชาชน (13 หลัก)</label><input id="f_taxId" value="${esc(e.taxId)}" maxlength="13"></div>
+      <div class="field"><label>เลขบัตรประชาชน (13 หลัก)</label><input id="f_taxId" value="${esc(e.taxId)}" inputmode="numeric" maxlength="13" placeholder="ตัวเลข 13 หลัก" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13);this.style.borderColor=(this.value&&this.value.length<13)?'#f59e0b':''"></div>
       <div class="field"><label>อัตราสะสม กสล. (%)</label>
         <input id="f_pvdRate" type="number" step="0.5" min="0" value="${e.pvdRate||0}">
         <div class="muted" style="font-size:11px;margin-top:2px">กองทุนสำรองเลี้ยงชีพ</div></div>
@@ -2900,6 +3048,11 @@ function empForm(id){
         <option value="0" ${!e.noSSO?'selected':''}>เข้าประกันสังคม (หัก 5%)</option>
         <option value="1" ${e.noSSO?'selected':''}>ยกเว้น — ไม่หัก/ไม่ยื่น (เช่น กรรมการ)</option></select>
         <div class="muted" style="font-size:11px;margin-top:2px">* ตำแหน่งที่มีคำว่า "กรรมการ" ระบบยกเว้นให้อัตโนมัติ</div></div>
+      <div class="field"><label>ระดับ (สิทธิ์ในลิงก์ลงเวลา)</label><select id="f_ckRole">
+        <option value="staff" ${empRole(e)==='staff'?'selected':''}>พนักงาน</option>
+        <option value="head" ${empRole(e)==='head'?'selected':''}>หัวหน้า/ผู้จัดการ (อนุมัติใบลาได้)</option>
+        <option value="exec" ${empRole(e)==='exec'?'selected':''}>ผู้บริหาร/CEO (อนุมัติอย่างเดียว ไม่ลงเวลา)</option></select>
+        <div class="muted" style="font-size:11px;margin-top:2px">* ${e.ckRole?'ตั้งเองไว้':'เลือกให้อัตโนมัติจากตำแหน่ง/แผนก — เปลี่ยนได้'} · ใช้กับระบบลงเวลาผ่านมือถือและสายอนุมัติใบลา</div></div>
       <div class="field"><label>สิทธิ์ค่าล่วงเวลา (OT)</label><select id="f_noOT">
         <option value="0" ${!e.noOT?'selected':''}>คิด OT ให้ (ปกติ)</option>
         <option value="1" ${e.noOT?'selected':''}>ไม่คิด OT ให้คนนี้</option></select>
@@ -2917,7 +3070,12 @@ function empForm(id){
     const dup=DB.employees.find(x=>x.id!==id && String(x.code||'').trim().toLowerCase()===code.toLowerCase());
     if(dup){ toast(`รหัส ${code} ซ้ำกับ "${dup.name}" — กรุณาใช้รหัสอื่น`);
       const f=$('#f_code'); if(f){ f.style.borderColor='#dc2626'; f.focus(); f.select(); } return; }
-    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),phone:g('f_phone').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,photo:photoData||''};
+    /* ตรวจจำนวนหลัก — เว้นว่างได้ แต่ถ้ากรอกต้องครบ */
+    const bad=(sel,msg)=>{ toast(msg); const f=$(sel); if(f){ f.style.borderColor='#dc2626'; f.focus(); } };
+    const tid=g('f_taxId').trim(), ph=g('f_phone').trim();
+    if(tid && !/^[0-9]{13}$/.test(tid)){ bad('#f_taxId',`เลขบัตรประชาชนต้องครบ 13 หลัก (ตอนนี้ ${tid.replace(/[^0-9]/g,'').length} หลัก)`); return; }
+    if(ph && !/^0[0-9]{8,9}$/.test(ph)){ bad('#f_phone',`เบอร์โทรต้องขึ้นต้นด้วย 0 และมี 9–10 หลัก (ตอนนี้ ${ph.replace(/[^0-9]/g,'').length} หลัก)`); return; }
+    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),phone:g('f_phone').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,ckRole:g('f_ckRole')||'staff',photo:photoData||''};
     // เพิ่มคนใหม่ หรือปลดสถานะลาออกให้กลับมาทำงาน = กินโควตาเพิ่ม ต้องเช็คก่อน
     const willCount = !rec.resignDate;
     const wasCount  = id ? !e.resignDate : false;
@@ -3987,7 +4145,7 @@ function vSettings(v){
   const panel=el(`<div class="panel"><div class="phead"><h2>ข้อมูลบริษัท / ผู้จ่ายเงิน</h2></div><div class="pbody">
     <div class="grid2">
       <div class="field"><label>ชื่อบริษัท</label><input id="s_name" value="${esc(c.name)}"></div>
-      <div class="field"><label>เลขประจำตัวผู้เสียภาษี (13 หลัก)</label><input id="s_taxId" value="${esc(c.taxId)}"></div>
+      <div class="field"><label>เลขประจำตัวผู้เสียภาษี (13 หลัก)</label><input id="s_taxId" value="${esc(c.taxId)}" inputmode="numeric" maxlength="13" placeholder="ตัวเลข 13 หลัก" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13);this.style.borderColor=(this.value&&this.value.length<13)?'#f59e0b':''"></div>
       <div class="field" style="grid-column:1/-1"><label>ที่อยู่</label><input id="s_address" value="${esc(c.address)}"></div>
       <div class="field"><label>เลขที่บัญชีนายจ้าง (ประกันสังคม)</label><input id="s_ssoNo" value="${esc(c.ssoNo)}"></div>
       <div class="field"><label>ชื่อผู้ลงนาม</label><input id="s_signer" value="${esc(c.signer)}"></div>
@@ -4005,6 +4163,7 @@ function vSettings(v){
   </div></div>`);
   v.appendChild(panel);
   panel.querySelector('#saveSet').onclick=()=>{
+    { const t=$('#s_taxId').value.trim(); if(t && !/^[0-9]{13}$/.test(t)){ toast(`เลขประจำตัวผู้เสียภาษีต้องครบ 13 หลัก (ตอนนี้ ${t.replace(/[^0-9]/g,'').length} หลัก)`); const f=$('#s_taxId'); f.style.borderColor='#dc2626'; f.focus(); return; } }
     c.name=$('#s_name').value; c.taxId=$('#s_taxId').value; c.address=$('#s_address').value;
     c.ssoNo=$('#s_ssoNo').value; c.signer=$('#s_signer').value;
     DB.ssoRate=+$('#s_ssoRate').value||5; DB.ssoMaxBase=+$('#s_ssoMax').value||17500;
@@ -5368,6 +5527,14 @@ function unpaidDeduction(emp, p){
 let leaveYear, leaveEmpF='all', leaveTypeF='all';
 function vLeave(v){
   ckLeaveSync(true);
+  setTimeout(()=>document.querySelectorAll('[data-lvfiles]').forEach(b=>b.onclick=async()=>{
+    openModal('📎 รูปแนบใบลา','<div class="empty">กำลังโหลด…</div>',[['ปิด','',closeModal]]);
+    const {data,error}=await sb.from('leave_requests').select('attachments').eq('id',+b.dataset.lvfiles).maybeSingle();
+    const box=$('#modal').querySelector('.empty')||$('#modal');
+    if(error||!data){ box.textContent='โหลดรูปไม่สำเร็จ'+(error?': '+error.message:''); return; }
+    box.outerHTML=(data.attachments||[]).filter(s=>String(s).startsWith('data:image/jpeg;base64,'))
+      .map(s=>`<img src="${s}" alt="" style="width:100%;border-radius:12px;margin-bottom:10px">`).join('')||'<div class="empty">ไม่มีรูป</div>';
+  }),0);
   // ไม่นับใบลาของพนักงานที่ถูกลบไปแล้ว (ข้อมูลเก่าก่อนแก้เรื่องเก็บกวาด)
   const alive=new Set(DB.employees.map(e=>e.id));
   const lst=leaveList().filter(l=>alive.has(l.empId));
@@ -5455,7 +5622,7 @@ function vLeave(v){
       <td><span class="chip" style="background:${LEAVE_COL(l.type)}22;color:${LEAVE_COL(l.type)}">${esc(LEAVE_LAB(l.type))}</span></td>
       <td style="white-space:nowrap">${esc(l.from||'')}${l.to&&l.to!==l.from?'<br>ถึง '+esc(l.to):''}</td>
       <td class="num"><strong>${leaveAmountText(l)}</strong></td>
-      <td>${esc(l.reason||'')||'<span class="muted">-</span>'}</td>
+      <td>${esc(l.reason||'')||'<span class="muted">-</span>'}${l.reqId&&l.files?` <button class="btn ghost sm" data-lvfiles="${l.reqId}" style="padding:2px 8px">📎 ${l.files}</button>`:''}</td>
       <td><span class="chip" style="background:${stCol[l.status]||stCol.approved}">${stLab[l.status]||l.status}</span></td>
       <td style="text-align:right;white-space:nowrap">
         <button class="btn ghost sm" data-lv-ed="${l.id}">✏️</button>
