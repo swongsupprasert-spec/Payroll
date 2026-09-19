@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ลงเวลาเข้า-ออกงาน — eSimPayroll</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0e3a5c">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
+<link rel="apple-touch-icon" href="/brand/favicon-192.png?v=2">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--brand:#0e3a5c;--ink:#0b1b2b;--muted:#5b7186;--line:#e3eaf0;--ok:#10b981;--warn:#b45309;--bad:#dc2626}
+  html,body{height:100%}
+  body{font-family:"Sarabun","Segoe UI",Tahoma,sans-serif;background:#f3f7f9;color:var(--ink);-webkit-tap-highlight-color:transparent}
+  .top{background:linear-gradient(135deg,#0b1b2b,#0e3a5c 60%,#0f766e);color:#fff;padding:18px 20px 64px;text-align:center}
+  .brand{font-weight:800;font-size:17px;letter-spacing:.2px}.brand span{color:#6ee7b7}
+  .clock{font-size:46px;font-weight:800;margin-top:14px;font-variant-numeric:tabular-nums;letter-spacing:1px}
+  .date{font-size:14px;color:#a9c4d4}
+  .wrap{max-width:440px;margin:-46px auto 0;padding:0 16px 30px}
+  .card{background:#fff;border-radius:20px;box-shadow:0 10px 30px rgba(11,27,43,.1);padding:20px}
+  h2{font-size:18px;margin-bottom:14px}
+  label{display:block;font-size:13.5px;font-weight:700;color:var(--muted);margin:12px 0 6px}
+  input{width:100%;font:inherit;font-size:18px;padding:12px 14px;border:1.5px solid #d3dde6;border-radius:12px;background:#fff;color:var(--ink)}
+  input:focus{outline:none;border-color:var(--ok)}
+  .btn{display:block;width:100%;font:inherit;font-size:17px;font-weight:800;border:0;border-radius:14px;padding:15px;cursor:pointer;margin-top:16px}
+  .btn:disabled{opacity:.55}
+  .primary{background:var(--brand);color:#fff}
+  .in{background:linear-gradient(135deg,#10b981,#0f766e);color:#fff;font-size:21px;padding:22px}
+  .out{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:21px;padding:22px}
+  .ghost{background:#eef3f6;color:var(--ink);font-size:15px;padding:12px}
+  .who{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .av{width:48px;height:48px;border-radius:14px;background:#e6f4ef;color:#0f766e;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+  .who b{font-size:18px;display:block}.who small{color:var(--muted)}
+  .last{font-size:14px;color:var(--muted);background:#f6f9fb;border-radius:12px;padding:10px 12px;margin-top:12px}
+  .msg{margin-top:12px;font-size:14.5px;border-radius:12px;padding:10px 12px;display:none}
+  .msg.ok{display:block;background:#ecfdf5;color:#065f46}
+  .msg.err{display:block;background:#fef2f2;color:#991b1b}
+  .cam{position:fixed;inset:0;background:#000;z-index:10;display:none;flex-direction:column}
+  .cam video{flex:1;width:100%;object-fit:cover;transform:scaleX(-1)}
+  .cam .bar{padding:18px 18px calc(18px + env(safe-area-inset-bottom));background:#0b1b2b;display:flex;gap:10px}
+  .cam .bar .btn{margin:0}
+  .cam .ring{position:absolute;top:14%;left:50%;transform:translateX(-50%);width:62vw;max-width:300px;aspect-ratio:3/4;border:3px dashed rgba(255,255,255,.75);border-radius:50%}
+  .cam .hint{position:absolute;top:5%;width:100%;text-align:center;color:#fff;font-weight:700;text-shadow:0 1px 4px #000}
+  .foot{text-align:center;font-size:12px;color:#8aa0b2;margin-top:16px;line-height:1.6}
+  .pdpa{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.55}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">eSim<span>Payroll</span> · ลงเวลา</div>
+  <div class="clock" id="clock">--:--</div>
+  <div class="date" id="date"></div>
+</div>
+
+<div class="wrap">
+  <!-- เข้าสู่ระบบ -->
+  <div class="card" id="vLogin" hidden>
+    <h2>เข้าสู่ระบบลงเวลา</h2>
+    <label for="lCode">รหัสบริษัท</label>
+    <input id="lCode" autocomplete="organization" maxlength="12" style="text-transform:uppercase" placeholder="รหัสบริษัท">
+    <label for="lEmp">ชื่อผู้ใช้</label>
+    <input id="lEmp" autocomplete="username" style="text-transform:uppercase" placeholder="ชื่อผู้ใช้ที่ได้รับจากบริษัท">
+    <label for="lPin">รหัสผ่าน</label>
+    <input id="lPin" type="password" maxlength="32" autocomplete="current-password" placeholder="รหัสผ่าน">
+    <button class="btn primary" id="bLogin">เข้าสู่ระบบ</button>
+    <div class="msg" id="lMsg"></div>
+    <p class="pdpa">ระบบจะถ่ายรูปและบันทึกตำแหน่ง GPS ตอนลงเวลา เพื่อยืนยันการเข้างานเท่านั้น
+      รูปถูกเก็บไม่เกิน 90 วัน และเห็นได้เฉพาะผู้ดูแลของบริษัท</p>
+  </div>
+
+  <!-- ลงเวลา -->
+  <div class="card" id="vMain" hidden>
+    <div class="who"><div class="av" id="mAv">?</div><div><b id="mName"></b><small id="mCo"></small></div></div>
+    <div class="last" id="mLast">ยังไม่มีการลงเวลา</div>
+    <button class="btn in" id="bIn">🟢 ลงเวลาเข้างาน</button>
+    <button class="btn out" id="bOut">🟠 ลงเวลาออกงาน</button>
+    <div class="msg" id="mMsg"></div>
+    <button class="btn" id="bLeave" style="background:#eef2ff;color:#3730a3">📝 ยื่นใบลา / ดูสถานะใบลา</button>
+    <button class="btn ghost" id="bLogout">ออกจากระบบ</button>
+  </div>
+
+  <!-- ใบลา -->
+  <div class="card" id="vLeave" hidden>
+    <h2>📝 ยื่นใบลา</h2>
+    <label for="lvType">ประเภทการลา</label>
+    <select id="lvType" style="width:100%;font:inherit;font-size:17px;padding:12px 14px;border:1.5px solid #d3dde6;border-radius:12px;background:#fff">
+      <option value="sick">ลาป่วย</option><option value="personal">ลากิจ</option><option value="vacation">ลาพักร้อน</option>
+      <option value="maternity">ลาคลอด</option><option value="ordination">ลาอุปสมบท</option><option value="unpaid">ลาไม่รับค่าจ้าง</option><option value="other">อื่นๆ (ระบุในเหตุผล)</option>
+    </select>
+    <div style="display:flex;gap:10px">
+      <div style="flex:1;min-width:0"><label for="lvFrom">ตั้งแต่วันที่</label><input type="date" id="lvFrom" style="min-width:0;font-size:16px;padding:12px 8px"></div>
+      <div style="flex:1;min-width:0"><label for="lvTo">ถึงวันที่</label><input type="date" id="lvTo" style="min-width:0;font-size:16px;padding:12px 8px"></div>
+    </div>
+    <label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-weight:600;color:#0b1b2b">
+      <input type="checkbox" id="lvIsH" style="width:20px;height:20px"> ลาเป็นชั่วโมง (ไม่เต็มวัน)</label>
+    <div id="lvHBox" hidden><label for="lvHours">จำนวนชั่วโมง</label><input type="number" id="lvHours" min="0.5" max="24" step="0.5" inputmode="decimal" placeholder="เช่น 4"></div>
+    <label for="lvReason">เหตุผล</label>
+    <input id="lvReason" maxlength="500" placeholder="เช่น ไม่สบาย ไปพบแพทย์">
+    <button class="btn primary" id="bLvSend">ส่งใบลา</button>
+    <div class="msg" id="lvMsg"></div>
+    <h2 style="margin-top:22px">ใบลาของฉัน</h2>
+    <div id="lvList" style="font-size:14.5px"><div style="color:#8aa0b2">กำลังโหลด…</div></div>
+    <button class="btn ghost" id="bLvBack">‹ กลับไปหน้าลงเวลา</button>
+  </div>
+
+  <!-- ยินยอมเก็บใบหน้า (ครั้งแรก) -->
+  <div class="card" id="vConsent" hidden style="margin-top:12px">
+    <h2>ลงทะเบียนใบหน้า</h2>
+    <p style="font-size:14.5px;line-height:1.65;color:#334155">บริษัทใช้การ<strong>จดจำใบหน้า</strong>ยืนยันว่าเป็นคุณจริงตอนลงเวลา
+      ครั้งนี้ระบบจะบันทึกใบหน้าของคุณไว้ ครั้งต่อไปถ้าไม่ใช่ใบหน้าเดียวกันจะลงเวลาไม่ได้</p>
+    <ul style="font-size:13.5px;line-height:1.7;color:#475569;margin:10px 0 0 18px">
+      <li>ระบบเก็บเป็น<strong>รหัสตัวเลขของใบหน้า</strong> และรูปตอนลงทะเบียน 1 รูป ใช้เพื่อยืนยันการลงเวลาเท่านั้น</li>
+      <li>เห็นได้เฉพาะผู้ดูแลของบริษัท · ขอให้ลบได้ทุกเมื่อผ่านผู้ดูแล</li>
+      <li>ถ้าไม่ยินยอม แจ้งผู้ดูแลเพื่อใช้วิธีลงเวลาแบบอื่น</li>
+    </ul>
+    <label style="display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:14.5px;color:#0b1b2b;font-weight:600">
+      <input type="checkbox" id="cOk" style="width:22px;height:22px;margin-top:2px;flex:none"> ข้าพเจ้ายินยอมให้เก็บและใช้ข้อมูลใบหน้าเพื่อยืนยันตัวตนในการลงเวลา</label>
+    <button class="btn primary" id="bConsent">ยินยอมและถ่ายรูปลงทะเบียน</button>
+    <button class="btn ghost" id="bConsentNo">ยกเลิก</button>
+  </div>
+  <div class="card" id="vLine" hidden style="margin-top:12px;background:#fffbeb;border:1px solid #fcd34d;color:#92400e;font-size:14.5px;line-height:1.6">
+    <strong>เปิดใน LINE อยู่</strong> — ถ้ากดถ่ายรูปไม่ได้ ให้กดปุ่ม <strong>⋮</strong> หรือ <strong>แชร์</strong> มุมขวาบน แล้วเลือก <strong>“เปิดในเบราว์เซอร์” / “Open in Safari/Chrome”</strong>
+  </div>
+  <input type="file" id="fileCam" accept="image/*" capture="user" hidden>
+  <div class="foot">ใช้งานผ่านเบราว์เซอร์ ไม่ต้องติดตั้งแอป<br>ต้องอนุญาตกล้องและตำแหน่งเมื่อเบราว์เซอร์ถาม</div>
+</div>
+
+<!-- กล้อง -->
+<div class="cam" id="cam">
+  <div class="hint" id="camHint">จัดหน้าให้อยู่ในวงรี แล้วกดถ่าย</div>
+  <video id="vid" playsinline autoplay muted></video>
+  <div class="ring"></div>
+  <div class="bar">
+    <button class="btn ghost" id="bCamCancel" style="flex:1">ยกเลิก</button>
+    <button class="btn primary" id="bShot" style="flex:2">📸 ถ่ายและลงเวลา</button>
+  </div>
+</div>
+<canvas id="cv" hidden></canvas>
+
+<script>
+/* LINE เปิดลิงก์ในเบราว์เซอร์ของตัวเอง ซึ่งไม่ให้เว็บเปิดกล้อง → ขอให้ LINE เปิดใน Chrome/Safari แทน (ทำครั้งเดียว กันวนลูป) */
+(function(){
+  if((navigator.userAgent.indexOf(" Line/")>=0) && !/[?&]openExternalBrowser=1/.test(location.search)){
+    location.replace(location.pathname+(location.search?location.search+'&':'?')+'openExternalBrowser=1'+location.hash);
+  }
+})();
+</script>
+<script>
+(function(){
+  var SB_URL='https://sfzzswzyoqshlppsturd.supabase.co';
+  var SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenpzd3p5b3FzaGxwcHN0dXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4OTE1ODAsImV4cCI6MjEwMDQ2NzU4MH0.5IVEuvp6JM-JZUKGfCEoVgQ_CwiLLsU8tUJxbW85eac';
+  var TK='esp_checkin_token', CK='esp_checkin_code';
+  var $=function(id){return document.getElementById(id)};
+  var ME=null, KIND=null, STREAM=null;
+
+  var TH_D=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+  var TH_M=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  function p2(n){return (n<10?'0':'')+n}
+  function tick(){ var d=new Date(); $('clock').textContent=p2(d.getHours())+':'+p2(d.getMinutes())+':'+p2(d.getSeconds());
+    $('date').textContent='วัน'+TH_D[d.getDay()]+'ที่ '+d.getDate()+' '+TH_M[d.getMonth()]+' '+(d.getFullYear()+543); }
+  tick(); setInterval(tick,1000);
+
+  function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v);}catch(e){} }
+
+  function rpc(fn,args){
+    return fetch(SB_URL+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'apikey':SB_ANON,'Authorization':'Bearer '+SB_ANON,'Content-Type':'application/json'},body:JSON.stringify(args)})
+      .then(function(r){ return r.text().then(function(t){ var j=null; try{j=t?JSON.parse(t):null}catch(e){}
+        if(!r.ok){ var m=(j&&(j.message||j.hint))||('HTTP '+r.status); throw new Error(m); } return j; }); });
+  }
+  var ERR={invalid:'รหัสบริษัท ชื่อผู้ใช้ หรือรหัสผ่านไม่ถูกต้อง',locked:'ใส่รหัสผ่านผิดหลายครั้ง ระบบล็อกไว้ 15 นาที',
+    not_premium:'บริษัทยังไม่ได้เปิดใช้ฟีเจอร์นี้ กรุณาติดต่อผู้ดูแล',session:'หมดเวลาการใช้งาน กรุณาเข้าสู่ระบบใหม่',
+    photo_required:'ต้องถ่ายรูปก่อนลงเวลา',photo_too_big:'รูปใหญ่เกินไป ลองใหม่อีกครั้ง',gps_required:'ต้องเปิดตำแหน่ง (GPS) ก่อนลงเวลา',
+    duplicate:'เพิ่งลงเวลาไปเมื่อสักครู่ ไม่ต้องกดซ้ำ',bad_date:'ช่วงวันที่ไม่ถูกต้อง (ลาได้ไม่เกิน 90 วันต่อใบ)',bad_type:'ประเภทการลาไม่ถูกต้อง (ถ้าเลือก อื่นๆ ไม่ได้ แจ้งผู้ดูแลให้อัปเดตระบบ)',reason_required:'ลาประเภทอื่นๆ ต้องระบุเหตุผล',
+    bad_hours:'จำนวนชั่วโมงไม่ถูกต้อง',too_many:'มีใบลารออนุมัติมากเกินไป รอผู้ดูแลอนุมัติก่อน',not_pending:'ใบลานี้ถูกพิจารณาแล้ว ยกเลิกไม่ได้',face_required:'ต้องสแกนใบหน้าก่อนลงเวลา',
+    consent_required:'ต้องยินยอมการเก็บข้อมูลใบหน้าก่อน',bad_face:'อ่านใบหน้าไม่สำเร็จ ลองใหม่อีกครั้ง'};
+  function errText(e){ var m=String(e&&e.message||e);
+    if(/face_mismatch/.test(m)) return '❌ ใบหน้าไม่ตรงกับที่ลงทะเบียนไว้ — ถ่ายใหม่ในที่สว่าง หน้าตรง ไม่สวมแมสก์/แว่นดำ (ถ้าเป็นคุณจริงแต่ยังไม่ผ่าน แจ้งผู้ดูแลให้รีเซ็ตใบหน้า)';
+    var z=m.match(/out_of_zone:(\d+)/); if(z) return 'อยู่นอกพื้นที่ลงเวลา (ห่างจุดที่ใกล้ที่สุด '+Number(z[1]).toLocaleString('th-TH')+' เมตร)';
+    for(var k in ERR) if(m.indexOf(k)>=0) return ERR[k];
+    if(/schema cache|PGRST202/i.test(m)) return 'ระบบลงเวลายังไม่พร้อมใช้งาน กรุณาแจ้งผู้ดูแลของบริษัท';
+    if(/Failed to fetch|NetworkError/i.test(m)) return 'เชื่อมต่ออินเทอร์เน็ตไม่ได้ ลองใหม่อีกครั้ง';
+    return 'เกิดข้อผิดพลาด: '+m; }
+  function msg(id,t,ok){ var el=$(id); el.className='msg '+(ok?'ok':'err'); el.textContent=t; }
+
+  function show(v){ $('vLogin').hidden=v!=='login'; $('vMain').hidden=v!=='main'; }
+
+  function fmtTs(ts){ var d=new Date(ts); return d.getDate()+' '+TH_M[d.getMonth()]+' '+p2(d.getHours())+':'+p2(d.getMinutes()); }
+  function renderMe(){
+    $('mName').textContent=ME.emp_name||ME.emp_code; $('mCo').textContent=(ME.company||'')+' · '+ME.emp_code;
+    $('mAv').textContent=(ME.emp_name||ME.emp_code||'?').trim().charAt(0);
+    var s0=ME.sites&&ME.sites[0]; if(s0&&s0.sim) $('mCo').textContent+=' · 🧪 โหมดทดสอบ GPS';
+    $('mLast').textContent=ME.last_ts ? ('ล่าสุด: '+(ME.last_kind==='in'?'เข้างาน':'ออกงาน')+' '+fmtTs(ME.last_ts)) : 'ยังไม่มีการลงเวลา';
+  }
+  function loadMe(){
+    var t=ls(TK); if(!t){ show('login'); return; }
+    rpc('checkin_me',{p_token:t}).then(function(j){ ME=j; renderMe(); show('main'); })
+      .catch(function(e){ if(/session/.test(e.message)){ ls(TK,null); show('login'); } else { show('login'); msg('lMsg',errText(e)); } });
+  }
+
+  $('bLogin').onclick=function(){
+    var code=$('lCode').value.trim().toUpperCase(), emp=$('lEmp').value.trim().toUpperCase(), pin=$('lPin').value.trim();
+    if(!code||!emp||!pin){ msg('lMsg','กรอกให้ครบทั้ง 3 ช่อง'); return; }
+    var b=this; b.disabled=true; b.textContent='กำลังเข้าสู่ระบบ…';
+    rpc('checkin_login',{p_code:code,p_emp:emp,p_pin:pin}).then(function(j){
+      if(!j||j.error||!j.token) throw new Error((j&&j.error)||'invalid');
+      ls(TK,j.token); ls(CK,code); $('lPin').value=''; $('lMsg').className='msg'; loadMe();
+    }).catch(function(e){ msg('lMsg',errText(e)); }).then(function(){ b.disabled=false; b.textContent='เข้าสู่ระบบ'; });
+  };
+  $('bLogout').onclick=function(){ var t=ls(TK); if(t) rpc('checkin_logout',{p_token:t}).catch(function(){}); ls(TK,null); ME=null; show('login'); };
+
+  /* ---------- ตำแหน่ง ---------- */
+  function getPos(){
+    return new Promise(function(res){
+      if(!navigator.geolocation) return res(null);
+      navigator.geolocation.getCurrentPosition(function(p){ res(p.coords); }, function(){ res(null); },
+        {enableHighAccuracy:true, timeout:15000, maximumAge:0});
+    });
+  }
+
+  /* ---------- กล้อง ---------- */
+  /* ---------- จดจำใบหน้า (ทำบนมือถือ ไฟล์โมเดลอยู่บนเว็บเราเอง) ---------- */
+  var FACE=null, CONSENT=false;
+  function faceNeeded(){ return !!(ME&&ME.require_face); }
+  function loadFace(){
+    if(FACE) return FACE;
+    FACE=new Promise(function(res,rej){
+      var s=document.createElement('script'); s.src='/vendor/face-api.js';
+      s.onload=function(){ var f=window.faceapi;
+        Promise.all([f.nets.tinyFaceDetector.loadFromUri('/models/face'),f.nets.faceLandmark68TinyNet.loadFromUri('/models/face'),
+          f.nets.faceRecognitionNet.loadFromUri('/models/face')]).then(function(){ res(f); }).catch(rej); };
+      s.onerror=function(){ rej(new Error('โหลดระบบจดจำใบหน้าไม่สำเร็จ')); };
+      document.head.appendChild(s);
+    });
+    FACE.catch(function(){ FACE=null; });
+    return FACE;
+  }
+  function faceDesc(canvas){
+    return loadFace().then(function(f){
+      return f.detectSingleFace(canvas,new f.TinyFaceDetectorOptions({inputSize:416,scoreThreshold:0.45}))
+        .withFaceLandmarks(true).withFaceDescriptor();
+    }).then(function(d){ if(!d) throw new Error('noface'); return Array.prototype.map.call(d.descriptor,function(x){return Math.round(x*1e6)/1e6}); });
+  }
+  $('bConsent').onclick=function(){ if(!$('cOk').checked){ msg('mMsg','ต้องติ๊กยินยอมก่อน'); return; }
+    CONSENT=true; $('vConsent').hidden=true; $('vMain').hidden=false; openCam(KIND); };
+  $('bConsentNo').onclick=function(){ $('vConsent').hidden=true; $('vMain').hidden=false; };
+
+  function openCam(kind){
+    KIND=kind; $('mMsg').className='msg';
+    if(faceNeeded()){ loadFace();   // เริ่มโหลดโมเดลระหว่างเปิดกล้อง
+      if(!ME.face_enrolled && !CONSENT){ $('vMain').hidden=true; $('vConsent').hidden=false; window.scrollTo(0,0); return; } }
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ fileCam(); return; }
+    navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:640}},audio:false})
+      .then(function(s){ STREAM=s; $('vid').srcObject=s; $('cam').style.display='flex';
+        $('camHint').textContent=(kind==='in'?'ลงเวลาเข้างาน':'ลงเวลาออกงาน')+' — จัดหน้าให้อยู่ในวงรี'; })
+      .catch(function(){ fileCam(); });   // เบราว์เซอร์ในแอป (LINE ฯลฯ) มักเปิดกล้องตรงไม่ได้ → ใช้กล้องของมือถือผ่านช่องเลือกรูปแทน
+  }
+  /* ถ่ายด้วยแอปกล้องของมือถือ (input capture) — ใช้ได้แม้ในเบราว์เซอร์ของ LINE */
+  function fileCam(){ var f=$('fileCam'); f.value=''; f.click(); }
+  $('fileCam').onchange=function(){
+    var file=this.files&&this.files[0]; if(!file) return;
+    var img=new Image(), rd=new FileReader(), W, H;   // ใช้ data URL — นโยบายความปลอดภัยของเว็บไม่อนุญาตรูปแบบ blob:
+    img.onload=function(){ var c=$('cv');
+      W=480; H=Math.round(W*img.naturalHeight/img.naturalWidth);
+      c.width=W; c.height=H; c.getContext('2d').drawImage(img,0,0,W,H);
+      submitPunch(c.toDataURL('image/jpeg',0.6)); };
+    img.onerror=function(){ msg('mMsg','อ่านรูปไม่ได้ ลองถ่ายใหม่อีกครั้ง'); };
+    rd.onload=function(){ img.src=rd.result; }; rd.onerror=img.onerror; rd.readAsDataURL(file);
+  };
+  function closeCam(){ if(STREAM){ STREAM.getTracks().forEach(function(t){t.stop()}); STREAM=null; } $('cam').style.display='none'; }
+  function snap(){
+    var v=$('vid'), c=$('cv'), W=480, H=Math.round(W*(v.videoHeight||480)/(v.videoWidth||640));
+    c.width=W; c.height=H; var g=c.getContext('2d');
+    g.translate(W,0); g.scale(-1,1); g.drawImage(v,0,0,W,H);
+    return c.toDataURL('image/jpeg',0.6);
+  }
+  $('bIn').onclick=function(){ openCam('in'); };
+  $('bOut').onclick=function(){ openCam('out'); };
+  $('bCamCancel').onclick=closeCam;
+  $('bShot').onclick=function(){
+    if(!$('vid').videoWidth){ return; }
+    var photo=snap(); closeCam(); submitPunch(photo);
+  };
+  function submitPunch(photo){
+    $('bIn').disabled=$('bOut').disabled=true;
+    var s0=ME&&ME.sites&&ME.sites[0], sim=!!(s0&&s0.sim&&s0.lat!=null), desc=null;
+    msg('mMsg',faceNeeded()?'กำลังตรวจใบหน้า… (ครั้งแรกอาจใช้เวลาโหลดสักครู่)':'กำลังหาตำแหน่งและบันทึกเวลา…',true);
+    /* ย่อรูปที่เก็บให้เล็ก (360px) — ตรวจใบหน้าจากภาพใหญ่ก่อน */
+    var small=(function(){ var c=$('cv'), o=document.createElement('canvas'), W=360, H=Math.round(W*c.height/c.width);
+      o.width=W; o.height=H; o.getContext('2d').drawImage(c,0,0,W,H); return o.toDataURL('image/jpeg',0.6); })();
+    (faceNeeded()?faceDesc($('cv')).then(function(d){ desc=d; msg('mMsg','กำลังหาตำแหน่งและบันทึกเวลา…',true); }):Promise.resolve())
+    .then(function(){ return sim?{latitude:s0.lat,longitude:s0.lng,accuracy:0}:getPos(); })
+    .then(function(pos){
+      return rpc('checkin_punch',{p_token:ls(TK),p_kind:KIND,p_lat:pos?pos.latitude:null,p_lng:pos?pos.longitude:null,
+        p_acc:pos?Math.round(pos.accuracy):null,p_photo:small,p_desc:desc,p_consent:CONSENT});
+    }).then(function(j){
+      ME.last_kind=j.kind; ME.last_ts=j.ts; if(j.enrolled) ME.face_enrolled=true; renderMe();
+      var t=new Date(j.ts);
+      msg('mMsg',(j.enrolled?'✅ ลงทะเบียนใบหน้าแล้ว · ':'✅ ')+'บันทึก'+(j.kind==='in'?'เข้างาน':'ออกงาน')+' เวลา '+p2(t.getHours())+':'+p2(t.getMinutes())+' น.'+(j.site?' · '+j.site:''),true);
+    }).catch(function(e){
+      if(e&&e.message==='noface'){ msg('mMsg','ไม่พบใบหน้าในรูป — ถ่ายใหม่ให้เห็นหน้าชัด ๆ ในที่สว่าง'); return; }
+      if(/session/.test(e.message)){ ls(TK,null); show('login'); msg('lMsg',errText(e)); return; }
+      msg('mMsg',errText(e));
+    }).then(function(){ $('bIn').disabled=$('bOut').disabled=false; });
+  }
+
+  /* ---------- ใบลา ---------- */
+  var LV_LAB={sick:'ลาป่วย',personal:'ลากิจ',vacation:'ลาพักร้อน',maternity:'ลาคลอด',ordination:'ลาอุปสมบท',unpaid:'ลาไม่รับค่าจ้าง',other:'อื่นๆ'};
+  var LV_ST={pending:['รออนุมัติ','#b45309','#fef3c7'],approved:['อนุมัติแล้ว','#15803d','#dcfce7'],rejected:['ไม่อนุมัติ','#b91c1c','#fee2e2'],cancelled:['ยกเลิกแล้ว','#64748b','#f1f5f9']};
+  function isoToday(){ var d=new Date(); return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()); }
+  function thD(s){ var a=String(s).slice(0,10).split('-'); return (+a[2])+' '+TH_M[+a[1]-1]+' '+(+a[0]+543); }
+  function openLeave(){ $('vMain').hidden=true; $('vLeave').hidden=false; $('lvMsg').className='msg';
+    if(!$('lvFrom').value){ $('lvFrom').value=isoToday(); $('lvTo').value=isoToday(); } loadLeaves(); window.scrollTo(0,0); }
+  function loadLeaves(){
+    rpc('checkin_leave_list',{p_token:ls(TK)}).then(function(list){
+      if(!list||!list.length){ $('lvList').innerHTML='<div style="color:#8aa0b2">ยังไม่มีใบลา</div>'; return; }
+      $('lvList').innerHTML=list.map(function(x){ var s=LV_ST[x.status]||LV_ST.pending;
+        return '<div style="border:1px solid #e3eaf0;border-radius:12px;padding:10px 12px;margin-bottom:8px">'
+          +'<div style="display:flex;justify-content:space-between;gap:8px"><b>'+(LV_LAB[x.type]||x.type)+'</b>'
+          +'<span style="font-size:12.5px;font-weight:700;color:'+s[1]+';background:'+s[2]+';border-radius:999px;padding:2px 10px">'+s[0]+'</span></div>'
+          +'<div style="color:#475569;margin-top:4px">'+thD(x.from_date)+(x.to_date!==x.from_date?' – '+thD(x.to_date):'')+(x.hours?' · '+x.hours+' ชม.':'')+'</div>'
+          +(x.reason?'<div style="color:#64748b;font-size:13px;margin-top:2px">'+x.reason.replace(/[<>&]/g,'')+'</div>':'')
+          +(x.status==='pending'?'<button data-lvc="'+x.id+'" style="margin-top:8px;font:inherit;font-size:13px;border:0;background:none;color:#dc2626;text-decoration:underline;padding:0;cursor:pointer">ยกเลิกใบลานี้</button>':'')
+          +'</div>'; }).join('');
+      $('lvList').querySelectorAll('[data-lvc]').forEach(function(b){ b.onclick=function(){
+        if(!confirm('ยกเลิกใบลานี้?')) return;
+        rpc('checkin_leave_cancel',{p_token:ls(TK),p_id:+b.getAttribute('data-lvc')}).then(loadLeaves).catch(function(e){ msg('lvMsg',errText(e)); }); }; });
+    }).catch(function(e){ if(/session/.test(e.message)){ ls(TK,null); $('vLeave').hidden=true; show('login'); msg('lMsg',errText(e)); return; }
+      $('lvList').innerHTML='<div style="color:#b91c1c">'+errText(e)+'</div>'; });
+  }
+  $('bLeave').onclick=openLeave;
+  $('bLvBack').onclick=function(){ $('vLeave').hidden=true; $('vMain').hidden=false; };
+  $('lvIsH').onchange=function(){ $('lvHBox').hidden=!this.checked; if(this.checked) $('lvTo').value=$('lvFrom').value; };
+  $('lvFrom').onchange=function(){ if(!$('lvTo').value||$('lvTo').value<this.value||$('lvIsH').checked) $('lvTo').value=this.value; };
+  $('bLvSend').onclick=function(){
+    var f=$('lvFrom').value, t=$('lvTo').value||f, isH=$('lvIsH').checked, h=isH?parseFloat($('lvHours').value):null;
+    if(!f){ msg('lvMsg','เลือกวันที่ลา'); return; }
+    if(t<f){ msg('lvMsg','วันสิ้นสุดต้องไม่ก่อนวันเริ่ม'); return; }
+    if($('lvType').value==='other' && $('lvReason').value.trim().length<2){ msg('lvMsg','ลาประเภทอื่นๆ ต้องระบุเหตุผล'); return; }
+    if(isH && !(h>0 && h<=24)){ msg('lvMsg','ใส่จำนวนชั่วโมงที่ลา'); return; }
+    if(isH && t!==f){ msg('lvMsg','ลาเป็นชั่วโมงเลือกได้วันเดียว'); return; }
+    var b=this; b.disabled=true; b.textContent='กำลังส่ง…';
+    rpc('checkin_leave_submit',{p_token:ls(TK),p_type:$('lvType').value,p_from:f,p_to:t,p_hours:h,p_reason:$('lvReason').value.trim()})
+      .then(function(){ msg('lvMsg','✅ ส่งใบลาแล้ว — รอผู้ดูแลอนุมัติ',true); $('lvReason').value=''; $('lvHours').value=''; loadLeaves(); })
+      .catch(function(e){ msg('lvMsg',errText(e)); })
+      .then(function(){ b.disabled=false; b.textContent='ส่งใบลา'; });
+  };
+
+  if((navigator.userAgent.indexOf(" Line/")>=0)) $('vLine').hidden=false;
+  var qs=new URLSearchParams(location.search), qc=qs.get('c'), qu=qs.get('u');
+  $('lCode').value=(qc||ls(CK)||'').toUpperCase();
+  if(qu){ $('lEmp').value=qu.toUpperCase(); }
+  if(qc&&qu) setTimeout(function(){ if(!$('vLogin').hidden) $('lPin').focus(); },300);
+  loadMe();
+})();
+</script>
+</body>
+</html>

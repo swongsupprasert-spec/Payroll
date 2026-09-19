@@ -22,6 +22,9 @@
 <meta name="twitter:title" content="โปรแกรม Payroll ออนไลน์ — eSimPayroll">
 <meta name="twitter:description" content="โปรแกรม Payroll ลงเวลาเข้างาน จัดกะ ระบบลา และทำเงินเดือน สำหรับธุรกิจไทย">
 <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"th","mainEntity":[{"@type":"Question","name":"โปรแกรม Payroll คืออะไร","acceptedAnswer":{"@type":"Answer","text":"โปรแกรม Payroll หรือโปรแกรมเงินเดือน คือระบบที่คำนวณเงินเดือน ค่าล่วงเวลา เงินเพิ่มและเงินหักของพนักงาน หักภาษี ณ ที่จ่ายและประกันสังคมให้อัตโนมัติ แล้วออกสลิปเงินเดือนและเอกสารที่ต้องยื่นหน่วยงานราชการ แทนการทำใน Excel ด้วยมือทุกเดือน"}},{"@type":"Question","name":"eSimPayroll ราคาเท่าไหร่","acceptedAnswer":{"@type":"Answer","text":"เริ่มต้น 590 บาทต่อเดือน คิดตามจำนวนพนักงาน ไม่มีค่าติดตั้งและไม่มีค่าใช้จ่ายแอบแฝง ดูราคาทุกแพ็กเกจได้ที่หน้าราคา"}},{"@type":"Question","name":"ทดลองใช้ฟรีได้ไหม","acceptedAnswer":{"@type":"Answer","text":"ได้ ทดลองใช้ฟรี 30 วัน ใช้ได้ครบทุกฟีเจอร์ในช่วงทดลอง ไม่ต้องใช้บัตรเครดิต"}},{"@type":"Question","name":"ต้องติดตั้งโปรแกรมไหม","acceptedAnswer":{"@type":"Answer","text":"ไม่ต้อง eSimPayroll เป็นโปรแกรมเงินเดือนออนไลน์ ใช้งานผ่านเว็บเบราว์เซอร์ได้ทั้งคอมพิวเตอร์ แท็บเล็ต และมือถือ ข้อมูลบันทึกบนคลาวด์"}},{"@type":"Question","name":"ออกเอกสารอะไรได้บ้าง","acceptedAnswer":{"@type":"Answer","text":"สลิปเงินเดือน หนังสือรับรองหัก ณ ที่จ่าย 50 ทวิ แบบ ภ.ง.ด.1 และ ภ.ง.ด.1ก แบบ สปส.1-10 และแบบ กท.20ก พร้อมส่งออกไฟล์ CSV สำหรับยื่นออนไลน์"}},{"@type":"Question","name":"คำนวณภาษีและประกันสังคมยังไง","acceptedAnswer":{"@type":"Answer","text":"ภาษีหัก ณ ที่จ่ายคิดแบบขั้นบันไดจากเงินได้ทั้งปี แล้วเฉลี่ยตามจำนวนเดือนที่ทำงาน ประกันสังคมหัก 5% บนฐานค่าจ้าง 1,650–17,500 บาท โดยไม่รวมค่าล่วงเวลาและโบนัส และรองรับกองทุนสำรองเลี้ยงชีพกับกองทุนสงเคราะห์ลูกจ้าง 0.25%"}},{"@type":"Question","name":"รองรับพนักงานรายวันไหม","acceptedAnswer":{"@type":"Answer","text":"รองรับทั้งพนักงานรายเดือนและรายวันในบริษัทเดียวกัน คิดตามสัดส่วนวันเมื่อเข้าหรือออกกลางเดือน"}},{"@type":"Question","name":"สำนักงานบัญชีใช้ดูแลหลายบริษัทได้ไหม","acceptedAnswer":{"@type":"Answer","text":"ได้ มีแพ็กเกจสำหรับสำนักงานบัญชี ดูแลบริษัทลูกค้าหลายแห่งในบัญชีเดียว สลับบริษัทได้ในคลิกเดียว และข้อมูลแต่ละบริษัทแยกกัน"}}]}
+</script>
+<script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"eSimPayroll",
 "applicationCategory":"BusinessApplication","operatingSystem":"Web",
 "description":"โปรแกรม Payroll ออนไลน์สำหรับธุรกิจไทย ลงเวลาเข้างาน จัดกะ ระบบลางาน คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม ออกสลิปเงินเดือนและเอกสารยื่นราชการ",
@@ -526,6 +529,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         <a href="/pricing" class="link" data-en="Pricing">ราคา</a>
         <a href="#how" class="link" data-en="How it works">วิธีใช้งาน</a>
         <a href="/articles" class="link" data-en="Articles">บทความ</a>
+        <a href="/tax-calculator" class="link" data-en="Free tax calculator">คำนวณภาษีฟรี</a>
         <a href="/about" class="link" data-en="About">เกี่ยวกับ</a>
         <button id="langBtn" class="btn ghost" style="padding:8px 12px;font-size:14px;margin-left:4px">🌐 EN</button>
         <a href="/app" class="btn ghost" style="padding:9px 18px;font-size:15px" data-en="Sign in">เข้าสู่ระบบ</a>
@@ -895,6 +899,31 @@ footer .ft-mail{color:#6ee7b7 !important}
       <div class="step rv"><div class="n">5</div><h4 data-en="Generate documents">ออกเอกสาร</h4><p data-en="Payslips, 50 Bis, PND.1 and SSO forms ready for filing.">พิมพ์สลิป, 50 ทวิ, ภ.ง.ด.1, สปส.1-10 พร้อมยื่น</p></div>
     </div>
   </div>
+</section>
+
+<!-- คำถามที่พบบ่อย -->
+<section id="homefaq">
+  <div class="wrap" style="max-width:860px">
+    <h2 style="text-align:center;margin-bottom:22px">คำถามที่พบบ่อยเกี่ยวกับโปรแกรม Payroll</h2>
+    <div class="hfaq">
+      <details><summary>โปรแกรม Payroll คืออะไร</summary><p>โปรแกรม Payroll หรือโปรแกรมเงินเดือน คือระบบที่คำนวณเงินเดือน ค่าล่วงเวลา เงินเพิ่มและเงินหักของพนักงาน หักภาษี ณ ที่จ่ายและประกันสังคมให้อัตโนมัติ แล้วออกสลิปเงินเดือนและเอกสารที่ต้องยื่นหน่วยงานราชการ แทนการทำใน Excel ด้วยมือทุกเดือน</p></details>
+      <details><summary>eSimPayroll ราคาเท่าไหร่</summary><p>เริ่มต้น 590 บาทต่อเดือน คิดตามจำนวนพนักงาน ไม่มีค่าติดตั้งและไม่มีค่าใช้จ่ายแอบแฝง ดูราคาทุกแพ็กเกจได้ที่หน้าราคา</p></details>
+      <details><summary>ทดลองใช้ฟรีได้ไหม</summary><p>ได้ ทดลองใช้ฟรี 30 วัน ใช้ได้ครบทุกฟีเจอร์ในช่วงทดลอง ไม่ต้องใช้บัตรเครดิต</p></details>
+      <details><summary>ต้องติดตั้งโปรแกรมไหม</summary><p>ไม่ต้อง eSimPayroll เป็นโปรแกรมเงินเดือนออนไลน์ ใช้งานผ่านเว็บเบราว์เซอร์ได้ทั้งคอมพิวเตอร์ แท็บเล็ต และมือถือ ข้อมูลบันทึกบนคลาวด์</p></details>
+      <details><summary>ออกเอกสารอะไรได้บ้าง</summary><p>สลิปเงินเดือน หนังสือรับรองหัก ณ ที่จ่าย 50 ทวิ แบบ ภ.ง.ด.1 และ ภ.ง.ด.1ก แบบ สปส.1-10 และแบบ กท.20ก พร้อมส่งออกไฟล์ CSV สำหรับยื่นออนไลน์</p></details>
+      <details><summary>คำนวณภาษีและประกันสังคมยังไง</summary><p>ภาษีหัก ณ ที่จ่ายคิดแบบขั้นบันไดจากเงินได้ทั้งปี แล้วเฉลี่ยตามจำนวนเดือนที่ทำงาน ประกันสังคมหัก 5% บนฐานค่าจ้าง 1,650–17,500 บาท โดยไม่รวมค่าล่วงเวลาและโบนัส และรองรับกองทุนสำรองเลี้ยงชีพกับกองทุนสงเคราะห์ลูกจ้าง 0.25%</p></details>
+      <details><summary>รองรับพนักงานรายวันไหม</summary><p>รองรับทั้งพนักงานรายเดือนและรายวันในบริษัทเดียวกัน คิดตามสัดส่วนวันเมื่อเข้าหรือออกกลางเดือน</p></details>
+      <details><summary>สำนักงานบัญชีใช้ดูแลหลายบริษัทได้ไหม</summary><p>ได้ มีแพ็กเกจสำหรับสำนักงานบัญชี ดูแลบริษัทลูกค้าหลายแห่งในบัญชีเดียว สลับบริษัทได้ในคลิกเดียว และข้อมูลแต่ละบริษัทแยกกัน</p></details>
+    </div>
+  </div>
+  <style>
+    .hfaq details{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff}
+    .hfaq summary{cursor:pointer;padding:15px 18px;font-weight:700;list-style:none}
+    .hfaq summary::-webkit-details-marker{display:none}
+    .hfaq summary::after{content:"+";float:right;color:#10b981;font-weight:800}
+    .hfaq details[open] summary::after{content:"−"}
+    .hfaq details p{padding:0 18px 16px;margin:0;color:var(--muted)}
+  </style>
 </section>
 
 <!-- CTA -->

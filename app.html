@@ -356,7 +356,7 @@ const I18N = {
     ask_period_t:'เลือกงวดเดือนที่จะทำเงินเดือน', ask_period_q:'ต้องการทำเงินเดือนของเดือนไหน?',
     ask_period_ok:'เริ่มทำเงินเดือน', ask_period_has:'งวดนี้เคยกรอกข้อมูลไว้แล้ว — เปิดขึ้นมาแก้ไขต่อได้',
     ask_period_new:'งวดนี้ยังไม่มีข้อมูล — จะเริ่มกรอกใหม่', cancel:'ยกเลิก',
-    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_attend:'เวลาเข้างาน', nav_leave:'ระบบลางาน', nav_resign:'การลาออก', nav_advance:'เบิกจ่ายล่วงหน้า', nav_payroll:'คำนวณเงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
+    nav_dashboard:'แดชบอร์ด', nav_employees:'ข้อมูลพนักงาน', nav_attend:'เวลาเข้างาน', nav_checkin:'ลงเวลาผ่านมือถือ', nav_leave:'ระบบลางาน', nav_resign:'การลาออก', nav_advance:'เบิกจ่ายล่วงหน้า', nav_payroll:'คำนวณเงินได้ / เงินหัก', nav_summary:'สรุปเงินเดือน',
     nav_dept:'สรุปตามแผนก', nav_detail:'สรุปรายละเอียดทั้งหมด', nav_slip:'สลิปเงินเดือน', nav_wht:'หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)',
     nav_pnd1:'แบบ ภ.ง.ด.1', nav_sso:'แบบประกันสังคม (สปส.1-10)', nav_settings:'ตั้งค่า', nav_companies:'บริษัทลูกค้า', nav_admin:'ผู้ดูแลระบบ', nav_feedback:'แจ้งปัญหา/คำแนะนำ', nav_orders:'คำสั่งซื้อ/ต่ออายุ',
     period:'งวดเดือน',
@@ -374,7 +374,7 @@ const I18N = {
     ask_period_t:'Choose the payroll period', ask_period_q:'Which month do you want to run payroll for?',
     ask_period_ok:'Start payroll', ask_period_has:'This period already has data — you can continue editing it',
     ask_period_new:'This period is empty — you will start fresh', cancel:'Cancel',
-    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_attend:'Attendance', nav_leave:'Leave', nav_resign:'Resignation', nav_advance:'Advance Payment', nav_payroll:'Calculate Earnings / Deductions', nav_summary:'Payroll Summary',
+    nav_dashboard:'Dashboard', nav_employees:'Employees', nav_attend:'Attendance', nav_checkin:'Mobile check-in', nav_leave:'Leave', nav_resign:'Resignation', nav_advance:'Advance Payment', nav_payroll:'Calculate Earnings / Deductions', nav_summary:'Payroll Summary',
     nav_dept:'By Department', nav_detail:'Full Details', nav_slip:'Payslip', nav_wht:'Withholding Cert. (50 Bis)',
     nav_pnd1:'PND.1 Form', nav_sso:'Social Security Form', nav_settings:'Settings', nav_companies:'Client companies', nav_admin:'Admin', nav_feedback:'Feedback', nav_orders:'Orders',
     period:'Period',
@@ -404,7 +404,7 @@ const DEFAULT = {
   workStart:'08:00', workEnd:'17:00', lateGrace:15,   // เวลาทำงานมาตรฐาน + อนุโลมสาย (นาที)
   shifts:[],     // กะการทำงาน [{id,name,start,end,grace,color}] — สร้างอัตโนมัติครั้งแรก
   shiftPlan:{},  // สลับกะรายวัน { "YYYY-MM-DD": { empId: shiftId } }
-  otMaxDay:0,    // เพดาน OT ต่อวัน (ชั่วโมง) · 0 = ไม่จำกัด · ตั้งรายคนทับได้ที่ emp.otMaxDay
+  otMaxDay:0,    // เพดาน OT ต่อวัน (ชั่วโมง) · 0 = ไม่จำกัด · ต่างกันรายคน/รายวันใช้ OT อนุมัติ (attend.c)
   otWeekdays:[true,true,true,true,true,true,true],     // เปิด OT วันไหน (0=อาทิตย์ … 6=เสาร์)
   otDates:{},                                          // กำหนดเฉพาะวัน { "YYYY-MM-DD": true|false } ทับค่ารายสัปดาห์
   leaveQuota:{ sick:30, personal:3, vacation:6 },      // โควตาวันลาต่อปี
@@ -738,6 +738,7 @@ const PAGES = [
   ['dashboard','แดชบอร์ด','📊'],
   ['employees','ข้อมูลพนักงาน','👥'],
   ['attend','เวลาเข้างาน','⏰'],
+  ['checkin','ลงเวลาผ่านมือถือ','📱'],
   ['leave','ระบบลางาน','🌴'],
   ['resign','การลาออก','🚪'],
   ['advance','เบิกจ่ายล่วงหน้า','💸'],
@@ -758,6 +759,7 @@ const NAV_ICONS={
   dashboard: ICO('<path d="M3.5 20.5h17"/><rect x="4.5" y="11" width="3.6" height="7"/><rect x="10.2" y="6.5" width="3.6" height="11.5"/><rect x="15.9" y="14" width="3.6" height="4"/>'),
   employees: ICO('<circle cx="9" cy="8" r="3.2"/><path d="M2.8 20a6.2 6.2 0 0 1 12.4 0"/><path d="M16.2 5.4a3.2 3.2 0 0 1 0 6.2"/><path d="M17.4 14.3A6.2 6.2 0 0 1 21.2 20"/>'),
   attend:    ICO('<circle cx="12" cy="12" r="8.6"/><path d="M12 7.2V12l3.2 2"/>'),
+  checkin:   ICO('<rect x="6.5" y="2.8" width="11" height="18.4" rx="2.4"/><circle cx="12" cy="10" r="2.6"/><path d="M8.8 15.6a3.4 3.4 0 0 1 6.4 0"/>'),
   leave:     ICO('<rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 9.6h17.2M8.2 3v4M15.8 3v4"/><path d="m9 14.6 2.1 2.1 3.9-4"/>'),
   resign:    ICO('<path d="M14.5 3.5h3.6a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-3.6"/><path d="M10 8 6 12l4 4"/><path d="M6 12h9"/>'),
   advance:   ICO('<rect x="2.6" y="5.6" width="18.8" height="12.8" rx="2.4"/><circle cx="12" cy="12" r="2.8"/><path d="M6.2 9.4h.01M17.8 14.6h.01"/>'),
@@ -778,7 +780,7 @@ const NAV_ICONS={
 const LOCK_ICO='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.6" y="10.4" width="14.8" height="10.4" rx="2.2"/><path d="M8.2 10.4V7.6a3.8 3.8 0 0 1 7.6 0v2.8"/></svg>';
 
 const NAV_COLORS = {
-  dashboard:'#17557f', employees:'#8b5cf6', attend:'#0891b2', leave:'#84cc16', resign:'#f43f5e', advance:'#f97316', payroll:'#06b6d4', summary:'#10b981',
+  dashboard:'#17557f', employees:'#8b5cf6', attend:'#0891b2', checkin:'#0d9488', leave:'#84cc16', resign:'#f43f5e', advance:'#f97316', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
   pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', companies:'#a855f7', feedback:'#f97316', orders:'#22c55e', admin:'#eab308'
 };
@@ -786,7 +788,7 @@ const NAV_COLORS = {
 function pagesForEdition(){
   if(!isFirm()) return PAGES;
   return [['companies','บริษัทลูกค้า','🏢'],
-          ...PAGES.filter(p=>!['attend','leave'].includes(p[0]))];
+          ...PAGES.filter(p=>!['attend','checkin','leave'].includes(p[0]))];
 }
 function pageAllowed(id){
   if(['orders','feedback','admin'].includes(id)) return IS_ADMIN;
@@ -888,10 +890,496 @@ function render(){
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
   // สำนักงานบัญชีที่ยังไม่ได้เลือกบริษัท — ให้เพิ่ม/เลือกบริษัทก่อน
   if(isFirm() && !CUR_CO && PAGE!=='companies' && PAGE!=='admin'){ PAGE='companies'; savePage(PAGE); renderNav(); }
-  ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, leave:vLeave, resign:vResign, advance:vAdvance, payroll:vPayroll, summary:vSummary,
+  ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, checkin:vCheckin, leave:vLeave, resign:vResign, advance:vAdvance, payroll:vPayroll, summary:vSummary,
     dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders,
     admin:vAdmin, companies:vCompanies}[PAGE])(v);
 }
+/* ============ ลงเวลาผ่านมือถือ (ถ่ายรูป + GPS) — หน้าแอดมิน ============
+   ข้อมูลอยู่ในตาราง checkin_config / checkin_users / punches (supabase-checkin.sql)
+   ไม่อยู่ในก้อน DB ของบริษัท — มือถือพนักงานเขียนพร้อมกันได้โดยไม่ทับข้อมูลเงินเดือน */
+let CK_STATE={ loaded:false, err:'', cfg:null, users:[], punches:[], from:'', to:'' };
+function ckCode(){ const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s=''; const r=crypto.getRandomValues(new Uint8Array(6)); r.forEach(x=>s+=A[x%A.length]); return s; }
+function ckPin(){ const r=crypto.getRandomValues(new Uint32Array(1))[0]; return String(100000+(r%900000)); }
+function ckBkk(ts){   /* เวลาไทย → ['ปปปป-ดด-วว','ชช:นน'] */
+  const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date(ts));
+  const g=t=>p.find(x=>x.type===t).value; return [`${g('year')}-${g('month')}-${g('day')}`, `${g('hour')==='24'?'00':g('hour')}:${g('minute')}`];
+}
+async function ckLoad(){
+  CK_STATE.err='';
+  if(DEMO || !sb || !MY_UID){ CK_STATE.err='demo'; CK_STATE.loaded=true; return; }
+  const {from,to}=periodRange(PERIOD); CK_STATE.from=isoOf(from); CK_STATE.to=isoOf(to);
+  const fromTs=new Date(CK_STATE.from+'T00:00:00+07:00').toISOString(), toTs=new Date(CK_STATE.to+'T23:59:59+07:00').toISOString();
+  const [c,u,p]=await Promise.all([
+    sb.from('checkin_config').select('*').eq('owner_id',MY_UID).maybeSingle(),
+    sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at,face_photo,face_enrolled_at').eq('owner_id',MY_UID)
+      .then(x=>x.error&&/face_/.test(x.error.message)?sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at').eq('owner_id',MY_UID):x),
+    sb.from('punches').select('*')
+      .eq('owner_id',MY_UID).gte('ts',fromTs).lte('ts',toTs).order('ts',{ascending:false}).limit(2000)
+  ]);
+  const e=c.error||u.error||p.error;
+  if(e){ CK_STATE.err=/relation|does not exist|schema cache/i.test(e.message)?'nosql':e.message; }
+  CK_STATE.cfg=c.data||null; CK_STATE.users=u.data||[]; CK_STATE.punches=p.data||[]; CK_STATE.loaded=true;
+}
+function vCheckin(v){
+  ckAutoMerge(); ckLeaveSync();
+  if(!CK_STATE.loaded){ v.appendChild(el(`<div class="panel"><div class="empty">กำลังโหลด…</div></div>`));
+    ckLoad().then(()=>{ if(PAGE==='checkin') render(); }); return; }
+  const S=CK_STATE; S.loaded=false;          // เข้าหน้านี้ครั้งหน้าให้โหลดใหม่เสมอ
+  if(S.err==='demo'){ v.appendChild(el(`<div class="panel"><div class="empty">📱 ระบบลงเวลาผ่านมือถือใช้ได้เมื่อเข้าสู่ระบบด้วยบัญชีจริง (โหมดสาธิตไม่มีข้อมูลบนคลาวด์)</div></div>`)); return; }
+  if(S.err==='nosql'){ v.appendChild(el(`<div class="panel"><div class="empty">⚙️ ยังไม่ได้ติดตั้งฐานข้อมูลของฟีเจอร์นี้ — ผู้ดูแลระบบต้องรันไฟล์ <code>supabase-checkin.sql</code> ใน Supabase ก่อน</div></div>`)); return; }
+  if(S.err){ v.appendChild(el(`<div class="panel"><div class="empty">โหลดข้อมูลไม่สำเร็จ: ${esc(S.err)}</div></div>`)); return; }
+
+  const cfg=S.cfg || { code:'', company_name:(DB.company&&DB.company.name)||'', sites:[], require_zone:true, require_photo:true };
+  const link=cfg.code?`${location.origin}/checkin?c=${cfg.code}&openExternalBrowser=1`:'';
+  const unmerged=S.punches.filter(p=>!p.merged).length;
+  const byEmp=new Map(S.users.map(u=>[u.emp_id,u]));
+  const staff=DB.employees.filter(e=>!resignedBefore(e,PERIOD));
+
+  /* ---- สรุปงวดนี้: บัญชี · มาสาย · ขาดงาน (ไม่ได้ลา) ---- */
+  if(!Array.isArray(DB.ckWorkDays)||DB.ckWorkDays.length!==7) DB.ckWorkDays=[false,true,true,true,true,true,false];   // อา–ส · ค่าเริ่มต้น จ–ศ
+  const WD=['อา','จ','อ','พ','พฤ','ศ','ส'];
+  const todayIso=ckBkk(new Date().toISOString())[0];
+  const hm=t=>{ const m=/^(\d{1,2}):(\d{2})/.exec(t||''); return m?(+m[1])*60+(+m[2]):null; };
+  const dayList=[]; { const {from,to}=periodRange(PERIOD); for(let d=new Date(from); d<=to; d.setDate(d.getDate()+1)){ const iso=isoOf(d); if(iso>todayIso) break; dayList.push(iso); } }
+  const tracked=staff.filter(e=>{ const u=byEmp.get(e.id); return u&&u.active; });
+  const byEmpDay=new Map();   // empId|day -> {in:'HH:MM' เร็วสุด}
+  S.punches.forEach(p=>{ const [d,t]=ckBkk(p.ts); const k=p.emp_id+'|'+d; const o=byEmpDay.get(k)||{};
+    if(p.kind==='in'){ if(!o.in||t<o.in) o.in=t; } else o.out=t; byEmpDay.set(k,o); });
+  const onLeave=(eid,d)=>leaveList().some(l=>l.empId===eid && l.status!=='rejected' && l.from<=d && (l.to||l.from)>=d);
+  const lateRows=[], absentRows=[];
+  tracked.forEach(e=>{
+    const att=attendOf(PERIOD, e.id);
+    dayList.forEach(d=>{
+      if(e.startDate && d<e.startDate) return;
+      const uc=byEmp.get(e.id).created_at; if(uc && d<ckBkk(uc)[0]) return;   // ก่อนมีบัญชีลงเวลา ไม่นับขาดงาน
+      if(e.resignDate && d>e.resignDate) return;
+      const pr=byEmpDay.get(e.id+'|'+d), rec=att[d];
+      const inT=(pr&&pr.in)||(rec&&rec.i)||'';
+      if(inT){ const sh=shiftFor(e,d), s=hm(sh.start), t=hm(inT);
+        if(s!=null && t!=null && t>s+(+sh.grace||0)) lateRows.push({e,d,t:inT,min:t-s}); return; }
+      if(pr||(rec&&rec.o)) return;                              // มีลงเวลาออกอย่างเดียว = มาทำงาน
+      const wd=new Date(d+'T00:00:00').getDay();
+      if(!DB.ckWorkDays[wd]) return;                             // วันหยุดประจำสัปดาห์
+      if(isHoliday(d)) return;                                   // วันหยุดบริษัท (ปฏิทินวันหยุด)
+      if(onLeave(e.id,d)) return;                                // ลาแล้ว
+      absentRows.push({e,d});
+    });
+  });
+  const lateEmp=new Set(lateRows.map(x=>x.e.id)), absEmp=new Set(absentRows.map(x=>x.e.id));
+  const kp=el(`<div class="cards">
+    <div class="kpi b1"><div class="lab">👤 บัญชีลงเวลา</div><div class="val">${num(tracked.length)} <span class="muted" style="font-size:14px">/ ${num(staff.length)} คน</span></div></div>
+    <div class="kpi b3" data-kl="late" style="cursor:pointer"><div class="lab">⏰ มาสาย</div><div class="val">${num(lateEmp.size)} <span class="muted" style="font-size:14px">คน</span></div></div>
+    <div class="kpi b2" data-kl="late" style="cursor:pointer"><div class="lab">📅 สายรวม</div><div class="val">${num(lateRows.length)} <span class="muted" style="font-size:14px">วัน</span></div></div>
+    <div class="kpi b4" data-kl="abs" style="cursor:pointer"><div class="lab">🚫 ขาดงาน (ไม่ได้ลา)</div><div class="val">${num(absentRows.length)} <span class="muted" style="font-size:14px">วัน · ${num(absEmp.size)} คน</span></div></div>
+  </div>`);
+  v.appendChild(kp);
+  const sub=el(`<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:-6px 0 14px;font-size:13px;color:var(--muted)">
+    <span>นับถึงวันนี้ · เฉพาะคนที่มีบัญชีลงเวลา นับตั้งแต่วันที่สร้างบัญชี · วันทำงาน:</span>
+    ${WD.map((n,i)=>`<button class="btn ghost sm" data-ckwd="${i}" style="padding:3px 9px;${DB.ckWorkDays[i]?'background:#0e3a5c;color:#fff;border-color:#0e3a5c':''}">${n}</button>`).join('')}
+    <span style="margin-left:6px">· ลงเวลา ${num(S.punches.length)} ครั้ง · นอกพื้นที่ ${num(S.punches.filter(p=>p.in_zone===false).length)} · รอนำเข้า ${num(unmerged)}</span>
+  </div>`);
+  v.appendChild(sub);
+  sub.querySelectorAll('[data-ckwd]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.ckwd; DB.ckWorkDays[i]=!DB.ckWorkDays[i]; save(); CK_STATE.loaded=true; S.loaded=true; render(); });
+  kp.querySelectorAll('[data-kl]').forEach(c=>c.onclick=()=>{
+    const late=c.dataset.kl==='late'; const rows=(late?lateRows:absentRows).slice().sort((a,b)=>a.d<b.d?-1:(a.d>b.d?1:(a.e.code<b.e.code?-1:1)));
+    const fmt=d=>`${d.slice(8)}/${d.slice(5,7)} (${WD[new Date(d+'T00:00:00').getDay()]})`;
+    if(late){
+      openModal('⏰ มาสาย — งวดนี้', rows.length?`<div class="tbl-wrap" style="max-height:60vh;overflow:auto"><table><thead><tr><th>วันที่</th><th>พนักงาน</th><th>เวลาเข้า</th><th class="num">สาย</th></tr></thead><tbody>
+        ${rows.map(x=>`<tr><td>${fmt(x.d)}</td><td>${esc(x.e.code)} ${esc(x.e.name)}</td><td>${x.t}</td><td class="num" style="color:#dc2626">${num(x.min)} นาที</td></tr>`).join('')}
+        </tbody></table></div>`:'<div class="empty">ไม่มีรายการ 🎉</div>',[['ปิด','',closeModal]]);
+      return;
+    }
+    /* ขาดงาน: ติ๊กเลือก → สร้างใบลาไม่รับค่าจ้าง (รายเดือนเท่านั้น — รายวันไม่ได้ค่าจ้างวันที่ไม่มาอยู่แล้ว) */
+    const canPick=x=>x.e.payType!=='daily';
+    const nPick=rows.filter(canPick).length;
+    const btns=[['ปิด','ghost',closeModal]];
+    if(nPick) btns.push([`📝 สร้างใบลาไม่รับค่าจ้าง`,'',()=>{
+      const picked=[...$('#modal').querySelectorAll('[data-abs]:checked')].map(x=>rows[+x.dataset.abs]);
+      if(!picked.length){ toast('ยังไม่ได้เลือกรายการ'); return; }
+      const L=leaveList(); let n=0;
+      picked.forEach(x=>{
+        if(L.some(l=>l.empId===x.e.id && l.status!=='rejected' && l.from<=x.d && (l.to||l.from)>=x.d)) return;   // มีใบลาแล้ว ไม่สร้างซ้ำ
+        L.push({ id:uid(), empId:x.e.id, type:'unpaid', status:'approved', from:x.d, to:x.d, days:1, hours:null,
+                 reason:'สร้างจากการขาดงาน — ระบบลงเวลาผ่านมือถือ (ไม่มีการลงเวลาและไม่มีใบลา)' });
+        n++;
+      });
+      save(); closeModal(); CK_STATE.loaded=true; S.loaded=true; render();
+      toast(`สร้างใบลาไม่รับค่าจ้างแล้ว ${num(n)} ใบ — ยอดหักจะขึ้นในหน้าเงินได้/เงินหัก ตรวจหรือลบได้ที่หน้าระบบลางาน`);
+    }]);
+    openModal('🚫 ขาดงาน (ไม่ได้ลา) — งวดนี้', rows.length?`
+      ${nPick?`<label style="display:flex;gap:8px;align-items:center;font-size:13.5px;margin-bottom:8px"><input type="checkbox" id="absAll" checked> เลือกทั้งหมด (พนักงานรายเดือน ${num(nPick)} รายการ)</label>`:''}
+      <div class="tbl-wrap" style="max-height:55vh;overflow:auto"><table><thead><tr><th></th><th>วันที่</th><th>พนักงาน</th><th>ประเภท</th></tr></thead><tbody>
+      ${rows.map((x,i)=>`<tr><td>${canPick(x)?`<input type="checkbox" data-abs="${i}" checked style="width:18px;height:18px">`:''}</td>
+        <td>${fmt(x.d)}</td><td>${esc(x.e.code)} ${esc(x.e.name)}</td>
+        <td>${canPick(x)?'<span class="muted" style="font-size:12px">รายเดือน</span>':'<span class="muted" style="font-size:12px">รายวัน — ไม่ได้ค่าจ้างวันนี้อยู่แล้ว</span>'}</td></tr>`).join('')}
+      </tbody></table></div>
+      <p class="muted" style="font-size:12.5px;margin-top:8px">ขาดงาน = วันทำงานที่ไม่มีการลงเวลาเลย และไม่มีใบลา · ไม่นับวันหยุดใน “ปฏิทินวันหยุดบริษัท” (เมนูตั้งค่า)<br>
+      กด <strong>สร้างใบลาไม่รับค่าจ้าง</strong> → ใบลาไปอยู่หน้าระบบลางาน และหักเงินในหน้าเงินได้/เงินหักอัตโนมัติ (เงินเดือน ÷ 30 × วัน) · ติ๊กออกถ้ารู้ว่าไม่ได้ขาดจริง</p>`
+      :'<div class="empty">ไม่มีรายการ 🎉</div>', btns);
+    const all=$('#absAll'); if(all) all.onchange=()=>$('#modal').querySelectorAll('[data-abs]').forEach(x=>x.checked=all.checked);
+  });
+
+  /* ---- 1) ข้อมูลบริษัท + หมุดบริษัท & รัศมีสแกน ---- */
+  const site0=(cfg.sites&&cfg.sites[0])?{...cfg.sites[0]}:{name:'สำนักงาน',lat:null,lng:null,radius:100,address:'',sim:false};
+  const saved0={...site0};
+  const setP=el(`<div class="panel"><div style="padding:18px 20px">
+    <h3 style="margin-bottom:12px">🏢 ข้อมูลบริษัท</h3>
+    <div class="field"><label>ชื่อบริษัท</label><input id="ckName" value="${esc(cfg.company_name||'')}"></div>
+    <div class="field" style="margin-top:10px"><label>รหัสบริษัท (พนักงานใช้เข้าสู่ระบบ · A-Z, 0-9 ยาว 4–12 ตัว)</label>
+      <input id="ckCodeIn" value="${esc(cfg.code||'')}" maxlength="12" placeholder="เช่น BESTWORLD" autocomplete="off"
+        style="text-transform:uppercase;font-weight:800;letter-spacing:2px;max-width:260px">
+      ${cfg.code?'<div class="muted" style="font-size:12px;margin-top:3px">⚠️ เปลี่ยนรหัสแล้ว ลิงก์เดิมที่ส่งให้พนักงานจะใช้ไม่ได้ ต้องส่งลิงก์ใหม่ (พนักงานที่เข้าสู่ระบบค้างไว้ใช้ต่อได้)</div>':'<div class="muted" style="font-size:12px;margin-top:3px">เว้นว่าง = ระบบสุ่มให้</div>'}</div>
+    <div class="field" style="margin-top:10px"><label>ที่อยู่บริษัท</label><textarea id="ckAddr" rows="2" style="width:100%">${esc(site0.address||(DB.company&&DB.company.address)||'')}</textarea></div>
+    <button class="btn sm" id="ckGeo" style="margin-top:10px">🔎 ปักหมุดจากที่อยู่นี้</button>
+    <div style="border-top:1px solid var(--line);margin:18px 0"></div>
+
+    <h3 style="margin-bottom:12px">📍 หมุดบริษัท & รัศมีสแกน</h3>
+    <div class="field"><label>วางลิงก์ Google Maps หรือพิกัด</label>
+      <div style="display:flex;gap:8px"><input id="ckGmap" placeholder="เช่น https://www.google.com/maps/place/.../@13.608,100.919,17z หรือ 13.6080995, 100.919102" style="flex:1" autocomplete="off">
+      <button class="btn sm" id="ckGmapGo">📍 ใช้ตำแหน่งนี้</button></div>
+      <div class="muted" style="font-size:12px;margin-top:4px">วิธีที่ง่ายสุด: ใน Google Maps <strong>คลิกขวาที่ตำแหน่งบริษัท → กดตัวเลขพิกัดบรรทัดแรก</strong> (คัดลอกให้อัตโนมัติ) แล้ววางที่นี่ · หรือคัดลอกลิงก์จากแถบที่อยู่ของเบราว์เซอร์</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="field"><label>Latitude</label><input id="ckLat" type="number" step="any" value="${site0.lat??''}"></div>
+      <div class="field"><label>Longitude</label><input id="ckLng" type="number" step="any" value="${site0.lng??''}"></div>
+    </div>
+    <div class="field" style="margin-top:10px"><label>รัศมีที่อนุญาต (เมตร)</label><input id="ckRad" type="number" min="30" step="10" value="${site0.radius||100}"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+      <button class="btn ghost sm" id="ckHere">📌 ใช้ตำแหน่งปัจจุบันเป็นหมุดบริษัท</button>
+      <button class="btn ghost sm" id="ckReset">↺ คืนค่าหมุดบริษัท</button>
+      <button class="btn sm" id="ckSave" style="background:#1d4ed8">บันทึกการตั้งค่า</button>
+    </div>
+    <a id="ckMap" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;font-size:13.5px">🗺️ ดูหมุดใน Google Maps</a>
+    <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:13.5px">
+      <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="ckZone" ${cfg.require_zone?'checked':''}> ต้องอยู่ในรัศมีจึงลงเวลาได้</label>
+      <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="ckPhoto" ${cfg.require_photo?'checked':''}> ต้องถ่ายรูปทุกครั้ง</label>
+      <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="ckFace" ${cfg.require_face!==false?'checked':''}> 🙂 จดจำใบหน้า (ใบหน้าไม่ตรง = ลงเวลาไม่ได้)</label>
+    </div>
+    <div style="border-top:1px solid var(--line);margin:18px 0"></div>
+
+    <h3 style="margin-bottom:8px">โหมดจำลอง GPS (สำหรับทดสอบ)</h3>
+    <label style="display:flex;gap:8px;align-items:center;font-size:14px"><input type="checkbox" id="ckSim" ${site0.sim?'checked':''}> เปิดโหมดจำลอง (ไม่ใช้ GPS จริง)</label>
+    <p class="muted" style="font-size:12.5px;margin-top:4px">เปิดแล้วมือถือพนักงานจะส่งพิกัดหมุดบริษัทแทน GPS จริง ใช้ทดลองจากที่อื่นได้ — <strong style="color:#b45309">ปิดก่อนใช้งานจริง</strong></p>
+    <div style="border-top:1px solid var(--line);margin:18px 0"></div>
+
+    <button class="btn ghost sm" id="ckWipe" style="color:#dc2626">🗑️ ล้างข้อมูลทดลองทั้งหมด</button>
+    <div style="margin-top:14px;font-size:13.5px">${link?`ลิงก์ให้พนักงาน: <a href="${link}" target="_blank" rel="noopener"><strong>${esc(link)}</strong></a>
+      · รหัสบริษัท <strong style="letter-spacing:2px">${esc(cfg.code)}</strong> <button class="btn ghost sm" id="ckCopy">📋 คัดลอกลิงก์</button>`
+      :'<span class="muted">บันทึกการตั้งค่าครั้งแรกแล้วจะได้ลิงก์และรหัสบริษัทสำหรับพนักงาน</span>'}</div>
+  </div></div>`);
+  v.appendChild(setP);
+  const q=s=>setP.querySelector(s);
+  const upMap=()=>{ const a=q('#ckMap'), la=q('#ckLat').value, lo=q('#ckLng').value;
+    if(la&&lo){ a.href=`https://www.google.com/maps?q=${la},${lo}`; a.style.display='inline-block'; } else a.style.display='none'; };
+  ['#ckLat','#ckLng'].forEach(s=>q(s).addEventListener('input',upMap)); upMap();
+  /* อ่านพิกัดจากลิงก์ Google Maps หลายรูปแบบ หรือจากตัวเลข "lat, lng" */
+  const parseGmap=t=>{
+    t=decodeURIComponent(String(t||'').trim());
+    const pats=[/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/, /@(-?\d+\.\d+),\s*(-?\d+\.\d+)/, /[?&](?:q|query|ll|center|destination)=(-?\d+\.\d+),\s*(-?\d+\.\d+)/,
+                /^\s*\(?\s*(-?\d+\.\d+)\s*[, ]\s*(-?\d+\.\d+)\s*\)?\s*$/];
+    for(const p of pats){ const m=t.match(p); if(m){ const la=+m[1], lo=+m[2]; if(Math.abs(la)<=90&&Math.abs(lo)<=180) return [la,lo]; } }
+    return null;
+  };
+  const useGmap=()=>{
+    const t=q('#ckGmap').value; if(!t.trim()){ toast('วางลิงก์หรือพิกัดก่อน'); return; }
+    const p=parseGmap(t);
+    if(!p){
+      if(/goo\.gl|maps\.app/i.test(t)) toast('ลิงก์แบบย่อ (maps.app.goo.gl) อ่านพิกัดไม่ได้ — เปิดลิงก์นั้นก่อน แล้วคัดลอกลิงก์ยาวจากแถบที่อยู่ หรือคลิกขวาที่หมุดเพื่อคัดลอกพิกัด');
+      else toast('หาพิกัดในข้อความนี้ไม่เจอ — ลองคลิกขวาที่หมุดใน Google Maps แล้วคัดลอกพิกัดมาวาง');
+      return;
+    }
+    q('#ckLat').value=p[0].toFixed(7); q('#ckLng').value=p[1].toFixed(7); upMap();
+    toast('ได้พิกัดแล้ว — อย่าลืมกดบันทึกการตั้งค่า');
+  };
+  q('#ckGmapGo').onclick=useGmap;
+  q('#ckGmap').addEventListener('paste',()=>setTimeout(()=>{ if(parseGmap(q('#ckGmap').value)) useGmap(); },0));
+  q('#ckHere').onclick=()=>{
+    if(!navigator.geolocation){ toast('เบราว์เซอร์นี้หาตำแหน่งไม่ได้'); return; }
+    toast('กำลังหาตำแหน่ง…');
+    navigator.geolocation.getCurrentPosition(p=>{ q('#ckLat').value=p.coords.latitude.toFixed(7); q('#ckLng').value=p.coords.longitude.toFixed(7); upMap();
+      toast(`ได้ตำแหน่งแล้ว (คลาดเคลื่อน ±${Math.round(p.coords.accuracy)} ม.) — อย่าลืมกดบันทึก`); },
+      ()=>toast('ไม่ได้รับอนุญาตให้ใช้ตำแหน่ง'), {enableHighAccuracy:true,timeout:15000,maximumAge:0});
+  };
+  q('#ckReset').onclick=()=>{ q('#ckLat').value=saved0.lat??''; q('#ckLng').value=saved0.lng??''; q('#ckRad').value=saved0.radius||100; upMap(); toast('คืนค่าหมุดที่บันทึกไว้แล้ว'); };
+  q('#ckGeo').onclick=async()=>{
+    const addr=q('#ckAddr').value.trim(); if(!addr){ toast('กรอกที่อยู่ก่อน'); return; }
+    const b=q('#ckGeo'); b.disabled=true; b.textContent='กำลังค้นหา…';
+    try{
+      const r=await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=th&accept-language=th&q='+encodeURIComponent(addr));
+      const j=await r.json();
+      if(!j.length){ toast('หาพิกัดจากที่อยู่นี้ไม่เจอ — ลองใส่แค่ ตำบล อำเภอ จังหวัด หรือใช้ตำแหน่งปัจจุบันแทน'); }
+      else { q('#ckLat').value=(+j[0].lat).toFixed(7); q('#ckLng').value=(+j[0].lon).toFixed(7); upMap();
+        toast('ปักหมุดแล้ว — กด “ดูหมุดใน Google Maps” เช็คว่าตรงไหม แล้วกดบันทึก'); }
+    }catch(e){ toast('ค้นหาไม่สำเร็จ: '+e.message); }
+    b.disabled=false; b.textContent='🔎 ปักหมุดจากที่อยู่นี้';
+  };
+  if(link) q('#ckCopy').onclick=()=>{ navigator.clipboard.writeText(link).then(()=>toast('คัดลอกลิงก์แล้ว')); };
+  q('#ckWipe').onclick=async()=>{
+    if(!confirm('ลบประวัติการลงเวลาผ่านมือถือทั้งหมดของบริษัทนี้ (รวมรูป)?\nเวลาที่นำเข้าหน้าเวลาเข้างานไปแล้วจะไม่ถูกลบ')) return;
+    const {error}=await sb.from('punches').delete().eq('owner_id',MY_UID);
+    if(error){ toast('ลบไม่สำเร็จ: '+error.message); return; }
+    toast('ล้างข้อมูลทดลองแล้ว'); render();
+  };
+  q('#ckSave').onclick=async()=>{
+    const lat=q('#ckLat').value===''?null:+q('#ckLat').value, lng=q('#ckLng').value===''?null:+q('#ckLng').value;
+    const hasPin=lat!=null&&lng!=null&&isFinite(lat)&&isFinite(lng)&&Math.abs(lat)<=90&&Math.abs(lng)<=180;
+    if((q('#ckZone').checked||q('#ckSim').checked) && !hasPin){ toast('ต้องมีหมุดบริษัท (Latitude/Longitude) ก่อน'); return; }
+    const site={ name:q('#ckName').value.trim()||'สำนักงาน', lat, lng, radius:Math.max(30,+q('#ckRad').value||100),
+                 address:q('#ckAddr').value.trim(), sim:q('#ckSim').checked };
+    const want=q('#ckCodeIn').value.trim().toUpperCase();
+    if(want && !/^[A-Z0-9]{4,12}$/.test(want)){ toast('รหัสบริษัทต้องเป็น A-Z หรือ 0-9 ยาว 4–12 ตัว (ไม่มีเว้นวรรคหรือภาษาไทย)'); return; }
+    if(cfg.code && want && want!==cfg.code && !confirm(`เปลี่ยนรหัสบริษัทจาก ${cfg.code} เป็น ${want}?
+ลิงก์เดิมที่ส่งให้พนักงานจะใช้ไม่ได้ ต้องส่งลิงก์ใหม่`)) return;
+    const row={ owner_id:MY_UID, code:want||cfg.code||ckCode(), company_name:q('#ckName').value.trim(),
+      sites: hasPin?[site]:[], require_zone:q('#ckZone').checked, require_photo:q('#ckPhoto').checked, require_face:q('#ckFace').checked, updated_at:new Date().toISOString() };
+    if(row.require_face) row.require_photo=true;       // จดจำใบหน้าต้องมีรูปเสมอ
+    let {error}=await sb.from('checkin_config').upsert(row);
+    if(error && /require_face/.test(error.message)){ toast('ยังไม่ได้รัน supabase-checkin-3.sql — บันทึกโดยไม่เปิดจดจำใบหน้า'); delete row.require_face; ({error}=await sb.from('checkin_config').upsert(row)); }
+    if(error && /duplicate|unique/i.test(error.message)){
+      if(want){ toast(`รหัส ${want} มีบริษัทอื่นใช้แล้ว — ลองรหัสอื่น`); return; }
+      row.code=ckCode(); ({error}=await sb.from('checkin_config').upsert(row)); }
+    if(error && /row-level security|violates/i.test(error.message) && want && want.length!==6){ toast('ยังไม่ได้รัน supabase-checkin-4.sql — ตอนนี้ใช้ได้เฉพาะรหัส 6 ตัว'); return; }
+    if(error){ toast('บันทึกไม่สำเร็จ: '+error.message); return; }
+    toast(site.sim?'บันทึกแล้ว — โหมดจำลอง GPS เปิดอยู่':'บันทึกการตั้งค่าแล้ว'); render();
+  };
+  if(site0.sim) v.insertBefore(el(`<div class="panel" style="background:#fffbeb;border-color:#fcd34d"><div style="padding:12px 16px;color:#92400e;font-size:14px">⚠️ <strong>โหมดจำลอง GPS เปิดอยู่</strong> — พนักงานลงเวลาได้จากทุกที่ ปิดก่อนใช้งานจริง</div></div>`), setP);
+
+  /* ---- 2) บัญชีพนักงาน: ชื่อผู้ใช้ + รหัสผ่าน + ลิงก์ส่วนตัว ---- */
+  const userLink=u=>`${location.origin}/checkin?c=${cfg.code}&u=${encodeURIComponent(u)}&openExternalBrowser=1`;   // ให้ LINE เปิดใน Chrome/Safari (กล้องใช้ได้)
+  const accP=el(`<div class="panel"><div style="padding:16px 18px 6px">
+    <h3 style="margin-bottom:4px">👤 บัญชีลงเวลาของพนักงาน</h3>
+    <p class="muted" style="font-size:13px;margin-bottom:10px">ตั้ง <strong>ชื่อผู้ใช้ + รหัสผ่าน</strong> ให้แต่ละคน แล้วส่ง <strong>ลิงก์ส่วนตัว</strong> ให้พนักงาน (ลิงก์กรอกรหัสบริษัทและชื่อผู้ใช้ไว้ให้แล้ว พนักงานใส่แค่รหัสผ่าน)<br>
+    ระบบเก็บรหัสผ่านแบบเข้ารหัส — ดูย้อนหลังไม่ได้ ถ้าลืมให้ตั้งใหม่</p>
+    <button class="btn sm" id="ckBulk" ${cfg.code?'':'disabled title="บันทึกการตั้งค่าบริษัทก่อน"'}>🔑 สร้างบัญชีให้ทุกคนที่ยังไม่มี (รหัสผ่านสุ่ม)</button>
+  </div>
+  <div class="tbl-wrap"><table><thead><tr><th>รหัส</th><th>ชื่อ</th><th>ชื่อผู้ใช้</th><th>ใบหน้า</th><th>สถานะ</th><th></th></tr></thead><tbody>
+  ${staff.map(e=>{ const u=byEmp.get(e.id);
+    const st=!u?'<span class="chip" style="background:#f1f5f9;color:#64748b">ยังไม่มีบัญชี</span>'
+      : !u.active?'<span class="chip" style="background:#fee2e2;color:#b91c1c">ปิดใช้งาน</span>'
+      : (u.locked_until&&new Date(u.locked_until)>new Date())?'<span class="chip" style="background:#fef3c7;color:#b45309">ล็อก 15 นาที (รหัสผิด)</span>'
+      : '<span class="chip" style="background:#dcfce7;color:#16a34a">ใช้งานได้</span>';
+    return `<tr><td>${esc(e.code)}</td><td>${esc(e.name)}</td><td><strong>${u?esc(u.emp_code):'<span class="muted">-</span>'}</strong></td>
+      <td>${u&&u.face_enrolled_at?`<img src="${u.face_photo||''}" data-face="${u.id}" alt="" title="ลงทะเบียนเมื่อ ${esc(ckBkk(u.face_enrolled_at).join(' '))}" style="width:36px;height:36px;object-fit:cover;border-radius:50%;cursor:zoom-in;vertical-align:middle;border:2px solid #10b981">`
+        :(u?'<span class="muted" style="font-size:12px">ลงทะเบียนตอนลงเวลาครั้งแรก</span>':'<span class="muted">-</span>')}</td><td>${st}</td>
+      <td style="text-align:right;white-space:nowrap">
+      <button class="btn ghost sm" data-edit="${esc(e.id)}" ${cfg.code?'':'disabled'}>${u?'✏️ ตั้งชื่อผู้ใช้/รหัสผ่าน':'➕ สร้างบัญชี'}</button>
+      ${u&&u.face_enrolled_at?`<button class="btn ghost sm" data-rface="${u.id}">🙂 รีเซ็ตใบหน้า</button>`:''}
+      ${u?`<button class="btn ghost sm" data-link="${esc(u.emp_code)}">🔗 คัดลอกลิงก์</button>
+           <button class="btn ghost sm" data-act="${u.id}" data-on="${u.active?0:1}">${u.active?'ปิด':'เปิด'}</button>`:''}</td></tr>`; }).join('')}
+  </tbody></table></div></div>`);
+  v.appendChild(accP);
+  const ERRS={bad_login:'ชื่อผู้ใช้ต้องเป็น a-z, 0-9, จุด, ขีด ยาว 3–30 ตัว',bad_pin:'รหัสผ่านต้องยาว 4–32 ตัวอักษร',
+    login_taken:'ชื่อผู้ใช้นี้มีพนักงานคนอื่นใช้แล้ว',not_premium:'ต้องใช้แพ็กเกจพรีเมี่ยม'};
+  const errMsg=e=>{ for(const k in ERRS) if(String(e.message).includes(k)) return ERRS[k]; return e.message; };
+  const setAcc=async(e,login,pw)=>{ const {error}=await sb.rpc('checkin_set_user',{p_emp_id:e.id,p_emp_code:login,p_emp_name:e.name,p_pin:pw}); return error; };
+  const copy=t=>navigator.clipboard.writeText(t).then(()=>toast('คัดลอกแล้ว'),()=>toast('คัดลอกไม่ได้ — เลือกข้อความแล้วคัดลอกเอง'));
+  const showCreds=(list)=>{
+    openModal('🔑 ข้อมูลเข้าสู่ระบบของพนักงาน',
+      `<p style="margin-bottom:8px">ส่งให้พนักงานแต่ละคน — <strong>ปิดหน้านี้แล้วจะดูรหัสผ่านอีกไม่ได้</strong> (ตั้งใหม่ได้เสมอ)</p>
+       <p style="margin-bottom:10px;font-size:13.5px">รหัสบริษัท <strong style="letter-spacing:2px">${esc(cfg.code)}</strong></p>
+       <div class="tbl-wrap"><table><thead><tr><th>ชื่อ</th><th>ชื่อผู้ใช้</th><th>รหัสผ่าน</th><th></th></tr></thead><tbody>
+       ${list.map((x,i)=>`<tr><td>${esc(x.name)}</td><td><strong>${esc(x.login)}</strong></td><td style="font-weight:800;letter-spacing:1px">${esc(x.pw)}</td>
+         <td><button class="btn ghost sm" data-cp="${i}">📋 คัดลอกข้อความส่ง LINE</button></td></tr>`).join('')}</tbody></table></div>`,
+      [['🖨️ พิมพ์','ghost',()=>window.print()],['ปิด','',()=>{ closeModal(); render(); }]]);
+    $('#modal').querySelectorAll('[data-cp]').forEach(b=>b.onclick=()=>{ const x=list[+b.dataset.cp];
+      copy(`ลงเวลาเข้า-ออกงาน ${cfg.company_name||''}\nเปิดลิงก์: ${userLink(x.login)}\nชื่อผู้ใช้: ${x.login}\nรหัสผ่าน: ${x.pw}\n(เก็บรหัสผ่านไว้เป็นความลับ)`); });
+  };
+  accP.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{
+    const e=DB.employees.find(x=>x.id===b.dataset.edit); if(!e) return; const u=byEmp.get(e.id);
+    const defLogin=(u&&u.emp_code)||String(e.code||'').toUpperCase().replace(/[^A-Z0-9._-]/g,'');
+    openModal(`${u?'✏️ ตั้งชื่อผู้ใช้/รหัสผ่าน':'➕ สร้างบัญชี'} — ${esc(e.name)}`,
+      `<div class="field"><label>ชื่อผู้ใช้ (a-z, 0-9, จุด, ขีด · 3–30 ตัว)</label><input id="caLogin" value="${esc(defLogin)}" style="text-transform:uppercase" autocomplete="off"></div>
+       <div class="field" style="margin-top:10px"><label>รหัสผ่าน (4–32 ตัวอักษร)</label>
+         <div style="display:flex;gap:6px"><input id="caPw" type="text" autocomplete="new-password" style="flex:1" placeholder="${u?'ตั้งรหัสผ่านใหม่':''}">
+         <button class="btn ghost sm" id="caGen">🎲 สุ่ม</button></div></div>
+       <p class="muted" style="font-size:12.5px;margin-top:8px">${u?'บันทึกแล้วพนักงานจะถูกออกจากระบบทุกเครื่อง ต้องเข้าใหม่ด้วยรหัสผ่านใหม่':'พนักงานเปิดลิงก์ส่วนตัวแล้วใส่รหัสผ่านนี้'}</p>`,
+      [['ยกเลิก','ghost',closeModal],['💾 บันทึก','',async()=>{
+        const login=$('#caLogin').value.trim().toUpperCase(), pw=$('#caPw').value;
+        if(!/^[A-Z0-9._-]{3,30}$/.test(login)){ toast(ERRS.bad_login); return; }
+        if(pw.length<4||pw.length>32){ toast(ERRS.bad_pin); return; }
+        const err=await setAcc(e,login,pw); if(err){ toast('ไม่สำเร็จ: '+errMsg(err)); return; }
+        showCreds([{name:e.name,login,pw}]);
+      }]]);
+    $('#caGen').onclick=()=>{ $('#caPw').value=ckPin(); };
+    if(!u) $('#caPw').value=ckPin();
+  });
+  accP.querySelectorAll('[data-link]').forEach(b=>b.onclick=()=>copy(userLink(b.dataset.link)));
+  accP.querySelectorAll('[data-face]').forEach(im=>im.onclick=()=>{ const u=S.users.find(x=>x.id===im.dataset.face);
+    openModal('🙂 ใบหน้าที่ลงทะเบียน — '+esc(u.emp_name||u.emp_code),`<img src="${u.face_photo}" alt="" style="width:100%;max-width:320px;border-radius:14px;display:block;margin:0 auto">
+      <p class="muted" style="text-align:center;margin-top:8px;font-size:13px">ลงทะเบียนเมื่อ ${esc(ckBkk(u.face_enrolled_at).join(' '))}</p>`,[['ปิด','',closeModal]]); });
+  accP.querySelectorAll('[data-rface]').forEach(b=>b.onclick=async()=>{
+    if(!confirm('ลบใบหน้าที่ลงทะเบียนของพนักงานคนนี้?\nครั้งถัดไปที่ลงเวลา ระบบจะลงทะเบียนใบหน้าใหม่')) return;
+    const {error}=await sb.rpc('checkin_reset_face',{p_user_id:b.dataset.rface});
+    if(error){ toast('ไม่สำเร็จ: '+error.message); return; } toast('รีเซ็ตใบหน้าแล้ว'); render(); });
+  accP.querySelectorAll('[data-act]').forEach(b=>b.onclick=async()=>{
+    const {error}=await sb.from('checkin_users').update({active:b.dataset.on==='1'}).eq('id',b.dataset.act);
+    if(error){ toast('ไม่สำเร็จ: '+error.message); return; } render();
+  });
+  const bulk=accP.querySelector('#ckBulk');
+  if(bulk) bulk.onclick=async()=>{
+    const taken=new Set(S.users.map(u=>u.emp_code));
+    const todo=staff.filter(e=>!byEmp.has(e.id)); if(!todo.length){ toast('ทุกคนมีบัญชีแล้ว'); return; }
+    bulk.disabled=true; const out=[]; let skip=0;
+    for(const e of todo){
+      const login=String(e.code||'').toUpperCase().replace(/[^A-Z0-9._-]/g,'');
+      if(login.length<3||taken.has(login)){ skip++; continue; }
+      const pw=ckPin(); bulk.textContent=`กำลังสร้าง ${out.length+1}/${todo.length}…`;
+      const err=await setAcc(e,login,pw); if(err){ toast('ไม่สำเร็จ: '+errMsg(err)); break; }
+      taken.add(login); out.push({name:e.name,login,pw});
+    }
+    if(skip) toast(`ข้าม ${skip} คน (รหัสพนักงานใช้เป็นชื่อผู้ใช้ไม่ได้ — ตั้งเองทีละคน)`);
+    if(out.length) showCreds(out); else render();
+  };
+
+  /* ---- 3) บันทึกการลงเวลา ---- */
+  const logP=el(`<div class="panel"><div style="padding:16px 18px 6px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <h3 style="margin-right:auto">3. บันทึกการลงเวลา (งวดนี้)</h3>
+    <button class="btn ghost sm" id="ckReload">🔄 โหลดใหม่</button>
+    <button class="btn sm" id="ckMerge" ${unmerged?'':'disabled'}>⬇️ นำเข้าหน้าเวลาเข้างาน (${num(unmerged)})</button>
+  </div>
+  <p class="muted" style="font-size:12.5px;padding:0 18px 8px">นำเข้าแล้วระบบใช้ <strong>เวลาเข้าเร็วสุด</strong> และ <strong>เวลาออกช้าสุด</strong> ของแต่ละวัน ไปคิดวันทำงาน มาสาย และ OT ตามปกติ · รูปถูกลบอัตโนมัติหลัง 90 วัน</p>
+  <div class="tbl-wrap" style="max-height:60vh;overflow:auto"><table><thead><tr><th>รูป</th><th>วันเวลา</th><th>พนักงาน</th><th>ประเภท</th><th>ตำแหน่ง</th><th>สถานะ</th><th></th></tr></thead><tbody>
+  ${S.punches.length?S.punches.map(p=>{ const [d,t]=ckBkk(p.ts);
+    return `<tr><td>${p.photo?`<img src="${p.photo}" data-ph="${p.id}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:10px;cursor:zoom-in">`:'<span class="muted">-</span>'}</td>
+      <td style="white-space:nowrap">${d.slice(8)}/${d.slice(5,7)} <strong>${t}</strong></td>
+      <td>${esc(p.emp_code)} ${esc(p.emp_name)}</td>
+      <td>${p.kind==='in'?'<span class="chip" style="background:#dcfce7;color:#16a34a">เข้า</span>':'<span class="chip" style="background:#fef3c7;color:#b45309">ออก</span>'}</td>
+      <td style="font-size:12.5px">${p.lat!=null?`<a target="_blank" rel="noopener" href="https://www.google.com/maps?q=${p.lat},${p.lng}">${p.site_name?esc(p.site_name)+' · ':''}${p.distance_m!=null?num(p.distance_m)+' ม.':'แผนที่'}</a>`:'<span class="muted">ไม่มี GPS</span>'}
+        ${p.in_zone===false?' <span class="chip" style="background:#fee2e2;color:#b91c1c">นอกพื้นที่</span>':''}
+        ${p.face_dist!=null?(p.face_dist===0?' <span class="chip" style="background:#e0f2fe;color:#0369a1">ลงทะเบียนหน้า</span>'
+          :` <span class="chip" style="background:#dcfce7;color:#16a34a" title="ระยะห่างใบหน้า ${(+p.face_dist).toFixed(2)} (ยิ่งน้อยยิ่งเหมือน)">หน้าตรง ${Math.max(0,Math.round((1-p.face_dist)*100))}%</span>`):''}</td>
+      <td>${p.merged?'<span class="muted" style="font-size:12px">นำเข้าแล้ว</span>':'<span style="font-size:12px;color:#0f766e;font-weight:700">รอนำเข้า</span>'}
+        ${p.edited_at?`<br><span style="font-size:11px;color:#b45309" title="เดิม ${p.orig_ts?esc(ckBkk(p.orig_ts).join(' ')):''} ${p.orig_kind==='out'?'ออก':p.orig_kind==='in'?'เข้า':''}">✏️ แก้ไขแล้ว</span>`:''}</td>
+      <td style="white-space:nowrap;text-align:right"><button class="btn ghost sm" data-pedit="${p.id}" title="แก้ไข">✏️</button>
+        <button class="btn ghost sm" data-pdel="${p.id}" title="ลบ" style="color:#dc2626">🗑️</button></td></tr>`; }).join('')
+    :'<tr><td colspan="7"><div class="empty">ยังไม่มีการลงเวลาในงวดนี้</div></td></tr>'}
+  </tbody></table></div></div>`);
+  v.appendChild(logP);
+  logP.querySelector('#ckReload').onclick=()=>render();
+  /* แก้/ลบรายการที่นำเข้าแล้ว → คำนวณเวลาเข้า-ออกของวันนั้นใหม่จากรายการที่เหลือ (เวลาเข้าเร็วสุด/ออกช้าสุด) */
+  const redoDay=(empId,day,list)=>{
+    const box=ensureAttend(periodOfDate(day)); if(!box[empId]) box[empId]={};
+    const rows=list.filter(p=>p.emp_id===empId && p.merged && ckBkk(p.ts)[0]===day).map(p=>[p.kind,ckBkk(p.ts)[1]]);
+    const ins=rows.filter(x=>x[0]==='in').map(x=>x[1]).sort(), outs=rows.filter(x=>x[0]==='out').map(x=>x[1]).sort();
+    const rec=box[empId][day]||{};
+    const nr={i:ins[0]||'', o:outs[outs.length-1]||''}; if(rec.c!=null) nr.c=rec.c;
+    if(!nr.i && !nr.o && nr.c==null) delete box[empId][day]; else box[empId][day]=nr;
+  };
+  logP.querySelectorAll('[data-pdel]').forEach(b=>b.onclick=async()=>{
+    const p=S.punches.find(x=>String(x.id)===b.dataset.pdel); if(!p) return; const [d,t]=ckBkk(p.ts);
+    if(!confirm(`ลบรายการ${p.kind==='in'?'เข้างาน':'ออกงาน'}ของ ${p.emp_name||p.emp_code} วันที่ ${d.slice(8)}/${d.slice(5,7)} เวลา ${t}?${p.merged?'\nเวลาเข้างานของวันนั้นจะถูกคำนวณใหม่จากรายการที่เหลือ':''}`)) return;
+    const {error}=await sb.from('punches').delete().eq('id',p.id);
+    if(error){ toast('ลบไม่สำเร็จ: '+error.message); return; }
+    if(p.merged){ redoDay(p.emp_id,d,S.punches.filter(x=>x.id!==p.id)); save(); }
+    toast('ลบรายการแล้ว'); render();
+  });
+  logP.querySelectorAll('[data-pedit]').forEach(b=>b.onclick=()=>{
+    const p=S.punches.find(x=>String(x.id)===b.dataset.pedit); if(!p) return; const [d,t]=ckBkk(p.ts);
+    openModal(`✏️ แก้ไขการลงเวลา — ${esc(p.emp_name||p.emp_code)}`,
+      `<div style="display:flex;gap:10px;flex-wrap:wrap">
+         <div class="field"><label>วันที่</label><input type="date" id="peD" value="${d}"></div>
+         <div class="field"><label>เวลา (24 ชม.)</label>${t24('id="peT"',t)}</div>
+         <div class="field"><label>ประเภท</label><select id="peK"><option value="in" ${p.kind==='in'?'selected':''}>เข้างาน</option><option value="out" ${p.kind==='out'?'selected':''}>ออกงาน</option></select></div>
+       </div>
+       <p class="muted" style="font-size:12.5px;margin-top:8px">ระบบเก็บเวลาเดิมไว้เป็นหลักฐาน และแสดงป้าย “แก้ไขแล้ว” ในรายการ${p.merged?' · เวลาเข้างานของวันนั้นจะถูกคำนวณใหม่ให้อัตโนมัติ':''}</p>`,
+      [['ยกเลิก','ghost',closeModal],['💾 บันทึก','',async()=>{
+        const nd=$('#peD').value, nt=t24Norm($('#peT').value), nk=$('#peK').value;
+        if(!nd || !nt){ toast('กรอกวันที่และเวลาให้ถูกต้อง'); return; }
+        const ts=new Date(`${nd}T${nt}:00+07:00`).toISOString();
+        const patch={ ts, kind:nk, edited_at:new Date().toISOString() };
+        if(!p.orig_ts){ patch.orig_ts=p.ts; patch.orig_kind=p.kind; }
+        const {error}=await sb.from('punches').update(patch).eq('id',p.id);
+        if(error){ toast(/permission|edited_at|orig_/i.test(error.message)?'ยังไม่ได้รัน supabase-checkin-5.sql':('บันทึกไม่สำเร็จ: '+error.message)); return; }
+        if(p.merged){ const upd=S.punches.map(x=>x.id===p.id?{...x,...patch}:x); redoDay(p.emp_id,d,upd); if(nd!==d) redoDay(p.emp_id,nd,upd); save(); }
+        closeModal(); toast('แก้ไขแล้ว'); render();
+      }]]);
+  });
+  logP.querySelectorAll('[data-ph]').forEach(im=>im.onclick=()=>{
+    const p=S.punches.find(x=>String(x.id)===im.dataset.ph); const [d,t]=ckBkk(p.ts);
+    openModal(`${esc(p.emp_name||p.emp_code)} · ${p.kind==='in'?'เข้างาน':'ออกงาน'} ${d.slice(8)}/${d.slice(5,7)} ${t}`,
+      `<img src="${p.photo}" alt="" style="width:100%;max-width:360px;border-radius:14px;display:block;margin:0 auto">`,[['ปิด','',closeModal]]);
+  });
+  logP.querySelector('#ckMerge').onclick=async()=>{
+    const res=await ckMergePunches(S.punches.filter(p=>!p.merged));
+    if(res.err) toast('นำเข้าเวลาแล้ว แต่บันทึกสถานะไม่สำเร็จ: '+res.err);
+    else toast(`นำเข้าเวลาเข้างานแล้ว ${num(res.n)} รายการ${res.skipped?` · ข้าม ${res.skipped} รายการ (ไม่พบพนักงาน)`:''}`);
+    render();
+  };
+}
+
+/* นำรายการลงเวลาจากมือถือเข้าหน้าเวลาเข้างาน (เข้าเร็วสุด/ออกช้าสุดของวัน) แล้วติดสถานะ merged */
+async function ckMergePunches(todo){
+  const known=new Map(DB.employees.map(e=>[e.id,e])); let n=0, skipped=0;
+  todo.slice().sort((a,b)=>a.ts<b.ts?-1:1).forEach(p=>{
+    if(!known.has(p.emp_id)){ skipped++; return; }
+    const [d,t]=ckBkk(p.ts); const box=ensureAttend(periodOfDate(d));
+    if(!box[p.emp_id]) box[p.emp_id]={};
+    const r=box[p.emp_id][d]||(box[p.emp_id][d]={i:'',o:''});
+    if(p.kind==='in'){ if(!r.i || t<r.i) r.i=t; } else { if(!r.o || t>r.o) r.o=t; }
+    n++;
+  });
+  if(n) save();
+  const ids=todo.filter(p=>known.has(p.emp_id)).map(p=>p.id); let err='';
+  for(let i=0;i<ids.length;i+=200){ const {error}=await sb.from('punches').update({merged:true}).in('id',ids.slice(i,i+200)); if(error){ err=error.message; break; } }
+  return {n, skipped, err};
+}
+/* นำเข้าอัตโนมัติ — เรียกตอนเปิดหน้าเวลาเข้างาน/ลงเวลาผ่านมือถือ (เงียบ ๆ ไม่รบกวนถ้าไม่มีอะไรใหม่) */
+let _ckAutoBusy=false, _ckAutoAt=0;
+async function ckAutoMerge(){
+  if(_ckAutoBusy || DEMO || !sb || !MY_UID || isFirm() || !hasPremium()) return;
+  if(Date.now()-_ckAutoAt<60000) return;              // ไม่เกินนาทีละครั้ง
+  _ckAutoBusy=true; _ckAutoAt=Date.now();
+  try{
+    const since=new Date(Date.now()-62*86400000).toISOString();
+    const {data,error}=await sb.from('punches').select('id,emp_id,kind,ts').eq('owner_id',MY_UID).eq('merged',false).gte('ts',since).limit(2000);
+    if(error || !data || !data.length) return;
+    const res=await ckMergePunches(data);
+    if(res.n){ toast(`📱 นำเข้าเวลาจากมือถืออัตโนมัติ ${num(res.n)} รายการ`); if(PAGE==='attend'||PAGE==='checkin') render(); }
+  }catch(e){} finally{ _ckAutoBusy=false; }
+}
+
+/* ใบลาจากมือถือ ↔ ระบบลางาน
+   ดึง: ใบลาใหม่ → DB.leave (สถานะรออนุมัติ, reqId=เลขใบลาในตาราง leave_requests)
+   ส่งกลับ: สถานะที่แอดมินเลือกในระบบลางาน → leave_requests.status ให้พนักงานเห็น
+   พนักงานยกเลิกใบที่ยังรออนุมัติ → ลบออกจากระบบลางาน */
+let _lvSyncBusy=false, _lvSyncAt=0;
+async function ckLeaveSync(force){
+  if(_lvSyncBusy || DEMO || !sb || !MY_UID || isFirm() || !hasPremium()) return;
+  if(!force && Date.now()-_lvSyncAt<30000) return;
+  _lvSyncBusy=true; _lvSyncAt=Date.now();
+  let changed=false, added=0;
+  try{
+    const L=leaveList();
+    // 1) ใบใหม่ที่ยังไม่เคยดึง
+    const {data:news,error}=await sb.from('leave_requests').select('*').eq('owner_id',MY_UID).eq('synced',false).limit(500);
+    if(error) return;                                    // ยังไม่รัน SQL รอบ 6 → เงียบไว้
+    const known=new Set(DB.employees.map(e=>e.id)), done=[];
+    (news||[]).forEach(q=>{
+      done.push(q.id);
+      if(!known.has(q.emp_id) || L.some(l=>l.reqId===q.id)) return;
+      if(q.status!=='pending') return;                   // ยกเลิกก่อนแอดมินเห็น ไม่ต้องเพิ่ม
+      const hours=q.hours!=null?+q.hours:null;
+      L.push({ id:uid(), reqId:q.id, empId:q.emp_id, type:q.type, status:'pending', from:q.from_date, to:q.to_date,
+               days: hours!=null?hrsToDays(hours):leaveDaysCount(q.from_date,q.to_date), hours,
+               reason:(q.reason?q.reason+' · ':'')+'ยื่นจากมือถือ' });
+      added++; changed=true;
+    });
+    if(done.length) await sb.from('leave_requests').update({synced:true}).in('id',done);
+    // 2) ส่งสถานะกลับ + รับการยกเลิกจากพนักงาน
+    const mine=L.filter(l=>l.reqId);
+    if(mine.length){
+      const {data:rs}=await sb.from('leave_requests').select('id,status').in('id',mine.map(l=>l.reqId));
+      const st=new Map((rs||[]).map(x=>[x.id,x.status]));
+      for(const l of mine){
+        const s=st.get(l.reqId); if(!s) continue;
+        if(s==='cancelled'){ if(l.status==='pending'){ L.splice(L.indexOf(l),1); changed=true; } continue; }
+        const want=['pending','approved','rejected'].includes(l.status)?l.status:'approved';
+        if(s!==want) await sb.from('leave_requests').update({status:want, decided_at:new Date().toISOString()}).eq('id',l.reqId);
+      }
+    }
+    if(changed){ save(); if(added) toast(`📱 มีใบลาใหม่จากมือถือ ${num(added)} ใบ — รออนุมัติในระบบลางาน`); if(['leave','attend','checkin'].includes(PAGE)) render(); }
+  }catch(e){} finally{ _lvSyncBusy=false; }
+}
+
 /* ============ เครื่องมือข้ามบริษัท (สำนักงานบัญชี) ============ */
 /* คิดยอดของบริษัทอื่นโดยยืมฟังก์ชันคำนวณชุดเดิมทั้งหมด — สลับ DB ชั่วคราวแล้วคืนค่าเสมอ
    ทำแบบนี้เพื่อกันตัวเลขสองชุดเพี้ยนจากกัน ถ้าเขียนสูตรใหม่แยกไว้จะหลุดกันวันใดวันหนึ่ง */
@@ -2412,9 +2900,6 @@ function empForm(id){
         <option value="0" ${!e.noSSO?'selected':''}>เข้าประกันสังคม (หัก 5%)</option>
         <option value="1" ${e.noSSO?'selected':''}>ยกเว้น — ไม่หัก/ไม่ยื่น (เช่น กรรมการ)</option></select>
         <div class="muted" style="font-size:11px;margin-top:2px">* ตำแหน่งที่มีคำว่า "กรรมการ" ระบบยกเว้นให้อัตโนมัติ</div></div>
-      <div class="field"><label>เพดาน OT ต่อวัน (ชม.)</label>
-        <input type="number" id="f_otMax" min="0" step="0.5" value="${e.otMaxDay||''}" placeholder="ใช้ค่าส่วนกลาง — ${(+DB.otMaxDay||0)? 'วันละ '+num(DB.otMaxDay)+' ชม.' : 'ไม่จำกัด'}">
-        <div class="muted" style="font-size:11px;margin-top:2px">* เว้นว่าง = ใช้ค่าส่วนกลางจากหน้า “เวลาเข้างาน”</div></div>
       <div class="field"><label>สิทธิ์ค่าล่วงเวลา (OT)</label><select id="f_noOT">
         <option value="0" ${!e.noOT?'selected':''}>คิด OT ให้ (ปกติ)</option>
         <option value="1" ${e.noOT?'selected':''}>ไม่คิด OT ให้คนนี้</option></select>
@@ -2432,7 +2917,7 @@ function empForm(id){
     const dup=DB.employees.find(x=>x.id!==id && String(x.code||'').trim().toLowerCase()===code.toLowerCase());
     if(dup){ toast(`รหัส ${code} ซ้ำกับ "${dup.name}" — กรุณาใช้รหัสอื่น`);
       const f=$('#f_code'); if(f){ f.style.borderColor='#dc2626'; f.focus(); f.select(); } return; }
-    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),phone:g('f_phone').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,otMaxDay:+g('f_otMax')||0,photo:photoData||''};
+    const rec={code,name,gender:g('f_gender'),position:g('f_position').trim(),phone:g('f_phone').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,photo:photoData||''};
     // เพิ่มคนใหม่ หรือปลดสถานะลาออกให้กลับมาทำงาน = กินโควตาเพิ่ม ต้องเช็คก่อน
     const willCount = !rec.resignDate;
     const wasCount  = id ? !e.resignDate : false;
@@ -3431,6 +3916,72 @@ function vPND1(v){
 }
 
 /* ============ SETTINGS ============ */
+/* ============ ปฏิทินวันหยุดบริษัท ============
+   เก็บใน DB.holidays = { "YYYY-MM-DD": "ชื่อวันหยุด" } — แยกตามบริษัท (อยู่ในข้อมูลของแต่ละบริษัท)
+   ใช้: ไม่นับขาดงาน · ทำงานวันหยุดคิด OT ตามตัวคูณวันหยุด */
+function holidayMap(){ if(!DB.holidays||typeof DB.holidays!=='object') DB.holidays={}; return DB.holidays; }
+function isHoliday(iso){ return !!(DB.holidays && DB.holidays[iso]); }
+function holidayName(iso){ return (DB.holidays && DB.holidays[iso]) || ''; }
+/* วันหยุดตามประเพณีที่ใช้บ่อยในภาคเอกชน — วันตามจันทรคติเปลี่ยนทุกปี ใส่ให้เฉพาะปีที่ตรวจแล้ว
+   ปีอื่นเติมเฉพาะวันที่ตายตัว แล้วให้บริษัทเพิ่มวันพระเอง */
+const HOLIDAY_FIXED=[['01-01','วันขึ้นปีใหม่'],['04-06','วันจักรี'],['04-13','วันสงกรานต์'],['04-14','วันสงกรานต์'],['04-15','วันสงกรานต์'],
+  ['05-01','วันแรงงานแห่งชาติ'],['05-04','วันฉัตรมงคล'],['06-03','วันเฉลิมพระชนมพรรษา สมเด็จพระราชินี'],['07-28','วันเฉลิมพระชนมพรรษา ร.10'],
+  ['08-12','วันแม่แห่งชาติ'],['10-13','วันนวมินทรมหาราช'],['10-23','วันปิยมหาราช'],['12-05','วันพ่อแห่งชาติ'],['12-10','วันรัฐธรรมนูญ'],['12-31','วันสิ้นปี']];
+const HOLIDAY_LUNAR={ 2026:[['2026-03-03','วันมาฆบูชา'],['2026-05-31','วันวิสาขบูชา'],['2026-07-29','วันอาสาฬหบูชา'],['2026-07-30','วันเข้าพรรษา']] };
+function vHolidayPanel(v){
+  const H=holidayMap();
+  if(!window._hyYear) window._hyYear=+PERIOD.split('-')[0];
+  const Y=window._hyYear;
+  const list=Object.keys(H).filter(d=>+d.slice(0,4)===Y).sort();
+  const TH_M=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  const WDN=['อา','จ','อ','พ','พฤ','ศ','ส'];
+  const fmt=d=>`${WDN[new Date(d+'T00:00:00').getDay()]} ${+d.slice(8)} ${TH_M[+d.slice(5,7)-1]}`;
+  const p=el(`<div class="panel"><div class="phead"><h2>📅 ปฏิทินวันหยุดบริษัท</h2></div><div class="pbody">
+    <p class="muted" style="font-size:13px;margin-bottom:10px">วันหยุดของบริษัทนี้เท่านั้น (แต่ละบริษัทตั้งไม่เหมือนกันได้) · ใช้กับ <strong>ไม่นับขาดงาน</strong> และ <strong>OT วันหยุด</strong></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+      <button class="btn ghost sm" id="hyPrev">‹</button><strong style="font-size:16px">ปี ${Y+543}</strong><button class="btn ghost sm" id="hyNext">›</button>
+      <span class="chip" style="${list.length<13?'background:#fef3c7;color:#b45309':'background:#dcfce7;color:#16a34a'}">${num(list.length)} วัน${list.length<13?' — กฎหมายกำหนดวันหยุดตามประเพณีอย่างน้อย 13 วัน':''}</span>
+      <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn ghost sm" id="hyFill">⭐ เติมวันหยุดทั่วไปปี ${Y+543}</button>
+        <button class="btn ghost sm" id="hyCopy">📋 คัดลอกจากปี ${Y+542}</button>
+      </span>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px">
+      <div class="field"><label>วันที่</label><input type="date" id="hyD" value="${Y}-01-01" min="${Y}-01-01" max="${Y}-12-31"></div>
+      <div class="field" style="flex:1;min-width:180px"><label>ชื่อวันหยุด</label><input id="hyN" placeholder="เช่น หยุดชดเชยสงกรานต์ / วันหยุดประจำปีบริษัท"></div>
+      <button class="btn sm" id="hyAdd">＋ เพิ่มวันหยุด</button>
+    </div>
+    <div class="tbl-wrap" style="max-height:340px;overflow:auto"><table><thead><tr><th>วันที่</th><th>ชื่อวันหยุด</th><th></th></tr></thead><tbody>
+      ${list.length?list.map(d=>`<tr><td style="white-space:nowrap">${fmt(d)}</td><td>${esc(H[d])}</td>
+        <td style="text-align:right"><button class="btn ghost sm" data-hydel="${d}" style="color:#dc2626">ลบ</button></td></tr>`).join('')
+        :`<tr><td colspan="3"><div class="empty">ยังไม่มีวันหยุดปี ${Y+543} — กด “เติมวันหยุดทั่วไป” แล้วลบวันที่บริษัทไม่หยุด</div></td></tr>`}
+    </tbody></table></div>
+    <div class="settings-row" style="margin-top:12px"><label>ตัวคูณ OT เมื่อทำงานล่วงเวลาในวันหยุด</label>
+      <select id="hyMul">${[1.5,2,3].map(m=>`<option value="${m}" ${(+DB.holidayOtMult||3)===m?'selected':''}>${m} เท่า</option>`).join('')}</select>
+      <span class="muted" style="font-size:12px">กฎหมายแรงงาน: ล่วงเวลาในวันหยุด = 3 เท่า · ตั้งเฉพาะวันในหน้าเวลาเข้างานจะมีผลเหนือค่านี้</span></div>
+    <p class="muted" style="font-size:12px;margin-top:8px">⚠️ วันหยุดตามจันทรคติ (มาฆบูชา วิสาขบูชา ฯลฯ) และวันหยุดชดเชยเปลี่ยนทุกปี ตรวจกับประกาศของบริษัทก่อนใช้ · รัฐอาจประกาศวันหยุดพิเศษเพิ่มระหว่างปี</p>
+  </div></div>`);
+  v.appendChild(p);
+  const q=s=>p.querySelector(s);
+  q('#hyPrev').onclick=()=>{ window._hyYear--; render(); };
+  q('#hyNext').onclick=()=>{ window._hyYear++; render(); };
+  q('#hyAdd').onclick=()=>{ const d=q('#hyD').value, n=q('#hyN').value.trim();
+    if(!d){ toast('เลือกวันที่ก่อน'); return; } if(!n){ toast('ใส่ชื่อวันหยุด'); return; }
+    H[d]=n; if(+d.slice(0,4)!==Y) window._hyYear=+d.slice(0,4); save(); render(); toast('เพิ่มวันหยุดแล้ว'); };
+  p.querySelectorAll('[data-hydel]').forEach(b=>b.onclick=()=>{ delete H[b.dataset.hydel]; save(); render(); });
+  q('#hyFill').onclick=()=>{
+    const add=[...HOLIDAY_FIXED.map(([md,n])=>[`${Y}-${md}`,n]), ...(HOLIDAY_LUNAR[Y]||[])];
+    let n=0; add.forEach(([d,name])=>{ if(!H[d]){ H[d]=name; n++; } }); save(); render();
+    toast(`เติมแล้ว ${n} วัน${HOLIDAY_LUNAR[Y]?'':' — ปีนี้ยังไม่มีวันพระในรายการ เพิ่มมาฆบูชา/วิสาขบูชา/อาสาฬหบูชา/เข้าพรรษาเอง'} · ลบวันที่บริษัทไม่หยุดได้เลย`);
+  };
+  q('#hyCopy').onclick=()=>{
+    const src=Object.keys(H).filter(d=>+d.slice(0,4)===Y-1); if(!src.length){ toast(`ปี ${Y+542} ยังไม่มีวันหยุด`); return; }
+    let n=0; src.forEach(d=>{ const nd=Y+d.slice(4); if(!H[nd]){ H[nd]=H[d]; n++; } }); save(); render();
+    toast(`คัดลอกแล้ว ${n} วัน — วันพระและวันชดเชยเปลี่ยนทุกปี ตรวจวันที่อีกครั้ง`);
+  };
+  q('#hyMul').onchange=e=>{ DB.holidayOtMult=+e.target.value; save(); toast('ตั้ง OT วันหยุด = '+e.target.value+' เท่า'); };
+}
+
 function vSettings(v){
   const c=DB.company;
   const panel=el(`<div class="panel"><div class="phead"><h2>ข้อมูลบริษัท / ผู้จ่ายเงิน</h2></div><div class="pbody">
@@ -3460,6 +4011,8 @@ function vSettings(v){
     DB.otDays=+$('#s_otDays').value||30; DB.otHours=+$('#s_otHours').value||8; DB.workDaysDefault=+$('#s_workDays').value||26; DB.cutoffDay=+$('#s_cutoff').value||0;
     save(); toast('บันทึกการตั้งค่าแล้ว');
   };
+
+  vHolidayPanel(v);
 
   // ส่วน "ข้อมูลระบบ" (สำรอง/นำเข้า/รีเซ็ต) — เห็นเฉพาะผู้ดูแลระบบ
   if(IS_ADMIN){
@@ -3556,6 +4109,7 @@ function otMultWeekday(i){
 }
 function otMultFor(iso){
   if(DB.otMultDates && DB.otMultDates[iso]!=null){ const v=+DB.otMultDates[iso]; if(v>0) return v; }
+  if(isHoliday(iso)) return +DB.holidayOtMult||3;      // ทำงานล่วงเวลาในวันหยุดบริษัท
   return otMultWeekday(weekdayOf(iso));
 }
 function otMultOverridden(iso){ return !!(DB.otMultDates && DB.otMultDates[iso]!=null); }
@@ -3565,9 +4119,14 @@ function otPerson(emp){ return !(emp && emp.noOT); }
 // 45 นาที → 0.5 · 29 นาที → 0 · 59 นาที → 0.5 · 90 นาที → 1.5
 function otHalfHours(mins){ return Math.max(0, Math.floor((+mins||0)/30)/2); }
 // เพดาน OT ต่อวันของคนนี้ — ตั้งรายคนได้ ถ้าไม่ตั้งใช้ค่าส่วนกลาง (0 = ไม่จำกัด)
+/* เพดาน OT ของ "วันนั้น" — ถ้ากรอก OT อนุมัติรายวันไว้ (รวม 0) ใช้ค่านั้น ไม่งั้นใช้เพดานรายคน/ส่วนกลาง
+   คืนค่า -1 = ไม่จำกัด */
+function otCapDay(emp, r){
+  if(r && r.c!=null && r.c!=='') return Math.max(0,+r.c||0);
+  const cap=otCapFor(emp); return cap>0 ? cap : -1;
+}
 function otCapFor(emp){
-  const own=+((emp&&emp.otMaxDay)||0);
-  return own>0 ? own : (+DB.otMaxDay||0);
+  return +DB.otMaxDay||0;   // เพดานส่วนกลาง · ต่างกันรายคน/รายวัน ใช้ "OT อนุมัติ"
 }
 // เปิด OT จริงเมื่อ "คนเปิด" และ "วันเปิด" พร้อมกัน
 function otAllowedFor(emp, iso){ return otPerson(emp) && otAllowed(iso); }
@@ -3651,8 +4210,8 @@ function attendStats(emp, p){
       const raw=otHalfHours(om-we);
       if(raw>0){
         if(otAllowedFor(emp, d)){
-          const cap=otCapFor(emp);
-          const h=(cap>0 && raw>cap) ? cap : raw;   // เกินเพดานต่อวัน → ตัดเหลือเท่าเพดาน
+          const cap=otCapDay(emp, rec[d]);
+          const h=(cap>=0 && raw>cap) ? cap : raw;   // เกินเพดาน (หรือ OT อนุมัติของวันนั้น) → ตัดเหลือเท่าเพดาน
           otH+=h;
           const mul=otMultFor(d);
           otBy[mul]=Math.round(((otBy[mul]||0)+h)*100)/100;
@@ -3671,6 +4230,7 @@ function attendStats(emp, p){
 
 let attendSearch='';
 function vAttend(v){
+  ckAutoMerge(); ckLeaveSync();
   const list=DB.employees.filter(e=>!resignedBefore(e,PERIOD));
   const q=attendSearch.trim().toLowerCase();
   const shown=q? list.filter(e=>[e.code,e.name,e.position,e.dept].some(x=>String(x||'').toLowerCase().includes(q))) : list;
@@ -3852,8 +4412,8 @@ function shiftPlanPanel(shown){
   const dates=periodDates(PERIOD);
   const head=dates.map(d=>{
     const wk=weekdayOf(d);
-    return `<th style="min-width:38px;padding:5px 2px;font-size:11px;${wk===0||wk===6?'background:#f1f5f9':''}">
-      ${+d.slice(8)}<br><span style="font-weight:400;color:#94a3b8">${WD_S[wk]}</span></th>`;
+    return `<th style="min-width:38px;padding:5px 2px;font-size:11px;${isHoliday(d)?'background:#fee2e2':(wk===0||wk===6?'background:#f1f5f9':'')}" ${isHoliday(d)?`title="🎌 ${esc(holidayName(d))}"`:''}>
+      ${+d.slice(8)}<br><span style="font-weight:400;color:${isHoliday(d)?'#b91c1c':'#94a3b8'}">${isHoliday(d)?'หยุด':WD_S[wk]}</span></th>`;
   }).join('');
   const body=shown.map(e=>{
     const cells=dates.map(d=>{
@@ -4141,28 +4701,45 @@ function shiftRotateModal(shown){
      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
        <div class="field"><label>เปลี่ยนกะทุก ๆ</label>
          <select id="roEvery">
-           <option value="7" selected>7 วัน (รายสัปดาห์)</option>
            <option value="1">1 วัน</option>
            <option value="2">2 วัน</option>
            <option value="3">3 วัน</option>
-           <option value="14">14 วัน (2 สัปดาห์)</option>
+           <option value="7" selected>1 สัปดาห์</option>
+           <option value="14">2 สัปดาห์</option>
+           <option value="m1">1 เดือน</option>
+           <option value="m2">2 เดือน</option>
+           <option value="m3">3 เดือน</option>
+         </select></div>
+       <div class="field" id="roWdBox"><label>สลับกะทุกวัน</label>
+         <select id="roWd">
+           <option value="1" selected>จันทร์</option><option value="2">อังคาร</option><option value="3">พุธ</option>
+           <option value="4">พฤหัสบดี</option><option value="5">ศุกร์</option><option value="6">เสาร์</option><option value="0">อาทิตย์</option>
          </select></div>
        <div class="field"><label>เริ่มนับรอบจากวันที่</label><input type="date" id="roAnchor" value="${isoOf(periodRange(PERIOD).from)}"></div>
      </div>
+     <p class="muted" id="roHint" style="font-size:12.5px;margin-top:4px"></p>
      ${dateRangeHtml()}${empPickerHtml(shown)}`,
     [['ยกเลิก','ghost',closeModal],['สร้างตารางหมุนกะ','',()=>{
       const ids=[...document.querySelectorAll('.roSh:checked')].map(x=>x.value);
       if(ids.length<2){ toast('เลือกกะที่ร่วมหมุนอย่างน้อย 2 กะ'); return; }
-      const every=+$('#roEvery').value||7;
+      const ev=$('#roEvery').value;
+      const months=ev[0]==='m' ? +ev.slice(1) : 0;
+      const every=months ? 0 : (+ev||7);
       const anchor=$('#roAnchor').value;
       if(!anchor){ toast('ยังไม่ได้เลือกวันเริ่มนับรอบ'); return; }
       const r=readRange(); if(!r) return;
       const emps=pickedEmps(); if(!emps.length){ toast('ยังไม่ได้เลือกพนักงาน'); return; }
-      const [ay,am,ad]=anchor.split('-').map(Number); const A0=new Date(ay,am-1,ad);
+      const [ay,am,ad]=anchor.split('-').map(Number); let A0=new Date(ay,am-1,ad);
+      /* รายสัปดาห์: ขยับจุดเริ่มถอยไปยังวันสลับกะที่เลือก รอบจึงตัดตรงวันนั้นทุกครั้ง */
+      if(every===7||every===14){ const wd=+$('#roWd').value; A0=new Date(ay,am-1,ad-((A0.getDay()-wd+7)%7)); }
       let n=0;
       eachDate(r.f,r.t,r.wds,iso=>{
         const [y,m,d]=iso.split('-').map(Number);
-        const block=Math.floor(Math.round((new Date(y,m-1,d)-A0)/86400000)/every);
+        let block;
+        if(months){ /* รายเดือน: เปลี่ยนกะในวันที่เดียวกับวันเริ่มนับของทุกเดือน */
+          let diff=(y*12+m)-(ay*12+am); if(d<ad) diff--;
+          block=Math.floor(diff/months);
+        } else block=Math.floor(Math.round((new Date(y,m-1,d)-A0)/86400000)/every);
         emps.forEach(e=>{
           const def=e.shiftId||list[0].id;
           let start=ids.indexOf(def); if(start<0) start=0;      // กะประจำไม่ได้ร่วมหมุน → เริ่มที่ตัวแรก
@@ -4173,6 +4750,21 @@ function shiftRotateModal(shown){
       save(); closeModal(); render(); toast(`สร้างตารางหมุนกะแล้ว ${num(n)} รายการ`);
     }]]);
   wireEmpPicker();
+  /* แสดงตัวเลือกวันสลับกะเฉพาะรอบรายสัปดาห์ และคำอธิบายว่ารอบตัดวันไหน */
+  (function(){
+    const TH=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+    const upd=()=>{
+      const ev=$('#roEvery').value, wk=(ev==='7'||ev==='14');
+      $('#roWdBox').style.display=wk?'':'none';
+      const a=$('#roAnchor').value, day=a?+a.split('-')[2]:null;
+      let h='';
+      if(wk) h=`สลับกะทุกวัน${TH[+$('#roWd').value]} ทุก ${ev==='7'?'1':'2'} สัปดาห์`;
+      else if(ev[0]==='m') h=day?`สลับกะทุกวันที่ ${day} ของเดือน ทุก ${ev.slice(1)} เดือน${day>28?' (เดือนที่ไม่มีวันนี้ จะสลับวันแรกของเดือนถัดไป)':''}`:'';
+      else h=`สลับกะทุก ${ev} วัน นับจากวันเริ่ม`;
+      $('#roHint').textContent=h;
+    };
+    ['roEvery','roWd','roAnchor'].forEach(id=>$('#'+id).addEventListener('change',upd)); upd();
+  })();
   /* ติ๊กกะออก = กะนั้นไม่ร่วมหมุนเวียน คนที่มีกะประจำเป็นกะนั้นจึงไม่ควรถูกจัดตารางด้วย
      จึงติ๊กชื่อออกให้อัตโนมัติ และติ๊กกลับให้เมื่อเลือกกะนั้นคืน */
   (function(){
@@ -4238,11 +4830,11 @@ function otDaysPanel(){
 
   const chips=dates.map(d=>{
     const on=otAllowed(d), ov=otOverridden(d);
-    return `<button type="button" data-otd="${d}" title="${d} (${WD_TH[weekdayOf(d)]}) — ${on?'เปิด OT':'ปิด OT'}${ov?' · กำหนดเอง':''}"
+    return `<button type="button" data-otd="${d}" title="${d} (${WD_TH[weekdayOf(d)]})${isHoliday(d)?' 🎌 '+esc(holidayName(d)):''} — ${on?'เปิด OT':'ปิด OT'}${ov?' · กำหนดเอง':''}"
       style="width:42px;padding:6px 0;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;
         border:1.5px ${ov?'solid':'dashed'} ${on?'#0f766e':'#cbd5e1'};
         background:${on?'#ccfbf1':'#f8fafc'};color:${on?'#0f766e':'#94a3b8'}">
-      ${+d.slice(8)}${ov?'<span style="color:#f59e0b">•</span>':''}</button>`;
+      ${+d.slice(8)}${ov?'<span style="color:#f59e0b">•</span>':''}${isHoliday(d)?'<span style="color:#dc2626">🎌</span>':''}</button>`;
   }).join('');
 
   const wdMulBtns=WD_TH.map((lab,i)=>{
@@ -4257,10 +4849,10 @@ function otDaysPanel(){
   const mulChips=dates.map(d=>{
     if(!otAllowed(d)) return '';                       // วันที่ปิด OT ไม่ต้องตั้งตัวคูณ
     const m=otMultFor(d), ov=otMultOverridden(d);
-    return `<button type="button" data-otm="${d}" title="${d} (${WD_TH[weekdayOf(d)]}) — ตัวคูณ ${m}× ${ov?'(กำหนดเอง)':'(ตามวันในสัปดาห์)'} · กดเพื่อเปลี่ยน"
+    return `<button type="button" data-otm="${d}" title="${d} (${WD_TH[weekdayOf(d)]}) — ตัวคูณ ${m}× ${ov?'(กำหนดเอง — มีผลเหนือวันหยุดและวันในสัปดาห์)':isHoliday(d)?'(วันหยุดบริษัท: '+esc(holidayName(d))+')':'(ตามวันในสัปดาห์)'} · กดเพื่อเปลี่ยน"
       style="min-width:50px;padding:5px 3px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;line-height:1.35;
-        border:1.5px ${ov?'solid':'dashed'} #0f766e;background:${ov?'#ccfbf1':'#fff'};color:#0f766e">
-      ${+d.slice(8)}<br><span style="font-size:11px;font-weight:600">${m}×</span></button>`;
+        border:1.5px ${ov?'solid':'dashed'} ${isHoliday(d)&&!ov?'#dc2626':'#0f766e'};background:${ov?'#ccfbf1':isHoliday(d)?'#fff1f2':'#fff'};color:${isHoliday(d)&&!ov?'#b91c1c':'#0f766e'}">
+      ${+d.slice(8)}${isHoliday(d)?'🎌':''}<br><span style="font-size:11px;font-weight:600">${m}×</span></button>`;
   }).join('');
 
   const panel=el(`<div class="panel" style="margin-bottom:16px">
@@ -4297,7 +4889,7 @@ function otDaysPanel(){
             <input type="number" id="otCap" min="0" step="0.5" value="${+DB.otMaxDay||0}"></div>
           <button class="btn ghost sm" id="otCapSave">💾 บันทึกเพดาน</button>
           <span class="muted" style="font-size:12.5px">ใส่ <strong>0</strong> = ไม่จำกัด · ชั่วโมงที่เกินจะถูกตัดออก ไม่นำไปคิดเงิน<br>
-            ตั้งเฉพาะบางคนต่างจากนี้ได้ที่ฟอร์ม “ข้อมูลพนักงาน”</span>
+            แต่ละคนแต่ละวันไม่เท่ากัน ใช้ “กรอก OT อนุมัติตามวันที่” ด้านล่าง</span>
         </div>
       </div>
 
@@ -4312,6 +4904,11 @@ function otDaysPanel(){
           <button class="btn ghost sm" id="otpDaily">เปิดเฉพาะพนักงานรายวัน</button>
           <button class="btn ghost sm" id="otpMonthly">เปิดเฉพาะพนักงานรายเดือน</button>
         </div>
+      </div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+        <div style="font-size:13.5px;font-weight:700;margin-bottom:4px">OT อนุมัติรายวัน (แต่ละคนไม่เท่ากัน)</div>
+        <div class="muted" style="font-size:12.5px;margin-bottom:8px">เลือกวันที่ แล้วกรอกชั่วโมง OT ที่อนุมัติของทุกคนในวันนั้นในหน้าเดียว</div>
+        <button class="btn sm" id="otByDate">🗓️ กรอก OT อนุมัติตามวันที่</button>
       </div>
 
       <div style="margin-top:14px;padding:11px 13px;background:#f8fafc;border-radius:10px;font-size:12.5px;color:var(--muted)">
@@ -4337,7 +4934,8 @@ function otDaysPanel(){
     const cur=otMultFor(d);
     const i=OT_MULT_STEPS.indexOf(cur);
     const next=OT_MULT_STEPS[(i+1)%OT_MULT_STEPS.length];
-    if(next===otMultWeekday(weekdayOf(d))) delete DB.otMultDates[d];
+    const base=isHoliday(d)?(+DB.holidayOtMult||3):otMultWeekday(weekdayOf(d));   // ค่าที่ใช้ถ้าไม่กำหนดเอง
+    if(next===base) delete DB.otMultDates[d];
     else DB.otMultDates[d]=next;
     save(); render();
   });
@@ -4368,10 +4966,70 @@ function otDaysPanel(){
   panel.querySelector('#otpNone').onclick=()=>setAll(()=>false);
   panel.querySelector('#otpDaily').onclick=()=>setAll(e=>e.payType==='daily');
   panel.querySelector('#otpMonthly').onclick=()=>setAll(e=>e.payType!=='daily');
+  panel.querySelector('#otByDate').onclick=()=>otByDateModal();
   return panel;
 }
 
 // ตารางเวลารายวันของพนักงาน 1 คน — แก้ไขได้ทีละช่อง
+/* OT อนุมัติตามวันที่ — วันเดียว กรอกได้ทุกคน (ค่าเก็บที่ attend[งวด][คน][วัน].c เหมือนหน้ารายวันของแต่ละคน) */
+function otByDateModal(pick){
+  const dates=periodDates(PERIOD);
+  const today=isoOf(new Date());
+  const day=pick || (dates.includes(today)?today:dates[0]);
+  ensureShifts();
+  const list=DB.employees.filter(e=>!resignedBefore(e,PERIOD));
+  const rows=list.map(e=>{
+    const r=attendOf(PERIOD,e.id)[day]||{};
+    const sh=shiftFor(e,day);
+    const {OM:om,E:we}=punchMinutes(sh,r.i,r.o);
+    const raw=(om!=null&&om>we)?otHalfHours(om-we):0;
+    const ok=otAllowedFor(e,day);
+    const cap=otCapDay(e,r), got=!ok?0:((cap>=0&&raw>cap)?cap:raw);
+    const v=(r.c!=null&&r.c!=='')?r.c:'';
+    return `<tr>
+      <td>${esc(e.code)}</td><td>${esc(e.name)}<br><span class="muted" style="font-size:11px">${esc(sh.name)}</span></td>
+      <td>${r.i||'<span class="muted">-</span>'}–${r.o||'<span class="muted">-</span>'}</td>
+      <td class="num">${raw?num(raw):'<span class="muted">-</span>'}</td>
+      <td>${ok?`<input type="number" min="0" step="0.5" data-obd="${e.id}" value="${v}" placeholder="${otCapFor(e)>0?num(otCapFor(e)):'∞'}" style="width:70px;padding:5px 6px">`
+             :`<span class="chip" style="background:#f1f5f9;color:#64748b">${!otPerson(e)?'คนนี้ปิด OT':'วันนี้ปิด OT'}</span>`}</td>
+      <td class="num"><strong style="color:#0d9488">${got?num(got):'-'}</strong></td>
+    </tr>`;
+  }).join('');
+  openModal('🗓️ OT อนุมัติตามวันที่',
+    `<div class="field" style="max-width:260px"><label>วันที่</label>
+       <select id="obdDay">${dates.map(d=>`<option value="${d}" ${d===day?'selected':''}>${d.slice(8)}/${d.slice(5,7)}/${+d.slice(0,4)+543} (${WD_S[new Date(d+'T00:00:00').getDay()]})</option>`).join('')}</select></div>
+     <div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0">
+       <input type="number" id="obdAll" min="0" step="0.5" placeholder="ชม." style="width:80px;padding:5px 6px">
+       <button class="btn ghost sm" id="obdFill">ใส่ค่านี้ให้ทุกคนที่ว่าง</button>
+       <button class="btn ghost sm" id="obdClear">ล้างทั้งหมด</button>
+     </div>
+     <div class="tbl-wrap" style="max-height:50vh;overflow:auto"><table>
+       <thead><tr><th>รหัส</th><th>ชื่อ</th><th>เข้า–ออก</th><th class="num">อยู่เกิน (ชม.)</th><th>OT อนุมัติ (ชม.)</th><th class="num">คิด OT</th></tr></thead>
+       <tbody>${rows}</tbody></table></div>
+     <p class="muted" style="font-size:12.5px;margin-top:8px">เว้นว่าง = ใช้เพดานปกติของคนนั้น · 0 = วันนี้ไม่คิด OT · ระบบคิดไม่เกินเวลาที่อยู่เกินจริง<br>
+     เปลี่ยนวันที่ระบบจะถามก่อนถ้ายังไม่ได้บันทึก</p>`,
+    [['ปิด','ghost',closeModal],['💾 บันทึก','',()=>{ otByDateSave(day); save(); closeModal(); render(); toast('บันทึก OT อนุมัติแล้ว'); }]]);
+  const m=$('#modal'); let dirty=false;
+  m.querySelectorAll('[data-obd]').forEach(i=>i.addEventListener('input',()=>dirty=true));
+  m.querySelector('#obdFill').onclick=()=>{ const v=m.querySelector('#obdAll').value; if(v==='') return;
+    m.querySelectorAll('[data-obd]').forEach(i=>{ if(i.value===''){ i.value=v; dirty=true; } }); };
+  m.querySelector('#obdClear').onclick=()=>{ m.querySelectorAll('[data-obd]').forEach(i=>i.value=''); dirty=true; };
+  m.querySelector('#obdDay').onchange=ev=>{
+    if(dirty && confirm('บันทึกค่าของวันนี้ก่อนเปลี่ยนวันไหม?')){ otByDateSave(day); save(); }
+    otByDateModal(ev.target.value);
+  };
+}
+function otByDateSave(day){
+  const box=ensureAttend(PERIOD);
+  $('#modal').querySelectorAll('[data-obd]').forEach(inp=>{
+    const id=inp.dataset.obd; const v=inp.value;
+    if(!box[id]) box[id]={};
+    const r=box[id][day];
+    if(v===''){ if(r){ delete r.c; if(!r.i&&!r.o) delete box[id][day]; } }
+    else { box[id][day]=Object.assign(r||{i:'',o:''},{c:Math.max(0,+v||0)}); }
+    if(!Object.keys(box[id]).length) delete box[id];
+  });
+}
 function attendDetailModal(empId){
   const emp=DB.employees.find(e=>e.id===empId); if(!emp) return;
   const rec=attendOf(PERIOD, empId);
@@ -4383,17 +5041,20 @@ function attendDetailModal(empId){
     const {IM:im2, OM:om2, S:ws2, E:we2, grace:gr2}=punchMinutes(sh, r.i, r.o);
     const isLate=im2!=null && im2>ws2+gr2;
     const rawOver=(om2!=null&&om2>we2)?otHalfHours(om2-we2):0;
-    const capD=otCapFor(emp);
-    const over=(capD>0 && rawOver>capD) ? capD : rawOver;
+    const capD=otCapDay(emp, r);
+    const over=(capD>=0 && rawOver>capD) ? capD : rawOver;
+    const dayCap=(r.c!=null && r.c!=='') ? r.c : '';
     const capped=over<rawOver;
     const okOT=otAllowedFor(emp, d);
-    return `<tr style="${wk===0||wk===6?'background:#f8fafc':''}">
-      <td style="white-space:nowrap">${d.slice(8)}/${d.slice(5,7)}<br><span class="muted" style="font-size:11px">${WD_S[wk]}</span></td>
+    return `<tr style="${isHoliday(d)?'background:#fff1f2':(wk===0||wk===6?'background:#f8fafc':'')}">
+      <td style="white-space:nowrap">${d.slice(8)}/${d.slice(5,7)}<br><span class="muted" style="font-size:11px">${WD_S[wk]}</span>${isHoliday(d)?`<br><span class="chip" style="background:#fee2e2;color:#b91c1c;font-size:10.5px;padding:1px 6px" title="${esc(holidayName(d))}">🎌 วันหยุด</span>`:''}</td>
       <td>${t24(`data-ai="${d}"`, r.i||'', isLate?'color:#dc2626;font-weight:700':'')}</td>
       <td>${t24(`data-ao="${d}"`, r.o||'')}</td>
       <td class="num">${!rawOver?'<span class="muted">-</span>'
-        : okOT ? `<strong style="color:#0d9488">${num(over)}</strong>${capped?`<br><span style="font-size:11px;color:#b45309" title="เกินเพดานวันละ ${num(capD)} ชม.">จาก ${num(rawOver)}</span>`:''}`
+        : okOT ? `<strong style="color:#0d9488">${num(over)}</strong>${capped?`<br><span style="font-size:11px;color:#b45309" title="${dayCap!==''?'OT อนุมัติวันนี้':'เกินเพดานวันละ'} ${num(capD)} ชม.">จาก ${num(rawOver)}</span>`:''}`
                : `<span style="color:#94a3b8;text-decoration:line-through">${num(rawOver)}</span>`}</td>
+      <td><input type="number" min="0" step="0.5" data-ac="${d}" value="${dayCap}" placeholder="${otCapFor(emp)>0?num(otCapFor(emp)):'∞'}"
+        style="width:62px;padding:5px 6px;font-size:13px" title="OT อนุมัติวันนี้ (ชม.) — เว้นว่าง = ใช้เพดานปกติ · 0 = ไม่คิด OT วันนี้"></td>
       <td><span class="chip" title="${esc(sh.start)}–${esc(sh.end)}"
         style="background:${sh.color}1f;color:${sh.color}">${esc(sh.name)}</span>
         ${shiftPlanned(emp,d)?'<br><span class="muted" style="font-size:10.5px">สลับกะ</span>':''}</td>
@@ -4408,9 +5069,10 @@ function attendDetailModal(empId){
        padding:9px 12px;margin-bottom:10px;font-size:12.5px;color:#9a3412">
        ⚠️ พนักงานคนนี้<strong>ปิดสิทธิ์ OT</strong> — เวลาที่อยู่เกินจะไม่ถูกคิดเป็น OT ทุกวัน</div>`:''}
      <div class="tbl-wrap" style="max-height:56vh;overflow:auto"><table>
-      <thead><tr><th>วันที่</th><th>เข้า</th><th>ออก</th><th class="num">OT</th><th>กะ</th><th>OT วันนี้</th><th>สถานะ</th></tr></thead>
+      <thead><tr><th>วันที่</th><th>เข้า</th><th>ออก</th><th class="num">OT</th><th title="เว้นว่าง = ใช้เพดานปกติ · 0 = ไม่คิด OT วันนี้">OT อนุมัติ<br><span style="font-weight:400;font-size:11px">(ชม.)</span></th><th>กะ</th><th>OT วันนี้</th><th>สถานะ</th></tr></thead>
       <tbody>${rows}</tbody></table></div>
      <p class="muted" style="font-size:12.5px;margin-top:10px">แก้เวลาแล้วกด “บันทึก” · เว้นว่าง = ไม่มาทำงานวันนั้น<br>
+     <strong>OT อนุมัติ</strong> = จำนวนชั่วโมง OT สูงสุดที่ให้คิดในวันนั้น · เว้นว่าง = ใช้เพดานปกติของคนนี้ · ใส่ 0 = วันนั้นไม่คิด OT<br>
      กรอกแบบ <strong>24 ชั่วโมง</strong> — พิมพ์ตัวเลขติดกันได้เลย เช่น <code>830</code> → 08:30 · <code>1745</code> → 17:45 · <code>20</code> → 20:00</p>`,
     [['ปิด','ghost',closeModal],['💾 บันทึก','',()=>{
       const box=ensureAttend(PERIOD); if(!box[empId]) box[empId]={};
@@ -4420,7 +5082,10 @@ function attendDetailModal(empId){
         const d=inp.dataset.ai, o=$('#modal').querySelector(`[data-ao="${d}"]`);
         const i=t24Norm(inp.value), ov=o?t24Norm(o.value):'';
         if(i===null||ov===null){ bad++; return; }        // ค่าผิด → ข้ามไป ไม่เขียนทับของเดิม
-        if(!i && !ov) delete map[d]; else map[d]={i, o:ov};
+        const cEl=$('#modal').querySelector(`[data-ac="${d}"]`);
+        const cv=cEl && cEl.value!=='' ? Math.max(0,+cEl.value||0) : null;
+        if(!i && !ov && cv==null) delete map[d];
+        else { map[d]={i, o:ov}; if(cv!=null) map[d].c=cv; }
       });
       if(bad){ toast(`มีเวลาไม่ถูกต้อง ${bad} ช่อง — ช่องนั้นไม่ถูกบันทึก`); }
       if(!Object.keys(map).length) delete box[empId];
@@ -4428,13 +5093,13 @@ function attendDetailModal(empId){
     }]]);
 }
 
-const ATT_CSV_HEAD=['รหัสพนักงาน','วันที่(ปปปป-ดด-วว)','เวลาเข้า(ชช:นน)','เวลาออก(ชช:นน)'];
+const ATT_CSV_HEAD=['รหัสพนักงาน','วันที่(ปปปป-ดด-วว)','เวลาเข้า(ชช:นน)','เวลาออก(ชช:นน)','OT อนุมัติ(ชม.) เว้นว่างได้'];
 function attendTemplate(){
   const {from}=periodRange(PERIOD);
   const e=DB.employees[0];
   const sample=[
-    [e?e.code:'EMP001', isoOf(from), '08:00','17:00'],
-    [e?e.code:'EMP001', isoOf(new Date(from.getFullYear(),from.getMonth(),from.getDate()+1)), '08:25','18:30'],
+    [e?e.code:'EMP001', isoOf(from), '08:00','17:00',''],
+    [e?e.code:'EMP001', isoOf(new Date(from.getFullYear(),from.getMonth(),from.getDate()+1)), '08:25','20:30','2'],
   ];
   const lines=[ATT_CSV_HEAD.map(csvEsc).join(','), ...sample.map(r=>r.map(csvEsc).join(','))];
   downloadFile(`attendance_template.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
@@ -4447,7 +5112,7 @@ function exportAttendCSV(){
     const rec=attendOf(PERIOD, e.id);
     Object.keys(rec).sort().forEach(d=>{
       if(!inPeriod(d,PERIOD)) return;
-      lines.push([e.code, d, rec[d].i||'', rec[d].o||''].map(csvEsc).join(',')); n++;
+      lines.push([e.code, d, rec[d].i||'', rec[d].o||'', rec[d].c!=null?rec[d].c:''].map(csvEsc).join(',')); n++;
     });
   });
   downloadFile(`attendance_${PERIOD}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
@@ -4470,11 +5135,13 @@ function importAttendCSV(){
         const i=String(c[2]||'').trim(), o=String(c[3]||'').trim();
         if(i && hm2min(i)==null){ bad.push(`บรรทัด ${r+1}: เวลาเข้า "${i}"`); continue; }
         if(o && hm2min(o)==null){ bad.push(`บรรทัด ${r+1}: เวลาออก "${o}"`); continue; }
-        if(!i && !o){ continue; }
+        const cs=String(c[4]==null?'':c[4]).trim();
+        if(cs && !(+cs>=0)){ bad.push(`บรรทัด ${r+1}: OT อนุมัติ "${cs}"`); continue; }
+        if(!i && !o && !cs){ continue; }
         // เก็บลงงวดที่วันที่นั้นสังกัด (รองรับไฟล์ที่คร่อมหลายงวด)
         const p = periodOfDate(d);
         const box=ensureAttend(p); if(!box[emp.id]) box[emp.id]={};
-        box[emp.id][d]={i,o};
+        box[emp.id][d]={i,o}; if(cs) box[emp.id][d].c=+cs;
         if(p!==PERIOD) outside.push(p);
         ok++;
       }
@@ -4561,6 +5228,7 @@ const LEAVE_TYPES=[
   ['maternity','ลาคลอด','#ec4899'],
   ['ordination','ลาอุปสมบท','#8b5cf6'],
   ['unpaid','ขาดงาน / ลาไม่รับค่าจ้าง','#64748b'],
+  ['other','อื่นๆ','#0ea5e9'],
 ];
 const LEAVE_LAB=k=>{ const t=LEAVE_TYPES.find(x=>x[0]===k); return t?t[1]:k; };
 const LEAVE_COL=k=>{ const t=LEAVE_TYPES.find(x=>x[0]===k); return t?t[2]:'#64748b'; };
@@ -4573,10 +5241,17 @@ function hrsToDays(h){ return Math.round((+h||0)/lvHPD()*10000)/10000; }
 function daysToHrs(d){ return Math.round((+d||0)*lvHPD()*100)/100; }
 // แสดงจำนวนวันลาให้อ่านง่าย — ถ้าไม่เต็มวันบอกเป็นชั่วโมงกำกับ
 function leaveAmountText(l){
-  const d=Number(l.days||daysBetween(l.from,l.to||l.from)||0);
+  const d=Number(l.days||leaveDaysCount(l.from,l.to||l.from)||0);
   const h=(l.hours!=null && l.hours!=='') ? Number(l.hours) : null;
   if(h!=null) return `${num(h)} ชม.<br><span class="muted" style="font-size:11.5px">= ${num(Math.round(d*100)/100)} วัน</span>`;
   return num(d);
+}
+/* จำนวนวันลาในช่วง — ไม่นับวันหยุดบริษัท (ปฏิทินวันหยุด) */
+function leaveDaysCount(a,b){
+  const n=daysBetween(a,b); if(!n) return 0;
+  const [y,m,d]=a.split('-').map(Number); let k=0;
+  for(let i=0;i<n;i++){ const x=new Date(y,m-1,d+i); const iso=`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`; if(!isHoliday(iso)) k++; }
+  return k;
 }
 function daysBetween(a,b){
   if(!a||!b) return 0;
@@ -4592,8 +5267,9 @@ function leaveDaysInPeriod(lv, p){
   let A=new Date(y1,m1-1,d1), B=new Date(y2,m2-1,d2);
   if(A<from) A=from; if(B>to) B=to;
   if(A>B) return 0;
-  const span=Math.round((B-A)/86400000)+1;
-  const total=daysBetween(lv.from, lv.to||lv.from) || 1;
+  const iso=x=>`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+  const span=leaveDaysCount(iso(A), iso(B));
+  const total=leaveDaysCount(lv.from, lv.to||lv.from) || 1;
   // ถ้าผู้ใช้ระบุจำนวนวันเอง (เช่นลาครึ่งวัน) เฉลี่ยตามสัดส่วน
   return Math.round((Number(lv.days||total) * span/total)*100)/100;
 }
@@ -4674,7 +5350,7 @@ function quotaFor(emp, type, year){
 function leaveUsed(empId, year, type){
   return leaveList().filter(l=>l.empId===empId && l.type===type && l.status!=='rejected'
       && String(l.from||'').slice(0,4)===String(year))
-    .reduce((s,l)=>s+Number(l.days||daysBetween(l.from,l.to||l.from)||0),0);
+    .reduce((s,l)=>s+Number(l.days||leaveDaysCount(l.from,l.to||l.from)||0),0);
 }
 /* จำนวนวันลาไม่รับค่าจ้าง/ขาดงานที่ตกอยู่ในงวดนี้ (ใบที่ไม่อนุมัติไม่นับ) */
 function unpaidDays(emp, p){
@@ -4691,6 +5367,7 @@ function unpaidDeduction(emp, p){
 
 let leaveYear, leaveEmpF='all', leaveTypeF='all';
 function vLeave(v){
+  ckLeaveSync(true);
   // ไม่นับใบลาของพนักงานที่ถูกลบไปแล้ว (ข้อมูลเก่าก่อนแก้เรื่องเก็บกวาด)
   const alive=new Set(DB.employees.map(e=>e.id));
   const lst=leaveList().filter(l=>alive.has(l.empId));
@@ -4705,9 +5382,9 @@ function vLeave(v){
   rows=rows.slice().sort((a,b)=>String(b.from).localeCompare(String(a.from)));
 
   const yrAll=lst.filter(inYr);
-  const totDays=yrAll.filter(l=>l.status!=='rejected').reduce((s,l)=>s+Number(l.days||daysBetween(l.from,l.to||l.from)||0),0);
+  const totDays=yrAll.filter(l=>l.status!=='rejected').reduce((s,l)=>s+Number(l.days||leaveDaysCount(l.from,l.to||l.from)||0),0);
   const byType={}; LEAVE_TYPES.forEach(([k])=>byType[k]=0);
-  yrAll.filter(l=>l.status!=='rejected').forEach(l=>{ byType[l.type]=(byType[l.type]||0)+Number(l.days||daysBetween(l.from,l.to||l.from)||0); });
+  yrAll.filter(l=>l.status!=='rejected').forEach(l=>{ byType[l.type]=(byType[l.type]||0)+Number(l.days||leaveDaysCount(l.from,l.to||l.from)||0); });
   const pend=yrAll.filter(l=>l.status==='pending').length;
 
   v.appendChild(el(`<div class="cards">
@@ -4771,7 +5448,7 @@ function vLeave(v){
   const stLab={approved:'อนุมัติ', pending:'รออนุมัติ', rejected:'ไม่อนุมัติ'};
   const body=rows.length? rows.map(l=>{
     const e=DB.employees.find(x=>x.id===l.empId);
-    const dd=Number(l.days||daysBetween(l.from,l.to||l.from)||0);
+    const dd=Number(l.days||leaveDaysCount(l.from,l.to||l.from)||0);
     return `<tr>
       <td>${e?`<strong>${esc(e.name)}</strong><br><span class="muted" style="font-size:12px">${esc(e.code)} · ${esc(e.dept||'-')}</span>`
              :'<span class="muted">— ไม่พบพนักงาน —</span>'}</td>
@@ -4893,7 +5570,7 @@ function leaveModal(id){
       let days, hours=null;
       if(manualH!==''){ hours=+manualH; days=hrsToDays(hours); }
       else if(manual!==''){ days=+manual; }
-      else { days=daysBetween(f,t); }
+      else { days=leaveDaysCount(f,t); }
       if(!(days>0)){ toast(manualH!==''?'จำนวนชั่วโมงต้องมากกว่า 0':'จำนวนวันต้องมากกว่า 0'); return; }
       const rec={ empId, type, status, from:f, to:t, days, hours, reason:$('#lvR').value.trim() };
       if(cur) Object.assign(cur, rec); else leaveList().push({ id:uid(), ...rec });
@@ -4929,10 +5606,10 @@ function leaveModal(id){
     const syncFromDates=()=>{
       if(!auto) return;
       const f=fIn?fIn.value:'', t=(tIn&&tIn.value)||f;
-      const d=daysBetween(f,t);
-      if(d>0){
+      const d=leaveDaysCount(f,t), hol=daysBetween(f,t)-d;
+      if(daysBetween(f,t)>0){
         lock=true; dIn.value=String(d); hIn.value=''; lock=false;
-        showNote('นับจากช่วงวันที่ให้ — พิมพ์ทับได้ถ้าลาไม่เต็มวัน');
+        showNote('นับจากช่วงวันที่ให้'+(hol?` (ไม่นับวันหยุดบริษัท ${hol} วัน)`:'')+' — พิมพ์ทับได้ถ้าลาไม่เต็มวัน');
       }else{
         lock=true; dIn.value=''; hIn.value=''; lock=false;
         showNote('');
@@ -4989,7 +5666,7 @@ function importLeaveCSV(){
         if(daysBetween(fr,to)===0){ bad.push(`บรรทัด ${r+1}: ช่วงวันที่ไม่ถูกต้อง`); continue; }
         const hTxt=String(c[5]||'').trim();
         const hours = hTxt!=='' ? +hTxt : null;
-        const days = hours!=null ? hrsToDays(hours) : (+c[4]||daysBetween(fr,to));
+        const days = hours!=null ? hrsToDays(hours) : (+c[4]||leaveDaysCount(fr,to));
         const stTxt=String(c[7]||'').trim();
         const status=/รออนุมัติ|pending/i.test(stTxt)?'pending':/ไม่อนุมัติ|reject/i.test(stTxt)?'rejected':'approved';
         leaveList().push({ id:uid(), empId:emp.id, type:t, from:fr, to, days, hours,
@@ -5047,7 +5724,7 @@ function downloadFile(name, content, type){
 }
 
 /* ---------- นำเข้า/ส่งออก พนักงาน เป็น CSV ---------- */
-const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','เบอร์โทร','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เหตุผลในการลาออก','รายละเอียดการลาออก','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%','กองทุนสงเคราะห์%','คิดOT(ใช่/ไม่)','กะประจำ','เพดานOT/วัน'];
+const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','เบอร์โทร','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เหตุผลในการลาออก','รายละเอียดการลาออก','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%','กองทุนสงเคราะห์%','คิดOT(ใช่/ไม่)','กะประจำ'];
 function csvEsc(v){ v=String(v??''); return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
 /* ---------- ช่องที่ Excel ชอบแปลงค่าให้เอง ----------
    เลขบัตร 13 หลัก -> 1.23457E+11 · เบอร์โทร 0812345678 -> 812345678 (เลข 0 หน้าหาย)
@@ -5106,7 +5783,7 @@ function exportEmpCSV(){
       e.payType==='daily'?'รายวัน':'รายเดือน',
       e.salary||0, csvKeepText(e.startDate), csvKeepText(e.resignDate),
       resignReasonLabel(e.resignReason), e.resignNote||'', csvKeepText(e.taxId),
-      e.address||'', e.bank||'', csvKeepText(e.bankNo), e.pvdRate||0, e.wfRate||'', e.noOT?'ไม่':'ใช่', (shiftById(e.shiftId)||ensureShifts()[0]).name, e.otMaxDay||''].map(csvEsc).join(','));
+      e.address||'', e.bank||'', csvKeepText(e.bankNo), e.pvdRate||0, e.wfRate||'', e.noOT?'ไม่':'ใช่', (shiftById(e.shiftId)||ensureShifts()[0]).name].map(csvEsc).join(','));
   });
   const tag = empFilter==='daily'?'_รายวัน' : empFilter==='monthly'?'_รายเดือน' : '';
   downloadFile(`employees${tag}_${curPeriod()}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
@@ -5137,11 +5814,10 @@ const EMP_FIELDS=[
   ['pvdRate','อัตรากสล.%',    [/กสล|สำรองเลี้ยงชีพ/,/\bpvd\b/i]],
   ['wfRate','กองทุนสงเคราะห์%',[/สงเคราะห์/,/\bwelfare\b/i]],
   ['noOT','คิดOT',           [/คิด ?ot/i,/^ot$/i]],
-  ['shift','กะประจำ',        [/^กะ/,/\bshift\b/i]],
-  ['otMaxDay','เพดานOT/วัน',  [/เพดาน ?ot/i,/\bot ?(max|cap)\b/i]]
+  ['shift','กะประจำ',        [/^กะ/,/\bshift\b/i]]
 ];
 const EMP_POS_ORDER=['code','name','gender','nationality','position','dept','payType','salary',
-  'startDate','resignDate','taxId','address','bank','bankNo','pvdRate','wfRate','noOT','shift','otMaxDay'];
+  'startDate','resignDate','taxId','address','bank','bankNo','pvdRate','wfRate','noOT','shift'];
 function normHead(s){
   return String(s||'').replace(/^\uFEFF/,'').replace(/[()（）]/g,' ')
     .replace(/[\s\u00A0._-]+/g,' ').trim();
@@ -5182,8 +5858,7 @@ function empRecFromRow(c, map){
     resignReason:(RESIGN_REASONS.find(r=>r[1]===g('resignReason'))||[])[0]||'',
     resignNote:g('resignNote'),
     pvdRate:pvd, wfRate: pvd>0 ? 0 : num('wfRate'),
-    noOT: otTxt && /^(ไม่|no|n|0|false)$/i.test(otTxt) ? 1 : 0,
-    otMaxDay:num('otMaxDay')
+    noOT: otTxt && /^(ไม่|no|n|0|false)$/i.test(otTxt) ? 1 : 0
   };
   const sh=g('shift');
   if(sh){ const s=ensureShifts().find(x=>x.name===sh); if(s) rec.shiftId=s.id; }
@@ -5517,7 +6192,7 @@ function isEmpLimitError(err){
 
 /* เมนูที่ต้องซื้อแพ็กเกจพรีเมี่ยม (ช่วงทดลอง 30 วันใช้ได้ครบ)
    ล็อกหน้า "เวลาเข้างาน" = ล็อกระบบกะและกฎ OT ที่อยู่ในหน้านั้นไปด้วย */
-const PREMIUM_PAGES = ['attend','leave','advance'];
+const PREMIUM_PAGES = ['attend','checkin','leave','advance'];
 /* ข้อมูลของฟีเจอร์พรีเมี่ยม — เก็บคนละตารางกับข้อมูลเงินเดือน
    ตาราง premium_stores มี RLS กั้นไว้ คนที่ไม่มีสิทธิ์อ่าน/เขียนไม่ได้จริง ๆ */
 const PREMIUM_KEYS = ['attend','leave','shifts','shiftPlan','otWeekdays','otDates','otMaxDay','leaveQuota','leaveHoursPerDay'];
@@ -5584,6 +6259,7 @@ function premiumModal(pageId){
      <div style="background:linear-gradient(140deg,#0b1b2b,#0e3a5c 55%,#0f766e);color:#fff;border-radius:14px;padding:16px 18px">
        <b>อัปเกรดแล้วได้เพิ่ม</b>
        <div style="display:grid;gap:7px;margin-top:10px;font-size:14px">
+         <span>📱 สแกนใบหน้าลงเวลาผ่านมือถือ — เซลฟี่ + GPS ไม่ต้องซื้อเครื่องสแกน</span>
          <span>⏰ ลงเวลาเข้างาน — นำเข้า CSV คิดวันทำงาน/มาสาย/OT ส่งเข้าเงินเดือนอัตโนมัติ</span>
          <span>🔄 ระบบกะการทำงาน — กะข้ามคืน สลับกะยกชุด หมุนเวียนกะ</span>
          <span>⚡ กฎการคิด OT — เลือกวันที่คิด OT เปิดรายคน ตั้งเพดานต่อวัน</span>

@@ -213,6 +213,9 @@
   }
 </style>
 <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"th","mainEntity":[{"@type":"Question","name":"eSimPayroll มีฟีเจอร์อะไรบ้าง","acceptedAnswer":{"@type":"Answer","text":"คำนวณเงินเดือนรายเดือนและรายวัน ค่าล่วงเวลา เงินเพิ่มและเงินหักทุกรายการ ภาษีหัก ณ ที่จ่ายแบบขั้นบันได ประกันสังคม กองทุนสำรองเลี้ยงชีพ กองทุนสงเคราะห์ลูกจ้าง ออกสลิป 50 ทวิ ภ.ง.ด.1 ภ.ง.ด.1ก สปส.1-10 กท.20ก รายงานตามแผนก และโหมดสำนักงานบัญชีหลายบริษัท"}},{"@type":"Question","name":"ลงเวลาด้วยการสแกนใบหน้าต้องซื้อเครื่องไหม","acceptedAnswer":{"@type":"Answer","text":"ไม่ต้อง พนักงานเปิดลิงก์บนมือถือของตัวเอง ถ่ายเซลฟี่ลงเวลาเข้าและออก ระบบจดจำใบหน้าว่าเป็นคนเดิม และเช็คตำแหน่ง GPS ว่าอยู่ในรัศมีที่บริษัทกำหนด แอดมินตั้งชื่อผู้ใช้และรหัสผ่านให้พนักงานแต่ละคน เห็นรูปและตำแหน่งทุกครั้ง แล้วนำเข้าหน้าเวลาเข้างานเพื่อคิดวันทำงาน มาสาย และ OT ได้ทันที ฟีเจอร์นี้อยู่ในแพ็กเกจพรีเมี่ยม"}},{"@type":"Question","name":"ฟีเจอร์ลงเวลาและลางานอยู่แพ็กเกจไหน","acceptedAnswer":{"@type":"Answer","text":"ระบบลงเวลาเข้างาน สแกนใบหน้าลงเวลาผ่านมือถือ กะการทำงาน กฎ OT ระบบลางาน และเบิกเงินล่วงหน้า อยู่ในแพ็กเกจพรีเมี่ยม ส่วนระบบเงินเดือน ภาษี ประกันสังคม และเอกสารราชการมีครบในแพ็กเกจมาตรฐาน ช่วงทดลอง 30 วันใช้ได้ทุกฟีเจอร์"}},{"@type":"Question","name":"นำข้อมูลพนักงานจาก Excel เข้าระบบได้ไหม","acceptedAnswer":{"@type":"Answer","text":"ได้ นำเข้ารายชื่อพนักงานและตัวเลขเงินได้เงินหักจากไฟล์ CSV ซึ่งบันทึกจาก Excel ได้ทันที ทีเดียวทั้งบริษัท"}},{"@type":"Question","name":"ขึ้นเงินเดือนแล้วสลิปเก่าเปลี่ยนไหม","acceptedAnswer":{"@type":"Answer","text":"ไม่เปลี่ยน ระบบเก็บประวัติการขึ้นเงินเดือน งวดที่ผ่านมาใช้อัตราเดิม สลิปและเอกสารย้อนหลังจึงตรงกับที่จ่ายจริง"}}]}
+</script>
+<script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ItemList","name":"ฟีเจอร์ของ eSimPayroll","inLanguage":"th","itemListElement":[
 {"@type":"ListItem","position":1,"name":"จัดการเงินเดือน"},
 {"@type":"ListItem","position":2,"name":"ลงเวลาเข้างานและจัดกะ"},
@@ -267,6 +270,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <a href="/features" class="link active" data-en="Features">ฟีเจอร์</a>
         <a href="/pricing" class="link" data-en="Pricing">ราคา</a>
       <a href="/articles" class="link" data-en="Articles">บทความ</a>
+      <a href="/tax-calculator" class="link" data-en="Free tax calculator">คำนวณภาษีฟรี</a>
       <a href="/about" class="link" data-en="About">เกี่ยวกับ</a>
       <button id="langBtn" class="btn ghost" style="padding:8px 12px;font-size:14px;margin-left:4px">🌐 EN</button>
         <a href="/app#signup" class="btn primary" style="padding:9px 18px" data-en="30-day free trial">ทดลองฟรี 30 วัน</a>
@@ -290,6 +294,96 @@ footer .ft-mail{color:#6ee7b7 !important}
       <div class="flist" id="flist"></div>
     </div>
   </div>
+</section>
+
+<section id="featall" style="border-top:1px solid var(--line)">
+  <div class="wrap wide">
+    <h2 style="text-align:center;margin-bottom:8px">ฟีเจอร์ทั้งหมดของโปรแกรมเงินเดือน eSimPayroll</h2>
+    <p class="lead" style="text-align:center;max-width:720px;margin:0 auto 30px">โปรแกรม Payroll ออนไลน์สำหรับธุรกิจไทย ครบตั้งแต่คำนวณเงินเดือน ภาษี ประกันสังคม ไปจนถึงเอกสารที่ต้องยื่นทุกเดือน ใช้ผ่านเว็บ ไม่ต้องติดตั้ง</p>
+    <div class="fall">
+      <div class="fall-col">
+        <h3>จัดการเงินเดือน</h3>
+        <ul>
+          <li><strong>คำนวณรายเดือนและรายวัน</strong> — รองรับทั้งสองประเภทในบริษัทเดียว คิดตามสัดส่วนวันเมื่อเข้า–ออกกลางเดือน</li>
+          <li><strong>ค่าล่วงเวลา (OT)</strong> — อัตราต่อชั่วโมงคิดตามประเภทการจ้าง เลือกตัวคูณ 1.5× หรือ 3× ตามกฎหมาย</li>
+          <li><strong>เงินเพิ่ม–เงินหักครบทุกรายการ</strong> — ค่าคอมมิชชั่น เบี้ยขยัน ค่าเดินทาง ค่าตำแหน่ง โบนัส หักขาดงาน เงินกู้ กยศ.</li>
+          <li><strong>จ่ายเงินเดือน 2 รอบ</strong> — บันทึกยอดเบิกล่วงหน้ากลางเดือน พิมพ์ใบสรุปยอดโอน แล้วระบบหักคืนตอนสิ้นเดือน</li>
+          <li><strong>ประวัติการขึ้นเงินเดือน</strong> — งวดเก่าใช้อัตราเดิม สลิปและเอกสารย้อนหลังไม่เปลี่ยน</li>
+          <li><strong>นำเข้า/ส่งออก CSV</strong> — นำเข้ารายชื่อและตัวเลขเงินได้–เงินหักทีเดียวทั้งบริษัท</li>
+        </ul>
+      </div>
+      <div class="fall-col">
+        <h3>ลงเวลา & จัดกะ</h3>
+        <ul>
+          <li><strong>สแกนใบหน้าลงเวลาผ่านมือถือ</strong> — พนักงานถ่ายเซลฟี่ลงเวลาเข้า–ออกผ่านมือถือ ระบบจดจำใบหน้าและเช็ค GPS ว่าอยู่ในรัศมีบริษัท ไม่ต้องซื้อเครื่องสแกน</li>
+          <li><strong>นำเข้าเวลาจากไฟล์ CSV</strong> — ระบบคิดวันทำงาน มาสาย และชั่วโมง OT ให้เอง</li>
+          <li><strong>ตั้งกะ รวมกะข้ามคืน</strong> — กำหนดเวลาเข้า–ออกต่อกะ รองรับกะที่คร่อมเที่ยงคืน</li>
+          <li><strong>สลับกะและหมุนเวียนกะยกทีม</strong> — เปลี่ยนกะทั้งทีมได้ในคลิกเดียว ติ๊กกะออกก็ตัดคนในกะนั้นออกให้</li>
+          <li><strong>เพดาน OT และปิด OT เฉพาะคน</strong> — กำหนดชั่วโมง OT สูงสุดต่อวัน และปิด OT ให้บางคนได้</li>
+          <li><strong>ระบบลางาน</strong> — ลาป่วย ลากิจ ลาพักร้อน บันทึกเป็นวันหรือชั่วโมง คุมโควตารายปี</li>
+          <li><strong>ส่งตัวเลขเข้าเงินเดือนอัตโนมัติ</strong> — ชั่วโมง OT และวันขาดงานเข้าหน้าคำนวณเงินเดือนโดยไม่ต้องคีย์ซ้ำ</li>
+        </ul>
+      </div>
+      <div class="fall-col">
+        <h3>ภาษี & ประกันสังคม</h3>
+        <ul>
+          <li><strong>ภาษีหัก ณ ที่จ่ายแบบขั้นบันได</strong> — คิดจากเงินได้ทั้งปีแล้วเฉลี่ยตามเดือนที่ทำงานจริง ไม่ใช่คิดทีละเดือน</li>
+          <li><strong>ค่าลดหย่อนครบ</strong> — ส่วนตัว คู่สมรส บุตร ประกันสังคมที่จ่ายจริง กองทุน และลดหย่อนอื่น</li>
+          <li><strong>ประกันสังคม 5% พร้อมเพดานที่แก้ได้</strong> — กันค่าล่วงเวลาและโบนัสออกจากฐานค่าจ้าง ยกเว้นกรรมการได้</li>
+          <li><strong>กองทุนสำรองเลี้ยงชีพ</strong> — ตั้งอัตราต่อคนได้ คำนวณจากค่าจ้างฐานของงวด</li>
+          <li><strong>กองทุนสงเคราะห์ลูกจ้าง 0.25%</strong> — สำหรับพนักงานที่ไม่มีกองทุนสำรองเลี้ยงชีพ</li>
+          <li><strong>กดดูวิธีคำนวณทีละขั้น</strong> — เปิดดูที่มาของตัวเลขภาษีได้ทุกบรรทัด ตรวจสอบย้อนหลังได้</li>
+        </ul>
+      </div>
+      <div class="fall-col">
+        <h3>เอกสารราชการ</h3>
+        <ul>
+          <li><strong>สลิปเงินเดือน</strong> — พิมพ์ทีละคนหรือทั้งบริษัท มีจำนวนเงินเป็นตัวอักษร ไทย–อังกฤษ</li>
+          <li><strong>หนังสือรับรองหัก ณ ที่จ่าย 50 ทวิ</strong> — แบบฟอร์มราชการเต็มหน้า A4 ยอดดึงจากข้อมูลเงินเดือนอัตโนมัติ</li>
+          <li><strong>ภ.ง.ด.1 และ ภ.ง.ด.1ก</strong> — แสดงเฉพาะพนักงานที่ทำงานอยู่จริงในเดือนนั้น</li>
+          <li><strong>สปส.1-10</strong> — ยื่นสำนักงานประกันสังคมทุกเดือน คิดฐานค่าจ้างตามนิยามประกันสังคม</li>
+          <li><strong>กท.20ก</strong> — แบบเงินกองทุนเงินทดแทนรายปี</li>
+          <li><strong>ส่งออก CSV ยื่นออนไลน์</strong> — ส่งออกไฟล์สำหรับยื่นออนไลน์ได้ทุกแบบ</li>
+        </ul>
+      </div>
+      <div class="fall-col">
+        <h3>รายงาน & Export</h3>
+        <ul>
+          <li><strong>แดชบอร์ดพร้อมกราฟ</strong> — สรุปยอดของงวดและกราฟย้อนหลังรายเดือน เห็นภาพรวมทันทีที่เข้าระบบ</li>
+          <li><strong>สรุปเงินเดือนรายงวด</strong> — ยอดเงินได้ เงินหัก และจ่ายสุทธิของทุกคนในหน้าเดียว</li>
+          <li><strong>สรุปตามแผนก</strong> — แยกต้นทุนค่าจ้างตามแผนก ใช้ทำงบประมาณได้</li>
+          <li><strong>สรุปรายละเอียดทั้งหมด</strong> — ทุกรายการเงินได้และเงินหักของทุกคน สำหรับผู้สอบบัญชี</li>
+          <li><strong>สลับบริษัทลูกค้าได้ในคลิกเดียว</strong> — สำหรับสำนักงานบัญชี ข้อมูลแต่ละบริษัทแยกกันสมบูรณ์</li>
+          <li><strong>ส่งออก CSV และพิมพ์ PDF</strong> — เปิดใน Excel ได้ทันที หรือพิมพ์เป็น PDF ส่งต่อ</li>
+        </ul>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:18px;color:var(--muted);font-size:14.5px">ฟีเจอร์ลงเวลา กะ และลางาน อยู่ในแพ็กเกจพรีเมี่ยม · ช่วงทดลอง 30 วันใช้ได้ทุกฟีเจอร์ · <a href="/pricing">ดูราคา</a></p>
+
+    <h2 style="text-align:center;margin:44px 0 20px">คำถามเกี่ยวกับฟีเจอร์</h2>
+    <div class="fall-faq">
+      <details><summary>eSimPayroll มีฟีเจอร์อะไรบ้าง</summary><p>คำนวณเงินเดือนรายเดือนและรายวัน ค่าล่วงเวลา เงินเพิ่มและเงินหักทุกรายการ ภาษีหัก ณ ที่จ่ายแบบขั้นบันได ประกันสังคม กองทุนสำรองเลี้ยงชีพ กองทุนสงเคราะห์ลูกจ้าง ออกสลิป 50 ทวิ ภ.ง.ด.1 ภ.ง.ด.1ก สปส.1-10 กท.20ก รายงานตามแผนก และโหมดสำนักงานบัญชีหลายบริษัท</p></details>
+      <details><summary>ลงเวลาด้วยการสแกนใบหน้าต้องซื้อเครื่องไหม</summary><p>ไม่ต้อง พนักงานเปิดลิงก์บนมือถือของตัวเอง ถ่ายเซลฟี่ลงเวลาเข้าและออก ระบบจดจำใบหน้าว่าเป็นคนเดิม และเช็คตำแหน่ง GPS ว่าอยู่ในรัศมีที่บริษัทกำหนด แอดมินตั้งชื่อผู้ใช้และรหัสผ่านให้พนักงานแต่ละคน เห็นรูปและตำแหน่งทุกครั้ง แล้วนำเข้าหน้าเวลาเข้างานเพื่อคิดวันทำงาน มาสาย และ OT ได้ทันที ฟีเจอร์นี้อยู่ในแพ็กเกจพรีเมี่ยม</p></details>
+      <details><summary>ฟีเจอร์ลงเวลาและลางานอยู่แพ็กเกจไหน</summary><p>ระบบลงเวลาเข้างาน สแกนใบหน้าลงเวลาผ่านมือถือ กะการทำงาน กฎ OT ระบบลางาน และเบิกเงินล่วงหน้า อยู่ในแพ็กเกจพรีเมี่ยม ส่วนระบบเงินเดือน ภาษี ประกันสังคม และเอกสารราชการมีครบในแพ็กเกจมาตรฐาน ช่วงทดลอง 30 วันใช้ได้ทุกฟีเจอร์</p></details>
+      <details><summary>นำข้อมูลพนักงานจาก Excel เข้าระบบได้ไหม</summary><p>ได้ นำเข้ารายชื่อพนักงานและตัวเลขเงินได้เงินหักจากไฟล์ CSV ซึ่งบันทึกจาก Excel ได้ทันที ทีเดียวทั้งบริษัท</p></details>
+      <details><summary>ขึ้นเงินเดือนแล้วสลิปเก่าเปลี่ยนไหม</summary><p>ไม่เปลี่ยน ระบบเก็บประวัติการขึ้นเงินเดือน งวดที่ผ่านมาใช้อัตราเดิม สลิปและเอกสารย้อนหลังจึงตรงกับที่จ่ายจริง</p></details>
+    </div>
+  </div>
+  <style>
+    .fall{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+    .fall-col{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+    .fall-col h3{font-size:17px;margin-bottom:10px}
+    .fall-col ul{margin:0;padding-left:18px}
+    .fall-col li{margin:0 0 8px;font-size:14.5px;line-height:1.6;color:var(--muted)}
+    .fall-col li strong{color:var(--ink)}
+    .fall-faq{max-width:860px;margin:0 auto}
+    .fall-faq details{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff}
+    .fall-faq summary{cursor:pointer;padding:15px 18px;font-weight:700;list-style:none}
+    .fall-faq summary::-webkit-details-marker{display:none}
+    .fall-faq summary::after{content:"+";float:right;color:#10b981;font-weight:800}
+    .fall-faq details[open] summary::after{content:"−"}
+    .fall-faq details p{padding:0 18px 16px;margin:0;color:var(--muted)}
+  </style>
 </section>
 
 <section style="background:var(--bg);border-top:1px solid var(--line)">
@@ -423,6 +517,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       kpi:[['วันทำงาน','Work days','22 วัน','22'],['มาสาย','Late','3 ครั้ง','3'],['ชั่วโมง OT','OT hours','48 ชม.','48'],['กะทั้งหมด','Shifts','4 กะ','4']],
       chart:false,
       items:[
+        ['users','สแกนใบหน้าลงเวลาผ่านมือถือ','Face check-in on mobile','พนักงานถ่ายเซลฟี่ลงเวลาเข้า–ออกผ่านมือถือ ระบบจดจำใบหน้าและเช็ค GPS ว่าอยู่ในรัศมีบริษัท ไม่ต้องซื้อเครื่องสแกน','Staff take a selfie to clock in and out; face recognition plus a GPS radius check. No scanner hardware needed.'],
         ['csv','นำเข้าเวลาจากไฟล์ CSV','Import punch data','ระบบคิดวันทำงาน มาสาย และชั่วโมง OT ให้เอง','The system counts work days, lateness and OT hours for you.'],
         ['clock','ตั้งกะ รวมกะข้ามคืน','Shifts, including overnight','กำหนดเวลาเข้า–ออกต่อกะ รองรับกะที่คร่อมเที่ยงคืน','Set start and end times per shift, including shifts that cross midnight.'],
         ['swap','สลับกะและหมุนเวียนกะยกทีม','Swap and rotate shifts','เปลี่ยนกะทั้งทีมได้ในคลิกเดียว ติ๊กกะออกก็ตัดคนในกะนั้นออกให้','Change a whole team in one click; unticking a shift removes its staff too.'],
