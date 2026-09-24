@@ -14,6 +14,54 @@
     --good:#059669; --bad:#dc2626; --warn:#d97706;
     --chip:#eaf6f1; --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
   }
+
+  /* ---------- โหมดมืด ---------- */
+  html[data-theme="dark"]{color-scheme:dark;
+    --bg:#0b1522; --card:#132131; --ink:#e5edf5; --muted:#94a3b8; --line:#243548;
+    --brand:#7cc4ee; --brand-d:#a5d8f5; --chip:#12332a; --shadow:0 1px 3px rgba(0,0,0,.5)}
+  html[data-theme="dark"] .btn.ghost{background:#182a3d;color:var(--ink);border-color:var(--line)}
+  html[data-theme="dark"] .btn.ghost:hover,html[data-theme="dark"] .icon-btn:hover,html[data-theme="dark"] .menuBtn:active{background:#1f3449}
+  html[data-theme="dark"] th{background:#0f1c2b}
+  html[data-theme="dark"] tbody tr:hover{background:#172838}
+  html[data-theme="dark"] tfoot td{background:#10241f}
+  html[data-theme="dark"] .kpi-brk-val{color:var(--ink)}
+  html[data-theme="dark"] .modal{background:var(--card);color:var(--ink)}
+  html[data-theme="dark"] .field input,html[data-theme="dark"] .field select,html[data-theme="dark"] .field textarea,
+  html[data-theme="dark"] input:not([type=checkbox]):not([type=radio]):not([type=color]),html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#0e1a28;color:var(--ink);border-color:var(--line)}
+  html[data-theme="dark"] .edpick{background:#0e1a28;border-color:var(--line)}
+  html[data-theme="dark"] .segbtn.on{background:#1f3449;color:#fff}
+  html[data-theme="dark"] input.t24.bad{background:#3b1518}
+  /* กล่องพื้นขาว/เทาอ่อนที่ใส่สีไว้ในแท็กโดยตรง */
+  html[data-theme="dark"] :not(.doc) [style*="background:#fff;"],html[data-theme="dark"] :not(.doc) [style*="background:#fff\""],
+  html[data-theme="dark"] [style*="background:#ffffff"],html[data-theme="dark"] [style*="background:#f8fafc"],html[data-theme="dark"] [style*="background:#f1f5f9"],
+  html[data-theme="dark"] [style*="background:#f9fafb"],html[data-theme="dark"] [style*="background:#fafbfc"],html[data-theme="dark"] [style*="background:#f6faf8"],
+  html[data-theme="dark"] [style*="background:#e2e8f0"]{background:#182a3d!important;color:var(--ink)}
+  html[data-theme="dark"] [style*="background:#fffbeb"],html[data-theme="dark"] [style*="background:#fff7ed"]{background:#2d2310!important;color:#fde68a}
+  html[data-theme="dark"] [style*="background:#fef2f2"],html[data-theme="dark"] [style*="background:#fff1f2"]{background:#2e1417!important;color:#fecaca}
+  html[data-theme="dark"] [style*="background:#eff6ff"],html[data-theme="dark"] [style*="background:#f0fdf4"],html[data-theme="dark"] [style*="background:#eaf6f1"]{background:#11283a!important;color:var(--ink)}
+  html[data-theme="dark"] [style*="color:#1e293b"],html[data-theme="dark"] [style*="color:#334155"],html[data-theme="dark"] [style*="color:#475569"],html[data-theme="dark"] [style*="color:#0f172a"],html[data-theme="dark"] [style*="color:#1f2937"]{color:var(--ink)!important}
+  html[data-theme="dark"] .doc,html[data-theme="dark"] .doc *{color-scheme:light}
+  html[data-theme="dark"] #authGate,html[data-theme="dark"] #authGate > div{background:var(--card)!important;color:var(--ink)}
+  /* กราฟ SVG ในโหมดมืด */
+  html[data-theme="dark"] svg text[fill="#374151"],html[data-theme="dark"] svg text[fill="#1f2937"]{fill:#e5edf5}
+  html[data-theme="dark"] svg text[fill="#6b7280"]{fill:#94a3b8}
+  html[data-theme="dark"] svg text[fill="#0e3a5c"]{fill:#7dd3fc}
+  html[data-theme="dark"] svg line[stroke="#eef1f5"]{stroke:#22344a}
+  html[data-theme="dark"] svg rect[fill="#0e3a5c"],html[data-theme="dark"] svg path[fill="#0e3a5c"]{fill:#38bdf8}
+  html[data-theme="dark"] svg rect[fill="#e2e8f0"]{fill:#243548}
+  html[data-theme="dark"] svg circle[stroke="#e5e7eb"]{stroke:#243548}
+  html[data-theme="dark"] [style*="color:#0e3a5c"]:not([style*="background:#"]),html[data-theme="dark"] [style*="color:#092942"]:not([style*="background:#"]){color:#7dd3fc!important}
+  html[data-theme="dark"] [style*="background:#eaf6f1"]{color:#6ee7b7!important}
+  /* ตัวหนังสือสีเข้มที่ไม่ได้อยู่บนป้ายพื้นสีอ่อน → ปรับให้สว่างขึ้น */
+  html[data-theme="dark"] [style*="color:#92400e"]:not([style*="background:#"]),html[data-theme="dark"] [style*="color:#b45309"]:not([style*="background:#"]),
+  html[data-theme="dark"] [style*="color:#9a3412"]:not([style*="background:#"]),html[data-theme="dark"] [style*="color:#78350f"]:not([style*="background:#"]){color:#fcd34d!important}
+  html[data-theme="dark"] [style*="color:#b91c1c"]:not([style*="background:#"]),html[data-theme="dark"] [style*="color:#dc2626"]:not([style*="background:#"]){color:#f87171!important}
+  html[data-theme="dark"] [style*="color:#16a34a"]:not([style*="background:#"]),html[data-theme="dark"] [style*="color:#0b5f58"]:not([style*="background:#"]),
+  html[data-theme="dark"] [style*="color:#0f766e"]:not([style*="background:#"]),html[data-theme="dark"] [style*="color:#065f46"]:not([style*="background:#"]){color:#6ee7b7!important}
+  html[data-theme="dark"] [style*="color:#6d28d9"]:not([style*="background:#"]),html[data-theme="dark"] [style*="color:#7c3aed"]:not([style*="background:#"]){color:#c4b5fd!important}
+  html[data-theme="dark"] [style*="color:#1d4ed8"]:not([style*="background:#"]){color:#93c5fd!important}
+  html[data-theme="dark"] [style*="color:#5b7186"]:not([style*="background:#"]),html[data-theme="dark"] [style*="color:#64748b"]:not([style*="background:#"]){color:#94a3b8!important}
+  #themeToggle{white-space:nowrap}
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{font-family:"Segoe UI",Tahoma,"Sarabun",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
@@ -244,6 +292,12 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="shortcut icon" href="/brand/favicon-48.png?v=2">
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
+<script>
+/* โหมดมืด/สว่าง — จำค่าที่เลือกไว้ ถ้ายังไม่เคยเลือกใช้ตามเครื่อง */
+(function(){ var t=null; try{ t=localStorage.getItem('esp_theme'); }catch(e){}
+  if(t!=='dark'&&t!=='light') t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  document.documentElement.setAttribute('data-theme',t); })();
+</script>
 </head>
 <body>
 <div id="authGate" style="position:fixed;inset:0;background:#ffffff;display:none;align-items:center;justify-content:center;z-index:200;padding:20px">
@@ -310,6 +364,7 @@
         <select id="monthSel"></select>
         <select id="yearSel"></select>
       </div>
+      <button class="btn ghost sm no-print" id="themeToggle" title="สลับโหมดมืด / สว่าง">🌙 โหมดมืด</button>
       <button class="btn ghost sm no-print" id="langToggle">🌐 EN</button>
     </header>
     <div class="content" id="view"><div id="bootLoad" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:50vh;color:#5b7186"><div style="width:38px;height:38px;border:4px solid #d7e6ee;border-top-color:#10b981;border-radius:50%;animation:bootspin .8s linear infinite"></div><div>กำลังโหลดข้อมูล…</div></div><style>@keyframes bootspin{to{transform:rotate(360deg)}}</style></div>
@@ -737,8 +792,8 @@ function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&l
 const PAGES = [
   ['dashboard','แดชบอร์ด','📊'],
   ['employees','ข้อมูลพนักงาน','👥'],
-  ['attend','เวลาเข้างาน','⏰'],
   ['checkin','ลงเวลาผ่านมือถือ','📱'],
+  ['attend','เวลาเข้างาน','⏰'],
   ['leave','ระบบลางาน','🌴'],
   ['resign','การลาออก','🚪'],
   ['advance','เบิกจ่ายล่วงหน้า','💸'],
@@ -911,11 +966,15 @@ async function ckLoad(){
   const fromTs=new Date(CK_STATE.from+'T00:00:00+07:00').toISOString(), toTs=new Date(CK_STATE.to+'T23:59:59+07:00').toISOString();
   const [c,u,p]=await Promise.all([
     sb.from('checkin_config').select('*').eq('owner_id',MY_UID).maybeSingle(),
-    sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at,role,dept,position,face_photo,face_enrolled_at').eq('owner_id',MY_UID)
-      .then(x=>x.error&&/position/.test(x.error.message)?sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at,role,dept,face_photo,face_enrolled_at').eq('owner_id',MY_UID):x)
+    sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at,role,dept,position,face_enrolled_at').eq('owner_id',MY_UID)
+      .then(x=>x.error&&/position/.test(x.error.message)?sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at,role,dept,face_enrolled_at').eq('owner_id',MY_UID):x)
       .then(x=>x.error&&/face_|role|dept/.test(x.error.message)?sb.from('checkin_users').select('id,emp_id,emp_code,emp_name,active,fail_count,locked_until,created_at').eq('owner_id',MY_UID):x),
-    sb.from('punches').select('*')
+    sb.from('punches').select('id,emp_id,emp_code,emp_name,kind,ts,lat,lng,accuracy,distance_m,site_name,in_zone,face_dist,merged,edited_at,orig_ts,orig_kind,has_photo')                       /* ไม่ดึงรูป — ประหยัด egress ของ Supabase */
       .eq('owner_id',MY_UID).gte('ts',fromTs).lte('ts',toTs).order('ts',{ascending:false}).limit(2000)
+      .then(x=>x.error&&/has_photo/.test(x.error.message)
+        ? sb.from('punches').select('id,emp_id,emp_code,emp_name,kind,ts,lat,lng,accuracy,distance_m,site_name,in_zone,face_dist,merged,edited_at,orig_ts,orig_kind')
+            .eq('owner_id',MY_UID).gte('ts',fromTs).lte('ts',toTs).order('ts',{ascending:false}).limit(2000)
+        : x)
   ]);
   const e=c.error||u.error||p.error;
   if(e){ CK_STATE.err=/relation|does not exist|schema cache/i.test(e.message)?'nosql':e.message; }
@@ -1170,14 +1229,14 @@ function vCheckin(v){
       <td>${u?`<select data-role="${u.id}" style="font-size:13px;padding:4px 6px">
         <option value="staff" ${(u.role||'staff')==='staff'?'selected':''}>พนักงาน</option>
         <option value="head" ${u.role==='head'?'selected':''}>หัวหน้า/ผู้จัดการ</option>
-        <option value="exec" ${u.role==='exec'?'selected':''}>ผู้บริหาร/CEO (อนุมัติอย่างเดียว)</option></select>`:'<span class="muted">-</span>'}</td>
-      <td>${u&&u.face_enrolled_at?`<img src="${u.face_photo||''}" data-face="${u.id}" alt="" title="ลงทะเบียนเมื่อ ${esc(ckBkk(u.face_enrolled_at).join(' '))}" style="width:36px;height:36px;object-fit:cover;border-radius:50%;cursor:zoom-in;vertical-align:middle;border:2px solid #10b981">`
-        :(u?'<span class="muted" style="font-size:12px">ลงทะเบียนตอนลงเวลาครั้งแรก</span>':'<span class="muted">-</span>')}</td><td>${st}</td>
+        <option value="exec" ${u.role==='exec'?'selected':''} title="อนุมัติอย่างเดียว ไม่ต้องลงเวลา">ผู้บริหาร/CEO</option></select>`:'<span class="muted">-</span>'}</td>
+      <td>${u&&u.face_enrolled_at?`<button class="btn ghost sm" data-face="${u.id}" title="ดูใบหน้าที่ลงทะเบียน — ${esc(ckBkk(u.face_enrolled_at).join(' '))}">🙂 ดูรูป</button>`
+        :(u?'<span class="muted" style="font-size:12px">ยังไม่ลงทะเบียน</span>':'<span class="muted">-</span>')}</td><td>${st}</td>
       <td style="text-align:right;white-space:nowrap">
-      <button class="btn ghost sm" data-edit="${esc(e.id)}" ${cfg.code?'':'disabled'}>${u?'✏️ ตั้งชื่อผู้ใช้/รหัสผ่าน':'➕ สร้างบัญชี'}</button>
-      ${u&&u.face_enrolled_at?`<button class="btn ghost sm" data-rface="${u.id}">🙂 รีเซ็ตใบหน้า</button>`:''}
-      ${u?`<button class="btn ghost sm" data-link="${esc(u.emp_code)}">🔗 คัดลอกลิงก์</button>
-           <button class="btn ghost sm" data-act="${u.id}" data-on="${u.active?0:1}">${u.active?'ปิด':'เปิด'}</button>`:''}</td></tr>`; }).join('')}
+      <button class="btn ghost sm" data-edit="${esc(e.id)}" ${cfg.code?'':'disabled'} title="${u?'ตั้งชื่อผู้ใช้ / รหัสผ่าน':'สร้างบัญชี'}">${u?'✏️':'➕ สร้างบัญชี'}</button>
+      ${u&&u.face_enrolled_at?`<button class="btn ghost sm" data-rface="${u.id}" title="รีเซ็ตใบหน้า">🙂</button>`:''}
+      ${u?`<button class="btn ghost sm" data-link="${esc(u.emp_code)}" title="คัดลอกลิงก์ส่วนตัว">🔗</button>
+           <button class="btn ghost sm" data-act="${u.id}" data-on="${u.active?0:1}" title="${u.active?'ปิดใช้งานบัญชี':'เปิดใช้งานบัญชี'}">${u.active?'ปิด':'เปิด'}</button>`:''}</td></tr>`; }).join('')}
   </tbody></table></div></div>`);
   v.appendChild(accP);
   const ERRS={bad_login:'ชื่อผู้ใช้ต้องเป็น a-z, 0-9, จุด, ขีด ยาว 3–30 ตัว',bad_pin:'รหัสผ่านต้องยาว 4–32 ตัวอักษร',
@@ -1229,8 +1288,14 @@ function vCheckin(v){
       const sel=accP.querySelector('[data-role="'+u.id+'"]'); if(sel) sel.value=u.role;
       sb.from('checkin_users').update(Object.assign({dept:(e.dept||'').trim(),emp_name:e.name,role:empRole(e)},u.position!==undefined?{position:(e.position||'').trim()}:{})).eq('id',u.id).then(()=>{}); }); }
   accP.querySelectorAll('[data-face]').forEach(im=>im.onclick=()=>{ const u=S.users.find(x=>x.id===im.dataset.face);
-    openModal('🙂 ใบหน้าที่ลงทะเบียน — '+esc(u.emp_name||u.emp_code),`<img src="${u.face_photo}" alt="" style="width:100%;max-width:320px;border-radius:14px;display:block;margin:0 auto">
-      <p class="muted" style="text-align:center;margin-top:8px;font-size:13px">ลงทะเบียนเมื่อ ${esc(ckBkk(u.face_enrolled_at).join(' '))}</p>`,[['ปิด','',closeModal]]); });
+    openModal('🙂 ใบหน้าที่ลงทะเบียน — '+esc(u.emp_name||u.emp_code),'<div class="empty">กำลังโหลดรูป…</div>',[['ปิด','',closeModal]]);
+    sb.from('checkin_users').select('face_photo').eq('id',u.id).maybeSingle().then(({data,error})=>{
+      const box=$('#modal').querySelector('.mbody'); if(!box) return;
+      box.innerHTML = (data&&data.face_photo)
+        ? `<img src="${data.face_photo}" alt="" style="width:100%;max-width:320px;border-radius:14px;display:block;margin:0 auto">
+           <p class="muted" style="text-align:center;margin-top:8px;font-size:13px">ลงทะเบียนเมื่อ ${esc(ckBkk(u.face_enrolled_at).join(' '))}</p>`
+        : `<div class="empty">${error?'โหลดรูปไม่สำเร็จ: '+esc(error.message):'ไม่มีรูป'}</div>`;
+    }); });
   accP.querySelectorAll('[data-rface]').forEach(b=>b.onclick=async()=>{
     if(!confirm('ลบใบหน้าที่ลงทะเบียนของพนักงานคนนี้?\nครั้งถัดไปที่ลงเวลา ระบบจะลงทะเบียนใบหน้าใหม่')) return;
     const {error}=await sb.rpc('checkin_reset_face',{p_user_id:b.dataset.rface});
@@ -1371,12 +1436,12 @@ function vCheckin(v){
   const logP=el(`<div class="panel"><div style="padding:16px 18px 6px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
     <h3 style="margin-right:auto">3. บันทึกการลงเวลา (งวดนี้)</h3>
     <button class="btn ghost sm" id="ckReload">🔄 โหลดใหม่</button>
-    <button class="btn sm" id="ckMerge" ${unmerged?'':'disabled'}>⬇️ นำเข้าหน้าเวลาเข้างาน (${num(unmerged)})</button>
+    ${unmerged?`<button class="btn sm" id="ckMerge">⬇️ นำเข้าหน้าเวลาเข้างาน (${num(unmerged)} ใหม่)</button>`:(S.punches.length?'<span class="chip" style="background:#dcfce7;color:#15803d;font-weight:700;padding:6px 12px">✅ นำเข้าครบแล้ว</span> <button class="btn ghost sm" id="ckMerge" data-redo="1">⬇️ นำเข้าใหม่อีกครั้ง</button>':'')}
   </div>
   <p class="muted" style="font-size:12.5px;padding:0 18px 8px">นำเข้าแล้วระบบใช้ <strong>เวลาเข้าเร็วสุด</strong> และ <strong>เวลาออกช้าสุด</strong> ของแต่ละวัน ไปคิดวันทำงาน มาสาย และ OT ตามปกติ · รูปถูกลบอัตโนมัติหลัง 90 วัน</p>
   <div class="tbl-wrap" style="max-height:60vh;overflow:auto"><table><thead><tr><th>รูป</th><th>วันเวลา</th><th>พนักงาน</th><th>ประเภท</th><th>ตำแหน่ง</th><th>สถานะ</th><th></th></tr></thead><tbody>
   ${S.punches.length?S.punches.map(p=>{ const [d,t]=ckBkk(p.ts);
-    return `<tr><td>${p.photo?`<img src="${p.photo}" data-ph="${p.id}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:10px;cursor:zoom-in">`:'<span class="muted">-</span>'}</td>
+    return `<tr><td>${(p.has_photo!==false&&p.has_photo!==null)?`<button class="btn ghost sm" data-ph="${p.id}" title="ดูรูปตอนลงเวลา">📷</button>`:'<span class="muted">-</span>'}</td>
       <td style="white-space:nowrap">${d.slice(8)}/${d.slice(5,7)} <strong>${t}</strong></td>
       <td>${esc(p.emp_code)} ${esc(p.emp_name)}</td>
       <td>${p.kind==='in'?'<span class="chip" style="background:#dcfce7;color:#16a34a">เข้า</span>':'<span class="chip" style="background:#fef3c7;color:#b45309">ออก</span>'}</td>
@@ -1433,19 +1498,36 @@ function vCheckin(v){
   logP.querySelectorAll('[data-ph]').forEach(im=>im.onclick=()=>{
     const p=S.punches.find(x=>String(x.id)===im.dataset.ph); const [d,t]=ckBkk(p.ts);
     openModal(`${esc(p.emp_name||p.emp_code)} · ${p.kind==='in'?'เข้างาน':'ออกงาน'} ${d.slice(8)}/${d.slice(5,7)} ${t}`,
-      `<img src="${p.photo}" alt="" style="width:100%;max-width:360px;border-radius:14px;display:block;margin:0 auto">`,[['ปิด','',closeModal]]);
+      '<div class="empty">กำลังโหลดรูป…</div>',[['ปิด','',closeModal]]);
+    sb.from('punches').select('photo').eq('id',p.id).maybeSingle().then(({data,error})=>{
+      const box=$('#modal').querySelector('.mbody'); if(!box) return;
+      box.innerHTML = (data&&data.photo)
+        ? `<img src="${data.photo}" alt="" style="width:100%;max-width:360px;border-radius:14px;display:block;margin:0 auto">`
+        : `<div class="empty">${error?'โหลดรูปไม่สำเร็จ: '+esc(error.message):'ไม่มีรูป (ระบบลบรูปอัตโนมัติหลัง 90 วัน)'}</div>`;
+    });
   });
-  logP.querySelector('#ckMerge').onclick=async()=>{
-    const res=await ckMergePunches(S.punches.filter(p=>!p.merged));
-    if(res.err) toast('นำเข้าเวลาแล้ว แต่บันทึกสถานะไม่สำเร็จ: '+res.err);
-    else toast(`นำเข้าเวลาเข้างานแล้ว ${num(res.n)} รายการ${res.skipped?` · ข้าม ${res.skipped} รายการ (ไม่พบพนักงาน)`:''}`);
+  const mBtn=logP.querySelector('#ckMerge'); if(mBtn) mBtn.onclick=async()=>{
+    const redo=!!mBtn.dataset.redo;
+    if(redo && !confirm('นำเข้าเวลาจากมือถือของงวดนี้ใหม่ทั้งหมด?\nวันที่มีรายการในมือถือ เวลาเข้า/ออกในหน้าเวลาเข้างานจะถูกแทนด้วยเวลาล่าสุดจากมือถือ (ถ้าเคยแก้เองในหน้าเวลาเข้างาน จะถูกแทน)')) return;
+    mBtn.disabled=true; mBtn.textContent='⏳ กำลังนำเข้า…';
+    const res=await ckMergePunches(redo?S.punches.slice():S.punches.filter(p=>!p.merged), redo);
     render();
+    openModal(res.err?'⚠️ นำเข้าแล้วบางส่วน':'✅ นำเข้าเวลาเข้างานเรียบร้อย',
+      `<p style="font-size:15px">นำเข้า <strong>${num(res.n)}</strong> รายการ ไปที่หน้า <strong>เวลาเข้างาน</strong> แล้ว</p>`
+      +(res.skipped?`<p class="muted">ข้าม ${num(res.skipped)} รายการ เพราะไม่พบพนักงานในระบบ</p>`:'')
+      +(res.err?`<p style="color:#dc2626">บันทึกสถานะไม่สำเร็จ: ${esc(res.err)}</p>`:'')
+      +'<p class="muted" style="font-size:13px">ระบบใช้เวลาเข้าเร็วสุด/ออกช้าสุดของแต่ละวัน ไปคิดวันทำงาน มาสาย และ OT</p>',
+      [['ปิด','ghost',closeModal],['ไปหน้าเวลาเข้างาน','',()=>{ closeModal(); PAGE='attend'; savePage('attend'); renderNav(); render(); }]]);
   };
 }
 
 /* นำรายการลงเวลาจากมือถือเข้าหน้าเวลาเข้างาน (เข้าเร็วสุด/ออกช้าสุดของวัน) แล้วติดสถานะ merged */
-async function ckMergePunches(todo){
+async function ckMergePunches(todo, redo){
   const known=new Map(DB.employees.map(e=>[e.id,e])); let n=0, skipped=0;
+  if(redo){                                          // นำเข้าใหม่: ล้างวันที่มีรายการในมือถือ แล้วคิดจากรายการล่าสุด
+    todo.forEach(p=>{ if(!known.has(p.emp_id)) return; const [d]=ckBkk(p.ts); const box=ensureAttend(periodOfDate(d));
+      if(!box[p.emp_id]) box[p.emp_id]={}; const o=box[p.emp_id][d]||{}; box[p.emp_id][d]=Object.assign({},o,{i:'',o:''}); });
+  }
   todo.slice().sort((a,b)=>a.ts<b.ts?-1:1).forEach(p=>{
     if(!known.has(p.emp_id)){ skipped++; return; }
     const [d,t]=ckBkk(p.ts); const box=ensureAttend(periodOfDate(d));
@@ -4484,7 +4566,7 @@ function shiftPanel(){
       <td><input data-sh-name="${sh.id}" value="${esc(sh.name)}" style="width:120px"></td>
       <td>${t24(`data-sh-start="${sh.id}"`, sh.start)}</td>
       <td>${t24(`data-sh-end="${sh.id}"`, sh.end)}</td>
-      <td class="num">${shiftHours(sh)} ชม.${sp.over?'<br><span class="chip" style="background:#ede9fe;color:#6d28d9">ข้ามคืน</span>':''}</td>
+      <td class="num" data-sh-hrs="${sh.id}">${shiftHours(sh)} ชม.${sp.over?'<br><span class="chip" style="background:#ede9fe;color:#6d28d9">ข้ามคืน</span>':''}</td>
       <td class="num"><input type="number" min="0" data-sh-grace="${sh.id}" value="${+sh.grace||0}" style="width:64px;text-align:center"></td>
       <td><input type="color" data-sh-color="${sh.id}" value="${esc(sh.color||'#0891b2')}" style="width:44px;height:30px;padding:2px;border:1px solid var(--line);border-radius:6px"></td>
       <td class="num">${num(used)} คน</td>
@@ -4510,6 +4592,15 @@ function shiftPanel(){
       </div>
     </div></div>`);
   wireT24(p);
+  /* ชั่วโมงเปลี่ยนตามเวลาที่พิมพ์ทันที ไม่ต้องรอกดบันทึก */
+  const liveHours=()=>list.forEach(sh=>{
+    const cell=p.querySelector('[data-sh-hrs="'+sh.id+'"]'); if(!cell) return;
+    const s=t24Norm(p.querySelector('[data-sh-start="'+sh.id+'"]').value)||sh.start;
+    const e=t24Norm(p.querySelector('[data-sh-end="'+sh.id+'"]').value)||sh.end;
+    const tmp={start:s,end:e}, sp=shiftSpan(tmp);
+    cell.innerHTML=shiftHours(tmp)+' ชม.'+(sp.over?'<br><span class="chip" style="background:#ede9fe;color:#6d28d9">ข้ามคืน</span>':'');
+  });
+  p.querySelectorAll('[data-sh-start],[data-sh-end]').forEach(i=>{ i.addEventListener('input',liveHours); i.addEventListener('change',liveHours); i.addEventListener('blur',liveHours); });
 
   const readForm=()=>{
     list.forEach(sh=>{
@@ -4815,13 +4906,42 @@ function shiftSwapModal(shown){
        <div style="padding-bottom:10px;font-size:20px">🔁</div>
        <div class="field"><label>กะ B</label><select id="swB">${opt(1)}</select></div>
      </div>
-     ${dateRangeHtml()}${permaHtml('สลับกะประจำถาวร')}${empPickerHtml(shown)}`,
+     <div class="field" style="margin-top:6px"><label>รูปแบบการสลับ</label>
+       <select id="swMode"><option value="once">สลับครั้งเดียว (ตามช่วงวันที่ด้านล่าง)</option><option value="cycle">สลับเป็นรอบ ๆ ไปเรื่อย ๆ</option></select></div>
+     <div id="swCyc" style="display:none">
+       <div style="display:flex;gap:10px;flex-wrap:wrap">
+         <div class="field"><label>เปลี่ยนกะทุก ๆ</label>
+           <select id="swEvery"><option value="1">1 วัน</option><option value="2">2 วัน</option><option value="3">3 วัน</option>
+             <option value="7" selected>1 สัปดาห์</option><option value="14">2 สัปดาห์</option>
+             <option value="m1">1 เดือน</option><option value="m2">2 เดือน</option><option value="m3">3 เดือน</option></select></div>
+         <div class="field" id="swWdBox"><label>สลับกะทุกวัน</label>
+           <select id="swWd"><option value="1" selected>จันทร์</option><option value="2">อังคาร</option><option value="3">พุธ</option>
+             <option value="4">พฤหัสบดี</option><option value="5">ศุกร์</option><option value="6">เสาร์</option><option value="0">อาทิตย์</option></select></div>
+         <div class="field"><label>เริ่มนับรอบจากวันที่</label><input type="date" id="swAnchor" value="${isoOf(periodRange(PERIOD).from)}"></div>
+       </div>
+       <p class="muted" id="swHint" style="font-size:12.5px;margin-top:4px"></p>
+       <p class="muted" style="font-size:12.5px">รอบแรกทุกคนอยู่กะประจำของตัวเอง รอบถัดไปสลับ A↔B แล้วสลับกลับไปเรื่อย ๆ</p>
+     </div>
+     ${dateRangeHtml()}<div id="swPerma">${permaHtml('สลับกะประจำถาวร')}</div>${empPickerHtml(shown)}`,
     [['ยกเลิก','ghost',closeModal],['สลับกะ','',()=>{
       const A=$('#swA').value, B=$('#swB').value;
       if(A===B){ toast('เลือกกะให้ต่างกัน'); return; }
       const r=readRange(); if(!r) return;
       const emps=pickedEmps(); if(!emps.length){ toast('ยังไม่ได้เลือกพนักงาน'); return; }
       const swap=id=> id===A?B : id===B?A : null;
+      if($('#swMode').value==='cycle'){
+        const ev=$('#swEvery').value, anchor=$('#swAnchor').value;
+        if(!anchor){ toast('ยังไม่ได้เลือกวันเริ่มนับรอบ'); return; }
+        let n=0, who=new Set();
+        eachDate(r.f,r.t,r.wds,iso=>{
+          const odd=Math.abs(cycBlock(iso,ev,anchor,+$('#swWd').value))%2===1;
+          emps.forEach(e=>{ const base=e.shiftId||list[0].id; if(base!==A&&base!==B) return;
+            setShiftPlan(iso,e,odd?swap(base):base); n++; who.add(e.id); });
+        });
+        save(); closeModal(); render();
+        toast(n?`สร้างตารางสลับกะเป็นรอบแล้ว ${num(who.size)} คน`:'ไม่มีใครมีกะประจำเป็นสองกะนี้');
+        return;
+      }
       if(isPerma()){
         const affected=emps.filter(e=>{ const d=e.shiftId||list[0].id; return d===A||d===B; });
         applyPermanentShift(emps, r.f, swap);
@@ -4841,6 +4961,22 @@ function shiftSwapModal(shown){
       toast(n?`สลับกะแล้ว ${num(n)} รายการ`:'ไม่มีใครอยู่ในสองกะนี้ในช่วงที่เลือก');
     }]]);
   wireEmpPicker();
+  { const TH=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+    const upd=()=>{ const cyc=$('#swMode').value==='cycle'; $('#swCyc').style.display=cyc?'':'none'; $('#swPerma').style.display=cyc?'none':'';
+      const ev=$('#swEvery').value, wk=(ev==='7'||ev==='14'); $('#swWdBox').style.display=wk?'':'none';
+      const a=$('#swAnchor').value, day=a?+a.split('-')[2]:null;
+      $('#swHint').textContent= wk?`สลับกะทุกวัน${TH[+$('#swWd').value]} ทุก ${ev==='7'?'1':'2'} สัปดาห์`
+        : ev[0]==='m' ? (day?`สลับกะทุกวันที่ ${day} ของเดือน ทุก ${ev.slice(1)} เดือน`:'') : `สลับกะทุก ${ev} วัน นับจากวันเริ่ม`; };
+    ['swMode','swEvery','swWd','swAnchor'].forEach(id=>$('#'+id).addEventListener('change',upd)); upd(); }
+}
+/* ลำดับรอบของวัน iso — ใช้ร่วมกันระหว่างสลับกะเป็นรอบ */
+function cycBlock(iso, ev, anchor, wd){
+  const months=ev[0]==='m'?+ev.slice(1):0, every=months?0:(+ev||7);
+  const [ay,am,ad]=anchor.split('-').map(Number); let A0=new Date(ay,am-1,ad);
+  if(every===7||every===14) A0=new Date(ay,am-1,ad-((A0.getDay()-wd+7)%7));
+  const [y,m,d]=iso.split('-').map(Number);
+  if(months){ let diff=(y*12+m)-(ay*12+am); if(d<ad) diff--; return Math.floor(diff/months); }
+  return Math.floor(Math.round((new Date(y,m-1,d)-A0)/86400000)/every);
 }
 
 /* 3) หมุนเวียนกะอัตโนมัติ — วนกะทุก N วัน แต่ละคนเริ่มจากกะประจำตัวเอง (กลุ่มจึงเหลื่อมกันเอง) */
@@ -6595,6 +6731,14 @@ $('#menuBtn').onclick=()=>sideOpen(!$('#side').classList.contains('open'));
 $('#sideOverlay').onclick=()=>sideOpen(false);
 window.addEventListener('keydown',e=>{ if(e.key==='Escape') sideOpen(false); });
 
+const themeBtn=$('#themeToggle');
+if(themeBtn){
+  const paint=()=>{ const d=document.documentElement.getAttribute('data-theme')==='dark';
+    themeBtn.textContent=d?'☀️ โหมดสว่าง':'🌙 โหมดมืด'; };
+  paint();
+  themeBtn.onclick=()=>{ const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',t); try{ localStorage.setItem('esp_theme',t); }catch(e){} paint(); };
+}
 const langBtn=$('#langToggle');
 if(langBtn){ langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH';
   langBtn.onclick=()=>{ LANG = LANG==='th'?'en':'th'; localStorage.setItem('lang',LANG); langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH'; renderNav(); render(); }; }

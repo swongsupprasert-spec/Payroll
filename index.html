@@ -229,10 +229,10 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
                linear-gradient(to bottom,#000 0,#000 84%,transparent 100%);
     -webkit-mask-composite:source-in;mask-composite:intersect}
   @media(max-width:900px){
-    /* จอแคบ : ให้ hero เรียงเป็นคอลัมน์ ข้อความก่อน แล้วภาพต่อท้าย */
-    .hero{display:flex;flex-direction:column}
-    .hero > .wrap{order:1}
-    .heroimg{order:2;position:relative;width:auto;margin:14px -22px -58px 0;top:auto;right:auto;bottom:auto}
+    /* จอแคบ : ให้ hero เรียงเป็นคอลัมน์ ภาพปกขึ้นก่อน แล้วค่อยเป็นข้อความ */
+    .hero{display:flex;flex-direction:column;padding-top:18px}
+    .hero > .wrap{order:2}
+    .heroimg{order:1;position:relative;width:auto;margin:0 -22px 6px 0;top:auto;right:auto;bottom:auto}
     .heroimg img{height:auto;object-fit:contain;
       -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 80%,transparent 100%);
       mask-image:linear-gradient(to bottom,#000 0,#000 80%,transparent 100%)}
@@ -406,7 +406,7 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
     .steprow::before{display:none}
   }
   @media(max-width:900px){
-    .hero{padding:56px 0 52px}
+    .hero{padding:16px 0 52px}
     .hero .grid{grid-template-columns:minmax(0,1fr);gap:36px}
     .hero .cover,.hero .shots{min-width:0;max-width:100%}
     .hero p.lead{max-width:none}
