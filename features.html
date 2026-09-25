@@ -261,6 +261,8 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="shortcut icon" href="/brand/favicon-48.png?v=2">
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
+<link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/noto-sans-thai.css">
 </head>
 <body>
 <header>
@@ -305,7 +307,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         <h3>จัดการเงินเดือน</h3>
         <ul>
           <li><strong>คำนวณรายเดือนและรายวัน</strong> — รองรับทั้งสองประเภทในบริษัทเดียว คิดตามสัดส่วนวันเมื่อเข้า–ออกกลางเดือน</li>
-          <li><strong>ค่าล่วงเวลา (OT)</strong> — อัตราต่อชั่วโมงคิดตามประเภทการจ้าง เลือกตัวคูณ 1.5× หรือ 3× ตามกฎหมาย</li>
+          <li><strong>ค่าล่วงเวลา (OT)</strong> — อัตราต่อชั่วโมงคิดตามประเภทการจ้าง ตัวคูณ 1.5× / 2× / 3× ตามกฎหมาย ตั้งตามวันได้</li>
           <li><strong>เงินเพิ่ม–เงินหักครบทุกรายการ</strong> — ค่าคอมมิชชั่น เบี้ยขยัน ค่าเดินทาง ค่าตำแหน่ง โบนัส หักขาดงาน เงินกู้ กยศ.</li>
           <li><strong>จ่ายเงินเดือน 2 รอบ</strong> — บันทึกยอดเบิกล่วงหน้ากลางเดือน พิมพ์ใบสรุปยอดโอน แล้วระบบหักคืนตอนสิ้นเดือน</li>
           <li><strong>ประวัติการขึ้นเงินเดือน</strong> — งวดเก่าใช้อัตราเดิม สลิปและเอกสารย้อนหลังไม่เปลี่ยน</li>
@@ -315,12 +317,13 @@ footer .ft-mail{color:#6ee7b7 !important}
       <div class="fall-col">
         <h3>ลงเวลา & จัดกะ</h3>
         <ul>
-          <li><strong>สแกนใบหน้าลงเวลาผ่านมือถือ</strong> — พนักงานถ่ายเซลฟี่ลงเวลาเข้า–ออกผ่านมือถือ ระบบจดจำใบหน้าและเช็ค GPS ว่าอยู่ในรัศมีบริษัท ไม่ต้องซื้อเครื่องสแกน</li>
-          <li><strong>นำเข้าเวลาจากไฟล์ CSV</strong> — ระบบคิดวันทำงาน มาสาย และชั่วโมง OT ให้เอง</li>
-          <li><strong>ตั้งกะ รวมกะข้ามคืน</strong> — กำหนดเวลาเข้า–ออกต่อกะ รองรับกะที่คร่อมเที่ยงคืน</li>
-          <li><strong>สลับกะและหมุนเวียนกะยกทีม</strong> — เปลี่ยนกะทั้งทีมได้ในคลิกเดียว ติ๊กกะออกก็ตัดคนในกะนั้นออกให้</li>
-          <li><strong>เพดาน OT และปิด OT เฉพาะคน</strong> — กำหนดชั่วโมง OT สูงสุดต่อวัน และปิด OT ให้บางคนได้</li>
-          <li><strong>ระบบลางาน</strong> — ลาป่วย ลากิจ ลาพักร้อน บันทึกเป็นวันหรือชั่วโมง คุมโควตารายปี</li>
+          <li><strong>สแกนใบหน้าลงเวลาผ่านมือถือ</strong> — พนักงานเปิดลิงก์ส่วนตัว ถ่ายเซลฟี่ลงเวลาเข้า–ออก ระบบจดจำใบหน้าและเช็ค GPS ว่าอยู่ในพื้นที่บริษัท (ตั้งได้หลายสาขา) ใช้ในแอป LINE ได้ ไม่ต้องติดตั้งแอป ไม่ต้องซื้อเครื่องสแกน</li>
+          <li><strong>เวลาจากมือถือเข้าหน้าเวลาเข้างานอัตโนมัติ</strong> — หรือนำเข้าจากไฟล์ CSV ระบบคิดวันทำงาน มาสาย ขาดงานโดยไม่ได้ลา และชั่วโมง OT ให้เอง</li>
+          <li><strong>ตั้งกะ รวมกะข้ามคืน</strong> — กำหนดเวลาเข้า–ออกต่อกะ รองรับกะที่คร่อมเที่ยงคืน ตั้งเวลาอนุโลมสายได้</li>
+          <li><strong>หมุนเวียนกะและสลับกะ A↔B</strong> — หมุนกะอัตโนมัติทุก 1–3 วัน 1–2 สัปดาห์ หรือ 1–3 เดือน สลับกะ 2 กลุ่มครั้งเดียวหรือเป็นรอบ ๆ ไปเรื่อย ๆ</li>
+          <li><strong>อนุมัติ OT รายวันรายคน</strong> — อนุมัติ OT แต่ละวันแต่ละคนไม่เท่ากันได้ ตั้งตัวคูณ OT ตามวัน 1.5 / 2 / 3 เท่า</li>
+          <li><strong>ปฏิทินวันหยุดบริษัท</strong> — ใส่วันหยุดนักขัตฤกษ์ ไม่นับขาดงาน ไม่นับเป็นวันลา ทำงานวันหยุดคิด OT 3 เท่าให้อัตโนมัติ</li>
+          <li><strong>ลางานผ่านมือถือพร้อมสายอนุมัติ</strong> — ยื่นใบลาเป็นวันหรือชั่วโมง แนบรูปได้ 3 รูป หัวหน้าแผนก → CEO → HR อนุมัติจากมือถือได้ คุมโควตารายปี</li>
           <li><strong>ส่งตัวเลขเข้าเงินเดือนอัตโนมัติ</strong> — ชั่วโมง OT และวันขาดงานเข้าหน้าคำนวณเงินเดือนโดยไม่ต้องคีย์ซ้ำ</li>
         </ul>
       </div>
@@ -358,7 +361,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         </ul>
       </div>
     </div>
-    <p style="text-align:center;margin-top:18px;color:var(--muted);font-size:14.5px">ฟีเจอร์ลงเวลา กะ และลางาน อยู่ในแพ็กเกจพรีเมี่ยม · ช่วงทดลอง 30 วันใช้ได้ทุกฟีเจอร์ · <a href="/pricing">ดูราคา</a></p>
+    <p style="text-align:center;margin-top:18px;color:var(--muted);font-size:14.5px">ฟีเจอร์ลงเวลาผ่านมือถือ เวลาเข้างาน กะ OT ลางาน และเบิกจ่ายล่วงหน้า อยู่ในแพ็กเกจพรีเมี่ยม ·ช่วงทดลอง 30 วันใช้ได้ทุกฟีเจอร์ · <a href="/pricing">ดูราคา</a></p>
 
     <h2 style="text-align:center;margin:44px 0 20px">คำถามเกี่ยวกับฟีเจอร์</h2>
     <div class="fall-faq">
@@ -506,7 +509,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       chart:true,
       items:[
         ['users','คำนวณรายเดือนและรายวัน','Monthly and daily staff','รองรับทั้งสองประเภทในบริษัทเดียว คิดตามสัดส่วนวันเมื่อเข้า–ออกกลางเดือน','Both pay types in one company, prorated by days for mid-month joiners and leavers.'],
-        ['clock','ค่าล่วงเวลา (OT)','Overtime','อัตราต่อชั่วโมงคิดตามประเภทการจ้าง เลือกตัวคูณ 1.5× หรือ 3× ตามกฎหมาย','Hourly rate derived per pay type, with statutory 1.5x and 3x multipliers.'],
+        ['clock','ค่าล่วงเวลา (OT)','Overtime','อัตราต่อชั่วโมงคิดตามประเภทการจ้าง ตัวคูณ 1.5× / 2× / 3× ตามกฎหมาย ตั้งตามวันได้','Hourly rate derived per pay type, with statutory 1.5x, 2x and 3x multipliers set by day.'],
         ['calc','เงินเพิ่ม–เงินหักครบทุกรายการ','Every earning and deduction','ค่าคอมมิชชั่น เบี้ยขยัน ค่าเดินทาง ค่าตำแหน่ง โบนัส หักขาดงาน เงินกู้ กยศ.','Commission, diligence, travel, position, bonus, absence, loans and KYS.'],
         ['swap','จ่ายเงินเดือน 2 รอบ','Pay twice a month','บันทึกยอดเบิกล่วงหน้ากลางเดือน พิมพ์ใบสรุปยอดโอน แล้วระบบหักคืนตอนสิ้นเดือน','Record the mid-month advance, print the transfer sheet, deducted at month-end.'],
         ['chart','ประวัติการขึ้นเงินเดือน','Salary history','งวดเก่าใช้อัตราเดิม สลิปและเอกสารย้อนหลังไม่เปลี่ยน','Past periods keep the old rate so old payslips never change.'],
@@ -517,12 +520,13 @@ footer .ft-mail{color:#6ee7b7 !important}
       kpi:[['วันทำงาน','Work days','22 วัน','22'],['มาสาย','Late','3 ครั้ง','3'],['ชั่วโมง OT','OT hours','48 ชม.','48'],['กะทั้งหมด','Shifts','4 กะ','4']],
       chart:false,
       items:[
-        ['users','สแกนใบหน้าลงเวลาผ่านมือถือ','Face check-in on mobile','พนักงานถ่ายเซลฟี่ลงเวลาเข้า–ออกผ่านมือถือ ระบบจดจำใบหน้าและเช็ค GPS ว่าอยู่ในรัศมีบริษัท ไม่ต้องซื้อเครื่องสแกน','Staff take a selfie to clock in and out; face recognition plus a GPS radius check. No scanner hardware needed.'],
-        ['csv','นำเข้าเวลาจากไฟล์ CSV','Import punch data','ระบบคิดวันทำงาน มาสาย และชั่วโมง OT ให้เอง','The system counts work days, lateness and OT hours for you.'],
-        ['clock','ตั้งกะ รวมกะข้ามคืน','Shifts, including overnight','กำหนดเวลาเข้า–ออกต่อกะ รองรับกะที่คร่อมเที่ยงคืน','Set start and end times per shift, including shifts that cross midnight.'],
-        ['swap','สลับกะและหมุนเวียนกะยกทีม','Swap and rotate shifts','เปลี่ยนกะทั้งทีมได้ในคลิกเดียว ติ๊กกะออกก็ตัดคนในกะนั้นออกให้','Change a whole team in one click; unticking a shift removes its staff too.'],
-        ['shield','เพดาน OT และปิด OT เฉพาะคน','OT caps and per-person control','กำหนดชั่วโมง OT สูงสุดต่อวัน และปิด OT ให้บางคนได้','Cap OT hours per day and switch OT off for specific people.'],
-        ['cal','ระบบลางาน','Leave management','ลาป่วย ลากิจ ลาพักร้อน บันทึกเป็นวันหรือชั่วโมง คุมโควตารายปี','Sick, personal and annual leave in days or hours, with yearly quotas.'],
+        ['users','สแกนใบหน้าลงเวลาผ่านมือถือ','Face check-in on mobile','พนักงานเปิดลิงก์ส่วนตัว ถ่ายเซลฟี่ลงเวลาเข้า–ออก ระบบจดจำใบหน้าและเช็ค GPS ว่าอยู่ในพื้นที่บริษัท (ตั้งได้หลายสาขา) ใช้ในแอป LINE ได้ ไม่ต้องติดตั้งแอป ไม่ต้องซื้อเครื่องสแกน','Staff open a personal link and take a selfie to clock in and out; face recognition plus a GPS check against your sites (multiple branches). Works inside LINE. No app install, no scanner hardware.'],
+        ['csv','เวลาจากมือถือเข้าระบบอัตโนมัติ','Mobile punches flow in automatically','หรือนำเข้าจากไฟล์ CSV ระบบคิดวันทำงาน มาสาย ขาดงานโดยไม่ได้ลา และชั่วโมง OT ให้เอง','Or import a CSV. The system counts work days, lateness, unexcused absences and OT hours for you.'],
+        ['clock','ตั้งกะ รวมกะข้ามคืน','Shifts, including overnight','กำหนดเวลาเข้า–ออกต่อกะ รองรับกะที่คร่อมเที่ยงคืน ตั้งเวลาอนุโลมสายได้','Set start and end times per shift, including shifts that cross midnight, with a late grace period.'],
+        ['swap','หมุนเวียนกะและสลับกะ A↔B','Shift rotation and A↔B swaps','หมุนกะอัตโนมัติทุก 1–3 วัน 1–2 สัปดาห์ หรือ 1–3 เดือน สลับกะ 2 กลุ่มครั้งเดียวหรือเป็นรอบ ๆ ไปเรื่อย ๆ','Rotate shifts automatically every 1–3 days, 1–2 weeks or 1–3 months; swap two groups once or on a repeating cycle.'],
+        ['shield','อนุมัติ OT รายวันรายคน','Per-day, per-person OT approval','อนุมัติ OT แต่ละวันแต่ละคนไม่เท่ากันได้ ตั้งตัวคูณ OT ตามวัน 1.5 / 2 / 3 เท่า','Approve OT per person per day, each day different, with day-based multipliers of 1.5x, 2x or 3x.'],
+        ['cal','ปฏิทินวันหยุดบริษัท','Company holiday calendar','ใส่วันหยุดนักขัตฤกษ์ ไม่นับขาดงาน ไม่นับเป็นวันลา ทำงานวันหยุดคิด OT 3 เท่าให้อัตโนมัติ','Add public holidays; they never count as absence or leave, and holiday work is paid at 3x OT automatically.'],
+        ['cal','ลางานผ่านมือถือพร้อมสายอนุมัติ','Mobile leave with approval chain','ยื่นใบลาเป็นวันหรือชั่วโมง แนบรูปได้ 3 รูป หัวหน้าแผนก → CEO → HR อนุมัติจากมือถือได้ คุมโควตารายปี','Request leave in days or hours with up to 3 photos; department head → CEO → HR approve from their phones, with yearly quotas.'],
         ['money','ส่งตัวเลขเข้าเงินเดือนอัตโนมัติ','Feeds straight into payroll','ชั่วโมง OT และวันขาดงานเข้าหน้าคำนวณเงินเดือนโดยไม่ต้องคีย์ซ้ำ','OT hours and unpaid days reach payroll without retyping.']
       ]},
     { ic:'percent', th:'ภาษี & ประกันสังคม', en:'Tax & social security',

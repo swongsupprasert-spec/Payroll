@@ -278,6 +278,8 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="shortcut icon" href="/brand/favicon-48.png?v=2">
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
+<link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/noto-sans-thai.css">
 </head>
 <body>
 <header>
@@ -383,12 +385,13 @@ footer .ft-mail{color:#6ee7b7 !important}
       <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; Dashboard and summary charts"><span class="ck">✓</span> แดชบอร์ดและกราฟสรุป</li>
       <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; CSV import and export"><span class="ck">✓</span> นำเข้า/ส่งออก CSV</li>
       <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; Cloud data, usable on any device"><span class="ck">✓</span> ข้อมูลบนคลาวด์ ใช้ได้ทุกอุปกรณ์</li>
+      <li data-en="&lt;span class=&quot;ck&quot;&gt;✓&lt;/span&gt; Thai / English · dark mode"><span class="ck">✓</span> ภาษาไทย/อังกฤษ · โหมดมืด</li>
     </ul>
     <div style="margin-top:22px;background:linear-gradient(140deg,#0b1b2b,#0e3a5c 55%,#0f766e);color:#fff;border-radius:20px;padding:24px 26px;box-shadow:var(--sh-md)"
-      data-en="&lt;b style=&quot;font-size:17px&quot;&gt;💎 Premium adds&lt;/b&gt;&lt;div style=&quot;display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:15px&quot;&gt;&lt;span&gt;📱 Face check-in on mobile&lt;/span&gt;&lt;span&gt;⏰ Time attendance&lt;/span&gt;&lt;span&gt;🌴 Leave management&lt;/span&gt;&lt;span&gt;🔄 Shift management&lt;/span&gt;&lt;span&gt;⚡ OT rules &amp;amp; caps&lt;/span&gt;&lt;/div&gt;">
+      data-en="&lt;b style=&quot;font-size:17px&quot;&gt;💎 Premium adds&lt;/b&gt;&lt;div style=&quot;display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:15px&quot;&gt;&lt;span&gt;📱 Face + GPS check-in on mobile&lt;/span&gt;&lt;span&gt;⏰ Time attendance&lt;/span&gt;&lt;span&gt;🌴 Mobile leave with approvals&lt;/span&gt;&lt;span&gt;🔄 Shift management&lt;/span&gt;&lt;span&gt;⚡ Per-day OT approval&lt;/span&gt;&lt;span&gt;📅 Company holiday calendar&lt;/span&gt;&lt;span&gt;💸 Mid-month advances&lt;/span&gt;&lt;/div&gt;">
       <b style="font-size:17px">💎 แพ็กเกจพรีเมี่ยมได้เพิ่ม</b>
       <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:15px">
-        <span>📱 สแกนใบหน้าลงเวลาผ่านมือถือ</span><span>⏰ ลงเวลาเข้างาน</span><span>🌴 ระบบลางาน</span><span>🔄 ระบบกะการทำงาน</span><span>⚡ กฎ OT &amp; เพดาน OT</span>
+        <span>📱 สแกนใบหน้า + GPS ลงเวลาผ่านมือถือ</span><span>⏰ ลงเวลาเข้างาน</span><span>🌴 ลางานผ่านมือถือ + สายอนุมัติ</span><span>🔄 ระบบกะการทำงาน</span><span>⚡ อนุมัติ OT รายวันรายคน</span><span>📅 ปฏิทินวันหยุดบริษัท</span><span>💸 เบิกจ่ายล่วงหน้า</span>
       </div>
     </div>
   </div>
@@ -519,7 +522,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     /* ระดับแพ็กเกจ */
     premTag:['พรีเมี่ยม','Premium'],
     premShort:['รวมสแกนใบหน้า · ลงเวลา · ลางาน · กะ · OT','Incl. face check-in · attendance · leave · shifts · OT'],
-    premNote:['💎 พรีเมี่ยม = ระบบเงินเดือนครบ + สแกนใบหน้าลงเวลาผ่านมือถือ + ลงเวลาเข้างาน + ระบบลางาน + ระบบกะ + กฎ OT','💎 Premium = full payroll + mobile face check-in + time attendance + leave + shifts + OT rules'],
+    premNote:['💎 พรีเมี่ยม = ระบบเงินเดือนครบ + สแกนใบหน้าลงเวลาผ่านมือถือ + ลงเวลาเข้างาน + ระบบลางาน + ระบบกะ + อนุมัติ OT + เบิกจ่ายล่วงหน้า','💎 Premium = full payroll + mobile face check-in + time attendance + leave + shifts + OT approval + advances'],
     stdNote:['มาตรฐาน = ระบบเงินเดือนครบทุกฟีเจอร์ (ไม่รวมระบบลงเวลา/ลา/กะ/OT)','Standard = complete payroll (excludes attendance / leave / shifts / OT)'],
     stdUpsell:['💎 พรีเมี่ยมเพียง','💎 Premium from'],
     /* กล่องสั่งซื้อ */
