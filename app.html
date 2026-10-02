@@ -2400,6 +2400,7 @@ async function vAdmin(v){
     if(paid>FOREVER) return {t:'♾️ ไม่จำกัด',c:'#ede9fe;color:#6d28d9',d:0,e:null,unlimited:true};
     if(paid>now) return {t:'ชำระแล้ว',c:'#dcfce7;color:#16a34a',d:Math.ceil((paid-now)/864e5),e:u.paid_until};
     if(trialEnd>now) return {t:'ทดลองใช้',c:'#dbeafe;color:#1d4ed8',d:Math.ceil((trialEnd-now)/864e5),e:new Date(trialEnd).toISOString()};
+    if((u.edition||'single')==='single') return {t:'ฟรี 1-10 คน',c:'#f1f5f9;color:#475569',d:0,e:null};
     return {t:'หมดอายุ',c:'#fee2e2;color:#dc2626',d:0,e:u.paid_until||new Date(trialEnd).toISOString()};
   };
   const rows=(data||[]).map(u=>{ const s=stat(u); return `<tr>
@@ -6885,8 +6886,8 @@ function enterGuest(){
   renderNav(); render();
 }
 /* โหมดสาธิต: บริษัทตัวอย่าง 5 คน + จำลองระดับแพ็กเกจ
-   ?demo         = แพ็กเกจมาตรฐาน 590 (เวลาเข้างาน/ลางาน ถูกล็อก)
-   ?demo=premium = แพ็กเกจพรีเมี่ยม 790 (ใช้ได้ครบ)                         */
+   ?demo         = แพ็กเกจมาตรฐาน (เวลาเข้างาน/ลางาน ถูกล็อก)
+   ?demo=premium = แพ็กเกจพรีเมี่ยม (ใช้ได้ครบ)                         */
 function enterDemo(){
   const q = new URLSearchParams(location.search).get('demo');
   const prem = (q==='premium');
@@ -6901,7 +6902,7 @@ function enterDemo(){
   EMP_QUOTA = 10;         // แพ็กเกจ 1-10 คน — ให้เห็นการล็อกจำนวนพนักงานเหมือนของจริง
   demoFillPeriod();
   const f=$('#userFoot');
-  if(f) f.innerHTML=`🧪 โหมดสาธิต · แพ็กเกจ${prem?'พรีเมี่ยม 790':'มาตรฐาน 590'}<br>`
+  if(f) f.innerHTML=`🧪 โหมดสาธิต · แพ็กเกจ${prem?'พรีเมี่ยม':'มาตรฐาน'}<br>`
     +`<span style="opacity:.75">ข้อมูลตัวอย่าง เก็บในเครื่องนี้เท่านั้น</span>`
     +` · <a href="#" id="demoReset" style="color:#a7f3d0">เริ่มใหม่</a>`;
   renderNav(); render();
@@ -6915,10 +6916,10 @@ function demoBanner(prem){
     color:#fff;padding:9px 16px;font-size:13.5px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
     <strong>🧪 โหมดสาธิต</strong>
     <span style="opacity:.9">ข้อมูลตัวอย่าง แก้ได้เต็มที่ ไม่กระทบของจริง — กำลังดูแบบ
-      <strong>${prem?'พรีเมี่ยม 790 บาท':'มาตรฐาน 590 บาท'}</strong></span>
+      <strong>${prem?'พรีเมี่ยม':'มาตรฐาน'}</strong></span>
     <span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
       <a href="/app?demo=${prem?'':'premium'}" style="background:rgba(255,255,255,.18);padding:5px 12px;border-radius:100px;color:#fff">
-        ${prem?'↩ ดูแบบมาตรฐาน 590':'ดูแบบพรีเมี่ยม 790 →'}</a>
+        ${prem?'↩ ดูแบบมาตรฐาน':'ดูแบบพรีเมี่ยม →'}</a>
       <a href="/pricing" style="background:#fff;color:#0e3a5c;font-weight:700;padding:5px 12px;border-radius:100px">ดูราคา</a>
     </span></div>`);
   document.body.insertBefore(b, document.body.firstChild);

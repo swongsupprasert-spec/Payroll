@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>แพ็กเกจและราคา — eSimPayroll</title>
-<meta name="description" content="ราคาแพ็กเกจ eSimPayroll คิดตามจำนวนพนักงาน เริ่มต้น 590 บาท/เดือน สำหรับ 1-10 คน จ่ายรายปีประหยัด 2 เดือน ต่ออายุออนไลน์ได้ทันที">
+<meta name="description" content="ราคาแพ็กเกจ eSimPayroll คิดตามจำนวนพนักงาน พนักงาน 1-10 คนใช้ฟรี แพ็กเกจเสียเงินเริ่ม 590 บาท/เดือน จ่ายรายปีประหยัด 2 เดือน ต่ออายุออนไลน์ได้ทันที">
 <meta name="keywords" content="ราคาโปรแกรมเงินเดือน,แพ็กเกจ payroll,ค่าบริการโปรแกรม HR,โปรแกรมเงินเดือนรายเดือน">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0e3a5c">
@@ -14,7 +14,7 @@
 <meta property="og:locale" content="th_TH">
 <meta property="og:url" content="https://esimpayroll.com/pricing">
 <meta property="og:title" content="แพ็กเกจและราคา — eSimPayroll">
-<meta property="og:description" content="คิดราคาตามจำนวนพนักงาน เริ่มต้น 590 บาท/เดือน จ่ายรายปีประหยัด 2 เดือน">
+<meta property="og:description" content="คิดราคาตามจำนวนพนักงาน 1-10 คนใช้ฟรี แพ็กเกจเสียเงินเริ่ม 590 บาท/เดือน">
 <meta property="og:image" content="https://esimpayroll.com/media/covers/social-security-contribution-thailand-hero.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -260,7 +260,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 </style>
 <style>.pickrow[hidden]{display:none !important}</style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Product","name":"eSimPayroll","description":"โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุน ออกสลิป 50 ทวิ ภ.ง.ด.1 และ สปส.1-10","brand":{"@type":"Brand","name":"eSimPayroll"},"offers":{"@type":"AggregateOffer","priceCurrency":"THB","lowPrice":"590","highPrice":"9900","offerCount":"8","availability":"https://schema.org/InStock","url":"https://esimpayroll.com/pricing"}}
+{"@context":"https://schema.org","@type":"Product","name":"eSimPayroll","description":"โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุน ออกสลิป 50 ทวิ ภ.ง.ด.1 และ สปส.1-10","brand":{"@type":"Brand","name":"eSimPayroll"},"offers":{"@type":"AggregateOffer","priceCurrency":"THB","lowPrice":"0","highPrice":"6990","offerCount":"14","availability":"https://schema.org/InStock","url":"https://esimpayroll.com/pricing"}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"หน้าแรก","item":"https://esimpayroll.com/"},{"@type":"ListItem","position":2,"name":"แพ็กเกจและราคา","item":"https://esimpayroll.com/pricing"}]}
@@ -323,15 +323,15 @@ footer .ft-mail{color:#6ee7b7 !important}
         <span class="lbl" id="calcLab" data-en="👥 How many employees do you have?">👥 บริษัทคุณมีพนักงานกี่คน?</span>
         <span class="cnt-box"><input type="number" id="cnt" min="1" max="500" value="15"><span id="cntUnit" data-en="employees">คน</span></span>
       </div>
-      <input type="range" id="rng" min="1" max="120" value="15">
-      <div class="ticks" id="ticks"><span>1</span><span>20</span><span>40</span><span>60</span><span>80</span><span>100+</span></div>
+      <input type="range" id="rng" min="1" max="170" value="15">
+      <div class="ticks" id="ticks"><span>1</span><span>30</span><span>60</span><span>90</span><span>120</span><span>150+</span></div>
       <div class="result">
         <div>
           <div class="r-l" data-en="Recommended plan">แพ็กเกจที่เหมาะกับคุณ</div>
           <div class="r-pkg" id="rPkg">11-30 คน</div>
         </div>
         <div class="r-price">
-          <b id="rPrice">990</b> <small id="rUnit">บาท / เดือน</small>
+          <b id="rPrice">590</b> <small id="rUnit">บาท / เดือน</small>
           <div class="r-l" id="rSub" style="margin-top:2px"></div>
         </div>
         <div class="r-note" id="rNote"></div>
@@ -490,7 +490,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
   /* ---- คำแปล TH/EN ---- */
   var TX={
-    ppl:['คน','employees'], baht:['บาท','THB'], over80:['มากกว่า 100 คน','More than 100'],
+    ppl:['คน','employees'], baht:['บาท','THB'], over80:['มากกว่า 150 คน','More than 150'],
     popular:['ยอดนิยม','Popular'], enterprise:['องค์กรขนาดใหญ่','Large organisation'],
     upTo:['พนักงานสูงสุด','Up to'], contactQuote:['ราคาพิเศษ','Custom pricing'],
     customPrice:['คิดตามจำนวนพนักงานและระดับแพ็กเกจ','Based on headcount and plan level'],
@@ -500,8 +500,8 @@ footer .ft-mail{color:#6ee7b7 !important}
     payRenew:['💳 ชำระเงิน / ต่ออายุ','💳 Pay / Renew'],
     quoteOnly:['ขอใบเสนอราคา','Quote on request'],
     coUnit:['บริษัท','companies'],
-    overCo:['มากกว่า 30 บริษัท','More than 30'],
-    overCoNote:['ดูแลเกิน 30 บริษัท — ทัก LINE @esimpayroll รับข้อเสนอสำหรับสำนักงานบัญชีขนาดใหญ่','Over 30 companies — chat with us on LINE @esimpayroll'],
+    overCo:['มากกว่า 40 บริษัท','More than 40'],
+    overCoNote:['ดูแลเกิน 40 บริษัท — ทัก LINE @esimpayroll รับข้อเสนอสำหรับสำนักงานบัญชีขนาดใหญ่','Over 40 companies — chat with us on LINE @esimpayroll'],
     perCo:['ต่อบริษัท/เดือน','per company / mo'],
     askPpl:['👥 บริษัทคุณมีพนักงานกี่คน?','👥 How many employees do you have?'],
     askCo:['🏦 คุณดูแลลูกค้ากี่บริษัท?','🏦 How many client companies do you handle?'],
@@ -515,7 +515,10 @@ footer .ft-mail{color:#6ee7b7 !important}
     f_prem:['💎 สแกนใบหน้า · ลงเวลา · ลางาน · จัดกะ · OT','💎 Face check-in · attendance · leave · shifts · OT'],
     f_multi:['สลับบริษัทลูกค้าในคลิกเดียว','Switch client companies in one click'],
     bahtYear:['บาท / ปี','THB / year'], bahtMonth:['บาท / เดือน','THB / month'],
-    over80note:['พนักงานเกิน 100 คน — ทัก LINE @esimpayroll รับข้อเสนอพิเศษสำหรับองค์กร','Over 100 employees — chat with us on LINE @esimpayroll for an enterprise offer'],
+    over80note:['พนักงานเกิน 150 คน — ทัก LINE @esimpayroll รับข้อเสนอพิเศษสำหรับองค์กร','Over 150 employees — chat with us on LINE @esimpayroll for an enterprise offer'],
+    free:['ฟรี','Free'], freeForever:['ฟรีตลอด ไม่มีค่าใช้จ่าย','Free forever'],
+    startFree:['🚀 เริ่มใช้ฟรี','🚀 Start free'],
+    freeNote:['มาตรฐาน 1-10 คนใช้ฟรีตลอด — สมัครแล้วใช้ได้เลย ไม่ต้องชำระเงิน','Standard for 1-10 employees is free forever — just sign up'],
     perHead:['บาท/คน/เดือน','THB/employee/month'],
     saveYear:['จ่ายรายปีประหยัด','Annual billing saves'],
     switchYear:['เปลี่ยนเป็นรายปีประหยัด','Switch to annual and save'],
@@ -527,7 +530,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     stdUpsell:['💎 พรีเมี่ยมเพียง','💎 Premium from'],
     /* กล่องสั่งซื้อ */
     orderTitle:['ยืนยันการสั่งซื้อ','Confirm your order'],
-    fPlan:['แพ็กเกจ','Plan'], fCount:['จำนวนพนักงาน','Employees'], fCycle:['รอบชำระ','Billing cycle'],
+    fPlan:['แพ็กเกจ','Plan'], fCount:['จำนวนพนักงาน','Employees'], fCountCo:['จำนวนบริษัท','Companies'], fCycle:['รอบชำระ','Billing cycle'],
     fTotal:['ยอดชำระ','Total'], cyYear:['รายปี (10 เดือน)','Annual (10 months)'], cyMonth:['รายเดือน','Monthly'],
     fInvoiceTo:['ออกใบเสร็จ / ใบกำกับภาษีในนาม *','Issue receipt / tax invoice to *'],
     btIndiv:['บุคคลทั่วไป','Individual'], btIndivSub:['ออกใบเสร็จในชื่อบุคคล','Receipt in a personal name'],
@@ -629,18 +632,19 @@ footer .ft-mail{color:#6ee7b7 !important}
 
   /* ---- แพ็กเกจ ---- */
   const TIERS=[
-    {min:1,   max:10,  price:590,  prem:790},
-    {min:11,  max:30,  price:990,  prem:1590, hot:true},
-    {min:31,  max:50,  price:1490, prem:2490},
-    {min:51,  max:80,  price:2490, prem:3490},
-    {min:81,  max:100, price:2990, prem:4490},
-    {min:101, max:Infinity, price:null, prem:null}   // ขอใบเสนอราคา
+    {min:1,   max:10,  price:0,    prem:590},          // มาตรฐาน = ฟรี
+    {min:11,  max:30,  price:590,  prem:790, hot:true},
+    {min:31,  max:50,  price:990,  prem:1490},
+    {min:51,  max:80,  price:1490, prem:2290},
+    {min:81,  max:100, price:2290, prem:2990},
+    {min:101, max:150, price:2990, prem:4490},
+    {min:151, max:Infinity, price:null, prem:null}   // ขอใบเสนอราคา
   ];
   /* แพ็กเกจสำนักงานบัญชี — คิดตามจำนวนบริษัทลูกค้า พนักงานไม่จำกัด ไม่มีระดับพรีเมี่ยม */
   const FIRM_TIERS=[
-    {min:1,  max:10,  price:4900, hot:true},
-    {min:11, max:30,  price:9900},
-    {min:31, max:Infinity, price:null}      // ขอใบเสนอราคา
+    {min:1,  max:15,  price:3990, hot:true},
+    {min:16, max:40,  price:6990},
+    {min:41, max:Infinity, price:null}      // ขอใบเสนอราคา
   ];
   const YEAR_MONTHS=10;                   // จ่ายรายปี = 10 เดือน (ฟรี 2 เดือน)
   let cycle='m', count=15;
@@ -690,6 +694,12 @@ footer .ft-mail{color:#6ee7b7 !important}
           ? `<div class="p-price" style="font-size:22px">${L('contactQuote')}</div><div class="p-per">${L('customPrice')}</div>
              <a class="btn line" style="width:100%"
                 href="${LINE_URL}" target="_blank" rel="noopener">${L('askQuote')}</a>`
+          : p===0
+          ? `<div class="p-price">${L('free')}</div>
+             <div class="p-per">${L('freeForever')}</div>
+             <div class="p-per" style="margin-top:-10px">${L('stdUpsell')+' '+fmt(t.prem)+' '+L('bahtMonth')}</div>
+             <ul class="p-feat">${featList().map(f=>`<li><span class="ck">✓</span>${f}</li>`).join('')}</ul>
+             <a class="btn ${active?'green':'primary'}" style="width:100%" href="/app#signup">${L('startFree')}</a>`
           : `<div class="p-price">${fmt(p)} <small>${L('baht')}</small></div>
              <div class="p-per">${cycle==='y'?L('perYear')+' ('+L('avg')+' '+fmt(baseOf(t))+' '+L('bahtMonth')+')':L('perMonth')}</div>
              <div class="p-per" style="margin-top:-10px">${isFirm()
@@ -701,9 +711,10 @@ footer .ft-mail{color:#6ee7b7 !important}
       </div>`;
     }).join('');
     $('plans').querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{
-      const t=TIERS.find(x=>x.min==b.dataset.buy);
-      count=Math.max(t.min,Math.min(t.max===Infinity?120:t.max,count));
+      const t=curTiers().find(x=>x.min==b.dataset.buy);
+      count=Math.max(t.min,Math.min(t.max===Infinity?170:t.max,count));
       if(count<t.min||count>t.max) count=t.min;
+      $('cnt').value=count;   // sync() อ่านจำนวนจากช่องนี้ — ต้องตั้งก่อน ไม่งั้นได้แพ็กเกจเดิม
       /* ---------- กลับมาจากหน้ายืนยัน 3-D Secure ของธนาคาร ----------
      ธนาคารส่งลูกค้ากลับมาที่หน้านี้ · เราเช็คสถานะจากตาราง payments เอง
      (ไม่เชื่อว่า "กลับมาถึง = จ่ายสำเร็จ" เพราะผู้ใช้พิมพ์ URL เองได้) */
@@ -759,7 +770,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
   /* ---- อัปเดตผลลัพธ์ ---- */
   function sync(){
-    const cap=isFirm()?40:120;
+    const cap=isFirm()?50:170;
     count=Math.max(1,Math.min(isFirm()?200:500,+$('cnt').value||1));
     $('cnt').value=count;
     $('rng').value=Math.min(cap,count);
@@ -773,6 +784,11 @@ footer .ft-mail{color:#6ee7b7 !important}
       $('rSub').textContent=''; $('rNote').textContent=isFirm()?L('overCoNote'):L('over80note');
       $('buyNow').textContent=L('askQuote');
       $('buyNow').classList.add('line'); $('buyNow').classList.remove('green');
+    }else if(p===0){
+      $('rPrice').textContent=L('free'); $('rUnit').textContent='';
+      $('rSub').textContent=''; $('rNote').textContent=L('freeNote');
+      $('buyNow').textContent=L('startFree');
+      $('buyNow').classList.remove('line'); $('buyNow').classList.add('green');
     }else{
       $('rPrice').textContent=fmt(p);
       $('rUnit').textContent=cycle==='y'?L('bahtYear'):L('bahtMonth');
@@ -798,14 +814,14 @@ footer .ft-mail{color:#6ee7b7 !important}
     const lvl=$('ptS').closest('.pickrow'); if(lvl) lvl.style.display=firm?'none':'';
     $('calcLab').innerHTML = firm ? L('askCo') : L('askPpl');
     $('cntUnit').textContent = firm ? L('coUnit') : L('ppl');
-    $('rng').max = firm ? 40 : 120;
+    $('rng').max = firm ? 50 : 170;
     $('cnt').max = firm ? 200 : 500;
     $('ticks').innerHTML = firm
-      ? '<span>1</span><span>10</span><span>20</span><span>30</span><span>30+</span>'
-      : '<span>1</span><span>20</span><span>40</span><span>60</span><span>80</span><span>100+</span>';
-    if(firm && count>40) count=10;
-    if(!firm && count>120) count=15;
-    $('cnt').value = firm ? Math.min(count,40) : count;
+      ? '<span>1</span><span>15</span><span>30</span><span>40</span><span>40+</span>'
+      : '<span>1</span><span>30</span><span>60</span><span>90</span><span>120</span><span>150+</span>';
+    if(firm && count>50) count=10;
+    if(!firm && count>170) count=15;
+    $('cnt').value = firm ? Math.min(count,50) : count;
     try{ localStorage.setItem('pricing_for', edition); }catch(e){}
     sync();
   }
@@ -937,11 +953,12 @@ footer .ft-mail{color:#6ee7b7 !important}
   function openOrder(){
     const t=tierOf(count), p=priceOf(t);
     if(p===null){ openQuote(); return; }
+    if(p===0){ location.href='/app#signup'; return; }
     $('mTitle').textContent=L('orderTitle');
     $('mBody').innerHTML=`
       <div class="sum">
         <div class="row"><span>${L('fPlan')}</span><b>${planName(t)}</b></div>
-        <div class="row"><span>${L('fCount')}</span><b>${count} ${L('ppl')}</b></div>
+        <div class="row"><span>${isFirm()?L('fCountCo'):L('fCount')}</span><b>${count} ${unitWord()}</b></div>
         <div class="row"><span>${L('fCycle')}</span><b>${cycle==='y'?L('cyYear'):L('cyMonth')}</b></div>
         <div class="row total"><span>${L('fTotal')}</span><span>${fmt(p)} ${L('baht')}</span></div>
       </div>

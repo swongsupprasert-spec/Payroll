@@ -28,19 +28,21 @@ const fail = (code: string, msg_th: string, msg_en: string, status = 400) =>
 
 // ---- ตารางราคา (ต้องตรงกับหน้าเว็บ — คิดราคาฝั่งนี้เท่านั้น) ----
 const TIERS = [
-  { min: 1,   max: 10,  price: 590,  prem: 790 },
-  { min: 11,  max: 30,  price: 990,  prem: 1590 },
-  { min: 31,  max: 50,  price: 1490, prem: 2490 },
-  { min: 51,  max: 80,  price: 2490, prem: 3490 },
-  { min: 81,  max: 100, price: 2990, prem: 4490 },
+  { min: 1,   max: 10,  price: 0,    prem: 590 },   // มาตรฐาน 1-10 คน = ฟรี (ไม่ต้องชำระ)
+  { min: 11,  max: 30,  price: 590,  prem: 790 },
+  { min: 31,  max: 50,  price: 990,  prem: 1490 },
+  { min: 51,  max: 80,  price: 1490, prem: 2290 },
+  { min: 81,  max: 100, price: 2290, prem: 2990 },
+  { min: 101, max: 150, price: 2990, prem: 4490 },
 ];
 const YEAR_MONTHS = 10;
 
 // ptype: 'standard' = เงินเดือนอย่างเดียว · 'premium' = + ลงเวลา/ลา/กะ/OT
 function priceFor(employees: number, cycle: string, ptype: string) {
   const t = TIERS.find(t => employees >= t.min && employees <= t.max);
-  if (!t) return null;                                   // เกิน 100 คน → ต้องขอใบเสนอราคา
+  if (!t) return null;                                   // เกิน 150 คน → ต้องขอใบเสนอราคา
   const mo = ptype === 'premium' ? t.prem : t.price;
+  if (!mo) return null;                                  // แพ็กเกจฟรี ไม่ต้องชำระ
   return { plan: `${t.min}-${t.max} คน${ptype === 'premium' ? ' · พรีเมี่ยม' : ''}`,
            amount: cycle === 'yearly' ? mo * YEAR_MONTHS : mo };
 }
@@ -87,6 +89,8 @@ Deno.serve(async (req) => {
     return fail('taxid', 'เลขผู้เสียภาษีต้องมี 13 หลัก', 'Tax ID must be 13 digits', 400);
 
   // ---------- 3) ราคาคิดจากฝั่งเซิร์ฟเวอร์ ----------
+  if (ptype === 'standard' && employees >= 1 && employees <= 10)
+    return fail('free', 'แพ็กเกจมาตรฐาน 1-10 คนใช้ฟรี ไม่ต้องชำระเงิน', 'The Standard plan for 1-10 employees is free — no payment needed', 400);
   const quote = priceFor(employees, cycle, ptype);
   if (!quote) return fail('tier', 'จำนวนพนักงานเกินแพ็กเกจสำเร็จรูป กรุณาขอใบเสนอราคา',
                                  'Headcount exceeds standard plans — please request a quote', 400);

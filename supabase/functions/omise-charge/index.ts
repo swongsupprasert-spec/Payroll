@@ -22,28 +22,30 @@ const fail = (code: string, th: string, en: string, s = 400) =>
 
 // ---- ตารางราคา (ต้องตรงกับหน้าเว็บ — คิดที่นี่เท่านั้น) ----
 const TIERS = [
-  { min: 1,   max: 10,  price: 590,  prem: 790 },
-  { min: 11,  max: 30,  price: 990,  prem: 1590 },
-  { min: 31,  max: 50,  price: 1490, prem: 2490 },
-  { min: 51,  max: 80,  price: 2490, prem: 3490 },
-  { min: 81,  max: 100, price: 2990, prem: 4490 },
+  { min: 1,   max: 10,  price: 0,    prem: 590 },   // มาตรฐาน 1-10 คน = ฟรี (ไม่ต้องชำระ)
+  { min: 11,  max: 30,  price: 590,  prem: 790 },
+  { min: 31,  max: 50,  price: 990,  prem: 1490 },
+  { min: 51,  max: 80,  price: 1490, prem: 2290 },
+  { min: 81,  max: 100, price: 2290, prem: 2990 },
+  { min: 101, max: 150, price: 2990, prem: 4490 },
 ];
 const YEAR_MONTHS = 10;
 // แพ็กเกจสำนักงานบัญชี — คิดตามจำนวนบริษัทลูกค้า พนักงานไม่จำกัด
 const FIRM_TIERS = [
-  { min: 1,  max: 10, price: 4900 },
-  { min: 11, max: 30, price: 9900 },
+  { min: 1,  max: 15, price: 3990 },
+  { min: 16, max: 40, price: 6990 },
 ];
 function priceFor(count: number, cycle: string, ptype: string, edition: string) {
   if (edition === 'firm') {
     const t = FIRM_TIERS.find(t => count >= t.min && count <= t.max);
-    if (!t) return null;                       // เกิน 30 บริษัท = ขอใบเสนอราคา
+    if (!t) return null;                       // เกิน 40 บริษัท = ขอใบเสนอราคา
     return { plan: `${t.min}-${t.max} บริษัท · สำนักงานบัญชี`,
              amount: cycle === 'yearly' ? t.price * YEAR_MONTHS : t.price };
   }
   const t = TIERS.find(t => count >= t.min && count <= t.max);
   if (!t) return null;
   const mo = ptype === 'premium' ? t.prem : t.price;
+  if (!mo) return null;                                  // แพ็กเกจฟรี ไม่ต้องชำระ
   return { plan: `${t.min}-${t.max} คน${ptype === 'premium' ? ' · พรีเมี่ยม' : ''}`,
            amount: cycle === 'yearly' ? mo * YEAR_MONTHS : mo };
 }
@@ -111,6 +113,8 @@ Deno.serve(async (req) => {
     return fail('taxid', 'เลขผู้เสียภาษีต้องมี 13 หลัก', 'Tax ID must be 13 digits', 400);
 
   // ---------- 3) ราคาคิดฝั่งเซิร์ฟเวอร์ ----------
+  if (edition === 'single' && ptype === 'standard' && employees >= 1 && employees <= 10)
+    return fail('free', 'แพ็กเกจมาตรฐาน 1-10 คนใช้ฟรี ไม่ต้องชำระเงิน', 'The Standard plan for 1-10 employees is free — no payment needed', 400);
   const quote = priceFor(employees, cycle, ptype, edition);
   if (!quote) return fail('tier',
     edition === 'firm' ? 'จำนวนบริษัทเกินแพ็กเกจสำเร็จรูป กรุณาขอใบเสนอราคา'
