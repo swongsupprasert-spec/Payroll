@@ -5,7 +5,9 @@
   body{margin:0;background:#0f2231;color:#fff;font-family:"Sarabun","Leelawadee UI","Noto Sans Thai",sans-serif;padding:20px}
   canvas{width:100%;max-width:900px;height:auto;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
   p{font-size:14px;color:#9fb3c8}
-</style></head>
+</style><link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+</head>
 <body>
 <p>ตัวอย่างรูปริชเมนู (ขนาดจริง 2500 × 843 px)</p>
 <canvas id="cv" width="2500" height="843"></canvas>
@@ -43,7 +45,7 @@ function icoBook(){ X.moveTo(-26,-26); X.lineTo(-26,26); X.lineTo(0,20); X.lineT
 
 const CELLS=[
   {ico:icoApp,  t1:'เข้าใช้งานระบบ', t2:'ทำเงินเดือน · ออกสลิป'},
-  {ico:icoTag,  t1:'แพ็กเกจ & ราคา', t2:'เริ่ม 590 บาท/เดือน'},
+  {ico:icoTag,  t1:'แพ็กเกจ & ราคา', t2:'1-10 คนใช้ฟรี'},
   {ico:icoBook, t1:'คู่มือการใช้งาน', t2:'สอนใช้ทุกเมนู'},
 ];
 

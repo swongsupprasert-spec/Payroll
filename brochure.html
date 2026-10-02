@@ -152,6 +152,8 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="shortcut icon" href="/brand/favicon-48.png?v=2">
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
+<link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/noto-sans-thai.css">
 </head>
 <body>
 
@@ -176,7 +178,7 @@
        ให้อัตโนมัติ พร้อมออกสลิปเงินเดือน หนังสือรับรอง 50 ทวิ แบบ ภ.ง.ด.1 และ สปส.1-10 ที่ยื่นได้ทันที</p>
     <div class="pts">
       <div><b>30 วัน</b><span>ทดลองใช้ฟรี ไม่ต้องผูกบัตร</span></div>
-      <div><b>เริ่ม 590.-</b><span>ต่อเดือน ยกเลิกได้ทุกเมื่อ</span></div>
+      <div><b>1-10 คน ฟรี</b><span>แพ็กเกจมาตรฐาน ใช้ได้ตลอด</span></div>
       <div><b>ไม่ต้องติดตั้ง</b><span>ใช้ผ่านเบราว์เซอร์ได้เลย</span></div>
     </div>
   </div>
@@ -296,17 +298,21 @@
     <table>
       <thead><tr><th style="width:30%">ฟีเจอร์</th><th>รายละเอียด</th></tr></thead>
       <tbody>
+        <tr><td><b>📱 ลงเวลาผ่านมือถือ</b></td>
+            <td>ถ่ายเซลฟี่ + สแกนใบหน้า + ตรวจ GPS ว่าอยู่ในพื้นที่บริษัท (ตั้งได้หลายสาขา)
+                ผ่านลิงก์ส่วนตัว ใช้ในแอป LINE ได้ ไม่ต้องติดตั้งแอป ไม่ต้องซื้อเครื่องสแกน</td></tr>
         <tr><td><b>⏰ ลงเวลาเข้างาน</b></td>
-            <td>บันทึกเวลาเข้า–ออก นำเข้าจากไฟล์ CSV ของเครื่องสแกนนิ้ว คิดวันทำงาน มาสาย
-                และชั่วโมง OT ส่งเข้าเงินเดือนให้อัตโนมัติ</td></tr>
+            <td>เวลาจากมือถือเข้าระบบอัตโนมัติ หรือนำเข้าจากไฟล์ CSV คิดวันทำงาน มาสาย
+                ขาดงานโดยไม่ได้ลา และชั่วโมง OT ส่งเข้าเงินเดือนให้อัตโนมัติ</td></tr>
         <tr><td><b>🔄 ระบบกะการทำงาน</b></td>
-            <td>ตั้งกะได้ไม่จำกัด รองรับกะข้ามคืน สลับกะยกชุด และหมุนเวียนกะรายวัน</td></tr>
-        <tr><td><b>⚡ กฎการคิด OT</b></td>
-            <td>เลือกวันที่คิด OT ตั้งเพดาน OT ต่อวัน เปิด–ปิด OT เฉพาะบางคน
-                ปัดเศษลงทีละครึ่งชั่วโมงตามกฎหมาย</td></tr>
+            <td>ตั้งกะได้หลายกะ รองรับกะข้ามคืน หมุนเวียนกะอัตโนมัติ (รายวัน/สัปดาห์/เดือน)
+                และสลับกะ 2 กลุ่ม A↔B ครั้งเดียวหรือเป็นรอบ</td></tr>
+        <tr><td><b>⚡ OT และวันหยุด</b></td>
+            <td>อนุมัติ OT รายวันรายคน ตั้งตัวคูณ OT ตามวัน 1.5 / 2 / 3 เท่า
+                ปฏิทินวันหยุดบริษัท ทำงานวันหยุดคิด OT 3 เท่าให้อัตโนมัติ</td></tr>
         <tr><td><b>🌴 ระบบลางาน</b></td>
-            <td>ลาป่วย ลากิจ ลาพักร้อน บันทึกเป็นวันหรือชั่วโมง คุมโควตารายปี
-                ตั้งโควตาเฉพาะรายคนได้ และหักเงินขาดงานเข้าเงินเดือนให้</td></tr>
+            <td>ยื่นใบลาผ่านมือถือ เป็นวันหรือชั่วโมง แนบรูปได้ 3 รูป อนุมัติตามสาย
+                หัวหน้าแผนก → CEO → HR คุมโควตารายปี และหักเงินเข้าเงินเดือนให้</td></tr>
         <tr><td><b>💸 เบิกล่วงหน้ากลางเดือน</b></td>
             <td>สำหรับบริษัทที่จ่ายเงินเดือน 2 รอบ — บันทึกยอดที่จ่ายรอบกลางเดือน
                 พิมพ์ใบสรุปยอดโอนพร้อมเลขบัญชี แล้วระบบหักคืนให้เองตอนสิ้นเดือน
@@ -320,34 +326,21 @@
   </div>
 
   <div class="sec">
-    <h2>เริ่มใช้งานแค่ 5 ขั้นตอน</h2>
-    <div class="chips">
-      <span class="chip">1 · สมัครใช้งานฟรี</span>
-      <span class="chip">2 · กรอกข้อมูลบริษัท</span>
-      <span class="chip">3 · เพิ่มพนักงาน (หรือนำเข้าจาก CSV)</span>
-      <span class="chip">4 · กรอกเงินได้–เงินหักของงวด</span>
-      <span class="chip">5 · พิมพ์สลิปและเอกสารยื่น</span>
-    </div>
-  </div>
-
-  <div class="sec">
     <h2>ราคาสำหรับบริษัทเดียว</h2>
-    <p class="muted" style="font-size:13.5px">คิดตามจำนวนพนักงาน · ราคาต่อเดือน (บาท) · ยังไม่รวมภาษีมูลค่าเพิ่ม</p>
+    <p class="muted" style="font-size:13.5px">คิดตามจำนวนพนักงาน · ราคาต่อเดือน (บาท) · ยังไม่รวมภาษีมูลค่าเพิ่ม · <b>จ่ายรายปี = จ่าย 10 เดือน ใช้ได้ 12 เดือน</b></p>
     <table>
       <thead><tr><th>จำนวนพนักงาน</th><th class="num">มาตรฐาน</th><th class="num">พรีเมี่ยม</th>
         <th class="num">รายปี (มาตรฐาน)</th></tr></thead>
       <tbody>
-        <tr><td>1 – 10 คน</td><td class="num">590</td><td class="num">790</td><td class="num">5,900</td></tr>
-        <tr class="hot"><td>11 – 30 คน</td><td class="num">990</td><td class="num">1,590</td><td class="num">9,900</td></tr>
-        <tr><td>31 – 50 คน</td><td class="num">1,490</td><td class="num">2,490</td><td class="num">14,900</td></tr>
-        <tr><td>51 – 80 คน</td><td class="num">2,490</td><td class="num">3,490</td><td class="num">24,900</td></tr>
-        <tr><td>81 – 100 คน</td><td class="num">2,990</td><td class="num">4,490</td><td class="num">29,900</td></tr>
-        <tr><td>เกิน 100 คน</td><td class="num" colspan="3" style="text-align:center">ขอใบเสนอราคา</td></tr>
+        <tr><td>1 – 10 คน</td><td class="num"><b>ฟรี</b></td><td class="num">590</td><td class="num">—</td></tr>
+        <tr class="hot"><td>11 – 30 คน</td><td class="num">590</td><td class="num">790</td><td class="num">5,900</td></tr>
+        <tr><td>31 – 50 คน</td><td class="num">990</td><td class="num">1,490</td><td class="num">9,900</td></tr>
+        <tr><td>51 – 80 คน</td><td class="num">1,490</td><td class="num">2,290</td><td class="num">14,900</td></tr>
+        <tr><td>81 – 100 คน</td><td class="num">2,290</td><td class="num">2,990</td><td class="num">22,900</td></tr>
+        <tr><td>101 – 150 คน</td><td class="num">2,990</td><td class="num">4,490</td><td class="num">29,900</td></tr>
+        <tr><td>เกิน 150 คน</td><td class="num" colspan="3" style="text-align:center">ขอใบเสนอราคา</td></tr>
       </tbody>
     </table>
-    <div class="note" style="margin-top:11px">
-      <b>จ่ายรายปีถูกกว่า</b> — จ่าย 10 เดือน ใช้ได้ 12 เดือน เท่ากับ<b>ได้ฟรี 2 เดือน</b>
-    </div>
   </div>
 
   <div class="foot"><span>eSimPayroll · esimpayroll.com</span><span>หน้า 3 / 4</span></div>
@@ -361,9 +354,9 @@
     <table>
       <thead><tr><th>จำนวนบริษัทลูกค้า</th><th class="num">ราคา/เดือน</th><th class="num">รายปี</th></tr></thead>
       <tbody>
-        <tr class="hot"><td>1 – 10 บริษัท</td><td class="num">4,900</td><td class="num">49,000</td></tr>
-        <tr><td>11 – 30 บริษัท</td><td class="num">9,900</td><td class="num">99,000</td></tr>
-        <tr><td>เกิน 30 บริษัท</td><td class="num" colspan="2" style="text-align:center">ขอใบเสนอราคา</td></tr>
+        <tr class="hot"><td>1 – 15 บริษัท</td><td class="num">3,990</td><td class="num">39,900</td></tr>
+        <tr><td>16 – 40 บริษัท</td><td class="num">6,990</td><td class="num">69,900</td></tr>
+        <tr><td>เกิน 40 บริษัท</td><td class="num" colspan="2" style="text-align:center">ขอใบเสนอราคา</td></tr>
       </tbody>
     </table>
     <div class="warn" style="margin-top:11px">

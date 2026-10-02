@@ -204,6 +204,8 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="shortcut icon" href="/brand/favicon-48.png?v=2">
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
+<link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/noto-sans-thai.css">
 </head>
 <body>
 <header>
@@ -231,7 +233,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <section>
   <div class="wrap">
-    <div style="color:var(--muted);font-size:14px;margin-bottom:24px" data-en="Last updated: 7 September 2026">ปรับปรุงล่าสุด: 7 กันยายน 2569</div>
+    <div style="color:var(--muted);font-size:14px;margin-bottom:24px" data-en="Last updated: 25 September 2026">ปรับปรุงล่าสุด: 25 กันยายน 2569</div>
       <p data-en="This policy explains how eSimPayroll collects, uses, discloses and protects personal data under Thailand's Personal Data Protection Act B.E. 2562 (PDPA). By using our service you confirm that you have read and accepted this policy.">นโยบายฉบับนี้อธิบายว่า eSimPayroll เก็บรวบรวม ใช้ เปิดเผย และคุ้มครองข้อมูลส่วนบุคคลอย่างไร ภายใต้พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA) การใช้บริการของเราถือว่าท่านได้อ่านและยอมรับนโยบายฉบับนี้แล้ว</p>
       <h2 data-en="1. Our role in relation to your data">1. บทบาทของเราต่อข้อมูล</h2>
       <div style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--r-sm);padding:14px 18px;margin:18px 0;color:#1f2937" data-en="Data on the system falls into two groups — &lt;strong&gt;account data&lt;/strong&gt; that you give us directly (we are the &lt;em&gt;data controller&lt;/em&gt;) and &lt;strong&gt;employee data&lt;/strong&gt; that you upload in order to run payroll (you are the &lt;em&gt;data controller&lt;/em&gt;; we act only as a &lt;em&gt;data processor&lt;/em&gt; following your instructions).">ข้อมูลบนระบบแบ่งเป็นสองกลุ่ม — <strong>ข้อมูลบัญชีผู้ใช้</strong> ที่ท่านให้ไว้กับเราโดยตรง (เราเป็น<em>ผู้ควบคุมข้อมูล</em>) และ<strong>ข้อมูลพนักงาน</strong>ที่ท่านนำเข้ามาเพื่อทำเงินเดือน (ท่านเป็น<em>ผู้ควบคุมข้อมูล</em> ส่วนเราเป็น<em>ผู้ประมวลผลข้อมูล</em>ตามคำสั่งของท่านเท่านั้น)</div>
@@ -249,7 +251,16 @@ footer .ft-mail{color:#6ee7b7 !important}
         <li style="margin-bottom:7px" data-en="Salary, wages, earnings and deductions">เงินเดือน ค่าจ้าง เงินได้และเงินหักต่าง ๆ</li>
         <li style="margin-bottom:7px" data-en="Tax ID, social security number, bank account number">เลขประจำตัวผู้เสียภาษี เลขประกันสังคม เลขบัญชีธนาคาร</li>
         <li style="margin-bottom:7px" data-en="Start date, resignation date, leave and attendance records">วันเริ่มงาน วันลาออก ข้อมูลการลาและการเข้างาน</li>
+        <li style="margin-bottom:7px" data-en="Photos attached to leave requests, such as medical certificates (when staff request leave from their phone)">รูปภาพที่แนบในใบลา เช่น ใบรับรองแพทย์ (เมื่อพนักงานยื่นลาผ่านมือถือ)</li>
       </ul>
+      <h3 style="font-size:19px;margin:22px 0 8px" data-en="2.2.1 Mobile check-in data (Premium, only if the employer turns it on)">2.2.1 ข้อมูลการลงเวลาผ่านมือถือ (แพ็กเกจพรีเมียม เฉพาะเมื่อนายจ้างเปิดใช้)</h3>
+      <ul style="margin:0 0 16px 22px;color:#1f2937">
+        <li style="margin-bottom:7px" data-en="Clock-in and clock-out times">วันเวลาที่ลงเวลาเข้า–ออก</li>
+        <li style="margin-bottom:7px" data-en="Location (GPS) at the moment of clocking in or out, to check it is inside the area set by the employer">ตำแหน่งที่ตั้ง (GPS) ขณะลงเวลา เพื่อตรวจว่าอยู่ในพื้นที่ที่นายจ้างกำหนด</li>
+        <li style="margin-bottom:7px" data-en="A selfie taken when clocking in or out">รูปถ่ายเซลฟีขณะลงเวลา</li>
+        <li style="margin-bottom:7px" data-en="&lt;strong&gt;Face data&lt;/strong&gt; — the registered face photo and a numeric face template used to confirm the person clocking in is that employee. This is &lt;strong&gt;biometric data&lt;/strong&gt;, sensitive data under PDPA section 26; the system asks each employee for &lt;strong&gt;explicit consent&lt;/strong&gt; before registering their face"><strong>ข้อมูลใบหน้า</strong> — รูปใบหน้าที่ลงทะเบียน และค่าตัวเลขที่แทนลักษณะใบหน้า ใช้เปรียบเทียบว่าผู้ลงเวลาเป็นพนักงานคนนั้นจริง ข้อมูลนี้เป็น<strong>ข้อมูลชีวภาพ</strong> ซึ่งเป็นข้อมูลอ่อนไหวตาม PDPA มาตรา 26 ระบบจะขอ<strong>ความยินยอมโดยชัดแจ้ง</strong>จากพนักงานก่อนลงทะเบียนใบหน้าทุกครั้ง</li>
+      </ul>
+      <p data-en="The face template is created on the employee's own phone; we store only the numbers needed for matching and the reference photo. The employer can reset an employee's face data at any time.">ค่าตัวเลขใบหน้าสร้างขึ้นบนมือถือของพนักงานเอง เราเก็บเพียงค่าตัวเลขที่ใช้เปรียบเทียบและรูปอ้างอิง นายจ้างสั่งรีเซ็ตข้อมูลใบหน้าของพนักงานได้ทุกเมื่อ</p>
       <h3 style="font-size:19px;margin:22px 0 8px" data-en="2.3 Usage data">2.3 ข้อมูลการใช้งาน</h3>
       <ul style="margin:0 0 16px 22px;color:#1f2937">
         <li style="margin-bottom:7px" data-en="Access logs with date and time">บันทึกการเข้าใช้งาน (log) วันที่และเวลา</li>
@@ -260,6 +271,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <h2 data-en="3. Why we use your data">3. วัตถุประสงค์ในการใช้ข้อมูล</h2>
       <ul style="margin:0 0 16px 22px;color:#1f2937">
         <li style="margin-bottom:7px" data-en="To calculate payroll, withholding tax and social security, and to produce documents such as payslips, 50 Tawi certificates, Por Ngor Dor 1 and Sor Por Sor 1-10 forms">ให้บริการคำนวณเงินเดือน ภาษีหัก ณ ที่จ่าย ประกันสังคม และออกเอกสาร เช่น สลิปเงินเดือน หนังสือรับรอง 50 ทวิ แบบ ภ.ง.ด.1 และ สปส.1-10</li>
+        <li style="margin-bottom:7px" data-en="To record attendance and verify who is clocking in (photo, face and location) where the employer has turned this on, and to receive leave requests and route them to approvers">บันทึกเวลาเข้างานและตรวจสอบตัวตนผู้ลงเวลา (รูปถ่าย ใบหน้า และตำแหน่ง) ตามที่นายจ้างเปิดใช้ รวมถึงรับใบลาและส่งให้ผู้อนุมัติ</li>
         <li style="margin-bottom:7px" data-en="To authenticate users and keep accounts secure">ยืนยันตัวตนและรักษาความปลอดภัยของบัญชีผู้ใช้</li>
         <li style="margin-bottom:7px" data-en="To bill for the service and issue receipts">เรียกเก็บค่าบริการและออกใบเสร็จรับเงิน</li>
         <li style="margin-bottom:7px" data-en="To respond when you contact us with questions or problems">ติดต่อกลับเมื่อท่านสอบถาม แจ้งปัญหา หรือขอความช่วยเหลือ</li>
@@ -273,6 +285,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         <li style="margin-bottom:7px" data-en="&lt;strong&gt;Legal obligation&lt;/strong&gt; — for example retaining tax documents as required by law"><strong>การปฏิบัติตามกฎหมาย</strong> — เช่น การเก็บเอกสารทางภาษีตามที่กฎหมายกำหนด</li>
         <li style="margin-bottom:7px" data-en="&lt;strong&gt;Legitimate interest&lt;/strong&gt; — such as system security and fraud prevention"><strong>ประโยชน์โดยชอบด้วยกฎหมาย</strong> — เช่น การรักษาความปลอดภัยของระบบและการป้องกันการทุจริต</li>
         <li style="margin-bottom:7px" data-en="&lt;strong&gt;Consent&lt;/strong&gt; — for marketing messages, which you may withdraw at any time"><strong>ความยินยอม</strong> — สำหรับการส่งข่าวสารทางการตลาด ซึ่งท่านถอนความยินยอมได้ทุกเมื่อ</li>
+        <li style="margin-bottom:7px" data-en="&lt;strong&gt;Explicit consent&lt;/strong&gt; — for employee face data (biometric data); an employee can withdraw it by asking the employer to reset their face data"><strong>ความยินยอมโดยชัดแจ้ง</strong> — สำหรับข้อมูลใบหน้าของพนักงาน (ข้อมูลชีวภาพ) พนักงานถอนความยินยอมได้โดยแจ้งนายจ้างให้รีเซ็ตข้อมูลใบหน้า</li>
       </ul>
       <h2 data-en="5. Sharing with service providers">5. การเปิดเผยข้อมูลแก่ผู้ให้บริการภายนอก</h2>
       <p data-en="We use a small number of external providers where necessary to operate the service. They can access only what is required and are bound by confidentiality obligations.">เราใช้ผู้ให้บริการภายนอกเท่าที่จำเป็นต่อการดำเนินงาน ผู้ให้บริการเหล่านี้เข้าถึงข้อมูลได้เฉพาะเท่าที่จำเป็นและมีข้อผูกพันในการรักษาความลับ</p>
@@ -292,6 +305,8 @@ footer .ft-mail{color:#6ee7b7 !important}
         <li style="margin-bottom:7px" data-en="After cancellation — kept for a further &lt;strong&gt;90 days&lt;/strong&gt; so you can download your records, then permanently deleted">หลังยกเลิกบริการ — เก็บต่ออีก <strong>90 วัน</strong> เพื่อให้ท่านดาวน์โหลดข้อมูล จากนั้นลบถาวร</li>
         <li style="margin-bottom:7px" data-en="Tax documents and receipts — kept for &lt;strong&gt;5 years&lt;/strong&gt; as required by Thai tax law">เอกสารทางภาษีและใบเสร็จ — เก็บ <strong>5 ปี</strong> ตามที่กฎหมายภาษีอากรกำหนด</li>
         <li style="margin-bottom:7px" data-en="Access logs — kept for &lt;strong&gt;90 days&lt;/strong&gt;">บันทึกการเข้าใช้งาน (log) — เก็บ <strong>90 วัน</strong></li>
+        <li style="margin-bottom:7px" data-en="Clock-in selfies — &lt;strong&gt;deleted automatically after 90 days&lt;/strong&gt; (the time and location are kept as the attendance record)">รูปถ่ายเซลฟีตอนลงเวลา — <strong>ลบอัตโนมัติหลัง 90 วัน</strong> (ยังเก็บวันเวลาและตำแหน่งไว้เป็นหลักฐานเวลาทำงาน)</li>
+        <li style="margin-bottom:7px" data-en="Registered face data — kept until the employer resets it, deletes that employee's check-in account, or cancels the service">ข้อมูลใบหน้าที่ลงทะเบียน — เก็บจนกว่านายจ้างจะรีเซ็ตใบหน้า ลบบัญชีลงเวลาของพนักงานคนนั้น หรือยกเลิกบริการ</li>
       </ul>
       <h2 data-en="8. Security measures">8. มาตรการรักษาความปลอดภัย</h2>
       <ul style="margin:0 0 16px 22px;color:#1f2937">
