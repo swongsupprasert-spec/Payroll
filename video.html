@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>วิดีโอแนะนำ eSimPayroll</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#050d18;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:min(100vw,177.78vh);aspect-ratio:16/9;overflow:clip;font-size:calc(min(100vw,177.78vh)/100);
+  background:radial-gradient(circle at 15% 10%,#1154cd66,transparent 45%),radial-gradient(circle at 90% 95%,#18b57e55,transparent 45%),linear-gradient(135deg,#011840,#0b2a4f)}
+#mon{position:absolute;left:50%;top:3.2em;width:84em;transform:translateX(-50%);transition:opacity .8s;opacity:0}
+#mon.in{opacity:1}
+#bez{background:#10161f;border-radius:1.6em 1.6em .8em .8em;padding:.9em .9em 1.6em;box-shadow:0 2em 5em #000a,0 0 0 .18em #2b3645 inset}
+#scr{position:relative;width:100%;aspect-ratio:16/9;overflow:clip;border-radius:.5em;background:#fff}
+#fr{position:absolute;left:0;top:0;width:1440px;height:810px;border:0;transform-origin:0 0;background:#f3f6fa}
+#neck{width:10em;height:4em;margin:0 auto;background:linear-gradient(#232d3b,#141b25)}
+#foot{width:26em;height:1em;margin:0 auto;background:#232d3b;border-radius:.6em .6em 0 0;box-shadow:0 1em 2em #0008}
+#cur{position:absolute;left:0;top:0;width:2.6em;height:2.6em;z-index:5;pointer-events:none;transition:transform 1s cubic-bezier(.45,0,.2,1);filter:drop-shadow(0 .2em .3em #0007)}
+.rip{position:absolute;width:3em;height:3em;margin:-1.5em 0 0 -1.5em;border-radius:50%;border:.25em solid #18b57e;z-index:4;pointer-events:none;animation:rip .7s ease-out forwards}
+@keyframes rip{from{transform:scale(.3);opacity:1}to{transform:scale(1.8);opacity:0}}
+#cap{position:absolute;left:50%;bottom:2.6em;transform:translate(-50%,2em);opacity:0;transition:.5s;text-align:center;z-index:8;
+  background:#0b1b2bd9;backdrop-filter:blur(6px);border:.12em solid #ffffff2a;border-radius:1.6em;padding:.7em 2.2em;white-space:nowrap}
+#cap.on{opacity:1;transform:translate(-50%,0)}
+#cap b{display:block;font-size:2.7em;font-weight:800}
+#cap span{display:block;font-size:1.55em;color:#b9d3ee}
+.card{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(circle at 20% 15%,#1154cd77,transparent 45%),radial-gradient(circle at 85% 90%,#18b57e66,transparent 45%),linear-gradient(135deg,#011840,#0b2a4f);
+  opacity:0;visibility:hidden;transition:opacity .8s}
+.card.on{opacity:1;visibility:visible}
+.logo{font-size:9em;font-weight:900;letter-spacing:-.04em}.logo b{color:#4ade9c}
+.tg{font-size:2.8em;color:#c8dcf0;margin-top:.3em}
+.card .up{opacity:0;transform:translateY(3em)}
+.card.on .up{animation:up .8s ease forwards;animation-delay:var(--d,0s)}
+.card.on .pop{animation:pop .7s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes up{to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-.5em)}}
+.btn{background:#18b57e;color:#fff;font-weight:800;font-size:3.2em;padding:.45em 1.6em;border-radius:2em;box-shadow:0 1em 3em #18b57e77;margin-top:1em;border:0;font-family:inherit;cursor:pointer}
+.card.on .btn{animation:up .8s ease forwards,bob 1.6s 1.2s infinite}
+.chips{display:flex;gap:.8em;margin-top:1.4em;flex-wrap:wrap;justify-content:center;max-width:80em}
+.chips span{background:#ffffff1a;border:.1em solid #ffffff33;border-radius:2em;padding:.35em 1em;font-size:1.7em}
+#start{z-index:30}
+#hook{z-index:25}
+.hk1{font-size:6.2em;font-weight:900;line-height:1.25}
+.hk1 em{font-style:normal;color:#ffb648}
+.hk2{font-size:3em;color:#c8dcf0;margin-top:.6em}
+.xl{position:relative;display:inline-block;margin-bottom:2em;width:28em;height:15em;background:#fff;border-radius:.8em;box-shadow:0 1.5em 3em #0008;overflow:hidden;transform:rotate(-3deg)}
+.xl i{position:absolute;left:0;right:0;height:.12em;background:#cfd8e3}
+.xl b{position:absolute;top:0;bottom:0;width:.12em;background:#cfd8e3}
+.xl .er{position:absolute;color:#e11d48;font-weight:900;font-size:2.6em;opacity:0}
+.card.on .xl .er{animation:pop .5s cubic-bezier(.2,1.6,.4,1) forwards;animation-delay:var(--d)}
+.card.on .xl{animation:shake .5s 2.2s 2}
+@keyframes shake{0%,100%{transform:rotate(-3deg)}25%{transform:rotate(-6deg) translateX(-.5em)}75%{transform:rotate(0) translateX(.5em)}}
+.price{font-size:3.6em;font-weight:800;color:#fff;margin-top:.6em}.price b{color:#4ade9c;font-size:1.4em}
+body.rec #ctl{display:none}
+/* ---- แนวตั้ง 9:16 (Reels/TikTok): ?v ---- */
+body.v #stage{width:min(100vw,56.25vh);aspect-ratio:9/16;font-size:calc(min(100vw,56.25vh)/100)}
+body.v #mon{top:34em;width:80em}
+body.v #bez{border-radius:10em;padding:2.2em;background:#15151c}
+body.v #scr{aspect-ratio:auto;height:136em;border-radius:8em}
+body.v #neck,body.v #foot,body.v #cur{display:none}
+body.v #cap{top:8em;bottom:auto;white-space:normal;width:92em;padding:1.6em 2.4em;border-radius:3em}
+body.v #cap b{font-size:5.4em;line-height:1.3}
+body.v #cap span{font-size:3.3em;margin-top:.3em}
+body.v .logo{font-size:17em}
+body.v .tg{font-size:4.6em;padding:0 1.5em}
+body.v .hk1{font-size:9.5em;padding:0 .6em}
+body.v .hk2{font-size:4.4em;padding:0 2em}
+body.v .xl{font-size:1.9em}
+body.v .chips{flex-direction:column;gap:1.4em}
+body.v .chips span{font-size:3.8em}
+body.v .price{font-size:5.6em}
+body.v .btn{font-size:6em}
+body.v #ui{height:.8em}
+#ui{position:absolute;left:0;right:0;bottom:0;height:.45em;background:#ffffff22;z-index:9}#bar{height:100%;width:0;background:#4ade9c}
+#ctl{position:absolute;top:1em;right:1.2em;z-index:40;display:flex;gap:.6em}
+#ctl button{font:inherit;font-size:1.4em;background:#0b1b2bcc;color:#fff;border:.08em solid #ffffff44;border-radius:.6em;padding:.25em .8em;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+
+<div id="mon"><div id="bez"><div id="scr">
+  <iframe id="fr" title="ตัวอย่างหน้าระบบ eSimPayroll" src="about:blank"></iframe>
+  <svg id="cur" viewBox="0 0 24 24"><path d="M3 2l7 19 3-8 8-3z" fill="#fff" stroke="#0b1b2b" stroke-width="1.6" stroke-linejoin="round"/></svg>
+</div></div><div id="neck"></div><div id="foot"></div></div>
+
+<div id="cap"><b id="ct"></b><span id="cs"></span></div>
+
+<div class="card" id="hook">
+  <div class="xl pop"><i style="top:2.4em"></i><i style="top:4.8em"></i><i style="top:7.199999999999999em"></i><i style="top:9.6em"></i><i style="top:12em"></i><i style="top:14.399999999999999em"></i><b style="left:5.6em"></b><b style="left:11.2em"></b><b style="left:16.799999999999997em"></b><b style="left:22.4em"></b><span class="er" style="--d:.9s;left:2em;top:1.4em">#REF!</span><span class="er" style="--d:1.3s;left:14em;top:6em">#VALUE!</span><span class="er" style="--d:1.7s;left:5em;top:10.5em">ภาษีผิด?</span></div>
+  <div class="hk1 up" style="--d:.3s">ยังทำเงินเดือนใน <em>Excel</em> อยู่เหรอ?</div>
+  <div class="hk2 up" style="--d:1.2s">สูตรพัง ภาษีผิด ประกันสังคมคิดพลาด เสียเวลาทุกสิ้นเดือน</div>
+</div>
+<div class="card" id="intro">
+  <div class="logo pop">eSim<b>Payroll</b></div>
+  <div class="tg up" style="--d:.5s">ให้ระบบทำแทน ครบ จบ ในไม่กี่คลิก</div>
+</div>
+<div class="card" id="outro">
+  <div class="logo pop" style="font-size:7em">eSim<b>Payroll</b></div>
+  <div class="tg up" style="--d:.4s">ทำเงินเดือนครบจบในที่เดียว</div>
+  <div class="chips up" style="--d:.8s"><span>ไม่ต้องติดตั้ง</span><span>พนักงานสแกนหน้าลงเวลาผ่านมือถือ</span><span>ภาษี · ประกันสังคม · เอกสารราชการอัตโนมัติ</span></div>
+  <div class="price up" style="--d:1.1s">เริ่มต้นเพียง <b>590</b> บาท/เดือน</div>
+  <button class="btn up" style="--d:1.4s" onclick="location.href='app.html?demo=premium'">ทดลองใช้ฟรี</button>
+  <div class="tg up" style="--d:1.6s;font-weight:700;color:#fff">esimpayroll.com</div>
+</div>
+<div class="card on" id="start">
+  <div class="logo pop" style="font-size:7em">eSim<b>Payroll</b></div>
+  <div class="tg up" style="--d:.3s">วิดีโอแนะนำโปรแกรม พร้อมเสียงเพลง</div>
+  <button class="btn up" id="go" style="--d:.7s">▶ เริ่มดูวิดีโอ</button>
+</div>
+
+<div id="ctl"><button id="mute">ปิดเพลง</button><button id="rs">เล่นใหม่</button></div>
+<div id="ui"><div id="bar"></div></div>
+</div></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)}, fr=$('fr'), mon=$('mon'), scr=$('scr'), cur=$('cur');
+var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+var STEPS=[
+ {p:'dashboard',t:'แดชบอร์ดสรุปภาพรวมบริษัท',s:'ต้นทุนแรงงาน แผนก และสถิติพนักงาน ดูได้ในหน้าเดียว',sc:[0,520,1100],d:5.5},
+ {p:'employees',t:'ข้อมูลพนักงานครบ ค้นหาง่าย',s:'ทะเบียนพนักงาน เงินเดือน ภาษี ประกันสังคม กองทุน',sc:[0,380],d:4.5},
+ {p:'attend',t:'เวลาเข้างาน · จัดกะ · ลงเวลาผ่านมือถือ',s:'สแกนหน้า + GPS ส่งวันทำงานและ OT เข้าเงินเดือนอัตโนมัติ',sc:[0,300],d:4.5},
+ {p:'leave',t:'ระบบลางาน',s:'พนักงานยื่นลา หัวหน้าอนุมัติ ตัดยอดวันลาให้เอง',sc:[0,300],d:4},
+ {p:'payroll',t:'คำนวณเงินได้ · เงินหัก อัตโนมัติ',s:'OT โบนัส ภาษี ประกันสังคม กองทุน ครบตามกฎหมาย',sc:[0,420],d:5.5},
+ {p:'slip',t:'สลิปเงินเดือน',s:'พิมพ์หรือส่งให้พนักงานได้ทันที',sc:[0,300],d:4},
+ {p:'wht',t:'หนังสือรับรอง 50 ทวิ · ภ.ง.ด.1',s:'เอกสารสรรพากรสร้างให้อัตโนมัติ',sc:[0,250],d:4},
+ {p:'sso',t:'แบบประกันสังคม สปส.1-10',s:'ได้ไฟล์พร้อมยื่นในไม่กี่คลิก',sc:[0,250],d:4}
+];
+var run=0, REC=/[?&]rec/.test(location.search); if(REC)document.body.classList.add('rec');
+var V=/[?&]v\b/.test(location.search); if(V)document.body.classList.add('v');
+var VW=V?390:1440;
+
+var AC=null, master=null, muted=false, mtimer=null;
+var CH=[[0,4,7],[7,11,14],[9,12,16],[5,9,12]];
+function fq(n){return 261.63*Math.pow(2,n/12)}
+function tone(t,f,dur,type,vol){
+  var o=AC.createOscillator(),g=AC.createGain(); o.type=type;o.frequency.value=f;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.05);
+}
+function kick(t){var o=AC.createOscillator(),g=AC.createGain();o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(42,t+.14);
+  g.gain.setValueAtTime(.55,t);g.gain.exponentialRampToValueAtTime(.001,t+.2);o.connect(g);g.connect(master);o.start(t);o.stop(t+.22)}
+function hat(t,v){var n=AC.createBuffer(1,AC.sampleRate*.05,AC.sampleRate),d=n.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);
+  var s=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain();s.buffer=n;f.type='highpass';f.frequency.value=7000;g.gain.value=v;s.connect(f);f.connect(g);g.connect(master);s.start(t)}
+function startMusic(){
+  if(!AC){AC=new (window.AudioContext||window.webkitAudioContext)();master=AC.createGain();master.connect(AC.destination)}
+  master.gain.cancelScheduledValues(AC.currentTime);master.gain.setValueAtTime(muted?0:.5,AC.currentTime);
+  if(AC.state==='suspended')AC.resume();
+  var bpm=112,beat=60/bpm,step=beat/2,t0=AC.currentTime+.1,k=0;
+  clearInterval(mtimer);
+  function sched(){
+    while(t0+k*step<AC.currentTime+.6){
+      var t=t0+k*step,i=k%8,bar=Math.floor(k/8)%4,ch=CH[bar];
+      if(i%2===0&&i!==6)kick(t); if(i%2===1)hat(t,.06);
+      if(i===0){ch.forEach(function(n){tone(t,fq(n-12),beat*3.9,'triangle',.07)});tone(t,fq(ch[0]-24),beat*1.9,'sine',.22)}
+      if(i===4)tone(t,fq(ch[0]-24),beat*1.9,'sine',.2);
+      var arp=[0,1,2,1,0,2,1,2][i]; tone(t,fq(ch[arp]+12),.32,'square',.035);
+      if(bar%2===1&&(i===2||i===6))tone(t,fq(ch[2]+24),.4,'sine',.05);
+      k++;
+    }
+  }
+  sched();mtimer=setInterval(sched,120);
+}
+function stopMusic(fade){
+  clearInterval(mtimer);
+  if(AC&&master){master.gain.cancelScheduledValues(AC.currentTime);master.gain.setValueAtTime(master.gain.value,AC.currentTime);master.gain.linearRampToValueAtTime(0,AC.currentTime+(fade||1))}
+}
+$('mute').onclick=function(){muted=!muted;this.textContent=muted?'เปิดเพลง':'ปิดเพลง';if(master)master.gain.value=muted?0:.5};
+
+function S(){return scr.clientWidth/VW}
+function fit(){var s=S();fr.style.width=VW+'px';fr.style.transform='scale('+s+')';fr.style.height=(V?scr.clientHeight/s:810)+'px'}
+function doc(){return fr.contentDocument}
+function moveTo(x,y){cur.style.transform='translate('+x+'px,'+y+'px)'}
+function ripple(x,y){var r=document.createElement('div');r.className='rip';r.style.left=x+'px';r.style.top=y+'px';scr.appendChild(r);setTimeout(function(){r.remove()},800)}
+async function clickNav(p,me){
+  var d=doc(),b=d.querySelector('#nav button[data-p="'+p+'"]');
+  if(!b)return false;
+  if(V){b.click();if(p==='payroll'){await sleep(400);['apM','apY'].forEach(function(id){var m=d.getElementById(id);if(m)m.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))})}await sleep(300);return true}
+  var r=b.getBoundingClientRect(),s=S(),x=(r.left+r.width*.4)*s,y=(r.top+r.height/2)*s;
+  moveTo(x,y);await sleep(1050);if(me!==run)return;
+  ripple(x,y);b.click();
+  if(p==='payroll'){await sleep(500);['apM','apY'].forEach(function(id){var m=d.getElementById(id);if(m)m.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))})}
+  return true;
+}
+function say(t,s){var c=$('cap');c.classList.remove('on');setTimeout(function(){$('ct').textContent=t;$('cs').textContent=s;c.classList.add('on')},350)}
+function scrollTo(y){try{fr.contentWindow.scrollTo({top:y,behavior:'smooth'})}catch(e){}}
+function total(){return 6.5+3.5+STEPS.reduce(function(a,s){return a+s.d},0)+11}
+async function ready(){
+  for(var i=0;i<80;i++){var d=doc();if(d&&d.querySelector('#nav button[data-p]'))return true;await sleep(250)}return false;
+}
+
+async function play(){
+  var me=++run,t0=Date.now(),T=total();
+  var bt=setInterval(function(){$('bar').style.width=Math.min(100,(Date.now()-t0)/1000/T*100)+'%';if(me!==run)clearInterval(bt)},200);
+  ['hook','intro','outro','start'].forEach(function(i){$(i).classList.remove('on')});
+  mon.classList.remove('in');$('cap').classList.remove('on');
+  $('hook').classList.add('on'); if(!REC)startMusic();
+  fr.src='app.html?demo=premium';
+  await ready(); if(me!==run)return;
+  await sleep(Math.max(0,6500-(Date.now()-t0)));if(me!==run)return;
+  $('intro').classList.add('on');$('hook').classList.remove('on');t0=Date.now();
+  try{var st=doc().createElement('style');st.textContent='#demoBar{display:none!important}::-webkit-scrollbar{display:none}';doc().head.appendChild(st)}catch(e){}
+  try{doc().documentElement.setAttribute('data-theme','light')}catch(e){}
+  fit();
+  await sleep(Math.max(0,3500-(Date.now()-t0)));if(me!==run)return;
+  $('intro').classList.remove('on');mon.classList.add('in');
+  moveTo(scr.clientWidth*.5,scr.clientHeight*.6);
+  await sleep(1200);if(me!==run)return;
+  for(var i=0;i<STEPS.length;i++){
+    var st2=STEPS[i],ts=Date.now();
+    await clickNav(st2.p,me); if(me!==run)return;
+    say(st2.t,st2.s); window.scrollTo(0,0); $("stage").scrollLeft=0; $("wrap").scrollLeft=0; mon.scrollLeft=0;
+    try{doc().defaultView.scrollTo(0,0)}catch(e){}
+    await sleep(1400);if(me!==run)return;
+    for(var k=1;k<st2.sc.length;k++){scrollTo(st2.sc[k]*(V?2.4:1));await sleep(Math.max(900,(st2.d*1000-2400)/(st2.sc.length-1)));if(me!==run)return}
+    var left=st2.d*1000-(Date.now()-ts);if(left>0)await sleep(left);if(me!==run)return;
+  }
+  $('cap').classList.remove('on');mon.classList.remove('in');
+  await sleep(700);$('outro').classList.add('on');
+  await sleep(9500);if(me!==run)return;
+  window.__done=true; if(!REC)stopMusic(2.5);
+}
+if(REC){$('start').classList.remove('on');window.__startAt=Date.now();play()}
+$('go').onclick=function(){$('start').classList.remove('on');play()};
+$('rs').onclick=function(){stopMusic(.1);play()};
+window.addEventListener('resize',fit);
+})();
+</script>
+</body>
+</html>

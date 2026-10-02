@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>eSimPayroll Motion</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#020a16;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);
+  background:linear-gradient(170deg,#021431 0%,#06234a 55%,#073a44 100%)}
+/* ฉากหลังเคลื่อนไหว */
+.blob{position:absolute;border-radius:50%;opacity:.55;will-change:transform;animation:drift 14s ease-in-out infinite alternate}
+.b1{width:70em;height:70em;background:radial-gradient(circle,#1154cd 0,#1154cd00 70%);left:-25em;top:-15em}
+.b2{width:60em;height:60em;background:radial-gradient(circle,#18b57e 0,#18b57e00 70%);right:-25em;bottom:-10em;animation-delay:-5s}
+.b3{width:40em;height:40em;background:radial-gradient(circle,#7c5cff 0,#7c5cff00 70%);left:30em;top:70em;opacity:.25;animation-delay:-9s}
+@keyframes drift{to{transform:translate(12em,18em) scale(1.15)}}
+.grid{position:absolute;inset:0;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:9em 9em;
+  mask-image:radial-gradient(ellipse at 50% 45%,#000 30%,transparent 75%)}
+/* ฉาก */
+.sc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;visibility:hidden}
+.sc.on{visibility:visible}
+.sc.off{animation:out .5s ease forwards;visibility:visible}
+@keyframes out{to{opacity:0;transform:scale(1.08);filter:blur(.6em)}}
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.7s)}
+.on .up{animation-name:up;animation-timing-function:cubic-bezier(.2,.9,.2,1)}
+.on .pop{animation-name:pop;animation-timing-function:cubic-bezier(.2,1.6,.4,1)}
+.on .fade{animation-name:fade}
+.on .sl{animation-name:sl;animation-timing-function:cubic-bezier(.2,.9,.2,1)}
+.on .sr{animation-name:sr;animation-timing-function:cubic-bezier(.2,.9,.2,1)}
+@keyframes up{from{opacity:0;transform:translateY(4em)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes sl{from{opacity:0;transform:translateX(-30em)}to{opacity:1;transform:none}}
+@keyframes sr{from{opacity:0;transform:translateX(30em)}to{opacity:1;transform:none}}
+.ttl{position:absolute;top:13em;left:6em;right:6em}
+.kick{display:inline-block;font-size:3em;font-weight:700;color:#4ade9c;background:#4ade9c1f;border:.08em solid #4ade9c55;border-radius:2em;padding:.15em .9em;margin-bottom:.6em}
+.h{font-size:8.6em;font-weight:900;line-height:1.18;letter-spacing:-.02em}
+.h em{font-style:normal;background:linear-gradient(90deg,#4ade9c,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:3.6em;color:#b9d3ee;margin-top:.5em;line-height:1.4}
+.glass{background:#ffffff12;border:.15em solid #ffffff22;border-radius:3.2em;box-shadow:0 3em 6em #0006}
+/* 0 hook */
+.xl{position:relative;width:74em;height:44em;background:#fff;border-radius:2em;overflow:hidden;box-shadow:0 3em 6em #0008;color:#0b1b2b}
+.xl .hd{height:5em;background:#1d6f42;display:flex;align-items:center;padding:0 2em;font-size:2.6em;font-weight:800;color:#fff}
+.xl i{position:absolute;left:0;right:0;height:.15em;background:#d5dde7}
+.xl b{position:absolute;top:5em;bottom:0;width:.15em;background:#d5dde7}
+.er{position:absolute;font-weight:900;font-size:4em;color:#e11d48;background:#ffe4e6;padding:0 .3em;border-radius:.2em}
+.on .xlw{animation:shk .45s 2.6s 3,crush .6s 4.2s forwards}
+@keyframes shk{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg) translateX(-1em)}75%{transform:rotate(3deg) translateX(1em)}}
+@keyframes crush{to{transform:scale(0) rotate(40deg);opacity:0}}
+/* 1 logo */
+.logo{font-size:13.5em;font-weight:900;letter-spacing:-.04em}.logo b{color:#4ade9c}
+.ring{position:absolute;left:50%;top:50%;width:40em;height:40em;margin:-20em 0 0 -20em;border-radius:50%;border:.5em solid #4ade9c;opacity:0}
+.on .ring{animation:ring 1.4s var(--d) ease-out forwards}
+@keyframes ring{from{transform:scale(.2);opacity:.9}to{transform:scale(2.6);opacity:0}}
+/* 2 calc */
+.pay{width:84em;padding:3.6em 4.5em;text-align:left;margin-top:24em}
+.who{display:flex;align-items:center;gap:2.4em;margin-bottom:3em}
+.av{width:11em;height:11em;flex:none;border-radius:50%;background:linear-gradient(135deg,#2a78d6,#7c5cff);display:grid;place-items:center}.av span{font-size:4.6em;font-weight:900}
+.who b{display:block;font-size:4.2em}.who span{font-size:3em;color:#9fb8d2}
+.ln{display:flex;justify-content:space-between;font-size:3.9em;padding:.45em 0;border-bottom:.04em dashed #ffffff22}
+.ln .p{color:#4ade9c}.ln .m{color:#fb7185}
+.net{display:flex;justify-content:space-between;align-items:baseline;margin-top:1.4em;background:linear-gradient(90deg,#18b57e,#0ea5a4);border-radius:1.4em;padding:1.2em 1.4em}
+.net>span{font-size:3.6em;font-weight:700;white-space:nowrap}.net b{font-size:6em;font-weight:900}
+.chips{display:flex;flex-wrap:wrap;gap:1.6em;justify-content:center;margin-top:4em;padding:0 6em}
+.chip{font-size:3.3em;font-weight:700;background:#ffffff14;border:.08em solid #ffffff2e;border-radius:2em;padding:.35em 1em}
+/* 3 docs */
+.docs{position:relative;width:90em;height:70em;margin-top:6em;transform:scale(.9)}
+.doc{position:absolute;left:50%;top:50%;width:36em;height:47em;margin:-23.5em 0 0 -18em;background:#fff;border-radius:2em;color:#0b1b2b;padding:3em;text-align:left;
+  box-shadow:0 2.5em 5em #0007;transform:translate(var(--x),var(--y)) rotate(var(--r))}
+.doc h5{font-size:4.4em;font-weight:900}.doc small{display:block;font-size:2.4em;color:#6b7c8f;margin:.2em 0 1.4em}
+.doc i{display:block;height:1.1em;background:#e3eaf2;border-radius:1em;margin:1.4em 0}
+.doc i:nth-child(odd){width:70%}
+.doc .ok{position:absolute;right:2.4em;bottom:2.4em;width:7em;height:7em;border-radius:50%;background:#18b57e;display:grid;place-items:center}
+.on .doc{animation:deal .8s var(--d) cubic-bezier(.2,1.2,.3,1) both}
+@keyframes deal{from{opacity:0;transform:translate(0,80em) rotate(0) scale(.6)}to{opacity:1;transform:translate(var(--x),var(--y)) rotate(var(--r))}}
+/* 4 phone */
+.phwrap{position:relative;margin-top:22em;display:flex;align-items:center;justify-content:center;width:100%}
+.ph{position:relative;width:46em;height:88em;border-radius:7em;background:#0c111a;border:1.4em solid #1b2230;box-shadow:0 3em 7em #000a;overflow:hidden}
+.isl{position:absolute;left:50%;top:1.6em;width:14em;height:3.6em;margin-left:-7em;border-radius:3em;background:#000;z-index:3}
+.cam{position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,#24456b,#0c111a 70%)}
+.face{position:absolute;left:50%;top:16em;width:26em;height:32em;margin-left:-13em;border-radius:50%;border:.6em dashed #4ade9c}
+.face::before{content:"";position:absolute;left:7em;top:11em;width:2.4em;height:2.4em;border-radius:50%;background:#e2edf8;box-shadow:9em 0 #e2edf8}
+.face::after{content:"";position:absolute;left:8.5em;top:19em;width:9em;height:3.5em;border-bottom:.8em solid #e2edf8;border-radius:0 0 9em 9em}
+.beam{position:absolute;left:8em;right:8em;height:.7em;background:#4ade9c;box-shadow:0 0 3em #4ade9c;top:18em;opacity:0}
+.on .beam{animation:scan 1s .6s ease-in-out 3 alternate both}
+@keyframes scan{from{top:17em;opacity:1}to{top:46em;opacity:1}}
+.tick{position:absolute;left:50%;top:22em;width:20em;height:20em;margin-left:-10em}
+.tick circle{fill:#18b57e}.tick path{stroke:#fff;stroke-width:7;fill:none;stroke-linecap:round;stroke-dasharray:60;stroke-dashoffset:60}
+.on .tick path{animation:draw .5s 4s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.ptag{position:absolute;left:0;right:0;margin:0 auto;width:max-content;bottom:30%;white-space:nowrap;font-size:3.2em;font-weight:800;background:#18b57e;border-radius:2em;padding:.4em 1.2em}
+.gps{position:absolute;left:4%;bottom:15%;right:4%;display:flex;align-items:center;gap:1.4em;font-size:2.8em;color:#cfe2f3;justify-content:center}
+.pin{position:absolute;width:13em;height:13em}
+.pin .dot{position:absolute;inset:3em;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#ffb648}
+.pin .pl{position:absolute;inset:0;border-radius:50%;border:.4em solid #ffb648;opacity:0}
+.on .pin .pl{animation:ring 1.5s 2.4s infinite}
+.lv{position:absolute;z-index:6;width:44em;padding:2.6em 3em;text-align:left;border-radius:2.6em;background:#fff;color:#0b1b2b;box-shadow:0 2.5em 5em #0008}
+.lv b{display:block;font-size:3.6em}.lv span{font-size:2.8em;color:#6b7c8f}
+.stamp{position:absolute;right:2em;top:50%;margin-top:-3em;font-size:3.6em;font-weight:900;color:#18b57e;border:.15em solid #18b57e;border-radius:.4em;padding:.1em .5em;transform:rotate(-12deg);opacity:0}
+.on .stamp{animation:stamp .4s 5.6s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stamp{from{opacity:0;transform:rotate(-12deg) scale(2.4)}to{opacity:1;transform:rotate(-12deg) scale(1)}}
+/* 5 dashboard */
+.dash{width:86em;padding:4em;margin-top:18em}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:2em;margin-bottom:3em}
+.kp{background:#ffffff10;border-radius:2em;padding:2.2em 2.6em;text-align:left}
+.kp small{display:block;font-size:2.8em;color:#9fb8d2}.kp b{font-size:6.4em;font-weight:900}
+.row2{display:flex;gap:3em;align-items:center}
+.donut{width:34em;height:34em;flex:none}
+.donut circle{fill:none;stroke-width:16;transform:rotate(-90deg);transform-origin:50% 50%}
+.on .donut .s{animation:dn 1.4s var(--d) cubic-bezier(.3,.8,.2,1) both}
+@keyframes dn{from{stroke-dasharray:0 400}}
+.bars{flex:1;height:34em;display:flex;align-items:flex-end;gap:1.6em;border-bottom:.3em solid #ffffff33}
+.bars i{flex:1;border-radius:1em 1em 0 0;transform-origin:bottom;transform:scaleY(0)}
+.on .bars i{animation:grow .9s var(--d) cubic-bezier(.2,1.2,.3,1) forwards}
+@keyframes grow{to{transform:scaleY(1)}}
+/* 6 close */
+.feat4{display:grid;grid-template-columns:1fr 1fr;gap:2.4em;margin-top:6em;width:84em}
+.f4{padding:3em 2em;border-radius:2.6em;background:#ffffff10;border:.12em solid #ffffff22}
+.f4 .ic{width:11em;height:11em;margin:0 auto 1.4em;border-radius:3em;display:grid;place-items:center}
+.f4 b{font-size:3.6em;display:block;line-height:1.3}
+.cta{margin-top:6em;font-size:5.4em;font-weight:900;background:linear-gradient(90deg,#18b57e,#0ea5a4);border-radius:2em;padding:.5em 1.6em;box-shadow:0 1em 3em #18b57e66}
+.on .cta{animation:pop .7s var(--d) cubic-bezier(.2,1.6,.4,1) both,bob 1.6s 6s infinite}
+@keyframes bob{50%{transform:translateY(-.3em)}}
+.url{font-size:4.6em;font-weight:800;margin-top:1.2em;letter-spacing:.02em}
+#bar{position:absolute;left:0;bottom:0;height:.6em;background:#4ade9c;width:0;z-index:9}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="grid"></div>
+
+<!-- 0 hook -->
+<section class="sc" data-t="5">
+  <div class="ttl" style="top:22em">
+    <div class="h a up" style="--d:.2s">ยังทำเงินเดือน<br>ใน <em>Excel</em> อยู่เหรอ?</div>
+  </div>
+  <div class="xlw" style="margin-top:14em"><div class="xl a pop" style="--d:.6s">
+    <div class="hd">payroll_final_v7(แก้).xlsx</div>
+    <i style="top:11em"></i><i style="top:17em"></i><i style="top:23em"></i><i style="top:29em"></i><i style="top:35em"></i>
+    <b style="left:18em"></b><b style="left:37em"></b><b style="left:56em"></b>
+    <span class="er a pop" style="--d:1.2s;left:3em;top:7.5em">#REF!</span>
+    <span class="er a pop" style="--d:1.6s;left:21em;top:15em">#VALUE!</span>
+    <span class="er a pop" style="--d:2s;left:8em;top:22.5em">ภาษีผิด?</span>
+    <span class="er a pop" style="--d:2.3s;left:20em;top:30em">ประกันสังคมพลาด</span>
+  </div></div>
+  <div class="sub a up" style="--d:2.6s;position:absolute;bottom:13%;left:6%;right:6%">เสียเวลาทุกสิ้นเดือน<br>แล้วยังต้องลุ้นว่าถูกไหม</div>
+</section>
+
+<!-- 1 logo -->
+<section class="sc" data-t="3.5">
+  <div class="ring" style="--d:.2s"></div><div class="ring" style="--d:.5s"></div>
+  <div class="logo a pop" style="--d:.15s">eSim<b>Payroll</b></div>
+  <div class="sub a up" style="--d:.7s;font-size:4.4em">ให้ระบบทำแทน<br><b style="color:#fff">ครบ จบ ในที่เดียว</b></div>
+</section>
+
+<!-- 2 calc -->
+<section class="sc" data-t="7">
+  <div class="ttl"><div class="kick a up">01</div><div class="h a up" style="--d:.1s">คำนวณเงินเดือน<br><em>อัตโนมัติ</em></div></div>
+  <div class="pay glass a up" style="--d:.4s">
+    <div class="who"><div class="av"><span>ส</span></div><div><b>คุณสมชาย ใจดี</b><span>ฝ่ายขาย · พนักงานรายเดือน</span></div></div>
+    <div class="ln a sl" style="--d:.9s"><span>เงินเดือน</span><span class="cnt" data-to="25000" data-d="0.9">0</span></div>
+    <div class="ln a sl" style="--d:1.5s"><span>ค่าล่วงเวลา (OT)</span><span class="p">+<span class="cnt" data-to="1800" data-d="1.5">0</span></span></div>
+    <div class="ln a sl" style="--d:2.1s"><span>ภาษีหัก ณ ที่จ่าย</span><span class="m">−<span class="cnt" data-to="650" data-d="2.1">0</span></span></div>
+    <div class="ln a sl" style="--d:2.7s"><span>ประกันสังคม</span><span class="m">−<span class="cnt" data-to="875" data-d="2.7">0</span></span></div>
+    <div class="ln a sl" style="--d:3.3s"><span>กองทุนสำรองเลี้ยงชีพ</span><span class="m">−<span class="cnt" data-to="750" data-d="3.3">0</span></span></div>
+    <div class="net a pop" style="--d:4s"><span>รับสุทธิ</span><b><span class="cnt" data-to="24525" data-d="4.1">0</span></b></div>
+  </div>
+  <div class="chips"><span class="chip a pop" style="--d:4.8s">รายเดือน</span><span class="chip a pop" style="--d:5s">รายวัน</span><span class="chip a pop" style="--d:5.2s">ถูกต้องตามกฎหมาย</span></div>
+</section>
+
+<!-- 3 docs -->
+<section class="sc" data-t="6.5">
+  <div class="ttl"><div class="kick a up">02</div><div class="h a up" style="--d:.1s">ออกเอกสาร<br><em>ครบในคลิกเดียว</em></div></div>
+  <div class="docs">
+    <div class="doc" style="--x:-22em;--y:-12em;--r:-14deg;--d:.5s"><h5>สลิปเงินเดือน</h5><small>Pay Slip</small><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="doc" style="--x:22em;--y:-12em;--r:12deg;--d:.9s"><h5>50 ทวิ</h5><small>หนังสือรับรองหัก ณ ที่จ่าย</small><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="doc" style="--x:-24em;--y:16em;--r:-6deg;--d:1.3s"><h5>ภ.ง.ด.1</h5><small>แบบยื่นภาษีรายเดือน</small><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="doc" style="--x:24em;--y:16em;--r:7deg;--d:1.7s"><h5>สปส.1-10</h5><small>แบบนำส่งประกันสังคม</small><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="doc" style="--x:0em;--y:2em;--r:0deg;--d:2.2s"><h5>กท.20ก</h5><small>กองทุนเงินทดแทน</small><i></i><i></i><i></i><i></i><i></i>
+      <div class="ok a pop" style="--d:3s"><svg width="4em" height="4em" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg></div></div>
+  </div>
+  <div class="sub a up" style="--d:3.4s;position:absolute;bottom:7%;left:6%;right:6%">พร้อมยื่นสรรพากรและประกันสังคม<br>ไม่ต้องกรอกซ้ำ</div>
+</section>
+
+<!-- 4 phone -->
+<section class="sc" data-t="7.5">
+  <div class="ttl"><div class="kick a up">03</div><div class="h a up" style="--d:.1s">ลงเวลา + ลางาน<br><em>ผ่านมือถือ</em></div></div>
+  <div class="phwrap">
+    <div class="ph a up" style="--d:.3s">
+      <div class="isl"></div><div class="cam"></div><div class="face"></div><div class="beam"></div>
+      <svg class="tick a pop" style="--d:3.8s" viewBox="0 0 70 70"><circle cx="35" cy="35" r="32"/><path d="M20 36l10 10 20-22"/></svg>
+      <div class="ptag a pop" style="--d:4.2s">เข้างาน 08:02 ✓</div>
+      <div class="gps a fade" style="--d:2.2s">📍 อยู่ในรัศมีสำนักงาน</div>
+    </div>
+    <div class="pin a pop" style="--d:2.2s;right:3em;top:8em"><div class="pl"></div><div class="dot"></div></div>
+    <div class="lv a sr" style="--d:5s;left:6em;bottom:4em"><b>ลาพักร้อน 2 วัน</b><span>คุณนภา · รออนุมัติ</span><div class="stamp">อนุมัติ</div></div>
+  </div>
+</section>
+
+<!-- 5 dashboard -->
+<section class="sc" data-t="7">
+  <div class="ttl"><div class="kick a up">04</div><div class="h a up" style="--d:.1s">แดชบอร์ด<br><em>เห็นภาพรวมทั้งบริษัท</em></div></div>
+  <div class="dash glass a up" style="--d:.4s">
+    <div class="kpis">
+      <div class="kp"><small>พนักงาน</small><b><span class="cnt" data-to="48" data-d="0.8">0</span> คน</b></div>
+      <div class="kp"><small>ต้นทุนแรงงาน/เดือน</small><b>฿<span class="cnt" data-to="1420000" data-d="0.8">0</span></b></div>
+    </div>
+    <div class="row2">
+      <svg class="donut" viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="44" stroke="#ffffff14"/>
+        <circle class="s" cx="60" cy="60" r="44" stroke="#2a78d6" stroke-dasharray="160 400" style="--d:1s"/>
+        <circle class="s" cx="60" cy="60" r="44" stroke="#18b57e" stroke-dasharray="55 400" stroke-dashoffset="-160" style="--d:1.3s"/>
+        <circle class="s" cx="60" cy="60" r="44" stroke="#eda100" stroke-dasharray="35 400" stroke-dashoffset="-215" style="--d:1.6s"/>
+        <circle class="s" cx="60" cy="60" r="44" stroke="#e87ba4" stroke-dasharray="26 400" stroke-dashoffset="-250" style="--d:1.9s"/>
+      </svg>
+      <div class="bars">
+        <i style="height:45%;background:#2a78d6;--d:1.4s"></i><i style="height:62%;background:#2a78d6;--d:1.55s"></i><i style="height:52%;background:#2a78d6;--d:1.7s"></i>
+        <i style="height:78%;background:#eb6834;--d:1.85s"></i><i style="height:68%;background:#2a78d6;--d:2s"></i><i style="height:92%;background:#18b57e;--d:2.15s"></i>
+      </div>
+    </div>
+  </div>
+  <div class="chips"><span class="chip a pop" style="--d:3s">ต้นทุนแรงงาน</span><span class="chip a pop" style="--d:3.2s">แยกตามแผนก</span><span class="chip a pop" style="--d:3.4s">สถิติพนักงาน</span></div>
+</section>
+
+<!-- 6 close -->
+<section class="sc" data-t="7">
+  <div class="logo a pop" style="--d:.1s;font-size:13em">eSim<b>Payroll</b></div>
+  <div class="sub a up" style="--d:.5s;font-size:4.2em;color:#fff;font-weight:700">โปรแกรม Payroll ออนไลน์ ครบ จบ ในที่เดียว</div>
+  <div class="feat4">
+    <div class="f4 a up" style="--d:.9s"><div class="ic" style="background:#2a78d633"><svg width="6em" height="6em" viewBox="0 0 24 24" fill="none" stroke="#7fb4ff" stroke-width="1.8" stroke-linecap="round"><rect x="4.4" y="2.6" width="15.2" height="18.8" rx="2.4"/><path d="M7.6 6h8.8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01"/></svg></div><b>คำนวณ<br>อัตโนมัติ</b></div>
+    <div class="f4 a up" style="--d:1.1s"><div class="ic" style="background:#18b57e33"><svg width="6em" height="6em" viewBox="0 0 24 24" fill="none" stroke="#4ade9c" stroke-width="1.8" stroke-linecap="round"><path d="M7.6 2.8h7.2l4 4v14.4H7.6z"/><path d="M14.8 2.8v4h4M10.4 14.2l1.8 1.8 3.4-3.6"/></svg></div><b>เอกสาร<br>ครบถ้วน</b></div>
+    <div class="f4 a up" style="--d:1.3s"><div class="ic" style="background:#eda10033"><svg width="6em" height="6em" viewBox="0 0 24 24" fill="none" stroke="#ffc94d" stroke-width="1.8" stroke-linecap="round"><rect x="6.5" y="2.8" width="11" height="18.4" rx="2.4"/><circle cx="12" cy="10" r="2.6"/><path d="M8.8 15.6a3.4 3.4 0 0 1 6.4 0"/></svg></div><b>ลงเวลา<br>ผ่านมือถือ</b></div>
+    <div class="f4 a up" style="--d:1.5s"><div class="ic" style="background:#e87ba433"><svg width="6em" height="6em" viewBox="0 0 24 24" fill="none" stroke="#f9a8d4" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 20.5h17"/><rect x="4.5" y="11" width="3.6" height="7"/><rect x="10.2" y="6.5" width="3.6" height="11.5"/><rect x="15.9" y="14" width="3.6" height="4"/></svg></div><b>แดชบอร์ด<br>ภาพรวม</b></div>
+  </div>
+  <div class="cta" style="--d:2.1s">ทดลองใช้ฟรี</div>
+  <div class="url a up" style="--d:2.5s">esimpayroll.com</div>
+</section>
+
+<div id="bar"></div>
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var cur=-1,bar=document.getElementById('bar');
+  function fmt(n){return Math.round(n).toLocaleString('en-US')}
+  /* วาดภาพ ณ เวลา t วินาที — ทุกแอนิเมชันถูกหยุดแล้วตั้งเวลาเอง จึงได้ภาพเหมือนกันทุกครั้ง */
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s,k){s.classList.remove('on','off')});void S[i].offsetWidth;S[i].classList.add('on');cur=i}
+    if(i>0){var p=S[i-1];if(st<.5){if(!p.classList.contains('off')){p.classList.add('off')}}else p.classList.remove('off')}
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;
+      else if(sc===S[i])an.currentTime=st*1000;
+      else an.currentTime=Math.min(st,.5)*1000;
+    });
+    [].forEach.call(S[i].querySelectorAll('.cnt'),function(el){var p=Math.max(0,Math.min(1,(st-(+el.dataset.d||0))/.9));el.textContent=fmt(+el.dataset.to*(1-Math.pow(1-p,3)))});
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render;
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>
