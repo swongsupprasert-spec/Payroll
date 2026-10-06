@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>น้อง eSim 3D — มาตรา 119</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#050a18;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);background:#091025}
+.A{position:absolute}
+/* ===== ฉาก 3D: ห้องทำงานแสงนุ่ม ชัดลึก ===== */
+.set{position:absolute;inset:0;overflow:hidden}
+.wall{position:absolute;inset:0;background:radial-gradient(90em 70em at 30% 30%,#2a4aa8 0%,#173070 35%,#0d1a44 65%,#091025 100%)}
+.win{position:absolute;left:8em;top:22em;width:40em;height:52em;border-radius:2em;background:linear-gradient(160deg,#7fb6ff,#3b6fd6 55%,#2a4aa8);filter:blur(1.2em);opacity:.55}
+.win::before,.win::after{content:"";position:absolute;background:#0d1a44}
+.win::before{left:49%;top:0;bottom:0;width:2%}.win::after{top:49%;left:0;right:0;height:2%}
+.rays{position:absolute;left:0;top:10em;width:120em;height:130em;background:linear-gradient(115deg,transparent 30%,#9cc8ff1f 38%,transparent 46%,#9cc8ff14 54%,transparent 62%);filter:blur(1em);animation:ry 6s ease-in-out infinite alternate}
+@keyframes ry{to{opacity:.55;transform:translateX(4em)}}
+.shelf{position:absolute;right:4em;top:34em;width:34em;height:40em;filter:blur(.9em);opacity:.7}
+.shelf i{position:absolute;left:0;right:0;height:1.4em;background:#0a1435;border-radius:1em}
+.shelf b{position:absolute;bottom:0;width:4em;border-radius:.6em .6em .2em .2em}
+.plant{position:absolute;right:6em;top:76em;width:16em;height:30em;filter:blur(.6em);opacity:.9}
+.plant::before{content:"";position:absolute;left:3em;bottom:0;width:10em;height:9em;border-radius:1em 1em 3em 3em;background:radial-gradient(circle at 35% 30%,#f2b36b,#c9773a 60%,#7a3f18)}
+.plant::after{content:"";position:absolute;left:0;top:0;width:16em;height:22em;border-radius:50% 50% 45% 45%;background:radial-gradient(circle at 40% 35%,#6fe0a0,#1f9a5a 55%,#0d5a33)}
+.floor{position:absolute;left:0;right:0;top:122em;bottom:0;background:linear-gradient(#24407e,#132656 30%,#0a1638)}
+.floor::before{content:"";position:absolute;inset:0;background:radial-gradient(50em 10em at 50% 0,#9cc8ff33,transparent 70%)}
+.vig{position:absolute;inset:0;background:radial-gradient(70em 100em at 50% 50%,transparent 55%,#050a18cc);pointer-events:none;z-index:20}
+/* กล้อง: ดอลลี่นุ่ม ๆ + พั้นช์ */
+.cam{position:absolute;inset:0;transform-origin:50% 60%}
+.on .cam{animation:dolly var(--sd,8s) cubic-bezier(.3,0,.3,1) both}
+@keyframes dolly{from{transform:scale(1.1) translateY(2em)}to{transform:scale(1)}}
+.cam2{position:absolute;inset:0;transform-origin:var(--ox,50%) 15%}
+.on .cam2.punch{animation:punch .7s var(--pd) cubic-bezier(.3,1.3,.4,1) both}
+@keyframes punch{to{transform:scale(1.12)}}
+.on .cam2.shake{animation:shake .5s var(--pd) linear both}
+@keyframes shake{0%,100%{transform:none}20%{transform:translate(-1.6em,.8em) rotate(-.6deg)}40%{transform:translate(1.6em,-.8em) rotate(.6deg)}60%{transform:translate(-1em,.4em)}80%{transform:translate(.8em,-.3em)}}
+/* ฉาก: วิปแพนเบลอ */
+.sc{position:absolute;inset:0;visibility:hidden;background:#091025}
+.sc.on{visibility:visible;animation:whip .5s cubic-bezier(.2,.9,.25,1) both}
+.sc.on.L{animation-name:whipL}
+@keyframes whip{from{transform:translateX(70%);filter:blur(2em)}to{transform:none;filter:none}}
+@keyframes whipL{from{transform:translateX(-70%);filter:blur(2em)}to{transform:none;filter:none}}
+.top{position:absolute;left:0;right:0;top:8em;text-align:center;z-index:30}
+.top span{display:inline-flex;align-items:center;gap:.5em;font-size:2.7em;font-weight:900;color:#0b1230;background:linear-gradient(#ffffff,#dfe7f7);border-radius:2em;padding:.25em 1em;box-shadow:0 .25em .6em #0007,inset 0 -.15em .2em #0b123022}
+.top i{font-style:normal;color:#fff;background:linear-gradient(150deg,#33c7a0,#1559c8);border-radius:.4em;padding:0 .35em}
+/* อนิเมชันพื้นฐาน (ease แบบแอนิเมชันมีน้ำหนัก) */
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.6s)}
+.on .pop{animation-name:pop;animation-timing-function:cubic-bezier(.2,1.5,.35,1)}
+@keyframes pop{0%{opacity:0;transform:scale(.2) translateY(3em)}55%{opacity:1;transform:scale(1.1,.92)}75%{transform:scale(.96,1.04)}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+.on .up{animation-name:up;animation-timing-function:cubic-bezier(.2,1.2,.3,1)}
+@keyframes up{from{opacity:0;transform:translateY(5em)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+.on .drop{animation-name:drop;animation-timing-function:linear;--t:.8s}
+@keyframes drop{0%{opacity:0;transform:translateY(-50em)}45%{opacity:1;transform:translateY(0) scale(1)}55%{transform:scale(1.18,.8)}70%{transform:translateY(-3em) scale(.95,1.06)}85%{transform:scale(1.04,.96)}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+.on .swing{animation-name:swing;animation-timing-function:ease-out;--t:1s;transform-origin:50% 0}
+@keyframes swing{0%{opacity:0;transform:rotate(-70deg)}30%{opacity:1;transform:rotate(25deg)}55%{transform:rotate(-12deg)}75%{transform:rotate(6deg)}100%{opacity:1;transform:rotate(0)}}
+.flt{display:inline-block}
+.on .flt{animation:flt 1.6s calc(var(--d,0s) + .6s) ease-in-out infinite alternate}
+@keyframes flt{to{transform:translateY(-1.2em) rotate(2deg)}}
+.H{position:absolute;left:5em;right:5em;text-align:center;z-index:9}
+/* ตัวหนังสือ 3D */
+.t3{font-weight:900;line-height:1.15;color:#fff;text-shadow:0 .03em 0 #c9d6f2,0 .06em 0 #9fb1d8,0 .09em 0 #6d82b3,0 .12em 0 #3d5491,0 .2em .3em #0009}
+.t3 em{font-style:normal;color:#ffd84d;text-shadow:0 .03em 0 #f0b400,0 .06em 0 #d89a00,0 .09em 0 #b37d00,0 .12em 0 #8a5f00,0 .2em .3em #0009}
+.t3.r{color:#ff8a8a;text-shadow:0 .03em 0 #e5484d,0 .06em 0 #c0353a,0 .09em 0 #9a2429,0 .12em 0 #6e161a,0 .2em .3em #0009}
+/* การ์ดดินน้ำมันมันวาว */
+.clay{position:relative;border-radius:3em;color:#0b1230;text-align:center;background:linear-gradient(170deg,#ffffff,#e4ebf8);box-shadow:0 1.6em 2.6em #0008,inset 0 -.8em 1.4em #0b123026,inset 0 .6em .8em #ffffffcc}
+.clay.y{background:linear-gradient(170deg,#ffe98a,#ffc93d)}.clay.m{background:linear-gradient(170deg,#9ff7e9,#3fd6c2)}.clay.r{background:linear-gradient(170deg,#ffb3b3,#ff6b6b)}.clay.b{background:linear-gradient(170deg,#c7dbff,#7fa6ff)}
+.clay.k{background:linear-gradient(170deg,#25407f,#132656);color:#fff;box-shadow:0 1.6em 2.6em #0008,inset 0 -.8em 1.4em #0006,inset 0 .4em .6em #ffffff33}
+.num{display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;font-weight:900;color:#fff;background:radial-gradient(circle at 35% 30%,#ff9b9b,#e5484d 55%,#9a1f24);box-shadow:0 .15em .3em #0008,inset 0 -.1em .15em #0005}
+/* ===== ตัวละคร 3D (ไม่มีเส้นขอบ แรเงานุ่ม) ===== */
+.p3{position:absolute;width:36em;height:66em;z-index:5}
+.p3 .aoc{position:absolute;left:3em;right:3em;bottom:-2em;height:5em;border-radius:50%;background:radial-gradient(#000a,transparent 70%)}
+.p3 .lg{position:absolute;top:44em;width:7.4em;height:18em;border-radius:3.5em 3.5em 2em 2em;background:linear-gradient(90deg,#1c2850,#33427a 45%,#141d3d);transform-origin:50% 0}
+.p3 .lg.l{left:9.4em}.p3 .lg.r{left:19.2em}
+.p3 .lg::after{content:"";position:absolute;left:-1.6em;bottom:-2em;width:10.4em;height:4.6em;border-radius:3em 3em 1.6em 1.6em;background:radial-gradient(circle at 35% 25%,#5b4636,#2b1d14 70%)}
+.p3 .ub{position:absolute;inset:0;transform-origin:50% 75%}
+.on .p3 .ub{animation:br 2.4s ease-in-out infinite alternate}
+@keyframes br{to{transform:translateY(-.6em) scale(1.01,.995)}}
+.p3 .bd{position:absolute;left:7.4em;top:25em;width:21.2em;height:23em;border-radius:46% 46% 38% 38%/52% 52% 42% 42%;box-shadow:inset -2em -1.4em 2.4em #0007,inset 1.4em 1.2em 1.6em #ffffff40}
+.p3 .am{position:absolute;top:27em;width:6.2em;height:18em;border-radius:3.2em;transform-origin:50% 2.6em;z-index:3;box-shadow:inset -1em -.6em 1.2em #0006,inset .6em .6em .8em #ffffff35}
+.p3 .am.l{left:3.6em;transform:rotate(12deg)}.p3 .am.r{right:3.6em;transform:rotate(-12deg)}
+.p3 .am::after{content:"";position:absolute;left:-.4em;bottom:-3.6em;width:7em;height:7em;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe2cf,#f2b08e 55%,#c97a5a)}
+.p3 .hd{position:absolute;left:3em;top:-1em;width:30em;height:29em;z-index:4;transform-origin:50% 92%}
+.p3 .ear{position:absolute;top:12em;width:5em;height:6.4em;border-radius:50%;background:radial-gradient(circle at 40% 40%,#ffd2b8,#e89b78 60%,#b86a4c)}
+.p3 .ear.l{left:-1.4em}.p3 .ear.r{right:-1.4em}
+.p3 .fc{position:absolute;inset:0;border-radius:48% 48% 46% 46%/50% 50% 50% 50%;background:radial-gradient(circle at 38% 32%,#ffe6d4 0%,#ffcfb1 30%,#f0a985 62%,#c97a5a 100%);box-shadow:inset -2em -2.4em 3em #8a3f2244,0 1.4em 2em #0005}
+.p3 .ck{position:absolute;top:18em;width:6em;height:3.4em;border-radius:50%;background:radial-gradient(#ff8fa3aa,transparent 70%)}
+.p3 .ck.l{left:3.4em}.p3 .ck.r{right:3.4em}
+.p3 .eye{position:absolute;top:10.4em;width:7.2em;height:8.4em;border-radius:50%;background:radial-gradient(circle at 45% 40%,#fff,#eef2f8 60%,#c9d2e6);box-shadow:inset 0 .8em .8em #00000026;overflow:hidden}
+.p3 .eye.l{left:6.4em}.p3 .eye.r{right:6.4em}
+.p3 .iris{position:absolute;left:1.2em;top:1.8em;width:4.8em;height:5.2em;border-radius:50%;background:radial-gradient(circle at 50% 55%,#0b0b14 0 30%,#5a3a1e 32%,#8a5a2e 60%,#3a220f 100%)}
+.p3 .iris::before{content:"";position:absolute;left:.7em;top:.7em;width:1.7em;height:1.7em;border-radius:50%;background:#fff}
+.p3 .iris::after{content:"";position:absolute;right:.9em;bottom:1em;width:.8em;height:.8em;border-radius:50%;background:#ffffffcc}
+.p3 .lid{position:absolute;left:-1em;right:-1em;top:-1em;height:10em;border-radius:50%;background:linear-gradient(#f5b896,#e8a07c);transform:scaleY(0);transform-origin:50% 0;animation:blink 3.4s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(0)}95%{transform:scaleY(1)}}
+.p3 .brw{position:absolute;top:7.6em;width:6.4em;height:1.6em;border-radius:1em 1em .4em .4em;background:linear-gradient(#5a3a22,#3a220f)}
+.p3 .brw.l{left:6.8em;transform:rotate(-4deg)}.p3 .brw.r{right:6.8em;transform:rotate(4deg)}
+.p3 .nose{position:absolute;left:12.6em;top:16.6em;width:4.8em;height:3.6em;border-radius:50%;background:radial-gradient(circle at 40% 35%,#ffd9c4,#ee9c78 70%)}
+.p3 .mth{position:absolute;left:11.4em;top:20.8em;width:7.2em;height:3.6em;border-radius:.8em .8em 4em 4em;background:radial-gradient(circle at 50% 100%,#ff7c8f 0 35%,#6b1424 37%);transform:scaleY(.35);transform-origin:50% 0;box-shadow:inset 0 .4em 0 #fff}
+.p3 .hair{position:absolute;z-index:5}
+/* พนักงาน: ผมสีน้ำตาลปัดข้าง เสื้อฟ้า */
+.emp .bd{background:radial-gradient(circle at 35% 25%,#7fb1ff,#2f6bff 55%,#1a3fa8)}
+.emp .am{background:linear-gradient(90deg,#4a83ff,#2f6bff 50%,#1a3fa8)}
+.emp .bd::after{content:"";position:absolute;left:50%;top:1em;width:3.4em;height:12em;margin-left:-1.7em;border-radius:.4em .4em 1.6em 1.6em;background:linear-gradient(90deg,#ff8a6b,#e5484d 50%,#a82a2e);clip-path:polygon(15% 0,85% 0,100% 85%,50% 100%,0 85%)}
+.emp .bd::before{content:"";position:absolute;left:50%;top:-.6em;width:11em;height:5em;margin-left:-5.5em;background:#fff;clip-path:polygon(0 0,100% 0,62% 100%,38% 100%);border-radius:1em}
+.emp .hair{left:-.6em;top:-2.4em;width:31.2em;height:13em;border-radius:15em 15em 5em 9em;background:radial-gradient(circle at 30% 30%,#b9784a,#7a4524 50%,#4a2510);box-shadow:inset -1.4em -1em 1.6em #0005}
+.emp .hair::after{content:"";position:absolute;left:4em;top:2em;width:14em;height:2.2em;border-radius:2em;background:#ffffff38;transform:rotate(-10deg)}
+.emp .hair::before{content:"";position:absolute;right:-1em;top:4em;width:13em;height:12em;border-radius:50% 0 50% 50%;background:inherit;transform:rotate(20deg)}
+/* หัวหน้า: หัวล้านมันวาว หนวด สูทแดงเข้ม */
+.boss .bd{background:radial-gradient(circle at 35% 25%,#ff8f8f,#c8364a 55%,#7a1626);width:24em;left:6em}
+.boss .am{background:linear-gradient(90deg,#d9475a,#c8364a 50%,#7a1626)}
+.boss .bd::before{content:"";position:absolute;left:50%;top:-.6em;width:11em;height:5em;margin-left:-5.5em;background:#fff;clip-path:polygon(0 0,100% 0,62% 100%,38% 100%);border-radius:1em}
+.boss .bd::after{content:"BOSS";position:absolute;right:2.4em;top:8em;font-size:2em;font-weight:900;color:#ffd84d}
+.boss .hair{left:-3.6em;top:7em;width:37.2em;height:13em;background:radial-gradient(ellipse at center,#e3e6ee 0,#a7afc0 50%,transparent 56%) left/8em 13em no-repeat,radial-gradient(ellipse at center,#e3e6ee 0,#a7afc0 50%,transparent 56%) right/8em 13em no-repeat}
+.boss .fc::after{content:"";position:absolute;left:9em;top:2.2em;width:9em;height:3.6em;border-radius:50%;background:radial-gradient(#ffffffaa,transparent 70%)}
+.boss .mus{position:absolute;left:9.6em;top:19.6em;width:10.8em;height:3.4em;border-radius:50% 50% 30% 30%;background:radial-gradient(circle at 50% 20%,#c9ced8,#8a93a6 70%);z-index:6;clip-path:polygon(0 60%,15% 10%,50% 30%,85% 10%,100% 60%,80% 100%,50% 70%,20% 100%)}
+.boss .brw{background:linear-gradient(#c9ced8,#8a93a6);height:2em}
+/* พูด */
+body.temp .emp .mth,body.tboss .boss .mth{animation:talk .13s ease-in-out infinite alternate}
+@keyframes talk{from{transform:scaleY(.3)}to{transform:scaleY(1.1)}}
+body.temp .emp .hd,body.tboss .boss .hd{animation:hb .5s ease-in-out infinite alternate}
+@keyframes hb{from{transform:rotate(-3deg)}to{transform:rotate(3deg) translateY(-.4em)}}
+/* ท่าทาง (มี anticipation + overshoot) */
+.on .p3.point .am.r{animation:pt .6s var(--g,0s) cubic-bezier(.3,1.6,.4,1) both}
+@keyframes pt{0%{transform:rotate(-12deg)}25%{transform:rotate(10deg)}100%{transform:rotate(-100deg)}}
+.on .p3.point .hd{animation:lean .6s var(--g,0s) ease-out both}
+@keyframes lean{to{transform:rotate(-6deg) translateX(-1em)}}
+.on .p3.angry .brw.l{animation:bal .3s var(--g,0s) both}.on .p3.angry .brw.r{animation:bar .3s var(--g,0s) both}
+@keyframes bal{to{transform:rotate(18deg) translateY(1.2em)}}@keyframes bar{to{transform:rotate(-18deg) translateY(1.2em)}}
+.on .p3.angry .fc{animation:red .5s var(--g,0s) both}
+@keyframes red{to{background:radial-gradient(circle at 38% 32%,#ffd0c4 0%,#ff9e8a 35%,#e8604a 70%,#a8302a 100%)}}
+.on .p3.shock .am.l{animation:skl .4s var(--g,0s) cubic-bezier(.3,1.6,.4,1) both}.on .p3.shock .am.r{animation:skr .4s var(--g,0s) cubic-bezier(.3,1.6,.4,1) both}
+@keyframes skl{to{transform:rotate(150deg)}}@keyframes skr{to{transform:rotate(-150deg)}}
+.on .p3.shock .eye{animation:bige .35s var(--g,0s) cubic-bezier(.3,1.8,.4,1) both}
+@keyframes bige{to{transform:scale(1.25)}}
+.on .p3.shock .ub{animation:jolt .5s var(--g,0s) cubic-bezier(.3,1.6,.4,1) both}
+@keyframes jolt{0%{transform:none}30%{transform:translateY(1.4em) scale(1.06,.92)}100%{transform:translateY(-1.6em) scale(.97,1.04)}}
+.on .p3.worry .am.r{animation:wr .5s var(--g,0s) both}
+@keyframes wr{to{transform:rotate(-165deg) translate(3.6em,-2em)}}
+.on .p3.worry .brw.l{animation:wl .3s var(--g,0s) both}.on .p3.worry .brw.r{animation:wrr .3s var(--g,0s) both}
+@keyframes wl{to{transform:rotate(-16deg)}}@keyframes wrr{to{transform:rotate(16deg)}}
+.on .p3.sneak .ub{animation:snk .8s var(--g,0s) ease-in-out infinite alternate}
+@keyframes snk{from{transform:translateY(1.6em) rotate(-4deg)}to{transform:translateY(1em) rotate(4deg)}}
+.on .p3.sneak .iris{animation:ey 1s var(--g,0s) ease-in-out infinite alternate}
+@keyframes ey{from{transform:translateX(-1em)}to{transform:translateX(1em)}}
+.on .p3.hold .am.l{animation:hl .5s var(--g,0s) cubic-bezier(.3,1.5,.4,1) both}
+@keyframes hl{to{transform:rotate(70deg)}}
+.on .p3.hold .am.r{animation:hr .5s var(--g,0s) cubic-bezier(.3,1.5,.4,1) both}
+@keyframes hr{to{transform:rotate(-70deg)}}
+.on .p3.smash .am.r{animation:sm .7s var(--g,0s) cubic-bezier(.5,0,.3,1) 3 both}
+@keyframes sm{0%{transform:rotate(-12deg)}40%{transform:rotate(-170deg)}70%{transform:rotate(-40deg)}100%{transform:rotate(-12deg)}}
+.on .p3.trip{animation:trip 1s var(--g,0s) cubic-bezier(.4,0,.3,1) both;transform-origin:50% 100%}
+@keyframes trip{0%{transform:none}30%{transform:rotate(-6deg) translateX(-2em)}60%{transform:rotate(18deg) translateX(4em)}80%{transform:rotate(12deg) translateX(3em)}100%{transform:rotate(14deg) translateX(3.4em)}}
+.on .p3.trip .am.l{animation:skl .4s calc(var(--g,0s) + .3s) both}.on .p3.trip .am.r{animation:skr .4s calc(var(--g,0s) + .3s) both}
+.on .p3.walk{animation:wk var(--wt,2s) var(--wd,0s) linear both}
+@keyframes wk{from{transform:translateX(var(--wx,-70em))}to{transform:none}}
+.on .p3.walk .lg.l{animation:la .3s var(--wd,0s) ease-in-out var(--wn,6) alternate}
+.on .p3.walk .lg.r{animation:lb .3s var(--wd,0s) ease-in-out var(--wn,6) alternate}
+@keyframes la{from{transform:rotate(18deg)}to{transform:rotate(-18deg)}}@keyframes lb{from{transform:rotate(-18deg)}to{transform:rotate(18deg)}}
+.on .p3.walk .ub{animation:wb .3s var(--wd,0s) ease-in-out var(--wn,6) alternate}
+@keyframes wb{to{transform:translateY(-1.4em)}}
+.on .p3.relax .am.l{animation:rl .5s var(--g,0s) both}.on .p3.relax .am.r{animation:rr .5s var(--g,0s) both}
+@keyframes rl{to{transform:rotate(150deg) translate(-1em,2em)}}@keyframes rr{to{transform:rotate(-150deg) translate(1em,2em)}}
+.on .p3.relax .lid{animation:half .5s var(--g,0s) both}
+@keyframes half{to{transform:scaleY(.5)}}
+.on .p3.cheer{animation:jmp .45s var(--g,0s) cubic-bezier(.3,0,.5,1) 6 alternate}
+@keyframes jmp{0%{transform:scale(1.04,.94)}100%{transform:translateY(-8em) scale(.97,1.04)}}
+.on .p3.cheer .am.l{animation:skl .4s var(--g,0s) both}.on .p3.cheer .am.r{animation:skr .4s var(--g,0s) both}
+.on .p3.wave .am.r{animation:wvi .4s var(--g,0s) both,wv .45s calc(var(--g,0s) + .4s) ease-in-out infinite alternate}
+@keyframes wvi{to{transform:rotate(-140deg)}}@keyframes wv{from{transform:rotate(-150deg)}to{transform:rotate(-112deg)}}
+.on .p3.sad .hd{animation:sd .6s var(--g,0s) both}
+@keyframes sd{to{transform:rotate(7deg) translateY(1.6em)}}
+.on .p3.sad .ub{animation:sdu .6s var(--g,0s) both}
+@keyframes sdu{to{transform:translateY(1.4em) scaleY(.96)}}
+.sweat{position:absolute;right:2em;top:6em;width:3.4em;height:4.8em;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 35% 30%,#fff,#9fe0ff 40%,#3fa8e8);opacity:0;z-index:7}
+.on .sweat{animation:swt 1s var(--g,0s) ease-in infinite}
+@keyframes swt{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(7em)}}
+/* อุปกรณ์ 3D */
+.obj{position:absolute;z-index:6;opacity:0}
+.on .obj{animation:pop .6s var(--d) cubic-bezier(.2,1.5,.35,1) both}
+.bag{width:14em;height:15em;border-radius:45% 45% 40% 40%/55% 55% 45% 45%;background:radial-gradient(circle at 35% 30%,#f5d58a,#d9a441 55%,#8a5e14);box-shadow:0 1.4em 2em #0008;display:grid;place-items:center}
+.bag b{font-size:6em;color:#7a4e08;font-weight:900}
+.lapt{width:24em;height:15em;border-radius:1.4em;background:linear-gradient(160deg,#c9d2e6,#7e8aa6);box-shadow:0 1.4em 2em #0008;padding:1em}
+.lapt div{width:100%;height:100%;border-radius:.8em;background:linear-gradient(160deg,#5ef0dc,#2f5bea)}
+.crack{position:absolute;inset:0;background:linear-gradient(115deg,transparent 46%,#fff 47%,transparent 49%),linear-gradient(60deg,transparent 52%,#fff 53%,transparent 55%),linear-gradient(170deg,transparent 40%,#fff 41%,transparent 43%);opacity:0}
+.on .crack{animation:fadein .1s var(--d) both}
+@keyframes fadein{to{opacity:1}}
+.mug{width:9em;height:10em;border-radius:1em 1em 2.4em 2.4em;background:radial-gradient(circle at 35% 30%,#fff,#dfe7f7 60%,#9fb1d8);box-shadow:0 1em 1.6em #0008}
+.mug::after{content:"";position:absolute;right:-3em;top:2em;width:4em;height:5em;border-radius:50%;border:1.2em solid #dfe7f7;border-left-color:transparent}
+.server{width:26em;height:34em;border-radius:2em;background:linear-gradient(90deg,#1a2347,#2b3a6e 40%,#141b38);box-shadow:0 1.6em 2.4em #0009;padding:2em}
+.server i{display:block;height:4em;margin-bottom:1.4em;border-radius:1em;background:linear-gradient(90deg,#0b1230,#16224a);position:relative}
+.server i::after{content:"";position:absolute;right:1.2em;top:1.3em;width:1.4em;height:1.4em;border-radius:50%;background:#5ae39a;box-shadow:0 0 1em #5ae39a}
+.on .server.boom i::after{animation:ledr .2s var(--d) steps(1) infinite alternate}
+@keyframes ledr{to{background:#ff4040;box-shadow:0 0 1.4em #ff4040}}
+.spark{position:absolute;font-size:8em;opacity:0;z-index:8}
+.on .spark{animation:spk .4s var(--d) steps(2) 6 alternate}
+@keyframes spk{from{opacity:1;transform:scale(.8) rotate(-10deg)}to{opacity:.6;transform:scale(1.2) rotate(10deg)}}
+.letter{width:28em;height:34em;border-radius:1.6em;background:linear-gradient(170deg,#fff,#eef2f8);box-shadow:0 1.6em 2.4em #0008;color:#0b1230;padding:2.4em;text-align:center}
+.letter b{display:block;font-size:3.6em;font-weight:900;color:#e5484d}
+.letter i{display:block;height:1.2em;border-radius:1em;background:#d7e1f0;margin-top:1.6em}
+.cal3{display:flex;gap:1.6em}
+.cal3 div{width:16em;border-radius:1.6em;overflow:hidden;background:#fff;box-shadow:0 1.2em 2em #0008;text-align:center;color:#0b1230;opacity:0}
+.cal3 div b{display:block;background:linear-gradient(#ff7b7b,#e5484d);color:#fff;font-size:2.6em;padding:.2em}
+.cal3 div span{display:block;font-size:7em;font-weight:900;line-height:1.3;color:#e5484d}
+.on .cal3 div{animation:pop .5s var(--d) cubic-bezier(.2,1.5,.35,1) both}
+.chair{width:30em;height:16em}
+.chair::before{content:"";position:absolute;left:0;bottom:0;width:30em;height:6em;border-radius:1em;background:repeating-linear-gradient(90deg,#ff8a6b 0 3em,#fff 3em 6em);transform:skewX(-20deg)}
+.bars{position:absolute;left:22em;right:22em;top:-100em;height:96em;display:flex;justify-content:space-around;padding:0 4em;z-index:12;opacity:0}
+.bars i{width:3em;height:100%;border-radius:2em;background:linear-gradient(90deg,#5b6684,#c9d2e6 40%,#3a4466)}
+.on .bars{animation:barsd .7s var(--d) cubic-bezier(.5,0,.3,1.4) both}
+@keyframes barsd{from{opacity:1;transform:none}to{opacity:1;transform:translateY(128em)}}
+.gavel{width:24em;height:10em;position:relative}
+.gavel::before{content:"";position:absolute;left:6em;top:0;width:12em;height:6em;border-radius:2em;background:linear-gradient(#b9784a,#7a4524)}
+.gavel::after{content:"";position:absolute;left:11.2em;top:5em;width:1.8em;height:12em;border-radius:1em;background:linear-gradient(90deg,#b9784a,#7a4524)}
+.on .gavel.hit{animation:gv .5s var(--d) cubic-bezier(.5,0,.3,1) 2 both;transform-origin:50% 100%}
+@keyframes gv{0%{transform:rotate(-40deg)}60%{transform:rotate(15deg)}100%{transform:rotate(-40deg)}}
+.book{width:34em;height:24em;border-radius:1.6em;background:linear-gradient(90deg,#7a1626,#c8364a 48%,#5a0f1c 50%,#c8364a 52%,#7a1626);box-shadow:0 1.6em 2.6em #0009;display:grid;place-items:center;text-align:center;padding:2em}
+.book b{font-size:3.4em;font-weight:900;color:#ffd84d;line-height:1.2;text-shadow:0 .1em .2em #0008}
+.glowr{position:absolute;border-radius:50%;filter:blur(4em);background:#ffd84d66;opacity:0}
+.on .glowr{animation:gl 1s var(--d) ease-out both}
+@keyframes gl{0%{opacity:0;transform:scale(.4)}60%{opacity:1}100%{opacity:.6;transform:scale(1)}}
+/* น้อง eSim */
+.es{position:absolute;background:no-repeat center/contain;z-index:7;filter:drop-shadow(0 1.6em 1.4em #0009) drop-shadow(0 0 1.2em #9cc8ff66)}
+.on .es.a{animation:esin .7s var(--d) cubic-bezier(.2,1.5,.35,1) both}
+@keyframes esin{0%{opacity:0;transform:translateY(20em) scale(.4)}60%{opacity:1;transform:translateY(-2em) scale(1.05,.95)}100%{opacity:1;transform:none}}
+.esw{position:absolute;z-index:7}
+body.tes .esw.ta{animation:estalk .18s ease-in-out infinite alternate}
+@keyframes estalk{from{transform:none}to{transform:scale(1.03,.97) translateY(.5em)}}
+.logo{display:flex;align-items:center;justify-content:center;gap:1.6em}
+.logo .ic{width:10em;height:10em;border-radius:28%;display:grid;place-items:center;background:linear-gradient(150deg,#33c7a0,#1559c8);box-shadow:0 1.2em 2em #0008,inset 0 -.6em 1em #0004,inset 0 .5em .6em #ffffff55}
+.logo .ic b{font-size:7.6em;font-weight:900;color:#fff;line-height:1;margin-top:-.12em}
+.logo .tx{font-size:6.6em;font-weight:900;letter-spacing:-.03em;text-shadow:0 .1em .2em #0008}.logo .tx i{font-style:normal;color:#5ae39a}
+.cta{display:inline-block;font-size:5.4em;font-weight:900;color:#fff;border-radius:1em;padding:.4em 1.2em;background:linear-gradient(#ff7b7b,#e5484d);box-shadow:0 .3em .5em #0008,inset 0 -.15em .25em #0004,inset 0 .12em .15em #ffffff66}
+.on .cta.a{animation:pop .6s var(--d) cubic-bezier(.2,1.5,.35,1) both,bob .8s calc(var(--d) + .6s) ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(.3em) scale(1.04)}}
+/* บอลลูน + ซับ */
+.bub{position:absolute;z-index:10;opacity:0;animation:bIn .4s var(--d) cubic-bezier(.2,1.5,.35,1) forwards,bOut .2s var(--e) ease-in forwards}
+@keyframes bIn{from{opacity:0;transform:scale(.3) translateY(3em)}to{opacity:1;transform:none}}
+@keyframes bOut{to{opacity:0;transform:scale(.7)}}
+.bub .in{position:relative;border-radius:3em;padding:1.6em 2.4em;color:#0b1230;background:linear-gradient(170deg,#fff,#e4ebf8);box-shadow:0 1.4em 2.2em #0008,inset 0 -.6em 1em #0b123022}
+.bub .in span{font-size:4em;font-weight:900;line-height:1.3}
+.bub .in small{display:block;font-size:2.3em;font-weight:900;margin-bottom:.2em}
+.bub.boss{left:3em;top:40em;max-width:62em;transform-origin:15% 100%}.bub.boss small{color:#c8364a}
+.bub.emp{right:3em;top:40em;max-width:62em;transform-origin:85% 100%}.bub.emp small{color:#2f6bff}
+.bub.boss .in::after,.bub.emp .in::after{content:"";position:absolute;bottom:-3em;width:6em;height:6em;background:#e8eef9;clip-path:polygon(0 0,100% 0,30% 100%)}
+.bub.boss .in::after{left:9em}.bub.emp .in::after{right:9em;transform:scaleX(-1)}
+.sub{position:absolute;left:7em;right:13em;bottom:40em;text-align:center;z-index:25;opacity:0;animation:sIn .3s var(--d) cubic-bezier(.2,1.4,.35,1) forwards,sOut .2s var(--e) ease-in forwards}
+@keyframes sIn{from{opacity:0;transform:translateY(1.5em) scale(.92)}to{opacity:1;transform:none}}
+@keyframes sOut{to{opacity:0}}
+.sub span{display:inline-block;font-size:3.5em;font-weight:900;color:#fff;background:linear-gradient(170deg,#1f3a80ee,#0d1a44ee);border-radius:.8em;padding:.3em .9em;line-height:1.4;box-shadow:0 .3em .6em #0008,inset 0 .08em .1em #ffffff44}
+#bar{position:absolute;left:0;bottom:0;height:.7em;background:linear-gradient(90deg,#ffd84d,#5ef0dc);width:0;z-index:50}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div class="top"><span><i>e</i> น้อง eSim · รู้ทันสิทธิ</span></div>
+<!-- 0 HOOK -->
+<section class="sc" data-t="13.24">
+ <div class="cam" style="--sd:13.24s"><div class="cam2 punch" style="--pd:0.60s;--ox:30%">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="p3 boss point angry" style="left:3em;top:58em;--g:0.60s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div><div class="mus"></div></div></div></div>
+  <div class="p3 emp shock" style="right:3em;top:58em;--g:1.80s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div></div></div></div>
+  <div class="H" style="top:16em"><div class="a pop" style="--d:3.17s"><span class="t3" style="font-size:6.6em">โดนไล่ออก ≠ <em>ได้เงินชดเชย</em></span></div></div>
+  <div class="H" style="top:28em"><div class="a drop" style="--d:6.20s"><span class="t3 r" style="font-size:22em">6</span></div></div>
+  <div class="H" style="top:55em"><div class="clay r a pop" style="--d:7.10s;display:inline-block;padding:1em 2.4em;--r:-3deg"><span style="font-size:4.2em;font-weight:900">กรณี ไม่จ่ายสักบาท!</span></div></div>
+  <div class="esw ta" style="left:35em;top:94em;width:30em;height:30em"><div class="es a" style="--d:2.67s;inset:0;background-image:url(media/esim/e3c.png)"></div></div>
+ </div></div>
+<div class="bub boss" style="--d:0.52s;--e:2.92s"><div class="in"><small>หัวหน้า</small><span>คุณ! พรุ่งนี้ไม่ต้องมาทำงานแล้ว! 😤</span></div></div>
+<div class="sub" style="--d:2.92s;--e:5.85s"><span>โดนไล่ออก ≠ ได้เงินชดเชยเสมอไป!</span></div>
+<div class="sub" style="--d:5.85s;--e:10.51s"><span>มี 6 กรณี ที่นายจ้างไม่ต้องจ่ายเงินชดเชยสักบาท!</span></div>
+<div class="sub" style="--d:10.51s;--e:13.04s"><span>เช็กด่วนใน 1 นาที! ⏱️</span></div>
+</section>
+
+<!-- 1 INTRO -->
+<section class="sc L" data-t="2.78">
+ <div class="cam" style="--sd:2.78s"><div class="cam2">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="A" style="left:14em;right:14em;top:20em"><div class="clay k a pop" style="--d:.15s;padding:2.2em 1.6em"><div style="font-size:3em;font-weight:900;color:#ffd84d">⚖️ มาตรา 119</div><div style="font-size:5.4em;font-weight:900;line-height:1.2">6 กรณี<br>ไม่ต้องจ่ายชดเชย</div></div></div>
+  <div class="esw ta" style="left:24em;top:62em;width:52em;height:56em"><div class="es a" style="--d:.05s;inset:0;background-image:url(media/esim/e1c.png)"></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:2.58s"><span>สวัสดีครับ ผม “น้อง eSim” 👋</span></div>
+</section>
+
+<!-- 2 BODY1: กฎหมายปกติ vs ข้อยกเว้น -->
+<section class="sc" data-t="13.59">
+ <div class="cam" style="--sd:13.59s"><div class="cam2 shake" style="--pd:9.12s">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="H" style="top:16em"><div class="a pop" style="--d:.2s"><span class="t3" style="font-size:6.4em">ปกติ: กฎหมาย<em>เซฟ</em>ลูกจ้าง</span></div></div>
+  <div class="A" style="left:6em;top:30em;width:40em"><div class="clay m a pop" style="--d:1.40s;--r:-3deg;padding:2em 1em"><div style="font-size:9em;line-height:1">🛡️</div><div style="font-size:3.4em;font-weight:900">เลิกจ้าง = จ่ายชดเชย<br>ตามอายุงาน</div></div></div>
+  <div class="glowr" style="--d:4.97s;left:46em;top:26em;width:50em;height:44em"></div>
+  <div class="A" style="left:52em;top:32em"><div class="book a drop" style="--d:4.97s;width:40em"><b>พ.ร.บ.คุ้มครองแรงงาน<br>มาตรา 119</b></div></div>
+  <div class="A" style="left:4em;right:4em;top:66em;display:flex;gap:2em;justify-content:center">
+   <div class="clay r a pop" style="--d:10.02s;--r:-3deg;padding:1.4em 2em"><span style="font-size:3.4em;font-weight:900">❌ ไม่ต้องจ่ายค่าชดเชย</span></div>
+   <div class="clay r a pop" style="--d:10.92s;--r:3deg;padding:1.4em 2em"><span style="font-size:3.4em;font-weight:900">❌ ไม่ต้องบอกล่วงหน้า</span></div>
+  </div>
+  <div class="esw ta" style="left:34em;top:86em;width:32em;height:34em"><div class="es a" style="--d:.4s;inset:0;background-image:url(media/esim/e2c.png)"></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:4.92s"><span>ปกติ: โดนเลิกจ้าง → นายจ้างต้องจ่ายเงินชดเชยตามอายุงาน</span></div>
+<div class="sub" style="--d:4.92s;--e:9.07s"><span>แต่มี “ข้อยกเว้นร้ายแรง” ใน พ.ร.บ.คุ้มครองแรงงาน ม.119</span></div>
+<div class="sub" style="--d:9.07s;--e:13.39s"><span>ไล่ออกได้ทันที ไม่ต้องจ่ายค่าชดเชย ไม่ต้องบอกล่วงหน้า!</span></div>
+</section>
+
+<!-- 3 MID: มาสายบ่อย -->
+<section class="sc L" data-t="8.23">
+ <div class="cam" style="--sd:8.23s"><div class="cam2 punch" style="--pd:3.50s;--ox:50%">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="p3 emp walk worry" style="left:32em;top:58em;--wt:1.2s;--wd:0s;--wx:-80em;--wn:4;--g:1.2s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div></div></div></div>
+  <div class="A" style="left:6em;top:66em"><div class="a pop" style="--d:.8s"><span class="flt" style="font-size:12em">⏰</span></div></div>
+  <div class="A" style="left:4em;top:90em"><div class="clay y a pop" style="--d:1.20s;--r:-5deg;padding:.8em 1.6em"><span style="font-size:3.6em;font-weight:900">09:47 😱</span></div></div>
+  <div class="H" style="top:20em"><div class="a pop" style="--d:3.70s"><span class="t3" style="font-size:7em">มาสาย = <em>โดนไล่ฟรี?</em></span></div></div>
+  <div class="A" style="right:6em;top:62em"><div class="a drop" style="--d:4.50s"><span class="t3 r" style="font-size:16em">?</span></div></div>
+ </div></div>
+<div class="bub emp" style="--d:0.52s;--e:3.45s"><div class="in"><small>พนักงาน</small><span>แย่แล้ว! ผมมาสายบ่อย ๆ จะโดนด้วยไหม!? 😰</span></div></div>
+<div class="sub" style="--d:3.45s;--e:8.03s"><span>แบบไหนเข้าข่าย? ผิดนิดหน่อยโดนด้วยไหม? ฟังต่อ!</span></div>
+</section>
+
+<!-- 4 CASE 1 ทุจริต -->
+<section class="sc" data-t="7.35">
+ <div class="cam" style="--sd:7.35s"><div class="cam2">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="H" style="top:16em"><div class="a pop" style="--d:.15s"><span class="t3" style="font-size:6.4em"><span class="num">1</span> ทุจริต / ผิดอาญา</span></div></div>
+  <div class="p3 emp sneak hold" style="left:30em;top:58em;--g:.4s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div></div></div></div>
+  <div class="obj bag" style="--d:.7s;left:41em;top:82em"><b>฿</b></div>
+  <div class="A" style="left:4em;right:4em;top:30em;display:flex;justify-content:space-between">
+   <div class="clay y a pop" style="--d:4.42s;--r:-5deg;width:28em;padding:1.4em .5em"><div style="font-size:6em;line-height:1">💰</div><div style="font-size:3em;font-weight:900">ยักยอกเงิน</div></div>
+   <div class="clay b a pop" style="--d:5.02s;--r:3deg;width:28em;padding:1.4em .5em"><div style="font-size:6em;line-height:1">📦</div><div style="font-size:3em;font-weight:900">ขโมยของ</div></div>
+   <div class="clay r a pop" style="--d:5.62s;--r:-2deg;width:28em;padding:1.4em .5em"><div style="font-size:6em;line-height:1">🗂️</div><div style="font-size:3em;font-weight:900">ขโมยข้อมูลลูกค้า</div></div>
+  </div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:4.17s"><span>① ทุจริตต่อหน้าที่ / ทำผิดอาญาโดยเจตนากับนายจ้าง</span></div>
+<div class="sub" style="--d:4.17s;--e:7.15s"><span>เช่น ยักยอกเงิน · ขโมยของ · ขโมยข้อมูลลูกค้า</span></div>
+</section>
+
+<!-- 5 CASE 2 จงใจ -->
+<section class="sc L" data-t="5.91">
+ <div class="cam" style="--sd:5.91s"><div class="cam2 shake" style="--pd:2.80s">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="H" style="top:16em"><div class="a pop" style="--d:.15s"><span class="t3" style="font-size:6.4em"><span class="num">2</span> จงใจทำให้เสียหาย</span></div></div>
+  <div class="p3 emp smash angry" style="left:8em;top:58em;--g:1.60s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div></div></div></div>
+  <div class="A" style="left:52em;top:94em"><div class="obj lapt" style="--d:.5s;position:relative"><div></div><div class="crack" style="--d:2.80s"></div></div></div>
+  <div class="A" style="left:60em;top:74em"><div class="a pop" style="--d:2.80s"><span style="font-size:10em">💥</span></div></div>
+  <div class="A" style="left:46em;right:4em;top:34em"><div class="clay r a pop" style="--d:1.20s;--r:3deg;padding:1.6em"><span style="font-size:3.6em;font-weight:900">ตั้งใจทำของ /<br>ระบบงานพัง</span></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:5.71s"><span>② จงใจทำให้นายจ้างเสียหาย เช่น ตั้งใจทำของ/ระบบพัง</span></div>
+</section>
+
+<!-- 6 CASE 3 ประมาท -->
+<section class="sc" data-t="5.35">
+ <div class="cam" style="--sd:5.35s"><div class="cam2 shake" style="--pd:1.90s">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="H" style="top:16em"><div class="a pop" style="--d:.15s"><span class="t3" style="font-size:6.4em"><span class="num">3</span> ประมาทร้ายแรง</span></div></div>
+  <div class="A" style="left:58em;top:84em"><div class="obj server boom" style="--d:.3s;position:relative"><i></i><i></i><i></i><i></i></div></div>
+  <div class="p3 emp trip shock" style="left:8em;top:58em;--g:1.20s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div></div></div></div>
+  <div class="A" style="left:40em;top:74em"><div class="obj mug" style="--d:.3s;position:relative"></div></div>
+  <div class="A" style="left:60em;top:72em"><div class="a pop" style="--d:1.90s"><span style="font-size:10em">⚡🔥</span></div></div>
+  <div class="A" style="left:4em;right:44em;top:30em"><div class="clay y a pop" style="--d:3.00s;--r:-3deg;padding:1.4em"><span style="font-size:3.4em;font-weight:900">ไม่ได้ตั้งใจ<br>แต่สะเพร่าหนักมาก</span></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:5.15s"><span>③ ประมาทเลินเล่อ จนบริษัทเสียหายอย่างร้ายแรง</span></div>
+</section>
+
+<!-- 7 CASE 4 ฝ่าฝืน + หนังสือเตือน -->
+<section class="sc L" data-t="11.32">
+ <div class="cam" style="--sd:11.32s"><div class="cam2">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="H" style="top:16em"><div class="a pop" style="--d:.15s"><span class="t3" style="font-size:6em"><span class="num">4</span> ฝ่าฝืน + โดนเตือนแล้ว</span></div></div>
+  <div class="p3 boss hold" style="left:3em;top:58em;--g:2.00s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div><div class="mus"></div></div></div></div>
+  <div class="A" style="left:24em;top:66em"><div class="letter a swing" style="--d:2.20s;transform-origin:50% 0"><b>หนังสือเตือน</b><i></i><i style="width:70%"></i><i></i><div style="font-size:3em;font-weight:900;margin-top:.6em">ครั้งที่ 1</div></div></div>
+  <div class="p3 emp worry" style="right:3em;top:58em;--g:3.10s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div></div></div><div class="sweat" style="--g:3.10s"></div></div>
+  <div class="A" style="left:46em;right:4em;top:28em"><div class="clay r a pop" style="--d:4.20s;--r:3deg;padding:1.4em"><span style="font-size:3.4em;font-weight:900">ผิดซ้ำ ภายใน 1 ปี 🔁</span></div></div>
+  <div class="A" style="left:4em;right:52em;top:40em"><div class="clay m a pop" style="--d:6.84s;--r:-3deg;padding:1.4em"><span style="font-size:3.2em;font-weight:900">มาสายบ่อย ๆ<br>→ ต้องเตือนก่อน ✍️</span></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:6.39s"><span>④ ฝ่าฝืนระเบียบ/คำสั่ง หลังโดนหนังสือเตือน แล้วยังผิดซ้ำใน 1 ปี</span></div>
+<div class="sub" style="--d:6.39s;--e:11.12s"><span>มาสายบ่อย ๆ → ต้องเตือนเป็นหนังสือก่อน (เว้นแต่ร้ายแรงจริง)</span></div>
+</section>
+
+<!-- 8 CASE 5 ละทิ้งหน้าที่ -->
+<section class="sc" data-t="6.4">
+ <div class="cam" style="--sd:6.4s"><div class="cam2">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="H" style="top:16em"><div class="a pop" style="--d:.15s"><span class="t3" style="font-size:6.4em"><span class="num">5</span> หายไป 3 วันทำงาน</span></div></div>
+  <div class="A cal3" style="left:0;right:0;top:30em;justify-content:center">
+   <div style="--d:1.80s"><b>จ.</b><span>✕</span></div><div style="--d:2.20s"><b>อ.</b><span>✕</span></div><div style="--d:2.60s"><b>พ.</b><span>✕</span></div>
+  </div>
+  <div class="p3 emp relax" style="left:30em;top:62em;--g:.6s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div></div></div></div>
+  <div class="A" style="left:22em;top:110em"><div class="obj chair" style="--d:.4s;position:relative"></div></div>
+  <div class="A" style="left:72em;top:66em"><div class="a pop" style="--d:.8s"><span class="flt" style="font-size:10em">🏖️</span></div></div>
+  <div class="A" style="left:6em;top:68em"><div class="a pop" style="--d:3.40s"><span style="font-size:8em">📵</span></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:6.20s"><span>⑤ ละทิ้งหน้าที่ 3 วันทำงานติดต่อกัน โดยไม่มีเหตุอันสมควร</span></div>
+</section>
+
+<!-- 9 CASE 6 จำคุก -->
+<section class="sc L" data-t="6.82">
+ <div class="cam" style="--sd:6.82s"><div class="cam2 shake" style="--pd:1.80s">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="H" style="top:16em"><div class="a pop" style="--d:.15s"><span class="t3" style="font-size:6.2em"><span class="num">6</span> ติดคุก (คดีถึงที่สุด)</span></div></div>
+  <div class="p3 emp sad" style="left:32em;top:58em;--g:2.00s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div></div></div></div>
+  <div class="bars" style="--d:1.50s"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="A" style="left:6em;top:32em"><div class="obj gavel hit" style="--d:0.80s"></div></div>
+  <div class="A" style="left:44em;right:4em;top:30em"><div class="clay m a pop" style="--d:3.65s;--r:3deg;padding:1.4em"><span style="font-size:3.2em;font-weight:900">ยกเว้น ✓<br>ประมาท / ลหุโทษ</span></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:3.30s"><span>⑥ ได้รับโทษจำคุกตามคำพิพากษาถึงที่สุด</span></div>
+<div class="sub" style="--d:3.30s;--e:6.62s"><span>ยกเว้น ความผิดโดยประมาท / ความผิดลหุโทษ</span></div>
+</section>
+
+<!-- 10 สรุป -->
+<section class="sc" data-t="9.71">
+ <div class="cam" style="--sd:9.71s"><div class="cam2">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="H" style="top:16em"><div class="a pop" style="--d:.15s"><span class="t3" style="font-size:6.6em">สรุปสั้น ๆ <em>✓</em></span></div></div>
+  <div class="A" style="left:5em;right:5em;top:28em"><div class="clay m a pop" style="--d:1.60s;--r:-2deg;padding:1.8em"><div style="font-size:3.6em;font-weight:900">ไม่ได้ทำผิดร้ายแรง</div><div style="font-size:4.6em;font-weight:900">= ต้องได้เงินชดเชย 💰</div></div></div>
+  <div class="p3 emp cheer" style="right:6em;top:58em;--g:6.76s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div></div></div></div>
+  <div class="esw ta" style="left:4em;top:72em;width:44em;height:46em"><div class="es a" style="--d:.3s;inset:0;background-image:url(media/esim/e2c.png)"></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:9.51s"><span>ไม่ได้ทำผิดร้ายแรง → นายจ้างอ้างไม่จ่ายเงินชดเชยไม่ได้!</span></div>
+<div class="bub emp" style="--d:6.68s;--e:9.51s"><div class="in"><small>พนักงาน</small><span>เย้! รู้สิทธิแล้ว ไม่โดนเอาเปรียบแน่! 🙌</span></div></div>
+</section>
+
+<!-- 11 ปิด -->
+<section class="sc L" data-t="6.47">
+ <div class="cam" style="--sd:6.47s"><div class="cam2">
+  <div class="set"><div class="wall"></div><div class="win"></div><div class="rays"></div><div class="shelf"><i style="top:12em"></i><i style="top:26em"></i><i style="top:40em"></i></div><div class="plant"></div><div class="floor"></div></div>
+  <div class="logo a pop" style="--d:.2s;position:absolute;left:0;right:0;top:16em"><div class="ic"><b>e</b></div><div class="tx">eSim<i>Payroll</i></div></div>
+  <div class="A" style="left:8em;right:8em;top:30em"><div class="clay a pop" style="--d:0.60s;padding:1.6em"><span style="font-size:3.8em;font-weight:900">สงสัยกรณีของตัวเอง? 💬</span></div></div>
+  <div class="H" style="top:43em"><span class="cta a" data-sfx="chime" data-at="4.18" style="--d:4.08s">กดติดตาม 🔔</span></div>
+  <div class="p3 boss wave" style="left:2em;top:58em;--g:.6s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div><div class="mus"></div></div></div></div>
+  <div class="p3 emp wave" style="right:2em;top:58em;--g:.8s"><div class="aoc"></div><div class="lg l"></div><div class="lg r"></div><div class="ub"><div class="bd"></div><div class="am l"></div><div class="am r"></div><div class="hd"><div class="ear l"></div><div class="ear r"></div><div class="fc"><div class="ck l"></div><div class="ck r"></div><div class="eye l"><div class="iris"></div><div class="lid"></div></div><div class="eye r"><div class="iris"></div><div class="lid"></div></div><div class="brw l"></div><div class="brw r"></div><div class="nose"></div><div class="mth"></div></div><div class="hair"></div></div></div></div>
+  <div class="esw ta" style="left:35em;top:72em;width:30em;height:32em"><div class="es a" style="--d:.3s;inset:0;background-image:url(media/esim/e6c.png)"></div></div>
+  <div class="H" style="top:106em;left:30em;right:30em"><div class="a up" style="--d:4.88s;font-size:3em;font-weight:900;color:#c9d6f2">esimpayroll.com</div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:4.03s"><span>สงสัยกรณีของตัวเอง? คอมเมนต์ทิ้งไว้ได้เลย 💬</span></div>
+<div class="sub" style="--d:4.03s;--e:6.27s"><span>กดติดตามน้อง eSim ไว้ด้วยนะ 🔔</span></div>
+</section>
+
+<div class="vig"></div>
+<div id="bar"></div>
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var LINES=[{"who":"boss","s":0.6,"dur":2.02},{"who":"es","s":2.97,"dur":2.58},{"who":"es","s":5.9,"dur":4.31},{"who":"es","s":10.56,"dur":1.83},{"who":"es","s":13.84,"dur":1.33},{"who":"es","s":16.62,"dur":4.02},{"who":"es","s":20.99,"dur":3.8},{"who":"es","s":25.14,"dur":3.62},{"who":"emp","s":30.21,"dur":2.55},{"who":"es","s":33.11,"dur":3.88},{"who":"es","s":38.44,"dur":3.27},{"who":"es","s":42.06,"dur":2.28},{"who":"es","s":45.79,"dur":4.46},{"who":"es","s":51.7,"dur":3.9},{"who":"es","s":57.05,"dur":5.49},{"who":"es","s":62.89,"dur":4.03},{"who":"es","s":68.37,"dur":4.95},{"who":"es","s":74.77,"dur":2.4},{"who":"es","s":77.52,"dur":2.62},{"who":"es","s":81.59,"dur":5.81},{"who":"emp","s":87.75,"dur":2.1},{"who":"es","s":91.3,"dur":3.13},{"who":"es","s":94.78,"dur":1.54}];
+  var cur=-1,bar=document.getElementById('bar');
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on')});void S[i].offsetWidth;S[i].classList.add('on');cur=i}
+    var w={es:0,boss:0,emp:0};LINES.forEach(function(l){if(t>=l.s&&t<l.s+l.dur)w[l.who]=1});
+    for(var k in w)document.body.classList.toggle('t'+k,!!w[k]);
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;else an.currentTime=(sc===S[i]?st:0)*1000;
+    });
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render; window.__drop=ST[1];
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>

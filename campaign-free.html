@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>แคมเปญ ฟรี 1-10 คน</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{background:#dfe8f5;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#13234a}
+#st{position:relative;width:1080px;height:1350px;overflow:hidden;font-size:10.8px;
+  background:linear-gradient(165deg,#e8f1ff 0%,#f6f9ff 48%,#e6faf1 100%)}
+body.s11 #st{height:1080px} body.s916 #st{height:1920px}
+.grid{position:absolute;inset:0;background-image:linear-gradient(#2f5bea0f .15em,transparent .15em),linear-gradient(90deg,#2f5bea0f .15em,transparent .15em);background-size:8em 8em}
+.ball{position:absolute;border-radius:50%}
+.b1{width:26em;height:26em;right:-8em;top:-6em;background:radial-gradient(circle at 32% 28%,#fff 0,#a8c4ff 22%,#4f7cff 70%,#2c50c9 100%)}
+.b2{width:16em;height:16em;left:-5em;top:52%;background:radial-gradient(circle at 32% 28%,#fff 0,#a7f3d0 22%,#22c08a 70%,#0f8a62 100%)}
+.b3{width:8em;height:8em;right:8em;bottom:22%;background:radial-gradient(circle at 32% 28%,#fff 0,#ffe6a6 25%,#ffb938 70%,#e08a00 100%)}
+.b4{width:6em;height:6em;left:30em;top:5em;background:radial-gradient(circle at 32% 28%,#fff 0,#ffc8dd 25%,#ff7aa8 70%,#d94c7f 100%)}
+.wrap{position:absolute;inset:0;padding:4.4em 6.4em;display:flex;flex-direction:column;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:1.8em}
+.ico{width:9em;height:9em;border-radius:28%;display:grid;place-items:center;background:linear-gradient(150deg,#33c7a0,#1559c8);
+  box-shadow:inset 0 .6em 1em #ffffffa0,inset 0 -.8em 1.2em #0003,0 1.4em 2em -.6em #1559c877;position:relative}
+.ico b{font-size:6.6em;font-weight:900;color:#fff;line-height:1;margin-top:-.12em}
+.brand .n{font-size:5.4em;font-weight:900;letter-spacing:-.03em;color:#123a7a}.brand .n i{font-style:normal;color:#12a36b}
+.brand .t{font-size:2.5em;color:#5a6b8c;font-weight:700}
+.kick{display:inline-block;margin-top:1.2em;font-size:3.4em;font-weight:900;color:#fff;background:linear-gradient(150deg,#ff9b6b,#f2542d);border-radius:3em;padding:.25em 1em;
+  box-shadow:inset 0 .2em .3em #ffffff70,0 .5em 1.2em #f2542d55;transform:rotate(-2deg);align-self:flex-start}
+.h1{margin-top:.3em;font-size:9.4em;font-weight:900;line-height:1.08;letter-spacing:-.02em}
+.h1 em{font-style:normal;background:linear-gradient(90deg,#12a36b,#0ea5e9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin-top:.5em;font-size:3.3em;color:#3f5175;font-weight:700;line-height:1.4}
+.mid{position:relative;flex:none;display:flex;align-items:center;gap:3em;margin-top:3em}
+.list{flex:1;display:flex;flex-direction:column;gap:1.4em;z-index:2}
+.it{display:flex;align-items:center;gap:1.6em;background:#fff;border-radius:2.4em;padding:1.3em 2em;box-shadow:0 1.6em 3em -1.2em #2b4a8a40,inset 0 -.4em 0 #e7eef9}
+.ck{width:5.6em;height:5.6em;border-radius:50%;flex:none;display:grid;place-items:center;background:linear-gradient(150deg,#34d399,#12a36b);box-shadow:inset 0 .3em .4em #ffffff80}
+.it span{font-size:2.9em;font-weight:800;line-height:1.3}
+.it small{display:block;font-size:.72em;color:#6a7a98;font-weight:600}
+.hero{position:relative;width:36em;flex:none;align-self:stretch;display:flex;align-items:center;justify-content:center}
+.mascot{width:32em;height:32em;border-radius:50%;background:url(media/motion3-cover.webp) no-repeat;background-size:112em auto;background-position:-29.3em -38.7em;
+  border:1.2em solid #fff;box-shadow:0 2.4em 4em #2b4a8a40}
+.free{position:absolute;right:-1em;top:6%;width:18em;height:18em;border-radius:50%;display:grid;place-items:center;text-align:center;color:#fff;
+  background:radial-gradient(circle at 35% 30%,#ffe9a8 0,#ffc83d 35%,#f59e0b 100%);box-shadow:inset 0 -1em 1.4em #b4530944,0 1.8em 2.4em #f59e0b66;transform:rotate(10deg)}
+.free b{display:block;font-size:6.4em;font-weight:900;line-height:1;color:#7a2e00;text-shadow:0 .04em 0 #fff8}
+.free small{display:block;font-size:2.6em;font-weight:900;color:#7a2e00}
+.spark{position:absolute;width:4.4em;height:4.4em;background:#ffc93c;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
+.foot{margin-top:0;display:flex;align-items:center;justify-content:space-between;gap:2em;background:linear-gradient(150deg,#123a7a,#0b2550);border-radius:3.4em;padding:2.6em 3em;color:#fff;
+  box-shadow:0 2em 3em -1.4em #0b255088}
+.foot .l b{display:block;font-size:4em;font-weight:900}.foot .l span{font-size:2.6em;color:#b9cdf0;font-weight:600}
+.cta{font-size:3.8em;font-weight:900;color:#fff;border-radius:1em;padding:.5em 1.1em;background:linear-gradient(150deg,#34d399,#0e9f6e);box-shadow:inset 0 .2em .3em #ffffff70,0 .35em 0 #087a54;white-space:nowrap}
+.note{margin-top:.8em;font-size:2.1em;white-space:nowrap;color:#6a7a98;text-align:center}
+/* 1:1 — กะทัดรัด */
+body.s11 .wrap{padding:5em 5.6em}
+body.s11 .kick{margin-top:.8em} body.s11 .h1{font-size:8.2em} body.s11 .sub{display:none}
+body.s11 .mid{margin-top:0;gap:2em} body.s11 .list{gap:1.2em} body.s11 .it{padding:1.1em 1.8em} body.s11 .it span{font-size:2.8em} body.s11 .ck{width:5em;height:5em}
+body.s11 .it:nth-child(4){display:none}
+body.s11 .hero{width:34em} body.s11 .mascot{width:30em;height:30em;background-size:105em auto;background-position:-27.5em -36.2em} body.s11 .free{width:18em;height:18em}
+body.s11 .free b{font-size:6.4em}
+body.s11 .foot{margin-top:2.2em;padding:2em 2.6em} body.s11 .note{display:none}
+/* 9:16 — สตอรี่ */
+body.s916 .wrap{padding:9em 6.4em 10em}
+body.s916 .kick{margin-top:2em} body.s916 .h1{font-size:10.6em}
+body.s916 .mid{flex-direction:column-reverse;gap:3em;margin-top:0;justify-content:center} body.s916 .it span{font-size:3.4em} body.s916 .it{padding:1.8em 2.4em} body.s916 .h1{font-size:11em}
+body.s916 .hero{width:100%;height:34em;flex:none;align-self:auto}
+body.s916 .free{right:12em}
+body.s916 .list{flex:none;width:100%}
+</style>
+</head>
+<body>
+<div id="st">
+<div class="grid"></div><div class="ball b1"></div><div class="ball b2"></div><div class="ball b3"></div><div class="ball b4"></div>
+<div class="wrap">
+  <div class="brand"><div class="ico"><b>e</b></div><div><div class="n">eSim<i>Payroll</i></div><div class="t">โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</div></div></div>
+  <div class="kick">🎉 แพ็กเกจใหม่!</div>
+  <div class="h1">พนักงาน 1–10 คน<br><em>ใช้ฟรีตลอด</em></div>
+  <div class="sub">ทำเงินเดือนครบ จบในที่เดียว ไม่มีค่าใช้จ่าย</div>
+  <div class="mid">
+    <div class="list">
+      <div class="it"><div class="ck"><svg width="3.6em" height="3.6em" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg></div><span>คำนวณเงินเดือนอัตโนมัติ<small>ภาษี · ประกันสังคม · กองทุน · OT</small></span></div>
+      <div class="it"><div class="ck"><svg width="3.6em" height="3.6em" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg></div><span>ออกสลิป + เอกสารยื่นครบ<small>50 ทวิ · ภ.ง.ด.1 · สปส.1-10</small></span></div>
+      <div class="it"><div class="ck"><svg width="3.6em" height="3.6em" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg></div><span>ไม่ต้องติดตั้ง<small>ใช้ได้ทั้งคอมและมือถือ</small></span></div>
+      <div class="it"><div class="ck"><svg width="3.6em" height="3.6em" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg></div><span>ไม่ต้องใช้บัตรเครดิต<small>สมัครแล้วใช้ได้ทันที</small></span></div>
+    </div>
+    <div class="hero">
+      <div class="mascot"></div>
+      <div class="free"><div><b>ฟรี</b><small>ตลอดไป</small></div></div>
+      <div class="spark" style="left:2em;top:12%"></div><div class="spark" style="left:6em;bottom:10%;width:3em;height:3em"></div><div class="spark" style="right:3em;bottom:14%;width:5.4em;height:5.4em"></div>
+    </div>
+  </div>
+  <div class="foot"><div class="l"><b>สมัครใช้ฟรีวันนี้</b><span>esimpayroll.com</span></div><div class="cta">เริ่มใช้ฟรี →</div></div>
+  <div class="note">แพ็กเกจมาตรฐาน ไม่เกิน 10 คน · ลงเวลา/ลางานผ่านมือถือ อัปเกรดพรีเมี่ยม 590 บาท/เดือน</div>
+</div>
+</div>
+<script>var s=(location.search.match(/s=(\w+)/)||[])[1];if(s)document.body.classList.add('s'+s);</script>
+</body>
+</html>

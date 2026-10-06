@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>น้อง eSim — เงินเดือนเท่าไหร่ต้องเสียภาษี</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#091025;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);background:#091025}
+/* ---------- พื้นคอลลาจที่ขยับตลอด ---------- */
+.dots{position:absolute;inset:0;background-image:radial-gradient(#ffffff12 .32em,transparent .38em);background-size:2.6em 2.6em;animation:dd 10s linear infinite}
+@keyframes dd{to{background-position:2.6em 5.2em}}
+.strip{position:absolute;left:-20em;right:-20em;height:22em;clip-path:polygon(0 12%,4% 0,9% 10%,15% 2%,22% 12%,30% 0,37% 9%,45% 1%,52% 11%,60% 0,68% 10%,76% 2%,84% 12%,92% 1%,100% 9%,100% 88%,95% 100%,88% 90%,80% 99%,72% 88%,64% 100%,56% 91%,48% 100%,40% 89%,32% 99%,24% 90%,16% 100%,8% 88%,0 97%)}
+.s1{top:24em;background:#13204a;transform:rotate(-8deg);animation:sl1 12s ease-in-out infinite alternate}
+.s2{top:96em;background:#0f1a3d;transform:rotate(6deg);animation:sl2 14s ease-in-out infinite alternate}
+.s3{top:150em;background:#152557;transform:rotate(-4deg);animation:sl1 11s ease-in-out infinite alternate-reverse}
+@keyframes sl1{from{translate:-8em 0}to{translate:8em 0}}
+@keyframes sl2{from{translate:8em 0}to{translate:-8em 0}}
+.scrap{position:absolute;opacity:.16;font-weight:900;color:#7fb4ff;animation:fl 9s ease-in-out infinite alternate}
+@keyframes fl{to{transform:translate(3em,-6em) rotate(12deg)}}
+.top{position:absolute;left:0;right:0;top:8em;text-align:center;z-index:9}
+.top span{display:inline-flex;align-items:center;gap:.5em;font-size:2.8em;font-weight:900;color:#fff;background:linear-gradient(150deg,#2f5bea,#12a3a0);border-radius:2em;padding:.3em 1em;box-shadow:0 .5em 1.2em #0006}
+.top i{font-style:normal;background:#fff;color:#2f5bea;border-radius:.4em;padding:0 .35em;font-size:.9em}
+/* ---------- ฉาก ---------- */
+.sc{position:absolute;inset:0;visibility:hidden}
+.sc.on{visibility:visible;animation:zin .4s cubic-bezier(.2,1.5,.4,1) both}
+.sc.off{visibility:visible;animation:rip .38s cubic-bezier(.6,0,.9,.4) forwards}
+@keyframes zin{from{transform:translateY(-6em) rotate(-4deg) scale(.9);opacity:0}to{transform:none;opacity:1}}
+@keyframes rip{to{transform:translateY(40em) rotate(14deg);opacity:0;clip-path:polygon(0 0,100% 0,100% 60%,0 80%)}}
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.45s)}
+/* แปะ (slap) — ทุกชิ้นหมุนตาม --r */
+.on .slap{animation-name:slap;animation-timing-function:cubic-bezier(.2,1.6,.4,1)}
+@keyframes slap{0%{opacity:0;transform:scale(1.7) rotate(calc(var(--r,0deg) - 14deg))}60%{opacity:1;transform:scale(.94) rotate(calc(var(--r,0deg) + 3deg))}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+.on .up{animation-name:up;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+@keyframes up{from{opacity:0;transform:translateY(5em) rotate(var(--r,0deg))}to{opacity:1;transform:rotate(var(--r,0deg))}}
+.on .swing{animation-name:swing;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+@keyframes swing{from{opacity:0;transform:translateX(-50em) rotate(-30deg)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+/* ตัวหนังสือตัดแปะ */
+.rn{display:flex;flex-wrap:wrap;justify-content:center;gap:.6em .8em}
+.rn span{display:inline-block;font-weight:900;line-height:1.15;padding:.08em .3em;box-shadow:.12em .14em 0 #0009}
+.rn span:nth-child(5n+1){background:#fff;color:#10245a;transform:rotate(-3deg)}
+.rn span:nth-child(5n+2){background:#ffd84d;color:#10245a;transform:rotate(2deg)}
+.rn span:nth-child(5n+3){background:#5ef0dc;color:#062a2a;transform:rotate(-2deg)}
+.rn span:nth-child(5n+4){background:#2f6bff;color:#fff;transform:rotate(3deg)}
+.rn span:nth-child(5n+5){background:#ff6b6b;color:#fff;transform:rotate(-1deg)}
+.H{position:absolute;left:5em;right:5em;text-align:center;z-index:6}
+.mid{font-size:5.4em;font-weight:900;line-height:1.3;text-shadow:0 .08em 0 #0008}
+em{font-style:normal;color:#ffd84d}
+.paper{background:#fdf8ec;color:#10245a;box-shadow:.6em .8em 0 #0008;clip-path:polygon(0 2%,6% 0,14% 2%,22% 0,30% 2%,38% 0,46% 2%,54% 0,62% 2%,70% 0,78% 2%,86% 0,94% 2%,100% 0,99% 50%,100% 100%,92% 98%,84% 100%,76% 98%,68% 100%,60% 98%,52% 100%,44% 98%,36% 100%,28% 98%,20% 100%,12% 98%,4% 100%,0 98%,1% 50%)}
+.tape{position:absolute;width:15em;height:4.4em;background:#5ef0dc77;box-shadow:inset 0 0 0 .2em #ffffff22;z-index:3}
+.pol{background:#fff;padding:1.6em 1.6em 5.4em;box-shadow:.8em 1em 0 #0009;position:relative}
+.pol .ph{display:grid;place-items:center;overflow:hidden}
+.pol .cap{position:absolute;left:0;right:0;bottom:1.2em;text-align:center;color:#10245a;font-weight:900;font-size:3em;font-style:italic}
+.stick{position:absolute;background:no-repeat center/contain;z-index:5;
+  filter:drop-shadow(.6em 0 0 #fff) drop-shadow(-.6em 0 0 #fff) drop-shadow(0 .6em 0 #fff) drop-shadow(0 -.6em 0 #fff) drop-shadow(.8em 1.2em 0 #0008)}
+.on .stick.a{animation:sin .6s var(--d) cubic-bezier(.2,1.6,.4,1) both,sbob 1.5s calc(var(--d) + .6s) ease-in-out infinite alternate}
+@keyframes sin{0%{opacity:0;transform:scale(1.8) rotate(-20deg)}60%{opacity:1;transform:scale(.92) rotate(4deg)}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes sbob{from{transform:rotate(var(--r,0deg))}to{transform:translateY(-1.4em) rotate(calc(var(--r,0deg) - 3deg))}}
+.burst{display:grid;place-items:center;text-align:center;background:#ffd84d;color:#10245a;font-weight:900;
+  clip-path:polygon(50% 0,61% 18%,82% 8%,79% 30%,100% 34%,85% 50%,100% 66%,79% 70%,82% 92%,61% 82%,50% 100%,39% 82%,18% 92%,21% 70%,0 66%,15% 50%,0 34%,21% 30%,18% 8%,39% 18%)}
+.stamp{display:inline-block;font-weight:900;color:#ff5a5f;border:.14em solid #ff5a5f;border-radius:.25em;padding:.05em .45em;background:#fdf8ecee;transform:rotate(-12deg)}
+.on .slam{animation:slam .35s var(--d) cubic-bezier(.2,1.6,.4,1) both}
+@keyframes slam{from{opacity:0;transform:scale(3) rotate(-12deg)}to{opacity:1;transform:rotate(-12deg)}}
+.scrib path{fill:none;stroke:#ffd84d;stroke-width:1.4;stroke-linecap:round;stroke-dasharray:120;stroke-dashoffset:120}
+.on .scrib path{animation:draw .7s var(--d) ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.coin{position:absolute;width:9em;height:9em;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b0 0,#ffcf3f 35%,#e7a400 100%);display:grid;place-items:center;font-weight:900;color:#8a5700;opacity:0}
+.coin b{font-size:4em}
+.on .coin{animation:cdrop .7s var(--d) cubic-bezier(.5,0,.7,1) forwards}
+@keyframes cdrop{0%{opacity:1;transform:translateY(-40em) rotate(0)}85%{opacity:1;transform:translateY(0) rotate(300deg)}100%{opacity:0;transform:translateY(2em) scale(.6)}}
+.fly{position:absolute;font-size:9em;opacity:0}
+.on .fly{animation:flyaway 1.6s var(--d) ease-in forwards}
+@keyframes flyaway{0%{opacity:1;transform:none}100%{opacity:0;transform:translate(var(--x),-60em) rotate(40deg)}}
+.logo{display:flex;align-items:center;justify-content:center;gap:1.6em}
+.logo .ic{width:9em;height:9em;border-radius:28%;display:grid;place-items:center;background:linear-gradient(150deg,#33c7a0,#1559c8);box-shadow:inset 0 .6em 1em #ffffffa0,inset 0 -.8em 1.2em #0003}
+.logo .ic b{font-size:7em;font-weight:900;color:#fff;line-height:1;margin-top:-.12em}
+.logo .tx{font-size:6em;font-weight:900;letter-spacing:-.03em}.logo .tx i{font-style:normal;color:#5ae39a}
+.cta2{display:inline-block;font-size:5.4em;font-weight:900;color:#fff;border-radius:1em;padding:.45em 1.3em;background:linear-gradient(150deg,#ff6b6b,#e5484d);box-shadow:inset 0 .2em .3em #ffffff70,0 .35em 0 #b4232e}
+.on .cta2.a{animation:slap .5s var(--d) cubic-bezier(.2,1.7,.4,1) both,nod .9s calc(var(--d) + .5s) ease-in-out infinite alternate}
+@keyframes nod{to{transform:translateY(.25em) scale(1.04)}}
+
+/* แผ่นกระดาษฉีกเปิดฉาก */
+.ripL,.ripR,.ripLw,.ripRw{position:absolute;inset:-1em;z-index:15;pointer-events:none}
+.ripL,.ripR{background:linear-gradient(170deg,#1b2b5e,#101b44)}
+.ripLw,.ripRw{background:#e9e2cf}
+.ripL{clip-path:polygon(0 0,55% 0,52% 4%,57% 9%,51% 14%,56% 19%,50% 25%,55% 31%,52% 37%,58% 43%,51% 49%,56% 55%,50% 61%,57% 67%,52% 73%,56% 79%,50% 85%,55% 91%,52% 96%,54% 100%,0 100%)}.ripLw{clip-path:polygon(0 0,56.4% 0,53.4% 4%,58.4% 9%,52.4% 14%,57.4% 19%,51.4% 25%,56.4% 31%,53.4% 37%,59.4% 43%,52.4% 49%,57.4% 55%,51.4% 61%,58.4% 67%,53.4% 73%,57.4% 79%,51.4% 85%,56.4% 91%,53.4% 96%,55.4% 100%,0 100%)}
+.ripR{clip-path:polygon(55% 0,100% 0,100% 100%,54% 100%,52% 96%,55% 91%,50% 85%,56% 79%,52% 73%,57% 67%,50% 61%,56% 55%,51% 49%,58% 43%,52% 37%,55% 31%,50% 25%,56% 19%,51% 14%,57% 9%,52% 4%)}.ripRw{clip-path:polygon(53.6% 0,100% 0,100% 100%,52.6% 100%,50.6% 96%,53.6% 91%,48.6% 85%,54.6% 79%,50.6% 73%,55.6% 67%,48.6% 61%,54.6% 55%,49.6% 49%,56.6% 43%,50.6% 37%,53.6% 31%,48.6% 25%,54.6% 19%,49.6% 14%,55.6% 9%,50.6% 4%)}
+.on .ripL,.on .ripLw{animation:tl .75s .05s cubic-bezier(.55,0,.35,1) both}
+.on .ripR,.on .ripRw{animation:tr .75s .05s cubic-bezier(.55,0,.35,1) both}
+.sc:not(.on) .ripL,.sc:not(.on) .ripR,.sc:not(.on) .ripLw,.sc:not(.on) .ripRw{display:none}
+@keyframes tl{0%{transform:none}25%{transform:translate(-1.5em,.5em) rotate(-1deg)}100%{transform:translate(-75em,10em) rotate(-14deg)}}
+@keyframes tr{0%{transform:none}25%{transform:translate(1.5em,-.5em) rotate(1deg)}100%{transform:translate(75em,-6em) rotate(12deg)}}
+/* ป้ายฉีกแปะเข้ามา */
+.tornin{opacity:0;clip-path:polygon(0 0,0 0,0 100%,0 100%)}
+.on .tornin{animation:tin .55s var(--d) cubic-bezier(.3,0,.2,1) forwards}
+@keyframes tin{0%{opacity:1;clip-path:polygon(0 0,0 0,0 100%,0 100%)}100%{opacity:1;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}}
+
+/* ===== ผิวกระดาษจริง ===== */
+.bgtex{position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27900%27%20height%3D%27900%27%3E%3Cfilter%20id%3D%27f%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%27.0055%27%20numOctaves%3D%275%27%20seed%3D%2711%27%2F%3E%3CfeDiffuseLighting%20lighting-color%3D%27%23fff%27%20surfaceScale%3D%275%27%3E%3CfeDistantLight%20azimuth%3D%27225%27%20elevation%3D%2752%27%2F%3E%3C%2FfeDiffuseLighting%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url(%23f)%27%2F%3E%3C%2Fsvg%3E"),url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27520%27%20height%3D%27520%27%3E%3Cfilter%20id%3D%27f%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%27.01%20.32%27%20numOctaves%3D%272%27%20seed%3D%274%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeColorMatrix%20type%3D%27saturate%27%20values%3D%270%27%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url(%23f)%27%20opacity%3D%27.45%27%2F%3E%3C%2Fsvg%3E"),url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27260%27%20height%3D%27260%27%3E%3Cfilter%20id%3D%27f%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%27.9%27%20numOctaves%3D%273%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeColorMatrix%20type%3D%27saturate%27%20values%3D%270%27%2F%3E%3CfeComponentTransfer%3E%3CfeFuncR%20type%3D%27linear%27%20slope%3D%271.6%27%20intercept%3D%27-.3%27%2F%3E%3CfeFuncG%20type%3D%27linear%27%20slope%3D%271.6%27%20intercept%3D%27-.3%27%2F%3E%3CfeFuncB%20type%3D%27linear%27%20slope%3D%271.6%27%20intercept%3D%27-.3%27%2F%3E%3C%2FfeComponentTransfer%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url(%23f)%27%20opacity%3D%27.75%27%2F%3E%3C%2Fsvg%3E");background-size:100% 100%,52em 52em,26em 26em;mix-blend-mode:multiply;opacity:.5}
+.strip::after,.paper::after,.tornin::after,.ripL::after,.ripR::after,.ripLw::after,.ripRw::after,.pol::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27900%27%20height%3D%27900%27%3E%3Cfilter%20id%3D%27f%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%27.0055%27%20numOctaves%3D%275%27%20seed%3D%2711%27%2F%3E%3CfeDiffuseLighting%20lighting-color%3D%27%23fff%27%20surfaceScale%3D%275%27%3E%3CfeDistantLight%20azimuth%3D%27225%27%20elevation%3D%2752%27%2F%3E%3C%2FfeDiffuseLighting%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url(%23f)%27%2F%3E%3C%2Fsvg%3E"),url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27520%27%20height%3D%27520%27%3E%3Cfilter%20id%3D%27f%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%27.01%20.32%27%20numOctaves%3D%272%27%20seed%3D%274%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeColorMatrix%20type%3D%27saturate%27%20values%3D%270%27%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url(%23f)%27%20opacity%3D%27.45%27%2F%3E%3C%2Fsvg%3E"),url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27260%27%20height%3D%27260%27%3E%3Cfilter%20id%3D%27f%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%27.9%27%20numOctaves%3D%273%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeColorMatrix%20type%3D%27saturate%27%20values%3D%270%27%2F%3E%3CfeComponentTransfer%3E%3CfeFuncR%20type%3D%27linear%27%20slope%3D%271.6%27%20intercept%3D%27-.3%27%2F%3E%3CfeFuncG%20type%3D%27linear%27%20slope%3D%271.6%27%20intercept%3D%27-.3%27%2F%3E%3CfeFuncB%20type%3D%27linear%27%20slope%3D%271.6%27%20intercept%3D%27-.3%27%2F%3E%3C%2FfeComponentTransfer%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url(%23f)%27%20opacity%3D%27.75%27%2F%3E%3C%2Fsvg%3E");background-size:100% 100%,52em 52em,26em 26em;mix-blend-mode:multiply;opacity:.95}
+.strip::after,.ripL::after,.ripR::after{mix-blend-mode:multiply;opacity:.75}
+.paper,.tornin,.pol{position:relative}
+.paper{clip-path:polygon(0.00% 2.74%,3.57% 1.88%,7.14% 1.36%,10.71% 2.5%,14.29% 2.19%,17.86% 1.7%,21.43% 0.85%,25.00% 1.86%,28.57% 1.15%,32.14% 1.94%,35.71% 1.44%,39.29% 1.15%,42.86% 2.02%,46.43% 1.5%,50.00% 1.95%,53.57% 1.86%,57.14% 1.77%,60.71% 1.8%,64.29% 2.01%,67.86% 1.98%,71.43% 1.94%,75.00% 1.91%,78.57% 0.86%,82.14% 0.48%,85.71% 1.61%,89.29% 1.68%,92.86% 2.01%,96.43% 1.09%,100.00% 1.44%,98.62% 7.14%,98.6% 14.29%,98.84% 21.43%,98.36% 28.57%,98.74% 35.71%,99.13% 42.86%,98.38% 50.00%,98.69% 57.14%,98.69% 64.29%,97.76% 71.43%,98.4% 78.57%,99.05% 85.71%,98.47% 92.86%,98.31% 100.00%,96.43% 98.79%,92.86% 99.11%,89.29% 98.66%,85.71% 98.83%,82.14% 97.85%,78.57% 98.61%,75.00% 98.94%,71.43% 98.89%,67.86% 98.13%,64.29% 98.81%,60.71% 99%,57.14% 97.94%,53.57% 100.16%,50.00% 99.15%,46.43% 99.05%,42.86% 98.67%,39.29% 99.12%,35.71% 98.49%,32.14% 98.86%,28.57% 98.65%,25.00% 98.41%,21.43% 97.97%,17.86% 98.18%,14.29% 97.94%,10.71% 98.37%,7.14% 97.93%,3.57% 98.47%,0.00% 97.34%,1.18% 92.86%,1.54% 85.71%,0.9% 78.57%,1.74% 71.43%,0.86% 64.29%,1.34% 57.14%,1.04% 50.00%,1.49% 42.86%,1.69% 35.71%,1.97% 28.57%,1.84% 21.43%,1.23% 14.29%,1.56% 7.14%)!important;background:#f3ecdb}
+.pol::after{opacity:.35}
+.stripw{position:absolute;inset:0;filter:drop-shadow(0 1.2em 1.4em #000a)}
+.strip{clip-path:polygon(0.00% 8.52%,1.43% 9.03%,2.86% 8.52%,4.29% 11.78%,5.71% 8.74%,7.14% 12.37%,8.57% 8.33%,10.00% 5.87%,11.43% 5.7%,12.86% 6.28%,14.29% 10.16%,15.71% 5.17%,17.14% 10.82%,18.57% 9.87%,20.00% 5.6%,21.43% 11.88%,22.86% 16.62%,24.29% 3.64%,25.71% 12.38%,27.14% 7.44%,28.57% 11.35%,30.00% 13.88%,31.43% 6.3%,32.86% 13.19%,34.29% 7.51%,35.71% 10.89%,37.14% 9.92%,38.57% 12.01%,40.00% 9.83%,41.43% 6.62%,42.86% 6.62%,44.29% 10.38%,45.71% 8.75%,47.14% 8.63%,48.57% 11.7%,50.00% 6.7%,51.43% 11.37%,52.86% 12.47%,54.29% 6.4%,55.71% 9.13%,57.14% 9.29%,58.57% 8.54%,60.00% 5.97%,61.43% 7.92%,62.86% 14.59%,64.29% 11.89%,65.71% 11.73%,67.14% 10.27%,68.57% 7.43%,70.00% 8.43%,71.43% 2.65%,72.86% 5.91%,74.29% 6.34%,75.71% 8.03%,77.14% 7.21%,78.57% 10.51%,80.00% 10.27%,81.43% 6.76%,82.86% 9.33%,84.29% 9.64%,85.71% 9.36%,87.14% 11.47%,88.57% 8.01%,90.00% 10.68%,91.43% 7.17%,92.86% 11.97%,94.29% 9.47%,95.71% 11.76%,97.14% 8.87%,98.57% 10.89%,100.00% 10.34%,100.00% 93.71%,98.57% 92.34%,97.14% 82.71%,95.71% 92.23%,94.29% 87.71%,92.86% 83.98%,91.43% 88.88%,90.00% 93.84%,88.57% 93.34%,87.14% 92.18%,85.71% 93.15%,84.29% 92.89%,82.86% 84.29%,81.43% 88.8%,80.00% 88.59%,78.57% 90.93%,77.14% 87.51%,75.71% 87.6%,74.29% 90.03%,72.86% 90.31%,71.43% 92.66%,70.00% 94.22%,68.57% 87.52%,67.14% 93.47%,65.71% 92.25%,64.29% 93.04%,62.86% 88.54%,61.43% 90.63%,60.00% 88.53%,58.57% 94.07%,57.14% 92.22%,55.71% 88.39%,54.29% 91.11%,52.86% 94.3%,51.43% 88.58%,50.00% 85.99%,48.57% 90.07%,47.14% 89.21%,45.71% 98.4%,44.29% 92.26%,42.86% 92.57%,41.43% 84.05%,40.00% 87.72%,38.57% 91.86%,37.14% 87.55%,35.71% 90.23%,34.29% 90.56%,32.86% 92.41%,31.43% 88.61%,30.00% 93.7%,28.57% 88.8%,27.14% 89.44%,25.71% 89.39%,24.29% 84.88%,22.86% 91.5%,21.43% 87.87%,20.00% 93.11%,18.57% 90.28%,17.14% 89.14%,15.71% 90.09%,14.29% 88.06%,12.86% 88.12%,11.43% 90.04%,10.00% 87.89%,8.57% 93.91%,7.14% 91.33%,5.71% 94.17%,4.29% 98.18%,2.86% 87.74%,1.43% 92.82%,0.00% 87.54%)!important}
+.s1{background:#1e3170}.s2{background:#16255a}.s3{background:#22387c}
+div:has(> .paper),div:has(> .tornin),div:has(> .pol){filter:drop-shadow(0 0 .22em #fffdf3) drop-shadow(0 0 .08em #fffdf3) drop-shadow(.4em .9em .7em #000a)}
+.ripL{clip-path:polygon(0 0,52.9% 0.00%,54.11% 1.43%,55.96% 2.86%,54.28% 4.29%,56.07% 5.71%,55.77% 7.14%,56.33% 8.57%,54.47% 10.00%,57% 11.43%,55.77% 12.86%,56.77% 14.29%,53.42% 15.71%,56.78% 17.14%,55.6% 18.57%,56.73% 20.00%,54.46% 21.43%,56.42% 22.86%,53.54% 24.29%,54.7% 25.71%,56.84% 27.14%,55.96% 28.57%,53.15% 30.00%,55.25% 31.43%,54.67% 32.86%,59.12% 34.29%,54.43% 35.71%,55.69% 37.14%,55.06% 38.57%,54.6% 40.00%,54.43% 41.43%,54.3% 42.86%,55.48% 44.29%,56.71% 45.71%,56.52% 47.14%,55.56% 48.57%,55.02% 50.00%,56.85% 51.43%,55.87% 52.86%,55.36% 54.29%,54.29% 55.71%,56.24% 57.14%,53.37% 58.57%,53.23% 60.00%,51.51% 61.43%,57.08% 62.86%,56.33% 64.29%,54.82% 65.71%,53.48% 67.14%,56.62% 68.57%,56.62% 70.00%,56.1% 71.43%,52.94% 72.86%,50.73% 74.29%,55.49% 75.71%,56.01% 77.14%,55.79% 78.57%,56.6% 80.00%,54.47% 81.43%,53.4% 82.86%,52.91% 84.29%,55.58% 85.71%,52.99% 87.14%,53.69% 88.57%,55.27% 90.00%,54.02% 91.43%,53.78% 92.86%,53.12% 94.29%,55.84% 95.71%,54.98% 97.14%,53.36% 98.57%,53.45% 100.00%,0 100%)}.ripR{clip-path:polygon(52.9% 0.00%,54.11% 1.43%,55.96% 2.86%,54.28% 4.29%,56.07% 5.71%,55.77% 7.14%,56.33% 8.57%,54.47% 10.00%,57% 11.43%,55.77% 12.86%,56.77% 14.29%,53.42% 15.71%,56.78% 17.14%,55.6% 18.57%,56.73% 20.00%,54.46% 21.43%,56.42% 22.86%,53.54% 24.29%,54.7% 25.71%,56.84% 27.14%,55.96% 28.57%,53.15% 30.00%,55.25% 31.43%,54.67% 32.86%,59.12% 34.29%,54.43% 35.71%,55.69% 37.14%,55.06% 38.57%,54.6% 40.00%,54.43% 41.43%,54.3% 42.86%,55.48% 44.29%,56.71% 45.71%,56.52% 47.14%,55.56% 48.57%,55.02% 50.00%,56.85% 51.43%,55.87% 52.86%,55.36% 54.29%,54.29% 55.71%,56.24% 57.14%,53.37% 58.57%,53.23% 60.00%,51.51% 61.43%,57.08% 62.86%,56.33% 64.29%,54.82% 65.71%,53.48% 67.14%,56.62% 68.57%,56.62% 70.00%,56.1% 71.43%,52.94% 72.86%,50.73% 74.29%,55.49% 75.71%,56.01% 77.14%,55.79% 78.57%,56.6% 80.00%,54.47% 81.43%,53.4% 82.86%,52.91% 84.29%,55.58% 85.71%,52.99% 87.14%,53.69% 88.57%,55.27% 90.00%,54.02% 91.43%,53.78% 92.86%,53.12% 94.29%,55.84% 95.71%,54.98% 97.14%,53.36% 98.57%,53.45% 100.00%,100% 100%,100% 0)}
+.ripLw{clip-path:polygon(0 0,55.25% 0.00%,55.26% 1.43%,58.30% 2.86%,56.59% 4.29%,58.56% 5.71%,58.21% 7.14%,58.50% 8.57%,56.16% 10.00%,58.45% 11.43%,57.89% 12.86%,59.11% 14.29%,55.08% 15.71%,58.21% 17.14%,57.27% 18.57%,59.07% 20.00%,56.34% 21.43%,58.01% 22.86%,55.51% 24.29%,56.83% 25.71%,58.41% 27.14%,58.08% 28.57%,54.84% 30.00%,56.63% 31.43%,56.21% 32.86%,61.60% 34.29%,56.92% 35.71%,57.68% 37.14%,57.38% 38.57%,56.99% 40.00%,55.81% 41.43%,56.30% 42.86%,56.77% 44.29%,58.51% 45.71%,58.40% 47.14%,57.74% 48.57%,57.44% 50.00%,58.62% 51.43%,57.23% 52.86%,57.09% 54.29%,55.62% 55.71%,58.27% 57.14%,55.20% 58.57%,55.12% 60.00%,53.32% 61.43%,59.24% 62.86%,57.94% 64.29%,56.97% 65.71%,54.62% 67.14%,58.14% 68.57%,58.48% 70.00%,57.48% 71.43%,55.05% 72.86%,52.24% 74.29%,56.92% 75.71%,58.03% 77.14%,57.49% 78.57%,57.81% 80.00%,56.65% 81.43%,55.65% 82.86%,55.29% 84.29%,57.95% 85.71%,55.04% 87.14%,56.13% 88.57%,56.41% 90.00%,56.19% 91.43%,55.72% 92.86%,55.23% 94.29%,58.20% 95.71%,56.13% 97.14%,54.65% 98.57%,54.66% 100.00%,0 100%);background:#f1ead8}.ripRw{clip-path:polygon(51.65% 0.00%,52.89% 1.43%,54.85% 2.86%,52.33% 4.29%,53.65% 5.71%,54.40% 7.14%,55.04% 8.57%,53.09% 10.00%,54.96% 11.43%,54.33% 12.86%,55.03% 14.29%,50.93% 15.71%,55.09% 17.14%,53.56% 18.57%,54.55% 20.00%,52.80% 21.43%,54.74% 22.86%,52.35% 24.29%,53.28% 25.71%,54.61% 27.14%,53.50% 28.57%,51.84% 30.00%,52.85% 31.43%,52.86% 32.86%,57.85% 34.29%,53.04% 35.71%,53.75% 37.14%,53.72% 38.57%,53.39% 40.00%,52.95% 41.43%,52.29% 42.86%,53.60% 44.29%,54.94% 45.71%,54.03% 47.14%,54.35% 48.57%,53.34% 50.00%,55.31% 51.43%,54.76% 52.86%,54.25% 54.29%,52.61% 55.71%,55.01% 57.14%,51.94% 58.57%,50.84% 60.00%,49.32% 61.43%,54.91% 62.86%,54.62% 64.29%,52.52% 65.71%,51.03% 67.14%,54.40% 68.57%,54.59% 70.00%,54.20% 71.43%,51.35% 72.86%,49.06% 74.29%,53.69% 75.71%,54.22% 77.14%,53.90% 78.57%,54.49% 80.00%,52.44% 81.43%,51.41% 82.86%,50.79% 84.29%,53.24% 85.71%,50.71% 87.14%,51.21% 88.57%,53.56% 90.00%,52.24% 91.43%,51.34% 92.86%,50.65% 94.29%,54.24% 95.71%,53.77% 97.14%,51.78% 98.57%,51.11% 100.00%,100% 100%,100% 0);background:#f1ead8}
+.ripL,.ripR{background:linear-gradient(170deg,#22387c,#16255a)!important}
+.tornin{clip-path:polygon(0.00% 2.63%,0.08% 3.37%,0.17% 1.12%,0.25% 4.15%,0.33% 3.25%,0.42% 2.41%,0.50% 2.11%,0.58% 3.12%,0.67% 3.12%,0.75% 2.56%,0.83% 1.69%,0.92% 2.27%,1.00% 3.2%,1.08% 1.51%,1.17% 4.72%,1.25% 1.42%,1.33% -1.59%,1.42% 1.26%,1.50% 2.58%,1.58% 1.02%,1.67% 3.34%,1.75% -0.34%,1.83% 2.91%,1.92% 2.94%,2.00% 3.81%,1.99% 10.00%,1.97% 20.00%,1.97% 30.00%,1.97% 40.00%,1.93% 50.00%,1.94% 60.00%,1.95% 70.00%,1.97% 80.00%,1.98% 90.00%,2.02% 100.00%,1.92% 98.34%,1.83% 98.6%,1.75% 98.68%,1.67% 97.9%,1.58% 96.78%,1.50% 94.8%,1.42% 97.94%,1.33% 96.92%,1.25% 97.91%,1.17% 95.83%,1.08% 99.37%,1.00% 99.32%,0.92% 96.73%,0.83% 101.27%,0.75% 96.88%,0.67% 98.66%,0.58% 99.07%,0.50% 98.68%,0.42% 99.1%,0.33% 98.97%,0.25% 99.26%,0.17% 100.19%,0.08% 98.88%,0.00% 98.57%,-0.00% 90.00%,0.03% 80.00%,0.03% 70.00%,-0.01% 60.00%,0.04% 50.00%,0.04% 40.00%,0.05% 30.00%,0.02% 20.00%,0.05% 10.00%)}
+@keyframes tin{0%{opacity:1;clip-path:polygon(0.00% 2.63%,0.08% 3.37%,0.17% 1.12%,0.25% 4.15%,0.33% 3.25%,0.42% 2.41%,0.50% 2.11%,0.58% 3.12%,0.67% 3.12%,0.75% 2.56%,0.83% 1.69%,0.92% 2.27%,1.00% 3.2%,1.08% 1.51%,1.17% 4.72%,1.25% 1.42%,1.33% -1.59%,1.42% 1.26%,1.50% 2.58%,1.58% 1.02%,1.67% 3.34%,1.75% -0.34%,1.83% 2.91%,1.92% 2.94%,2.00% 3.81%,1.99% 10.00%,1.97% 20.00%,1.97% 30.00%,1.97% 40.00%,1.93% 50.00%,1.94% 60.00%,1.95% 70.00%,1.97% 80.00%,1.98% 90.00%,2.02% 100.00%,1.92% 98.34%,1.83% 98.6%,1.75% 98.68%,1.67% 97.9%,1.58% 96.78%,1.50% 94.8%,1.42% 97.94%,1.33% 96.92%,1.25% 97.91%,1.17% 95.83%,1.08% 99.37%,1.00% 99.32%,0.92% 96.73%,0.83% 101.27%,0.75% 96.88%,0.67% 98.66%,0.58% 99.07%,0.50% 98.68%,0.42% 99.1%,0.33% 98.97%,0.25% 99.26%,0.17% 100.19%,0.08% 98.88%,0.00% 98.57%,-0.00% 90.00%,0.03% 80.00%,0.03% 70.00%,-0.01% 60.00%,0.04% 50.00%,0.04% 40.00%,0.05% 30.00%,0.02% 20.00%,0.05% 10.00%)}100%{opacity:1;clip-path:polygon(0.00% 2.63%,4.17% 3.37%,8.33% 1.12%,12.50% 4.15%,16.67% 3.25%,20.83% 2.41%,25.00% 2.11%,29.17% 3.12%,33.33% 3.12%,37.50% 2.56%,41.67% 1.69%,45.83% 2.27%,50.00% 3.2%,54.17% 1.51%,58.33% 4.72%,62.50% 1.42%,66.67% -1.59%,70.83% 1.26%,75.00% 2.58%,79.17% 1.02%,83.33% 3.34%,87.50% -0.34%,91.67% 2.91%,95.83% 2.94%,100.00% 3.81%,99.37% 10.00%,98.26% 20.00%,98.61% 30.00%,98.7% 40.00%,96.64% 50.00%,97.17% 60.00%,97.25% 70.00%,98.36% 80.00%,98.94% 90.00%,100.92% 100.00%,95.83% 98.34%,91.67% 98.6%,87.50% 98.68%,83.33% 97.9%,79.17% 96.78%,75.00% 94.8%,70.83% 97.94%,66.67% 96.92%,62.50% 97.91%,58.33% 95.83%,54.17% 99.37%,50.00% 99.32%,45.83% 96.73%,41.67% 101.27%,37.50% 96.88%,33.33% 98.66%,29.17% 99.07%,25.00% 98.68%,20.83% 99.1%,16.67% 98.97%,12.50% 99.26%,8.33% 100.19%,4.17% 98.88%,0.00% 98.57%,-0.16% 90.00%,1.28% 80.00%,1.65% 70.00%,-0.5% 60.00%,1.97% 50.00%,2.11% 40.00%,2.35% 30.00%,0.96% 20.00%,2.73% 10.00%)}}
+/* ซับไตเติล */
+.sub{position:absolute;left:7em;right:13em;bottom:40em;text-align:center;z-index:12;opacity:0;animation:sIn .25s var(--d) ease-out forwards,sOut .2s var(--e) ease-in forwards}
+@keyframes sIn{from{opacity:0;transform:translateY(1.5em)}to{opacity:1;transform:none}}
+@keyframes sOut{to{opacity:0}}
+.sub span{display:inline-block;font-size:3.6em;font-weight:800;color:#fff;background:#000000b8;border:.06em solid #ffffff22;border-radius:.5em;padding:.35em .8em;line-height:1.4}
+#bar{position:absolute;left:0;bottom:0;height:.7em;background:linear-gradient(90deg,#ffd84d,#5ef0dc);width:0;z-index:20}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div class="stripw"><div class="strip s1"></div><div class="strip s2"></div><div class="strip s3"></div></div><div class="bgtex"></div>
+
+<div class="scrap" style="left:6em;top:60em;font-size:12em">฿</div>
+<div class="scrap" style="left:76em;top:130em;font-size:10em;animation-delay:-4s">%</div>
+<div class="scrap" style="left:70em;top:40em;font-size:8em;animation-delay:-2s">★</div>
+<div class="top"><span><i>e</i> น้อง eSim · รู้ทันเงินเดือน</span></div>
+
+<!-- 0 HOOK -->
+<section class="sc" data-t="10.13">
+  <div class="ripLw"></div><div class="ripL"></div><div class="ripRw"></div><div class="ripR"></div>
+  <div class="H" style="top:14em"><div class="rn" style="font-size:6.8em">
+    <span class="a slap" style="--d:.6s">เงินเดือน</span><span class="a slap" style="--d:.8s">เท่าไหร่</span><span class="a slap" style="--d:1s">ถึงต้อง</span><span class="a slap" style="--d:1.2s">เสียภาษี?</span></div></div>
+  <div style="position:absolute;left:10em;right:10em;top:52em">
+    <div class="paper a slap" style="--d:2.84s;--r:-3deg;padding:3em;text-align:center">
+      <div style="font-size:3.2em;font-weight:800;color:#5a6b8c">หลายคนคิดว่า…</div>
+      <div style="font-size:6.6em;font-weight:900;line-height:1.15">เงินเดือนเกิน<br>15,000 = เสียภาษี?</div>
+    </div>
+    <div class="tape a up" style="--d:3.14s;left:-2em;top:-1.6em;transform:rotate(-28deg)"></div>
+    <div style="position:absolute;right:-3em;bottom:-6em"><span class="stamp slam" style="--d:7.73s;font-size:7em">เข้าใจผิด! ✕</span></div>
+  </div>
+  <div class="stick a" style="--d:1.4s;--r:-4deg;left:5em;top:100em;width:30em;height:30em;background-image:url(media/esim/e3c.png)"></div>
+<div class="sub" data-sc="0" style="--d:0.50s;--e:2.79s"><span>เงินเดือนเท่าไหร่ ถึงต้องเสียภาษีจริง ๆ? 🤔</span></div>
+<div class="sub" data-sc="0" style="--d:2.79s;--e:7.68s"><span>หลายคนคิดว่า เงินเดือนเกิน 15,000 ต้องจ่ายภาษีแล้ว</span></div>
+<div class="sub" data-sc="0" style="--d:7.68s;--e:9.93s"><span>บอกเลย… เข้าใจผิดอย่างแรง! ❌</span></div>
+</section>
+
+<!-- 1 แนะนำตัว -->
+<section class="sc" data-t="5.42">
+  <div class="ripLw"></div><div class="ripL"></div><div class="ripRw"></div><div class="ripR"></div>
+  <div style="position:absolute;left:18em;right:18em;top:16em">
+    <div class="pol a slap" style="--d:.5s;--r:-4deg"><div class="ph" style="height:62em;background:#fff url(media/esim/hero.png) 50% 20%/cover"></div><div class="cap">น้อง eSim 👋</div></div>
+    <div class="tape a up" style="--d:.8s;left:24em;top:-2em;transform:rotate(-6deg)"></div>
+  </div>
+  <div class="H" style="top:98em"><div class="rn" style="font-size:5.4em"><span class="a slap" style="--d:2.26s">ไขข้อสงสัย</span><span class="a slap" style="--d:2.56s">ภาษี</span><span class="a slap" style="--d:2.86s">เงินเดือน 💰</span></div></div>
+<div class="sub" data-sc="1" style="--d:0.50s;--e:2.21s"><span>สวัสดีครับ ผม “น้อง eSim” 👋</span></div>
+<div class="sub" data-sc="1" style="--d:2.21s;--e:5.22s"><span>วันนี้มาไขข้อสงสัยเรื่องภาษีเงินเดือน</span></div>
+</section>
+
+<!-- 2 ยื่น ≠ เสีย -->
+<section class="sc" data-t="4.82">
+  <div class="ripLw"></div><div class="ripL"></div><div class="ripRw"></div><div class="ripR"></div>
+  <div style="position:absolute;left:5em;top:22em;width:42em">
+    <div class="paper a slap" style="--d:1.55s;--r:-5deg;padding:4em 2em;text-align:center"><div style="font-size:12em;line-height:1">📄</div><div style="font-size:5.4em;font-weight:900">ต้อง “ยื่น”</div><div style="font-size:3em;font-weight:800;color:#5a6b8c">แจ้งสรรพากร</div></div>
+  </div>
+  <div style="position:absolute;right:5em;top:30em;width:42em">
+    <div class="paper a slap" style="--d:2.35s;--r:5deg;padding:4em 2em;text-align:center"><div style="font-size:12em;line-height:1">💸</div><div style="font-size:5.4em;font-weight:900">ต้อง “เสีย”</div><div style="font-size:3em;font-weight:800;color:#5a6b8c">จ่ายเงินภาษี</div></div>
+  </div>
+  <div class="burst a slap" style="--d:2.95s;--r:-8deg;position:absolute;left:50%;margin-left:-11em;top:72em;width:22em;height:22em"><span style="font-size:13em;line-height:1">≠</span></div>
+  <div class="H" style="top:100em"><div class="rn" style="font-size:6em"><span class="a slap" style="--d:3.35s">คนละเรื่อง</span><span class="a slap" style="--d:3.65s">กันเลย!</span></div></div>
+  <div class="stick a" style="--d:.9s;--r:5deg;left:56em;top:100em;width:30em;height:30em;background-image:url(media/esim/e1c.png)"></div>
+<div class="sub" data-sc="2" style="--d:0.50s;--e:4.62s"><span>“ต้องยื่นภาษี” กับ “ต้องเสียภาษี” คนละเรื่องกัน!</span></div>
+</section>
+
+<!-- 3 ต้องยื่น แต่ไม่ต้องจ่าย -->
+<section class="sc" data-t="13.2">
+  <div class="ripLw"></div><div class="ripL"></div><div class="ripRw"></div><div class="ripR"></div>
+  <div class="H" style="top:13em"><div class="mid a up" style="--d:.5s">มนุษย์เงินเดือน <em>คนโสด</em></div></div>
+  <div style="position:absolute;left:8em;right:8em;top:26em">
+    <div class="paper tornin" style="--d:1.75s;padding:3em;text-align:center">
+      <div style="font-size:3.4em;font-weight:800;color:#5a6b8c">รายได้เกิน</div>
+      <div style="font-size:10em;font-weight:900;line-height:1.05">10,000<span style="font-size:.4em">/เดือน</span></div>
+      <div style="font-size:3.6em;font-weight:800;color:#5a6b8c">(120,000 บาท/ปี)</div>
+    </div>
+  </div>
+  <div class="H" style="top:64em"><span class="a slap" style="--d:6.60s;--r:-3deg;display:inline-block;font-size:5.6em;font-weight:900;background:#5ef0dc;color:#062a2a;padding:.2em .7em">ต้อง “ยื่นแบบ” 📄 ✓</span></div>
+  <div class="H" style="top:80em"><div class="mid a up" style="--d:9.53s">แต่… <em>ไม่ได้แปลว่าต้องจ่าย!</em></div></div>
+  <div class="burst a slap" style="--d:10.93s;--r:8deg;position:absolute;right:6em;top:100em;width:30em;height:30em"><div style="text-align:center"><div style="font-size:7em;line-height:1">0 ฿</div><div style="font-size:2.8em">ไม่เสียสักบาท</div></div></div>
+  <div class="stick a" style="--d:9.53s;--r:-4deg;left:5em;top:100em;width:30em;height:30em;background-image:url(media/esim/e2c.png)"></div>
+<div class="sub" data-sc="3" style="--d:0.50s;--e:6.55s"><span>คนโสด รายได้เกิน 10,000/เดือน (120,000/ปี)</span></div>
+<div class="sub" data-sc="3" style="--d:6.55s;--e:9.48s"><span>มีหน้าที่ “ยื่นแบบภาษี” ให้สรรพากรรับรู้</span></div>
+<div class="sub" data-sc="3" style="--d:9.48s;--e:13.00s"><span>แต่… ไม่ได้แปลว่าต้องจ่ายแม้แต่บาทเดียว!</span></div>
+</section>
+
+<!-- 4 mid hook -->
+<section class="sc" data-t="9.49">
+  <div class="ripLw"></div><div class="ripL"></div><div class="ripRw"></div><div class="ripR"></div>
+  <div class="H" style="top:14em"><div class="rn" style="font-size:6.4em"><span class="a slap" style="--d:.5s">ตัวเลขจริง</span><span class="a slap" style="--d:.8s">คือเท่าไหร่?</span></div></div>
+  <div style="position:absolute;left:6em;top:40em"><div class="pol a slap" style="--d:4.19s;--r:-6deg;width:40em"><div class="ph" style="height:22em;background:#c9f7e0"><span style="font-size:7em;font-weight:900;color:#10245a">20,000</span></div><div class="cap">ไม่เสียภาษี?!</div></div></div>
+  <div style="position:absolute;right:6em;top:52em"><div class="pol a slap" style="--d:5.19s;--r:5deg;width:40em"><div class="ph" style="height:22em;background:#cfe0ff"><span style="font-size:7em;font-weight:900;color:#10245a">25,000</span></div><div class="cap">ก็ยังไม่เสีย?!</div></div></div>
+  <div class="burst a slap" style="--d:6.19s;--r:-6deg;position:absolute;left:50%;margin-left:-12em;top:88em;width:24em;height:24em"><span style="font-size:13em;line-height:1">?</span></div>
+  <div class="stick a" style="--d:3.59s;--r:4deg;left:58em;top:100em;width:30em;height:30em;background-image:url(media/esim/e3c.png)"></div>
+<div class="sub" data-sc="4" style="--d:0.50s;--e:3.54s"><span>แล้วตัวเลขที่ต้องเริ่มจ่ายภาษี คือเท่าไหร่?</span></div>
+<div class="sub" data-sc="4" style="--d:3.54s;--e:9.29s"><span>ทำไมเงินเดือน 20,000–25,000 ยังไม่เสียสักบาท?</span></div>
+</section>
+
+<!-- 5 หักค่าใช้จ่าย + ลดหย่อน -->
+<section class="sc" data-t="11.66">
+  <div class="ripLw"></div><div class="ripL"></div><div class="ripRw"></div><div class="ripR"></div>
+  <div class="H" style="top:13em"><div class="mid a up" style="--d:.5s">สรรพากร<em>หักให้ก่อน</em> ✂️</div></div>
+  <div style="position:absolute;left:8em;right:8em;top:28em">
+    <div class="paper a slap" style="--d:.9s;--r:-1deg;padding:3em;text-align:center"><div style="font-size:3.4em;font-weight:800;color:#5a6b8c">เงินได้ทั้งปี</div><div style="font-size:9em;font-weight:900">💼 เงินเดือน × 12</div></div>
+  </div>
+  <div style="position:absolute;left:6em;right:6em;top:58em">
+    <div class="tornin" style="--d:5.50s;background:#ffd84d;color:#10245a;padding:2.4em 3em;box-shadow:.6em .8em 0 #0008;transform:rotate(-2deg)"><div style="font-size:5em;font-weight:900">✂️ หักค่าใช้จ่าย 50%</div><div style="font-size:3.4em;font-weight:800">สูงสุด 100,000 บาท</div></div>
+  </div>
+  <div style="position:absolute;left:10em;right:4em;top:84em">
+    <div class="tornin" style="--d:8.70s;background:#5ef0dc;color:#062a2a;padding:2.4em 3em;box-shadow:.6em .8em 0 #0008;transform:rotate(2deg)"><div style="font-size:5em;font-weight:900">✂️ ลดหย่อนส่วนตัว</div><div style="font-size:3.4em;font-weight:800">60,000 บาท</div></div>
+  </div>
+  <div class="stick a" style="--d:9.30s;--r:-4deg;left:5em;top:100em;width:30em;height:30em;background-image:url(media/esim/e4c.png)"></div>
+<div class="sub" data-sc="5" style="--d:0.50s;--e:5.45s"><span>เพราะสรรพากรหัก “ค่าใช้จ่าย” กับ “ลดหย่อนส่วนตัว” ให้ก่อน</span></div>
+<div class="sub" data-sc="5" style="--d:5.45s;--e:8.65s"><span>หักค่าใช้จ่าย 50% (สูงสุด 100,000)</span></div>
+<div class="sub" data-sc="5" style="--d:8.65s;--e:11.46s"><span>ลดหย่อนส่วนตัวอีก 60,000</span></div>
+</section>
+
+<!-- 6 จุดเริ่มเสียภาษี -->
+<section class="sc" data-t="10.91">
+  <div class="ripLw"></div><div class="ripL"></div><div class="ripRw"></div><div class="ripR"></div>
+  <div class="H" style="top:13em"><div class="mid a up" style="--d:.5s">คนโสด · ลดหย่อนส่วนตัว<br>+ <em>ประกันสังคม</em></div></div>
+  <div style="position:absolute;left:12em;right:12em;top:34em">
+    <div class="paper a slap" style="--d:.9s;--r:-2deg;padding:2.6em 3.2em">
+      <div style="font-size:3em;font-weight:800;color:#5a6b8c;text-align:center">🧾 ใบคำนวณคร่าว ๆ (ต่อปี)</div>
+      <div style="display:flex;justify-content:space-between;font-size:3.6em;font-weight:800;margin-top:.5em"><span>เงินได้</span><span>320,500</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:3.6em;font-weight:800;color:#e5484d"><span>ค่าใช้จ่าย</span><span>−100,000</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:3.6em;font-weight:800;color:#e5484d"><span>ลดหย่อนส่วนตัว</span><span>−60,000</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:3.6em;font-weight:800;color:#e5484d"><span>ประกันสังคม</span><span>−10,500</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:4.2em;font-weight:900;border-top:.1em dashed #10245a;margin-top:.3em;padding-top:.2em"><span>เงินได้สุทธิ</span><span>150,000</span></div>
+      <div style="font-size:2.8em;font-weight:800;color:#12a36b;text-align:center;margin-top:.3em">0–150,000 ได้รับยกเว้นภาษี</div>
+    </div>
+  </div>
+  <div style="position:absolute;left:6em;right:6em;top:96em">
+    <div class="tornin" style="--d:4.21s;background:#ff6b6b;color:#fff;padding:2.4em 3em;text-align:center;box-shadow:.6em .8em 0 #0008;transform:rotate(-2deg)">
+      <div style="font-size:3.6em;font-weight:800">เริ่มเสียภาษีเมื่อเงินเดือนเกิน</div>
+      <div style="font-size:11em;font-weight:900;line-height:1.05">26,708 ฿</div></div>
+  </div>
+<div class="sub" data-sc="6" style="--d:0.50s;--e:3.76s"><span>คนโสด มีแค่ลดหย่อนส่วนตัว + ประกันสังคม</span></div>
+<div class="sub" data-sc="6" style="--d:3.76s;--e:10.71s"><span>เงินเดือนเกิน 26,708 บาท (≈320,500/ปี) ถึงเริ่มจ่ายภาษี!</span></div>
+</section>
+
+<!-- 7 ลดหย่อนเพิ่ม -->
+<section class="sc" data-t="8.34">
+  <div class="ripLw"></div><div class="ripL"></div><div class="ripRw"></div><div class="ripR"></div>
+  <div class="H" style="top:13em"><div class="rn" style="font-size:6em"><span class="a slap" style="--d:.5s">มีลดหย่อน</span><span class="a slap" style="--d:.8s">เพิ่มอีก?</span></div></div>
+  <div style="position:absolute;left:6em;top:32em"><div class="pol a slap" style="--d:1.95s;--r:-6deg;width:38em"><div class="ph" style="height:22em;background:#ffe3b3"><span style="font-size:13em">🛡️</span></div><div class="cap">ประกันชีวิต</div></div></div>
+  <div style="position:absolute;right:6em;top:40em"><div class="pol a slap" style="--d:2.95s;--r:6deg;width:38em"><div class="ph" style="height:22em;background:#cfe0ff"><span style="font-size:13em">📈</span></div><div class="cap">กองทุนลดหย่อนภาษี</div></div></div>
+  <div style="position:absolute;left:8em;right:8em;top:82em">
+    <div class="tornin" style="--d:4.35s;background:#fdf8ec;color:#10245a;padding:2.6em 3em;text-align:center;box-shadow:.6em .8em 0 #0008">
+      <div style="font-size:4em;font-weight:900">เงินเดือน 30,000–40,000</div>
+      <div style="font-size:4.6em;font-weight:900;color:#12a36b">ก็อาจไม่เสียสักบาท! 🙌</div></div>
+  </div>
+  <div class="stick a" style="--d:4.95s;--r:4deg;left:58em;top:100em;width:30em;height:30em;background-image:url(media/esim/e4c.png)"></div>
+<div class="sub" data-sc="7" style="--d:0.50s;--e:4.30s"><span>มีลดหย่อนเพิ่ม เช่น ประกันชีวิต · กองทุนลดหย่อนภาษี (เช่น RMF)</span></div>
+<div class="sub" data-sc="7" style="--d:4.30s;--e:8.14s"><span>เงินเดือน 30,000–40,000 ก็อาจไม่เสียสักบาท</span></div>
+</section>
+
+<!-- 8 สรุป -->
+<section class="sc" data-t="9.45">
+  <div class="ripLw"></div><div class="ripL"></div><div class="ripRw"></div><div class="ripR"></div>
+  <div class="H" style="top:13em"><div class="rn" style="font-size:7em"><span class="a slap" style="--d:.5s">สรุป</span><span class="a slap" style="--d:.7s">สั้น ๆ</span></div></div>
+  <div style="position:absolute;left:6em;right:6em;top:34em">
+    <div class="tornin" style="--d:0.55s;background:#5ef0dc;color:#062a2a;padding:2.6em 3em;box-shadow:.6em .8em 0 #0008;transform:rotate(-2deg);display:flex;align-items:center;gap:2em">
+      <span style="font-size:10em;line-height:1">📄</span><div><div style="font-size:3.4em;font-weight:800">เงินเดือนเกิน 10,000</div><div style="font-size:6em;font-weight:900">ต้อง “ยื่น”</div></div></div>
+  </div>
+  <div style="position:absolute;left:6em;right:6em;top:64em">
+    <div class="tornin" style="--d:2.83s;background:#ffd84d;color:#10245a;padding:2.6em 3em;box-shadow:.6em .8em 0 #0008;transform:rotate(2deg);display:flex;align-items:center;gap:2em">
+      <span style="font-size:10em;line-height:1">💸</span><div><div style="font-size:3.4em;font-weight:800">ไม่ถึง 26,708</div><div style="font-size:6em;font-weight:900">ยังไม่ต้อง “จ่าย”</div></div></div>
+  </div>
+  <div class="H" style="top:96em"><span class="stamp slam" style="--d:6.74s;font-size:5.6em">สิ้นปีอย่าลืมยื่น! 📅</span></div>
+  <div class="stick a" style="--d:6.34s;--r:-4deg;left:5em;top:100em;width:30em;height:30em;background-image:url(media/esim/e2c.png)"></div>
+<div class="sub" data-sc="8" style="--d:0.50s;--e:2.78s"><span>เงินเดือนเกิน 10,000 → ต้อง “ยื่น”</span></div>
+<div class="sub" data-sc="8" style="--d:2.78s;--e:6.29s"><span>ไม่ถึง 26,708 → ยังไม่ต้อง “จ่าย”</span></div>
+<div class="sub" data-sc="8" style="--d:6.29s;--e:9.25s"><span>สิ้นปีอย่าลืมยื่นแบบให้ถูกต้อง! 📄</span></div>
+</section>
+
+<!-- 9 ปิด -->
+<section class="sc" data-t="7.14">
+  <div class="ripLw"></div><div class="ripL"></div><div class="ripRw"></div><div class="ripR"></div>
+  <div class="stick a" style="--d:.5s;left:27em;top:12em;width:46em;height:46em;background-image:url(media/esim/e6c.png)"></div>
+  <div class="logo a slap" style="--d:.9s;position:absolute;left:0;right:0;top:62em"><div class="ic"><b>e</b></div><div class="tx">eSim<i>Payroll</i></div></div>
+  <div style="position:absolute;left:10em;right:10em;top:78em">
+    <div class="paper a up" style="--d:0.75s;padding:2.6em 3em;text-align:center"><div style="font-size:4.4em;font-weight:900">สงสัยตรงไหน คอมเมนต์เลย 💬</div></div>
+  </div>
+  <div class="H" style="top:100em"><span class="cta2 a" style="--d:3.48s">กดติดตาม 🔔</span></div>
+  <div class="H" style="top:118em"><div class="a up" style="--d:4.28s;font-size:3.4em;font-weight:900;color:#9fb4e0">esimpayroll.com</div></div>
+<div class="sub" data-sc="9" style="--d:0.50s;--e:3.43s"><span>สงสัยตรงไหน คอมเมนต์คุยกันได้เลย 💬</span></div>
+<div class="sub" data-sc="9" style="--d:3.43s;--e:6.94s"><span>กดติดตามไว้ เดี๋ยวมีเรื่องเงินเดือนมาเล่าอีก!</span></div>
+</section>
+
+<div id="bar"></div>
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var cur=-1,bar=document.getElementById('bar');
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on','off')});void S[i].offsetWidth;S[i].classList.add('on');cur=i}
+    if(i>0){var p=S[i-1];if(st<.38)p.classList.add('off');else p.classList.remove('off')}
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;else if(sc===S[i])an.currentTime=st*1000;else an.currentTime=Math.min(st,.38)*1000;
+    });
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render; window.__drop=ST[1];
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>

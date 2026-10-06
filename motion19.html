@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>สอนใช้ eSimPayroll แบบละเอียด</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#050a18;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,177.78vh);aspect-ratio:16/9;overflow:clip;font-size:calc(min(100vw,177.78vh)/100);background:#091025}
+.sc{display:none}
+#cam{position:absolute;left:0;top:0;width:100em;height:56.25em;transform-origin:0 0;will-change:transform}
+#scr{position:absolute;inset:0;width:100%;height:100%}
+#hl{position:absolute;border:.28em solid #5ef0dc;border-radius:.8em;box-shadow:0 0 0 999em rgba(5,10,24,.42),0 0 1.4em #5ef0dc;opacity:0;pointer-events:none}
+#cur{position:absolute;width:2.4em;height:2.4em;margin:-.15em 0 0 -.25em;opacity:0;filter:drop-shadow(0 .2em .25em #0009);z-index:5}
+#rip{position:absolute;width:4em;height:4em;margin:-2em 0 0 -2em;border-radius:50%;border:.3em solid #5ef0dc;opacity:0;z-index:4}
+/* หัวบท */
+#chip{position:absolute;left:2.2em;top:1.8em;display:flex;align-items:center;gap:.8em;z-index:20;background:#091025e6;border:.12em solid #5ef0dc66;border-radius:3em;padding:.55em 1.4em .55em .6em;box-shadow:0 .4em 1.2em #0007;opacity:0}
+#chip b{display:grid;place-items:center;width:2.2em;height:2.2em;border-radius:50%;background:linear-gradient(150deg,#12a3a0,#1559c8);font-size:1.5em;font-weight:900}
+#chip span{font-size:1.9em;font-weight:900}
+/* ซับ */
+#sub{position:absolute;left:12em;right:12em;bottom:2.6em;text-align:center;z-index:20}
+#sub span{display:inline-block;font-size:2.2em;font-weight:800;line-height:1.45;background:#050a18e0;border-radius:.5em;padding:.3em .9em;box-shadow:0 .3em .8em #0007}
+/* น้อง eSim */
+#es{position:absolute;right:1.2em;bottom:.4em;width:11em;height:11em;background:url(media/esim/e1c.png) no-repeat center/contain;z-index:21;filter:drop-shadow(0 .4em .6em #0009);transform-origin:50% 100%}
+/* การ์ดเปิด/ปิด */
+.card{position:absolute;inset:0;z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(60em 40em at 50% 45%,#13245aee,#091025f5);opacity:0}
+.card img.logo{width:30em}
+.card h1{font-size:5.4em;font-weight:900;line-height:1.2;margin-top:.4em}
+.card h1 em{font-style:normal;color:#5ae39a}
+.card p{font-size:2.2em;font-weight:700;color:#c9d6f2;margin-top:.6em}
+.toc{display:flex;flex-wrap:wrap;gap:.8em;justify-content:center;margin-top:2.2em;max-width:76em}
+.toc span{font-size:1.7em;font-weight:800;background:#ffffff14;border:.08em solid #ffffff2a;border-radius:2em;padding:.35em .9em}
+.toc b{color:#5ef0dc;margin-right:.3em}
+.url{display:inline-block;margin-top:1.2em;font-size:3em;font-weight:900;color:#0b1230;background:linear-gradient(120deg,#5ae39a,#5ef0dc);border-radius:2em;padding:.3em 1.2em}
+.cta{display:inline-block;margin-top:1em;font-size:2.4em;font-weight:900;background:#e5484d;border-radius:2em;padding:.35em 1.2em}
+#bar{position:absolute;left:0;bottom:0;height:.45em;background:linear-gradient(90deg,#12a3a0,#5ae39a);width:0;z-index:30}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div id="cam"><img id="scr" alt=""><div id="hl"></div><div id="rip"></div>
+ <svg id="cur" viewBox="0 0 24 24"><path d="M3 2l7.5 19 2.6-7.6L21 11z" fill="#fff" stroke="#0b1230" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+<div class="card" id="intro"><img class="logo" src="brand/logo-full-white-1600.png" alt="eSimPayroll"><h1>สอนใช้งาน <em>แบบละเอียด</em></h1><p>ตั้งแต่ตั้งค่าบริษัท จนออกสลิปและเอกสารยื่นราชการ</p>
+ <div class="toc"><span><b>1</b>ตั้งค่าบริษัท</span><span><b>2</b>เพิ่มพนักงาน</span><span><b>3</b>เวลา & ลางาน</span><span><b>4</b>คำนวณเงินเดือน</span><span><b>5</b>ออกสลิป</span><span><b>6</b>เอกสารยื่นราชการ</span></div></div>
+<div class="card" id="outro"><img class="logo" src="brand/logo-full-white-1600.png" alt="eSimPayroll"><h1>ลองใช้ด้วย<em>ข้อมูลตัวอย่าง</em>ได้เลย</h1>
+ <div class="url">esimpayroll.com/app?demo</div><p>พนักงาน 1–10 คน ใช้ฟรีตลอด · ทดลองฟรี 30 วัน</p><div class="cta">กดติดตาม 🔔</div></div>
+<div id="chip"><b></b><span></span></div>
+<div id="sub"><span></span></div>
+<div id="es"></div>
+<div id="bar"></div>
+<section class="sc" data-t="10.340"></section>
+<section class="sc" data-t="16.760"></section>
+<section class="sc" data-t="26.370"><i data-sfx="blip" data-at="0.55"></i><i data-sfx="blip" data-at="19.07"></i><i data-sfx="blip" data-at="22.56"></i></section>
+<section class="sc" data-t="24.330"><i data-sfx="blip" data-at="0.55"></i><i data-sfx="blip" data-at="7.60"></i><i data-sfx="blip" data-at="16.40"></i></section>
+<section class="sc" data-t="17.600"><i data-sfx="blip" data-at="0.55"></i><i data-sfx="blip" data-at="7.93"></i><i data-sfx="blip" data-at="12.15"></i><i data-sfx="blip" data-at="15.43"></i></section>
+<section class="sc" data-t="24.080"><i data-sfx="blip" data-at="0.55"></i><i data-sfx="blip" data-at="2.70"></i><i data-sfx="blip" data-at="16.16"></i><i data-sfx="blip" data-at="20.42"></i></section>
+<section class="sc" data-t="5.310"><i data-sfx="blip" data-at="0.55"></i><i data-sfx="blip" data-at="1.88"></i><i data-sfx="blip" data-at="4.53"></i></section>
+<section class="sc" data-t="12.550"><i data-sfx="blip" data-at="0.55"></i><i data-sfx="blip" data-at="6.13"></i><i data-sfx="blip" data-at="9.70"></i></section>
+<section class="sc" data-t="5.640"><i data-sfx="blip" data-at="0.55"></i></section>
+<section class="sc" data-t="11.320"></section>
+
+</div></div>
+<script>
+(function(){
+const D={"TOT":154.3,"lines":[{"id":"L0","sub":"สอนใช้ eSimPayroll แบบละเอียด ตั้งแต่ตั้งค่าบริษัท จนออกสลิปและเอกสารยื่นราชการ","s":1.55,"dur":8.29,"t0":0,"t1":10.34},{"id":"L1","sub":"เข้า esimpayroll.com → สมัครด้วยอีเมลหรือ Google · ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต","s":10.69,"dur":6.49,"t0":10.34,"t1":17.68},{"id":"L2","sub":"เมนูทั้งหมดอยู่แถบซ้าย เรียงตามขั้นตอนการทำเงินเดือน","s":18.03,"dur":5.5,"t0":17.68,"t1":24.03},{"id":"L2b","sub":"มุมขวาบน = เลือกงวดเดือนที่จะทำเงินเดือน","s":24.38,"dur":2.22,"t0":24.03,"t1":27.1},{"id":"L3","sub":"เมนู “ตั้งค่า” → กรอกชื่อบริษัท เลขผู้เสียภาษี และที่อยู่ (ขึ้นในสลิปและเอกสารทุกฉบับ)","s":27.45,"dur":7.68,"t0":27.1,"t1":35.63},{"id":"L4","sub":"เลขบัญชีนายจ้าง ปกส. · ผู้ลงนาม · อัตราสมทบ 5% ฐานสูงสุด 17,500 บาท","s":35.98,"dur":7.39,"t0":35.63,"t1":43.87},{"id":"L5","sub":"ฐานคิด OT · วันทำงาน/เดือน · วันตัดรอบ → กด “บันทึกการตั้งค่า”","s":44.22,"dur":4.39,"t0":43.87,"t1":49.11},{"id":"L6","sub":"วันหยุดบริษัท → กด “เติมวันหยุดทั่วไป” ได้ในคลิกเดียว","s":49.46,"dur":3.51,"t0":49.11,"t1":53.47},{"id":"L7","sub":"เมนู “ข้อมูลพนักงาน” → สรุปจำนวนคน ยอดเงินเดือนรวม แยกรายเดือน/รายวัน","s":53.82,"dur":6.2,"t0":53.47,"t1":60.52},{"id":"L8","sub":"กด “เพิ่มพนักงาน” → รหัสรันอัตโนมัติ · กรอกชื่อ ตำแหน่ง แผนก ประเภทการจ้าง เงินเดือน","s":60.87,"dur":5.63,"t0":60.52,"t1":67},{"id":"L9","sub":"กรอกเลขบัตรประชาชน และบัญชีธนาคาร → กด “บันทึก” ขึ้นในรายชื่อทันที","s":67.35,"dur":4.99,"t0":67,"t1":72.84},{"id":"L10","sub":"พนักงานเยอะ? ใช้ “นำเข้า CSV” เพิ่มทีเดียวทั้งบริษัท","s":73.19,"dur":4.11,"t0":72.84,"t1":77.8},{"id":"L11","sub":"เมนู “เวลาเข้างาน” → ตั้งกะการทำงาน เวลาเข้า–ออก","s":78.15,"dur":3.51,"t0":77.8,"t1":82.16},{"id":"L12","sub":"เลือกวันที่เปิดให้ทำ OT ของแต่ละเดือน","s":82.51,"dur":2.17,"t0":82.16,"t1":85.18},{"id":"L13","sub":"เมนู “ระบบลางาน” → ตั้งโควตาลาป่วย ลากิจ ลาพักร้อน ต่อปี","s":85.53,"dur":3.37,"t0":85.18,"t1":89.4},{"id":"L14","sub":"กด “เพิ่มใบลา” → เลือกพนักงาน ประเภท วันที่ เหตุผล → กด “เพิ่ม”","s":89.75,"dur":5.15,"t0":89.4,"t1":95.4},{"id":"L15","sub":"เมนู “คำนวณเงินได้ / เงินหัก” → เลือกพนักงาน ใส่รายได้เพิ่ม เช่น OT คอมมิชชั่น","s":95.75,"dur":5.59,"t0":95.4,"t1":101.84},{"id":"L16","sub":"ตัวอย่าง: ใส่ OT 6 ชม. → ระบบคิดเป็นเงินให้ทันที","s":102.19,"dur":2.64,"t0":101.84,"t1":105.33},{"id":"L17","sub":"เงินหัก: ภาษีหัก ณ ที่จ่าย · ประกันสังคม · กองทุนสำรองฯ คำนวณอัตโนมัติ","s":105.68,"dur":4.83,"t0":105.33,"t1":111.01},{"id":"L18","sub":"กด “ดูวิธีคำนวณภาษี” → เห็นขั้นตอนคิดภาษีครบ","s":111.36,"dur":3.41,"t0":111.01,"t1":115.27},{"id":"L19","sub":"เมนู “สรุปเงินเดือน” → รายได้ เงินหัก เงินสุทธิ ทุกคนในหน้าเดียว","s":115.62,"dur":3.36,"t0":115.27,"t1":119.48},{"id":"L20","sub":"เมนู “สลิปเงินเดือน” → เลือกพนักงาน/ทุกคน → กด “พิมพ์สลิป” หรือบันทึก PDF","s":119.83,"dur":4.46,"t0":119.48,"t1":124.79},{"id":"L21","sub":"หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ) ออกรายคน พร้อมพิมพ์","s":125.14,"dur":4.73,"t0":124.79,"t1":130.37},{"id":"L22","sub":"แบบ ภ.ง.ด.1 สรุปภาษีที่หักของทุกคนในเดือน","s":130.72,"dur":2.72,"t0":130.37,"t1":133.94},{"id":"L23","sub":"แบบ สปส.1-10 สำหรับยื่นประกันสังคม","s":134.29,"dur":2.55,"t0":133.94,"t1":137.34},{"id":"L24","sub":"แดชบอร์ด: ภาพรวมค่าใช้จ่ายเงินเดือน ภาษี ประกันสังคม","s":137.69,"dur":4.79,"t0":137.34,"t1":142.98},{"id":"L25","sub":"ลองได้ที่ esimpayroll.com · พนักงาน 1–10 คน ใช้ฟรีตลอด","s":143.33,"dur":4.9,"t0":142.98,"t1":148.73},{"id":"L26","sub":"ติดตรงไหน คอมเมนต์ถามได้เลย · กดติดตามน้อง eSim 🔔","s":149.08,"dur":3.22,"t0":148.73,"t1":154.3}],"shots":[{"line":"L0","img":"001.jpg","a":0,"b":10.34},{"line":"L1","img":"000.jpg","hl":[632,328.90625,336,353.1875],"cur":[800,615.59375],"a":10.34,"b":17.68},{"line":"L2","img":"002.jpg","hl":[0,0,230,900],"a":17.68,"b":24.03},{"line":"L2b","img":"003.jpg","hl":[1227.28125,20,151,25],"cur":[1271.28125,32.5],"zoom":1,"a":24.03,"b":27.1},{"line":"L3","img":"004.jpg","cur":[115,874],"hl":[8,848,214,52],"click":true,"a":27.1,"b":31.365},{"line":"L3","img":"005.jpg","hl":[273,185,1114,119],"zoom":1,"a":31.365,"b":35.63},{"line":"L4","img":"006.jpg","hl":[273,341,1114,41],"zoom":1,"a":35.63,"b":39.75},{"line":"L4","img":"007.jpg","hl":[273,419,1114,41],"zoom":1,"a":39.75,"b":43.87},{"line":"L5","img":"008.jpg","hl":[273,497,1114,121],"zoom":1,"a":43.87,"b":45.617},{"line":"L5","img":"009.jpg","cur":[343.6171875,653.5],"hl":[273,634,141.234375,39],"click":true,"a":45.617,"b":47.363},{"line":"L5","img":"010.jpg","a":47.363,"b":49.11},{"line":"L6","img":"011.jpg","cur":[1150.671875,462],"hl":[1065.109375,445,171.125,34],"click":true,"a":49.11,"b":51.29},{"line":"L6","img":"012.jpg","hl":[254,330,1152,550],"a":51.29,"b":53.47},{"line":"L7","img":"013.jpg","cur":[115,166],"hl":[8,140,214,52],"click":true,"a":53.47,"b":55.82},{"line":"L7","img":"014.jpg","hl":[254,87,1151.984375,143.5],"a":55.82,"b":58.17},{"line":"L7","img":"015.jpg","hl":[257,255.5,336.125,37],"a":58.17,"b":60.52},{"line":"L8","img":"016.jpg","cur":[1342.90625,322],"hl":[1279.8125,302.5,126.1875,39],"click":true,"a":60.52,"b":62.64},{"line":"L8","img":"017.jpg","cur":[953.5,271.5],"hl":[807,251,293,41],"typing":true,"a":62.64,"b":62.92},{"line":"L8","img":"018.jpg","cur":[953.5,271.5],"hl":[807,251,293,41],"typing":true,"a":62.92,"b":63.2},{"line":"L8","img":"019.jpg","cur":[953.5,271.5],"hl":[807,251,293,41],"typing":true,"a":63.2,"b":63.48},{"line":"L8","img":"020.jpg","cur":[953.5,445.5],"hl":[807,425,293,41],"typing":true,"a":63.48,"b":63.76},{"line":"L8","img":"021.jpg","cur":[953.5,445.5],"hl":[807,425,293,41],"typing":true,"a":63.76,"b":64.04},{"line":"L8","img":"022.jpg","cur":[953.5,523.5],"hl":[807,503,293,41],"typing":true,"a":64.04,"b":64.32},{"line":"L8","img":"023.jpg","cur":[953.5,601.5],"hl":[807,581,293,41],"typing":true,"a":64.32,"b":64.6},{"line":"L8","img":"024.jpg","cur":[953.5,601.5],"hl":[807,581,293,41],"typing":true,"a":64.6,"b":64.88},{"line":"L8","img":"025.jpg","hl":[500,251,600,471],"zoom":1,"a":64.88,"b":67},{"line":"L9","img":"026.jpg","cur":[953.5,438.5],"hl":[807,418,293,41],"typing":true,"a":67,"b":67.28},{"line":"L9","img":"027.jpg","cur":[953.5,438.5],"hl":[807,418,293,41],"typing":true,"a":67.28,"b":67.56},{"line":"L9","img":"028.jpg","hl":[807,458,293,85],"zoom":1,"a":67.56,"b":69.32},{"line":"L9","img":"029.jpg","cur":[1067.4765625,754.5],"hl":[1034.953125,734,65.046875,41],"click":true,"a":69.32,"b":71.08},{"line":"L9","img":"030.jpg","hl":[255,679,1150,55],"zoom":1,"a":71.08,"b":72.84},{"line":"L10","img":"031.jpg","hl":[1050.5625,305,219.25,34],"cur":[1100.9921875,322],"zoom":1,"a":72.84,"b":77.8},{"line":"L11","img":"032.jpg","cur":[115,270],"hl":[8,244,214,52],"click":true,"a":77.8,"b":79.98},{"line":"L11","img":"033.jpg","hl":[254,262,1152,219],"a":79.98,"b":82.16},{"line":"L12","img":"034.jpg","hl":[254,90,1152,790],"a":82.16,"b":85.18},{"line":"L13","img":"035.jpg","cur":[115,322],"hl":[8,296,214,52],"click":true,"a":85.18,"b":87.29},{"line":"L13","img":"036.jpg","hl":[273,333,881.734375,41],"zoom":1,"a":87.29,"b":89.4},{"line":"L14","img":"037.jpg","cur":[298.0390625,242],"hl":[254,226,88.078125,32],"click":true,"a":89.4,"b":90.76},{"line":"L14","img":"038.jpg","hl":[500,132,600,195],"zoom":1,"a":90.76,"b":92.12},{"line":"L14","img":"039.jpg","cur":[800,478.5],"hl":[500,458,600,41],"typing":true,"a":92.12,"b":92.4},{"line":"L14","img":"040.jpg","cur":[800,478.5],"hl":[500,458,600,41],"typing":true,"a":92.4,"b":92.68},{"line":"L14","img":"041.jpg","cur":[1073.3984375,615],"hl":[1046.796875,594.5,53.203125,41],"click":true,"a":92.68,"b":94.04},{"line":"L14","img":"042.jpg","hl":[255,544.5,1150,63],"zoom":1,"a":94.04,"b":95.4},{"line":"L15","img":"043.jpg","cur":[115,478],"hl":[8,452,214,52],"click":true,"a":95.4,"b":97.547},{"line":"L15","img":"044.jpg","cur":[394,183.5],"hl":[254,162,280,43],"click":true,"a":97.547,"b":99.693},{"line":"L15","img":"045.jpg","hl":[254,221,1152,600],"a":99.693,"b":101.84},{"line":"L16","img":"046.jpg","cur":[363.0625,437.5],"hl":[288,417,277.65625,138],"zoom":1,"typing":true,"a":101.84,"b":102.12},{"line":"L16","img":"047.jpg","hl":[288,417,277.65625,138],"zoom":1,"a":102.12,"b":105.33},{"line":"L17","img":"048.jpg","hl":[837,353,550,119],"zoom":1,"a":105.33,"b":111.01},{"line":"L18","img":"049.jpg","cur":[608,183],"hl":[544,166,128,34],"click":true,"a":111.01,"b":113.14},{"line":"L18","img":"050.jpg","a":113.14,"b":115.27},{"line":"L19","img":"051.jpg","cur":[115,530],"hl":[8,504,214,52],"click":true,"a":115.27,"b":117.375},{"line":"L19","img":"052.jpg","hl":[255,141,1150,340],"a":117.375,"b":119.48},{"line":"L20","img":"053.jpg","cur":[115,686],"hl":[8,660,214,52],"click":true,"a":119.48,"b":120.808},{"line":"L20","img":"054.jpg","cur":[384,134.5],"hl":[254,113,260,43],"click":true,"a":120.808,"b":122.135},{"line":"L20","img":"055.jpg","hl":null,"a":122.135,"b":123.463},{"line":"L20","img":"056.jpg","cur":[577.5078125,134],"hl":[524,114.5,107.015625,39],"click":true,"zoom":1,"a":123.463,"b":124.79},{"line":"L21","img":"057.jpg","cur":[115,744],"hl":[8,712,214,64],"click":true,"a":124.79,"b":127.58},{"line":"L21","img":"058.jpg","a":127.58,"b":130.37},{"line":"L22","img":"059.jpg","cur":[115,802],"hl":[8,776,214,52],"click":true,"a":130.37,"b":132.155},{"line":"L22","img":"060.jpg","a":132.155,"b":133.94},{"line":"L23","img":"061.jpg","cur":[115,860],"hl":[8,828,214,64],"click":true,"a":133.94,"b":135.64},{"line":"L23","img":"062.jpg","a":135.64,"b":137.34},{"line":"L24","img":"063.jpg","cur":[115,114],"hl":[8,88,214,52],"click":true,"a":137.34,"b":139.22},{"line":"L24","img":"064.jpg","a":139.22,"b":141.1},{"line":"L24","img":"065.jpg","a":141.1,"b":142.98}],"secs":[{"name":"intro","num":"","a":0,"b":10.34},{"name":"เริ่มต้นใช้งาน","num":"0","a":10.34,"b":27.1},{"name":"ตั้งค่าบริษัท","num":"1","a":27.1,"b":53.47},{"name":"เพิ่มพนักงาน","num":"2","a":53.47,"b":77.8},{"name":"เวลาเข้างาน & ลางาน","num":"3","a":77.8,"b":95.4},{"name":"คำนวณเงินเดือน","num":"4","a":95.4,"b":119.48},{"name":"ออกสลิปเงินเดือน","num":"5","a":119.48,"b":124.79},{"name":"เอกสารยื่นราชการ","num":"6","a":124.79,"b":137.34},{"name":"ภาพรวม","num":"✓","a":137.34,"b":142.98},{"name":"outro","num":"","a":142.98,"b":154.3}],"W":1600,"H":900};const K=100/D.W; // css px → em
+const $=id=>document.getElementById(id);
+const ease=x=>x<0?0:x>1?1:x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+function camOf(s){ if(!s||!s.zoom||!s.hl)return {k:1,x:0,y:0};
+  const [hx,hy,hw,hh]=s.hl;let k=Math.min(.72*D.W/hw,.6*D.H/hh,2.3);k=Math.max(1,k);
+  const cx=hx+hw/2,cy=hy+hh/2;let x=D.W/2-cx*k,y=D.H*.47-cy*k;x=Math.min(0,Math.max(D.W-D.W*k,x));y=Math.min(0,Math.max(D.H-D.H*k,y));return {k,x,y}; }
+const lerp=(a,b,p)=>a+(b-a)*p;
+const S=D.shots;
+async function render(t){
+  let i=S.findIndex(s=>t>=s.a&&t<s.b);if(i<0)i=t<S[0].a?0:S.length-1;const s=S[i],prev=S[i-1];
+  // ภาพ
+  const img=$('scr'),src='_tut19/'+s.img;if(img.getAttribute('src')!==src){img.src=src;try{await img.decode()}catch(e){}}
+  // กล้อง
+  const c1=camOf(s),c0=prev?camOf(prev):c1,p=ease((t-s.a)/.7);
+  const k=lerp(c0.k,c1.k,p),x=lerp(c0.x,c1.x,p),y=lerp(c0.y,c1.y,p);
+  $('cam').style.transform=`translate(${x*K}em,${y*K}em) scale(${k})`;
+  // ไฮไลต์
+  const hl=$('hl');if(s.hl&&!s.typing){const[hx,hy,hw,hh]=s.hl,pad=6;Object.assign(hl.style,{left:(hx-pad)*K+'em',top:(hy-pad)*K+'em',width:(hw+pad*2)*K+'em',height:(hh+pad*2)*K+'em',opacity:Math.min(1,(t-s.a-.35)/.3)})}
+  else if(s.hl&&s.typing){const[hx,hy,hw,hh]=s.hl,pad=6;Object.assign(hl.style,{left:(hx-pad)*K+'em',top:(hy-pad)*K+'em',width:(hw+pad*2)*K+'em',height:(hh+pad*2)*K+'em',opacity:1})}
+  else hl.style.opacity=0;
+  // เคอร์เซอร์: ตำแหน่งก่อนหน้า → เป้าหมาย
+  let from=null;for(let j=i-1;j>=0;j--){if(S[j].cur){from=S[j].cur;break}}
+  const cur=$('cur'),rip=$('rip');
+  if(s.cur){const q=ease((t-s.a)/.6),f=from||[s.cur[0]+120,s.cur[1]+160];const cx=lerp(f[0],s.cur[0],q),cy=lerp(f[1],s.cur[1],q);
+    Object.assign(cur.style,{left:cx*K+'em',top:cy*K+'em',opacity:1,transform:`scale(${1/Math.sqrt(k)})`});
+    const rc=(t-s.a-.6)/.45;if(s.click&&rc>0&&rc<1){Object.assign(rip.style,{left:s.cur[0]*K+'em',top:s.cur[1]*K+'em',opacity:1-rc,transform:`scale(${.3+rc*1.4})`});cur.style.transform+=` scale(${rc<.3?.85:1})`}else rip.style.opacity=0;}
+  else if(from&&!s.typing&&prev&&prev.img===s.img){Object.assign(cur.style,{left:from[0]*K+'em',top:from[1]*K+'em',opacity:Math.max(0,1-(t-s.a)/.4)});rip.style.opacity=0}
+  else {cur.style.opacity=0;rip.style.opacity=0}
+  // บรรทัดพูด / ซับ / หัวบท
+  const ln=D.lines.find(l=>t>=l.t0&&t<l.t1)||D.lines[D.lines.length-1];
+  const sub=$('sub').firstElementChild;sub.textContent=ln.sub;$('sub').style.opacity=Math.min(1,Math.max(0,(t-ln.s+.15)/.2))*Math.min(1,Math.max(0,(ln.t1-t)/.2));
+  const speaking=t>=ln.s&&t<ln.s+ln.dur;$('es').style.transform=speaking?`scale(${1+.035*Math.sin(t*38)},${1-.035*Math.sin(t*38)})`:'none';
+  const sec=D.secs.find(x=>t>=x.a&&t<x.b)||D.secs[D.secs.length-1];const chip=$('chip');
+  if(sec.num){chip.firstElementChild.textContent=sec.num;chip.lastElementChild.textContent=sec.num==='0'||sec.num==='✓'?sec.name:'ขั้นที่ '+sec.num+' · '+sec.name;if(sec.num==='0')chip.firstElementChild.textContent='▶';chip.style.opacity=Math.min(1,(t-sec.a)/.4)}else chip.style.opacity=0;
+  // การ์ดเปิด/ปิด
+  const L0=D.lines[0];$('intro').style.opacity=t<L0.t1-.4?1:Math.max(0,(L0.t1-t)/.4);
+  const out=D.secs[D.secs.length-1];$('outro').style.opacity=Math.min(1,Math.max(0,(t-out.a)/.5));
+  $('sub').style.display='';$('bar').style.width=Math.min(100,t/D.TOT*100)+'%';
+}
+window.__total=D.TOT;window.__render=render;window.__drop=D.secs[1].a+1;
+if(!/[?&]rec/.test(location.search)){const t0=performance.now();(async function f(){const t=(performance.now()-t0)/1000;await render(Math.min(t,D.TOT));if(t<D.TOT)requestAnimationFrame(f)})()}
+})();
+</script>
+</body>
+</html>

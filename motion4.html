@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ถ้า Excel พูดได้</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#091025;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#13234a;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);
+  background:#091025}
+.grid{position:absolute;inset:0;background-image:linear-gradient(#ffffff09 .15em,transparent .15em),linear-gradient(90deg,#ffffff09 .15em,transparent .15em);background-size:4em 4em}
+.ball{position:absolute;border-radius:50%;animation:fl 6s ease-in-out infinite alternate}
+.b1{width:20em;height:20em;left:-7em;top:14em;background:radial-gradient(circle at 32% 28%,#fff 0,#a8c4ff 22%,#4f7cff 70%,#2c50c9 100%)}
+.b2{width:12em;height:12em;right:-3em;top:46em;background:radial-gradient(circle at 32% 28%,#fff 0,#ffc8dd 25%,#ff7aa8 70%,#d94c7f 100%);animation-delay:-2s}
+.b3{width:9em;height:9em;right:10em;bottom:6em;background:radial-gradient(circle at 32% 28%,#fff 0,#ffe6a6 25%,#ffb938 70%,#e08a00 100%);animation-delay:-4s}
+@keyframes fl{to{transform:translate(2em,-5em)}}
+/* กลางคืน: ฉาก 6 */
+.night{position:absolute;inset:0;background:#03071a;opacity:0}
+body[data-sc="6"] .night{opacity:1}
+body[data-sc="6"] .ball{opacity:.25}
+
+.sc{position:absolute;inset:0;visibility:hidden;z-index:3}
+.sc.on{visibility:visible;animation:zin .45s cubic-bezier(.2,1.5,.4,1) both}
+.sc.off{visibility:visible;animation:zout .35s cubic-bezier(.6,0,.9,.4) forwards}
+@keyframes zin{from{transform:scale(.85) rotate(-2deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes zout{to{transform:scale(1.15) translateX(-20em);opacity:0}}
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.5s)}
+.on .pop,.on .pz{animation-name:pop;animation-timing-function:cubic-bezier(.2,1.7,.4,1)}
+.on .up{animation-name:up;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+@keyframes pop{0%{opacity:0;transform:scale(.1) rotate(-10deg)}60%{opacity:1;transform:scale(1.12) rotate(3deg)}100%{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(6em) scale(.9)}to{opacity:1;transform:none}}
+/* บอลลูนคำพูด: โผล่แล้วหายเองตามเวลา */
+.say{position:absolute;opacity:0}
+.on .say{animation:sayIn .45s var(--d) cubic-bezier(.2,1.6,.4,1) both,sayOut .25s var(--e,999s) ease-in forwards}
+@keyframes sayIn{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:none}}
+@keyframes sayOut{to{opacity:0;transform:scale(.6)}}
+.bub{background:#fff;border-radius:3.6em;padding:2.4em 3.2em;box-shadow:0 1.8em 3em -1.2em #2b4a8a55,inset 0 -.6em 0 #e7eef9;position:relative}
+.bub p{font-size:4.6em;font-weight:900;line-height:1.3}
+.bub small{display:block;font-size:2.4em;font-weight:800;color:#12a36b;margin-bottom:.3em;letter-spacing:.05em}
+.bx{right:4%;top:15%;max-width:66%;transform-origin:85% 120%}
+.bx .bub::after{content:"";position:absolute;right:16%;bottom:-3em;border:2em solid transparent;border-top:3.2em solid #fff;border-bottom:0}
+.bh{left:37%;top:67%;max-width:58%;transform-origin:0 50%}
+.bh .bub{background:#fff6e5}
+.bh .bub::after{content:"";position:absolute;left:-2.6em;top:40%;border:1.8em solid transparent;border-right:3em solid #fff6e5;border-left:0}
+.bh .bub small{color:#e8590c}
+.emo{font-size:9em;line-height:1}
+/* ตัวละคร Excel */
+.xlc{position:absolute;left:41%;top:33%;width:46em;height:54em;z-index:2;opacity:0;animation:cin .7s 3.6s cubic-bezier(.2,1.6,.4,1) forwards,cout .5s 44s ease-in forwards}
+@keyframes cin{from{opacity:0;transform:translateY(40em) scale(.4)}to{opacity:1;transform:none}}
+@keyframes cout{to{opacity:0;transform:translateX(60em) rotate(25deg)}}
+.xlin{position:absolute;inset:0;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-1.4em) rotate(-2deg)}}
+.xb{position:absolute;inset:0 0 6em 0;border-radius:7em;background:linear-gradient(160deg,#4fd88f,#1aa35a 55%,#0d7a40);
+  box-shadow:inset 0 1.4em 2em #ffffff90,inset 0 -2em 3em #0004,0 3em 4em -1.4em #0d7a4088;overflow:hidden}
+.xb::before{content:"";position:absolute;left:12%;top:5%;width:46%;height:16%;border-radius:50%;background:linear-gradient(#ffffffb0,#fff0);transform:rotate(-10deg)}
+.xb::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;
+  background-image:linear-gradient(#ffffff40 .3em,transparent .3em),linear-gradient(90deg,#ffffff40 .3em,transparent .3em);background-size:9em 6em;background-position:0 0}
+.tag{position:absolute;left:50%;top:-4em;transform:translateX(-50%);font-size:3.4em;font-weight:900;color:#fff;background:#0d7a40;border-radius:1em;padding:.15em .8em;white-space:nowrap;box-shadow:0 .4em .8em #0003}
+.eye{position:absolute;top:13em;width:10em;height:12em;border-radius:50%;background:#fff;box-shadow:inset 0 -.6em .8em #0001;animation:blink 4.2s infinite}
+.eye.l{left:9em}.eye.r{right:9em}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
+.pu{position:absolute;left:50%;top:50%;width:5em;height:5em;margin:-1em 0 0 -2.5em;border-radius:50%;background:#14213d}
+.pu::after{content:"";position:absolute;left:.9em;top:.8em;width:1.6em;height:1.6em;border-radius:50%;background:#fff}
+.mo{position:absolute;left:50%;top:29em;width:13em;height:7em;margin-left:-6.5em;border-radius:1.4em 1.4em 7em 7em;background:#5a0f1f;overflow:hidden;
+  transform-origin:50% 0;animation:talk .22s ease-in-out infinite alternate}
+.mo::after{content:"";position:absolute;left:25%;right:25%;bottom:-1em;height:3.4em;border-radius:50%;background:#ff7b8c}
+@keyframes talk{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+.ck{position:absolute;top:26em;width:6em;height:3.4em;border-radius:50%;background:#ff8fa3;opacity:.6}
+.ck.l{left:4.5em}.ck.r{right:4.5em}
+.br{position:absolute;top:10em;width:9em;height:1.6em;border-radius:1em;background:#0b4f2a;opacity:0}
+.br.l{left:9.5em}.br.r{right:9.5em}
+.arm{position:absolute;top:30em;width:9em;height:9em;border-radius:50%;background:linear-gradient(160deg,#4fd88f,#13894a);box-shadow:inset 0 .8em 1em #ffffff70}
+.arm.l{left:-5em;animation:wl 1.2s ease-in-out infinite alternate}.arm.r{right:-5em;animation:wr 1.2s ease-in-out infinite alternate}
+@keyframes wl{to{transform:translateY(-3em)}}@keyframes wr{to{transform:translateY(2em)}}
+.ft{position:absolute;bottom:0;width:12em;height:7em;border-radius:50%;background:linear-gradient(#13894a,#0b5f33)}
+.ft.l{left:8em}.ft.r{right:8em}
+.fx{position:absolute;visibility:hidden;font-weight:900}
+.qm{right:-6em;top:-6em;font-size:12em;color:#2f5bea;animation:qb 1s ease-in-out infinite alternate}
+@keyframes qb{to{transform:rotate(15deg) translateY(-.2em)}}
+.tear{width:2.6em;height:3.6em;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#5ec8ff;top:24em;animation:drip 1s ease-in infinite}
+.tear.l{left:10em}.tear.r{right:10em;animation-delay:-.5s}
+@keyframes drip{from{transform:translateY(0);opacity:1}to{transform:translateY(14em);opacity:0}}
+.sweat{right:3em;top:6em;width:4em;height:6em;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#7fd3ff;animation:sw 1.4s ease-in infinite}
+@keyframes sw{from{transform:translateY(0)}to{transform:translateY(6em)}}
+.zz{right:-8em;top:-4em;font-size:8em;color:#9ec5ff;animation:zz 2s ease-in-out infinite}
+@keyframes zz{0%{transform:translate(0,0) scale(.6);opacity:0}30%{opacity:1}100%{transform:translate(1em,-1.4em) scale(1.1);opacity:0}}
+/* อารมณ์ตามฉาก */
+body[data-sc="2"] .qm{visibility:visible}
+body[data-sc="2"] .br{opacity:1}body[data-sc="2"] .br.l{transform:rotate(-12deg)}body[data-sc="2"] .br.r{transform:rotate(12deg)}
+body[data-sc="3"] .tear{visibility:visible}
+body[data-sc="3"] .br{opacity:1}body[data-sc="3"] .br.l{transform:rotate(18deg)}body[data-sc="3"] .br.r{transform:rotate(-18deg)}
+body[data-sc="3"] .mo{height:9em}
+body[data-sc="4"] .br{opacity:1}body[data-sc="4"] .br.l{transform:rotate(22deg) translateY(1em)}body[data-sc="4"] .br.r{transform:rotate(-22deg) translateY(1em)}
+body[data-sc="4"] .pu{animation:look 1.2s ease-in-out infinite alternate}
+@keyframes look{from{transform:translateX(-2.2em)}to{transform:translateX(2.2em)}}
+body[data-sc="5"] .sweat{visibility:visible}
+body[data-sc="5"] .eye{height:13em}
+body[data-sc="6"] .eye{animation:none;transform:scaleY(.14)}
+body[data-sc="6"] .zz{visibility:visible}
+body[data-sc="6"] .mo{animation-duration:.6s}
+/* พี่ HR */
+.hr{position:absolute;left:5%;top:66%;width:30em;height:30em;border-radius:50%;z-index:2;opacity:0;
+  background:url(media/motion3-cover.webp) no-repeat;background-size:105em auto;background-position:-27.5em -36.2em;border:1.2em solid #fff;box-shadow:0 2em 3em #2b4a8a44;
+  animation:hin .6s 4.2s cubic-bezier(.2,1.6,.4,1) forwards,hout .4s 44.1s ease-in forwards}
+@keyframes hin{from{opacity:0;transform:translateX(-30em) rotate(-30deg)}to{opacity:1;transform:none}}
+@keyframes hout{to{opacity:0;transform:translateX(-30em)}}
+.hrn{position:absolute;left:5%;top:84%;width:30em;text-align:center;font-size:1em;z-index:2;opacity:0;animation:hin .6s 4.4s cubic-bezier(.2,1.6,.4,1) forwards,hout .4s 44.1s ease-in forwards}
+.hrn span{font-size:3em;font-weight:900;background:#fff;border-radius:2em;padding:.2em .9em;box-shadow:0 .4em 1em #2b4a8a26}
+/* นาฬิกา */
+.clk{position:absolute;left:0;right:0;top:5.5%;text-align:center}
+.clk span{display:inline-block;font-size:4em;font-weight:900;color:#fff;background:linear-gradient(150deg,#3b4f8a,#1c2a55);border-radius:2em;padding:.25em 1.1em;box-shadow:0 .5em 1.2em #1c2a5555}
+/* ของประกอบฉาก */
+.props{position:absolute;left:4%;right:4%;top:84%;height:13%}
+.file{position:absolute;width:30em;padding:1.6em 2em;border-radius:2em;background:#fff;box-shadow:0 1.4em 2em -1em #2b4a8a55;display:flex;align-items:center;gap:1.4em}
+.file i{width:5em;height:6em;border-radius:1em;background:linear-gradient(160deg,#4fd88f,#13894a);flex:none}
+.file b{font-size:2.9em;font-weight:800;white-space:nowrap}
+.on .doc{animation:drop .5s var(--d) cubic-bezier(.3,1.5,.4,1) both}
+@keyframes drop{from{opacity:0;transform:translateY(-80em) rotate(var(--r))}to{opacity:1;transform:rotate(var(--r))}}
+.sheet{position:absolute;left:36%;right:0;top:0;bottom:0;background:#fff;border-radius:2.6em;padding:2em;display:grid;grid-template-columns:repeat(3,1fr);gap:1em;box-shadow:0 1.6em 2.6em -1em #2b4a8a55}
+.cell{border-radius:1em;background:#f1f5fb;display:grid;place-items:center}
+.cell b{font-size:3.2em;font-weight:900;color:#13234a}
+.cell.er{background:#ffe1e5}.cell.er b{color:#e5484d}
+.fml{position:absolute;left:36%;right:0;top:0;bottom:0;background:#fff;border-radius:2.6em;padding:2.4em 3em;box-shadow:0 1.6em 2.6em -1em #2b4a8a55;display:flex;flex-direction:column;justify-content:center;gap:1em}
+.fml div{font-size:4em;font-weight:800;font-family:Consolas,monospace}
+.fml s{color:#9aa9c3;text-decoration-color:#e5484d;text-decoration-thickness:.12em}
+.fml .bad{color:#e5484d}
+.slp{position:absolute;left:36%;right:0;top:0;bottom:0;background:#fff;border-radius:2.6em;padding:2.2em 3em;box-shadow:0 1.6em 2.6em -1em #2b4a8a55}
+.slp .r{display:flex;justify-content:space-between;font-size:3.4em;font-weight:700;padding:.3em 0;border-bottom:.06em dashed #d7e1f0}
+.slp .r b{color:#e5484d}
+/* ฉากข้อความใหญ่ */
+.center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 6em}
+.big{font-size:11em;font-weight:900;line-height:1.12;letter-spacing:-.02em;color:#fff}
+.big em{font-style:normal;background:linear-gradient(90deg,#12a36b,#0ea5e9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mid{font-size:5.4em;font-weight:900;color:#b8c8ec;line-height:1.35}
+.minix{width:24em;height:26em;margin-bottom:4em;position:relative}
+.chip{display:inline-block;font-size:3.6em;font-weight:800;background:#fff;border-radius:2em;padding:.45em 1.1em;box-shadow:0 .6em 1.4em #2b4a8a26;margin:.35em}
+.cta{margin-top:1.4em;font-size:5.6em;font-weight:900;color:#fff;border-radius:1em;padding:.4em 1.2em;background:linear-gradient(150deg,#ff9b6b,#f2542d);box-shadow:inset 0 .2em .3em #ffffff70,0 .35em 0 #c2410c}
+.on .cta{animation:pop .5s var(--d) cubic-bezier(.2,1.7,.4,1) both,nod 1s calc(var(--d) + .6s) ease-in-out infinite alternate}
+@keyframes nod{to{transform:translateY(.25em)}}
+.brand{position:absolute;left:0;right:0;bottom:5%;text-align:center}
+.brand span{font-size:3em;font-weight:800;color:#8fa3cf}.brand b{color:#fff}.brand i{font-style:normal;color:#12a36b}
+#bar{position:absolute;left:0;bottom:0;height:.7em;background:linear-gradient(90deg,#12a36b,#2f5bea);width:0;z-index:9}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div class="grid"></div><div class="night"></div>
+<div class="ball b1"></div><div class="ball b2"></div><div class="ball b3"></div>
+
+<!-- ตัวละครอยู่ตลอดฉาก 1–6 -->
+<div class="xlc"><div class="xlin">
+  <div class="arm l"></div><div class="arm r"></div><div class="ft l"></div><div class="ft r"></div>
+  <div class="xb"></div><div class="tag">Excel</div>
+  <div class="br l"></div><div class="br r"></div>
+  <div class="eye l"><div class="pu"></div></div><div class="eye r"><div class="pu"></div></div>
+  <div class="ck l"></div><div class="ck r"></div><div class="mo"></div>
+  <div class="fx qm">?</div><div class="fx tear l"></div><div class="fx tear r"></div><div class="fx sweat"></div><div class="fx zz">Zz</div>
+</div></div>
+<div class="hr"></div><div class="hrn"><span>พี่ HR</span></div>
+
+<!-- 0 เปิด -->
+<section class="sc" data-t="3.5">
+  <div class="clk"><span class="a pop" style="--d:.1s;display:inline-block">🌙 20:47 · คืนก่อนเงินเดือนออก</span></div>
+  <div class="center">
+    <div class="mid a up" style="--d:.5s">ถ้า</div>
+    <div class="big a pop" style="--d:.8s"><em>Excel</em><br>พูดได้…</div>
+  </div>
+</section>
+
+<!-- 1 Final_v8 -->
+<section class="sc" data-t="8">
+  <div class="clk"><span>🌙 20:47</span></div>
+  <div class="say bx" style="--d:1s;--e:3.5s" data-sfx="pop" data-at="1"><div class="bub"><small>EXCEL</small><p>ไฟล์ Final_v8.xlsx<br>เปิดแล้วนะ…</p></div></div>
+  <div class="say bh" style="--d:3.4s;--e:5.6s" data-sfx="pop" data-at="3.4"><div class="bub"><small>พี่ HR</small><p>แล้ว Final_v7 ล่ะ?</p></div></div>
+  <div class="say bx" style="--d:5.6s" data-sfx="pop" data-at="5.6"><div class="bub"><small>EXCEL</small><p>ก็มีครับ…</p></div></div>
+  <div class="say bh" style="--d:6.8s" data-sfx="blip" data-at="6.8"><div class="emo">😐</div></div>
+</section>
+
+<!-- 2 ไฟล์ไหนล่าสุด -->
+<section class="sc" data-t="7">
+  <div class="clk"><span>🌙 21:15</span></div>
+  <div class="say bx" style="--d:.3s" data-sfx="pop" data-at=".3"><div class="bub"><small>EXCEL</small><p>แต่ไม่แน่ใจว่า<br>อันไหนล่าสุด 😅</p></div></div>
+  <div class="props" style="top:83%">
+    <div class="file doc" style="--d:1.4s;--r:-6deg;left:34%;top:-2em"><i></i><b>Final_v7.xlsx</b></div>
+    <div class="file doc" style="--d:1.8s;--r:5deg;left:52%;top:5em"><i></i><b>Final_v8.xlsx</b></div>
+    <div class="file doc" style="--d:2.2s;--r:-3deg;left:30%;top:12em"><i></i><b>Final_จริง.xlsx</b></div>
+    <div class="file doc" style="--d:2.6s;--r:7deg;left:56%;top:17em"><i></i><b>Final_ล่าสุด(2).xlsx</b></div>
+    <div class="file doc" style="--d:3s;--r:-8deg;left:38%;top:22em"><i></i><b>Final_v12_แก้แล้ว.xlsx</b></div>
+  </div>
+  <div class="say bh" style="--d:4.4s;left:4%;top:56%" data-sfx="blip" data-at="4.4"><div class="emo">😵‍💫</div></div>
+</section>
+
+<!-- 3 สูตรหาย -->
+<section class="sc" data-t="6.5">
+  <div class="clk"><span>🌙 21:58</span></div>
+  <div class="say bx" style="--d:.3s" data-sfx="pop" data-at=".3"><div class="bub"><small>EXCEL</small><p>สูตรหายครับ 😭</p></div></div>
+  <div class="props">
+    <div class="sheet a up" style="--d:.8s">
+      <div class="cell"><b>25,000</b></div><div class="cell er a pz" style="--d:1.4s"><b>#REF!</b></div><div class="cell"><b>1,800</b></div>
+      <div class="cell er a pz" style="--d:1.8s"><b>#VALUE!</b></div><div class="cell"><b>18,000</b></div><div class="cell er a pz" style="--d:2.2s"><b>#DIV/0!</b></div>
+    </div>
+  </div>
+  <div class="say bh" style="--d:3.4s" data-sfx="pop" data-at="3.4"><div class="bub"><small>พี่ HR</small><p>ห๊ะ!? 😨</p></div></div>
+</section>
+
+<!-- 4 ใครแก้สูตร -->
+<section class="sc" data-t="6.5">
+  <div class="clk"><span>🌙 22:40</span></div>
+  <div class="say bx" style="--d:.3s" data-sfx="pop" data-at=".3"><div class="bub"><small>EXCEL</small><p>ใครแก้สูตรผม?! 🧐</p></div></div>
+  <div class="props">
+    <div class="fml a up" style="--d:.9s">
+      <div><s>=SUM(C2:C40)</s></div>
+      <div class="bad a pz" style="--d:1.8s" data-sfx="err" data-at="1.8">=SUM(C2:C39) ❌</div>
+    </div>
+  </div>
+  <div class="say bh" style="--d:3.4s" data-sfx="pop" data-at="3.4"><div class="bub"><small>พี่ HR</small><p>ไม่ใช่ฉันนะ… 😬</p></div></div>
+</section>
+
+<!-- 5 ลืม OT -->
+<section class="sc" data-t="6">
+  <div class="clk"><span>🌙 23:30</span></div>
+  <div class="say bx" style="--d:.3s" data-sfx="pop" data-at=".3"><div class="bub"><small>EXCEL</small><p>ลืม OT ไป 1 คนครับ…</p></div></div>
+  <div class="props">
+    <div class="slp a up" style="--d:.9s">
+      <div class="r"><span>คุณสมชาย · OT</span><span>0</span></div>
+      <div class="r a pz" style="--d:1.7s" data-sfx="err" data-at="1.7"><span>ควรได้</span><b>+1,500 ❗</b></div>
+    </div>
+  </div>
+  <div class="say bh" style="--d:3s" data-sfx="blip" data-at="3"><div class="emo">😱</div></div>
+</section>
+
+<!-- 6 ตี 2 -->
+<section class="sc" data-t="7">
+  <div class="clk"><span style="background:linear-gradient(150deg,#e5484d,#9f1239)">⏰ 02:13 · เงินเดือนออกพรุ่งนี้!</span></div>
+  <div class="say bx" style="--d:.5s;--e:3.4s" data-sfx="pop" data-at=".5"><div class="bub"><small>EXCEL</small><p>ตี 2 แล้วนะครับ…</p></div></div>
+  <div class="say bx" style="--d:3.6s" data-sfx="pop" data-at="3.6"><div class="bub"><small>EXCEL</small><p>เดือนหน้า<br>ขออย่าเจอกันอีกเลย 😴</p></div></div>
+  <div class="say bh" style="--d:5.2s" data-sfx="blip" data-at="5.2"><div class="emo">😭</div></div>
+</section>
+
+<!-- 7 ชวนอิน -->
+<section class="sc" data-t="4.5">
+  <div class="center">
+    <div class="mid a up" style="--d:.2s">คนทำเงินเดือน…</div>
+    <div class="big a pop" style="--d:.7s">เคยเจอ<br><em>แบบนี้ไหม?</em> 🙋</div>
+  </div>
+</section>
+
+<!-- 8 ปิดด้วยคำถาม -->
+<section class="sc" data-t="10.5">
+  <div class="center">
+    <div class="minix a pop" style="--d:.1s">
+      <div class="xb" style="inset:0 0 0 0;border-radius:5em"></div>
+      <div class="eye l" style="left:4.5em;top:6em;width:6em;height:7em"><div class="pu" style="width:3em;height:3em;margin:-.6em 0 0 -1.5em"></div></div>
+      <div class="eye r" style="right:4.5em;top:6em;width:6em;height:7em"><div class="pu" style="width:3em;height:3em;margin:-.6em 0 0 -1.5em"></div></div>
+      <div class="mo" style="top:15em;width:8em;height:4.4em;margin-left:-4em"></div>
+    </div>
+    <div class="mid a up" style="--d:.5s">ถ้า Excel ของคุณพูดได้…</div>
+    <div class="big a pop" style="--d:1s;font-size:9.6em">มันจะพูด<br><em>ว่าอะไร?</em></div>
+    <div style="margin-top:3em">
+      <span class="chip a pz" style="--d:2.2s" data-sfx="blip" data-at="2.2">ไฟล์ไหนล่าสุดครับ?</span>
+      <span class="chip a pz" style="--d:2.6s" data-sfx="blip" data-at="2.6">สูตรหายครับ 😭</span>
+      <span class="chip a pz" style="--d:3s" data-sfx="blip" data-at="3">ใครแก้สูตรผม?</span>
+      <span class="chip a pz" style="--d:3.4s" data-sfx="blip" data-at="3.4">Final_v12 ไม่ใช่ Final</span>
+    </div>
+    <div class="cta" style="--d:4.4s">คอมเมนต์มาเลย 👇</div>
+  </div>
+  <div class="brand a up" style="--d:5.4s"><span><b>eSim</b><i>Payroll</i> · ให้ระบบคิดเงินเดือนแทน Excel</span></div>
+</section>
+
+<div id="bar"></div>
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var cur=-1,bar=document.getElementById('bar');
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on','off')});void S[i].offsetWidth;S[i].classList.add('on');cur=i;document.body.dataset.sc=i}
+    if(i>0){var p=S[i-1];if(st<.35)p.classList.add('off');else p.classList.remove('off')}
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;else if(sc===S[i])an.currentTime=st*1000;else an.currentTime=Math.min(st,.35)*1000;
+    });
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render; window.__drop=ST[1];
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>

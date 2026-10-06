@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>eSimPayroll — ตัดต่อคลิปน้อง eSim</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#050a18;font-family:'Noto Sans Thai',system-ui,sans-serif;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);background:#fff;color:#0b1230}
+.A{position:absolute}
+.sc{position:absolute;inset:0;visibility:hidden;overflow:hidden}
+.sc.on{visibility:visible}
+/* ฟุตเทจ */
+.vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 100%}
+.vid.crop{transform:scale(1.348)}
+/* แพตช์ซ่อนบรรทัด "เอกสารครบ" ที่ซ้ำ */
+.patch{position:absolute;left:9.2em;top:112.4em;width:58em;height:12.6em;background:#fcfcfc;border-radius:2em;filter:blur(.35em);display:none}
+/* แฟลชตอนตัดฉาก */
+.flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:40;pointer-events:none}
+.on .flash{animation:fl .35s ease-out both}
+@keyframes fl{0%{opacity:1}100%{opacity:0}}
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.5s)}
+.on .pop{animation-name:pop;animation-timing-function:cubic-bezier(.2,1.5,.35,1)}
+@keyframes pop{0%{opacity:0;transform:scale(.3)}100%{opacity:1;transform:none}}
+.on .rise{animation-name:rise;animation-timing-function:cubic-bezier(.2,1.2,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(3em)}to{opacity:1;transform:none}}
+/* แคปชัน (โซนปลอดภัย TikTok) */
+.cap{position:absolute;left:7em;right:13em;bottom:40em;text-align:center;z-index:25;opacity:0;animation:cIn .3s var(--d) cubic-bezier(.2,1.4,.35,1) forwards,cOut .2s var(--e) ease-in forwards}
+@keyframes cIn{from{opacity:0;transform:translateY(1.4em) scale(.92)}to{opacity:1;transform:none}}
+@keyframes cOut{to{opacity:0;transform:translateY(-.6em)}}
+.cap span{display:inline-block;font-size:3.7em;font-weight:900;color:#fff;background:#0b1230e0;border-radius:.6em;padding:.3em .9em;line-height:1.4;box-shadow:0 .25em .7em #0006}
+.cap b{color:#5ae39a}
+/* การ์ดสว่าง (คั่นกลาง + ปิด) */
+.lt{position:absolute;inset:0;background:radial-gradient(70em 60em at 50% 35%,#ffffff,#eef3fb 60%,#dfe8f7)}
+.blob{position:absolute;border-radius:50%;filter:blur(4em);opacity:.55}
+.logoimg{display:block;margin:0 auto;width:62em}
+.q{font-size:6.6em;font-weight:900;line-height:1.25;color:#0b1230;text-align:center}
+.q em{font-style:normal;color:#12a3a0}
+.pill{display:inline-block;font-size:4.4em;font-weight:900;color:#fff;border-radius:2em;padding:.35em 1.2em;background:linear-gradient(120deg,#12a3a0,#1559c8);box-shadow:0 .3em .8em #1559c855}
+.on .pill.a{animation:pop .5s var(--d) cubic-bezier(.2,1.5,.35,1) both,pb .8s calc(var(--d) + .5s) ease-in-out infinite alternate}
+@keyframes pb{to{transform:scale(1.05)}}
+.url{font-size:4.2em;font-weight:900;color:#1559c8}
+.small{font-size:3.2em;font-weight:800;color:#5b7186}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+
+<!-- A: คลิป 1 เหนื่อยหน้าคอม (ตัดก่อนการ์ดจบของ AI) -->
+<section class="sc" data-t="6.4" data-clip="c1">
+ <img class="vid" alt="">
+ <div class="cap" style="--d:.25s;--e:2.9s"><span>ทำเงินเดือนทั้งวัน… <b>ไม่เสร็จสักที</b> 😩</span></div>
+ <div class="cap" style="--d:3s;--e:6.2s"><span>ภาษี · ประกันสังคม · OT <b>ตีกันในหัว</b> 😵‍💫</span></div>
+</section>
+
+<!-- B: การ์ดคั่น (สร้างใหม่ ใช้โลโก้จริง) -->
+<section class="sc" data-t="1.6">
+ <div class="lt"></div>
+ <div class="blob" style="left:-10em;top:110em;width:50em;height:40em;background:#5ef0dc"></div>
+ <div class="blob" style="right:-12em;top:20em;width:46em;height:40em;background:#9cc0ff"></div>
+ <div class="A" style="left:0;right:0;top:56em"><img class="logoimg a pop" style="--d:.05s" src="brand/logo-full-800.png" alt="eSimPayroll"></div>
+ <div class="A" style="left:6em;right:6em;top:76em"><div class="q a rise" style="--d:.3s">ลองเปลี่ยน<em>วิธีทำงาน</em>ดูไหม?</div></div>
+ <div class="flash"></div>
+</section>
+
+<!-- C: คลิป 2 ใช้ระบบ (ตัดเฟรมข้อความเพี้ยน + การ์ดจบกระต่าย) -->
+<section class="sc" data-t="9.25" data-clip="c2">
+ <img class="vid" alt="">
+ <div class="patch"></div>
+ <div class="cap" style="--d:.3s;--e:3.25s"><span>แค่กด <b>“คำนวณเงินเดือน”</b> 👆</span></div>
+ <div class="cap" style="--d:3.35s;--e:4.7s"><span>เสร็จทั้งบริษัท <b>ในคลิกเดียว</b> ✨</span></div>
+ <div class="cap" style="--d:4.8s;--e:6.15s"><span>พนักงาน<b>สแกนหน้า</b>ลงเวลาผ่านมือถือ 📱</span></div>
+ <div class="cap" style="--d:6.25s;--e:7.2s"><span>ยืนยันตำแหน่งด้วย <b>GPS</b> 📍</span></div>
+ <div class="cap" style="--d:7.5s;--e:9.1s"><span>ครบ <b>จบในที่เดียว</b> ✓</span></div>
+ <div class="flash"></div>
+</section>
+
+<!-- D: คลิป 3 เลิกงานตรงเวลา (ตัดก่อนการ์ดจบของ AI) -->
+<section class="sc" data-t="7.2" data-clip="c3">
+ <img class="vid" alt="">
+ <div class="cap" style="--d:.3s;--e:3.25s"><span><b>17:00</b> เลิกงานตรงเวลา 🎉</span></div>
+ <div class="cap" style="--d:3.4s;--e:7.05s"><span>เจ้าของเช็กสรุปเงินเดือน<b>จากมือถือ</b> ☕</span></div>
+ <div class="flash"></div>
+</section>
+
+<!-- E: การ์ดปิด (โลโก้จริง) -->
+<section class="sc" data-t="3.4">
+ <div class="lt"></div>
+ <div class="blob" style="left:-12em;top:24em;width:50em;height:40em;background:#9cc0ff"></div>
+ <div class="blob" style="right:-10em;top:104em;width:50em;height:40em;background:#5ef0dc"></div>
+ <div class="A" style="left:0;right:0;top:40em"><img class="logoimg a pop" style="--d:.1s" src="brand/logo-full-800.png" alt="eSimPayroll"></div>
+ <div class="A" style="left:5em;right:5em;top:58em"><div class="q a rise" style="--d:.4s">ทำเงินเดือน<em>ให้ง่ายขึ้น</em></div></div>
+ <div class="A" style="left:0;right:0;top:72em;text-align:center"><span class="pill a" style="--d:.8s">ทดลองใช้ฟรี 30 วัน</span></div>
+ <div class="A" style="left:0;right:0;top:84em;text-align:center"><div class="url a rise" style="--d:1.1s">esimpayroll.com</div></div>
+ <div class="A" style="left:0;right:0;top:92em;text-align:center"><div class="small a rise" style="--d:1.3s">พนักงาน 1–10 คน ใช้ฟรีตลอด</div></div>
+ <i data-sfx="chime" data-at=".15"></i>
+ <div class="flash"></div>
+</section>
+
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var FR={c1:240,c2:240,c3:240};
+  /* เวลาในฉาก → เวลาในคลิปต้นฉบับ */
+  function srcTime(clip,st){
+    if(clip==='c2'){ if(st<7.4)return st; if(st<8.25)return 8.0+(st-7.4); return 8.85; }
+    return st;
+  }
+  var cur=-1;
+  async function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i],sc=S[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on')});void sc.offsetWidth;sc.classList.add('on');cur=i}
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var s2=el.closest&&el.closest('.sc');
+      an.pause();an.currentTime=(s2===sc?st:0)*1000;
+    });
+    var clip=sc.dataset.clip;
+    if(clip){
+      var s=srcTime(clip,st),n=Math.min(FR[clip],Math.floor(s*24+1e-6)+1);
+      var img=sc.querySelector('.vid');
+      img.classList.toggle('crop',clip==='c1'&&n<=120);
+      var p=sc.querySelector('.patch');if(p)p.style.display=(clip==='c2'&&st>=7.4)?'block':'none';
+      var src='_ed18/'+clip+'/'+String(n).padStart(4,'0')+'.jpg';
+      if(img.getAttribute('src')!==src){img.src=src;try{await img.decode()}catch(e){}}
+    }
+  }
+  window.__total=tot; window.__render=render; window.__drop=ST[2];
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>eSimPayroll — โปรเด็ด</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#050a18;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);background:#091025}
+.A{position:absolute}
+/* ฉากหลังนีออน synthwave */
+.sky{position:absolute;inset:0;background:radial-gradient(80em 50em at 50% 64%,#1d3fa0 0%,#12256a 30%,#091025 70%)}
+.blob{position:absolute;border-radius:50%;filter:blur(7em);opacity:.55;animation:blob 9s ease-in-out infinite alternate}
+@keyframes blob{to{transform:translate(12em,-10em) scale(1.25)}}
+.horizon{position:absolute;left:-10em;right:-10em;top:112em;height:.6em;background:#5ef0dc;box-shadow:0 0 3em 1em #5ef0dc88,0 0 10em 3em #2f5bea66}
+.gridw{position:absolute;left:-60em;right:-60em;top:112em;height:120em;perspective:30em;perspective-origin:50% 0;overflow:hidden}
+.grid{position:absolute;inset:0;transform-origin:50% 0;transform:rotateX(68deg);
+  background:linear-gradient(90deg,#5ef0dc66 .25em,transparent .25em) 0 0/10em 10em,linear-gradient(#5ef0dc66 .25em,transparent .25em) 0 0/10em 10em;
+  animation:gridmv .6s linear infinite}
+@keyframes gridmv{to{background-position:0 10em,0 10em}}
+.gridw::after{content:"";position:absolute;inset:0;background:linear-gradient(#091025 0%,transparent 30%)}
+.beam{position:absolute;top:-20em;width:14em;height:160em;background:linear-gradient(#5ef0dc00,#5ef0dc22,#5ef0dc00);transform-origin:50% 0;animation:beam 5s ease-in-out infinite alternate}
+@keyframes beam{from{transform:rotate(-24deg)}to{transform:rotate(24deg)}}
+.top{position:absolute;left:0;right:0;top:8em;text-align:center;z-index:30}
+.top span{display:inline-flex;align-items:center;gap:.5em;font-size:2.8em;font-weight:900;color:#fff;background:#091025cc;border:.12em solid #5ef0dc;border-radius:2em;padding:.25em 1em;box-shadow:0 0 1em #5ef0dc88,inset 0 0 .8em #5ef0dc44}
+.top i{font-style:normal;color:#ffd84d}
+/* ฉาก: วาร์ปซูม */
+.sc{position:absolute;inset:0;visibility:hidden}
+.sc.on{visibility:visible;animation:warp .45s cubic-bezier(.15,.9,.3,1) both}
+@keyframes warp{from{transform:scale(.25);filter:blur(1.5em) brightness(3);opacity:0}to{transform:none;filter:none;opacity:1}}
+.streak{position:absolute;left:-30%;top:-20%;width:30%;height:140%;background:linear-gradient(90deg,transparent,#ffffffcc,transparent);transform:rotate(18deg);opacity:0;z-index:40;pointer-events:none}
+.on .streak{animation:streak .5s .05s ease-out both}
+@keyframes streak{0%{opacity:1;left:-30%}100%{opacity:0;left:110%}}
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.45s)}
+.on .pop{animation-name:pop;animation-timing-function:cubic-bezier(.2,1.7,.4,1)}
+.on .up{animation-name:up;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+.on .zin{animation-name:zin;animation-timing-function:cubic-bezier(.1,1.2,.3,1);--t:.4s}
+.on .sl{animation-name:sl;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+.on .sr{animation-name:sr;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+.on .spinin{animation-name:spinin;animation-timing-function:cubic-bezier(.2,1.4,.4,1);--t:.6s}
+@keyframes pop{0%{opacity:0;transform:scale(.1) rotate(-12deg)}60%{opacity:1;transform:scale(1.12) rotate(3deg)}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes up{from{opacity:0;transform:translateY(6em)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes zin{from{opacity:0;transform:scale(4);filter:blur(1em)}to{opacity:1;transform:rotate(var(--r,0deg));filter:none}}
+@keyframes sl{from{opacity:0;transform:translateX(-70em) rotate(-20deg)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes sr{from{opacity:0;transform:translateX(70em) rotate(20deg)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes spinin{0%{opacity:0;transform:scale(0) rotate(-540deg)}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+.on .out{animation:outz .3s var(--o) ease-in forwards!important}
+@keyframes outz{to{opacity:0;transform:scale(.4)}}
+.H{position:absolute;left:4em;right:4em;text-align:center;z-index:6}
+.neo{font-weight:900;line-height:1.1;color:#fff;text-shadow:0 0 .15em #5ef0dc,0 0 .5em #5ef0dc,0 0 1.2em #2f5bea}
+.neo.y{text-shadow:0 0 .15em #ffd84d,0 0 .5em #ffb020,0 0 1.2em #ff7a00}
+.neo.r{text-shadow:0 0 .15em #ff6b6b,0 0 .5em #e5484d,0 0 1.2em #e5484d}
+.gl{display:inline-block}
+.on .gl{animation:gl .9s calc(var(--d,0s) + .4s) steps(1) infinite}
+@keyframes gl{0%{transform:none;filter:none}8%{transform:translate(-.6em,.2em) skewX(-8deg);filter:drop-shadow(.3em 0 0 #ff2a6d) drop-shadow(-.3em 0 0 #05d9e8)}12%{transform:translate(.5em,-.2em);filter:drop-shadow(-.3em 0 0 #ff2a6d) drop-shadow(.3em 0 0 #05d9e8)}16%{transform:none;filter:none}60%{transform:translate(.3em,0) skewX(6deg);filter:drop-shadow(.25em 0 0 #ff2a6d)}64%{transform:none;filter:none}}
+.wig{display:inline-block}
+.on .wig{animation:wig .45s calc(var(--d,0s) + .5s) ease-in-out infinite alternate}
+@keyframes wig{from{transform:rotate(-3deg) scale(1)}to{transform:rotate(3deg) scale(1.06)}}
+.pulse{display:inline-block}
+.on .pulse{animation:pls .7s calc(var(--d,0s) + .5s) ease-in-out infinite alternate}
+@keyframes pls{to{transform:scale(1.07)}}
+.on .shk{animation:shk .45s var(--sd) linear both}
+@keyframes shk{0%,100%{transform:none}15%{transform:translate(-2em,1em)}35%{transform:translate(2em,-1em)}55%{transform:translate(-1.4em,.6em)}75%{transform:translate(1em,-.5em)}}
+/* การ์ดกระจกนีออน */
+.gc{background:linear-gradient(160deg,#16255acc,#0b1433ee);border:.4em solid #5ef0dc;border-radius:2.6em;box-shadow:0 0 2em #5ef0dc66,inset 0 0 2em #5ef0dc22;text-align:center;color:#fff}
+.gc.y{border-color:#ffd84d;box-shadow:0 0 2em #ffd84d66,inset 0 0 2em #ffd84d22}
+.gc.r{border-color:#ff6b6b;box-shadow:0 0 2em #ff6b6b66,inset 0 0 2em #ff6b6b22}
+.chip{display:inline-flex;align-items:center;gap:.4em;background:#0b1433;border:.15em solid #5ef0dc;border-radius:2em;padding:.25em .8em;font-weight:900;box-shadow:0 0 .8em #5ef0dc66}
+.chip b{color:#5ae39a}
+/* Excel ปวดหัว */
+.xl{width:62em;background:#e9f2ea;border:.5em solid #1d6f42;border-radius:1.4em;overflow:hidden;color:#0b1230;box-shadow:0 1.5em 3em #0009}
+.xl .bar{background:#1d6f42;color:#fff;font-size:2.6em;font-weight:900;padding:.3em .8em;text-align:left}
+.xl .cells{display:grid;grid-template-columns:repeat(5,1fr);gap:.3em;padding:1em}
+.xl .cells i{height:3.6em;background:#fff;border:.15em solid #b8cdbd;font-style:normal;font-size:1.9em;font-weight:800;display:grid;place-items:center}
+.on .xl .cells i.e{animation:err .4s calc(var(--d,0s) + var(--k,0s)) steps(1) infinite alternate}
+@keyframes err{to{background:#ffb3b3;color:#c00}}
+/* จอมือถือ */
+.phone{position:absolute;width:44em;height:80em;border-radius:6em;background:#050a18;border:.8em solid #2b3a6e;box-shadow:0 0 0 .4em #5ef0dc55,0 0 4em #5ef0dc55,0 3em 5em #000a;padding:2.2em 2em;overflow:hidden}
+.phone::before{content:"";position:absolute;left:50%;top:1.2em;width:12em;height:2em;margin-left:-6em;border-radius:2em;background:#000}
+.scr{position:absolute;inset:4em 2em 2em;border-radius:3.6em;background:linear-gradient(#0f1d4a,#0a1435);overflow:hidden;padding:2.6em 2.4em}
+.scr h4{font-size:2.6em;font-weight:900;color:#5ef0dc;margin-bottom:.4em}
+.row{display:flex;justify-content:space-between;align-items:center;background:#ffffff10;border-radius:1.4em;padding:1em 1.4em;margin-top:1em}
+.row span{font-size:2.5em;font-weight:800}
+.row b{font-size:2.6em;font-weight:900;color:#5ae39a}
+.tick{display:inline-grid;place-items:center;width:1.4em;height:1.4em;border-radius:50%;background:#5ae39a;color:#0b1230;font-size:.9em;margin-left:.3em}
+/* สลิป */
+.slip{width:38em;background:#fff;color:#0b1230;border-radius:1.6em;padding:2em 2.2em;box-shadow:0 0 3em #5ef0dc88,0 2em 3em #000a}
+.slip h5{font-size:3em;font-weight:900;text-align:center;border-bottom:.15em dashed #b9c6dd;padding-bottom:.3em}
+.slip p{display:flex;justify-content:space-between;font-size:2.4em;font-weight:800;margin-top:.5em}
+.slip p.t{font-size:3em;color:#0e9f6e;border-top:.12em solid #0b1230;padding-top:.3em}
+.on .print{animation:print .7s var(--d) cubic-bezier(.2,1.2,.3,1) both}
+@keyframes print{from{opacity:0;clip-path:inset(0 0 100% 0);transform:translateY(-8em)}to{opacity:1;clip-path:inset(0 0 0 0);transform:rotate(var(--r,0deg))}}
+/* เอกสารราชการ */
+.doc{width:26em;height:34em;background:#fff;color:#0b1230;border-radius:1.4em;padding:2em 1.8em;box-shadow:0 0 2.4em #5ef0dc88,0 2em 3em #000a;border-top:2.2em solid #2f5bea}
+.doc b{display:block;font-size:4.4em;font-weight:900;text-align:center;line-height:1.1}
+.doc small{display:block;font-size:2.1em;font-weight:800;text-align:center;color:#5b7186;margin-bottom:.6em}
+.doc i{display:block;height:1.1em;background:#dbe5f4;border-radius:1em;margin-top:1.2em}
+.cursor{position:absolute;font-size:9em;z-index:9;opacity:0;filter:drop-shadow(0 0 .2em #000)}
+.on .cursor{animation:cur .8s var(--d) cubic-bezier(.3,1.2,.4,1) both}
+@keyframes cur{0%{opacity:0;transform:translate(30em,30em)}70%{opacity:1;transform:none}85%{transform:scale(.8)}100%{opacity:1;transform:none}}
+.ripple{position:absolute;width:20em;height:20em;margin:-10em;border-radius:50%;border:.8em solid #5ef0dc;opacity:0;z-index:8}
+.on .ripple{animation:rip .7s var(--d) ease-out both}
+@keyframes rip{0%{opacity:1;transform:scale(.1)}100%{opacity:0;transform:scale(2.4)}}
+/* สแกนใบหน้า */
+.face{position:relative;width:28em;height:28em;margin:2em auto 0;border-radius:50%;border:.5em dashed #5ef0dc;display:grid;place-items:center;font-size:1em;overflow:hidden}
+.face span{font-size:17em;line-height:1}
+.scanl{position:absolute;left:0;right:0;height:.6em;background:#5ef0dc;box-shadow:0 0 2em 1em #5ef0dc88;top:0}
+.on .scanl{animation:scan 1.1s var(--d) ease-in-out 3 alternate both}
+@keyframes scan{from{top:0}to{top:100%}}
+.map{position:relative;height:16em;border-radius:1.6em;margin-top:1.6em;background:linear-gradient(90deg,#ffffff10 .2em,transparent .2em) 0 0/4em 4em,linear-gradient(#ffffff10 .2em,transparent .2em) 0 0/4em 4em,#12306a;overflow:hidden}
+.map .road{position:absolute;left:-2em;right:-2em;top:7em;height:2em;background:#2b4f9a;transform:rotate(-12deg)}
+.pin{position:absolute;left:50%;top:2em;margin-left:-2.6em;font-size:5.2em;opacity:0}
+.on .pin{animation:pin .5s var(--d) cubic-bezier(.3,1.8,.4,1) both}
+@keyframes pin{from{opacity:0;transform:translateY(-12em)}to{opacity:1;transform:none}}
+.ok{margin-top:1.6em;background:#5ae39a;color:#0b1230;border-radius:1.6em;padding:.8em;text-align:center;font-size:2.8em;font-weight:900}
+/* นับถอยหลัง */
+.cd{position:absolute;left:0;right:0;top:50em;text-align:center;opacity:0}
+.cd span{font-size:30em;font-weight:900}
+.on .cd{animation:cd .5s var(--d) ease-out both}
+@keyframes cd{0%{opacity:0;transform:scale(3)}25%{opacity:1;transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(.6)}}
+/* คอนเฟตติ */
+.cf{position:absolute;width:1.6em;height:2.6em;border-radius:.3em;opacity:0;z-index:7}
+.on .cf{animation:cf 1.8s var(--d) cubic-bezier(.1,.8,.4,1) both}
+@keyframes cf{0%{opacity:1;transform:translate(0,0) rotate(0)}55%{opacity:1;transform:translate(var(--dx),var(--dy)) rotate(var(--rt))}100%{opacity:0;transform:translate(calc(var(--dx)*1.15),calc(var(--dy) + 36em)) rotate(calc(var(--rt)*2))}}
+/* น้อง eSim */
+.es{position:absolute;background:no-repeat center/contain;z-index:7;filter:drop-shadow(0 0 1.2em #5ef0dcaa)}
+.on .es.a{animation:esin .5s var(--d) cubic-bezier(.2,1.6,.4,1) both}
+@keyframes esin{0%{opacity:0;transform:scale(.2) rotate(-20deg)}100%{opacity:1;transform:none}}
+.esw{position:absolute;z-index:7}
+body.tes .esw.ta{animation:estalk .16s ease-in-out infinite alternate}
+@keyframes estalk{from{transform:scale(1,1)}to{transform:scale(1.04,.96) translateY(.6em)}}
+.ring{position:absolute;border-radius:50%;border:.6em solid transparent;border-top-color:#5ef0dc;border-right-color:#2f5bea;animation:rot 1.6s linear infinite;box-shadow:0 0 2em #5ef0dc55}
+.ring.b{border-top-color:#ffd84d;border-right-color:transparent;border-left-color:#ffd84d;animation-duration:2.4s;animation-direction:reverse}
+@keyframes rot{to{transform:rotate(360deg)}}
+.logo{display:flex;align-items:center;justify-content:center;gap:1.6em}
+.logo .ic{width:10em;height:10em;border-radius:28%;display:grid;place-items:center;background:linear-gradient(150deg,#33c7a0,#1559c8);box-shadow:0 0 2.4em #5ef0dc99}
+.logo .ic b{font-size:7.6em;font-weight:900;color:#fff;line-height:1;margin-top:-.12em}
+.logo .tx{font-size:7em;font-weight:900;letter-spacing:-.03em;text-shadow:0 0 .4em #2f5beaaa}.logo .tx i{font-style:normal;color:#5ae39a}
+.btnx{display:inline-block;font-size:5.6em;font-weight:900;color:#0b1230;border-radius:1em;padding:.4em 1.2em;background:linear-gradient(120deg,#5ae39a,#5ef0dc);box-shadow:0 0 1em #5ef0dc,0 .15em 0 #0b1230}
+.btnr{display:inline-block;font-size:4.6em;font-weight:900;color:#fff;border-radius:1em;padding:.4em 1.2em;background:#e5484d;box-shadow:0 0 1em #e5484d99}
+/* ซับ */
+.sub{position:absolute;left:7em;right:13em;bottom:40em;text-align:center;z-index:25;opacity:0;animation:sIn .22s var(--d) ease-out forwards,sOut .18s var(--e) ease-in forwards}
+@keyframes sIn{from{opacity:0;transform:translateY(1.2em) scale(.9)}to{opacity:1;transform:none}}
+@keyframes sOut{to{opacity:0}}
+.sub span{display:inline-block;font-size:3.5em;font-weight:900;color:#fff;background:#050a18d9;border:.1em solid #5ef0dc;border-radius:.5em;padding:.3em .8em;line-height:1.4;box-shadow:0 0 .6em #5ef0dc77}
+#bar{position:absolute;left:0;bottom:0;height:.7em;background:linear-gradient(90deg,#ffd84d,#5ef0dc);width:0;z-index:50;box-shadow:0 0 1em #5ef0dc}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div class="sky"></div>
+<div class="blob" style="left:-10em;top:20em;width:50em;height:50em;background:#2f5bea"></div>
+<div class="blob" style="right:-14em;top:60em;width:46em;height:46em;background:#12a3a0;animation-delay:-4s"></div>
+<div class="beam" style="left:10em"></div><div class="beam" style="right:10em;animation-delay:-2.5s"></div>
+<div class="gridw"><div class="grid"></div></div><div class="horizon"></div>
+<div class="top"><span><i>⚡</i> eSimPayroll · โปรพิเศษ</span></div>
+<!-- 0 HOOK -->
+<section class="sc" data-t="7.26">
+ <div class="A shk" style="inset:0;--sd:0.50s">
+  <div class="A out" style="inset:0;--o:1.20s"><div class="H" style="top:42em"><div class="a zin" style="--d:0.30s"><span class="neo r gl" style="font-size:22em">หยุด!</span></div></div></div>
+  <div class="A out" style="inset:0;--o:3.65s">
+   <div class="A" style="left:19em;top:36em"><div class="xl a sl" style="--d:1.25s;--r:-4deg"><div class="bar">📊 เงินเดือน_final_v9.xlsx</div><div class="cells">
+    <i>ชื่อ</i><i>เงินเดือน</i><i>ภาษี</i><i>ปกส.</i><i>OT</i><i>สมชาย</i><i>25,000</i><i class="e" style="--k:.6s">#REF!</i><i>750</i><i>??</i><i>สมหญิง</i><i>18,500</i><i>460</i><i class="e" style="--k:1s">#N/A</i><i>1,200</i><i>วิชัย</i><i>32,000</i><i class="e" style="--k:1.3s">#VALUE!</i><i>875</i><i>??</i></div></div></div>
+   <div class="A" style="right:5em;top:28em"><span class="chip a pop" style="--d:2.15s;font-size:3.6em">😵 ตี 2 แล้ว…</span></div>
+  </div>
+  <div class="H" style="top:28em"><div class="a zin" style="--d:4.10s"><span class="neo y wig" style="font-size:24em">ฟรี</span></div></div>
+  <div class="H" style="top:62em"><span class="chip a pop" style="--d:4.70s;font-size:4.6em">♾️ <b>ตลอดไป!</b></span></div>
+  <div class="H" style="top:74em"><div class="gc y a up" style="--d:5.20s;display:inline-block;padding:1em 2.4em"><span style="font-size:4em;font-weight:900">👥 พนักงาน 1–10 คน</span></div></div>
+  <div class="cf" style="left:50em;top:45em;background:#ffd84d;--d:4.13s;--dx:49.3em;--dy:-14.0em;--rt:-208deg"></div><div class="cf" style="left:50em;top:45em;background:#5ef0dc;--d:4.14s;--dx:-4.7em;--dy:-49.8em;--rt:181deg"></div><div class="cf" style="left:50em;top:45em;background:#ff6b6b;--d:4.18s;--dx:1.2em;--dy:-50.4em;--rt:98deg"></div><div class="cf" style="left:50em;top:45em;background:#5ae39a;--d:4.14s;--dx:10.7em;--dy:-38.0em;--rt:150deg"></div><div class="cf" style="left:50em;top:45em;background:#9cc0ff;--d:4.18s;--dx:-6.4em;--dy:-32.8em;--rt:-23deg"></div><div class="cf" style="left:50em;top:45em;background:#ff9ff3;--d:4.11s;--dx:40.2em;--dy:-35.3em;--rt:9deg"></div><div class="cf" style="left:50em;top:45em;background:#ffd84d;--d:4.18s;--dx:36.7em;--dy:-33.2em;--rt:56deg"></div><div class="cf" style="left:50em;top:45em;background:#5ef0dc;--d:4.14s;--dx:41.6em;--dy:-39.7em;--rt:-119deg"></div><div class="cf" style="left:50em;top:45em;background:#ff6b6b;--d:4.12s;--dx:15.3em;--dy:-39.0em;--rt:-146deg"></div><div class="cf" style="left:50em;top:45em;background:#5ae39a;--d:4.21s;--dx:-25.2em;--dy:-1.8em;--rt:41deg"></div><div class="cf" style="left:50em;top:45em;background:#9cc0ff;--d:4.11s;--dx:-6.2em;--dy:-61.4em;--rt:-163deg"></div><div class="cf" style="left:50em;top:45em;background:#ff9ff3;--d:4.15s;--dx:-32.8em;--dy:-27.1em;--rt:-221deg"></div><div class="cf" style="left:50em;top:45em;background:#ffd84d;--d:4.14s;--dx:16.7em;--dy:-24.8em;--rt:-112deg"></div><div class="cf" style="left:50em;top:45em;background:#5ef0dc;--d:4.16s;--dx:-25.3em;--dy:-56.5em;--rt:-241deg"></div><div class="cf" style="left:50em;top:45em;background:#ff6b6b;--d:4.14s;--dx:-22.9em;--dy:1.4em;--rt:-55deg"></div><div class="cf" style="left:50em;top:45em;background:#5ae39a;--d:4.17s;--dx:-17.9em;--dy:17.3em;--rt:-192deg"></div><div class="cf" style="left:50em;top:45em;background:#9cc0ff;--d:4.20s;--dx:27.9em;--dy:-32.6em;--rt:97deg"></div><div class="cf" style="left:50em;top:45em;background:#ff9ff3;--d:4.16s;--dx:-23.6em;--dy:-40.6em;--rt:136deg"></div><div class="cf" style="left:50em;top:45em;background:#ffd84d;--d:4.18s;--dx:29.2em;--dy:-25.7em;--rt:-179deg"></div><div class="cf" style="left:50em;top:45em;background:#5ef0dc;--d:4.14s;--dx:-25.6em;--dy:-29.5em;--rt:-78deg"></div><div class="cf" style="left:50em;top:45em;background:#ff6b6b;--d:4.11s;--dx:13.3em;--dy:-60.0em;--rt:230deg"></div><div class="cf" style="left:50em;top:45em;background:#5ae39a;--d:4.12s;--dx:28.1em;--dy:0.9em;--rt:-304deg"></div><div class="cf" style="left:50em;top:45em;background:#9cc0ff;--d:4.18s;--dx:25.5em;--dy:-14.6em;--rt:-256deg"></div><div class="cf" style="left:50em;top:45em;background:#ff9ff3;--d:4.12s;--dx:-36.8em;--dy:-3.8em;--rt:304deg"></div><div class="cf" style="left:50em;top:45em;background:#ffd84d;--d:4.21s;--dx:36.1em;--dy:-46.0em;--rt:294deg"></div><div class="cf" style="left:50em;top:45em;background:#5ef0dc;--d:4.10s;--dx:1.9em;--dy:-41.3em;--rt:-181deg"></div><div class="cf" style="left:50em;top:45em;background:#ff6b6b;--d:4.17s;--dx:16.0em;--dy:-5.7em;--rt:-193deg"></div><div class="cf" style="left:50em;top:45em;background:#5ae39a;--d:4.18s;--dx:-1.9em;--dy:-48.6em;--rt:-189deg"></div><div class="cf" style="left:50em;top:45em;background:#9cc0ff;--d:4.14s;--dx:19.2em;--dy:-31.5em;--rt:284deg"></div><div class="cf" style="left:50em;top:45em;background:#ff9ff3;--d:4.10s;--dx:25.5em;--dy:9.4em;--rt:297deg"></div><div class="cf" style="left:50em;top:45em;background:#ffd84d;--d:4.10s;--dx:-32.2em;--dy:-51.4em;--rt:288deg"></div><div class="cf" style="left:50em;top:45em;background:#5ef0dc;--d:4.17s;--dx:19.3em;--dy:33.1em;--rt:129deg"></div><div class="cf" style="left:50em;top:45em;background:#ff6b6b;--d:4.13s;--dx:-2.6em;--dy:11.4em;--rt:46deg"></div><div class="cf" style="left:50em;top:45em;background:#5ae39a;--d:4.18s;--dx:41.8em;--dy:0.3em;--rt:154deg"></div>
+  <i data-sfx="boom" data-at="0.50"></i><i data-sfx="err" data-at="1.95"></i><i data-sfx="boom" data-at="4.10"></i><i data-sfx="chime" data-at="4.20"></i>
+  <div class="esw ta" style="left:66em;top:92em;width:30em;height:30em"><div class="es a" style="--d:.2s;inset:0;background-image:url(media/esim/e3c.png)"></div></div>
+ </div>
+ <div class="streak"></div>
+<div class="sub" style="--d:0.45s;--e:1.20s"><span>หยุดก่อน! ✋</span></div>
+<div class="sub" style="--d:1.20s;--e:3.65s"><span>ยังทำเงินเดือนด้วย Excel ทั้งคืนอยู่ใช่ไหม? 😵</span></div>
+<div class="sub" style="--d:3.65s;--e:7.06s"><span>พนักงานไม่เกิน 10 คน ใช้ฟรีตลอดไป!</span></div>
+</section>
+
+<!-- 1 PROMISE -->
+<section class="sc" data-t="9.03">
+ <div class="logo a zin" style="--d:.2s;position:absolute;left:0;right:0;top:18em"><div class="ic"><b>e</b></div><div class="tx">eSim<i>Payroll</i></div></div>
+ <div class="A out" style="inset:0;--o:2.06s">
+  <div class="ring" style="left:22em;top:36em;width:56em;height:56em"></div><div class="ring b" style="left:26em;top:40em;width:48em;height:48em"></div>
+  <div class="esw ta" style="left:28em;top:41em;width:44em;height:46em"><div class="es a" style="--d:.1s;inset:0;background-image:url(media/esim/e1c.png)"></div></div>
+ </div>
+ <div class="H" style="top:33em"><span class="chip a sl" style="--d:2.31s;font-size:4.2em">⏱️ แค่ <b>1 นาที</b></span></div>
+ <div class="H" style="top:43em"><div class="a zin" style="--d:3.01s"><span class="neo" style="font-size:9em">ทำเงินเดือน<br>จบในไม่กี่คลิก</span></div></div>
+ <div class="H" style="top:72em"><div class="a spinin" style="--d:6.30s"><span class="wig" style="font-size:16em">🎁</span></div></div>
+ <div class="H" style="top:92em"><span class="chip a pop" style="--d:6.80s;font-size:4em;border-color:#ffd84d">🔒 โปรเด็ด <b style="color:#ffd84d">รอท้ายคลิป</b></span></div>
+ <div class="esw ta" style="left:4em;top:92em;width:24em;height:24em"><div class="es a" style="--d:2.21s;inset:0;background-image:url(media/esim/e2c.png)"></div></div>
+ <i data-sfx="boom" data-at="3.01"></i>
+ <div class="streak"></div>
+<div class="sub" style="--d:0.45s;--e:2.06s"><span>สวัสดีครับ ผม “น้อง eSim” 👋</span></div>
+<div class="sub" style="--d:2.06s;--e:6.25s"><span>1 นาทีนี้ ดูว่า eSimPayroll ทำเงินเดือนจบในไม่กี่คลิกยังไง</span></div>
+<div class="sub" style="--d:6.25s;--e:8.83s"><span>ดูให้จบ! ท้ายคลิปมีโปรเด็ด 🎁</span></div>
+</section>
+
+<!-- 2 BODY1: คำนวณอัตโนมัติ -->
+<section class="sc" data-t="12.34">
+ <div class="H" style="top:16em"><span class="chip a sl" style="--d:.15s;font-size:4em">01 · <b>คำนวณอัตโนมัติ</b></span></div>
+ <div class="phone a up" style="--d:.3s;left:28em;top:25em"><div class="scr">
+  <h4>💼 เงินเดือน ต.ค.</h4>
+  <div class="row"><span>เงินเดือน</span><b class="a pop" style="--d:1.70s">25,000</b></div>
+  <div class="row a sr" style="--d:3.27s"><span>ภาษีหัก ณ ที่จ่าย</span><b>✓</b></div>
+  <div class="row a sr" style="--d:4.17s"><span>ประกันสังคม</span><b>✓</b></div>
+  <div class="row a sr" style="--d:5.07s"><span>กองทุนสำรองฯ</span><b>✓</b></div>
+  <div class="row a sr" style="--d:5.97s"><span>OT</span><b>✓</b></div>
+ </div></div>
+ <div class="A" style="right:4em;top:26em"><span class="chip a spinin" style="--d:3.07s;font-size:4em;border-color:#ffd84d">⚡ <b style="color:#ffd84d">AUTO</b></span></div>
+ <div class="A" style="left:30em;top:58em;z-index:8"><div class="slip print" style="--d:7.84s;--r:5deg"><h5>🧾 สลิปเงินเดือน</h5><p><span>เงินเดือน</span><span>25,000</span></p><p><span>ภาษี / ปกส. / กองทุน</span><span>✓</span></p><p class="t"><span>รับสุทธิ</span><span>✓ พร้อมส่ง</span></p></div></div>
+ <div class="A a up" style="--d:9.29s;--t:.3s;inset:0;background:#050a18e8;z-index:10"></div>
+ <div class="H" style="top:36em;z-index:11"><div class="a zin" style="--d:9.39s"><span class="neo y gl" style="font-size:9em">แต่เดี๋ยวก่อน…</span></div></div>
+ <div class="H" style="top:54em;z-index:11"><div class="a pop" style="--d:9.89s"><span class="wig" style="font-size:14em">👀</span></div></div>
+ <div class="H" style="top:80em;z-index:11"><div class="gc a up" style="--d:10.39s;display:inline-block;padding:1.2em 2.4em"><span style="font-size:4.2em;font-weight:900">ที่ HR ชอบที่สุด = <span style="filter:blur(.15em)">???</span></span></div></div>
+ <i data-sfx="ding" data-at="3.37"></i><i data-sfx="ding" data-at="4.27"></i><i data-sfx="ding" data-at="5.17"></i><i data-sfx="ding" data-at="6.07"></i><i data-sfx="scan" data-at="7.84"></i><i data-sfx="boom" data-at="9.39"></i>
+ <div class="streak"></div>
+<div class="sub" style="--d:0.45s;--e:2.92s"><span>เรื่องปวดหัวที่สุด… แค่กรอกเงินเดือน</span></div>
+<div class="sub" style="--d:2.92s;--e:7.79s"><span>ภาษี · ประกันสังคม · กองทุน · OT คำนวณอัตโนมัติ ⚡</span></div>
+<div class="sub" style="--d:7.79s;--e:9.34s"><span>ออกสลิปเงินเดือนได้ทันที 🧾</span></div>
+<div class="sub" style="--d:9.34s;--e:12.14s"><span>แต่เดี๋ยวก่อน! ยังมีอีกอย่างที่ HR ชอบที่สุด… 👀</span></div>
+</section>
+
+<!-- 3 BODY2: เอกสารราชการ -->
+<section class="sc" data-t="9.2">
+ <div class="H" style="top:16em"><span class="chip a sl" style="--d:.15s;font-size:4em">02 · <b>เอกสารยื่นราชการ</b></span></div>
+ <div class="A out" style="inset:0;--o:6.29s">
+  <div class="A" style="left:3em;top:30em"><div class="doc a sl" style="--d:0.90s;--r:-9deg"><small>หนังสือรับรอง</small><b>50 ทวิ</b><i></i><i style="width:70%"></i><i></i></div></div>
+  <div class="A" style="left:37em;top:27em;z-index:2"><div class="doc a zin" style="--d:1.70s"><small>แบบยื่นภาษี</small><b>ภ.ง.ด.1</b><i></i><i style="width:70%"></i><i></i></div></div>
+  <div class="A" style="left:71em;top:30em"><div class="doc a sr" style="--d:2.50s;--r:9deg"><small>ประกันสังคม</small><b>สปส.<br>1-10</b><i></i><i style="width:70%"></i></div></div>
+  <div class="cursor" style="--d:4.08s;left:54em;top:52em">👆</div>
+  <div class="ripple" style="--d:4.73s;left:58em;top:54em"></div>
+  <div class="H" style="top:72em"><div class="a zin" style="--d:4.78s"><span class="neo y" style="font-size:10em">1 คลิก ครบ!</span></div></div>
+ </div>
+ <div class="H" style="top:38em"><div class="a zin" style="--d:6.54s"><span class="neo r gl" style="font-size:12em">ว้าวกว่า!!</span></div></div>
+ <div class="H" style="top:56em"><div class="a pop" style="--d:6.94s"><span class="wig" style="font-size:16em">🤯</span></div></div>
+ <div class="H" style="top:90em"><span class="chip a pop pulse" style="--d:7.34s;font-size:4.4em">NEXT <b>▶▶</b></span></div>
+ <i data-sfx="blip" data-at="4.73"></i><i data-sfx="boom" data-at="4.78"></i><i data-sfx="boom" data-at="6.54"></i>
+ <div class="streak"></div>
+<div class="sub" style="--d:0.45s;--e:4.03s"><span>เอกสารยื่นราชการ 50 ทวิ · ภ.ง.ด.1 · สปส.1-10</span></div>
+<div class="sub" style="--d:4.03s;--e:6.29s"><span>ออกครบในคลิกเดียว ไม่ต้องกรอกซ้ำ! 🖱️</span></div>
+<div class="sub" style="--d:6.29s;--e:9.00s"><span>คิดว่าว้าวแล้ว? อันต่อไปว้าวกว่า!! 🤯</span></div>
+</section>
+
+<!-- 4 BODY3: พรีเมียม -->
+<section class="sc" data-t="10.19">
+ <div class="H" style="top:16em"><span class="chip a sl" style="--d:.15s;font-size:4em;border-color:#ffd84d">03 · <b style="color:#ffd84d">💎 PREMIUM</b></span></div>
+ <div class="phone a sl" style="--d:.3s;left:4em;top:25em"><div class="scr">
+  <h4>📍 ลงเวลาเข้างาน</h4>
+  <div class="face"><span>🙂</span><div class="scanl" style="--d:1.10s"></div></div>
+  <div class="map"><div class="road"></div><div class="pin" style="--d:2.90s">📍</div></div>
+  <div class="ok a pop" style="--d:3.60s">✓ เข้างาน 08:58</div>
+ </div></div>
+ <div class="A" style="left:52em;right:3em;top:28em"><div class="gc a sr" style="--d:4.96s;padding:1.4em"><div style="font-size:3.8em;font-weight:900">🌴 ลางานออนไลน์</div></div></div>
+ <div class="A" style="left:52em;right:3em;top:42em"><div class="gc a sr" style="--d:5.66s;padding:1.4em"><div style="font-size:3.8em;font-weight:900">🔄 จัดกะ</div></div></div>
+ <div class="A" style="left:52em;right:3em;top:56em"><div class="gc y a sr" style="--d:6.36s;padding:1.4em"><div style="font-size:3.8em;font-weight:900">⚡ อนุมัติ OT ✓</div></div></div>
+ <div class="A" style="left:52em;right:3em;top:74em;text-align:center"><div class="a zin" style="--d:7.58s"><span style="font-size:10em">💻📱</span></div></div>
+ <div class="A" style="left:52em;right:3em;top:90em;text-align:center"><span class="chip a pop" style="--d:8.18s;font-size:3.6em">ไม่ต้องติดตั้ง <b>✓</b></span></div>
+ <i data-sfx="scan" data-at="1.10"></i><i data-sfx="pop" data-at="3.00"></i><i data-sfx="ding" data-at="3.60"></i>
+ <div class="streak"></div>
+<div class="sub" style="--d:0.45s;--e:4.91s"><span>พรีเมียม: ลงเวลาผ่านมือถือ สแกนใบหน้า + GPS 📱</span></div>
+<div class="sub" style="--d:4.91s;--e:7.53s"><span>ลางานออนไลน์ · จัดกะ · อนุมัติ OT ครบในที่เดียว</span></div>
+<div class="sub" style="--d:7.53s;--e:9.99s"><span>ใช้ได้ทั้งคอมและมือถือ ไม่ต้องติดตั้ง 💻📱</span></div>
+</section>
+
+<!-- 5 PROMO -->
+<section class="sc" data-t="11.6">
+ <div class="cd" style="--d:.1s"><span class="neo y">3</span></div><div class="cd" style="--d:.65s"><span class="neo y">2</span></div><div class="cd" style="--d:1.2s"><span class="neo y">1</span></div>
+ <i data-sfx="blip" data-at=".12"></i><i data-sfx="blip" data-at=".67"></i><i data-sfx="blip" data-at="1.22"></i><i data-sfx="boom" data-at="1.90"></i><i data-sfx="chime" data-at="2.00"></i>
+ <div class="H" style="top:17em"><div class="a zin" style="--d:1.90s"><span class="neo y gl" style="font-size:9em">🎉 โปรเด็ด!!</span></div></div>
+ <div class="cf" style="left:50em;top:30em;background:#ffd84d;--d:1.91s;--dx:-19.1em;--dy:-13.8em;--rt:302deg"></div><div class="cf" style="left:50em;top:30em;background:#5ef0dc;--d:2.01s;--dx:28.2em;--dy:16.3em;--rt:-333deg"></div><div class="cf" style="left:50em;top:30em;background:#ff6b6b;--d:2.02s;--dx:35.1em;--dy:-45.7em;--rt:327deg"></div><div class="cf" style="left:50em;top:30em;background:#5ae39a;--d:1.93s;--dx:3.0em;--dy:-46.1em;--rt:164deg"></div><div class="cf" style="left:50em;top:30em;background:#9cc0ff;--d:1.93s;--dx:23.3em;--dy:-35.3em;--rt:-68deg"></div><div class="cf" style="left:50em;top:30em;background:#ff9ff3;--d:1.94s;--dx:28.1em;--dy:-38.1em;--rt:87deg"></div><div class="cf" style="left:50em;top:30em;background:#ffd84d;--d:1.99s;--dx:-2.8em;--dy:-43.3em;--rt:-56deg"></div><div class="cf" style="left:50em;top:30em;background:#5ef0dc;--d:2.02s;--dx:9.1em;--dy:13.1em;--rt:356deg"></div><div class="cf" style="left:50em;top:30em;background:#ff6b6b;--d:2.01s;--dx:-32.1em;--dy:-49.2em;--rt:-216deg"></div><div class="cf" style="left:50em;top:30em;background:#5ae39a;--d:1.96s;--dx:-13.8em;--dy:-31.9em;--rt:41deg"></div><div class="cf" style="left:50em;top:30em;background:#9cc0ff;--d:1.96s;--dx:6.7em;--dy:-63.7em;--rt:-225deg"></div><div class="cf" style="left:50em;top:30em;background:#ff9ff3;--d:1.98s;--dx:-22.3em;--dy:-6.2em;--rt:16deg"></div><div class="cf" style="left:50em;top:30em;background:#ffd84d;--d:1.99s;--dx:-32.6em;--dy:-27.3em;--rt:-99deg"></div><div class="cf" style="left:50em;top:30em;background:#5ef0dc;--d:1.94s;--dx:0.1em;--dy:-32.9em;--rt:30deg"></div><div class="cf" style="left:50em;top:30em;background:#ff6b6b;--d:1.93s;--dx:12.5em;--dy:26.7em;--rt:-190deg"></div><div class="cf" style="left:50em;top:30em;background:#5ae39a;--d:1.91s;--dx:-17.5em;--dy:-41.5em;--rt:196deg"></div><div class="cf" style="left:50em;top:30em;background:#9cc0ff;--d:2.01s;--dx:21.7em;--dy:-58.1em;--rt:130deg"></div><div class="cf" style="left:50em;top:30em;background:#ff9ff3;--d:1.99s;--dx:18.2em;--dy:-18.8em;--rt:73deg"></div><div class="cf" style="left:50em;top:30em;background:#ffd84d;--d:1.90s;--dx:-7.9em;--dy:-61.9em;--rt:-262deg"></div><div class="cf" style="left:50em;top:30em;background:#5ef0dc;--d:1.91s;--dx:19.0em;--dy:-3.5em;--rt:-353deg"></div><div class="cf" style="left:50em;top:30em;background:#ff6b6b;--d:1.92s;--dx:-39.6em;--dy:-44.8em;--rt:-264deg"></div><div class="cf" style="left:50em;top:30em;background:#5ae39a;--d:1.93s;--dx:12.1em;--dy:25.1em;--rt:-31deg"></div><div class="cf" style="left:50em;top:30em;background:#9cc0ff;--d:1.98s;--dx:32.3em;--dy:-15.2em;--rt:198deg"></div><div class="cf" style="left:50em;top:30em;background:#ff9ff3;--d:1.91s;--dx:-25.6em;--dy:5.4em;--rt:-194deg"></div><div class="cf" style="left:50em;top:30em;background:#ffd84d;--d:1.92s;--dx:18.1em;--dy:-61.8em;--rt:306deg"></div><div class="cf" style="left:50em;top:30em;background:#5ef0dc;--d:1.93s;--dx:-22.1em;--dy:-15.2em;--rt:74deg"></div><div class="cf" style="left:50em;top:30em;background:#ff6b6b;--d:1.93s;--dx:9.9em;--dy:4.1em;--rt:106deg"></div><div class="cf" style="left:50em;top:30em;background:#5ae39a;--d:2.02s;--dx:-32.2em;--dy:-25.9em;--rt:-306deg"></div><div class="cf" style="left:50em;top:30em;background:#9cc0ff;--d:1.90s;--dx:-24.5em;--dy:0.8em;--rt:-356deg"></div><div class="cf" style="left:50em;top:30em;background:#ff9ff3;--d:1.93s;--dx:-18.1em;--dy:-3.1em;--rt:305deg"></div><div class="cf" style="left:50em;top:30em;background:#ffd84d;--d:1.95s;--dx:7.5em;--dy:-57.3em;--rt:256deg"></div><div class="cf" style="left:50em;top:30em;background:#5ef0dc;--d:1.98s;--dx:44.0em;--dy:-24.6em;--rt:52deg"></div><div class="cf" style="left:50em;top:30em;background:#ff6b6b;--d:1.96s;--dx:-18.4em;--dy:12.0em;--rt:-4deg"></div><div class="cf" style="left:50em;top:30em;background:#5ae39a;--d:1.98s;--dx:-38.8em;--dy:-31.5em;--rt:96deg"></div>
+ <div class="A out" style="inset:0;--o:7.37s">
+  <div class="H" style="top:32em"><div class="a zin" style="--d:3.16s"><span class="neo wig" style="font-size:26em">ฟรี</span></div></div>
+  <div class="H" style="top:63em"><span class="chip a pop" style="--d:3.66s;font-size:5em">♾️ <b>ตลอดไป</b></span></div>
+  <div class="H" style="top:76em"><div class="gc a up" style="--d:4.06s;display:inline-block;padding:1em 2.4em"><span style="font-size:4em;font-weight:900">👥 1–10 คน · แพ็กเกจมาตรฐาน</span></div></div>
+  <div class="H" style="top:92em"><span class="chip a pop" style="--d:5.46s;font-size:3.8em;border-color:#ff6b6b">💳 ไม่ต้องใช้บัตรเครดิต</span></div>
+ </div>
+ <div class="A" style="left:4em;top:34em;width:44em"><div class="gc a sl" style="--d:7.62s;--r:-4deg;padding:2.4em 1em"><div style="font-size:8em;line-height:1">🚀</div><div style="font-size:3.6em;font-weight:900">ทดลองฟรี</div><div class="neo" style="font-size:7em">30 วัน</div></div></div>
+ <div class="A" style="right:4em;top:38em;width:44em"><div class="gc y a sr" style="--d:8.82s;--r:4deg;padding:2.4em 1em"><div style="font-size:8em;line-height:1">📅</div><div style="font-size:3.6em;font-weight:900">จ่ายรายปี ประหยัด</div><div class="neo y" style="font-size:7em">2 เดือน</div></div></div>
+ <div class="H" style="top:82em"><div class="a up" style="--d:9.62s;font-size:3.4em;font-weight:900;color:#c9d6f2">ทีม 11 คนขึ้นไป เริ่ม 590.- / เดือน</div></div>
+ <div class="esw ta" style="left:36em;top:92em;width:28em;height:28em"><div class="es a" style="--d:2.86s;inset:0;background-image:url(media/esim/e2c.png)"></div></div>
+ <div class="streak"></div>
+<div class="sub" style="--d:1.85s;--e:2.81s"><span>และนี่คือ… โปรเด็ด!! 🎉</span></div>
+<div class="sub" style="--d:2.81s;--e:7.37s"><span>1–10 คน ใช้แพ็กเกจมาตรฐาน ฟรีตลอดไป! ไม่ต้องใช้บัตรเครดิต</span></div>
+<div class="sub" style="--d:7.37s;--e:11.40s"><span>ทีมใหญ่กว่า? ทดลองฟรี 30 วัน · จ่ายรายปีประหยัด 2 เดือน</span></div>
+</section>
+
+<!-- 6 CTA -->
+<section class="sc" data-t="5.72">
+ <div class="logo a zin" style="--d:.15s;position:absolute;left:0;right:0;top:17em"><div class="ic"><b>e</b></div><div class="tx">eSim<i>Payroll</i></div></div>
+ <div class="H" style="top:33em"><div class="a pop" style="--d:0.50s"><span class="btnx pulse" style="--d:0.50s">esimpayroll.com</span></div></div>
+ <div class="cursor" style="--d:1.40s;left:62em;top:38em">👆</div>
+ <div class="ripple" style="--d:2.05s;left:64em;top:40em"></div>
+ <div class="H" style="top:49em"><span class="chip a up" style="--d:2.10s;font-size:4em">🚀 สมัครฟรี <b>ใช้ได้ทันที</b></span></div>
+ <div class="ring" style="left:28em;top:61em;width:44em;height:44em"></div><div class="ring b" style="left:31em;top:64em;width:38em;height:38em"></div>
+ <div class="esw ta" style="left:32em;top:64em;width:36em;height:38em"><div class="es a" style="--d:.3s;inset:0;background-image:url(media/esim/e6c.png)"></div></div>
+ <div class="H" style="top:108em"><div class="a pop" style="--d:3.43s"><span class="btnr pulse" style="--d:3.43s" data-sfx="chime" data-at="3.53">กดติดตาม 🔔</span></div></div>
+ <i data-sfx="blip" data-at="2.05"></i>
+ <div class="streak"></div>
+<div class="sub" style="--d:0.45s;--e:3.38s"><span>สมัครเลย esimpayroll.com ใช้ได้ทันที! 🚀</span></div>
+<div class="sub" style="--d:3.38s;--e:5.52s"><span>กดติดตามน้อง eSim ไว้ด้วยนะ 🔔</span></div>
+</section>
+
+<div id="bar"></div>
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var LINES=[{"who":"es","s":0.5,"dur":0.47},{"who":"es","s":1.25,"dur":2.17},{"who":"es","s":3.7,"dur":2.81},{"who":"es","s":7.76,"dur":1.33},{"who":"es","s":9.37,"dur":3.91},{"who":"es","s":13.56,"dur":1.98},{"who":"es","s":16.79,"dur":2.19},{"who":"es","s":19.26,"dur":4.59},{"who":"es","s":24.13,"dur":1.27},{"who":"es","s":25.68,"dur":2.2},{"who":"es","s":29.13,"dur":3.3},{"who":"es","s":32.71,"dur":1.98},{"who":"es","s":34.97,"dur":2.11},{"who":"es","s":38.33,"dur":4.18},{"who":"es","s":42.79,"dur":2.34},{"who":"es","s":45.41,"dur":1.86},{"who":"es","s":49.92,"dur":0.68},{"who":"es","s":50.88,"dur":4.28},{"who":"es","s":55.44,"dur":3.43},{"who":"es","s":60.12,"dur":2.65},{"who":"es","s":63.05,"dur":1.54}];
+  var cur=-1,bar=document.getElementById('bar');
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on')});void S[i].offsetWidth;S[i].classList.add('on');cur=i}
+    var w={es:0};LINES.forEach(function(l){if(t>=l.s&&t<l.s+l.dur)w[l.who]=1});
+    for(var k in w)document.body.classList.toggle('t'+k,!!w[k]);
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;else an.currentTime=(sc===S[i]?st:0)*1000;
+    });
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render; window.__drop=ST[1];
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>น้อง eSim — ละครเงินเดือนโอนผิด</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#091025;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);background:#091025}
+.A{position:absolute}
+/* ห้องทำงานการ์ตูน */
+.room{position:absolute;inset:0;background:linear-gradient(#0f1a40,#16255a 70%)}
+.room::before{content:"";position:absolute;left:0;right:0;top:0;height:126em;background-image:linear-gradient(90deg,#ffffff07 .4em,transparent .4em);background-size:16em 100%}
+.floorc{position:absolute;left:0;right:0;top:124em;bottom:0;background:linear-gradient(#0c1534,#091025);border-top:.8em solid #22387c}
+.rays{position:absolute;left:50%;top:44%;width:240em;height:240em;margin:-120em;background:repeating-conic-gradient(#ffffff0a 0 6deg,transparent 6deg 15deg);border-radius:50%;animation:rot 40s linear infinite;mask-image:radial-gradient(circle,#000 20%,transparent 60%)}
+@keyframes rot{to{transform:rotate(360deg)}}
+.top{position:absolute;left:0;right:0;top:8em;text-align:center;z-index:9}
+.top span{display:inline-flex;align-items:center;gap:.5em;font-size:2.8em;font-weight:900;color:#fff;background:linear-gradient(150deg,#2f5bea,#12a3a0);border-radius:2em;padding:.3em 1em;box-shadow:0 .5em 1.2em #0006}
+.top i{font-style:normal;background:#fff;color:#2f5bea;border-radius:.4em;padding:0 .35em;font-size:.9em}
+/* ฉาก: กระแทกเข้าแบบการ์ตูน */
+.sc{position:absolute;inset:0;visibility:hidden}
+.sc.on{visibility:visible;animation:slamin .38s cubic-bezier(.2,1.5,.4,1) both}
+.sc.off{visibility:hidden}
+@keyframes slamin{from{transform:scale(1.3) rotate(-4deg);opacity:0}to{transform:none;opacity:1}}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:40;pointer-events:none}
+.on .flash{animation:fl .32s ease-out both}
+@keyframes fl{0%{opacity:.75}100%{opacity:0}}
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.45s)}
+.on .pop{animation-name:pop;animation-timing-function:cubic-bezier(.2,1.7,.4,1)}
+.on .up{animation-name:up;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+@keyframes pop{0%{opacity:0;transform:scale(.1) rotate(-12deg)}60%{opacity:1;transform:scale(1.12) rotate(3deg)}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes up{from{opacity:0;transform:translateY(6em)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+.H{position:absolute;left:5em;right:5em;text-align:center;z-index:6}
+.ttl{font-size:6.4em;font-weight:900;line-height:1.2;text-shadow:0 .08em 0 #000a}
+.ttl em{font-style:normal;color:#ffd84d}
+/* การ์ดการ์ตูนเส้นหนา */
+.cc{background:#fff;color:#0b1230;border:.6em solid #0b1230;border-radius:2.4em;box-shadow:.8em 1em 0 #0b1230;text-align:center}
+.cc.y{background:#ffd84d}.cc.m{background:#5ef0dc}.cc.r{background:#ff8f8f}.cc.b{background:#9cc0ff}
+.sfx{display:inline-block;font-weight:900;color:#ffd84d;-webkit-text-stroke:.12em #0b1230;paint-order:stroke fill;text-shadow:.08em .1em 0 #0b1230}
+.stampx{display:inline-block;font-weight:900;color:#fff;background:#e5484d;border:.12em solid #0b1230;border-radius:.3em;padding:.05em .5em;box-shadow:.1em .12em 0 #0b1230;transform:rotate(-8deg)}
+.on .slam{animation:slam .32s var(--d) cubic-bezier(.2,1.6,.4,1) both}
+@keyframes slam{from{opacity:0;transform:scale(3) rotate(-8deg)}to{opacity:1;transform:rotate(-8deg)}}
+/* บอลลูนคำพูดการ์ตูน */
+.bub{position:absolute;z-index:8;opacity:0;animation:bIn .3s var(--d) cubic-bezier(.2,1.6,.4,1) forwards,bOut .18s var(--e) ease-in forwards}
+@keyframes bIn{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+@keyframes bOut{to{opacity:0;transform:scale(.6)}}
+.bub .in{position:relative;background:#fff;color:#0b1230;border:.55em solid #0b1230;border-radius:3em;padding:1.8em 2.4em;box-shadow:.6em .8em 0 #0b1230}
+.bub .in span{font-size:4.2em;font-weight:900;line-height:1.3}
+.bub .in small{display:block;font-size:2.4em;font-weight:900;margin-bottom:.2em}
+.bub.hr{left:3em;top:40em;max-width:62em;transform-origin:15% 100%}
+.bub.hr small{color:#0e9f8f}
+.bub.hr .in::after{content:"";position:absolute;left:10em;bottom:-4em;border:2.2em solid transparent;border-top:4em solid #0b1230;border-bottom:0}
+.bub.emp{right:3em;top:40em;max-width:62em;transform-origin:85% 100%}
+.bub.emp small{color:#2f6bff}
+.bub.emp .in::after{content:"";position:absolute;right:10em;bottom:-4em;border:2.2em solid transparent;border-top:4em solid #0b1230;border-bottom:0}
+/* ===== ตัวละครการ์ตูน ===== */
+.ch{position:absolute;width:34em;height:58em;z-index:5}
+.ch .leg{position:absolute;top:44em;width:6.4em;height:13em;background:#1b2550;border:.55em solid #0b1230;border-radius:1em}
+.ch .leg.l{left:9.6em}.ch .leg.r{left:18em}
+.ch .leg::after{content:"";position:absolute;left:-1.4em;bottom:-1.6em;width:8em;height:3.4em;border-radius:2em 2em .8em .8em;background:#0b1230}
+.ch .upper{position:absolute;inset:0;transform-origin:50% 78%}
+.ch .torso{position:absolute;left:7em;top:22em;width:20em;height:24em;border-radius:7em 7em 2em 2em;border:.55em solid #0b1230}
+.ch .arm{position:absolute;top:24em;width:5.6em;height:17em;border-radius:3em;border:.55em solid #0b1230;transform-origin:50% 1.6em;z-index:2}
+.ch .arm.l{left:3.2em;transform:rotate(14deg)}.ch .arm.r{right:3.2em;transform:rotate(-14deg)}
+.ch .arm::after{content:"";position:absolute;left:-.8em;bottom:-3.4em;width:6em;height:6em;border-radius:50%;background:#ffd9bf;border:.55em solid #0b1230}
+.ch .head{position:absolute;left:5em;top:0;width:24em;height:24em;z-index:3;transform-origin:50% 90%}
+.ch .face{position:absolute;inset:0;border-radius:50%;background:#ffd9bf;border:.55em solid #0b1230}
+.ch .eye{position:absolute;top:11em;width:2.8em;height:3.6em;border-radius:50%;background:#0b1230;animation:blink 3.6s infinite}
+.ch .eye.l{left:6.4em}.ch .eye.r{right:6.4em}
+.ch .eye::after{content:"";position:absolute;left:.5em;top:.5em;width:1em;height:1em;border-radius:50%;background:#fff}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.ch .blush{position:absolute;top:15.6em;width:4em;height:2em;border-radius:50%;background:#ff8fa3aa}
+.ch .blush.l{left:3.4em}.ch .blush.r{right:3.4em}
+.ch .brow{position:absolute;top:8.6em;width:4em;height:1em;border-radius:1em;background:#0b1230}
+.ch .brow.l{left:5.8em}.ch .brow.r{right:5.8em}
+.ch .mouth{position:absolute;left:50%;top:16.6em;width:5.4em;height:3em;margin-left:-2.7em;background:#7a1f2b;border:.4em solid #0b1230;border-radius:.8em .8em 3em 3em;transform:scaleY(.3);transform-origin:50% 0}
+/* พี่ HR */
+.hr .torso{background:#12a3a0}
+.hr .torso::before{content:"";position:absolute;left:50%;top:-.4em;margin-left:-4em;border:4em solid transparent;border-top:5em solid #fff;border-bottom:0}
+.hr .torso::after{content:"HR";position:absolute;right:2.4em;top:9em;font-size:2.2em;font-weight:900;color:#0b1230;background:#ffd84d;border:.2em solid #0b1230;border-radius:.3em;padding:0 .3em}
+.hr .arm{background:#12a3a0}
+.hr .hairb{position:absolute;left:-1.4em;top:-1.2em;width:26.8em;height:30em;border-radius:13em 13em 5em 5em;background:#4a2c1d;border:.55em solid #0b1230;z-index:-1}
+.hr .bang{position:absolute;left:-.2em;top:-.8em;width:24.4em;height:10em;border-radius:12em 12em 2em 8em;background:#4a2c1d;border:.55em solid #0b1230;border-top-color:#0b1230}
+.hr .bun{position:absolute;left:7.6em;top:-6em;width:9em;height:9em;border-radius:50%;background:#4a2c1d;border:.55em solid #0b1230;z-index:-2}
+/* พนักงาน */
+.emp .torso{background:#2f6bff}
+.emp .torso::before{content:"";position:absolute;left:50%;top:0;margin-left:-1.4em;width:2.8em;height:13em;background:#e5484d;border:.4em solid #0b1230;clip-path:polygon(20% 0,80% 0,100% 85%,50% 100%,0 85%)}
+.emp .arm{background:#2f6bff}
+.emp .hairt{position:absolute;left:-.4em;top:-1.4em;width:24.8em;height:9.4em;border-radius:12em 12em 2em 2em;background:#1b1b24;border:.55em solid #0b1230;clip-path:polygon(0 100%,0 40%,10% 10%,22% 22%,32% 0,46% 18%,58% 2%,70% 18%,84% 4%,94% 26%,100% 50%,100% 100%)}
+.emp .glass{position:absolute;top:10em;width:7em;height:6em;border:.5em solid #0b1230;border-radius:40%}
+.emp .glass.l{left:3.6em}.emp .glass.r{right:3.6em}
+.emp .glass.l::after{content:"";position:absolute;right:-2.4em;top:2em;width:2.2em;height:.5em;background:#0b1230}
+/* พูด: ปากขยับ + หัวโยก */
+body.thr .hr .mouth,body.temp .emp .mouth{animation:talk .14s ease-in-out infinite alternate}
+@keyframes talk{from{transform:scaleY(.25)}to{transform:scaleY(1.05)}}
+body.thr .hr .head,body.temp .emp .head{animation:hbob .5s ease-in-out infinite alternate}
+@keyframes hbob{from{transform:rotate(-3deg)}to{transform:rotate(3deg) translateY(-.4em)}}
+/* หายใจ */
+.ch .upper{animation:breathe 2.2s ease-in-out infinite alternate}
+@keyframes breathe{to{transform:translateY(-.5em) scaleY(1.01)}}
+/* ท่าทาง (เริ่มที่ --g) */
+.on .ch.wave .arm.r{animation:waveIn .3s var(--g,0s) both,wave .45s calc(var(--g,0s) + .3s) ease-in-out infinite alternate}
+@keyframes waveIn{to{transform:rotate(-140deg)}}
+@keyframes wave{from{transform:rotate(-150deg)}to{transform:rotate(-112deg)}}
+.on .ch.phone .arm.r{animation:phoneUp .35s var(--g,0s) cubic-bezier(.2,1.4,.4,1) both}
+@keyframes phoneUp{to{transform:rotate(-158deg)}}
+.on .ch.shock .arm.l{animation:shkL .3s var(--g,0s) both,jit .1s calc(var(--g,0s) + .3s) infinite alternate}
+.on .ch.shock .arm.r{animation:shkR .3s var(--g,0s) both,jit2 .1s calc(var(--g,0s) + .3s) infinite alternate}
+@keyframes shkL{to{transform:rotate(155deg)}}@keyframes shkR{to{transform:rotate(-155deg)}}
+@keyframes jit{from{transform:rotate(150deg)}to{transform:rotate(162deg)}}@keyframes jit2{from{transform:rotate(-150deg)}to{transform:rotate(-162deg)}}
+.on .ch.shock .eye{animation:bigeye .3s var(--g,0s) both}
+@keyframes bigeye{to{transform:scale(1.45)}}
+.on .ch.bow .upper{animation:bowd .5s var(--g,0s) cubic-bezier(.3,1.2,.4,1) both}
+@keyframes bowd{to{transform:translateY(3em) rotate(0) scaleY(.94)}}
+.on .ch.bow .head{animation:bowh .5s var(--g,0s) both}
+@keyframes bowh{to{transform:rotate(0) translateY(2.6em)}}
+.on .ch.bow .arm.l{animation:bowa .4s var(--g,0s) both}.on .ch.bow .arm.r{animation:bowb .4s var(--g,0s) both}
+@keyframes bowa{to{transform:rotate(-24deg)}}@keyframes bowb{to{transform:rotate(24deg)}}
+.on .ch.happy{animation:jump .5s var(--g,0s) ease-in-out 4 alternate}
+@keyframes jump{to{transform:translateY(-7em)}}
+.on .ch.happy .arm.l{animation:shkL .3s var(--g,0s) both}.on .ch.happy .arm.r{animation:shkR .3s var(--g,0s) both}
+.on .ch.sneaky .arm.r{animation:chin .4s var(--g,0s) both}
+@keyframes chin{to{transform:rotate(-168deg) translate(3em,-1em)}}
+.on .ch.sneaky .eye{animation:shift 1s var(--g,0s) ease-in-out infinite alternate}
+@keyframes shift{from{transform:translateX(-1em) scaleY(.6)}to{transform:translateX(1.2em) scaleY(.6)}}
+.on .ch.sneaky .brow.l{animation:bl .3s var(--g,0s) both}.on .ch.sneaky .brow.r{animation:br .3s var(--g,0s) both}
+@keyframes bl{to{transform:rotate(14deg) translateY(1em)}}@keyframes br{to{transform:rotate(-14deg) translateY(1em)}}
+.on .ch.show .arm.r{animation:show .4s var(--g,0s) cubic-bezier(.2,1.4,.4,1) both}
+@keyframes show{to{transform:rotate(-100deg)}}
+.on .ch.show2 .arm.l{animation:show2 .4s var(--g,0s) cubic-bezier(.2,1.4,.4,1) both}
+@keyframes show2{to{transform:rotate(100deg)}}
+.on .ch.nod .head{animation:nod .4s var(--g,0s) ease-in-out 4 alternate}
+@keyframes nod{to{transform:rotate(0) translateY(1.4em)}}
+.on .ch.confused .head{animation:tilt .5s var(--g,0s) both}
+@keyframes tilt{to{transform:rotate(-14deg)}}
+.sweat{position:absolute;right:1em;top:4em;width:3em;height:4.4em;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#7fd3ff;border:.4em solid #0b1230;opacity:0;z-index:4}
+.on .sweat{animation:swt 1s var(--g,0s) ease-in infinite}
+@keyframes swt{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(6em)}}
+/* โทรศัพท์ / เอกสารในมือ */
+.prop{position:absolute;z-index:6;opacity:0}
+.on .prop{animation:pop .4s var(--d) cubic-bezier(.2,1.7,.4,1) both}
+.phonep{width:17em;height:22em;border-radius:2em;background:#0b1230;border:.5em solid #0b1230;padding:1em}
+.phonep div{width:100%;height:100%;border-radius:1.2em;background:#e9f2ff;color:#0b1230;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.phonep b{font-size:2.6em;font-weight:900;line-height:1.2}.phonep small{font-size:2em;font-weight:800}
+.doc{width:16em;height:20em;background:#fff;border:.5em solid #0b1230;border-radius:1em;padding:1.2em;color:#0b1230}
+.doc b{display:block;font-size:2.4em;font-weight:900;text-align:center}
+.doc i{display:block;height:1em;background:#d7e1f0;border-radius:1em;margin-top:1.2em}
+/* น้อง eSim ผู้บรรยาย */
+.es{position:absolute;background:no-repeat center/contain;z-index:7;
+  filter:drop-shadow(.5em 0 0 #fff) drop-shadow(-.5em 0 0 #fff) drop-shadow(0 .5em 0 #fff) drop-shadow(0 -.5em 0 #fff) drop-shadow(.6em .9em 0 #0b1230)}
+.on .es.a{animation:esin .5s var(--d) cubic-bezier(.2,1.6,.4,1) both}
+@keyframes esin{0%{opacity:0;transform:scale(.2) rotate(-20deg)}100%{opacity:1;transform:none}}
+.esw{position:absolute;z-index:7}
+body.tes .esw{animation:estalk .16s ease-in-out infinite alternate}
+@keyframes estalk{from{transform:scale(1,1)}to{transform:scale(1.04,.96) translateY(.6em)}}
+.esw:not(.ta){animation:none!important}
+/* ปิด */
+.logo{display:flex;align-items:center;justify-content:center;gap:1.6em}
+.logo .ic{width:9em;height:9em;border-radius:28%;display:grid;place-items:center;background:linear-gradient(150deg,#33c7a0,#1559c8);border:.5em solid #0b1230}
+.logo .ic b{font-size:7em;font-weight:900;color:#fff;line-height:1;margin-top:-.12em}
+.logo .tx{font-size:6em;font-weight:900;letter-spacing:-.03em;-webkit-text-stroke:.08em #0b1230;paint-order:stroke fill}.logo .tx i{font-style:normal;color:#5ae39a}
+.cta2{display:inline-block;font-size:5.4em;font-weight:900;color:#fff;border-radius:1em;padding:.45em 1.3em;background:#e5484d;border:.12em solid #0b1230;box-shadow:.1em .14em 0 #0b1230}
+.on .cta2.a{animation:pop .5s var(--d) cubic-bezier(.2,1.7,.4,1) both,nod2 .9s calc(var(--d) + .5s) ease-in-out infinite alternate}
+@keyframes nod2{to{transform:translateY(.25em) scale(1.04)}}
+/* ซับไตเติล (เสียงบรรยาย) */
+.sub{position:absolute;left:7em;right:13em;bottom:40em;text-align:center;z-index:12;opacity:0;animation:sIn .25s var(--d) ease-out forwards,sOut .2s var(--e) ease-in forwards}
+@keyframes sIn{from{opacity:0;transform:translateY(1.5em)}to{opacity:1;transform:none}}
+@keyframes sOut{to{opacity:0}}
+.sub span{display:inline-block;font-size:3.6em;font-weight:800;color:#fff;background:#000000c0;border:.06em solid #ffffff22;border-radius:.5em;padding:.35em .8em;line-height:1.4}
+#bar{position:absolute;left:0;bottom:0;height:.7em;background:linear-gradient(90deg,#ffd84d,#5ef0dc);width:0;z-index:50}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div class="room"></div><div class="rays"></div><div class="floorc"></div>
+<div class="top"><span><i>e</i> น้อง eSim · รู้ทันเงินเดือน</span></div>
+<!-- 0 HOOK -->
+<section class="sc" data-t="11.91">
+  <div class="flash"></div>
+  <div class="H" style="top:15em"><div class="ttl a pop" style="--d:.2s">โอนเงินเดือน<em>ผิด!</em> 😱</div></div>
+  <div class="A" style="left:5em;right:5em;top:30em;display:flex;justify-content:space-between">
+    <div class="cc y a pop" style="--d:1.60s;--r:-5deg;width:28em;padding:2em 1em"><div style="font-size:8em;line-height:1">💸⬆</div><div style="font-size:3.6em;font-weight:900">โอนเกิน</div></div>
+    <div class="cc m a pop" style="--d:2.20s;--r:3deg;width:28em;padding:2em 1em"><div style="font-size:8em;line-height:1">💸⬇</div><div style="font-size:3.6em;font-weight:900">โอนขาด</div></div>
+    <div class="cc r a pop" style="--d:2.80s;--r:-3deg;width:28em;padding:2em 1em"><div style="font-size:8em;line-height:1">🏦❌</div><div style="font-size:3.6em;font-weight:900">ผิดบัญชี</div></div>
+  </div>
+  <div class="H" style="top:62em"><span class="stampx slam" style="--d:6.15s;font-size:6em">ห้ามแก้มั่ว!</span></div>
+  <div class="esw ta" style="left:29em;top:80em;width:42em;height:44em"><div class="es a" style="--d:.5s;inset:0;background-image:url(media/esim/e3c.png)"></div></div>
+<div class="sub" style="--d:0.55s;--e:4.10s"><span>โอนเงินเดือนผิด! เกิน · ขาด · ผิดบัญชี 😱</span></div>
+<div class="sub" style="--d:4.10s;--e:8.95s"><span>HR นายจ้าง พนักงาน ต้องระวังเรื่องกฎหมาย ห้ามแก้มั่ว ๆ!</span></div>
+<div class="sub" style="--d:8.95s;--e:11.71s"><span>มาดูวิธีแก้ให้ถูกต้องกัน!</span></div>
+</section>
+
+<!-- 1 แนะนำตัว -->
+<section class="sc" data-t="5.65">
+  <div class="flash"></div>
+  <div class="A" style="left:20em;right:20em;top:18em"><div class="cc a pop" style="--d:2.33s;--r:-3deg;padding:2.4em 2em;background:#0b1230;color:#fff;border-color:#fff">
+    <div style="font-size:3em;font-weight:900;color:#ffd84d">🎬 ละครสั้น</div><div style="font-size:5.4em;font-weight:900;line-height:1.2">เงินเดือน<br>โอนผิด</div></div></div>
+  <div class="esw ta" style="left:27em;top:66em;width:46em;height:50em"><div class="es a" style="--d:.2s;inset:0;background-image:url(media/esim/e1c.png)"></div></div>
+<div class="sub" style="--d:0.55s;--e:2.28s"><span>สวัสดีครับ ผม “น้อง eSim” 👋</span></div>
+<div class="sub" style="--d:2.28s;--e:5.45s"><span>วันนี้มีละครสั้น “เงินเดือนโอนผิด” 🎬</span></div>
+</section>
+
+<!-- 2 โอนขาด -->
+<section class="sc" data-t="10.72">
+  <div class="flash"></div>
+  <div class="H" style="top:15em"><div class="ttl a pop" style="--d:.2s">เคส 1: <em>โอนขาด</em></div></div>
+  <div class="ch hr bow" style="left:4em;top:68em;--g:2.95s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="bun"></div><div class="hairb"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="blush l"></div><div class="blush r"></div><div class="mouth"></div></div><div class="bang"></div></div></div></div>
+  <div class="ch emp phone confused" style="right:4em;top:68em;--g:.4s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="hairt"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div></div></div></div></div>
+  <div class="prop phonep" style="--d:.6s;right:3em;top:46em;transform:rotate(6deg)"><div><small>เงินเดือนเข้า</small><b>23,000 ฿</b><small style="color:#e5484d">ควรได้ 25,000</small></div></div>
+  <div class="H" style="top:64em;left:30em;right:30em"><span class="sfx a pop" style="--d:0.60s;font-size:6.4em">แอ๊ะ!?</span></div>
+  <div class="A" style="left:8em;right:8em;top:28em"><div class="cc m a pop" style="--d:5.83s;--r:-2deg;padding:2em"><div style="font-size:4em;font-weight:900">โอนขาด → โอนเพิ่มทันที ⚡</div></div></div>
+  <div class="esw ta" style="left:37em;top:100em;width:26em;height:26em"><div class="es a" style="--d:5.03s;inset:0;background-image:url(media/esim/e2c.png)"></div></div>
+<div class="bub emp" style="--d:0.52s;--e:2.80s"><div class="in"><small>พนักงาน</small><span>เอ๊ะ! เงินเดือนขาดไป 2,000 นี่นา 🤔</span></div></div>
+<div class="bub hr" style="--d:2.77s;--e:5.18s"><div class="in"><small>พี่ HR</small><span>ขอโทษค่ะ! เดี๋ยวโอนเพิ่มให้ทันทีเลย 🙏</span></div></div>
+<div class="sub" style="--d:5.18s;--e:10.52s"><span>โอนขาด → นายจ้างต้องรีบโอนเพิ่มทันที (ยังจ่ายไม่ครบ)</span></div>
+</section>
+
+<!-- 3 โอนผิดบัญชี -->
+<section class="sc" data-t="9.46">
+  <div class="flash"></div>
+  <div class="H" style="top:15em"><div class="ttl a pop" style="--d:.2s">เคส 2: <em>ผิดบัญชี</em></div></div>
+  <div class="ch hr shock" style="left:4em;top:68em;--g:.3s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="bun"></div><div class="hairb"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="blush l"></div><div class="blush r"></div><div class="mouth"></div></div><div class="bang"></div></div></div><div class="sweat" style="--g:.4s"></div></div>
+  <div class="H" style="top:27em;left:36em;right:2em"><span class="sfx a pop" style="--d:0.60s;font-size:6.4em;color:#ff8f8f">ตายแล้ว!!</span></div>
+  <div class="A" style="right:5em;top:44em;width:44em"><div class="cc b a pop" style="--d:2.85s;--r:3deg;padding:2.4em"><div style="font-size:9em;line-height:1">🏦</div><div style="font-size:3.8em;font-weight:900">แจ้งธนาคารต้นทาง<br>ดึงเงินกลับ</div></div></div>
+  <div class="A" style="right:6em;top:84em"><span class="stampx slam" style="--d:6.06s;font-size:5em">ห้ามทวง / ข่มขู่เอง ✕</span></div>
+  <div class="esw ta" style="left:58em;top:98em;width:28em;height:28em"><div class="es a" style="--d:2.65s;inset:0;background-image:url(media/esim/e1c.png)"></div></div>
+<div class="bub hr" style="--d:0.52s;--e:2.80s"><div class="in"><small>พี่ HR</small><span>ตายแล้ว!! โอนไปผิดบัญชี! 😱</span></div></div>
+<div class="sub" style="--d:2.80s;--e:5.71s"><span>รีบแจ้งธนาคารต้นทาง เพื่อดึงเงินกลับ 🏦</span></div>
+<div class="sub" style="--d:5.71s;--e:9.26s"><span>ห้ามไปทวง / ข่มขู่เจ้าของบัญชีปลายทางเอง!</span></div>
+</section>
+
+<!-- 4 mid hook -->
+<section class="sc" data-t="9.61">
+  <div class="flash"></div>
+  <div class="H" style="top:15em"><div class="ttl a pop" style="--d:.2s">เคสพีคสุด! 🔥</div></div>
+  <div class="H" style="top:28em"><span class="cc y a pop" style="--d:2.20s;--r:-3deg;display:inline-block;padding:1.4em 3em"><span style="font-size:7em;font-weight:900">โอนเงินเกิน!</span></span></div>
+  <div class="A" style="left:5em;top:50em"><div class="cc a pop" style="--d:4.54s;--r:-5deg;padding:1.6em 2.4em"><div style="font-size:3.8em;font-weight:900">หักงวดหน้าได้ไหม?</div></div></div>
+  <div class="A" style="right:5em;top:62em"><div class="cc a pop" style="--d:6.34s;--r:4deg;padding:1.6em 2.4em"><div style="font-size:3.8em;font-weight:900">ใช้หมดแล้ว ไม่คืน?</div></div></div>
+  <div class="esw ta" style="left:28em;top:80em;width:44em;height:44em"><div class="es a" style="--d:.4s;inset:0;background-image:url(media/esim/e3c.png)"></div></div>
+<div class="sub" style="--d:0.55s;--e:4.49s"><span>เคสพีคสุด ฟ้องกันบ่อยสุด = “โอนเงินเกิน”!</span></div>
+<div class="sub" style="--d:4.49s;--e:9.41s"><span>หักงวดหน้าได้ไหม? ใช้หมดแล้วไม่คืนล่ะ?</span></div>
+</section>
+
+<!-- 5 โอนเกิน: พนักงานดีใจ -->
+<section class="sc" data-t="8.61">
+  <div class="flash"></div>
+  <div class="H" style="top:15em"><div class="ttl a pop" style="--d:.2s">เคส 3: <em>โอนเกิน</em></div></div>
+  <div class="ch emp happy" style="right:6em;top:68em;--g:0.60s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="hairt"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div></div></div></div></div>
+  <div class="prop phonep" style="--d:.5s;left:6em;top:30em;transform:rotate(-8deg)"><div><small>เงินเดือนเข้า</small><b>50,000 ฿</b><small style="color:#12a36b">ปกติ 25,000</small></div></div>
+  <div class="H" style="top:56em;left:2em;right:50em"><span class="sfx a pop" style="--d:1.00s;font-size:7em">ว้าว!!</span></div>
+  <div class="A" style="left:27em;top:31em;font-size:10em" ><span class="a pop" style="--d:2.00s;display:inline-block">🛍️</span></div>
+  <div class="A" style="left:5em;right:40em;top:66em"><div class="cc r a pop" style="--d:5.13s;--r:-3deg;padding:2em"><div style="font-size:3.4em;font-weight:900">⚖️ ลาภมิควรได้</div><div style="font-size:4.4em;font-weight:900">ต้องคืน!</div></div></div>
+  <div class="esw ta" style="left:6em;top:96em;width:30em;height:30em"><div class="es a" style="--d:3.53s;inset:0;background-image:url(media/esim/e2c.png)"></div></div>
+<div class="bub emp" style="--d:0.52s;--e:3.68s"><div class="in"><small>พนักงาน</small><span>ว้าว! เงินเข้าเยอะกว่าปกติ ไปช็อปเลย! 🛍️</span></div></div>
+<div class="sub" style="--d:3.68s;--e:8.41s"><span>เดี๋ยวก่อน! เงินโอนเกิน = “ลาภมิควรได้” ต้องคืน</span></div>
+</section>
+
+<!-- 6 HR แอบหัก -->
+<section class="sc" data-t="7.75">
+  <div class="flash"></div>
+  <div class="H" style="top:15em"><div class="ttl a pop" style="--d:.2s">แอบหักงวดหน้า?</div></div>
+  <div class="ch hr sneaky" style="left:4em;top:68em;--g:.3s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="bun"></div><div class="hairb"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="blush l"></div><div class="blush r"></div><div class="mouth"></div></div><div class="bang"></div></div></div></div>
+  <div class="H" style="top:27em;left:40em;right:2em"><span class="sfx a pop" style="--d:0.90s;font-size:6em">แอบ… 😏</span></div>
+  <div class="A" style="right:4em;top:40em;width:50em"><div class="cc a pop" style="--d:3.43s;--r:2deg;padding:2.2em"><div style="font-size:9em;line-height:1;color:#e5484d">✕</div><div style="font-size:3.8em;font-weight:900">ต้องได้รับความยินยอม<br>เป็นลายลักษณ์อักษร ✍️</div></div></div>
+  <div class="H" style="top:82em;left:44em;right:2em"><span class="stampx slam" style="--d:2.83s;font-size:5.6em">ห้ามแอบหัก!</span></div>
+  <div class="esw ta" style="left:58em;top:96em;width:30em;height:30em"><div class="es a" style="--d:2.63s;inset:0;background-image:url(media/esim/e4c.png)"></div></div>
+<div class="bub hr" style="--d:0.52s;--e:2.78s"><div class="in"><small>พี่ HR</small><span>งั้นแอบหักงวดหน้าเลยละกัน… 😏</span></div></div>
+<div class="sub" style="--d:2.78s;--e:7.55s"><span>ไม่ได้! ห้ามหักค่าจ้าง ถ้าไม่ได้ยินยอมเป็นลายลักษณ์อักษร</span></div>
+</section>
+
+<!-- 7 ทางที่ถูกต้อง -->
+<section class="sc" data-t="14.69">
+  <div class="flash"></div>
+  <div class="H" style="top:15em"><div class="ttl a pop" style="--d:.2s">ทางที่<em>ถูกต้อง</em> ✓</div></div>
+  <div class="ch hr show" style="left:4em;top:68em;--g:0.60s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="bun"></div><div class="hairb"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="blush l"></div><div class="blush r"></div><div class="mouth"></div></div><div class="bang"></div></div></div></div>
+  <div class="ch emp nod" style="right:4em;top:68em;--g:4.04s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="hairt"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div></div></div></div></div>
+  <div class="prop doc" style="--d:1.00s;left:36em;top:74em;transform:rotate(-6deg)"><b>หลักฐาน<br>การโอน</b><i></i><i style="width:60%"></i><i></i></div>
+  <div class="prop doc" style="--d:4.64s;left:46em;top:92em;transform:rotate(5deg)"><b>หนังสือยินยอม<br>หัก 3 งวด</b><i></i><i style="width:60%"></i><div style="font-size:4em;text-align:right">✍️</div></div>
+  <div class="H" style="top:28em"><span class="sfx a pop" style="--d:7.08s;font-size:6.4em;color:#5ef0dc">🤝 ดีลจบ!</span></div>
+  <div class="A" style="left:6em;right:6em;top:40em"><div class="cc m a pop" style="--d:9.06s;--r:-1deg;padding:1.8em"><div style="font-size:3.6em;font-weight:900">แจ้งดี ๆ + หลักฐาน → โอนคืน หรือ เซ็นยินยอมแบ่งหัก</div></div></div>
+<div class="bub hr" style="--d:0.52s;--e:3.99s"><div class="in"><small>พี่ HR</small><span>ขอโทษนะคะ เดือนนี้โอนเกินไป นี่หลักฐานค่ะ 🧾</span></div></div>
+<div class="bub emp" style="--d:3.96s;--e:6.83s"><div class="in"><small>พนักงาน</small><span>ได้ครับ ขอเซ็นยินยอม แบ่งหัก 3 งวดนะครับ ✍️</span></div></div>
+<div class="bub hr" style="--d:6.80s;--e:8.61s"><div class="in"><small>พี่ HR</small><span>ได้เลยค่ะ ขอบคุณมาก ๆ 😊</span></div></div>
+<div class="sub" style="--d:8.61s;--e:14.49s"><span>แจ้งดี ๆ + หลักฐาน → ตกลงโอนคืน หรือเซ็นยินยอมแบ่งหัก ✓</span></div>
+</section>
+
+<!-- 8 สรุป -->
+<section class="sc" data-t="6.15">
+  <div class="flash"></div>
+  <div class="H" style="top:15em"><div class="ttl a pop" style="--d:.2s">สรุปสั้น ๆ</div></div>
+  <div class="A" style="left:6em;top:30em;width:42em"><div class="cc m a pop" style="--d:1.00s;--r:-3deg;padding:2.4em"><div style="font-size:8em;line-height:1">⚡</div><div style="font-size:3.6em;font-weight:900">จ่ายขาด</div><div style="font-size:4.4em;font-weight:900">รีบเติม!</div></div></div>
+  <div class="A" style="right:6em;top:34em;width:42em"><div class="cc y a pop" style="--d:2.20s;--r:3deg;padding:2.4em"><div style="font-size:8em;line-height:1">🤝</div><div style="font-size:3.6em;font-weight:900">จ่ายเกิน</div><div style="font-size:4.4em;font-weight:900">เจรจา!</div></div></div>
+  <div class="H" style="top:72em"><span class="stampx slam" style="--d:3.71s;font-size:6em">ห้ามหักมั่ว! 🚫</span></div>
+  <div class="esw ta" style="left:30em;top:84em;width:40em;height:40em"><div class="es a" style="--d:.4s;inset:0;background-image:url(media/esim/e4c.png)"></div></div>
+<div class="sub" style="--d:0.55s;--e:3.66s"><span>จ่ายขาด → รีบเติม · จ่ายเกิน → เจรจา</span></div>
+<div class="sub" style="--d:3.66s;--e:5.95s"><span>ห้ามหักเงินมั่ว ๆ ตามใจชอบ! 🚫</span></div>
+</section>
+
+<!-- 9 ปิด -->
+<section class="sc" data-t="8.05">
+  <div class="flash"></div>
+  <div class="logo a pop" style="--d:.2s;position:absolute;left:0;right:0;top:15em"><div class="ic"><b>e</b></div><div class="tx">eSim<i>Payroll</i></div></div>
+  <div class="A" style="left:8em;right:8em;top:30em"><div class="cc a pop" style="--d:0.60s;--r:-1deg;padding:2em"><div style="font-size:4em;font-weight:900">เคยเจอโอนเงินเดือนผิดไหม? 💬</div></div></div>
+  <div class="ch hr wave" style="left:2em;top:68em;--g:.6s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="bun"></div><div class="hairb"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="blush l"></div><div class="blush r"></div><div class="mouth"></div></div><div class="bang"></div></div></div></div>
+  <div class="ch emp wave" style="right:2em;top:68em;--g:.8s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="hairt"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div></div></div></div></div>
+  <div class="esw ta" style="left:35em;top:66em;width:30em;height:30em"><div class="es a" style="--d:.4s;inset:0;background-image:url(media/esim/e6c.png)"></div></div>
+  <div class="H" style="top:43em"><span class="cta2 a" data-sfx="chime" data-at="4.49" style="--d:4.39s">กดติดตาม 🔔</span></div>
+  <div class="H" style="top:100em;left:30em;right:30em"><div class="a up" style="--d:5.19s;font-size:3em;font-weight:900;color:#c9d6f2">esimpayroll.com</div></div>
+<div class="sub" style="--d:0.55s;--e:4.34s"><span>เคยเจอโอนเงินเดือนผิดไหม? คอมเมนต์แชร์กันได้ 💬</span></div>
+<div class="sub" style="--d:4.34s;--e:7.85s"><span>กดติดตามไว้ เดี๋ยวมีเรื่องเงินเดือนมาเล่าอีก!</span></div>
+</section>
+
+<div id="bar"></div>
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var LINES=[{"who":"es","s":0.6,"dur":3.15},{"who":"es","s":4.15,"dur":4.45},{"who":"es","s":9,"dur":2.01},{"who":"es","s":12.51,"dur":1.33},{"who":"es","s":14.24,"dur":2.42},{"who":"emp","s":18.16,"dur":1.85},{"who":"hr","s":20.41,"dur":1.98},{"who":"es","s":22.79,"dur":4.59},{"who":"hr","s":28.88,"dur":1.85},{"who":"es","s":31.13,"dur":2.51},{"who":"es","s":34.04,"dur":2.8},{"who":"es","s":38.34,"dur":3.54},{"who":"es","s":42.28,"dur":4.17},{"who":"emp","s":47.95,"dur":2.73},{"who":"es","s":51.08,"dur":3.98},{"who":"hr","s":56.56,"dur":1.83},{"who":"es","s":58.79,"dur":4.02},{"who":"hr","s":64.31,"dur":3.04},{"who":"emp","s":67.75,"dur":2.44},{"who":"hr","s":70.59,"dur":1.38},{"who":"es","s":72.37,"dur":5.13},{"who":"es","s":79,"dur":2.71},{"who":"es","s":82.11,"dur":1.54},{"who":"es","s":85.15,"dur":3.39},{"who":"es","s":88.94,"dur":2.76}];
+  var cur=-1,bar=document.getElementById('bar');
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on','off')});void S[i].offsetWidth;S[i].classList.add('on');cur=i}
+    var w={es:false,hr:false,emp:false};LINES.forEach(function(l){if(t>=l.s&&t<l.s+l.dur)w[l.who]=true});
+    document.body.classList.toggle('tes',w.es);document.body.classList.toggle('thr',w.hr);document.body.classList.toggle('temp',w.emp);
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;else an.currentTime=(sc===S[i]?st:0)*1000;
+    });
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render; window.__drop=ST[1];
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>

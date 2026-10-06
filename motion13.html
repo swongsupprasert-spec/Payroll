@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>น้อง eSim Toons — เงินชดเชยเลิกจ้าง</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#050a18;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);background:#050a18}
+.A{position:absolute}
+/* ฉาก: เปิดแบบไอริสการ์ตูน */
+.sc{position:absolute;inset:0;visibility:hidden;background:#091025}
+.sc.on{visibility:visible;animation:iris .55s cubic-bezier(.5,0,.3,1) both}
+@keyframes iris{from{clip-path:circle(0% at 50% 42%)}to{clip-path:circle(120% at 50% 42%)}}
+/* กล้อง: ซูมช้า ๆ + พั้นช์/สั่น */
+.cam{position:absolute;inset:0;transform-origin:50% 12%}
+.on .cam{animation:drift var(--sd,8s) linear both}
+@keyframes drift{from{transform:scale(1.05) translateX(var(--px,0em))}to{transform:scale(1) translateX(0)}}
+.cam2{position:absolute;inset:0;transform-origin:var(--ox,50%) var(--oy,12%)}
+.on .cam2.punch{animation:punch .5s var(--pd) cubic-bezier(.2,1.5,.4,1) both}
+@keyframes punch{to{transform:scale(1.18)}}
+.on .cam2.shake{animation:shake .5s var(--pd) linear both}
+@keyframes shake{0%,100%{transform:none}10%{transform:translate(-2em,1em) rotate(-1deg)}30%{transform:translate(2em,-1em) rotate(1deg)}50%{transform:translate(-1.5em,.5em)}70%{transform:translate(1.2em,-.6em)}90%{transform:translate(-.5em,.3em)}}
+/* ฉากหลัง: ออฟฟิศกลางคืน + วิวเมือง */
+.bg{position:absolute;inset:0;background:linear-gradient(#0b1433,#13204e 70%)}
+.moon{position:absolute;right:12em;top:22em;width:14em;height:14em;border-radius:50%;background:#ffe9a8;box-shadow:0 0 6em #ffe9a855;opacity:.85}
+.moon::after{content:"";position:absolute;left:3em;top:-1em;width:14em;height:14em;border-radius:50%;background:#0f1a40}
+.cloud{position:absolute;height:5em;border-radius:5em;background:#ffffff14;animation:cl 26s linear infinite}
+.cloud::before{content:"";position:absolute;left:25%;top:-2.6em;width:45%;height:6em;border-radius:50%;background:inherit}
+@keyframes cl{from{transform:translateX(-30em)}to{transform:translateX(120em)}}
+.city{position:absolute;left:0;right:0;bottom:53.8em;height:46em;
+  background:
+   linear-gradient(#0c1638,#0c1638) 2em 18em/12em 28em no-repeat,
+   linear-gradient(#0e1a42,#0e1a42) 15em 8em/14em 38em no-repeat,
+   linear-gradient(#0c1638,#0c1638) 30em 22em/10em 24em no-repeat,
+   linear-gradient(#0e1a42,#0e1a42) 41em 2em/16em 44em no-repeat,
+   linear-gradient(#0c1638,#0c1638) 58em 16em/12em 30em no-repeat,
+   linear-gradient(#0e1a42,#0e1a42) 71em 10em/13em 36em no-repeat,
+   linear-gradient(#0c1638,#0c1638) 85em 20em/14em 26em no-repeat}
+.win{position:absolute;width:2.2em;height:2.6em;background:#ffd84d;border-radius:.3em;opacity:.55;animation:wf 3s ease-in-out infinite alternate}
+@keyframes wf{to{opacity:.2}}
+.floorc{position:absolute;left:0;right:0;top:124em;bottom:0;background:linear-gradient(#101b42,#091025);border-top:.9em solid #2f5bea}
+.floorc::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 11em,#ffffff08 11em 11.4em)}
+/* แถบหัวรายการทีวี */
+.top{position:absolute;left:0;right:0;top:8em;text-align:center;z-index:30}
+.top span{display:inline-flex;align-items:center;gap:.5em;font-size:2.8em;font-weight:900;color:#0b1230;background:#ffd84d;border:.18em solid #0b1230;border-radius:.6em;padding:.15em .8em;box-shadow:.15em .2em 0 #0b1230;transform:rotate(-2deg)}
+.top i{font-style:normal;background:#e5484d;color:#fff;border-radius:.3em;padding:0 .35em;font-size:.85em}
+/* อนิเมชันพื้นฐาน */
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.45s)}
+.on .pop{animation-name:pop;animation-timing-function:cubic-bezier(.2,1.7,.4,1)}
+.on .up{animation-name:up;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+.on .drop{animation-name:drop;animation-timing-function:cubic-bezier(.3,1.6,.4,1);--t:.55s}
+.on .spinin{animation-name:spinin;animation-timing-function:cubic-bezier(.2,1.4,.4,1);--t:.6s}
+@keyframes pop{0%{opacity:0;transform:scale(.1) rotate(-12deg)}60%{opacity:1;transform:scale(1.12) rotate(3deg)}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes up{from{opacity:0;transform:translateY(6em)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes drop{0%{opacity:0;transform:translateY(-60em) rotate(-20deg)}70%{opacity:1;transform:translateY(1em) scaleY(.85)}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes spinin{0%{opacity:0;transform:scale(0) rotate(-540deg)}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+.wig{display:inline-block}
+.on .wig{animation:wig .5s calc(var(--d,0s) + .5s) ease-in-out infinite alternate}
+@keyframes wig{from{transform:rotate(-4deg) scale(1)}to{transform:rotate(4deg) scale(1.06)}}
+.H{position:absolute;left:5em;right:5em;text-align:center;z-index:6}
+.ttl{font-size:6.6em;font-weight:900;line-height:1.2;color:#fff;-webkit-text-stroke:.14em #0b1230;paint-order:stroke fill;text-shadow:.08em .1em 0 #0b1230}
+.ttl em{font-style:normal;color:#ffd84d}
+.big{font-weight:900;line-height:1;color:#ffd84d;-webkit-text-stroke:.07em #0b1230;paint-order:stroke fill;text-shadow:.05em .07em 0 #0b1230}
+.cc{background:#fff;color:#0b1230;border:.6em solid #0b1230;border-radius:2.4em;box-shadow:.8em 1em 0 #0b1230;text-align:center}
+.cc.y{background:#ffd84d}.cc.m{background:#5ef0dc}.cc.r{background:#ff8f8f}.cc.b{background:#9cc0ff}
+.sfx{display:inline-block;font-weight:900;color:#ffd84d;-webkit-text-stroke:.12em #0b1230;paint-order:stroke fill;text-shadow:.08em .1em 0 #0b1230}
+.stampx{display:inline-block;font-weight:900;color:#fff;background:#e5484d;border:.12em solid #0b1230;border-radius:.3em;padding:.05em .5em;box-shadow:.1em .12em 0 #0b1230;transform:rotate(-8deg)}
+.on .slam{animation:slam .32s var(--d) cubic-bezier(.2,1.6,.4,1) both}
+@keyframes slam{from{opacity:0;transform:scale(3) rotate(-8deg)}to{opacity:1;transform:rotate(-8deg)}}
+/* ฝนเงิน / สิ่งของตกลงมา */
+.rain{position:absolute;top:-10em;font-size:6em;opacity:0}
+.on .rain{animation:rain 1.6s var(--d) linear infinite}
+@keyframes rain{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:1;transform:translateY(32em) rotate(360deg)}}
+/* เส้นความเร็ว */
+.speed{position:absolute;inset:0;opacity:0;z-index:1;background:repeating-conic-gradient(from 0deg at 50% 50%,#ffffff22 0 2deg,transparent 2deg 9deg);mask-image:radial-gradient(circle,transparent 28%,#000 60%)}
+.on .speed{animation:spd .7s var(--d) ease-out both}
+@keyframes spd{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
+/* บอลลูนคำพูด */
+.bub{position:absolute;z-index:8;opacity:0;animation:bIn .3s var(--d) cubic-bezier(.2,1.6,.4,1) forwards,bOut .18s var(--e) ease-in forwards}
+@keyframes bIn{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+@keyframes bOut{to{opacity:0;transform:scale(.6)}}
+.bub .in{position:relative;background:#fff;color:#0b1230;border:.55em solid #0b1230;border-radius:3em;padding:1.6em 2.4em;box-shadow:.6em .8em 0 #0b1230}
+.bub .in span{font-size:4.2em;font-weight:900;line-height:1.3}
+.bub .in small{display:block;font-size:2.4em;font-weight:900;margin-bottom:.2em}
+.bub.boss{left:3em;top:40em;max-width:62em;transform-origin:15% 100%}
+.bub.boss small{color:#c8364a}
+.bub.boss .in::after{content:"";position:absolute;left:10em;bottom:-4em;border:2.2em solid transparent;border-top:4em solid #0b1230;border-bottom:0}
+.bub.emp{right:3em;top:40em;max-width:62em;transform-origin:85% 100%}
+.bub.emp small{color:#2f6bff}
+.bub.emp .in::after{content:"";position:absolute;right:10em;bottom:-4em;border:2.2em solid transparent;border-top:4em solid #0b1230;border-bottom:0}
+/* ===== ตัวละครการ์ตูน ===== */
+.ch{position:absolute;width:34em;height:58em;z-index:5}
+.ch .leg{position:absolute;top:44em;width:6.4em;height:13em;background:#1b2550;border:.55em solid #0b1230;border-radius:1em}
+.ch .leg.l{left:9.6em}.ch .leg.r{left:18em}
+.ch .leg::after{content:"";position:absolute;left:-1.4em;bottom:-1.6em;width:8em;height:3.4em;border-radius:2em 2em .8em .8em;background:#0b1230}
+.ch .upper{position:absolute;inset:0;transform-origin:50% 78%}
+.ch .torso{position:absolute;left:7em;top:22em;width:20em;height:24em;border-radius:7em 7em 2em 2em;border:.55em solid #0b1230}
+.ch .arm{position:absolute;top:24em;width:5.6em;height:17em;border-radius:3em;border:.55em solid #0b1230;transform-origin:50% 1.6em;z-index:2}
+.ch .arm.l{left:3.2em;transform:rotate(14deg)}.ch .arm.r{right:3.2em;transform:rotate(-14deg)}
+.ch .arm::after{content:"";position:absolute;left:-.8em;bottom:-3.4em;width:6em;height:6em;border-radius:50%;background:#ffd9bf;border:.55em solid #0b1230}
+.ch .head{position:absolute;left:5em;top:0;width:24em;height:24em;z-index:3;transform-origin:50% 90%}
+.ch .face{position:absolute;inset:0;border-radius:50%;background:#ffd9bf;border:.55em solid #0b1230}
+.ch .eye{position:absolute;top:11em;width:2.8em;height:3.6em;border-radius:50%;background:#0b1230;animation:blink 3.6s infinite}
+.ch .eye.l{left:6.4em}.ch .eye.r{right:6.4em}
+.ch .eye::after{content:"";position:absolute;left:.5em;top:.5em;width:1em;height:1em;border-radius:50%;background:#fff}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.ch .blush{position:absolute;top:15.6em;width:4em;height:2em;border-radius:50%;background:#ff8fa3aa}
+.ch .blush.l{left:3.4em}.ch .blush.r{right:3.4em}
+.ch .brow{position:absolute;top:8.6em;width:4em;height:1em;border-radius:1em;background:#0b1230}
+.ch .brow.l{left:5.8em}.ch .brow.r{right:5.8em}
+.ch .mouth{position:absolute;left:50%;top:16.6em;width:5.4em;height:3em;margin-left:-2.7em;background:#7a1f2b;border:.4em solid #0b1230;border-radius:.8em .8em 3em 3em;transform:scaleY(.3);transform-origin:50% 0}
+/* พี่ HR */
+.hr .torso{background:#12a3a0}
+.hr .torso::before{content:"";position:absolute;left:50%;top:-.4em;margin-left:-4em;border:4em solid transparent;border-top:5em solid #fff;border-bottom:0}
+.hr .torso::after{content:"HR";position:absolute;right:2.4em;top:9em;font-size:2.2em;font-weight:900;color:#0b1230;background:#ffd84d;border:.2em solid #0b1230;border-radius:.3em;padding:0 .3em}
+.hr .arm{background:#12a3a0}
+.hr .hairb{position:absolute;left:-1.4em;top:-1.2em;width:26.8em;height:30em;border-radius:13em 13em 5em 5em;background:#4a2c1d;border:.55em solid #0b1230;z-index:-1}
+.hr .bang{position:absolute;left:-.2em;top:-.8em;width:24.4em;height:10em;border-radius:12em 12em 2em 8em;background:#4a2c1d;border:.55em solid #0b1230;border-top-color:#0b1230}
+.hr .bun{position:absolute;left:7.6em;top:-6em;width:9em;height:9em;border-radius:50%;background:#4a2c1d;border:.55em solid #0b1230;z-index:-2}
+/* พนักงาน */
+.emp .torso{background:#2f6bff}
+.emp .torso::before{content:"";position:absolute;left:50%;top:0;margin-left:-1.4em;width:2.8em;height:13em;background:#e5484d;border:.4em solid #0b1230;clip-path:polygon(20% 0,80% 0,100% 85%,50% 100%,0 85%)}
+.emp .arm{background:#2f6bff}
+.emp .hairt{position:absolute;left:-.4em;top:-1.4em;width:24.8em;height:9.4em;border-radius:12em 12em 2em 2em;background:#1b1b24;border:.55em solid #0b1230;clip-path:polygon(0 100%,0 40%,10% 10%,22% 22%,32% 0,46% 18%,58% 2%,70% 18%,84% 4%,94% 26%,100% 50%,100% 100%)}
+.emp .glass{position:absolute;top:10em;width:7em;height:6em;border:.5em solid #0b1230;border-radius:40%}
+.emp .glass.l{left:3.6em}.emp .glass.r{right:3.6em}
+.emp .glass.l::after{content:"";position:absolute;right:-2.4em;top:2em;width:2.2em;height:.5em;background:#0b1230}
+/* พูด: ปากขยับ + หัวโยก */
+body.thr .hr .mouth,body.temp .emp .mouth{animation:talk .14s ease-in-out infinite alternate}
+@keyframes talk{from{transform:scaleY(.25)}to{transform:scaleY(1.05)}}
+body.thr .hr .head,body.temp .emp .head{animation:hbob .5s ease-in-out infinite alternate}
+@keyframes hbob{from{transform:rotate(-3deg)}to{transform:rotate(3deg) translateY(-.4em)}}
+/* หายใจ */
+.ch .upper{animation:breathe 2.2s ease-in-out infinite alternate}
+@keyframes breathe{to{transform:translateY(-.5em) scaleY(1.01)}}
+/* ท่าทาง (เริ่มที่ --g) */
+.on .ch.wave .arm.r{animation:waveIn .3s var(--g,0s) both,wave .45s calc(var(--g,0s) + .3s) ease-in-out infinite alternate}
+@keyframes waveIn{to{transform:rotate(-140deg)}}
+@keyframes wave{from{transform:rotate(-150deg)}to{transform:rotate(-112deg)}}
+.on .ch.phone .arm.r{animation:phoneUp .35s var(--g,0s) cubic-bezier(.2,1.4,.4,1) both}
+@keyframes phoneUp{to{transform:rotate(-158deg)}}
+.on .ch.shock .arm.l{animation:shkL .3s var(--g,0s) both,jit .1s calc(var(--g,0s) + .3s) infinite alternate}
+.on .ch.shock .arm.r{animation:shkR .3s var(--g,0s) both,jit2 .1s calc(var(--g,0s) + .3s) infinite alternate}
+@keyframes shkL{to{transform:rotate(155deg)}}@keyframes shkR{to{transform:rotate(-155deg)}}
+@keyframes jit{from{transform:rotate(150deg)}to{transform:rotate(162deg)}}@keyframes jit2{from{transform:rotate(-150deg)}to{transform:rotate(-162deg)}}
+.on .ch.shock .eye{animation:bigeye .3s var(--g,0s) both}
+@keyframes bigeye{to{transform:scale(1.45)}}
+.on .ch.bow .upper{animation:bowd .5s var(--g,0s) cubic-bezier(.3,1.2,.4,1) both}
+@keyframes bowd{to{transform:translateY(3em) rotate(0) scaleY(.94)}}
+.on .ch.bow .head{animation:bowh .5s var(--g,0s) both}
+@keyframes bowh{to{transform:rotate(0) translateY(2.6em)}}
+.on .ch.bow .arm.l{animation:bowa .4s var(--g,0s) both}.on .ch.bow .arm.r{animation:bowb .4s var(--g,0s) both}
+@keyframes bowa{to{transform:rotate(-24deg)}}@keyframes bowb{to{transform:rotate(24deg)}}
+.on .ch.happy{animation:jump .5s var(--g,0s) ease-in-out 4 alternate}
+@keyframes jump{to{transform:translateY(-7em)}}
+.on .ch.happy .arm.l{animation:shkL .3s var(--g,0s) both}.on .ch.happy .arm.r{animation:shkR .3s var(--g,0s) both}
+.on .ch.sneaky .arm.r{animation:chin .4s var(--g,0s) both}
+@keyframes chin{to{transform:rotate(-168deg) translate(3em,-1em)}}
+.on .ch.sneaky .eye{animation:shift 1s var(--g,0s) ease-in-out infinite alternate}
+@keyframes shift{from{transform:translateX(-1em) scaleY(.6)}to{transform:translateX(1.2em) scaleY(.6)}}
+.on .ch.sneaky .brow.l{animation:bl .3s var(--g,0s) both}.on .ch.sneaky .brow.r{animation:br .3s var(--g,0s) both}
+@keyframes bl{to{transform:rotate(14deg) translateY(1em)}}@keyframes br{to{transform:rotate(-14deg) translateY(1em)}}
+.on .ch.show .arm.r{animation:show .4s var(--g,0s) cubic-bezier(.2,1.4,.4,1) both}
+@keyframes show{to{transform:rotate(-100deg)}}
+.on .ch.show2 .arm.l{animation:show2 .4s var(--g,0s) cubic-bezier(.2,1.4,.4,1) both}
+@keyframes show2{to{transform:rotate(100deg)}}
+.on .ch.nod .head{animation:nod .4s var(--g,0s) ease-in-out 4 alternate}
+@keyframes nod{to{transform:rotate(0) translateY(1.4em)}}
+.on .ch.confused .head{animation:tilt .5s var(--g,0s) both}
+@keyframes tilt{to{transform:rotate(-14deg)}}
+.sweat{position:absolute;right:1em;top:4em;width:3em;height:4.4em;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#7fd3ff;border:.4em solid #0b1230;opacity:0;z-index:4}
+.on .sweat{animation:swt 1s var(--g,0s) ease-in infinite}
+@keyframes swt{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(6em)}}
+/* โทรศัพท์ / เอกสารในมือ */
+.prop{position:absolute;z-index:6;opacity:0}
+.on .prop{animation:pop .4s var(--d) cubic-bezier(.2,1.7,.4,1) both}
+.phonep{width:17em;height:22em;border-radius:2em;background:#0b1230;border:.5em solid #0b1230;padding:1em}
+.phonep div{width:100%;height:100%;border-radius:1.2em;background:#e9f2ff;color:#0b1230;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.phonep b{font-size:2.6em;font-weight:900;line-height:1.2}.phonep small{font-size:2em;font-weight:800}
+.doc{width:16em;height:20em;background:#fff;border:.5em solid #0b1230;border-radius:1em;padding:1.2em;color:#0b1230}
+.doc b{display:block;font-size:2.4em;font-weight:900;text-align:center}
+.doc i{display:block;height:1em;background:#d7e1f0;border-radius:1em;margin-top:1.2em}
+/* น้อง eSim ผู้บรรยาย */
+.es{position:absolute;background:no-repeat center/contain;z-index:7;
+  filter:drop-shadow(.5em 0 0 #fff) drop-shadow(-.5em 0 0 #fff) drop-shadow(0 .5em 0 #fff) drop-shadow(0 -.5em 0 #fff) drop-shadow(.6em .9em 0 #0b1230)}
+.on .es.a{animation:esin .5s var(--d) cubic-bezier(.2,1.6,.4,1) both}
+@keyframes esin{0%{opacity:0;transform:scale(.2) rotate(-20deg)}100%{opacity:1;transform:none}}
+.esw{position:absolute;z-index:7}
+body.tes .esw{animation:estalk .16s ease-in-out infinite alternate}
+@keyframes estalk{from{transform:scale(1,1)}to{transform:scale(1.04,.96) translateY(.6em)}}
+.esw:not(.ta){animation:none!important}
+/* ปิด */
+.logo{display:flex;align-items:center;justify-content:center;gap:1.6em}
+.logo .ic{width:9em;height:9em;border-radius:28%;display:grid;place-items:center;background:linear-gradient(150deg,#33c7a0,#1559c8);border:.5em solid #0b1230}
+.logo .ic b{font-size:7em;font-weight:900;color:#fff;line-height:1;margin-top:-.12em}
+.logo .tx{font-size:6em;font-weight:900;letter-spacing:-.03em;-webkit-text-stroke:.08em #0b1230;paint-order:stroke fill}.logo .tx i{font-style:normal;color:#5ae39a}
+.cta2{display:inline-block;font-size:5.4em;font-weight:900;color:#fff;border-radius:1em;padding:.45em 1.3em;background:#e5484d;border:.12em solid #0b1230;box-shadow:.1em .14em 0 #0b1230}
+.on .cta2.a{animation:pop .5s var(--d) cubic-bezier(.2,1.7,.4,1) both,nod2 .9s calc(var(--d) + .5s) ease-in-out infinite alternate}
+@keyframes nod2{to{transform:translateY(.25em) scale(1.04)}}
+/* หัวหน้า */
+.boss .torso{background:#c8364a}
+.boss .torso::before{content:"";position:absolute;left:50%;top:-.4em;margin-left:-4em;border:4em solid transparent;border-top:5em solid #fff;border-bottom:0}
+.boss .torso::after{content:"BOSS";position:absolute;right:1.6em;top:9em;font-size:2em;font-weight:900;color:#fff;background:#0b1230;border-radius:.3em;padding:0 .3em}
+.boss .arm{background:#c8364a}
+.boss .hairb{position:absolute;left:-1.6em;top:-1.4em;width:27.2em;height:22em;border-radius:13em 13em 4em 4em;background:#15151c;border:.55em solid #0b1230;z-index:-1}
+.boss .bang{position:absolute;left:-.2em;top:-.8em;width:24.4em;height:9em;border-radius:12em 12em 8em 2em;background:#15151c;border:.55em solid #0b1230}
+.boss .glass{position:absolute;top:10em;width:7em;height:5em;border:.5em solid #0b1230;border-radius:1em}
+.boss .glass.l{left:3.6em}.boss .glass.r{right:3.6em}
+.boss .glass.l::after{content:"";position:absolute;right:-2.4em;top:1.6em;width:2.2em;height:.5em;background:#0b1230}
+body.tboss .boss .mouth{animation:talk .14s ease-in-out infinite alternate}
+body.tboss .boss .head{animation:hbob .5s ease-in-out infinite alternate}
+/* ท่าใหม่ */
+.walkw{position:absolute;left:0;top:0}
+.on .walkw{animation:walkin var(--wt,2s) var(--wd,0s) linear both}
+@keyframes walkin{from{transform:translateX(var(--wx,-80em))}to{transform:none}}
+.on .ch.walk .leg.l{animation:legA .28s var(--wd,0s) ease-in-out var(--wn,7) alternate}
+.on .ch.walk .leg.r{animation:legB .28s var(--wd,0s) ease-in-out var(--wn,7) alternate}
+@keyframes legA{from{transform:rotate(16deg)}to{transform:rotate(-16deg)}}
+@keyframes legB{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
+.ch .leg{transform-origin:50% 0}
+.on .ch.walk .upper{animation:wbob .28s var(--wd,0s) ease-in-out var(--wn,7) alternate}
+@keyframes wbob{to{transform:translateY(-1.2em)}}
+.on .ch.carry .arm.l{animation:carL .3s 0s both}.on .ch.carry .arm.r{animation:carR .3s 0s both}
+@keyframes carL{to{transform:rotate(-38deg)}}@keyframes carR{to{transform:rotate(38deg)}}
+.box{position:absolute;left:6em;top:33em;width:22em;height:13em;background:#c98a4b;border:.55em solid #0b1230;border-radius:.8em;z-index:4}
+.box::before{content:"🪴 📎";position:absolute;left:2em;top:-5.6em;font-size:4em}
+.box::after{content:"";position:absolute;left:0;right:0;top:3em;height:.5em;background:#0b123044}
+.on .ch.sad .head{animation:sadh .5s var(--g,0s) both}
+@keyframes sadh{to{transform:rotate(6deg) translateY(1.4em)}}
+.tear{position:absolute;top:15em;width:2.2em;height:3em;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#7fd3ff;border:.35em solid #0b1230;opacity:0}
+.tear.l{left:5.2em}.tear.r{right:5.2em}
+.on .cry .tear{animation:tr .7s var(--g,0s) ease-in infinite}
+.on .cry .tear.r{animation-delay:calc(var(--g,0s) + .35s)}
+@keyframes tr{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(9em)}}
+.on .ch.point .arm.r{animation:pnt .35s var(--g,0s) cubic-bezier(.2,1.5,.4,1) both}
+@keyframes pnt{to{transform:rotate(-95deg)}}
+.on .ch.pointl .arm.l{animation:pntl .35s var(--g,0s) cubic-bezier(.2,1.5,.4,1) both}
+@keyframes pntl{to{transform:rotate(95deg)}}
+.on .ch.sign .arm.r{animation:sgn .25s var(--g,0s) ease-in-out 12 alternate}
+@keyframes sgn{from{transform:rotate(30deg)}to{transform:rotate(50deg) translateX(-1em)}}
+.on .ch.flex .arm.l{animation:shkL .3s var(--g,0s) both}.on .ch.flex .arm.r{animation:shkR .3s var(--g,0s) both}
+.on .ch.flex{animation:jump .4s var(--g,0s) ease-in-out 4 alternate}
+.on .ch.hold .arm.l{animation:hold .35s var(--g,0s) both}
+@keyframes hold{to{transform:rotate(60deg)}}
+.on .ch.lean{animation:lean .5s var(--g,0s) ease-in-out both}
+@keyframes lean{to{transform:rotate(6deg) translateX(2em)}}
+/* ขั้นบันไดอายุงาน */
+.bar{position:absolute;width:14.4em;background:linear-gradient(#5ef0dc,#12a3a0);border:.55em solid #0b1230;border-radius:1.4em 1.4em 0 0;box-shadow:.5em 0 0 #0b1230;transform-origin:50% 100%;opacity:0;color:#0b1230;text-align:center;padding-top:1em}
+.bar b{display:block;font-size:3.4em;font-weight:900;line-height:1}
+.bar small{display:block;font-size:2em;font-weight:900;line-height:1.1;margin-top:.3em}
+.bar.top{background:linear-gradient(#ffd84d,#ffb020)}
+.on .bar{animation:grow .45s var(--d) cubic-bezier(.2,1.5,.4,1) both}
+@keyframes grow{from{opacity:1;transform:scaleY(0)}to{opacity:1;transform:none}}
+.yr{position:absolute;width:14.4em;text-align:center;font-size:1em;opacity:0}
+.yr span{font-size:2.3em;font-weight:900;color:#fff}
+.on .yr{animation:up .35s var(--d) both}
+.climb{position:absolute;z-index:6}
+.climb .sx{position:absolute;left:0;top:0;transform:scale(.42);transform-origin:0 0}
+/* กระดาษ ใบลาออก */
+.paper{position:absolute;width:24em;height:30em;background:#fff;border:.55em solid #0b1230;border-radius:1em;color:#0b1230;padding:1.6em;z-index:7;box-shadow:.6em .8em 0 #0b1230}
+.paper b{display:block;font-size:3.2em;font-weight:900;text-align:center}
+.paper i{display:block;height:1.1em;background:#d7e1f0;border-radius:1em;margin-top:1.4em}
+.on .paper.half{animation:tearL .5s var(--d) ease-in forwards}
+.on .paper.half.r{animation-name:tearR}
+.paper.half{opacity:0}
+@keyframes tearL{from{opacity:1}to{transform:translate(-30em,20em) rotate(-50deg);opacity:0}}
+@keyframes tearR{from{opacity:1}to{transform:translate(30em,24em) rotate(50deg);opacity:0}}
+.on .gone{animation:gone .01s var(--d) both}
+@keyframes gone{to{opacity:0}}
+.stopsign{display:inline-grid;place-items:center;width:30em;height:30em;background:#e5484d;border:1em solid #fff;outline:.6em solid #0b1230;clip-path:polygon(29% 0,71% 0,100% 29%,100% 71%,71% 100%,29% 100%,0 71%,0 29%)}
+.stopsign span{font-size:7em;font-weight:900;color:#fff}
+/* ซับน้อง eSim: กล่องคำบรรยายการ์ตูนสีเหลือง */
+.sub{position:absolute;left:7em;right:13em;bottom:40em;text-align:center;z-index:25;opacity:0;animation:sIn .28s var(--d) cubic-bezier(.2,1.5,.4,1) forwards,sOut .2s var(--e) ease-in forwards}
+@keyframes sIn{from{opacity:0;transform:scale(.7) rotate(-3deg)}to{opacity:1;transform:rotate(-1deg)}}
+@keyframes sOut{to{opacity:0}}
+.sub span{display:inline-block;font-size:3.5em;font-weight:900;color:#0b1230;background:#ffd84d;border:.16em solid #0b1230;border-radius:.4em;padding:.3em .8em;line-height:1.4;box-shadow:.12em .16em 0 #0b1230}
+#bar{position:absolute;left:0;bottom:0;height:.7em;background:linear-gradient(90deg,#ffd84d,#5ef0dc);width:0;z-index:50}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div class="top"><span><i>▶ TOONS</i> น้อง eSim · รู้ทันสิทธิ</span></div>
+<!-- 0 HOOK: พนักงานเดินถือกล่องออกจากบริษัท -->
+<section class="sc" data-t="10.86">
+ <div class="cam" style="--sd:10.86s;--px:-4em"><div class="cam2 punch" style="--pd:3.54s;--ox:50%;--oy:12%">
+  <div class="bg"></div><div class="moon"></div><div class="cloud" style="width:22em;top:40em;animation-delay:-8s"></div><div class="cloud" style="width:16em;top:56em;animation-delay:-19s"></div><div class="city"><div class="win" style="left:5em;top:24em;animation-delay:-2.5s"></div><div class="win" style="left:9em;top:24em;animation-delay:-1s"></div><div class="win" style="left:5em;top:30em;animation-delay:-2.5s"></div><div class="win" style="left:18em;top:14em;animation-delay:-2s"></div><div class="win" style="left:23em;top:14em;animation-delay:-1s"></div><div class="win" style="left:18em;top:22em;animation-delay:-2s"></div><div class="win" style="left:44em;top:8em;animation-delay:-1s"></div><div class="win" style="left:49em;top:8em;animation-delay:-0s"></div><div class="win" style="left:44em;top:16em;animation-delay:-1s"></div><div class="win" style="left:49em;top:24em;animation-delay:-0s"></div><div class="win" style="left:61em;top:20em;animation-delay:-2.5s"></div><div class="win" style="left:74em;top:14em;animation-delay:-2s"></div><div class="win" style="left:79em;top:22em;animation-delay:-1s"></div><div class="win" style="left:88em;top:24em;animation-delay:-2s"></div><div class="win" style="left:33em;top:26em;animation-delay:-2.5s"></div></div><div class="floorc"></div>
+  <div class="H" style="top:15em"><div class="ttl a drop" style="--d:.15s">โดน<em>เลิกจ้าง</em>…</div></div>
+  <div class="H" style="top:25em"><div class="ttl a pop" style="--d:1.80s;font-size:5em;color:#ff8f8f">≠ ตกงานฟรี ๆ ✕</div></div>
+  <div class="walkw" style="left:33em;top:68em;--wt:2.2s;--wd:0s;--wx:-75em"><div class="ch emp walk carry sad" style="--wn:8;--g:.1s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div><div class="tear l"></div><div class="tear r"></div></div><div class="hairt"></div></div></div><div class="sweat"></div><div class="box"></div></div></div>
+  <div class="H" style="top:33em"><div class="a spinin" style="--d:4.04s"><span class="big wig" style="font-size:20em">400</span></div></div>
+  <div class="H" style="top:56em"><span class="stampx slam" style="--d:4.74s;font-size:5.4em">วัน! มากกว่า 1 ปีเต็ม</span></div>
+  <div class="A rain" style="left:6em;--d:4.24s">💸</div><div class="A rain" style="left:24em;--d:4.64s">💰</div><div class="A rain" style="left:68em;--d:4.44s">💸</div><div class="A rain" style="left:84em;--d:4.84s">💰</div>
+  <div class="esw ta" style="left:66em;top:96em;width:30em;height:30em"><div class="es a" style="--d:0.30s;inset:0;background-image:url(media/esim/e3c.png)"></div></div>
+  <div class="A" style="left:4em;top:100em"><div class="cc y a pop" style="--d:7.90s;--r:-6deg;padding:1em 2em"><span style="font-size:4.4em;font-weight:900">⏱️ 1 นาที!</span></div></div>
+  <div class="speed" style="--d:4.04s"></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:3.39s"><span>โดนเลิกจ้าง ≠ ตกงานฟรี ๆ นะ!</span></div>
+<div class="sub" style="--d:3.39s;--e:7.85s"><span>สิทธิเงินชดเชยเลิกจ้าง สูงสุด 400 วัน (มากกว่า 1 ปีเต็ม!)</span></div>
+<div class="sub" style="--d:7.85s;--e:10.66s"><span>เช็กสิทธิตัวเองใน 1 นาทีนี้! ⏱️</span></div>
+</section>
+
+<!-- 1 INTRO: การ์ดตอนการ์ตูน -->
+<section class="sc" data-t="2.83">
+ <div class="cam" style="--sd:2.83s"><div class="cam2">
+  <div class="bg"></div><div class="moon"></div><div class="cloud" style="width:22em;top:40em;animation-delay:-8s"></div><div class="cloud" style="width:16em;top:56em;animation-delay:-19s"></div><div class="city"><div class="win" style="left:5em;top:24em;animation-delay:-2.5s"></div><div class="win" style="left:9em;top:24em;animation-delay:-1s"></div><div class="win" style="left:5em;top:30em;animation-delay:-2.5s"></div><div class="win" style="left:18em;top:14em;animation-delay:-2s"></div><div class="win" style="left:23em;top:14em;animation-delay:-1s"></div><div class="win" style="left:18em;top:22em;animation-delay:-2s"></div><div class="win" style="left:44em;top:8em;animation-delay:-1s"></div><div class="win" style="left:49em;top:8em;animation-delay:-0s"></div><div class="win" style="left:44em;top:16em;animation-delay:-1s"></div><div class="win" style="left:49em;top:24em;animation-delay:-0s"></div><div class="win" style="left:61em;top:20em;animation-delay:-2.5s"></div><div class="win" style="left:74em;top:14em;animation-delay:-2s"></div><div class="win" style="left:79em;top:22em;animation-delay:-1s"></div><div class="win" style="left:88em;top:24em;animation-delay:-2s"></div><div class="win" style="left:33em;top:26em;animation-delay:-2.5s"></div></div><div class="floorc"></div>
+  <div class="A" style="left:12em;right:12em;top:20em"><div class="cc a spinin" style="--d:.2s;--r:-3deg;padding:2.4em 2em;background:#0b1230;color:#fff;border-color:#ffd84d">
+    <div style="font-size:3em;font-weight:900;color:#ffd84d">📺 EP. ตอนนี้</div><div style="font-size:6em;font-weight:900;line-height:1.2">เงินชดเชย<br>เลิกจ้าง</div></div></div>
+  <div class="esw ta" style="left:25em;top:66em;width:50em;height:54em"><div class="es a drop" style="--d:.05s;inset:0;background-image:url(media/esim/e1c.png)"></div></div>
+  <div class="speed" style="--d:.1s"></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:2.63s"><span>สวัสดีครับ ผม “น้อง eSim” 👋</span></div>
+</section>
+
+<!-- 2 เรื่องเล่า: หัวหน้าแจ้งเลิกจ้าง -->
+<section class="sc" data-t="6.11">
+ <div class="cam" style="--sd:6.11s;--px:4em"><div class="cam2 shake" style="--pd:3.76s">
+  <div class="bg"></div><div class="moon"></div><div class="cloud" style="width:22em;top:40em;animation-delay:-8s"></div><div class="cloud" style="width:16em;top:56em;animation-delay:-19s"></div><div class="city"><div class="win" style="left:5em;top:24em;animation-delay:-2.5s"></div><div class="win" style="left:9em;top:24em;animation-delay:-1s"></div><div class="win" style="left:5em;top:30em;animation-delay:-2.5s"></div><div class="win" style="left:18em;top:14em;animation-delay:-2s"></div><div class="win" style="left:23em;top:14em;animation-delay:-1s"></div><div class="win" style="left:18em;top:22em;animation-delay:-2s"></div><div class="win" style="left:44em;top:8em;animation-delay:-1s"></div><div class="win" style="left:49em;top:8em;animation-delay:-0s"></div><div class="win" style="left:44em;top:16em;animation-delay:-1s"></div><div class="win" style="left:49em;top:24em;animation-delay:-0s"></div><div class="win" style="left:61em;top:20em;animation-delay:-2.5s"></div><div class="win" style="left:74em;top:14em;animation-delay:-2s"></div><div class="win" style="left:79em;top:22em;animation-delay:-1s"></div><div class="win" style="left:88em;top:24em;animation-delay:-2s"></div><div class="win" style="left:33em;top:26em;animation-delay:-2.5s"></div></div><div class="floorc"></div>
+  <div class="H" style="top:15em"><div class="ttl a drop" style="--d:.15s">วันที่ฟ้าผ่า ⚡</div></div>
+  <div class="walkw" style="left:4em;top:68em;--wt:1s;--wd:.1s;--wx:-50em"><div class="ch boss walk sad" style="--wn:4;--g:0.60s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="hairb"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="blush l"></div><div class="blush r"></div><div class="mouth"></div></div><div class="bang"></div></div></div></div></div>
+  <div class="ch emp shock cry" style="right:4em;top:68em;--g:3.76s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div><div class="tear l"></div><div class="tear r"></div></div><div class="hairt"></div></div></div><div class="sweat"></div></div>
+  <div class="H" style="top:60em;left:30em;right:30em"><span class="sfx a pop" style="--d:3.76s;font-size:8em;color:#ff8f8f">ห๊ะ!!</span></div>
+  <div class="A" style="left:44em;top:27em;font-size:9em"><span class="a pop" style="--d:3.86s;display:inline-block">⚡</span></div>
+ </div></div>
+<div class="bub boss" style="--d:0.52s;--e:3.71s"><div class="in"><small>หัวหน้า</small><span>ขอโทษนะ บริษัทขาดทุนหนัก ต้องปิดแผนกนี้แล้ว 😔</span></div></div>
+<div class="bub emp" style="--d:3.68s;--e:5.91s"><div class="in"><small>พนักงาน</small><span>ห๊ะ!! ผมตกงานแล้วเหรอครับ 😭</span></div></div>
+</section>
+
+<!-- 3 อธิบาย: เงินชดเชยคืออะไร -->
+<section class="sc" data-t="14.72">
+ <div class="cam" style="--sd:14.72s"><div class="cam2">
+  <div class="bg"></div><div class="moon"></div><div class="cloud" style="width:22em;top:40em;animation-delay:-8s"></div><div class="cloud" style="width:16em;top:56em;animation-delay:-19s"></div><div class="city"><div class="win" style="left:5em;top:24em;animation-delay:-2.5s"></div><div class="win" style="left:9em;top:24em;animation-delay:-1s"></div><div class="win" style="left:5em;top:30em;animation-delay:-2.5s"></div><div class="win" style="left:18em;top:14em;animation-delay:-2s"></div><div class="win" style="left:23em;top:14em;animation-delay:-1s"></div><div class="win" style="left:18em;top:22em;animation-delay:-2s"></div><div class="win" style="left:44em;top:8em;animation-delay:-1s"></div><div class="win" style="left:49em;top:8em;animation-delay:-0s"></div><div class="win" style="left:44em;top:16em;animation-delay:-1s"></div><div class="win" style="left:49em;top:24em;animation-delay:-0s"></div><div class="win" style="left:61em;top:20em;animation-delay:-2.5s"></div><div class="win" style="left:74em;top:14em;animation-delay:-2s"></div><div class="win" style="left:79em;top:22em;animation-delay:-1s"></div><div class="win" style="left:88em;top:24em;animation-delay:-2s"></div><div class="win" style="left:33em;top:26em;animation-delay:-2.5s"></div></div><div class="floorc"></div>
+  <div class="H" style="top:15em"><div class="ttl a drop" style="--d:.15s">เงินชดเชย <em>คืออะไร?</em></div></div>
+  <div class="A" style="left:5em;right:5em;top:28em"><div class="cc y a pop" style="--d:0.90s;--r:-2deg;padding:1.6em"><div style="font-size:4em;font-weight:900">💰 เงินก้อนที่กฎหมาย<u>บังคับ</u>ให้จ่าย</div></div></div>
+  <div class="A" style="left:10em;right:10em;top:42em"><div class="cc a pop" style="--d:3.60s;--r:2deg;padding:1.4em"><div style="font-size:3.6em;font-weight:900">ลูกจ้าง<span style="color:#e5484d">ไม่มี</span>ความผิดร้ายแรง ✓</div></div></div>
+  <div class="A" style="left:4em;right:4em;top:56em;display:flex;justify-content:space-between">
+   <div class="cc r a drop" style="--d:7.37s;--r:-6deg;width:28em;padding:1.4em .5em"><div style="font-size:7em;line-height:1">📉</div><div style="font-size:3.2em;font-weight:900">ขาดทุน</div></div>
+   <div class="cc b a drop" style="--d:8.07s;--r:4deg;width:28em;padding:1.4em .5em"><div style="font-size:7em;line-height:1">🏚️</div><div style="font-size:3.2em;font-weight:900">ปิดกิจการ</div></div>
+   <div class="cc m a drop" style="--d:8.77s;--r:-3deg;width:28em;padding:1.4em .5em"><div style="font-size:7em;line-height:1">🔄</div><div style="font-size:3.2em;font-weight:900">ปรับโครงสร้าง</div></div>
+  </div>
+  <div class="A" style="left:4em;right:38em;top:86em"><div class="cc a spinin" style="--d:10.56s;--r:-2deg;padding:1.6em;background:#0b1230;color:#fff;border-color:#ffd84d"><div style="font-size:3.4em;font-weight:900;color:#ffd84d">สูตร</div><div style="font-size:3.6em;font-weight:900">📅 อายุงาน ×<br>💵 ค่าจ้างล่าสุด</div></div></div>
+  <div class="esw ta" style="left:62em;top:84em;width:34em;height:36em"><div class="es a pop" style="--d:.4s;inset:0;background-image:url(media/esim/e2c.png)"></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:6.82s"><span>เงินชดเชย = เงินก้อนที่กฎหมายบังคับนายจ้างจ่าย เมื่อเลิกจ้างโดยลูกจ้างไม่มีความผิดร้ายแรง</span></div>
+<div class="sub" style="--d:6.82s;--e:10.21s"><span>เช่น ขาดทุน · ปิดกิจการ · ปรับโครงสร้าง</span></div>
+<div class="sub" style="--d:10.21s;--e:14.52s"><span>ยอดเงินขึ้นกับ “อายุงาน” × ค่าจ้างอัตราสุดท้าย</span></div>
+</section>
+
+<!-- 4 MID HOOK: หัวหน้าหลอกให้เซ็นลาออก -->
+<section class="sc" data-t="8.29">
+ <div class="cam" style="--sd:8.29s;--px:-3em"><div class="cam2 punch" style="--pd:3.40s;--ox:50%;--oy:12%">
+  <div class="bg"></div><div class="moon"></div><div class="cloud" style="width:22em;top:40em;animation-delay:-8s"></div><div class="cloud" style="width:16em;top:56em;animation-delay:-19s"></div><div class="city"><div class="win" style="left:5em;top:24em;animation-delay:-2.5s"></div><div class="win" style="left:9em;top:24em;animation-delay:-1s"></div><div class="win" style="left:5em;top:30em;animation-delay:-2.5s"></div><div class="win" style="left:18em;top:14em;animation-delay:-2s"></div><div class="win" style="left:23em;top:14em;animation-delay:-1s"></div><div class="win" style="left:18em;top:22em;animation-delay:-2s"></div><div class="win" style="left:44em;top:8em;animation-delay:-1s"></div><div class="win" style="left:49em;top:8em;animation-delay:-0s"></div><div class="win" style="left:44em;top:16em;animation-delay:-1s"></div><div class="win" style="left:49em;top:24em;animation-delay:-0s"></div><div class="win" style="left:61em;top:20em;animation-delay:-2.5s"></div><div class="win" style="left:74em;top:14em;animation-delay:-2s"></div><div class="win" style="left:79em;top:22em;animation-delay:-1s"></div><div class="win" style="left:88em;top:24em;animation-delay:-2s"></div><div class="win" style="left:33em;top:26em;animation-delay:-2.5s"></div></div><div class="floorc"></div>
+  <div class="H" style="top:15em"><div class="ttl a drop" style="--d:.15s">กับดัก! 🪤</div></div>
+  <div class="ch boss sneaky hold lean" style="left:4em;top:68em;--g:.3s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="hairb"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="blush l"></div><div class="blush r"></div><div class="mouth"></div></div><div class="bang"></div></div></div></div>
+  <div class="paper a pop" style="--d:.6s;left:31em;top:88em;--r:-8deg;width:20em;height:24em"><b>ใบลาออก</b><i></i><i style="width:60%"></i><i></i></div>
+  <div class="ch emp confused" style="right:4em;top:68em;--g:0.60s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div><div class="tear l"></div><div class="tear r"></div></div><div class="hairt"></div></div></div><div class="sweat"></div></div>
+  <div class="A" style="right:6em;top:52em;font-size:9em"><span class="a spinin" style="--d:1.60s;display:inline-block">❓</span></div>
+  <div class="H" style="top:29em"><div class="a pop" style="--d:3.60s"><span class="big wig" style="font-size:10em">เซ็นไหม??</span></div></div>
+  <div class="esw ta" style="left:34em;top:44em;width:32em;height:32em"><div class="es a spinin" style="--d:3.30s;inset:0;background-image:url(media/esim/e4c.png)"></div></div>
+  <div class="speed" style="--d:3.40s"></div>
+ </div></div>
+<div class="bub boss" style="--d:0.52s;--e:3.35s"><div class="in"><small>หัวหน้า</small><span>เซ็นใบลาออกเองสิ จะได้เงินไวขึ้นนะ 😏</span></div></div>
+<div class="sub" style="--d:3.35s;--e:8.09s"><span>ควรเซ็นไหม?? กรณีไหนได้เงินบ้าง? ฟังต่อ!</span></div>
+</section>
+
+<!-- 5 บันไดอายุงาน -->
+<section class="sc" data-t="19.42">
+ <div class="cam" style="--sd:19.42s"><div class="cam2">
+  <div class="bg"></div><div class="moon"></div><div class="cloud" style="width:22em;top:40em;animation-delay:-8s"></div><div class="cloud" style="width:16em;top:56em;animation-delay:-19s"></div><div class="city"><div class="win" style="left:5em;top:24em;animation-delay:-2.5s"></div><div class="win" style="left:9em;top:24em;animation-delay:-1s"></div><div class="win" style="left:5em;top:30em;animation-delay:-2.5s"></div><div class="win" style="left:18em;top:14em;animation-delay:-2s"></div><div class="win" style="left:23em;top:14em;animation-delay:-1s"></div><div class="win" style="left:18em;top:22em;animation-delay:-2s"></div><div class="win" style="left:44em;top:8em;animation-delay:-1s"></div><div class="win" style="left:49em;top:8em;animation-delay:-0s"></div><div class="win" style="left:44em;top:16em;animation-delay:-1s"></div><div class="win" style="left:49em;top:24em;animation-delay:-0s"></div><div class="win" style="left:61em;top:20em;animation-delay:-2.5s"></div><div class="win" style="left:74em;top:14em;animation-delay:-2s"></div><div class="win" style="left:79em;top:22em;animation-delay:-1s"></div><div class="win" style="left:88em;top:24em;animation-delay:-2s"></div><div class="win" style="left:33em;top:26em;animation-delay:-2.5s"></div></div><div class="floorc"></div>
+  <div class="H" style="top:15em"><div class="ttl a drop" style="--d:.15s">ขั้นบันได<em>อายุงาน</em> 🪜</div></div>
+  <div class="bar" style="--d:2.70s;left:4em;top:114em;height:10em"><b>30</b><small>วัน</small></div><div class="yr" style="--d:2.85s;left:4em;top:126.5em"><span>120 วัน–1 ปี</span></div><i data-sfx="swish" data-at="2.95"></i><div class="bar" style="--d:5.50s;left:19.3em;top:107em;height:17em"><b>90</b><small>วัน</small></div><div class="yr" style="--d:5.65s;left:19.3em;top:126.5em"><span>1–3 ปี</span></div><i data-sfx="swish" data-at="5.75"></i><div class="bar" style="--d:7.88s;left:34.6em;top:100em;height:24em"><b>180</b><small>วัน</small></div><div class="yr" style="--d:8.03s;left:34.6em;top:126.5em"><span>3–6 ปี</span></div><i data-sfx="swish" data-at="8.13"></i><div class="bar" style="--d:10.62s;left:49.900000000000006em;top:93em;height:31em"><b>240</b><small>วัน</small></div><div class="yr" style="--d:10.77s;left:49.900000000000006em;top:126.5em"><span>6–10 ปี</span></div><i data-sfx="swish" data-at="10.87"></i><div class="bar" style="--d:13.28s;left:65.2em;top:86em;height:38em"><b>300</b><small>วัน</small></div><div class="yr" style="--d:13.43s;left:65.2em;top:126.5em"><span>10–20 ปี</span></div><i data-sfx="swish" data-at="13.53"></i><div class="bar top" style="--d:15.75s;left:80.5em;top:78em;height:46em"><b>400</b><small>วัน</small></div><div class="yr" style="--d:15.90s;left:80.5em;top:126.5em"><span>20 ปี+</span></div><i data-sfx="swish" data-at="16.00"></i><style>@keyframes climb{0.00%{left:-22.0em;top:99.6em}15.19%{left:-22.0em;top:99.6em}16.22%{left:-9.0em;top:80.6em}17.35%{left:4.0em;top:89.6em}29.61%{left:4.0em;top:89.6em}30.64%{left:11.7em;top:73.6em}31.77%{left:19.3em;top:82.6em}41.86%{left:19.3em;top:82.6em}42.89%{left:27.0em;top:66.6em}44.03%{left:34.6em;top:75.6em}55.97%{left:34.6em;top:75.6em}57.00%{left:42.3em;top:59.6em}58.14%{left:49.9em;top:68.6em}69.67%{left:49.9em;top:68.6em}70.70%{left:57.6em;top:52.6em}71.83%{left:65.2em;top:61.6em}82.39%{left:65.2em;top:61.6em}83.42%{left:72.8em;top:44.6em}84.55%{left:80.5em;top:53.6em}100.00%{left:80.5em;top:53.6em}}.on .climb{animation:climb 19.42s linear both}</style><div class="climb"><div class="sx"><div class="ch emp happy" style="--g:16.50s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div><div class="tear l"></div><div class="tear r"></div></div><div class="hairt"></div></div></div><div class="sweat"></div></div></div></div><div class="H" style="top:42em;left:2em;right:24em"><div class="a spinin" style="--d:16.30s"><span class="big wig" style="font-size:7.4em">🏆 สูงสุด 400 วัน!</span></div></div><div class="esw ta" style="left:74em;top:27em;width:22em;height:22em"><div class="es a pop" style="--d:.3s;inset:0;background-image:url(media/esim/e1c.png)"></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:2.60s"><span>นับตามอายุงาน ง่าย ๆ 👇</span></div>
+<div class="sub" style="--d:2.60s;--e:5.40s"><span>120 วัน – ไม่ถึง 1 ปี → 30 วัน</span></div>
+<div class="sub" style="--d:5.40s;--e:7.78s"><span>1 – ไม่ถึง 3 ปี → 90 วัน</span></div>
+<div class="sub" style="--d:7.78s;--e:10.52s"><span>3 – ไม่ถึง 6 ปี → 180 วัน</span></div>
+<div class="sub" style="--d:10.52s;--e:13.18s"><span>6 – ไม่ถึง 10 ปี → 240 วัน</span></div>
+<div class="sub" style="--d:13.18s;--e:15.65s"><span>10 – ไม่ถึง 20 ปี → 300 วัน</span></div>
+<div class="sub" style="--d:15.65s;--e:19.22s"><span>20 ปีขึ้นไป → 400 วัน (กว่า 13 เดือน!) 🏆</span></div>
+</section>
+
+<!-- 6 เตือน: ห้ามเซ็นใบลาออก -->
+<section class="sc" data-t="9.91">
+ <div class="cam" style="--sd:9.91s;--px:3em"><div class="cam2 shake" style="--pd:2.25s">
+  <div class="bg"></div><div class="moon"></div><div class="cloud" style="width:22em;top:40em;animation-delay:-8s"></div><div class="cloud" style="width:16em;top:56em;animation-delay:-19s"></div><div class="city"><div class="win" style="left:5em;top:24em;animation-delay:-2.5s"></div><div class="win" style="left:9em;top:24em;animation-delay:-1s"></div><div class="win" style="left:5em;top:30em;animation-delay:-2.5s"></div><div class="win" style="left:18em;top:14em;animation-delay:-2s"></div><div class="win" style="left:23em;top:14em;animation-delay:-1s"></div><div class="win" style="left:18em;top:22em;animation-delay:-2s"></div><div class="win" style="left:44em;top:8em;animation-delay:-1s"></div><div class="win" style="left:49em;top:8em;animation-delay:-0s"></div><div class="win" style="left:44em;top:16em;animation-delay:-1s"></div><div class="win" style="left:49em;top:24em;animation-delay:-0s"></div><div class="win" style="left:61em;top:20em;animation-delay:-2.5s"></div><div class="win" style="left:74em;top:14em;animation-delay:-2s"></div><div class="win" style="left:79em;top:22em;animation-delay:-1s"></div><div class="win" style="left:88em;top:24em;animation-delay:-2s"></div><div class="win" style="left:33em;top:26em;animation-delay:-2.5s"></div></div><div class="floorc"></div>
+  <div class="H" style="top:15em"><div class="ttl a drop" style="--d:.15s">ระวัง!! ⚠️</div></div>
+  <div class="ch emp sign" style="right:22em;top:68em;--g:.3s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div><div class="tear l"></div><div class="tear r"></div></div><div class="hairt"></div></div></div><div class="sweat"></div></div>
+  <div class="A gone" style="--d:8.35s;left:0;top:0;width:100%;height:100%;z-index:7"><div class="paper a pop" style="--d:.2s;left:46em;top:90em;--r:6deg"><b>ใบลาออก</b><i></i><i style="width:60%"></i><i></i><div style="font-size:4em;text-align:right">✍️</div></div></div>
+  <div class="paper half" style="--d:8.35s;left:46em;top:90em;width:12em;clip-path:inset(0 0 0 0);border-right:.3em dashed #0b1230"><b style="font-size:2.6em">ใบลา</b></div>
+  <div class="paper half r" style="--d:8.35s;left:58em;top:90em;width:12em;border-left:.3em dashed #0b1230"><b style="font-size:2.6em">ออก</b></div>
+  <div class="H" style="top:78em;left:56em;right:0"><span class="sfx a pop" style="--d:8.35s;font-size:6em" data-sfx="tear" data-at="8.35">แคว่ก!!</span></div>
+  <div class="H" style="top:26em"><div class="a spinin" style="--d:2.25s"><div class="stopsign"><span>หยุด!</span></div></div></div>
+  <div class="H" style="top:62em"><span class="stampx slam" style="--d:5.86s;font-size:5.6em">เซ็น = สิทธิหาย!</span></div>
+  <div class="esw ta" style="left:2em;top:90em;width:34em;height:34em"><div class="es a drop" style="--d:1.95s;inset:0;background-image:url(media/esim/e4c.png)"></div></div>
+  <div class="speed" style="--d:2.25s"></div>
+ </div></div>
+<div class="bub emp" style="--d:0.52s;--e:2.20s"><div class="in"><small>พนักงาน</small><span>งั้นเซ็นลาออกเลยดีกว่า… ✍️</span></div></div>
+<div class="sub" style="--d:2.20s;--e:5.41s"><span>หยุด!! โดนบีบให้ออก ห้ามเซ็นใบลาออกเอง!</span></div>
+<div class="sub" style="--d:5.41s;--e:9.71s"><span>เซ็นลาออก = สิทธิเงินชดเชยหายทันที ❌</span></div>
+<div class="bub emp" style="--d:8.27s;--e:9.71s"><div class="in"><small>พนักงาน</small><span>ไม่เซ็นแล้วครับ!! 💪</span></div></div>
+</section>
+
+<!-- 7 สรุป -->
+<section class="sc" data-t="8.18">
+ <div class="cam" style="--sd:8.18s"><div class="cam2">
+  <div class="bg"></div><div class="moon"></div><div class="cloud" style="width:22em;top:40em;animation-delay:-8s"></div><div class="cloud" style="width:16em;top:56em;animation-delay:-19s"></div><div class="city"><div class="win" style="left:5em;top:24em;animation-delay:-2.5s"></div><div class="win" style="left:9em;top:24em;animation-delay:-1s"></div><div class="win" style="left:5em;top:30em;animation-delay:-2.5s"></div><div class="win" style="left:18em;top:14em;animation-delay:-2s"></div><div class="win" style="left:23em;top:14em;animation-delay:-1s"></div><div class="win" style="left:18em;top:22em;animation-delay:-2s"></div><div class="win" style="left:44em;top:8em;animation-delay:-1s"></div><div class="win" style="left:49em;top:8em;animation-delay:-0s"></div><div class="win" style="left:44em;top:16em;animation-delay:-1s"></div><div class="win" style="left:49em;top:24em;animation-delay:-0s"></div><div class="win" style="left:61em;top:20em;animation-delay:-2.5s"></div><div class="win" style="left:74em;top:14em;animation-delay:-2s"></div><div class="win" style="left:79em;top:22em;animation-delay:-1s"></div><div class="win" style="left:88em;top:24em;animation-delay:-2s"></div><div class="win" style="left:33em;top:26em;animation-delay:-2.5s"></div></div><div class="floorc"></div>
+  <div class="H" style="top:15em"><div class="ttl a drop" style="--d:.15s">สรุปสั้น ๆ ✓</div></div>
+  <div class="A" style="left:5em;right:5em;top:28em"><div class="cc m a pop" style="--d:1.20s;--r:-2deg;padding:1.8em"><div style="font-size:3.8em;font-weight:900">ไม่มีความผิด + โดนเลิกจ้าง</div><div style="font-size:5.4em;font-weight:900">= ได้เงินชดเชย 💰</div></div></div>
+  <div class="A" style="left:16em;right:16em;top:50em"><div class="cc y a drop" style="--d:5.31s;--r:3deg;padding:1.4em"><div style="font-size:4em;font-weight:900">📅 เช็กอายุงานตัวเอง!</div></div></div>
+  <div class="ch emp flex" style="right:6em;top:68em;--g:1.40s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div><div class="tear l"></div><div class="tear r"></div></div><div class="hairt"></div></div></div><div class="sweat"></div></div>
+  <div class="esw ta" style="left:6em;top:76em;width:42em;height:44em"><div class="es a pop" style="--d:.3s;inset:0;background-image:url(media/esim/e2c.png)"></div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:4.96s"><span>ไม่มีความผิด + โดนเลิกจ้าง = ได้เงินชดเชยตามอายุงานเสมอ ✓</span></div>
+<div class="sub" style="--d:4.96s;--e:7.98s"><span>ชาวออฟฟิศ อย่าลืมเช็กอายุงานตัวเอง! 📅</span></div>
+</section>
+
+<!-- 8 ปิด -->
+<section class="sc" data-t="7.42">
+ <div class="cam" style="--sd:7.42s"><div class="cam2">
+  <div class="bg"></div><div class="moon"></div><div class="cloud" style="width:22em;top:40em;animation-delay:-8s"></div><div class="cloud" style="width:16em;top:56em;animation-delay:-19s"></div><div class="city"><div class="win" style="left:5em;top:24em;animation-delay:-2.5s"></div><div class="win" style="left:9em;top:24em;animation-delay:-1s"></div><div class="win" style="left:5em;top:30em;animation-delay:-2.5s"></div><div class="win" style="left:18em;top:14em;animation-delay:-2s"></div><div class="win" style="left:23em;top:14em;animation-delay:-1s"></div><div class="win" style="left:18em;top:22em;animation-delay:-2s"></div><div class="win" style="left:44em;top:8em;animation-delay:-1s"></div><div class="win" style="left:49em;top:8em;animation-delay:-0s"></div><div class="win" style="left:44em;top:16em;animation-delay:-1s"></div><div class="win" style="left:49em;top:24em;animation-delay:-0s"></div><div class="win" style="left:61em;top:20em;animation-delay:-2.5s"></div><div class="win" style="left:74em;top:14em;animation-delay:-2s"></div><div class="win" style="left:79em;top:22em;animation-delay:-1s"></div><div class="win" style="left:88em;top:24em;animation-delay:-2s"></div><div class="win" style="left:33em;top:26em;animation-delay:-2.5s"></div></div><div class="floorc"></div>
+  <div class="logo a pop" style="--d:.2s;position:absolute;left:0;right:0;top:15em"><div class="ic"><b>e</b></div><div class="tx">eSim<i>Payroll</i></div></div>
+  <div class="A" style="left:8em;right:8em;top:29em"><div class="cc a pop" style="--d:0.60s;--r:-1deg;padding:1.8em"><div style="font-size:4em;font-weight:900">เคยโดนบีบให้ออกไหม? 💬</div></div></div>
+  <div class="H" style="top:43em"><span class="cta2 a" data-sfx="chime" data-at="3.86" style="--d:3.76s">กดติดตาม 🔔</span></div>
+  <div class="ch boss wave" style="left:2em;top:68em;--g:.6s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="hairb"></div><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="blush l"></div><div class="blush r"></div><div class="mouth"></div></div><div class="bang"></div></div></div></div>
+  <div class="ch emp wave" style="right:2em;top:68em;--g:.8s"><div class="leg l"></div><div class="leg r"></div><div class="upper"><div class="torso"></div><div class="arm l"></div><div class="arm r"></div><div class="head"><div class="face"><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="glass l"></div><div class="glass r"></div><div class="mouth"></div><div class="tear l"></div><div class="tear r"></div></div><div class="hairt"></div></div></div><div class="sweat"></div></div>
+  <div class="esw ta" style="left:35em;top:66em;width:30em;height:30em"><div class="es a drop" style="--d:.3s;inset:0;background-image:url(media/esim/e6c.png)"></div></div>
+  <div class="H" style="top:100em;left:30em;right:30em"><div class="a up" style="--d:4.56s;font-size:3em;font-weight:900;color:#c9d6f2">esimpayroll.com</div></div>
+ </div></div>
+<div class="sub" style="--d:0.55s;--e:3.71s"><span>เคยโดนบีบให้ออกไหม? คอมเมนต์มาคุยกัน 💬</span></div>
+<div class="sub" style="--d:3.71s;--e:7.22s"><span>กดติดตามไว้ เดี๋ยวมีเรื่องเงินเดือนมาเล่าอีก!</span></div>
+</section>
+
+<div id="bar"></div>
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var LINES=[{"who":"es","s":0.6,"dur":2.44},{"who":"es","s":3.44,"dur":4.06},{"who":"es","s":7.9,"dur":2.06},{"who":"es","s":11.46,"dur":1.33},{"who":"boss","s":14.29,"dur":2.76},{"who":"emp","s":17.45,"dur":1.45},{"who":"es","s":20.4,"dur":5.87},{"who":"es","s":26.67,"dur":2.99},{"who":"es","s":30.06,"dur":3.56},{"who":"boss","s":35.12,"dur":2.4},{"who":"es","s":37.92,"dur":3.99},{"who":"es","s":43.41,"dur":1.65},{"who":"es","s":45.46,"dur":2.4},{"who":"es","s":48.26,"dur":1.98},{"who":"es","s":50.64,"dur":2.34},{"who":"es","s":53.38,"dur":2.26},{"who":"es","s":56.04,"dur":2.07},{"who":"es","s":58.51,"dur":2.82},{"who":"emp","s":62.83,"dur":1.25},{"who":"es","s":64.48,"dur":2.81},{"who":"es","s":67.69,"dur":2.49},{"who":"emp","s":70.58,"dur":0.66},{"who":"es","s":72.74,"dur":4.01},{"who":"es","s":77.15,"dur":2.27},{"who":"es","s":80.92,"dur":2.76},{"who":"es","s":84.08,"dur":2.76}];
+  var cur=-1,bar=document.getElementById('bar');
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on')});void S[i].offsetWidth;S[i].classList.add('on');cur=i}
+    var w={es:0,boss:0,emp:0};LINES.forEach(function(l){if(t>=l.s&&t<l.s+l.dur)w[l.who]=1});
+    for(var k in w)document.body.classList.toggle('t'+k,!!w[k]);
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;else an.currentTime=(sc===S[i]?st:0)*1000;
+    });
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render; window.__drop=ST[1];
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>

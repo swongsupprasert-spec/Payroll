@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>น้อง eSim — ภ.ง.ด.94</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#091025;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);background:#091025}
+/* พื้นหลังที่ขยับตลอด */
+.grid{position:absolute;inset:-8em;background-image:linear-gradient(#ffffff0a .15em,transparent .15em),linear-gradient(90deg,#ffffff0a .15em,transparent .15em);background-size:4em 4em;animation:gd 8s linear infinite}
+@keyframes gd{to{transform:translate(4em,4em)}}
+.glow{position:absolute;border-radius:50%;filter:blur(0);opacity:.55;animation:gw 7s ease-in-out infinite alternate}
+.g1{width:70em;height:70em;left:-30em;top:-20em;background:radial-gradient(circle,#2f5bea55,#2f5bea00 70%)}
+.g2{width:60em;height:60em;right:-28em;bottom:10em;background:radial-gradient(circle,#12a3a055,#12a3a000 70%);animation-delay:-3s}
+@keyframes gw{to{transform:translate(12em,16em) scale(1.2)}}
+.sym{position:absolute;font-weight:900;color:#ffffff12;animation:sy 9s linear infinite}
+@keyframes sy{from{transform:translateY(30em) rotate(-10deg)}to{transform:translateY(-190em) rotate(15deg)}}
+.top{position:absolute;left:0;right:0;top:4.5em;text-align:center;z-index:9}
+.top span{display:inline-flex;align-items:center;gap:.5em;font-size:2.8em;font-weight:900;color:#fff;background:linear-gradient(150deg,#2f5bea,#12a3a0);border-radius:2em;padding:.3em 1em;box-shadow:0 .5em 1.2em #0006}
+.top i{font-style:normal;background:#fff;color:#2f5bea;border-radius:.4em;padding:0 .35em;font-size:.9em}
+/* ฉาก */
+.sc{position:absolute;inset:0;visibility:hidden}
+.sc.on{visibility:visible;animation:zin .45s cubic-bezier(.2,1.5,.4,1) both}
+.sc.off{visibility:visible;animation:zout .35s cubic-bezier(.6,0,.9,.4) forwards}
+@keyframes zin{from{transform:scale(.8) rotate(-3deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes zout{to{transform:scale(1.2) translateX(-30em) rotate(6deg);opacity:0;filter:blur(.5em)}}
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.5s)}
+.on .pop,.on .pz{animation-name:pop;animation-timing-function:cubic-bezier(.2,1.7,.4,1)}
+.on .up{animation-name:up;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+.on .sl{animation-name:sl;animation-timing-function:cubic-bezier(.2,1.2,.3,1)}
+.on .sr{animation-name:sr;animation-timing-function:cubic-bezier(.2,1.2,.3,1)}
+@keyframes pop{0%{opacity:0;transform:scale(.1) rotate(-10deg)}60%{opacity:1;transform:scale(1.12) rotate(3deg)}100%{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(6em) scale(.9)}to{opacity:1;transform:none}}
+@keyframes sl{from{opacity:0;transform:translateX(-50em) skewX(12deg)}to{opacity:1;transform:none}}
+@keyframes sr{from{opacity:0;transform:translateX(50em) skewX(-12deg)}to{opacity:1;transform:none}}
+/* น้อง eSim (ตัดพื้นแล้ว) */
+.esim{position:absolute;background:no-repeat center/contain;filter:drop-shadow(0 2em 2em #0008);z-index:5}
+.on .esim.a{animation:ein .7s var(--d) cubic-bezier(.2,1.6,.4,1) both,ebob 1.6s calc(var(--d) + .7s) ease-in-out infinite alternate}
+@keyframes ein{0%{opacity:0;transform:translateY(40em) scale(.5,1.4)}60%{opacity:1;transform:translateY(-2em) scale(1.08,.92)}100%{opacity:1;transform:none}}
+@keyframes ebob{to{transform:translateY(-1.6em) rotate(-2deg)}}
+.H{position:absolute;left:5em;right:5em;text-align:center;z-index:6}
+.big{font-size:10em;font-weight:900;line-height:1.12;letter-spacing:-.02em}
+.mid{font-size:5.6em;font-weight:900;line-height:1.3}
+em{font-style:normal;background:linear-gradient(90deg,#7fb4ff,#5ef0dc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{background:#fff;color:#10245a;border-radius:3.4em;box-shadow:0 2em 3.4em -1.2em #000a,inset 0 -.6em 0 #e8eefa}
+.chip{display:inline-flex;align-items:center;gap:.5em;font-size:3.6em;font-weight:900;color:#10245a;background:#fff;border-radius:2em;padding:.4em 1em;box-shadow:0 .6em 1.4em #0006}
+.ib{display:grid;place-items:center;border-radius:28%;background:#fff;box-shadow:0 1.2em 2em -1em #000a,inset 0 -.5em 0 #e8eefa}
+.ib span{line-height:1}
+/* ฉาก 0: วงคลื่นเตือน */
+.ring{position:absolute;left:50%;top:44%;width:30em;height:30em;margin:-15em;border-radius:50%;border:.8em solid #ff6b6b;opacity:0}
+.on .ring{animation:rg 1.6s var(--d) ease-out infinite}
+@keyframes rg{0%{transform:scale(.3);opacity:.9}100%{transform:scale(3.2);opacity:0}}
+.stop{display:inline-block;font-size:6em;font-weight:900;color:#fff;background:#e5484d;border-radius:.4em;padding:.1em .6em;box-shadow:0 .2em 0 #9f1d23,0 .5em 1.4em #e5484d88;transform:rotate(-6deg)}
+.on .shk{animation:shk .4s var(--d) 4}
+@keyframes shk{25%{transform:rotate(-10deg) translateX(-.3em)}75%{transform:rotate(-2deg) translateX(.3em)}}
+/* ฉาก 1: วันกลางวัน→เย็น */
+.sky{position:absolute;inset:0;background:linear-gradient(#ffb34722,#09102500 60%);opacity:0}
+.on .sky{animation:sk1 var(--t) var(--d) linear forwards}
+@keyframes sk1{0%{opacity:1;background:linear-gradient(#ffb34730,#09102500 60%)}100%{opacity:1;background:linear-gradient(#7c5cff40,#09102500 60%)}}
+.sun{position:absolute;width:12em;height:12em;border-radius:50%;left:6em;top:28em;background:radial-gradient(circle at 40% 40%,#fff6c8,#ffcc3f 60%,#f59e0b);box-shadow:0 0 6em #ffcc3f99}
+.on .sun{animation:sunmv 4s var(--d) ease-in-out forwards}
+@keyframes sunmv{0%{transform:none;opacity:1}100%{transform:translate(60em,8em);opacity:0}}
+.moon{position:absolute;width:11em;height:11em;border-radius:50%;right:8em;top:28em;background:radial-gradient(circle at 35% 35%,#fffbe6,#ffe9a3 60%,#f5d36b);box-shadow:0 0 5em #ffe9a388;opacity:0}
+.on .moon{animation:mn .8s var(--d) ease-out forwards}
+@keyframes mn{from{opacity:0;transform:translateY(10em)}to{opacity:1;transform:none}}
+/* ฉาก 2: ปฏิทินพลิกไปสิ้นปี */
+.cal{width:40em;border-radius:3em;overflow:hidden;background:#fff;color:#10245a;box-shadow:0 2em 3em #0008;text-align:center}
+.cal .hd{background:#e5484d;color:#fff;font-size:4em;font-weight:900;padding:.25em}
+.cal .dd{font-size:20em;font-weight:900;line-height:1.1}
+.on .flip{animation:fp .25s var(--d) ease-in-out 6 alternate}
+@keyframes fp{to{transform:rotateX(70deg)}}
+/* ฉาก 3: แถบเดือน ม.ค.–มิ.ย. */
+.months{display:grid;grid-template-columns:repeat(6,1fr);gap:1.4em}
+.months div{height:4.4em;border-radius:.7em;background:#ffffff14;border:.2em solid #ffffff22;display:grid;place-items:center;font-size:3.2em;font-weight:900;color:#9fb4e0}
+.on .months .m{animation:mh .35s var(--d) ease-out forwards}
+@keyframes mh{to{background:linear-gradient(150deg,#5ef0dc,#12a3a0);color:#062a2a;border-color:#5ef0dc;transform:translateY(-.6em)}}
+.doc94{width:38em;padding:3em;text-align:center}
+.doc94 b{display:block;font-size:9em;font-weight:900;color:#2f5bea;line-height:1}
+.doc94 small{display:block;font-size:3.2em;font-weight:800;color:#5a6b8c;margin-top:.3em}
+/* ฉาก 4: สปอตไลต์ + การ์ด 4 ประเภท */
+.spot{position:absolute;left:50%;top:-20em;width:60em;height:200em;margin-left:-30em;background:linear-gradient(#ffffff1c,#ffffff00 70%);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);transform-origin:50% 0;animation:sp 3s ease-in-out infinite alternate}
+@keyframes sp{from{transform:rotate(-18deg)}to{transform:rotate(18deg)}}
+.inc{display:flex;align-items:center;gap:2.4em;background:#fff;border-radius:3em;padding:2em 2.6em;margin:2em 0;box-shadow:0 1.6em 2.6em -1em #000a}
+.inc .n{flex:none;width:17em;height:11em;border-radius:2.4em;display:grid;place-items:center;font-size:1em;color:#fff;box-shadow:inset 0 .6em .8em #ffffff60}
+.inc .n b{font-size:4.6em;font-weight:900}
+.inc .e{font-size:7.4em;line-height:1}
+.inc .t{font-size:4.4em;font-weight:900;color:#10245a}
+/* ฉาก 5: เงินเดือน 40(1) ไม่เกี่ยว */
+.calm{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,#12a36b33,#12a36b00 60%);opacity:0}
+.on .calm{animation:fi 1s var(--d) forwards}
+@keyframes fi{to{opacity:1}}
+.x{position:absolute;inset:0;display:grid;place-items:center;opacity:0}
+.on .x{animation:stamp .35s var(--d) cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stamp{from{opacity:0;transform:scale(2.6) rotate(-14deg)}to{opacity:1;transform:rotate(-14deg)}}
+/* ฉาก 6: แว่นขยายสแกน */
+.scan{position:absolute;left:6em;right:6em;height:1em;border-radius:1em;background:#5ef0dc;box-shadow:0 0 3em #5ef0dc;opacity:0}
+.on .scan{animation:scn 1.2s var(--d) ease-in-out 3 alternate}
+@keyframes scn{from{top:44em;opacity:1}to{top:104em;opacity:1}}
+.mag{position:absolute;font-size:16em;line-height:1;opacity:0}
+.on .mag{animation:mg 3.4s var(--d) ease-in-out forwards}
+@keyframes mg{0%{opacity:0;transform:translate(-10em,10em)}15%{opacity:1}50%{transform:translate(1.4em,-.6em)}100%{opacity:1;transform:translate(-.4em,.2em)}}
+/* ฉาก 7: ไฟเตือน */
+.alert{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,#e5484d33,#e5484d00 60%);opacity:0}
+.on .alert{animation:al 1s var(--d) ease-in-out infinite alternate}
+@keyframes al{to{opacity:1}}
+.sign{width:34em;height:30em;margin:0 auto;background:linear-gradient(150deg,#ffcf3f,#f59e0b);clip-path:polygon(50% 0,100% 100%,0 100%);display:grid;place-items:end center;padding-bottom:3em}
+.sign b{font-size:16em;font-weight:900;color:#3b2500;line-height:1}
+/* ฉาก 8: confetti */
+.cf{position:absolute;width:2em;height:3.4em;border-radius:.4em;opacity:0}
+.on .cf{animation:cff 2.6s var(--d) ease-in infinite}
+@keyframes cff{0%{opacity:1;transform:translateY(-20em) rotate(0)}100%{opacity:1;transform:translateY(190em) rotate(720deg)}}
+.cta{display:inline-block;font-size:6.4em;font-weight:900;color:#fff;border-radius:1em;padding:.4em 1.2em;background:linear-gradient(150deg,#34d399,#0e9f6e);box-shadow:inset 0 .2em .3em #ffffff70,0 .35em 0 #087a54}
+.on .cta.a{animation:pop .5s var(--d) cubic-bezier(.2,1.7,.4,1) both,nod .8s calc(var(--d) + .5s) ease-in-out infinite alternate}
+@keyframes nod{to{transform:translateY(.25em) scale(1.04)}}
+.logo{display:flex;align-items:center;justify-content:center;gap:1.6em}
+.logo .ic{width:9em;height:9em;border-radius:28%;display:grid;place-items:center;background:linear-gradient(150deg,#33c7a0,#1559c8);box-shadow:inset 0 .6em 1em #ffffffa0,inset 0 -.8em 1.2em #0003}
+.logo .ic b{font-size:7em;font-weight:900;color:#fff;line-height:1;margin-top:-.12em}
+.logo .tx{font-size:6em;font-weight:900;letter-spacing:-.03em}.logo .tx i{font-style:normal;color:#5ae39a}
+.pic{position:absolute;border-radius:4em;background:#fff no-repeat center/cover;border:1.2em solid #fff;box-shadow:0 2.4em 3.4em -1.2em #000a}
+.nm{display:inline-block;font-size:3.4em;font-weight:900;color:#fff;background:#2f6bff;border-radius:2em;padding:.2em 1em;box-shadow:0 .4em 1em #0006}
+.cta2{display:inline-block;font-size:5.4em;font-weight:900;color:#fff;border-radius:1em;padding:.45em 1.3em;background:linear-gradient(150deg,#ff6b6b,#e5484d);box-shadow:inset 0 .2em .3em #ffffff70,0 .35em 0 #b4232e}
+.on .cta2.a{animation:pop .5s var(--d) cubic-bezier(.2,1.7,.4,1) both,nod .9s calc(var(--d) + .5s) ease-in-out infinite alternate}
+/* ซับไตเติล */
+.sub{position:absolute;left:5em;right:5em;bottom:6.5em;text-align:center;z-index:12;opacity:0;animation:sIn .25s var(--d) ease-out forwards,sOut .2s var(--e) ease-in forwards}
+@keyframes sIn{from{opacity:0;transform:translateY(1.5em)}to{opacity:1;transform:none}}
+@keyframes sOut{to{opacity:0}}
+.sub span{display:inline-block;font-size:3.6em;font-weight:800;color:#fff;background:#000000b3;border:.06em solid #ffffff22;border-radius:.7em;padding:.35em .8em;line-height:1.4}
+#bar{position:absolute;left:0;bottom:0;height:.7em;background:linear-gradient(90deg,#2f5bea,#5ef0dc);width:0;z-index:20}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div class="grid"></div><div class="glow g1"></div><div class="glow g2"></div>
+<div class="sym" style="left:8em;bottom:0;font-size:9em">฿</div>
+<div class="sym" style="left:70em;bottom:0;font-size:7em;animation-delay:-3s">%</div>
+<div class="sym" style="left:40em;bottom:0;font-size:8em;animation-delay:-6s">94</div>
+<div class="sym" style="left:84em;bottom:0;font-size:6em;animation-delay:-1.5s">฿</div>
+<div class="top"><span><i>e</i> น้อง eSim · รู้ทันภาษี</span></div>
+
+<!-- 0 HOOK -->
+<section class="sc" data-t="6.26">
+  <div class="ring" style="--d:3.20s"></div><div class="ring" style="--d:3.70s"></div>
+  <div class="H" style="top:16em"><div class="mid a up" style="--d:.2s">มีเงินเดือนอย่างเดียว…</div></div>
+  <div class="H" style="top:26em"><div class="big a pop" style="--d:.9s">อาจไม่ต้องยื่น<br><em>ภ.ง.ด.94</em></div></div>
+  <div class="H" style="top:62em"><div class="mid a up" style="--d:3.20s">แต่ถ้ามีรายได้เสริม <em>4 แบบนี้</em></div></div>
+  <div class="H" style="top:76em"><span class="a pop" style="--d:4.20s;display:inline-block"><span class="stop shk" style="--d:4.70s">หยุดฟังก่อน! ✋</span></span></div>
+  <div class="esim a" style="--d:.5s;left:30em;top:96em;width:42em;height:42em;background-image:url(media/esim/e1c.png)"></div>
+<div class="sub" data-sc="0" style="--d:0.50s;--e:3.15s"><span>มีเงินเดือนอย่างเดียว… อาจไม่ต้องยื่น ภ.ง.ด.94</span></div>
+<div class="sub" data-sc="0" style="--d:3.15s;--e:6.06s"><span>แต่ถ้ามีรายได้เสริม 4 แบบนี้… หยุดฟังก่อน! ✋</span></div>
+</section>
+
+<!-- 1 แนะนำตัว -->
+<section class="sc" data-t="6.63">
+  <div class="pic a pop" style="--d:.15s;position:absolute;left:18em;right:18em;top:14em;height:76em;background-image:url(media/esim/hero.png);background-position:50% 20%"></div>
+  <div class="H" style="top:86em"><div class="a up" style="--d:1.05s"><span class="nm">น้อง eSim 👋</span></div></div>
+  <div class="H" style="top:97em"><div class="mid a up" style="--d:2.26s">รายได้เสริมแบบไหน<br>ต้องยื่น <em>ภ.ง.ด.94</em>?</div></div>
+  <div class="H" style="top:122em"><span class="chip a pop" style="--d:3.86s">ไปเช็กกัน! 🔍</span></div>
+<div class="sub" data-sc="1" style="--d:0.50s;--e:2.21s"><span>สวัสดีครับ ผม “น้อง eSim” 👋</span></div>
+<div class="sub" data-sc="1" style="--d:2.21s;--e:6.43s"><span>วันนี้มาเช็กกันว่า รายได้เสริมแบบไหน ต้องยื่น ภ.ง.ด.94</span></div>
+</section>
+
+<!-- 2 ชีวิตหนึ่งวัน -->
+<section class="sc" data-t="8.63">
+  <div class="sky" style="--d:0s;--t:8.63s"></div>
+  <div class="sun" style="--d:3.04s"></div><div class="moon" style="--d:3.64s"></div>
+  <div class="H" style="top:16em"><div class="mid a up" style="--d:.2s">สมมติคุณเป็น <em>มนุษย์เงินเดือน</em></div></div>
+  <div style="position:absolute;left:6em;right:6em;top:42em;display:grid;grid-template-columns:1fr 1fr;gap:3em">
+    <div class="ib a pop" style="--d:1.75s;height:24em"><div style="text-align:center"><span style="font-size:9em">🏢</span><div style="font-size:3.2em;font-weight:900;color:#10245a">ทำงานบริษัท</div></div></div>
+    <div class="ib a pop" style="--d:3.64s;height:24em"><div style="text-align:center"><span style="font-size:9em">📦</span><div style="font-size:3.2em;font-weight:900;color:#10245a">ขายของออนไลน์</div></div></div>
+    <div class="ib a pop" style="--d:5.13s;height:24em"><div style="text-align:center"><span style="font-size:9em">🏠</span><div style="font-size:3.2em;font-weight:900;color:#10245a">คอนโดปล่อยเช่า</div></div></div>
+    <div class="ib a pop" style="--d:6.43s;height:24em"><div style="text-align:center"><span style="font-size:9em">🛠️</span><div style="font-size:3.2em;font-weight:900;color:#10245a">รับเหมางาน</div></div></div>
+  </div>
+  <div class="esim a" style="--d:.4s;left:4em;top:100em;width:38em;height:38em;background-image:url(media/esim/e2c.png)"></div>
+  <div class="H" style="top:108em;left:42em;text-align:left"><span class="chip a pop" style="--d:7.03s">รายได้ 4 ทาง 💰</span></div>
+<div class="sub" data-sc="2" style="--d:0.50s;--e:3.59s"><span>สมมติคุณเป็นมนุษย์เงินเดือน กลางวันทำงานบริษัท</span></div>
+<div class="sub" data-sc="2" style="--d:3.59s;--e:5.08s"><span>ตอนเย็นขายของออนไลน์</span></div>
+<div class="sub" data-sc="2" style="--d:5.08s;--e:6.38s"><span>มีคอนโดปล่อยเช่า</span></div>
+<div class="sub" data-sc="2" style="--d:6.38s;--e:8.43s"><span>และรับเหมางานเป็นครั้งคราว</span></div>
+</section>
+
+<!-- 2 สิ้นปีก็พอ? -->
+<section class="sc" data-t="4.13">
+  <div style="position:absolute;left:0;right:0;top:18em;display:flex;justify-content:center;perspective:80em">
+    <div class="cal a pop" style="--d:.2s"><div class="hd">ธันวาคม</div><div class="dd flip" style="--d:.6s">31</div></div>
+  </div>
+  <div class="H" style="top:72em"><div class="mid a up" style="--d:0.85s">ยื่นภาษี<em>ทีเดียวตอนสิ้นปี</em><br>ก็พอ… ใช่ไหม? 🤔</div></div>
+  <div class="esim a" style="--d:.5s;left:30em;top:100em;width:42em;height:42em;background-image:url(media/esim/e3c.png)"></div>
+<div class="sub" data-sc="3" style="--d:0.50s;--e:3.93s"><span>คิดว่ายื่นภาษีทีเดียวตอนสิ้นปีก็พอ… ใช่ไหม? 🤔</span></div>
+</section>
+
+<!-- 3 ภ.ง.ด.94 ครึ่งปี -->
+<section class="sc" data-t="11.13">
+  <div class="H" style="top:15em"><div class="mid a up" style="--d:.2s">รายได้ของคุณ<br><em>อยู่ในประเภทไหน?</em></div></div>
+  <div style="position:absolute;left:0;right:0;top:40em;display:flex;justify-content:center">
+    <div class="card doc94 a pop" style="--d:4.08s"><b>ภ.ง.ด.94</b><small>ภาษีเงินได้บุคคลธรรมดา “ครึ่งปี”</small></div>
+  </div>
+  <div class="months" style="position:absolute;left:6em;right:6em;top:72em">
+    <div class="m" style="--d:7.43s">ม.ค.</div><div class="m" style="--d:7.78s">ก.พ.</div><div class="m" style="--d:8.13s">มี.ค.</div>
+    <div class="m" style="--d:8.48s">เม.ย.</div><div class="m" style="--d:8.83s">พ.ค.</div><div class="m" style="--d:9.18s">มิ.ย.</div>
+  </div>
+  <div class="H" style="top:92em"><span class="chip a pop" style="--d:9.63s">ครึ่งปีแรก ม.ค.–มิ.ย. 📅</span></div>
+  <div class="esim a" style="--d:.4s;left:4em;top:112em;width:36em;height:36em;background-image:url(media/esim/e1c.png)"></div>
+<div class="sub" data-sc="4" style="--d:0.50s;--e:4.03s"><span>ต้องเช็กก่อนว่ารายได้ของคุณ “อยู่ในประเภทไหน”</span></div>
+<div class="sub" data-sc="4" style="--d:4.03s;--e:6.98s"><span>ภ.ง.ด.94 = ภาษีเงินได้บุคคลธรรมดา “ครึ่งปี”</span></div>
+<div class="sub" data-sc="4" style="--d:6.98s;--e:10.93s"><span>สำหรับเงินได้บางประเภท ที่ได้รับช่วง ม.ค.–มิ.ย.</span></div>
+</section>
+
+<!-- 4 4 ประเภท -->
+<section class="sc" data-t="9.44">
+  <div class="spot"></div>
+  <div class="H" style="top:14em"><div class="mid a pop" style="--d:.1s">เงินได้ที่ต้องยื่น <em>ภ.ง.ด.94</em></div></div>
+  <div style="position:absolute;left:6em;right:6em;top:26em">
+    <div class="inc a sl" style="--d:0.55s"><div class="n" style="background:linear-gradient(150deg,#5b8cff,#1d4fc4)"><b>40(5)</b></div><div class="e">🏠</div><div class="t">ค่าเช่า</div></div>
+    <div class="inc a sr" style="--d:2.58s"><div class="n" style="background:linear-gradient(150deg,#c084fc,#7c3aed)"><b>40(6)</b></div><div class="e">⚖️</div><div class="t">วิชาชีพอิสระ</div></div>
+    <div class="inc a sl" style="--d:4.65s"><div class="n" style="background:linear-gradient(150deg,#ffb36b,#f2702d)"><b>40(7)</b></div><div class="e">🛠️</div><div class="t">รับเหมา</div></div>
+    <div class="inc a sr" style="--d:6.40s"><div class="n" style="background:linear-gradient(150deg,#3fd6c9,#0e8a85)"><b>40(8)</b></div><div class="e">🛍️</div><div class="t">ธุรกิจ / การค้า</div></div>
+  </div>
+  <div class="esim a" style="--d:7.20s;left:52em;top:116em;width:36em;height:36em;background-image:url(media/esim/e4c.png)"></div>
+<div class="sub" data-sc="5" style="--d:0.50s;--e:2.53s"><span>40(5) ค่าเช่า</span></div>
+<div class="sub" data-sc="5" style="--d:2.53s;--e:4.60s"><span>40(6) วิชาชีพอิสระ</span></div>
+<div class="sub" data-sc="5" style="--d:4.60s;--e:6.35s"><span>40(7) รับเหมา</span></div>
+<div class="sub" data-sc="5" style="--d:6.35s;--e:9.24s"><span>40(8) ธุรกิจ / การค้า</span></div>
+</section>
+
+<!-- 5 เงินเดือน 40(1) ไม่เกี่ยว -->
+<section class="sc" data-t="7.89">
+  <div class="calm" style="--d:4.70s"></div>
+  <div style="position:absolute;left:0;right:0;top:18em;display:flex;justify-content:center">
+    <div class="card a pop" style="--d:.2s;width:56em;padding:3.4em;text-align:center;position:relative">
+      <div style="font-size:3.4em;font-weight:800;color:#5a6b8c">เงินเดือน</div>
+      <div style="font-size:12em;font-weight:900;color:#2f5bea;line-height:1.05">40(1)</div>
+      <div style="font-size:3.4em;font-weight:900">💼 มนุษย์เงินเดือน</div>
+      <div class="x" style="--d:2.35s;inset:auto -4em -5em auto" data-sfx="stamp" data-at="2.35"><span style="font-size:4.6em;font-weight:900;color:#e5484d;border:.15em solid #e5484d;border-radius:.3em;padding:.1em .5em;background:#fff">ไม่ต้องยื่น 94</span></div>
+    </div>
+  </div>
+  <div class="H" style="top:70em"><div class="mid a up" style="--d:4.70s">มีเงินเดือนอย่างเดียว<br><em>อาจไม่เกี่ยวกับคุณ</em> 😌</div></div>
+  <div class="esim a" style="--d:5.00s;left:30em;top:100em;width:42em;height:42em;background-image:url(media/esim/e5c.png)"></div>
+<div class="sub" data-sc="6" style="--d:0.50s;--e:4.65s"><span>เงินเดือน 40(1) ไม่ต้องนำมายื่น ภ.ง.ด.94</span></div>
+<div class="sub" data-sc="6" style="--d:4.65s;--e:7.69s"><span>มีเงินเดือนอย่างเดียว เรื่องนี้อาจไม่เกี่ยวกับคุณ 😌</span></div>
+</section>
+
+<!-- 6 เช็กให้ดี -->
+<section class="sc" data-t="5">
+  <div class="scan" style="--d:0.95s"></div>
+  <div class="H" style="top:14em"><div class="mid a pop" style="--d:.1s">แต่ถ้ามี… <em>เช็กให้ดี!</em></div></div>
+  <div style="position:absolute;left:8em;right:8em;top:40em;display:grid;grid-template-columns:1fr 1fr;gap:3em">
+    <div class="ib a pz" style="--d:1.15s;height:24em"><div style="text-align:center"><span style="font-size:9em">🏠</span><div style="font-size:3.2em;font-weight:900;color:#10245a">ค่าเช่า</div></div></div>
+    <div class="ib a pz" style="--d:1.65s;height:24em"><div style="text-align:center"><span style="font-size:9em">🛠️</span><div style="font-size:3.2em;font-weight:900;color:#10245a">รับเหมา</div></div></div>
+    <div class="ib a pz" style="--d:2.25s;height:24em"><div style="text-align:center"><span style="font-size:9em">📦</span><div style="font-size:3.2em;font-weight:900;color:#10245a">ขายของ</div></div></div>
+    <div class="ib a pz" style="--d:2.85s;height:24em"><div style="text-align:center"><span style="font-size:9em">🏪</span><div style="font-size:3.2em;font-weight:900;color:#10245a">ทำธุรกิจ</div></div></div>
+  </div>
+  <div class="mag" style="--d:0.85s;left:58em;top:38em">🔍</div>
+  <div class="esim a" style="--d:.4s;left:4em;top:104em;width:38em;height:38em;background-image:url(media/esim/e3c.png)"></div>
+<div class="sub" data-sc="7" style="--d:0.50s;--e:4.80s"><span>มีค่าเช่า · รับเหมา · ขายของ · ทำธุรกิจ → เช็กให้ดี!</span></div>
+</section>
+
+<!-- 7 พลาดเพราะไม่รู้ -->
+<section class="sc" data-t="6.29">
+  <div class="alert" style="--d:.2s"></div>
+  <div style="position:absolute;left:0;right:0;top:16em"><div class="a pop" style="--d:.2s"><div class="sign shk" style="--d:.8s"><b>!</b></div></div></div>
+  <div class="H" style="top:52em"><div class="mid a up" style="--d:.4s">ภาษีไม่ได้พลาดกัน<br>ตอน<em>คำนวณ</em>อย่างเดียว</div></div>
+  <div class="H" style="top:78em"><div class="mid a pop" style="--d:3.13s;color:#ffcf3f">หลายคนพลาดตั้งแต่<br>ไม่รู้ว่าต้องยื่นอะไร 😱</div></div>
+  <div class="esim a" style="--d:.5s;left:52em;top:110em;width:36em;height:36em;background-image:url(media/esim/e2c.png)"></div>
+<div class="sub" data-sc="8" style="--d:0.50s;--e:3.08s"><span>ภาษีไม่ได้พลาดกันตอนคำนวณอย่างเดียว</span></div>
+<div class="sub" data-sc="8" style="--d:3.08s;--e:6.09s"><span>หลายคนพลาดตั้งแต่… ไม่รู้ว่าต้องยื่นอะไร</span></div>
+</section>
+
+<!-- 8 ปิด -->
+<section class="sc" data-t="5.18">
+  <div class="cf" style="--d:3.08s;left:10em;background:#5ef0dc"></div><div class="cf" style="--d:3.38s;left:30em;background:#ffcf3f"></div>
+  <div class="cf" style="--d:3.18s;left:50em;background:#ff7aa8"></div><div class="cf" style="--d:3.58s;left:70em;background:#7fb4ff"></div>
+  <div class="cf" style="--d:3.78s;left:88em;background:#5ae39a"></div><div class="cf" style="--d:3.98s;left:20em;background:#c084fc"></div>
+  <div class="H" style="top:15em"><div class="mid a up" style="--d:.2s">มีรายได้เสริม<br>อย่าเพิ่งรอ<em>สิ้นปี</em></div></div>
+  <div class="H" style="top:40em"><span class="cta a" style="--d:2.98s">เช็ก ภ.ง.ด.94 ก่อน! ✅</span></div>
+  <div class="esim a" style="--d:.4s;left:29em;top:60em;width:44em;height:44em;background-image:url(media/esim/e4c.png)"></div>
+<div class="sub" data-sc="9" style="--d:0.50s;--e:3.03s"><span>มีรายได้เสริม อย่าเพิ่งคิดว่าไว้สิ้นปีค่อยดู</span></div>
+<div class="sub" data-sc="9" style="--d:3.03s;--e:4.98s"><span>เช็ก ภ.ง.ด.94 ก่อน! ✅</span></div>
+</section>
+
+
+<!-- 10 ปิด -->
+<section class="sc" data-t="10.41">
+  <div class="esim a" style="--d:.1s;left:27em;top:12em;width:46em;height:46em;background-image:url(media/esim/e6c.png)"></div>
+  <div class="logo a pop" style="--d:.6s;position:absolute;left:0;right:0;top:62em"><div class="ic"><b>e</b></div><div class="tx">eSim<i>Payroll</i></div></div>
+  <div class="card a up" style="--d:1.75s;position:absolute;left:8em;right:8em;top:78em;padding:3em 3.6em;text-align:center">
+    <div style="font-size:3.8em;font-weight:900">คิดเงินเดือน ภาษี ประกันสังคมให้อัตโนมัติ ✓</div>
+    <div style="font-size:3em;font-weight:700;color:#5a6b8c;margin-top:.3em">สลิป · 50 ทวิ · ภ.ง.ด.1 · สปส.1-10</div>
+  </div>
+  <div class="H" style="top:104em"><span class="cta2 a" style="--d:6.75s">กดติดตาม 🔔</span></div>
+  <div class="H" style="top:120em"><div class="a up" style="--d:7.55s;font-size:3.4em;font-weight:900;color:#9fb4e0">esimpayroll.com</div></div>
+<div class="sub" data-sc="10" style="--d:0.50s;--e:6.70s"><span>เจ้าของกิจการ ให้ eSimPayroll คิดเงินเดือน ภาษี ประกันสังคมให้ทุกเดือน</span></div>
+<div class="sub" data-sc="10" style="--d:6.70s;--e:10.21s"><span>กดติดตามไว้ เดี๋ยวมีเรื่องภาษีมาเล่าอีก!</span></div>
+</section>
+
+<div id="bar"></div>
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var cur=-1,bar=document.getElementById('bar');
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on','off')});void S[i].offsetWidth;S[i].classList.add('on');cur=i}
+    if(i>0){var p=S[i-1];if(st<.35)p.classList.add('off');else p.classList.remove('off')}
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;else if(sc===S[i])an.currentTime=st*1000;else an.currentTime=Math.min(st,.35)*1000;
+    });
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render; window.__drop=ST[1];
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>

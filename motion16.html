@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>eSimPayroll — กรอกครั้งเดียว</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#050a18;font-family:'Noto Sans Thai',system-ui,sans-serif;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);background:#091025;color:#0b1230}
+.A{position:absolute}
+.sc{position:absolute;inset:0;visibility:hidden}.sc.on{visibility:visible}
+.bg{position:absolute;inset:0;background:radial-gradient(70em 60em at 50% 42%,#18307a,#091025 70%)}
+.halo{position:absolute;left:10em;top:30em;width:80em;height:70em;border-radius:50%;filter:blur(6em);background:#12a3a055;animation:hl 2s ease-in-out infinite alternate}
+@keyframes hl{to{opacity:.5;transform:scale(1.1)}}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.45s)}
+.a{opacity:0}
+.on .pop{animation-name:pop;animation-timing-function:cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{opacity:0;transform:scale(.3)}100%{opacity:1;transform:none}}
+.on .rise{animation-name:rise;animation-timing-function:cubic-bezier(.2,1.1,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(.8em)}to{opacity:1;transform:none}}
+.on .fade{animation-name:fade}@keyframes fade{from{opacity:0}to{opacity:1}}
+/* ฮีโร่ → ซูมออก */
+.cam{position:absolute;inset:0;transform-origin:50% 38%}
+.on .cam{animation:cam 2.2s cubic-bezier(.6,0,.2,1) both}
+@keyframes cam{0%{transform:scale(1.75) rotate(-9deg)}55%{transform:scale(1.75) rotate(-9deg)}100%{transform:none}}
+.coin{position:absolute;left:50%;top:40%;width:7em;height:7em;margin:-3.5em;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b0,#ffd84d 40%,#e0a800);border:.4em solid #b88400;display:grid;place-items:center;font-size:1em;font-weight:900;color:#8a5a00;opacity:0;z-index:9}
+.coin b{font-size:3.6em}
+.coin.p{border-radius:.6em;background:#fff;border:.3em solid #cfd8e8;width:6em;height:7.6em}
+.on .coin{animation:fly 1.5s var(--d,0s) cubic-bezier(.1,.7,.3,1) both}
+@keyframes fly{0%{opacity:0;transform:translate(0,0) scale(.4)}2%{opacity:1;transform:translate(0,0) rotate(0) scale(.4)}70%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(1.1)}}
+/* การ์ดเงินเดือน */
+.pc{position:absolute;left:10em;right:10em;top:20em;background:#fff;border-radius:3.6em;box-shadow:0 0 0 .5em #ffffff22,0 3em 6em #0009;overflow:hidden}
+.on .pc.glow{animation:gw .6s var(--g) ease-out both}
+@keyframes gw{0%{box-shadow:0 0 0 .5em #ffffff22,0 3em 6em #0009}30%{box-shadow:0 0 0 1.2em #5ae39acc,0 0 8em #5ae39a,0 3em 6em #0009}100%{box-shadow:0 0 0 .5em #ffffff22,0 3em 6em #0009}}
+.pc .hd{display:flex;align-items:center;gap:2em;padding:3em 3.4em 2em;background:linear-gradient(120deg,#12a3a0,#1559c8);color:#fff}
+.pc .av{width:10em;height:10em;border-radius:50%;background:#ffd9bf;border:.5em solid #fff;display:grid;place-items:center;font-size:1em;flex:none}
+.pc .av b{font-size:5.4em}
+.pc .hd h3{font-size:5em;font-weight:900;line-height:1.1}
+.pc .hd small{display:block;font-size:2.6em;font-weight:700;opacity:.85}
+.pc .rows{padding:1.4em 3.4em 0;min-height:30em}
+.r{display:flex;justify-content:space-between;align-items:center;padding:1.3em 0;border-bottom:.2em dashed #e3e9f2;opacity:0}
+.r span{font-size:3.4em;font-weight:800}
+.r b{font-size:3.6em;font-weight:900}
+.r.m b{color:#e5484d}.r.p b{color:#16a36b}
+.on .r{animation:rin .45s var(--d) cubic-bezier(.2,1.3,.3,1) both}
+@keyframes rin{0%{opacity:0;transform:translateX(-6em);background:#5ae39a55}60%{background:#5ae39a55}100%{opacity:1;transform:none;background:transparent}}
+.net{display:flex;justify-content:space-between;align-items:flex-end;padding:2.4em 3.4em 3em}
+.net span{font-size:3.4em;font-weight:900;color:#5b7186}
+.odo{position:relative;height:7.6em;width:44em;overflow:hidden;text-align:right}
+.odo i{position:absolute;right:0;top:0;font-style:normal;font-size:7em;font-weight:900;line-height:1.08;letter-spacing:-.03em;color:#0b1230;opacity:0}
+.on .odo i{animation:oin .4s var(--d) cubic-bezier(.2,1.3,.3,1) both,oout .3s var(--e,99s) ease-in forwards}
+@keyframes oin{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:none}}
+@keyframes oout{to{opacity:0;transform:translateY(-100%)}}
+.stamp{position:absolute;right:13%;top:33%;font-size:5em;font-weight:900;color:#16a36b;border:.16em solid #16a36b;border-radius:.3em;padding:.05em .45em;transform:rotate(-12deg);opacity:0;z-index:5;background:#ffffffd9}
+.on .stamp{animation:stp .3s var(--d) cubic-bezier(.2,1.6,.4,1) both}
+@keyframes stp{from{opacity:0;transform:scale(2.6) rotate(-12deg)}to{opacity:1;transform:rotate(-12deg)}}
+/* สลิปบินไปหาพนักงาน */
+.mini{position:absolute;left:46em;top:60em;width:8em;height:10em;background:#fff;border-radius:1em;border-top:1.6em solid #12a3a0;box-shadow:0 1em 2em #0006;opacity:0;z-index:8}
+.on .mini{animation:mini .7s var(--d) cubic-bezier(.5,0,.3,1) both}
+@keyframes mini{0%{opacity:0;transform:none}2%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.4) rotate(var(--r))}}
+.ppl{position:absolute;left:8em;right:8em;top:8.5em;display:flex;justify-content:space-between}
+.pp{position:relative;width:9em;height:9em;border-radius:50%;border:.45em solid #fff;opacity:0}
+.pp::after{content:"✓";position:absolute;right:-1em;bottom:-.8em;width:4.2em;height:4.2em;border-radius:50%;background:#5ae39a;color:#0b1230;font-size:1em;display:grid;place-items:center;font-weight:900;opacity:0;font-size:1em}
+.on .pp{animation:pop .4s var(--d) cubic-bezier(.2,1.6,.4,1) both}
+.on .pp.k::after{animation:fade .2s var(--k) both}
+/* แถบกรอกข้อมูล */
+.bar{position:absolute;left:5em;right:5em;top:112em;background:#fff;border-radius:3em;padding:2.2em 2.6em 2em;box-shadow:0 2em 4em #0008}
+.bar .lab{display:flex;justify-content:space-between;font-size:2.3em;font-weight:900;color:#5b7186;margin-bottom:.5em}
+.bar .lab em{font-style:normal;color:#12a3a0}
+.field{position:relative;height:6.4em;display:flex;align-items:center}
+.field .ic{width:5em;height:5em;border-radius:1.4em;background:linear-gradient(150deg,#33c7a0,#1559c8);display:grid;place-items:center;flex:none;margin-right:1.6em}
+.field .ic b{font-size:3.4em;color:#fff;font-weight:900;margin-top:-.15em}
+.tx{position:relative;flex:1;height:100%}
+.tx i{position:absolute;left:0;top:50%;transform:translateY(-50%);font-style:normal;font-size:3.6em;font-weight:800;white-space:nowrap;clip-path:inset(0 100% 0 0);opacity:0}
+.on .tx i{animation:type var(--tt,1s) var(--d) steps(18) both,gone .15s var(--e,99s) forwards}
+@keyframes type{0%{opacity:1;clip-path:inset(-20% 100% -20% 0)}100%{opacity:1;clip-path:inset(-20% 0 -20% 0)}}
+@keyframes gone{to{opacity:0}}
+.caret{position:absolute;width:.35em;height:4.6em;background:#12a3a0;top:50%;margin-top:-2.3em;left:6.6em;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.go{width:6em;height:6em;border-radius:50%;background:#2f5bea;color:#fff;display:grid;place-items:center;flex:none;font-size:1em}
+.go b{font-size:3.4em}
+.on .go.press{animation:press .3s var(--p1) both,press .3s var(--p2) both,press .3s var(--p3) both,press .3s var(--p4) both}
+@keyframes press{50%{transform:scale(.8);background:#12a3a0}}
+.ptr{position:absolute;z-index:20;filter:drop-shadow(0 .1em .1em #0008);left:84em;top:119.5em;opacity:0}
+.on .ptr{animation:ptr 16s linear both}
+.ripple{position:absolute;left:89.4em;top:120.2em;width:16em;height:16em;margin:-8em;border-radius:50%;border:.7em solid #5ef0dc;opacity:0;z-index:19}
+.on .ripple{animation:rip .6s var(--d) ease-out both}
+@keyframes rip{0%{opacity:1;transform:scale(.1)}100%{opacity:0;transform:scale(2)}}
+/* ปิด */
+.endw{position:absolute;inset:0;background:radial-gradient(70em 60em at 50% 42%,#18307a,#091025 70%);opacity:0;z-index:30}
+.on .endw{animation:fade .4s var(--d) both}
+.logo{display:flex;align-items:center;justify-content:center;gap:1.8em}
+.logo .ic{width:12em;height:12em;border-radius:28%;display:grid;place-items:center;background:linear-gradient(150deg,#33c7a0,#1559c8);box-shadow:0 0 3em #5ef0dc77}
+.logo .ic b{font-size:9em;font-weight:900;color:#fff;line-height:1;margin-top:-.12em}
+.logo .tx2{font-size:8em;font-weight:900;letter-spacing:-.04em;color:#fff}.logo .tx2 i{font-style:normal;color:#5ae39a}
+.hl{font-weight:900;line-height:1.15;color:#fff;text-align:center}
+.hl em{font-style:normal;color:#5ae39a}
+.url{display:inline-flex;align-items:center;gap:1em;background:#fff;color:#0b1230;border-radius:3em;padding:.45em .5em .45em 1.3em;font-size:4em;font-weight:900}
+.url i{font-style:normal;background:#5ae39a;border-radius:2em;padding:.2em .9em}
+#bar2{position:absolute;left:0;bottom:0;height:.6em;background:#5ae39a;width:0;z-index:50}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<section class="sc" data-t="16">
+ <div class="bg"></div><div class="halo"></div>
+ <div class="ppl">
+  <div class="pp a k" style="--d:12.2s;--k:12.95s;background:#9cc0ff"></div><div class="pp a k" style="--d:12.25s;--k:13.05s;background:#ffd84d"></div><div class="pp a k" style="--d:12.3s;--k:13.15s;background:#5ef0dc"></div><div class="pp a k" style="--d:12.35s;--k:13.25s;background:#ff8f8f"></div><div class="pp a k" style="--d:12.4s;--k:13.35s;background:#c3a6ff"></div><div class="pp a k" style="--d:12.45s;--k:13.45s;background:#ffd9bf"></div>
+ </div>
+ <div class="cam">
+  <div class="pc glow" style="--g:4.25s">
+   <div class="hd"><div class="av"><b>👨🏻‍💼</b></div><div><h3>สมชาย ใจดี</h3><small>สลิปเงินเดือน · ต.ค. 2569</small></div></div>
+   <div class="rows">
+    <div class="r" style="--d:4.25s"><span>เงินเดือน</span><b>25,000.00</b></div>
+    <div class="r p" style="--d:6.85s"><span>OT 1.5 เท่า · 6 ชม.</span><b>+937.50</b></div>
+    <div class="r m" style="--d:9.45s"><span>ประกันสังคม 5%</span><b>−875.00</b></div>
+    <div class="r m" style="--d:9.65s"><span>ภาษีหัก ณ ที่จ่าย</span><b>0.00</b></div>
+   </div>
+   <div class="net"><span>รับสุทธิ</span><div class="odo">
+    <i style="--d:0s;--e:4.3s">0.00</i><i style="--d:4.35s;--e:6.9s">25,000.00</i><i style="--d:6.95s;--e:9.75s">25,937.50</i><i style="--d:9.8s">25,062.50</i></div></div>
+  </div>
+  <div class="stamp" style="--d:12.05s">ส่งแล้ว ✓</div>
+  <div class="coin" style="--d:.15s;--x:-40em;--y:-48em;--r:-200deg"><b>฿</b></div><div class="coin" style="--d:.2s;--x:38em;--y:-52em;--r:160deg"><b>฿</b></div>
+  <div class="coin p" style="--d:.1s;--x:-46em;--y:10em;--r:-120deg"></div><div class="coin" style="--d:.25s;--x:44em;--y:6em;--r:240deg"><b>฿</b></div>
+  <div class="coin p" style="--d:.3s;--x:20em;--y:44em;--r:90deg"></div><div class="coin" style="--d:.18s;--x:-24em;--y:46em;--r:-300deg"><b>฿</b></div>
+  <div class="coin" style="--d:.35s;--x:4em;--y:-60em;--r:180deg"><b>฿</b></div><div class="coin p" style="--d:.22s;--x:50em;--y:-24em;--r:200deg"></div>
+  <div class="coin" style="--d:.28s;--x:-52em;--y:-20em;--r:-140deg"><b>฿</b></div>
+ </div>
+ <div class="mini" style="--d:12.15s;--x:-34em;--y:-50em;--r:-20deg"></div><div class="mini" style="--d:12.25s;--x:-20em;--y:-50em;--r:-10deg"></div><div class="mini" style="--d:12.35s;--x:-6em;--y:-50em;--r:0deg"></div><div class="mini" style="--d:12.45s;--x:8em;--y:-50em;--r:8deg"></div><div class="mini" style="--d:12.55s;--x:22em;--y:-50em;--r:14deg"></div><div class="mini" style="--d:12.65s;--x:36em;--y:-50em;--r:20deg"></div>
+ <div class="bar a rise" style="--d:1.9s">
+  <div class="lab"><span>ขั้นตอน</span><em class="stepn"></em></div>
+  <div class="field"><div class="ic"><b>e</b></div>
+   <div class="tx">
+    <i style="--d:2.4s;--e:4.3s;--tt:.9s">เงินเดือน 25,000 · สมชาย</i>
+    <i style="--d:5.1s;--e:6.9s;--tt:.8s">+ OT 6 ชม. (1.5 เท่า)</i>
+    <i style="--d:7.7s;--e:9.5s;--tt:.9s">คำนวณ ภาษี + ประกันสังคม</i>
+    <i style="--d:10.3s;--e:12.1s;--tt:.8s">ออกสลิป · ส่งทุกคน</i>
+   </div>
+   <div class="go press" style="--p1:4.05s;--p2:6.65s;--p3:9.25s;--p4:11.85s"><b>↑</b></div>
+  </div>
+ </div>
+ <div class="ptr"><span style="font-size:8em;line-height:1">👆</span></div>
+ <div class="ripple" style="--d:4.1s"></div><div class="ripple" style="--d:6.7s"></div><div class="ripple" style="--d:9.3s"></div><div class="ripple" style="--d:11.9s"></div>
+ <i data-sfx="whoosh" data-at=".05"></i><i data-sfx="boom" data-at=".1"></i><i data-sfx="swish" data-at="1.3"></i>
+ <i data-sfx="blip" data-at="4.1"></i><i data-sfx="ding" data-at="4.3"></i><i data-sfx="blip" data-at="6.7"></i><i data-sfx="ding" data-at="6.9"></i><i data-sfx="blip" data-at="9.3"></i><i data-sfx="count" data-at="9.5"></i><i data-sfx="blip" data-at="11.9"></i><i data-sfx="stamp" data-at="12.05"></i><i data-sfx="swish" data-at="12.2"></i><i data-sfx="chime" data-at="13"></i>
+ <div class="endw" style="--d:13.7s">
+  <div class="A" style="left:0;right:0;top:40em"><div class="logo a pop" style="--d:13.9s"><div class="ic"><b>e</b></div><div class="tx2">eSim<i>Payroll</i></div></div></div>
+  <div class="A" style="left:5em;right:5em;top:58em"><div class="hl a rise" style="--d:14.2s;font-size:7em">กรอกครั้งเดียว<br><em>ที่เหลือระบบทำ.</em></div></div>
+  <div class="A" style="left:0;right:0;top:86em;text-align:center"><div class="a pop" style="--d:14.7s"><span class="url">esimpayroll.com <i>เริ่มใช้ฟรี →</i></span></div></div>
+  <div class="A" style="left:0;right:0;top:98em;text-align:center"><div class="a rise" style="--d:15s;font-size:3em;font-weight:800;color:#9fb1d8">ฟรี 1–10 คน · ทดลอง 30 วัน</div></div>
+ </div>
+ <i data-sfx="boom" data-at="13.9"></i>
+</section>
+<div id="bar2"></div>
+</div></div>
+<style>
+@keyframes ptr{0%,12%{opacity:0;transform:translate(10em,10em)}15%{opacity:1;transform:none}
+ 25%,26.5%{opacity:1;transform:translate(0,0) scale(1)}25.5%{transform:scale(.85)}
+ 30%{transform:translate(-8em,4em)}41%,42.5%{transform:none}41.5%{transform:scale(.85)}
+ 46%{transform:translate(-8em,4em)}57.5%,59%{transform:none}58%{transform:scale(.85)}
+ 63%{transform:translate(-8em,4em)}73.8%,75.5%{opacity:1;transform:none}74.3%{transform:scale(.85)}
+ 82%,100%{opacity:0;transform:translate(10em,14em)}}
+.stepn::after{content:attr(data-s)}
+</style>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var cur=-1,bar=document.getElementById('bar2'),sn=document.querySelector('.stepn');
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on')});void S[i].offsetWidth;S[i].classList.add('on');cur=i}
+    var k=t<5?1:t<7.6?2:t<10.2?3:4;sn.dataset.k=k;sn.textContent='';sn.style.setProperty('--k',k);
+    sn.setAttribute('data-s',k+' / 4');
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;else an.currentTime=(sc===S[i]?st:0)*1000;
+    });
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render; window.__drop=2.4;
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>

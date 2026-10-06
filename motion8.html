@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>น้อง eSim — กองทุนสงเคราะห์ลูกจ้าง</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#091025;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);background:#091025}
+/* ---------- พื้นคอลลาจที่ขยับตลอด ---------- */
+.dots{position:absolute;inset:0;background-image:radial-gradient(#ffffff12 .32em,transparent .38em);background-size:2.6em 2.6em;animation:dd 10s linear infinite}
+@keyframes dd{to{background-position:2.6em 5.2em}}
+.strip{position:absolute;left:-20em;right:-20em;height:22em;clip-path:polygon(0 12%,4% 0,9% 10%,15% 2%,22% 12%,30% 0,37% 9%,45% 1%,52% 11%,60% 0,68% 10%,76% 2%,84% 12%,92% 1%,100% 9%,100% 88%,95% 100%,88% 90%,80% 99%,72% 88%,64% 100%,56% 91%,48% 100%,40% 89%,32% 99%,24% 90%,16% 100%,8% 88%,0 97%)}
+.s1{top:24em;background:#13204a;transform:rotate(-8deg);animation:sl1 12s ease-in-out infinite alternate}
+.s2{top:96em;background:#0f1a3d;transform:rotate(6deg);animation:sl2 14s ease-in-out infinite alternate}
+.s3{top:150em;background:#152557;transform:rotate(-4deg);animation:sl1 11s ease-in-out infinite alternate-reverse}
+@keyframes sl1{from{translate:-8em 0}to{translate:8em 0}}
+@keyframes sl2{from{translate:8em 0}to{translate:-8em 0}}
+.scrap{position:absolute;opacity:.16;font-weight:900;color:#7fb4ff;animation:fl 9s ease-in-out infinite alternate}
+@keyframes fl{to{transform:translate(3em,-6em) rotate(12deg)}}
+.top{position:absolute;left:0;right:0;top:4.5em;text-align:center;z-index:9}
+.top span{display:inline-flex;align-items:center;gap:.5em;font-size:2.8em;font-weight:900;color:#fff;background:linear-gradient(150deg,#2f5bea,#12a3a0);border-radius:2em;padding:.3em 1em;box-shadow:0 .5em 1.2em #0006}
+.top i{font-style:normal;background:#fff;color:#2f5bea;border-radius:.4em;padding:0 .35em;font-size:.9em}
+/* ---------- ฉาก ---------- */
+.sc{position:absolute;inset:0;visibility:hidden}
+.sc.on{visibility:visible;animation:zin .4s cubic-bezier(.2,1.5,.4,1) both}
+.sc.off{visibility:visible;animation:rip .38s cubic-bezier(.6,0,.9,.4) forwards}
+@keyframes zin{from{transform:translateY(-6em) rotate(-4deg) scale(.9);opacity:0}to{transform:none;opacity:1}}
+@keyframes rip{to{transform:translateY(40em) rotate(14deg);opacity:0;clip-path:polygon(0 0,100% 0,100% 60%,0 80%)}}
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.45s)}
+/* แปะ (slap) — ทุกชิ้นหมุนตาม --r */
+.on .slap{animation-name:slap;animation-timing-function:cubic-bezier(.2,1.6,.4,1)}
+@keyframes slap{0%{opacity:0;transform:scale(1.7) rotate(calc(var(--r,0deg) - 14deg))}60%{opacity:1;transform:scale(.94) rotate(calc(var(--r,0deg) + 3deg))}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+.on .up{animation-name:up;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+@keyframes up{from{opacity:0;transform:translateY(5em) rotate(var(--r,0deg))}to{opacity:1;transform:rotate(var(--r,0deg))}}
+.on .swing{animation-name:swing;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+@keyframes swing{from{opacity:0;transform:translateX(-50em) rotate(-30deg)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+/* ตัวหนังสือตัดแปะ */
+.rn{display:flex;flex-wrap:wrap;justify-content:center;gap:.6em .8em}
+.rn span{display:inline-block;font-weight:900;line-height:1.15;padding:.08em .3em;box-shadow:.12em .14em 0 #0009}
+.rn span:nth-child(5n+1){background:#fff;color:#10245a;transform:rotate(-3deg)}
+.rn span:nth-child(5n+2){background:#ffd84d;color:#10245a;transform:rotate(2deg)}
+.rn span:nth-child(5n+3){background:#5ef0dc;color:#062a2a;transform:rotate(-2deg)}
+.rn span:nth-child(5n+4){background:#2f6bff;color:#fff;transform:rotate(3deg)}
+.rn span:nth-child(5n+5){background:#ff6b6b;color:#fff;transform:rotate(-1deg)}
+.H{position:absolute;left:5em;right:5em;text-align:center;z-index:6}
+.mid{font-size:5.4em;font-weight:900;line-height:1.3;text-shadow:0 .08em 0 #0008}
+em{font-style:normal;color:#ffd84d}
+.paper{background:#fdf8ec;color:#10245a;box-shadow:.6em .8em 0 #0008;clip-path:polygon(0 2%,6% 0,14% 2%,22% 0,30% 2%,38% 0,46% 2%,54% 0,62% 2%,70% 0,78% 2%,86% 0,94% 2%,100% 0,99% 50%,100% 100%,92% 98%,84% 100%,76% 98%,68% 100%,60% 98%,52% 100%,44% 98%,36% 100%,28% 98%,20% 100%,12% 98%,4% 100%,0 98%,1% 50%)}
+.tape{position:absolute;width:15em;height:4.4em;background:#5ef0dc77;box-shadow:inset 0 0 0 .2em #ffffff22;z-index:3}
+.pol{background:#fff;padding:1.6em 1.6em 5.4em;box-shadow:.8em 1em 0 #0009;position:relative}
+.pol .ph{display:grid;place-items:center;overflow:hidden}
+.pol .cap{position:absolute;left:0;right:0;bottom:1.2em;text-align:center;color:#10245a;font-weight:900;font-size:3em;font-style:italic}
+.stick{position:absolute;background:no-repeat center/contain;z-index:5;
+  filter:drop-shadow(.6em 0 0 #fff) drop-shadow(-.6em 0 0 #fff) drop-shadow(0 .6em 0 #fff) drop-shadow(0 -.6em 0 #fff) drop-shadow(.8em 1.2em 0 #0008)}
+.on .stick.a{animation:sin .6s var(--d) cubic-bezier(.2,1.6,.4,1) both,sbob 1.5s calc(var(--d) + .6s) ease-in-out infinite alternate}
+@keyframes sin{0%{opacity:0;transform:scale(1.8) rotate(-20deg)}60%{opacity:1;transform:scale(.92) rotate(4deg)}100%{opacity:1;transform:rotate(var(--r,0deg))}}
+@keyframes sbob{from{transform:rotate(var(--r,0deg))}to{transform:translateY(-1.4em) rotate(calc(var(--r,0deg) - 3deg))}}
+.burst{display:grid;place-items:center;text-align:center;background:#ffd84d;color:#10245a;font-weight:900;
+  clip-path:polygon(50% 0,61% 18%,82% 8%,79% 30%,100% 34%,85% 50%,100% 66%,79% 70%,82% 92%,61% 82%,50% 100%,39% 82%,18% 92%,21% 70%,0 66%,15% 50%,0 34%,21% 30%,18% 8%,39% 18%)}
+.stamp{display:inline-block;font-weight:900;color:#ff5a5f;border:.14em solid #ff5a5f;border-radius:.25em;padding:.05em .45em;background:#fdf8ecee;transform:rotate(-12deg)}
+.on .slam{animation:slam .35s var(--d) cubic-bezier(.2,1.6,.4,1) both}
+@keyframes slam{from{opacity:0;transform:scale(3) rotate(-12deg)}to{opacity:1;transform:rotate(-12deg)}}
+.scrib path{fill:none;stroke:#ffd84d;stroke-width:1.4;stroke-linecap:round;stroke-dasharray:120;stroke-dashoffset:120}
+.on .scrib path{animation:draw .7s var(--d) ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.coin{position:absolute;width:9em;height:9em;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b0 0,#ffcf3f 35%,#e7a400 100%);display:grid;place-items:center;font-weight:900;color:#8a5700;opacity:0}
+.coin b{font-size:4em}
+.on .coin{animation:cdrop .7s var(--d) cubic-bezier(.5,0,.7,1) forwards}
+@keyframes cdrop{0%{opacity:1;transform:translateY(-40em) rotate(0)}85%{opacity:1;transform:translateY(0) rotate(300deg)}100%{opacity:0;transform:translateY(2em) scale(.6)}}
+.fly{position:absolute;font-size:9em;opacity:0}
+.on .fly{animation:flyaway 1.6s var(--d) ease-in forwards}
+@keyframes flyaway{0%{opacity:1;transform:none}100%{opacity:0;transform:translate(var(--x),-60em) rotate(40deg)}}
+.logo{display:flex;align-items:center;justify-content:center;gap:1.6em}
+.logo .ic{width:9em;height:9em;border-radius:28%;display:grid;place-items:center;background:linear-gradient(150deg,#33c7a0,#1559c8);box-shadow:inset 0 .6em 1em #ffffffa0,inset 0 -.8em 1.2em #0003}
+.logo .ic b{font-size:7em;font-weight:900;color:#fff;line-height:1;margin-top:-.12em}
+.logo .tx{font-size:6em;font-weight:900;letter-spacing:-.03em}.logo .tx i{font-style:normal;color:#5ae39a}
+.cta2{display:inline-block;font-size:5.4em;font-weight:900;color:#fff;border-radius:1em;padding:.45em 1.3em;background:linear-gradient(150deg,#ff6b6b,#e5484d);box-shadow:inset 0 .2em .3em #ffffff70,0 .35em 0 #b4232e}
+.on .cta2.a{animation:slap .5s var(--d) cubic-bezier(.2,1.7,.4,1) both,nod .9s calc(var(--d) + .5s) ease-in-out infinite alternate}
+@keyframes nod{to{transform:translateY(.25em) scale(1.04)}}
+/* ซับไตเติล */
+.sub{position:absolute;left:5em;right:5em;bottom:6.5em;text-align:center;z-index:12;opacity:0;animation:sIn .25s var(--d) ease-out forwards,sOut .2s var(--e) ease-in forwards}
+@keyframes sIn{from{opacity:0;transform:translateY(1.5em)}to{opacity:1;transform:none}}
+@keyframes sOut{to{opacity:0}}
+.sub span{display:inline-block;font-size:3.6em;font-weight:800;color:#fff;background:#000000b8;border:.06em solid #ffffff22;border-radius:.5em;padding:.35em .8em;line-height:1.4}
+#bar{position:absolute;left:0;bottom:0;height:.7em;background:linear-gradient(90deg,#ffd84d,#5ef0dc);width:0;z-index:20}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div class="strip s1"></div><div class="strip s2"></div><div class="strip s3"></div>
+<div class="dots"></div>
+<div class="scrap" style="left:6em;top:60em;font-size:12em">฿</div>
+<div class="scrap" style="left:76em;top:130em;font-size:10em;animation-delay:-4s">%</div>
+<div class="scrap" style="left:70em;top:40em;font-size:8em;animation-delay:-2s">★</div>
+<div class="top"><span><i>e</i> น้อง eSim · รู้ทันเงินเดือน</span></div>
+
+<!-- 0 HOOK -->
+<section class="sc" data-t="12.09">
+  <div class="H" style="top:15em"><div class="rn" style="font-size:7.4em">
+    <span class="a slap" style="--d:.1s">กองทุน</span><span class="a slap" style="--d:.3s">สงเคราะห์</span><span class="a slap" style="--d:.5s">ลูกจ้าง</span></div></div>
+  <div class="H" style="top:44em"><div class="mid a up" style="--d:1.75s">คืออะไร? <em>จ่ายแล้วได้อะไร?</em></div></div>
+  <div style="position:absolute;left:10em;right:10em;top:58em">
+    <div class="paper a slap" style="--d:3.87s;--r:-3deg;padding:3em 3.4em;text-align:center">
+      <div style="font-size:3em;font-weight:800;color:#5a6b8c">TOP SECRET 🤫</div>
+      <div style="font-size:5.6em;font-weight:900;line-height:1.2">เงินประกันความเสี่ยง<br><span style="background:#ffd84d;padding:0 .2em">ก้อนลับ</span></div>
+    </div>
+    <div class="tape a up" style="--d:4.17s;left:-2em;top:-1.6em;--r:-30deg;transform:rotate(-30deg)"></div>
+    <div class="tape a up" style="--d:4.27s;right:-2em;top:-1.6em;--r:28deg;transform:rotate(28deg)"></div>
+  </div>
+  <div class="burst a slap" style="--d:9.09s;--r:8deg;position:absolute;right:5em;top:96em;width:34em;height:34em"><div><div style="font-size:7em;line-height:1">0 ฿</div><div style="font-size:2.8em">ไม่เสียสักบาท!</div></div></div>
+  <div class="stick a" style="--d:.6s;--r:-4deg;left:5em;top:104em;width:40em;height:40em;background-image:url(media/esim/e1c.png)"></div>
+<div class="sub" data-sc="0" style="--d:0.50s;--e:3.22s"><span>กองทุนสงเคราะห์ลูกจ้าง คืออะไร? จ่ายแล้วได้อะไร?</span></div>
+<div class="sub" data-sc="0" style="--d:3.22s;--e:7.04s"><span>นี่คือ “เงินประกันความเสี่ยงก้อนลับ” ที่กฎหมายบังคับให้มี 🤫</span></div>
+<div class="sub" data-sc="0" style="--d:7.04s;--e:11.89s"><span>ช่วยเซฟมนุษย์เงินเดือน โดยไม่ต้องเสียเงินกระเป๋าตัวเองสักบาท!</span></div>
+</section>
+
+<!-- 1 แนะนำตัว -->
+<section class="sc" data-t="5.03">
+  <div style="position:absolute;left:18em;right:18em;top:16em">
+    <div class="pol a slap" style="--d:.1s;--r:-4deg"><div class="ph" style="height:66em;background:#fff url(media/esim/hero.png) 50% 20%/cover"></div><div class="cap">น้อง eSim 👋</div></div>
+    <div class="tape a up" style="--d:.5s;left:24em;top:-2em;transform:rotate(-6deg)"></div>
+  </div>
+  <div class="H" style="top:102em"><div class="rn" style="font-size:5.4em"><span class="a slap" style="--d:2.26s">เรื่องเงิน</span><span class="a slap" style="--d:2.56s">ที่หลายคน</span><span class="a slap" style="--d:2.86s">ไม่รู้!</span></div></div>
+<div class="sub" data-sc="1" style="--d:0.50s;--e:2.21s"><span>สวัสดีครับ ผม “น้อง eSim” 👋</span></div>
+<div class="sub" data-sc="1" style="--d:2.21s;--e:4.83s"><span>วันนี้มาเล่าเรื่องกองทุนนี้ให้ฟัง</span></div>
+</section>
+
+<!-- 2 บริษัทเจ๊ง -->
+<section class="sc" data-t="10.08">
+  <div class="H" style="top:14em"><div class="mid a up" style="--d:.2s">ลองนึกภาพตามนะ… 🤔</div></div>
+  <div style="position:absolute;left:8em;top:26em;width:46em">
+    <div class="pol a slap" style="--d:.6s;--r:-6deg"><div class="ph" style="height:38em;background:#cfe0ff"><span style="font-size:22em">🏢</span></div><div class="cap">บริษัทของคุณ</div></div>
+    <div style="position:absolute;left:6em;top:14em"><span class="stamp slam" style="--d:2.95s;font-size:8em">เจ๊ง!</span></div>
+  </div>
+  <div style="position:absolute;right:6em;top:40em;width:40em">
+    <div class="pol a swing" style="--d:5.21s;--r:7deg"><div class="ph" style="height:30em;background:#bff3ee"><span style="font-size:18em">🛶</span></div><div class="cap">ลอยแพ!</div></div>
+  </div>
+  <div style="position:absolute;right:8em;top:86em"><span class="stamp a slam" style="--d:6.41s;font-size:5em">ไม่จ่ายชดเชย ✕</span></div>
+  <div class="H" style="top:100em"><div class="rn" style="font-size:6.4em"><span class="a slap" style="--d:7.62s">กินไหน?</span><span class="a slap" style="--d:8.02s">ใช้ไหน?</span><span class="a slap" style="--d:8.42s">😰</span></div></div>
+  <div class="stick a" style="--d:7.62s;--r:5deg;left:56em;top:118em;width:34em;height:34em;background-image:url(media/esim/e3c.png)"></div>
+<div class="sub" data-sc="2" style="--d:0.50s;--e:5.16s"><span>ถ้าวันหนึ่งบริษัทเกิดแจ็กพอต “เจ๊ง” ปิดตัวลง</span></div>
+<div class="sub" data-sc="2" style="--d:5.16s;--e:7.57s"><span>หรือลอยแพพนักงาน โดยไม่จ่ายเงินชดเชย</span></div>
+<div class="sub" data-sc="2" style="--d:7.57s;--e:9.88s"><span>เราจะเอาเงินที่ไหนกินไหนใช้? 😰</span></div>
+</section>
+
+<!-- 3 ตั้งกองทุน -->
+<section class="sc" data-t="15.11">
+  <div style="position:absolute;left:6em;right:6em;top:13em">
+    <div class="paper a slap" style="--d:.2s;--r:-2deg;padding:2.6em 3em;text-align:center">
+      <div style="font-size:3em;font-weight:800;color:#5a6b8c">🏛️ กรมสวัสดิการและคุ้มครองแรงงาน</div>
+      <div style="font-size:6.4em;font-weight:900;line-height:1.2">ตั้ง “กองทุน<br>สงเคราะห์ลูกจ้าง” 🛡️</div>
+    </div>
+  </div>
+  <div style="position:absolute;left:6em;top:56em;width:40em">
+    <div class="pol a slap" style="--d:5.71s;--r:-5deg"><div class="ph" style="height:24em;background:#ffd6d6"><span style="font-size:14em">🏢</span></div><div class="cap">ไม่มี PVD ✕</div></div>
+  </div>
+  <svg class="scrib" style="position:absolute;left:44em;top:66em;width:18em;height:14em" viewBox="0 0 30 20"><path style="--d:9.22s" d="M2 12 C 10 2, 20 2, 27 10 M22 6 L27 10 L21 13"/></svg>
+  <div style="position:absolute;right:6em;top:58em;width:36em">
+    <div class="pol a slap" style="--d:9.82s;--r:6deg"><div class="ph" style="height:24em;background:#c9f7e0"><span style="font-size:14em">🏦</span></div><div class="cap">ส่งทุกเดือน</div></div>
+  </div>
+  <div class="H" style="top:100em"><div class="rn" style="font-size:5.4em"><span class="a slap" style="--d:10.82s">หลักประกัน</span><span class="a slap" style="--d:11.12s">ให้พนักงาน</span><span class="a slap" style="--d:11.42s">✓</span></div></div>
+  <div class="stick a" style="--d:.8s;--r:-5deg;left:4em;top:116em;width:34em;height:34em;background-image:url(media/esim/e1c.png)"></div>
+<div class="sub" data-sc="3" style="--d:0.50s;--e:5.66s"><span>กรมสวัสดิการและคุ้มครองแรงงาน จึงตั้ง “กองทุนสงเคราะห์ลูกจ้าง”</span></div>
+<div class="sub" data-sc="3" style="--d:5.66s;--e:9.17s"><span>ถ้าบริษัทไหน “ไม่มี” กองทุนสำรองเลี้ยงชีพ (PVD)</span></div>
+<div class="sub" data-sc="3" style="--d:9.17s;--e:14.91s"><span>กฎหมายบังคับนายจ้างส่งเงินเข้ากองทุนทุกเดือน เป็นหลักประกันให้พนักงาน</span></div>
+</section>
+
+<!-- 4 mid hook -->
+<section class="sc" data-t="12.2">
+  <div class="H" style="top:14em"><div class="mid a up" style="--d:.2s">ฟังดูดีใช่ไหม? 🤨</div></div>
+  <div class="burst a slap" style="--d:1.55s;--r:-6deg;position:absolute;left:50%;margin-left:-14em;top:24em;width:28em;height:28em"><span style="font-size:16em;line-height:1">?</span></div>
+  <div style="position:absolute;left:4em;top:58em"><div class="paper a slap" style="--d:3.20s;--r:-5deg;padding:1.6em 2.4em;font-size:4.2em;font-weight:900">ได้เงินตอนไหน?</div></div>
+  <div style="position:absolute;right:4em;top:70em"><div class="paper a slap" style="--d:4.60s;--r:4deg;padding:1.6em 2.4em;font-size:4.2em;font-weight:900">ลาออกเองได้ไหม?</div></div>
+  <div style="position:absolute;left:8em;top:83em"><div class="paper a slap" style="--d:5.80s;--r:-3deg;padding:1.6em 2.4em;font-size:4.2em;font-weight:900">ต้องโดนไล่ออก?</div></div>
+  <div class="fly" style="--d:9.15s;--x:20em;left:20em;top:118em">💸</div><div class="fly" style="--d:9.45s;--x:-12em;left:44em;top:122em">💸</div><div class="fly" style="--d:9.75s;--x:16em;left:64em;top:116em">💸</div>
+  <div class="H" style="top:100em"><span class="stamp a slam" style="--d:8.25s;font-size:5.4em">หลายคนไม่รู้!</span></div>
+  <div class="stick a" style="--d:7.65s;--r:4deg;left:56em;top:118em;width:34em;height:34em;background-image:url(media/esim/e3c.png)"></div>
+<div class="sub" data-sc="4" style="--d:0.50s;--e:3.15s"><span>ฟังดูดีใช่ไหม? แต่คำถามสำคัญคือ…</span></div>
+<div class="sub" data-sc="4" style="--d:3.15s;--e:7.60s"><span>ได้เงินตอนไหน? ลาออกเองได้ไหม? หรือต้องโดนไล่ออก?</span></div>
+<div class="sub" data-sc="4" style="--d:7.60s;--e:12.00s"><span>หลายคนไม่รู้ แล้วปล่อยเงินหลุดมือไปแบบน่าเสียดาย! 💸</span></div>
+</section>
+
+<!-- 5 3 กรณี -->
+<section class="sc" data-t="12.2">
+  <div class="H" style="top:13em"><div class="rn" style="font-size:6.4em"><span class="a slap" style="--d:.2s">ได้เงินคืน</span><span class="a slap" style="--d:.5s">3 กรณี</span></div></div>
+  <div class="H" style="top:28em"><span class="a slap" style="--d:2.35s;--r:-4deg;display:inline-block;font-size:3.6em;font-weight:900;background:#5ef0dc;color:#062a2a;padding:.2em .7em">+ ดอกผล 📈</span></div>
+  <div style="position:absolute;left:6em;right:6em;top:40em;display:flex;flex-direction:column;gap:3em">
+    <div class="paper a swing" style="--d:4.00s;--r:-2deg;padding:2.4em 3em;display:flex;align-items:center;gap:2.4em"><span style="font-size:10em;line-height:1">🚪</span><div><div style="font-size:5em;font-weight:900">1. ออกจากงาน</div><div style="font-size:3.2em;font-weight:800;color:#5a6b8c">ลาออกเอง / ถูกให้ออก ได้หมด!</div></div></div>
+    <div class="paper a swing" style="--d:6.87s;--r:2deg;padding:2.4em 3em;display:flex;align-items:center;gap:2.4em"><span style="font-size:10em;line-height:1">🧓</span><div><div style="font-size:5em;font-weight:900">2. เกษียณอายุ</div></div></div>
+    <div class="paper a swing" style="--d:8.22s;--r:-1deg;padding:2.4em 3em;display:flex;align-items:center;gap:2.4em"><span style="font-size:10em;line-height:1">🕊️</span><div><div style="font-size:5em;font-weight:900">3. เสียชีวิต</div><div style="font-size:3.2em;font-weight:800;color:#5a6b8c">เงินตกเป็นของทายาท</div></div></div>
+  </div>
+  <div class="stick a" style="--d:9.22s;--r:5deg;left:58em;top:120em;width:32em;height:32em;background-image:url(media/esim/e4c.png)"></div>
+<div class="sub" data-sc="5" style="--d:0.50s;--e:3.95s"><span>ได้เงินก้อนนี้ พร้อมดอกผล ใน 3 กรณี</span></div>
+<div class="sub" data-sc="5" style="--d:3.95s;--e:6.82s"><span>1. ออกจากงาน (ลาออกเอง / ถูกให้ออก)</span></div>
+<div class="sub" data-sc="5" style="--d:6.82s;--e:8.17s"><span>2. เกษียณอายุ</span></div>
+<div class="sub" data-sc="5" style="--d:8.17s;--e:12.00s"><span>3. เสียชีวิต → เงินตกเป็นของทายาท</span></div>
+</section>
+
+<!-- 6 กระปุกออมสิน -->
+<section class="sc" data-t="10.66">
+  <div class="H" style="top:14em"><div class="mid a up" style="--d:.2s">เหมือน<em>กระปุกออมสิน</em><br>ที่นายจ้างออมไว้ให้เรา</div></div>
+  <div class="coin" style="--d:1.15s;left:38em;top:40em"><b>฿</b></div><div class="coin" style="--d:1.55s;left:48em;top:40em"><b>฿</b></div><div class="coin" style="--d:1.95s;left:43em;top:40em"><b>฿</b></div>
+  <div class="H" style="top:44em"><div class="a slap" style="--d:.5s;font-size:26em;line-height:1">🐷</div></div>
+  <div style="position:absolute;left:6em;top:86em"><div class="pol a slap" style="--d:4.46s;--r:-6deg;width:36em"><div class="ph" style="height:20em;background:#c9f7e0"><span style="font-size:13em">😎</span></div><div class="cap">จบสวย</div></div></div>
+  <div style="position:absolute;right:6em;top:88em"><div class="pol a slap" style="--d:5.46s;--r:6deg;width:36em"><div class="ph" style="height:20em;background:#ffd6d6"><span style="font-size:13em">😵</span></div><div class="cap">จบไม่สวย</div></div></div>
+  <div class="H" style="top:126em"><div class="rn" style="font-size:5em"><span class="a slap" style="--d:6.86s">ก็มีเงินก้อน</span><span class="a slap" style="--d:7.16s">ติดกระเป๋า 💰</span></div></div>
+<div class="sub" data-sc="6" style="--d:0.50s;--e:3.81s"><span>เหมือนกระปุกออมสิน ที่นายจ้างออมไว้ให้เรา 🐷</span></div>
+<div class="sub" data-sc="6" style="--d:3.81s;--e:10.46s"><span>จบสวยหรือไม่สวย ก็มีเงินก้อนติดกระเป๋าไปตั้งหลักเสมอ!</span></div>
+</section>
+
+<!-- 7 ช้าก่อน -->
+<section class="sc" data-t="9.04">
+  <div class="burst a slap" style="--d:.1s;--r:-6deg;position:absolute;left:50%;margin-left:-22em;top:14em;width:44em;height:30em"><div style="font-size:6.2em">ช้าก่อน! ✋</div></div>
+  <div style="position:absolute;left:10em;right:10em;top:50em">
+    <div class="paper a slap" style="--d:1.61s;--r:2deg;padding:3em;text-align:center">
+      <div style="font-size:3.2em;font-weight:800;color:#5a6b8c">📅 การจัดเก็บเงินเข้ากองทุน</div>
+      <div style="font-size:7em;font-weight:900">ขยายเวลา ⏩</div>
+    </div>
+    <div style="position:absolute;right:1em;bottom:-6em"><span class="stamp slam" style="--d:3.21s;font-size:6em">เลื่อน!</span></div>
+  </div>
+  <div style="position:absolute;left:12em;right:12em;top:86em">
+    <div class="paper a slap" style="--d:5.70s;--r:-3deg;padding:2.4em 3em">
+      <div style="font-size:3em;font-weight:800;color:#5a6b8c">สลิปเงินเดือน</div>
+      <div style="display:flex;justify-content:space-between;font-size:4em;font-weight:900;margin-top:.3em"><span>เงินเดือน</span><span>ครบ ✓</span></div>
+    </div>
+  </div>
+  <div class="H" style="top:114em"><span class="a slap" style="--d:6.70s;--r:3deg;display:inline-block;font-size:5em;font-weight:900;background:#5ef0dc;color:#062a2a;padding:.2em .7em">ยังไม่โดนหัก! 🙌</span></div>
+<div class="sub" data-sc="7" style="--d:0.50s;--e:1.56s"><span>แต่ช้าก่อน! ✋</span></div>
+<div class="sub" data-sc="7" style="--d:1.56s;--e:5.65s"><span>ตอนนี้รัฐบาลยังขยายเวลา “เลื่อน” การจัดเก็บออกไปก่อน</span></div>
+<div class="sub" data-sc="7" style="--d:5.65s;--e:8.84s"><span>เงินในสลิปยังอยู่ครบ ไม่โดนหัก!</span></div>
+</section>
+
+<!-- 8 จับตาดู -->
+<section class="sc" data-t="10.01">
+  <div class="H" style="top:14em"><div class="rn" style="font-size:6.4em"><span class="a slap" style="--d:.2s">รู้ไว้</span><span class="a slap" style="--d:.5s">ล่วงหน้า</span><span class="a slap" style="--d:.8s">ไม่เสียสิทธิ!</span></div></div>
+  <div class="H" style="top:44em"><div class="a slap" style="--d:5.72s;font-size:24em;line-height:1">👀</div></div>
+  <div style="position:absolute;left:10em;right:10em;top:78em">
+    <div class="paper a up" style="--d:6.32s;--r:-2deg;padding:2.6em 3em;text-align:center"><div style="font-size:4.4em;font-weight:900">บริษัทส่งเงินให้เรา<br>ถูกต้องไหม? 🔍</div></div>
+  </div>
+  <div class="stick a" style="--d:.6s;--r:-4deg;left:4em;top:110em;width:36em;height:36em;background-image:url(media/esim/e2c.png)"></div>
+<div class="sub" data-sc="8" style="--d:0.50s;--e:5.67s"><span>รู้ไว้ล่วงหน้า เมื่อกฎหมายบังคับใช้จริง จะได้ไม่เสียสิทธิ</span></div>
+<div class="sub" data-sc="8" style="--d:5.67s;--e:9.81s"><span>และจับตาดูว่าบริษัทส่งเงินก้อนนี้ให้ถูกต้องไหม! 👀</span></div>
+</section>
+
+<!-- 9 ปิด -->
+<section class="sc" data-t="9.7">
+  <div class="stick a" style="--d:.1s;left:27em;top:12em;width:46em;height:46em;background-image:url(media/esim/e6c.png)"></div>
+  <div class="logo a slap" style="--d:.6s;position:absolute;left:0;right:0;top:62em"><div class="ic"><b>e</b></div><div class="tx">eSim<i>Payroll</i></div></div>
+  <div style="position:absolute;left:8em;right:8em;top:78em">
+    <div class="paper a up" style="--d:1.75s;padding:3em 3.6em;text-align:center">
+      <div style="font-size:3.8em;font-weight:900">คิดเงินเดือน ภาษี ประกันสังคมให้อัตโนมัติ ✓</div>
+      <div style="font-size:3em;font-weight:700;color:#5a6b8c;margin-top:.3em">สลิป · 50 ทวิ · ภ.ง.ด.1 · สปส.1-10</div>
+    </div>
+  </div>
+  <div class="H" style="top:104em"><span class="cta2 a" style="--d:6.04s">กดติดตาม 🔔</span></div>
+  <div class="H" style="top:122em"><div class="a up" style="--d:6.84s;font-size:3.4em;font-weight:900;color:#9fb4e0">esimpayroll.com</div></div>
+<div class="sub" data-sc="9" style="--d:0.50s;--e:5.99s"><span>เจ้าของกิจการ ให้ eSimPayroll คิดเงินเดือน ภาษี ประกันสังคมให้ทุกเดือน</span></div>
+<div class="sub" data-sc="9" style="--d:5.99s;--e:9.50s"><span>กดติดตามไว้ เดี๋ยวมีเรื่องเงินเดือนมาเล่าอีก!</span></div>
+</section>
+
+<div id="bar"></div>
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var cur=-1,bar=document.getElementById('bar');
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on','off')});void S[i].offsetWidth;S[i].classList.add('on');cur=i}
+    if(i>0){var p=S[i-1];if(st<.38)p.classList.add('off');else p.classList.remove('off')}
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;else if(sc===S[i])an.currentTime=st*1000;else an.currentTime=Math.min(st,.38)*1000;
+    });
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render; window.__drop=ST[1];
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>

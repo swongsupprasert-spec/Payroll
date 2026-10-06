@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>สอนใช้ระบบลงเวลาสแกนหน้า</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#050a18;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,177.78vh);aspect-ratio:16/9;overflow:clip;font-size:calc(min(100vw,177.78vh)/100);background:#091025}
+.sc{display:none}
+#cam{position:absolute;left:0;top:0;width:100em;height:56.25em;transform-origin:0 0;will-change:transform}
+#scr{position:absolute;inset:0;width:100%;height:100%}
+#hl{position:absolute;border:.28em solid #5ef0dc;border-radius:.8em;box-shadow:0 0 0 999em rgba(5,10,24,.42),0 0 1.4em #5ef0dc;opacity:0;pointer-events:none}
+#cur{position:absolute;width:2.4em;height:2.4em;margin:-.15em 0 0 -.25em;opacity:0;filter:drop-shadow(0 .2em .25em #0009);z-index:5}
+#rip{position:absolute;width:4em;height:4em;margin:-2em 0 0 -2em;border-radius:50%;border:.3em solid #5ef0dc;opacity:0;z-index:4}
+/* หัวบท */
+#chip{position:absolute;left:2.2em;top:1.8em;display:flex;align-items:center;gap:.8em;z-index:20;background:#091025e6;border:.12em solid #5ef0dc66;border-radius:3em;padding:.55em 1.4em .55em .6em;box-shadow:0 .4em 1.2em #0007;opacity:0}
+#chip b{display:grid;place-items:center;width:2.2em;height:2.2em;border-radius:50%;background:linear-gradient(150deg,#12a3a0,#1559c8);font-size:1.5em;font-weight:900}
+#chip span{font-size:1.9em;font-weight:900}
+/* ซับ */
+#sub{position:absolute;left:12em;right:12em;bottom:2.6em;text-align:center;z-index:20}
+#sub span{display:inline-block;font-size:2.2em;font-weight:800;line-height:1.45;background:#050a18e0;border-radius:.5em;padding:.3em .9em;box-shadow:0 .3em .8em #0007}
+/* น้อง eSim */
+#es{position:absolute;right:1.2em;bottom:.4em;width:11em;height:11em;background:url(media/esim/e1c.png) no-repeat center/contain;z-index:21;filter:drop-shadow(0 .4em .6em #0009);transform-origin:50% 100%}
+/* การ์ดเปิด/ปิด */
+.card{position:absolute;inset:0;z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(60em 40em at 50% 45%,#13245aee,#091025f5);opacity:0}
+.card img.logo{width:30em}
+.card h1{font-size:5.4em;font-weight:900;line-height:1.2;margin-top:.4em}
+.card h1 em{font-style:normal;color:#5ae39a}
+.card p{font-size:2.2em;font-weight:700;color:#c9d6f2;margin-top:.6em}
+.toc{display:flex;flex-wrap:wrap;gap:.8em;justify-content:center;margin-top:2.2em;max-width:76em}
+.toc span{font-size:1.7em;font-weight:800;background:#ffffff14;border:.08em solid #ffffff2a;border-radius:2em;padding:.35em .9em}
+.toc b{color:#5ef0dc;margin-right:.3em}
+.url{display:inline-block;margin-top:1.2em;font-size:3em;font-weight:900;color:#0b1230;background:linear-gradient(120deg,#5ae39a,#5ef0dc);border-radius:2em;padding:.3em 1.2em}
+.cta{display:inline-block;margin-top:1em;font-size:2.4em;font-weight:900;background:#e5484d;border-radius:2em;padding:.35em 1.2em}
+#ph{position:absolute;inset:0;opacity:0;z-index:3;background:radial-gradient(70em 50em at 30% 50%,#1b3a8a,#091025 70%)}
+#frame{position:absolute;left:33em;top:3.2em;width:24.4em;height:52.8em;border-radius:3.4em;background:#05070f;padding:1em;box-shadow:0 0 0 .3em #2b3a6e,0 2em 4em #000c}
+#pscr{position:relative;width:100%;height:100%;border-radius:2.5em;overflow:hidden;background:#fff}
+#pimg{position:absolute;left:0;top:0;width:100%;height:100%}
+#phl{position:absolute;border:.22em solid #12a3a0;border-radius:.7em;box-shadow:0 0 0 999em rgba(5,10,24,.35),0 0 1em #12a3a0;opacity:0}
+#tap{position:absolute;width:3.6em;height:3.6em;margin:-1.8em 0 0 -1.8em;border-radius:50%;background:rgba(94,240,220,.35);border:.25em solid #5ef0dc;opacity:0}
+#pside{position:absolute;left:61em;right:4em;top:14em}
+#pside b{display:inline-block;font-size:1.8em;font-weight:900;color:#0b1230;background:#5ae39a;border-radius:2em;padding:.2em .9em}
+#pside h2{font-size:3.6em;font-weight:900;line-height:1.25;margin-top:.5em}
+#pside p{font-size:1.9em;font-weight:700;color:#c9d6f2;margin-top:.6em;line-height:1.5}
+#bar{position:absolute;left:0;bottom:0;height:.45em;background:linear-gradient(90deg,#12a3a0,#5ae39a);width:0;z-index:30}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div id="cam"><img id="scr" alt=""><div id="hl"></div><div id="rip"></div>
+ <svg id="cur" viewBox="0 0 24 24"><path d="M3 2l7.5 19 2.6-7.6L21 11z" fill="#fff" stroke="#0b1230" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+<div id="ph"><div id="frame"><div id="pscr"><img id="pimg" alt=""><div id="phl"></div><div id="tap"></div></div></div>
+ <div id="pside"><b>📱 มือถือพนักงาน</b><h2 id="psh"></h2><p id="psp"></p></div></div>
+<div class="card" id="intro"><img class="logo" src="brand/logo-full-white-1600.png" alt="eSimPayroll"><h1>ลงเวลาด้วย<em>สแกนใบหน้า + GPS</em></h1><p>สอนตั้งค่าฝั่งผู้ดูแล และวิธีใช้ฝั่งพนักงานบนมือถือ</p>
+ <div class="toc"><span><b>1</b>ตั้งค่าบริษัท & หมุด</span><span><b>2</b>สร้างบัญชี & ส่งลิงก์</span><span><b>3</b>พนักงานสแกนหน้า</span><span><b>4</b>ตรวจบันทึกเวลา</span></div></div>
+<div class="card" id="outro"><img class="logo" src="brand/logo-full-white-1600.png" alt="eSimPayroll"><h1>ลงเวลาด้วยใบหน้า + GPS<br><em>แพ็กเกจพรีเมียม</em></h1><div class="url">esimpayroll.com</div><div class="cta">กดติดตาม 🔔</div></div>
+<div id="chip"><b></b><span></span></div>
+<div id="sub"><span></span></div>
+<div id="es"></div>
+<div id="bar"></div>
+<section class="sc" data-t="10.550"></section>
+<section class="sc" data-t="23.520"><i data-sfx="blip" data-at="0.55"></i><i data-sfx="blip" data-at="21.45"></i></section>
+<section class="sc" data-t="24.270"><i data-sfx="blip" data-at="0.55"></i><i data-sfx="blip" data-at="10.03"></i><i data-sfx="blip" data-at="11.33"></i><i data-sfx="blip" data-at="12.81"></i><i data-sfx="blip" data-at="15.19"></i><i data-sfx="blip" data-at="16.83"></i></section>
+<section class="sc" data-t="31.420"><i data-sfx="blip" data-at="4.45"></i><i data-sfx="blip" data-at="11.77"></i><i data-sfx="blip" data-at="14.54"></i><i data-sfx="blip" data-at="15.93"></i><i data-sfx="blip" data-at="18.96"></i></section>
+<section class="sc" data-t="14.360"><i data-sfx="blip" data-at="10.13"></i></section>
+<section class="sc" data-t="8.860"></section>
+
+</div></div>
+<script>
+(function(){
+const D={"TOT":112.98,"lines":[{"id":"K0","sub":"สอนใช้ระบบลงเวลาผ่านมือถือ สแกนใบหน้า + GPS ทั้งฝั่งผู้ดูแลและพนักงาน","s":1.55,"dur":8.5,"t0":0,"t1":10.55},{"id":"K1","sub":"เมนู “ลงเวลาผ่านมือถือ” → สรุปบัญชีที่เปิดใช้ มาสาย ลางาน ขาดงาน","s":10.9,"dur":5.71,"t0":10.55,"t1":17.11},{"id":"K2","sub":"ตั้งชื่อ และ “รหัสบริษัท” (พนักงานใช้ตอนเข้าสู่ระบบ)","s":17.46,"dur":4.15,"t0":17.11,"t1":22.11},{"id":"K3","sub":"ปักหมุดบริษัท: วางลิงก์ Google Maps หรือใช้ตำแหน่งปัจจุบัน · ตั้งรัศมี เช่น 150 ม.","s":22.46,"dur":5.87,"t0":22.11,"t1":28.83},{"id":"K4","sub":"เลือก: ต้องอยู่ในรัศมี · ต้องถ่ายรูป · จดจำใบหน้า → กด “บันทึกการตั้งค่า”","s":29.18,"dur":4.39,"t0":28.83,"t1":34.07},{"id":"K5","sub":"ลิงก์สำหรับพนักงาน → กด “คัดลอกลิงก์” ส่งในกลุ่ม LINE","s":34.42,"dur":3.22,"t0":34.07,"t1":38.14},{"id":"K6","sub":"บัญชีลงเวลาของพนักงาน → ดูว่าใครมีบัญชี / ลงทะเบียนใบหน้าแล้ว","s":38.49,"dur":4.56,"t0":38.14,"t1":43.55},{"id":"K7","sub":"กด “สร้างบัญชี” → ตั้งชื่อผู้ใช้ · กด “สุ่ม” รหัสผ่าน → บันทึก","s":43.9,"dur":2.67,"t0":43.55,"t1":47.07},{"id":"K8","sub":"ได้รหัสบริษัท ชื่อผู้ใช้ รหัสผ่าน → กด “คัดลอกข้อความส่ง LINE”","s":47.42,"dur":5.72,"t0":47.07,"t1":53.64},{"id":"K9","sub":"หลายคน? กด “สร้างบัญชีให้ทุกคนที่ยังไม่มี” ในคลิกเดียว","s":53.99,"dur":3.85,"t0":53.64,"t1":58.34},{"id":"K10","sub":"พนักงานเปิดลิงก์ → รหัสบริษัท/ชื่อผู้ใช้กรอกให้แล้ว → ใส่รหัสผ่าน → เข้าสู่ระบบ","s":58.69,"dur":6.11,"t0":58.34,"t1":65.3},{"id":"K11","sub":"หน้าหลัก: นาฬิกา · ลงเวลาเข้างาน · ลงเวลาออกงาน · ยื่นใบลา","s":65.65,"dur":3.41,"t0":65.3,"t1":69.56},{"id":"K12","sub":"ครั้งแรก: ขอความยินยอมเก็บข้อมูลใบหน้า → ติ๊กยินยอม → ถ่ายรูปลงทะเบียน","s":69.91,"dur":4.69,"t0":69.56,"t1":75.1},{"id":"K13","sub":"จัดหน้าให้อยู่ในวงรี → กด “ถ่ายและลงเวลา”","s":75.45,"dur":2.44,"t0":75.1,"t1":78.39},{"id":"K14","sub":"ตรวจใบหน้า + เช็ก GPS → บันทึกเวลาเข้างานทันที ✅","s":78.74,"dur":5.59,"t0":78.39,"t1":84.83},{"id":"K15","sub":"ยื่นใบลาผ่านมือถือ: ประเภท · วันที่ · แนบรูป → ส่งใบลา","s":85.18,"dur":4.08,"t0":84.83,"t1":89.76},{"id":"K16","sub":"บันทึกการลงเวลา: เวลา · สถานที่ · ระยะห่าง · % ใบหน้าตรงกัน","s":90.11,"dur":5.52,"t0":89.76,"t1":96.13},{"id":"K17","sub":"สแกนนอกพื้นที่ → ป้ายสีแดงเตือนทันที","s":96.48,"dur":2.36,"t0":96.13,"t1":99.34},{"id":"K18","sub":"กด “นำเข้าหน้าเวลาเข้างาน” → เอาไปคิดสาย ขาด OT ในเงินเดือน","s":99.69,"dur":3.93,"t0":99.34,"t1":104.12},{"id":"K19","sub":"มีในแพ็กเกจพรีเมียม · ลองใช้ที่ esimpayroll.com · กดติดตาม 🔔","s":104.47,"dur":6.51,"t0":104.12,"t1":112.98}],"shots":[{"line":"K1","img":"000.jpg","dev":"desk","cur":[115,218],"hl":[8,192,214,52],"click":true,"a":10.55,"b":13.83},{"line":"K1","img":"001.jpg","dev":"desk","hl":[254,90,1152,1175],"zoom":1,"a":13.83,"b":17.11},{"line":"K2","img":"002.jpg","dev":"desk","hl":[275,159,1110,115],"zoom":1,"a":17.11,"b":22.11},{"line":"K3","img":"003.jpg","dev":"desk","hl":[275,535,1110,41],"cur":[772.90625,555.5],"zoom":1,"a":22.11,"b":24.35},{"line":"K3","img":"004.jpg","dev":"desk","hl":[275,621,1110,115],"zoom":1,"a":24.35,"b":26.59},{"line":"K3","img":"005.jpg","dev":"desk","hl":[275,695,1110,87],"cur":[382.46875,765],"zoom":1,"a":26.59,"b":28.83},{"line":"K4","img":"006.jpg","dev":"desk","hl":[279,825,590.46875,21],"zoom":1,"a":28.83,"b":31.45},{"line":"K4","img":"007.jpg","dev":"desk","hl":[628.375,748,102.0625,34],"cur":[679.40625,765],"click":true,"zoom":1,"a":31.45,"b":34.07},{"line":"K5","img":"008.jpg","dev":"desk","hl":[275,433,1110,34],"cur":[1008.671875,450],"click":true,"zoom":1,"a":34.07,"b":38.14},{"line":"K6","img":"009.jpg","dev":"desk","hl":[254,80,1152,458],"a":38.14,"b":43.55},{"line":"K7","img":"010.jpg","dev":"desk","hl":[1295.03125,437,97.96875,34],"cur":[1344.015625,454],"click":true,"a":43.55,"b":44.29},{"line":"K7","img":"011.jpg","dev":"desk","hl":[500,132,600,115],"cur":[800,152.5],"typing":true,"zoom":1,"a":44.29,"b":44.57},{"line":"K7","img":"012.jpg","dev":"desk","hl":[500,132,600,115],"cur":[800,152.5],"typing":true,"zoom":1,"a":44.57,"b":44.85},{"line":"K7","img":"013.jpg","dev":"desk","hl":[1040.84375,206,59.15625,41],"cur":[1070.421875,226.5],"click":true,"zoom":1,"a":44.85,"b":45.59},{"line":"K7","img":"014.jpg","dev":"desk","hl":[500,132,600,115],"zoom":1,"a":45.59,"b":46.33},{"line":"K7","img":"015.jpg","dev":"desk","hl":[1012.09375,321.5,87.90625,41],"cur":[1056.046875,342],"click":true,"zoom":1,"a":46.33,"b":47.07},{"line":"K8","img":"016.jpg","dev":"desk","hl":[480,30,640,341.5],"zoom":1,"a":47.07,"b":48.712},{"line":"K8","img":"017.jpg","dev":"desk","hl":[827.46875,236.5,174.390625,34],"cur":[914.6640625,253.5],"click":true,"zoom":1,"a":48.712,"b":50.355},{"line":"K8","img":"018.jpg","dev":"desk","hl":[255,426.5,1150,55],"cur":[1331.1640625,454],"click":true,"zoom":1,"a":50.355,"b":51.997},{"line":"K8","img":"019.jpg","dev":"desk","a":51.997,"b":53.64},{"line":"K9","img":"020.jpg","dev":"desk","hl":[273,185,257.28125,32],"cur":[401.640625,201],"zoom":1,"a":53.64,"b":58.34},{"line":"K10","img":"021.jpg","dev":"phone","hl":[36,254,318,144],"a":58.34,"b":61.4},{"line":"K10","img":"022.jpg","dev":"phone","hl":[36,436,318,53],"cur":[195,462.5],"typing":true,"a":61.4,"b":61.68},{"line":"K10","img":"023.jpg","dev":"phone","hl":[36,436,318,53],"cur":[195,462.5],"typing":true,"a":61.68,"b":61.96},{"line":"K10","img":"024.jpg","dev":"phone","hl":[36,436,318,53],"cur":[195,462.5],"typing":true,"a":61.96,"b":62.24},{"line":"K10","img":"025.jpg","dev":"phone","hl":[36,505,318,56],"cur":[195,533],"click":true,"a":62.24,"b":65.3},{"line":"K11","img":"026.jpg","dev":"phone","hl":[36,328,318,240],"a":65.3,"b":69.56},{"line":"K12","img":"027.jpg","dev":"phone","hl":[36,328,318,76],"cur":[195,366],"click":true,"a":69.56,"b":70.945},{"line":"K12","img":"028.jpg","dev":"phone","a":70.945,"b":72.33},{"line":"K12","img":"029.jpg","dev":"phone","hl":[36,450.453125,318,44],"cur":[47,463.453125],"click":true,"a":72.33,"b":73.715},{"line":"K12","img":"030.jpg","dev":"phone","hl":[36,510.453125,318,56],"cur":[195,538.453125],"click":true,"a":73.715,"b":75.1},{"line":"K13","img":"031.jpg","dev":"phone","a":75.1,"b":76.745},{"line":"K13","img":"032.jpg","dev":"phone","hl":[148.671875,770,223.328125,56],"cur":[260.3359375,798],"click":true,"a":76.745,"b":78.39},{"line":"K14","img":"033.jpg","dev":"phone","hl":[36,508,318,42],"a":78.39,"b":81.61},{"line":"K14","img":"034.jpg","dev":"phone","hl":[36,271,318,302],"a":81.61,"b":84.83},{"line":"K15","img":"035.jpg","dev":"phone","a":84.83,"b":87.295},{"line":"K15","img":"036.jpg","dev":"phone","hl":[16,167,358,687],"a":87.295,"b":89.76},{"line":"K16","img":"037.jpg","dev":"desk","hl":[254,285.5,1152,599.5],"a":89.76,"b":92.945},{"line":"K16","img":"038.jpg","dev":"desk","hl":[255,-846.5,1150,55],"zoom":1,"a":92.945,"b":96.13},{"line":"K17","img":"039.jpg","dev":"desk","hl":[255,557,1150,55],"zoom":1,"a":96.13,"b":99.34},{"line":"K18","img":"040.jpg","dev":"desk","hl":[1188.765625,303.5,198.234375,32],"cur":[1287.8828125,319.5],"click":true,"zoom":1,"a":99.34,"b":104.12}],"secs":[{"name":"intro","num":"","a":0,"b":10.55},{"name":"ผู้ดูแล · ตั้งค่าบริษัท & หมุด","num":"1","a":10.55,"b":34.07},{"name":"ผู้ดูแล · สร้างบัญชี & ส่งลิงก์","num":"2","a":34.07,"b":58.34},{"name":"พนักงาน · สแกนหน้าลงเวลา","num":"3","a":58.34,"b":89.76},{"name":"ผู้ดูแล · ตรวจบันทึกเวลา","num":"4","a":89.76,"b":104.12},{"name":"outro","num":"","a":104.12,"b":112.98}],"W":1600,"H":900,"side":{"K10":["เปิดลิงก์ & เข้าสู่ระบบ","รหัสบริษัทและชื่อผู้ใช้กรอกให้แล้ว ใส่แค่รหัสผ่าน"],"K11":["หน้าหลัก","นาฬิกา · ลงเวลาเข้างาน · ออกงาน · ยื่นใบลา"],"K12":["ยินยอมเก็บข้อมูลใบหน้า","ทำครั้งแรกครั้งเดียว (PDPA)"],"K13":["สแกนใบหน้า","จัดหน้าให้อยู่ในวงรี แล้วกดถ่ายและลงเวลา"],"K14":["บันทึกเวลาเข้างานแล้ว ✅","ตรวจใบหน้า + เช็กตำแหน่ง GPS อัตโนมัติ"],"K15":["ยื่นใบลาผ่านมือถือ","เลือกประเภท วันที่ แนบรูปได้"]}};const K=100/D.W; // css px → em
+const $=id=>document.getElementById(id);
+const ease=x=>x<0?0:x>1?1:x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+function camOf(s){ if(!s||!s.zoom||!s.hl)return {k:1,x:0,y:0};
+  const [hx,hy,hw,hh]=s.hl;let k=Math.min(.72*D.W/hw,.6*D.H/hh,2.3);k=Math.max(1,k);
+  const cx=hx+hw/2,cy=hy+hh/2;let x=D.W/2-cx*k,y=D.H*.47-cy*k;x=Math.min(0,Math.max(D.W-D.W*k,x));y=Math.min(0,Math.max(D.H-D.H*k,y));return {k,x,y}; }
+const lerp=(a,b,p)=>a+(b-a)*p;
+const S=D.shots;
+async function renderPhone(t,i,s,prev){
+  $('ph').style.opacity=1;$('cam').style.visibility='hidden';$('hl').style.opacity=0;$('cur').style.opacity=0;$('rip').style.opacity=0;
+  const img=$('pimg'),src='_ck21/'+s.img;if(img.getAttribute('src')!==src){img.src=src;try{await img.decode()}catch(e){}}
+  const PK=24.4-2;const k=PK/390;const hl=$('phl');
+  if(s.hl){const[hx,hy,hw,hh]=s.hl,pad=5;Object.assign(hl.style,{left:(hx-pad)*k+'em',top:(hy-pad)*k+'em',width:(hw+pad*2)*k+'em',height:(hh+pad*2)*k+'em',opacity:s.typing?1:Math.max(0,Math.min(1,(t-s.a-.3)/.3))})}else hl.style.opacity=0;
+  const tap=$('tap');if(s.cur&&s.click){const rc=(t-s.a-.5)/.5;Object.assign(tap.style,{left:s.cur[0]*k+'em',top:s.cur[1]*k+'em',opacity:rc<0?Math.min(1,(t-s.a)/.3):Math.max(0,1-rc),transform:'scale('+(rc<0?1:1+rc*.8)+')'})}else if(s.cur&&s.typing){Object.assign(tap.style,{left:s.cur[0]*k+'em',top:s.cur[1]*k+'em',opacity:.8,transform:'scale(.8)'})}else tap.style.opacity=0;
+  const ln=D.lines.find(l=>t>=l.t0&&t<l.t1)||D.lines[D.lines.length-1];const P=D.side[ln.id]||['',''];$('psh').textContent=P[0];$('psp').textContent=P[1];
+  common(t);
+}
+function common(t){
+  const ln=D.lines.find(l=>t>=l.t0&&t<l.t1)||D.lines[D.lines.length-1];
+  const sub=$('sub').firstElementChild;sub.textContent=ln.sub;$('sub').style.opacity=Math.min(1,Math.max(0,(t-ln.s+.15)/.2))*Math.min(1,Math.max(0,(ln.t1-t)/.2));
+  const speaking=t>=ln.s&&t<ln.s+ln.dur;$('es').style.transform=speaking?'scale('+(1+.035*Math.sin(t*38))+','+(1-.035*Math.sin(t*38))+')':'none';
+  const sec=D.secs.find(x=>t>=x.a&&t<x.b)||D.secs[D.secs.length-1];const chip=$('chip');
+  if(sec.num){chip.firstElementChild.textContent=sec.num;chip.lastElementChild.textContent=sec.name;chip.style.opacity=Math.min(1,(t-sec.a)/.4)}else chip.style.opacity=0;
+  const L0=D.lines[0];$('intro').style.opacity=t<L0.t1-.4?1:Math.max(0,(L0.t1-t)/.4);
+  const out=D.secs[D.secs.length-1];$('outro').style.opacity=Math.min(1,Math.max(0,(t-out.a)/.5));
+  $('bar').style.width=Math.min(100,t/D.TOT*100)+'%';
+}
+async function render(t){
+  let i=S.findIndex(s=>t>=s.a&&t<s.b);if(i<0)i=t<S[0].a?0:S.length-1;const s=S[i],prev=S[i-1];
+  // ภาพ
+  if(s.dev==='phone'){return renderPhone(t,i,s,prev)} $('ph').style.opacity=0;$('cam').style.visibility='visible';const img=$('scr'),src='_ck21/'+s.img;if(img.getAttribute('src')!==src){img.src=src;try{await img.decode()}catch(e){}}
+  // กล้อง
+  const c1=camOf(s),c0=prev?camOf(prev):c1,p=ease((t-s.a)/.7);
+  const k=lerp(c0.k,c1.k,p),x=lerp(c0.x,c1.x,p),y=lerp(c0.y,c1.y,p);
+  $('cam').style.transform=`translate(${x*K}em,${y*K}em) scale(${k})`;
+  // ไฮไลต์
+  const hl=$('hl');if(s.hl&&!s.typing){const[hx,hy,hw,hh]=s.hl,pad=6;Object.assign(hl.style,{left:(hx-pad)*K+'em',top:(hy-pad)*K+'em',width:(hw+pad*2)*K+'em',height:(hh+pad*2)*K+'em',opacity:Math.min(1,(t-s.a-.35)/.3)})}
+  else if(s.hl&&s.typing){const[hx,hy,hw,hh]=s.hl,pad=6;Object.assign(hl.style,{left:(hx-pad)*K+'em',top:(hy-pad)*K+'em',width:(hw+pad*2)*K+'em',height:(hh+pad*2)*K+'em',opacity:1})}
+  else hl.style.opacity=0;
+  // เคอร์เซอร์: ตำแหน่งก่อนหน้า → เป้าหมาย
+  let from=null;for(let j=i-1;j>=0;j--){if(S[j].cur){from=S[j].cur;break}}
+  const cur=$('cur'),rip=$('rip');
+  if(s.cur){const q=ease((t-s.a)/.6),f=from||[s.cur[0]+120,s.cur[1]+160];const cx=lerp(f[0],s.cur[0],q),cy=lerp(f[1],s.cur[1],q);
+    Object.assign(cur.style,{left:cx*K+'em',top:cy*K+'em',opacity:1,transform:`scale(${1/Math.sqrt(k)})`});
+    const rc=(t-s.a-.6)/.45;if(s.click&&rc>0&&rc<1){Object.assign(rip.style,{left:s.cur[0]*K+'em',top:s.cur[1]*K+'em',opacity:1-rc,transform:`scale(${.3+rc*1.4})`});cur.style.transform+=` scale(${rc<.3?.85:1})`}else rip.style.opacity=0;}
+  else if(from&&!s.typing&&prev&&prev.img===s.img){Object.assign(cur.style,{left:from[0]*K+'em',top:from[1]*K+'em',opacity:Math.max(0,1-(t-s.a)/.4)});rip.style.opacity=0}
+  else {cur.style.opacity=0;rip.style.opacity=0}
+  // บรรทัดพูด / ซับ / หัวบท
+  const ln=D.lines.find(l=>t>=l.t0&&t<l.t1)||D.lines[D.lines.length-1];
+  const sub=$('sub').firstElementChild;sub.textContent=ln.sub;$('sub').style.opacity=Math.min(1,Math.max(0,(t-ln.s+.15)/.2))*Math.min(1,Math.max(0,(ln.t1-t)/.2));
+  const speaking=t>=ln.s&&t<ln.s+ln.dur;$('es').style.transform=speaking?`scale(${1+.035*Math.sin(t*38)},${1-.035*Math.sin(t*38)})`:'none';
+  const sec=D.secs.find(x=>t>=x.a&&t<x.b)||D.secs[D.secs.length-1];const chip=$('chip');
+  if(sec.num){chip.firstElementChild.textContent=sec.num;chip.lastElementChild.textContent=sec.num==='0'||sec.num==='✓'?sec.name:'ขั้นที่ '+sec.num+' · '+sec.name;if(sec.num==='0')chip.firstElementChild.textContent='▶';chip.style.opacity=Math.min(1,(t-sec.a)/.4)}else chip.style.opacity=0;
+  // การ์ดเปิด/ปิด
+  const L0=D.lines[0];$('intro').style.opacity=t<L0.t1-.4?1:Math.max(0,(L0.t1-t)/.4);
+  const out=D.secs[D.secs.length-1];$('outro').style.opacity=Math.min(1,Math.max(0,(t-out.a)/.5));
+  $('sub').style.display='';$('bar').style.width=Math.min(100,t/D.TOT*100)+'%';
+}
+window.__total=D.TOT;window.__render=render;window.__drop=D.secs[1].a+1;
+if(!/[?&]rec/.test(location.search)){const t0=performance.now();(async function f(){const t=(performance.now()-t0)/1000;await render(Math.min(t,D.TOT));if(t<D.TOT)requestAnimationFrame(f)})()}
+})();
+</script>
+</body>
+</html>

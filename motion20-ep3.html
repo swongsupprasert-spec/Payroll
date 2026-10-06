@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>สอนใช้ eSimPayroll · EP</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#050a18;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#fff;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);background:radial-gradient(80em 60em at 50% 20%,#18307a,#091025 70%)}
+.sc{display:none}
+/* หัวเรื่อง */
+#ep{position:absolute;left:6%;top:5.2%;display:inline-flex;align-items:center;gap:.6em;font-size:2.6em;font-weight:900;background:linear-gradient(120deg,#12a3a0,#1559c8);border-radius:2em;padding:.2em .9em;box-shadow:0 .3em .8em #0006}
+#ttl{position:absolute;left:6%;right:24%;top:8.6%;font-size:5.6em;font-weight:900;line-height:1.15}
+#ttl em{font-style:normal;color:#5ae39a}
+#es{position:absolute;right:4em;top:7em;width:20em;height:20em;background:url(media/esim/e1c.png) no-repeat center/contain;filter:drop-shadow(0 .5em .8em #0009);transform-origin:50% 100%;z-index:6}
+/* หน้าต่างจอ */
+#win{position:absolute;left:3em;right:3em;top:31em;height:92em;border-radius:2.4em;overflow:hidden;background:#0b1433;box-shadow:0 0 0 .35em #5ef0dc55,0 2em 4em #0009}
+#cam{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;will-change:transform}
+#scr{position:absolute;left:0;top:0;width:1600px;height:900px}
+#hl{position:absolute;border:5px solid #5ef0dc;border-radius:14px;box-shadow:0 0 0 9999px rgba(5,10,24,.42),0 0 22px #5ef0dc;opacity:0}
+#cur{position:absolute;width:44px;height:44px;margin:-3px 0 0 -4px;opacity:0;filter:drop-shadow(0 4px 4px #0009);z-index:5}
+#rip{position:absolute;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;border:6px solid #5ef0dc;opacity:0;z-index:4}
+/* การ์ดปิด */
+#end{position:absolute;left:3em;right:3em;top:31em;height:92em;border-radius:2.4em;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(60em 50em at 50% 40%,#1b3a8a,#0b1433);opacity:0;z-index:7}
+#end img{width:60em}
+#end h2{font-size:5.4em;font-weight:900;line-height:1.25;margin-top:.8em}
+#end h2 em{font-style:normal;color:#5ae39a}
+#end .url{margin-top:1.2em;font-size:3.6em;font-weight:900;color:#0b1230;background:linear-gradient(120deg,#5ae39a,#5ef0dc);border-radius:2em;padding:.3em 1.1em}
+#end .cta{margin-top:1.4em;font-size:4em;font-weight:900;background:#e5484d;border-radius:2em;padding:.35em 1.2em}
+/* ซับ (โซนปลอดภัย TikTok) */
+#sub{position:absolute;left:7em;right:13em;bottom:40em;text-align:center;z-index:9}
+#sub span{display:inline-block;font-size:3.5em;font-weight:900;line-height:1.4;background:#050a18e6;border-radius:.5em;padding:.3em .8em;box-shadow:0 .3em .8em #0008}
+#bar{position:absolute;left:0;bottom:0;height:.7em;background:linear-gradient(90deg,#12a3a0,#5ae39a);width:0;z-index:30}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div id="ep"></div><div id="ttl"></div><div id="es"></div>
+<div id="win"><div id="cam"><img id="scr" alt=""><div id="hl"></div><div id="rip"></div>
+ <svg id="cur" viewBox="0 0 24 24"><path d="M3 2l7.5 19 2.6-7.6L21 11z" fill="#fff" stroke="#0b1230" stroke-width="1.6" stroke-linejoin="round"/></svg></div></div>
+<div id="end"><img src="brand/logo-full-white-1600.png" alt="eSimPayroll"><h2></h2><div class="url">esimpayroll.com</div><div class="cta">กดติดตาม 🔔</div></div>
+<div id="sub"><span></span></div>
+<div id="bar"></div>
+<section class="sc" data-t="4"></section><section class="sc" data-t="17.200"><i data-sfx="blip" data-at="0.55"></i><i data-sfx="blip" data-at="7.73"></i><i data-sfx="blip" data-at="11.85"></i><i data-sfx="blip" data-at="15.08"></i></section><section class="sc" data-t="3.840"><i data-sfx="chime" data-at=".2"></i></section>
+</div></div>
+<script>
+(function(){
+const D={"ep":3,"title":"เวลาเข้างาน &<br><em>ระบบลางาน</em>","next":"ตอนหน้า<br><em>คำนวณเงินเดือน</em>","TOT":25.04,"lines":[{"id":"o3","sub":"สอนใช้ eSimPayroll EP.3 · เวลาเข้างาน & ลางาน","s":0.4,"dur":3.15,"t0":0,"t1":4,"dir":"vtut"},{"id":"L11","sub":"เมนู “เวลาเข้างาน” → ตั้งกะการทำงาน เวลาเข้า–ออก","s":4.3,"dur":3.51,"t0":4,"t1":8.26,"dir":"vtut"},{"id":"L12","sub":"เลือกวันที่เปิดให้ทำ OT ของแต่ละเดือน","s":8.56,"dur":2.17,"t0":8.26,"t1":11.18,"dir":"vtut"},{"id":"L13","sub":"เมนู “ระบบลางาน” → ตั้งโควตาลาป่วย ลากิจ ลาพักร้อน ต่อปี","s":11.48,"dur":3.37,"t0":11.18,"t1":15.3,"dir":"vtut"},{"id":"L14","sub":"กด “เพิ่มใบลา” → เลือกพนักงาน ประเภท วันที่ เหตุผล → กด “เพิ่ม”","s":15.6,"dur":5.15,"t0":15.3,"t1":21.2,"dir":"vtut"},{"id":"n3","sub":"EP.4 คำนวณเงินเดือน · กดติดตามไว้นะ 🔔","s":21.5,"dur":2.14,"t0":21.2,"t1":25.04,"dir":"vtut"}],"shots":[{"line":"L11","img":"033.jpg","hl":null,"cur":null,"click":false,"zoom":null,"a":0,"b":4},{"line":"L11","img":"032.jpg","cur":[115,270],"hl":[8,244,214,52],"click":true,"a":4,"b":6.13},{"line":"L11","img":"033.jpg","hl":[254,262,1152,219],"a":6.13,"b":8.26},{"line":"L12","img":"034.jpg","hl":[254,90,1152,790],"a":8.26,"b":11.18},{"line":"L13","img":"035.jpg","cur":[115,322],"hl":[8,296,214,52],"click":true,"a":11.18,"b":13.24},{"line":"L13","img":"036.jpg","hl":[273,333,881.734375,41],"zoom":1,"a":13.24,"b":15.3},{"line":"L14","img":"037.jpg","cur":[298.0390625,242],"hl":[254,226,88.078125,32],"click":true,"a":15.3,"b":16.635},{"line":"L14","img":"038.jpg","hl":[500,132,600,195],"zoom":1,"a":16.635,"b":17.97},{"line":"L14","img":"039.jpg","cur":[800,478.5],"hl":[500,458,600,41],"typing":true,"a":17.97,"b":18.25},{"line":"L14","img":"040.jpg","cur":[800,478.5],"hl":[500,458,600,41],"typing":true,"a":18.25,"b":18.53},{"line":"L14","img":"041.jpg","cur":[1073.3984375,615],"hl":[1046.796875,594.5,53.203125,41],"click":true,"a":18.53,"b":19.865},{"line":"L14","img":"042.jpg","hl":[255,544.5,1150,63],"zoom":1,"a":19.865,"b":21.2},{"line":"L14","img":"042.jpg","hl":null,"zoom":1,"cur":null,"click":false,"a":21.2,"b":25.04}]};
+const $=id=>document.getElementById(id);
+const ease=x=>x<0?0:x>1?1:x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const lerp=(a,b,p)=>a+(b-a)*p;
+$('ep').textContent='EP.'+D.ep+' / 5';$('ttl').innerHTML=D.title;$('end').querySelector('h2').innerHTML=D.next;
+const win=$('win');
+function camOf(s){ // กรอบที่จะโชว์ (หน่วย px ของหน้าเว็บ 1600x900)
+  const WW=win.clientWidth,WH=win.clientHeight,AR=WH/WW;
+  let fx,fy,r;
+  if(s.hl){const[hx,hy,hw,hh]=s.hl;fx=hx+hw/2;fy=hy+hh/2;r=Math.max(hw*1.18,hh*1.18/AR,s.zoom?480:620);}
+  else if(s.cur){fx=s.cur[0];fy=s.cur[1];r=760;}
+  else {fx=900;fy=450;r=1000;}
+  r=Math.min(r,900/AR,1600);const rh=r*AR;
+  let x0=fx-r/2,y0=fy-rh/2;x0=Math.max(0,Math.min(1600-r,x0));y0=Math.max(0,Math.min(900-rh,y0));if(rh>900)y0=(900-rh)/2;
+  const k=WW/r;return {k,x:-x0*k,y:-y0*k};
+}
+const S=D.shots;
+async function render(t){
+  let i=S.findIndex(s=>t>=s.a&&t<s.b);if(i<0)i=t<S[0].a?0:S.length-1;const s=S[i],prev=S[i-1];
+  const img=$('scr'),src='_tut20/'+s.img;if(img.getAttribute('src')!==src){img.src=src;try{await img.decode()}catch(e){}}
+  const c1=camOf(s),c0=prev?camOf(prev):c1,p=ease((t-s.a)/.7);
+  const k=lerp(c0.k,c1.k,p),x=lerp(c0.x,c1.x,p),y=lerp(c0.y,c1.y,p);
+  $('cam').style.transform=`translate(${x}px,${y}px) scale(${k})`;
+  const hl=$('hl');if(s.hl){const[hx,hy,hw,hh]=s.hl,pad=8;Object.assign(hl.style,{left:hx-pad+'px',top:hy-pad+'px',width:hw+pad*2+'px',height:hh+pad*2+'px',opacity:s.typing?1:Math.max(0,Math.min(1,(t-s.a-.35)/.3))})}else hl.style.opacity=0;
+  let from=null;for(let j=i-1;j>=0;j--){if(S[j].cur){from=S[j].cur;break}}
+  const cur=$('cur'),rip=$('rip');
+  if(s.cur){const q=ease((t-s.a)/.6),f=from||[s.cur[0]+120,s.cur[1]+160];
+    Object.assign(cur.style,{left:lerp(f[0],s.cur[0],q)+'px',top:lerp(f[1],s.cur[1],q)+'px',opacity:1,transform:`scale(${1.6/Math.sqrt(k*2)})`});
+    const rc=(t-s.a-.6)/.45;if(s.click&&rc>0&&rc<1){Object.assign(rip.style,{left:s.cur[0]+'px',top:s.cur[1]+'px',opacity:1-rc,transform:`scale(${.3+rc*1.4})`})}else rip.style.opacity=0;}
+  else{cur.style.opacity=0;rip.style.opacity=0}
+  const ln=D.lines.find(l=>t>=l.t0&&t<l.t1)||D.lines[D.lines.length-1];
+  $('sub').firstElementChild.textContent=ln.sub;$('sub').style.opacity=Math.min(1,Math.max(0,(t-ln.s+.15)/.2))*Math.min(1,Math.max(0,(ln.t1-t)/.2));
+  const sp=t>=ln.s&&t<ln.s+ln.dur;$('es').style.transform=sp?`scale(${1+.035*Math.sin(t*38)},${1-.035*Math.sin(t*38)})`:'none';
+  const last=D.lines[D.lines.length-1];$('end').style.opacity=Math.min(1,Math.max(0,(t-last.t0)/.45));
+  const a=Math.min(1,t/.5);$('ttl').style.opacity=a;$('ep').style.opacity=a;$('ttl').style.transform=`translateY(${(1-a)*2}em)`;
+  $('bar').style.width=Math.min(100,t/D.TOT*100)+'%';
+}
+window.__total=D.TOT;window.__render=render;window.__drop=D.lines[1].t0;
+if(!/[?&]rec/.test(location.search)){const t0=performance.now();(async function f(){const t=(performance.now()-t0)/1000;await render(Math.min(t,D.TOT));if(t<D.TOT)requestAnimationFrame(f)})()}
+})();
+</script>
+</body>
+</html>

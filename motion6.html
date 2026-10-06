@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>น้อง eSim — ประกันสังคม 3 มาตรา</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="fonts/noto-sans-thai.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#091025;font-family:'Noto Sans Thai',system-ui,sans-serif;color:#10245a;overflow:clip}
+#wrap{height:100%;display:flex;align-items:center;justify-content:center}
+#st{position:relative;width:min(100vw,56.25vh);aspect-ratio:9/16;overflow:clip;font-size:calc(min(100vw,56.25vh)/100);
+  background:#091025}
+.grid{position:absolute;inset:0;background-image:linear-gradient(#ffffff09 .15em,transparent .15em),linear-gradient(90deg,#ffffff09 .15em,transparent .15em);background-size:4em 4em}
+.ball{position:absolute;border-radius:50%;animation:fl 6s ease-in-out infinite alternate}
+.b1{width:20em;height:20em;left:-7em;top:30em;background:radial-gradient(circle at 32% 28%,#fff 0,#a8c4ff 22%,#3b6ff0 70%,#1d4fc4 100%)}
+.b2{width:13em;height:13em;right:-4em;top:64em;background:radial-gradient(circle at 32% 28%,#fff 0,#a5f0ea 22%,#19b8b0 70%,#0e8a85 100%);animation-delay:-2s}
+.b3{width:8em;height:8em;left:12em;bottom:26em;background:radial-gradient(circle at 32% 28%,#fff 0,#ffe6a6 25%,#ffb938 70%,#e08a00 100%);animation-delay:-4s}
+@keyframes fl{to{transform:translate(2em,-5em)}}
+.top{position:absolute;left:0;right:0;top:4.5em;text-align:center;z-index:9}
+.top span{display:inline-flex;align-items:center;gap:.5em;font-size:2.8em;font-weight:900;color:#fff;background:linear-gradient(150deg,#1d4fc4,#12a3a0);border-radius:2em;padding:.3em 1em;box-shadow:0 .5em 1.2em #1d4fc444}
+.top i{font-style:normal;background:#fff;color:#1d4fc4;border-radius:.4em;padding:0 .35em;font-size:.9em}
+/* ฉาก */
+.sc{position:absolute;inset:0;visibility:hidden;color:#fff}
+.card,.chk,.row,.icn{color:#10245a}
+.sc.on{visibility:visible;animation:zin .45s cubic-bezier(.2,1.5,.4,1) both}
+.sc.off{visibility:visible;animation:zout .35s cubic-bezier(.6,0,.9,.4) forwards}
+@keyframes zin{from{transform:scale(.8) rotate(-3deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes zout{to{transform:scale(1.2) translateX(-30em) rotate(6deg);opacity:0;filter:blur(.5em)}}
+.a{opacity:0}
+.on .a{animation-fill-mode:both;animation-delay:var(--d,0s);animation-duration:var(--t,.5s)}
+.on .pop,.on .pz{animation-name:pop;animation-timing-function:cubic-bezier(.2,1.7,.4,1)}
+.on .up{animation-name:up;animation-timing-function:cubic-bezier(.2,1.3,.3,1)}
+.on .sl{animation-name:sl;animation-timing-function:cubic-bezier(.2,1.2,.3,1)}
+.on .sr{animation-name:sr;animation-timing-function:cubic-bezier(.2,1.2,.3,1)}
+@keyframes pop{0%{opacity:0;transform:scale(.1) rotate(-10deg)}60%{opacity:1;transform:scale(1.12) rotate(3deg)}100%{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(6em) scale(.9)}to{opacity:1;transform:none}}
+@keyframes sl{from{opacity:0;transform:translateX(-50em) skewX(12deg)}to{opacity:1;transform:none}}
+@keyframes sr{from{opacity:0;transform:translateX(50em) skewX(-12deg)}to{opacity:1;transform:none}}
+.bob{animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-1.4em) rotate(-2deg)}}
+/* น้อง eSim */
+.stk{border-radius:50%;background:#fff no-repeat center/cover;border:1.2em solid #fff;box-shadow:0 2em 3em -1em #1d4fc466}
+.pic{border-radius:4em;background:#fff no-repeat center/cover;border:1.2em solid #fff;box-shadow:0 2.4em 3.4em -1.2em #1d4fc466}
+.nm{display:inline-block;font-size:3.4em;font-weight:900;color:#fff;background:#2f6bff;border-radius:2em;padding:.2em 1em;box-shadow:0 .4em 1em #1d4fc455}
+/* ข้อความ */
+.H{position:absolute;left:5em;right:5em;text-align:center}
+.big{font-size:10em;font-weight:900;line-height:1.12;letter-spacing:-.02em}
+.big em,.mid em{font-style:normal;background:linear-gradient(90deg,#7fb4ff,#5ef0dc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mid{font-size:5.6em;font-weight:900;line-height:1.3}
+.card{background:#fff;border-radius:3.6em;box-shadow:0 2em 3.4em -1.4em #1d4fc455,inset 0 -.6em 0 #e8eefa}
+.badge{display:grid;place-items:center;border-radius:50%;color:#fff;font-weight:900;box-shadow:inset 0 .8em 1.2em #ffffff70,inset 0 -1em 1.4em #0003,0 1.6em 2.4em -1em #0005}
+.badge b{font-size:1em}
+.m33{background:linear-gradient(150deg,#5b8cff,#1d4fc4)}.m39{background:linear-gradient(150deg,#3fd6c9,#0e8a85)}.m40{background:linear-gradient(150deg,#ffb36b,#f2702d)}
+.icn{display:grid;place-items:center;border-radius:28%;background:#fff;box-shadow:0 1.2em 2em -1em #1d4fc455,inset 0 -.5em 0 #e8eefa}
+.icn span{line-height:1}
+.icn small{display:block;font-weight:800;color:#3c4f7a;text-align:center}
+.coin{display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b0 0,#ffcf3f 35%,#e7a400 100%);box-shadow:inset 0 -.8em 1em #b77f0055,0 1.4em 2em #e7a40055}
+.coin b{font-weight:900;color:#8a5700}
+.x{position:absolute;inset:0;display:grid;place-items:center;opacity:0}
+.on .x{animation:stamp .35s var(--d) cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stamp{from{opacity:0;transform:scale(2.6)}to{opacity:1;transform:none}}
+.chk{display:flex;align-items:center;gap:1.4em;background:#fff;border-radius:2.4em;padding:1.6em 2.2em;box-shadow:0 1.4em 2.4em -1em #1d4fc455;margin:1.4em 0}
+.chk i{font-style:normal;width:5.6em;height:5.6em;border-radius:50%;display:grid;place-items:center;background:linear-gradient(150deg,#34d399,#12a36b);color:#fff;font-size:3em;flex:none}
+.chk span{font-size:3.6em;font-weight:800;text-align:left}
+.fly{animation:flyc 1.4s var(--d) cubic-bezier(.4,0,.3,1) both}
+@keyframes flyc{0%{opacity:1;transform:none}100%{opacity:0;transform:translate(14em,-40em) rotate(40deg) scale(.6)}}
+.bar3{display:flex;align-items:flex-end;gap:3em;height:44em;justify-content:center}
+.bar3 div{width:22em;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bar3 i{width:100%;border-radius:3em 3em 1em 1em;transform-origin:bottom;transform:scaleY(0);box-shadow:inset 0 1em 1.4em #ffffff60}
+.on .bar3 i{animation:grow .6s var(--d) cubic-bezier(.2,1.5,.3,1) forwards}
+@keyframes grow{to{transform:scaleY(1)}}
+.bar3 b{font-size:6em;font-weight:900;margin-bottom:.2em}
+.bar3 small{font-size:2.8em;font-weight:800;color:#9fb4e0;margin-top:.5em}
+.row{display:flex;align-items:center;gap:2.6em;background:#fff;border-radius:3em;padding:2.4em 3em;margin:2em 0;box-shadow:0 1.6em 2.6em -1.2em #1d4fc455}
+.row .e{font-size:8em;line-height:1}
+.row .t{flex:1;font-size:3.8em;font-weight:800;text-align:left;line-height:1.3}
+.row .badge{width:15em;height:15em;font-size:4.4em;flex:none}
+.row .badge{width:3.4em;height:3.4em}
+.cta{display:inline-block;font-size:5.4em;font-weight:900;color:#fff;border-radius:1em;padding:.45em 1.3em;background:linear-gradient(150deg,#ff6b6b,#e5484d);box-shadow:inset 0 .2em .3em #ffffff70,0 .35em 0 #b4232e}
+.on .cta.a{animation:pop .5s var(--d) cubic-bezier(.2,1.7,.4,1) both,nod .9s calc(var(--d) + .5s) ease-in-out infinite alternate}
+@keyframes nod{to{transform:translateY(.25em) scale(1.03)}}
+.logo{display:flex;align-items:center;justify-content:center;gap:2em}
+.logo .ic{width:13em;height:13em;border-radius:28%;display:grid;place-items:center;background:linear-gradient(150deg,#33c7a0,#1559c8);box-shadow:inset 0 .8em 1.2em #ffffffa0,inset 0 -1em 1.4em #0003,0 1.6em 2.4em -.8em #1559c877}
+.logo .ic b{font-size:10em;font-weight:900;color:#fff;line-height:1;margin-top:-.12em}
+.logo .tx{font-size:8.4em;font-weight:900;letter-spacing:-.03em;color:#fff}.logo .tx i{font-style:normal;color:#12a36b}
+/* ซับไตเติล */
+.sub{position:absolute;left:5em;right:5em;bottom:6.5em;text-align:center;z-index:12;opacity:0;animation:sIn .25s var(--d) ease-out forwards,sOut .2s var(--e) ease-in forwards}
+@keyframes sIn{from{opacity:0;transform:translateY(1.5em)}to{opacity:1;transform:none}}
+@keyframes sOut{to{opacity:0}}
+.sub span{display:inline-block;font-size:3.6em;font-weight:800;color:#fff;background:#0f1c3fe6;border-radius:.7em;padding:.35em .8em;line-height:1.4}
+#bar{position:absolute;left:0;bottom:0;height:.7em;background:linear-gradient(90deg,#1d4fc4,#12a3a0);width:0;z-index:20}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="st">
+<div class="grid"></div><div class="ball b1"></div><div class="ball b2"></div><div class="ball b3"></div>
+<div class="top"><span><i>e</i> น้อง eSim · รู้ทันเงินเดือน</span></div>
+
+<!-- 0 hook -->
+<section class="sc" data-t="6.44">
+  <div class="card a up" style="--d:.2s;position:absolute;left:12em;right:12em;top:20em;padding:4em 4.6em">
+    <div style="font-size:3.2em;font-weight:800;color:#5a6b8c">สลิปเงินเดือน</div>
+    <div style="display:flex;justify-content:space-between;font-size:4.4em;font-weight:800;margin-top:.6em"><span>เงินเดือน</span><span>25,000</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:4.4em;font-weight:800;margin-top:.4em;color:#e5484d"><span>ประกันสังคม</span><span class="fly" style="--d:1.75s;display:inline-block">−875</span></div>
+  </div>
+  <div class="H" style="top:62em"><div class="big a pop" style="--d:2.45s">หายไปไหน? 🤔</div></div>
+  <div class="H" style="top:90em"><div class="mid a up" style="--d:4.23s">แล้วเราได้<em>อะไรคืน</em>บ้าง? 🎁</div></div>
+  <div class="stk a pop" style="--d:.6s;position:absolute;right:6em;top:106em;width:40em;height:40em;background-image:url(media/esim/e3.png)"></div>
+<div class="sub" data-sc="0" style="--d:0.50s;--e:4.18s"><span>เคยสงสัยไหม? เงินประกันสังคมที่โดนหักทุกเดือน… หายไปไหน?</span></div>
+<div class="sub" data-sc="0" style="--d:4.18s;--e:6.24s"><span>แล้วเราได้อะไรคืนมาบ้าง?</span></div>
+</section>
+
+<!-- 1 intro -->
+<section class="sc" data-t="6.29">
+  <div class="pic a pop" style="--d:.15s;position:absolute;left:18em;right:18em;top:14em;height:80em;background-image:url(media/esim/hero.png);background-position:50% 20%"></div>
+  <div class="H" style="top:90em"><div class="a up" style="--d:1.15s"><span class="nm">น้อง eSim 👋</span></div></div>
+  <div class="H" style="top:100em"><div class="mid a up" style="--d:2.26s">ประกันสังคม <em>3 มาตรา</em></div></div>
+  <div style="position:absolute;left:0;right:0;top:114em;display:flex;justify-content:center;gap:4em">
+    <div class="badge m33 a pop" style="--d:3.26s;width:22em;height:22em;font-size:1em"><b style="font-size:6em">ม.33</b></div>
+    <div class="badge m39 a pop" style="--d:3.66s;width:22em;height:22em"><b style="font-size:6em">ม.39</b></div>
+    <div class="badge m40 a pop" style="--d:4.06s;width:22em;height:22em"><b style="font-size:6em">ม.40</b></div>
+  </div>
+<div class="sub" data-sc="1" style="--d:0.50s;--e:2.21s"><span>สวัสดีครับ ผม “น้อง eSim” 👋</span></div>
+<div class="sub" data-sc="1" style="--d:2.21s;--e:6.09s"><span>วันนี้พาไปรู้จักประกันสังคม 3 มาตรา</span></div>
+</section>
+
+<!-- 2 ม.33 -->
+<section class="sc" data-t="10.79">
+  <div class="badge m33 a pop" style="--d:.15s;position:absolute;left:6em;top:13em;width:26em;height:26em"><b style="font-size:7.6em">ม.33</b></div>
+  <div class="a sr" style="--d:.4s;position:absolute;left:36em;right:5em;top:16em"><div class="mid" style="text-align:left">มนุษย์เงินเดือน<br><em>มีนายจ้าง</em></div></div>
+  <div class="pic a up" style="--d:.7s;position:absolute;left:8em;right:8em;top:43em;height:46em;background-image:url(media/esim/s1.png)"></div>
+  <div class="card a up" style="--d:3.87s;position:absolute;left:8em;right:8em;top:93em;padding:3em 4em;text-align:center">
+    <div style="font-size:3.6em;font-weight:800;color:#5a6b8c">ค่าจ้าง × 5%</div>
+    <div style="font-size:9em;font-weight:900;color:#1d4fc4;line-height:1.1">สูงสุด <span class="cnt" data-to="875" data-d="5.27">0</span> ฿</div>
+    <div style="font-size:3em;font-weight:700;color:#5a6b8c">ต่อเดือน</div>
+  </div>
+  <div style="position:absolute;left:0;right:0;top:128em;display:flex;justify-content:center;align-items:center;gap:3em">
+    <div class="a pop" style="--d:7.98s;text-align:center"><div class="coin" style="width:20em;height:20em"><b style="font-size:4.6em">875</b></div><div style="font-size:3em;font-weight:800;margin-top:.4em">ลูกจ้าง</div></div>
+    <div class="a pop" style="--d:8.38s;font-size:9em;font-weight:900;color:#7fb4ff">+</div>
+    <div class="a pop" style="--d:8.68s;text-align:center"><div class="coin" style="width:20em;height:20em"><b style="font-size:4.6em">875</b></div><div style="font-size:3em;font-weight:800;margin-top:.4em">นายจ้าง 🤝</div></div>
+  </div>
+<div class="sub" data-sc="2" style="--d:0.50s;--e:3.82s"><span>ม.33 — มนุษย์เงินเดือนที่มีนายจ้าง</span></div>
+<div class="sub" data-sc="2" style="--d:3.82s;--e:7.93s"><span>หัก 5% ของค่าจ้าง สูงสุด 875 บาท/เดือน</span></div>
+<div class="sub" data-sc="2" style="--d:7.93s;--e:10.59s"><span>นายจ้างจ่ายสมทบให้อีกเท่ากัน</span></div>
+</section>
+
+<!-- 3 7 กรณี -->
+<section class="sc" data-t="6.51">
+  <div class="H" style="top:14em"><div class="big a pop" style="--d:.15s">คุ้มครอง <em>7 กรณี</em></div></div>
+  <div style="position:absolute;left:5em;right:5em;top:34em;display:grid;grid-template-columns:repeat(3,1fr);gap:3em;justify-items:center">
+    <div class="icn a pop" style="--d:2.20s;width:26em;height:26em"><div><span style="font-size:10em">🤒</span><small style="font-size:3em">เจ็บป่วย</small></div></div>
+    <div class="icn a pop" style="--d:2.65s;width:26em;height:26em"><div><span style="font-size:10em">🤰</span><small style="font-size:3em">คลอดบุตร</small></div></div>
+    <div class="icn a pop" style="--d:3.10s;width:26em;height:26em"><div><span style="font-size:10em">♿</span><small style="font-size:3em">ทุพพลภาพ</small></div></div>
+    <div class="icn a pop" style="--d:3.55s;width:26em;height:26em"><div><span style="font-size:10em">🕊️</span><small style="font-size:3em">เสียชีวิต</small></div></div>
+    <div class="icn a pop" style="--d:4.00s;width:26em;height:26em"><div><span style="font-size:10em">👶</span><small style="font-size:3em">สงเคราะห์บุตร</small></div></div>
+    <div class="icn a pop" style="--d:4.50s;width:26em;height:26em"><div><span style="font-size:10em">👴</span><small style="font-size:3em">ชราภาพ</small></div></div>
+    <div></div>
+    <div class="icn a pop" style="--d:5.00s;width:26em;height:26em"><div><span style="font-size:10em">💼</span><small style="font-size:3em">ว่างงาน</small></div></div>
+  </div>
+  <div class="stk a pop" style="--d:.5s;position:absolute;left:4em;top:128em;width:30em;height:30em;background-image:url(media/esim/e4.png)"></div>
+<div class="sub" data-sc="3" style="--d:0.50s;--e:2.15s"><span>คุ้มครองครบ 7 กรณี</span></div>
+<div class="sub" data-sc="3" style="--d:2.15s;--e:6.31s"><span>เจ็บป่วย · คลอดบุตร · ทุพพลภาพ · เสียชีวิต · สงเคราะห์บุตร · ชราภาพ · ว่างงาน</span></div>
+</section>
+
+<!-- 4 ม.39 -->
+<section class="sc" data-t="12.59">
+  <div class="pic a sl" style="--d:.15s;position:absolute;left:6em;right:6em;top:13em;height:46em;background-image:url(media/esim/s4.png)"></div>
+  <div class="H" style="top:62em"><div class="mid a up" style="--d:.6s">ลาออกไปลุยเอง 🚀</div></div>
+  <div class="badge m39 a pop" style="--d:4.43s;position:absolute;left:50%;margin-left:-15em;top:74em;width:30em;height:30em"><b style="font-size:9em">ม.39</b></div>
+  <div style="position:absolute;left:7em;right:7em;top:108em">
+    <div class="chk a sl" style="--d:6.41s"><i>✓</i><span>เคยจ่าย ม.33 มาแล้ว ≥ 12 เดือน</span></div>
+    <div class="chk a sl" style="--d:8.81s"><i>✓</i><span>สมัครภายใน 6 เดือนหลังออกงาน</span></div>
+  </div>
+<div class="sub" data-sc="4" style="--d:0.50s;--e:4.38s"><span>ลาออกไปทำธุรกิจ / ฟรีแลนซ์ แต่อยากเก็บสิทธิไว้?</span></div>
+<div class="sub" data-sc="4" style="--d:4.38s;--e:6.36s"><span>นี่แหละ ม.39</span></div>
+<div class="sub" data-sc="4" style="--d:6.36s;--e:12.39s"><span>เคยจ่าย ม.33 ≥ 12 เดือน · สมัครภายใน 6 เดือนหลังออกงาน</span></div>
+</section>
+
+<!-- 5 ม.39 จ่าย 432 -->
+<section class="sc" data-t="5.92">
+  <div class="badge m39 a pop" style="--d:.1s;position:absolute;left:6em;top:13em;width:20em;height:20em"><b style="font-size:6em">ม.39</b></div>
+  <div class="card a up" style="--d:.3s;position:absolute;left:30em;right:6em;top:13em;padding:2.6em;text-align:center">
+    <div style="font-size:3em;font-weight:800;color:#5a6b8c">จ่ายเดือนละ</div>
+    <div style="font-size:9em;font-weight:900;color:#0e8a85;line-height:1.1"><span class="cnt" data-to="432" data-d=".6">0</span> ฿</div>
+  </div>
+  <div class="H" style="top:42em"><div class="mid a up" style="--d:1.95s">ได้สิทธิ <em>6 กรณี</em></div></div>
+  <div style="position:absolute;left:5em;right:5em;top:56em;display:grid;grid-template-columns:repeat(4,1fr);gap:2em;justify-items:center">
+    <div class="icn a pz" style="--d:2.25s;width:20em;height:20em"><span style="font-size:9em">🤒</span></div>
+    <div class="icn a pz" style="--d:2.40s;width:20em;height:20em"><span style="font-size:9em">🤰</span></div>
+    <div class="icn a pz" style="--d:2.55s;width:20em;height:20em"><span style="font-size:9em">♿</span></div>
+    <div class="icn a pz" style="--d:2.70s;width:20em;height:20em"><span style="font-size:9em">🕊️</span></div>
+    <div class="icn a pz" style="--d:2.85s;width:20em;height:20em"><span style="font-size:9em">👶</span></div>
+    <div class="icn a pz" style="--d:3.00s;width:20em;height:20em"><span style="font-size:9em">👴</span></div>
+    <div class="icn a pop" style="--d:3.42s;width:20em;height:20em;position:relative;background:#ffecec"><span style="font-size:9em;opacity:.5">💼</span>
+      <div class="x" style="--d:4.02s" data-sfx="stamp" data-at="4.02"><span style="font-size:16em;color:#e5484d;font-weight:900">✕</span></div></div>
+  </div>
+  <div class="H" style="top:101em"><div class="a up" style="--d:4.12s"><span class="mid" style="color:#e5484d">ยกเว้น “ว่างงาน”</span></div></div>
+  <div class="stk a pop" style="--d:.8s;position:absolute;right:6em;top:104em;width:36em;height:36em;background-image:url(media/esim/e2.png)"></div>
+<div class="sub" data-sc="5" style="--d:0.50s;--e:3.77s"><span>จ่ายเดือนละ 432 บาท ได้ 6 กรณี</span></div>
+<div class="sub" data-sc="5" style="--d:3.77s;--e:5.72s"><span>ยกเว้น “ว่างงาน”</span></div>
+</section>
+
+<!-- 6 ม.40 -->
+<section class="sc" data-t="12.01">
+  <div class="badge m40 a pop" style="--d:.1s;position:absolute;left:6em;top:13em;width:24em;height:24em"><b style="font-size:7.4em">ม.40</b></div>
+  <div class="a sr" style="--d:.4s;position:absolute;left:34em;right:5em;top:15em"><div class="mid" style="text-align:left;font-size:5em">อาชีพอิสระ<br><em>ไม่เคยมีนายจ้าง</em></div></div>
+  <div style="position:absolute;left:0;right:0;top:42em;display:flex;justify-content:center;gap:3em">
+    <div class="icn a pop" style="--d:2.55s;width:22em;height:22em"><div><span style="font-size:9em">🛍️</span><small style="font-size:2.8em">แม่ค้า</small></div></div>
+    <div class="icn a pop" style="--d:3.25s;width:22em;height:22em"><div><span style="font-size:9em">🛵</span><small style="font-size:2.8em">วินมอไซค์</small></div></div>
+    <div class="icn a pop" style="--d:3.95s;width:22em;height:22em"><div><span style="font-size:9em">💻</span><small style="font-size:2.8em">ฟรีแลนซ์</small></div></div>
+  </div>
+  <div class="bar3" style="position:absolute;left:4em;right:4em;top:72em">
+    <div><b class="a pop" style="--d:7.54s;color:#f2702d">70</b><i style="height:30%;background:linear-gradient(#ffd0a8,#ffa66b);--d:7.44s"></i><small>บาท/เดือน</small></div>
+    <div><b class="a pop" style="--d:8.04s;color:#f2702d">100</b><i style="height:55%;background:linear-gradient(#ffbd85,#ff8a3d);--d:7.94s"></i><small>บาท/เดือน</small></div>
+    <div><b class="a pop" style="--d:8.64s;color:#f2702d">300</b><i style="height:90%;background:linear-gradient(#ffa066,#f2542d);--d:8.54s"></i><small>บาท/เดือน</small></div>
+  </div>
+  <div class="H" style="top:122em"><div class="mid a pop" style="--d:9.61s">จ่ายมาก = <em>สิทธิมาก</em> ⬆️</div></div>
+  <div class="stk a pop" style="--d:9.61s;position:absolute;left:4em;top:134em;width:24em;height:24em;background-image:url(media/esim/e1.png)"></div>
+<div class="sub" data-sc="6" style="--d:0.50s;--e:6.09s"><span>ม.40 — อาชีพอิสระ แม่ค้า วินมอเตอร์ไซค์ ฟรีแลนซ์</span></div>
+<div class="sub" data-sc="6" style="--d:6.09s;--e:9.56s"><span>เลือกจ่ายได้ 70 / 100 / 300 บาทต่อเดือน</span></div>
+<div class="sub" data-sc="6" style="--d:9.56s;--e:11.81s"><span>ยิ่งจ่ายมาก สิทธิยิ่งมาก</span></div>
+</section>
+
+<!-- 7 สรุป -->
+<section class="sc" data-t="9.43">
+  <div class="H" style="top:13em"><div class="big a pop" style="--d:.1s;font-size:9em">สรุปง่าย ๆ ✨</div></div>
+  <div style="position:absolute;left:5em;right:5em;top:32em">
+    <div class="row a sl" style="--d:0.55s"><div class="e">🏢</div><div class="t">มีนายจ้าง<br>รับเงินเดือนประจำ</div><div class="badge m33" style="font-size:4.4em;width:3.6em;height:3.6em"><b>ม.33</b></div></div>
+    <div class="row a sl" style="--d:3.33s"><div class="e">🚀</div><div class="t">เคยทำประจำ<br>แล้วออกมาทำเอง</div><div class="badge m39" style="font-size:4.4em;width:3.6em;height:3.6em"><b>ม.39</b></div></div>
+    <div class="row a sl" style="--d:6.50s"><div class="e">🛵</div><div class="t">อาชีพอิสระ<br>ตั้งแต่ต้น</div><div class="badge m40" style="font-size:4.4em;width:3.6em;height:3.6em"><b>ม.40</b></div></div>
+  </div>
+  <div class="stk a pop" style="--d:7.50s;position:absolute;right:6em;top:118em;width:34em;height:34em;background-image:url(media/esim/e4.png)"></div>
+<div class="sub" data-sc="7" style="--d:0.50s;--e:3.28s"><span>มีนายจ้าง → ม.33</span></div>
+<div class="sub" data-sc="7" style="--d:3.28s;--e:6.45s"><span>เคยทำประจำ แล้วออกมาทำเอง → ม.39</span></div>
+<div class="sub" data-sc="7" style="--d:6.45s;--e:9.23s"><span>อาชีพอิสระตั้งแต่ต้น → ม.40</span></div>
+</section>
+
+<!-- 8 ปิด -->
+<section class="sc" data-t="8.66">
+  <div class="pic a pop" style="--d:.1s;position:absolute;left:22em;right:22em;top:12em;height:60em;background-image:url(media/esim/e6.png)"></div>
+  <div class="logo a pop" style="--d:.6s;position:absolute;left:0;right:0;top:76em"><div class="ic"><b>e</b></div><div class="tx">eSim<i>Payroll</i></div></div>
+  <div class="card a up" style="--d:1.75s;position:absolute;left:8em;right:8em;top:94em;padding:3em 3.6em;text-align:center">
+    <div style="font-size:3.8em;font-weight:900">คิดประกันสังคมพนักงานให้อัตโนมัติ ✓</div>
+    <div style="font-size:3em;font-weight:700;color:#5a6b8c;margin-top:.3em">พร้อม สปส.1-10 ทุกเดือน</div>
+  </div>
+  <div class="H" style="top:120em"><span class="cta a" style="--d:5.00s">กดติดตาม 🔔</span></div>
+  <div class="H" style="top:136em"><div class="a up" style="--d:5.80s;font-size:3.4em;font-weight:900;color:#9fb4e0">esimpayroll.com</div></div>
+<div class="sub" data-sc="8" style="--d:0.50s;--e:4.95s"><span>เจ้าของกิจการ ให้ eSimPayroll คิดประกันสังคมให้ทุกเดือน</span></div>
+<div class="sub" data-sc="8" style="--d:4.95s;--e:8.46s"><span>กดติดตามไว้ เดี๋ยวมีเรื่องเงินเดือนมาเล่าอีก!</span></div>
+</section>
+
+
+<div id="bar"></div>
+</div></div>
+<script>
+(function(){
+  var S=[].slice.call(document.querySelectorAll('.sc')),T=S.map(function(s){return +s.dataset.t}),tot=T.reduce(function(a,b){return a+b},0);
+  var ST=[],acc=0;T.forEach(function(t){ST.push(acc);acc+=t});
+  var cur=-1,bar=document.getElementById('bar');
+  function fmt(n){return Math.round(n).toLocaleString('en-US')}
+  function render(t){
+    var i=0;while(i<S.length-1&&t>=ST[i+1])i++;
+    var st=t-ST[i];
+    if(i!==cur){S.forEach(function(s){s.classList.remove('on','off')});void S[i].offsetWidth;S[i].classList.add('on');cur=i}
+    if(i>0){var p=S[i-1];if(st<.35)p.classList.add('off');else p.classList.remove('off')}
+    document.getAnimations().forEach(function(an){
+      var el=an.effect&&an.effect.target;if(!el)return;if(el.nodeType!==1)el=el.parentElement||el;var sc=el.closest&&el.closest('.sc');
+      an.pause();
+      if(!sc)an.currentTime=t*1000;else if(sc===S[i])an.currentTime=st*1000;else an.currentTime=Math.min(st,.35)*1000;
+    });
+    [].forEach.call(S[i].querySelectorAll('.cnt'),function(el){var p=Math.max(0,Math.min(1,(st-(+el.dataset.d||0))/.9));el.textContent=fmt(+el.dataset.to*(1-Math.pow(1-p,3)))});
+    bar.style.width=Math.min(100,t/tot*100)+'%';
+  }
+  window.__total=tot; window.__render=render; window.__drop=ST[1];
+  if(!/[?&]rec/.test(location.search)){var t0=performance.now();(function f(n){var t=(n-t0)/1000;render(Math.min(t,tot));if(t<tot)requestAnimationFrame(f)})(t0)}
+})();
+</script>
+</body>
+</html>
