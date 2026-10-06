@@ -3,10 +3,17 @@
 เว็บแอปเงินเดือน แบบมีระบบล็อกอิน เก็บข้อมูลบนคลาวด์ (Supabase) แยกตามผู้ใช้
 
 ## โครงสร้าง
-- `index.html` — ตัวโปรแกรม (มีชั้นล็อกอิน + ซิงก์คลาวด์ในตัว)
-- `Payroll-tutorial.html` — วิดีโอสอนใช้งาน (16:9 + เสียงพากย์ไทย)
-- `supabase-schema.sql` — สคีมาฐานข้อมูล (รันครั้งเดียวใน Supabase)
-- `vercel.json` — ตั้งค่า deploy
+- `app.html` — โครงหน้าตัวโปรแกรม (มีชั้นล็อกอิน + ซิงก์คลาวด์ในตัว) · `checkin.html` — หน้าลงเวลาผ่านมือถือของพนักงาน
+- `assets/app/` — โค้ดของโปรแกรม แยกตามเมนู (`01-core.js` สูตรเงินเดือน … `16-cloud-boot.js` เริ่มระบบ) + `app.css`
+  **ไฟล์โหลดตามเลขลำดับและพึ่งกัน** — ฟังก์ชันที่เรียกตอนโหลดหน้าต้องอยู่ในไฟล์เลขเดียวกันหรือน้อยกว่า
+- `index.html`, `pricing.html`, `article-*.html` ฯลฯ — หน้าเว็บสาธารณะ
+- `partials/` — เมนูบน/ส่วนท้ายที่ใช้ร่วมทุกหน้า → แก้แล้วรัน `npm run build:partials`
+- `assets/css/` — CSS ที่ใช้ร่วมกัน (บทความ / หน้าทั่วไป)
+- `sql/` — ไฟล์ SQL ของ Supabase เรียงตามลำดับที่ต้องรัน (ดู `sql/README.md`)
+- `supabase/functions/` — Edge Functions
+- `tests/` — ทดสอบสูตรเงินเดือน (`payroll.test.mjs`) และตัวเลขในเอกสารราชการ กท.20 ก / สปส.1-10 / 50 ทวิ / ภ.ง.ด.1 (`documents.test.mjs`) → `npm test`
+- `motion*.html` — หน้าสำหรับเรนเดอร์วิดีโอโปรโมต (ไม่ขึ้นเว็บ)
+- `vercel.json` — ตั้งค่า deploy · `.vercelignore` — ไฟล์ที่ไม่ขึ้นเว็บ
 
 ---
 
@@ -14,9 +21,9 @@
 
 ### 1) ตั้งค่า Supabase
 1. เข้า https://sfzzswzyoqshlppsturd.supabase.co → **SQL Editor**
-2. วางเนื้อหาไฟล์ `supabase-schema.sql` ทั้งหมด → **Run** (สร้างตาราง `payroll_stores` + RLS)
+2. รันไฟล์ในโฟลเดอร์ `sql/` ทีละไฟล์ตามเลขลำดับ ตั้งแต่ `01-supabase-schema.sql` (สร้างตาราง `payroll_stores` + RLS) จนถึงไฟล์สุดท้าย — รายละเอียดแต่ละไฟล์อยู่ใน `sql/README.md`
 3. ไปที่ **Project Settings → API** คัดลอก **Project URL** และ **anon / publishable key**
-4. เปิด `index.html` แก้บรรทัด:
+4. เปิด `app.html` แก้บรรทัด:
    ```js
    const SB_ANON='__PASTE_SUPABASE_ANON_KEY_HERE__';
    ```

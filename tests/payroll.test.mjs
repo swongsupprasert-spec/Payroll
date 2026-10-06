@@ -1,48 +1,10 @@
-// ทดสอบสูตรเงินเดือนของจริงใน app.html โดยไม่แก้โค้ดแอป
-// ดึงฟังก์ชันตามชื่อออกมารันใน sandbox พร้อม DB จำลอง แล้วเทียบกับคำตอบที่คิดมือไว้
+// ทดสอบสูตรเงินเดือนของจริง (assets/app/*.js) เทียบกับคำตอบที่คิดมือไว้ — โดยไม่แก้โค้ดแอป
 // รัน: npm test
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import vm from 'node:vm';
+import { makeApp as load, CORE } from './load-app.mjs';
 
-const SRC = fs.readFileSync(process.env.APP_HTML || new URL('../app.html', import.meta.url), 'utf8');
-
-/* ตัดฟังก์ชัน/ค่าคงที่ระดับบนสุดตามชื่อ (นับวงเล็บปีกกา ข้ามสตริงและคอมเมนต์) */
-function grab(name) {
-  const m = new RegExp(`^(function ${name}\\(|const ${name}\\s*=)`, 'm').exec(SRC);
-  if (!m) throw new Error(`ไม่พบ ${name} ใน app.html — ถูกเปลี่ยนชื่อหรือลบไปหรือไม่`);
-  let i = m.index, depth = 0, started = false;
-  for (; i < SRC.length; i++) {
-    const c = SRC[i], n = SRC[i + 1];
-    if (c === '/' && n === '/') { i = SRC.indexOf('\n', i); continue; }
-    if (c === '/' && n === '*') { i = SRC.indexOf('*/', i) + 1; continue; }
-    if (c === "'" || c === '"' || c === '`') {
-      for (i++; i < SRC.length && SRC[i] !== c; i++) if (SRC[i] === '\\') i++;
-      continue;
-    }
-    if (c === '{' || c === '[') { depth++; started = true; }
-    else if (c === '}' || c === ']') { depth--; if (started && depth === 0 && m[0].startsWith('function')) return SRC.slice(m.index, i + 1); }
-    else if (c === ';' && depth === 0 && m[0].startsWith('const')) return SRC.slice(m.index, i + 1);
-  }
-  throw new Error(`ตัด ${name} ไม่สำเร็จ`);
-}
-
-const NAMES = ['EARN_FIELDS', 'DED_FIELDS', 'SSO_WAGE_KEYS', 'TAX_BRACKETS', 'periodRange', 'isoOf', 'blankRec',
-  'readRec', 'autoSSO', 'salHistOf', 'salaryOnDate', 'salaryFor', 'prorate', 'basePay', 'resignedBefore',
-  'ssoWage', 'ssoExempt', 'monthlyWage', 'otRate', 'otAmount', 'progressiveTax', 'monthsEmployedInYear',
-  'estTax', 'calc'];
-
-function makeApp(dbOver = {}) {
-  const ctx = {
-    DB: { ssoRate: 5, ssoMaxBase: 17500, otDays: 30, otHours: 8, cutoffDay: 0, workDaysDefault: 26, payroll: {}, ...dbOver },
-    PERIOD: '2026-10',
-    pad2: n => String(n).padStart(2, '0'),
-  };
-  vm.createContext(ctx);
-  vm.runInContext(NAMES.map(grab).join('\n') + '\n;this.F={' + NAMES.filter(n => !/^[A-Z_]+$/.test(n)).join(',') + '};', ctx);
-  return { ...ctx.F, DB: ctx.DB };
-}
+const makeApp = (db) => load(CORE, db);
 const A = makeApp();
 const M = (salary, extra = {}) => ({ id: 'e1', payType: 'monthly', salary, startDate: '2020-01-01', ...extra });
 
