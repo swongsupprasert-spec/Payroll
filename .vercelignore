@@ -22,3 +22,14 @@ brand/logo-full-white.svg
 brand/logo-mark.svg
 brand/logo-mark.png
 ids.txt
+
+# ไฟล์สำหรับทำวิดีโอ/ภาพโปรโมต — ใช้เรนเดอร์ในเครื่องเท่านั้น ไม่ขึ้นเว็บ
+motion*.html
+cover14.html
+campaign-free.html
+media/esimpayroll-*.mp4
+!media/esimpayroll-ad.mp4
+!media/esimpayroll-ad-9x16.mp4
+media/esimpayroll-*-cover-*.jpg
+media/campaign-free-*.png
+media/motion3-cover.webp

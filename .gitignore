@@ -11,3 +11,9 @@ deno.lock
 
 # ไฟล์สถานะของ Supabase CLI (เฉพาะเครื่องนี้)
 supabase/.temp/
+
+# วิดีโอ/เสียงที่เรนเดอร์จากหน้า motion*.html — ไฟล์ใหญ่ เก็บในเครื่องหรือ Drive แทน
+media/esimpayroll-*.mp4
+!media/esimpayroll-ad.mp4
+!media/esimpayroll-ad-9x16.mp4
+media/voice-samples.mp3
