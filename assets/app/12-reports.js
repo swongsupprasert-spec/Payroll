@@ -276,6 +276,8 @@ function pndPayDate(p){   // วันที่จ่ายของงวด (�
   const [y,m]=p.split('-').map(Number);
   return `${y}-${String(m).padStart(2,'0')}-${String(daysInMonth(y,m)).padStart(2,'0')}`;
 }
+/* ผู้มีเงินได้ใน ภ.ง.ด.1 ของงวด p — เฉพาะคนที่ทำงานในเดือนนั้น (คนลาออก/ยังไม่เริ่มงานไม่ต้องยื่น) แบบเดียวกับ สปส.1-10 */
+function pnd1List(p){ const [y,m]=p.split('-').map(Number); return DB.employees.filter(e=>activeInMonth(e,y,m)); }
 function vPND1(v){
   const tb=el(`<div class="toolbar no-print"><h2 style="font-size:16px">แบบ ภ.ง.ด.1 — ${periodLabel(PERIOD)}</h2>
     <div class="field" style="margin-left:auto"><label>วันที่จ่ายเงิน</label><input type="date" id="pndDate" value="${pndPayDate(PERIOD)}"></div>
@@ -285,7 +287,8 @@ function vPND1(v){
   tb.querySelector('#pndDate').onchange=(e)=>{ DB.payDates=DB.payDates||{}; DB.payDates[PERIOD]=e.target.value; save(); render(); };
   const payD=fmtDate(pndPayDate(PERIOD));
   let totIncome=0, totTax=0;
-  const rows=DB.employees.map((e,i)=>{ const c=calc(e,PERIOD); totIncome+=c.gross; totTax+=+c.r.ded.tax||0;
+  const list=pnd1List(PERIOD);
+  const rows=list.map((e,i)=>{ const c=calc(e,PERIOD); totIncome+=c.gross; totTax+=+c.r.ded.tax||0;
     return `<tr><td style="text-align:center">${i+1}</td><td>${esc(e.taxId||'-')}</td><td>${esc(e.name)}</td>
       <td style="text-align:center">${payD}</td>
       <td style="text-align:right">${money(c.gross)}</td><td style="text-align:right">${money(c.r.ded.tax)}</td></tr>`;
@@ -302,12 +305,12 @@ function vPND1(v){
       <tbody>${rows||'<tr><td colspan="6" style="text-align:center">ไม่มีข้อมูล</td></tr>'}</tbody>
       <tfoot><tr><th colspan="4" style="text-align:right">รวมทั้งสิ้น</th><th style="text-align:right">${money(totIncome)}</th><th style="text-align:right">${money(totTax)}</th></tr></tfoot>
     </table>
-    <div style="margin-top:8px">จำนวนผู้มีเงินได้ ${num(DB.employees.length)} ราย · รวมภาษีที่นำส่ง ${money(totTax)} บาท (${bahtText(totTax)})</div>
+    <div style="margin-top:8px">จำนวนผู้มีเงินได้ ${num(list.length)} ราย · รวมภาษีที่นำส่ง ${money(totTax)} บาท (${bahtText(totTax)})</div>
     <div class="sign"><div><div class="line"></div>ผู้จ่ายเงิน / ผู้มีหน้าที่หักภาษี ณ ที่จ่าย<br>(${esc(DB.company.signer)})</div></div>
   </div>`));
   $('#pnd1csv').onclick=()=>{
     const lines=['ลำดับ,เลขประจำตัวผู้เสียภาษี,ชื่อ,เงินได้,ภาษีหัก'];
-    DB.employees.forEach((e,i)=>{ const c=calc(e,PERIOD); lines.push(`${i+1},${e.taxId||''},"${e.name}",${c.gross},${c.r.ded.tax||0}`); });
+    pnd1List(PERIOD).forEach((e,i)=>{ const c=calc(e,PERIOD); lines.push(`${i+1},${e.taxId||''},"${e.name}",${c.gross},${c.r.ded.tax||0}`); });
     downloadFile(`pnd1_${PERIOD}.csv`, '﻿'+lines.join('\n'),'text/csv'); toast('ส่งออกแล้ว');
   };
 }
