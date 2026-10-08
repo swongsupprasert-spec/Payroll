@@ -32,6 +32,16 @@
   html[data-theme="dark"] [style*="color:#1e293b"],html[data-theme="dark"] [style*="color:#334155"],html[data-theme="dark"] [style*="color:#475569"],html[data-theme="dark"] [style*="color:#0f172a"],html[data-theme="dark"] [style*="color:#1f2937"]{color:var(--ink)!important}
   html[data-theme="dark"] .doc,html[data-theme="dark"] .doc *{color-scheme:light}
   html[data-theme="dark"] #authGate,html[data-theme="dark"] #authGate > div{background:var(--card)!important;color:var(--ink)}
+  /* ปุ่มสมัคร 2 ปุ่มบนหน้าล็อกอิน — ขนาด/น้ำหนักเท่ากัน เด่นเท่ากันทั้งโหมดสว่างและมืด */
+  .authBtn{width:100%;min-height:48px;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 14px;margin-bottom:10px;
+    border-radius:10px;font:inherit;font-weight:700;font-size:15.5px;cursor:pointer;box-shadow:0 2px 8px rgba(15,36,56,.16);transition:transform .12s,box-shadow .12s,filter .12s}
+  .authBtn:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(15,36,56,.22)}
+  .authBtn:disabled{opacity:.6;cursor:default;transform:none}
+  #authSignup.authBtn{background:#0284c7!important;color:#fff!important;border:1.5px solid #0284c7!important}
+  #authSignup.authBtn:hover{filter:brightness(1.07)}
+  #authGoogle.authBtn{background:#fff!important;color:#1f1f1f!important;border:1.5px solid #c6ccd3!important}
+  #authGoogle.authBtn:hover{background:#f7f9fb!important}
+  html[data-theme="dark"] #authGoogle.authBtn{border-color:#fff!important}
   /* กราฟ SVG ในโหมดมืด */
   html[data-theme="dark"] svg text[fill="#374151"],html[data-theme="dark"] svg text[fill="#1f2937"]{fill:#e5edf5}
   html[data-theme="dark"] svg text[fill="#6b7280"]{fill:#94a3b8}
