@@ -27,7 +27,8 @@ async function vQuotes(v){
   box.innerHTML=`<table><thead><tr><th>เลขที่</th><th>วันที่</th><th>ลูกค้า</th><th class="num">ยอดรวม</th><th>ยืนราคาถึง</th><th>สถานะ</th><th></th></tr></thead><tbody>
     ${data.map((q,i)=>{ const exp=q.status==='issued'&&q.valid_until&&q.valid_until<today;
       const contact=q.doc&&q.doc.customer&&q.doc.customer.contact;
-      return `<tr><td><strong>${esc(q.quote_no||'-')}</strong></td><td>${esc(fmtDateTime(q.created_at))}</td>
+      return `<tr><td style="white-space:nowrap"><strong>${esc(q.quote_no||'-')}</strong>
+        <button class="btn ghost sm" data-qn="${i}" title="แก้ไขเลขที่" style="padding:2px 7px;margin-left:4px">✏️</button></td><td>${esc(fmtDateTime(q.created_at))}</td>
       <td>${esc(q.customer)}${contact?`<br><span class="muted" style="font-size:12px">${esc(contact)}</span>`:''}</td>
       <td class="num"><strong>${money(q.total)}</strong></td>
       <td style="${exp?'color:#dc2626;font-weight:700':''}">${q.valid_until?fmtDate(q.valid_until):'-'}${exp?' (หมดอายุ)':''}</td>
@@ -46,6 +47,22 @@ async function vQuotes(v){
     const {error}=await sb.from('quotes').update({status:s.value}).eq('id',q.id);
     if(error){ toast('บันทึกสถานะไม่สำเร็จ: '+error.message); s.value=q.status; return; }
     q.status=s.value; s.style.background=(QST[s.value]||QST.issued)[1]; toast('อัปเดตสถานะแล้ว');
+  });
+  // แก้ไขเลขที่ใบเสนอราคา (เช่น ให้ตรงกับเลขในระบบเดิม) — เลขต้องไม่ซ้ำกับใบอื่น
+  box.querySelectorAll('[data-qn]').forEach(b=>b.onclick=()=>{
+    const q=data[+b.dataset.qn];
+    openModal('แก้ไขเลขที่ใบเสนอราคา',`<div class="field"><label>เลขที่ใบเสนอราคา</label>
+        <input id="qnInp" value="${esc(q.quote_no||'')}" maxlength="40" style="font-weight:700;font-size:16px"></div>
+      <p class="muted" style="font-size:12.5px;margin:8px 0 0">เลขต้องไม่ซ้ำกับใบอื่น · ใบใหม่ถัดไปยังออกเลขต่อจากลำดับอัตโนมัติเหมือนเดิม</p>`,
+      [['ยกเลิก','ghost',closeModal],['บันทึก','',async()=>{
+        const no=($('#qnInp').value||'').trim();
+        if(!no){ toast('กรุณาใส่เลขที่'); return; }
+        if(no===q.quote_no){ closeModal(); return; }
+        const {error}=await sb.from('quotes').update({quote_no:no}).eq('id',q.id);
+        if(error){ toast(/duplicate|unique/i.test(error.message)?'เลขที่ '+no+' มีอยู่แล้ว — ใช้เลขอื่น':'บันทึกไม่สำเร็จ: '+error.message); return; }
+        closeModal(); toast('เปลี่ยนเลขที่เป็น '+no+' แล้ว'); render();
+      }]]);
+    const inp=$('#qnInp'); if(inp){ inp.focus(); inp.select(); }
   });
   box.querySelectorAll('[data-qd]').forEach(b=>b.onclick=()=>{
     const q=data[+b.dataset.qd];
