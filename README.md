@@ -13,7 +13,7 @@
 - `supabase/functions/` — Edge Functions
 - `api/line-webhook.mjs` — บอทตอบอัตโนมัติใน LINE OA @esimpayroll (ฟรี: reply message + ตอบจากคลังความรู้ ไม่ใช้ AI ภายนอก)
   คลังความรู้ `api/_kb.json` สร้างจาก FAQ / บทความ / ตารางราคาบนเว็บ → แก้เนื้อหาแล้วรัน `npm run build:bot`
-  ต้องตั้ง env ใน Vercel: `LINE_CHANNEL_SECRET`, `LINE_CHANNEL_ACCESS_TOKEN`
+  ต้องตั้ง env ใน Vercel: `LINE_CHANNEL_SECRET`, `LINE_CHANNEL_ACCESS_TOKEN` และ (ถ้าต้องการให้จำบทสนทนาแน่นอน) `SUPABASE_SERVICE_ROLE_KEY` + รัน `sql/29-supabase-line-bot-memory.sql`
 - `tests/` — ทดสอบสูตรเงินเดือน (`payroll.test.mjs`) และตัวเลขในเอกสารราชการ กท.20 ก / สปส.1-10 / 50 ทวิ / ภ.ง.ด.1 (`documents.test.mjs`) และบอท LINE (`bot.test.mjs`) → `npm test`
 - `motion*.html` — หน้าสำหรับเรนเดอร์วิดีโอโปรโมต (ไม่ขึ้นเว็บ)
 - `vercel.json` — ตั้งค่า deploy · `.vercelignore` — ไฟล์ที่ไม่ขึ้นเว็บ

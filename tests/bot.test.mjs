@@ -85,3 +85,42 @@ test('webhook: ตรวจลายเซ็น และตอบเฉพา�
     assert.equal(sent[0].replyToken, 'r-ราคา');
   } finally { globalThis.fetch = realFetch; }
 });
+
+test('webhook: จำจำนวนพนักงานข้ามรอบผ่านตาราง Supabase (line_bot_memory)', async () => {
+  process.env.LINE_CHANNEL_SECRET = 'test-secret';
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-key';
+  const table = new Map(), replies = [];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (u, o = {}) => {
+    u = String(u);
+    if (u.includes('/rest/v1/line_bot_memory') && (o.method || 'GET') === 'GET') {
+      assert.equal(o.headers.apikey, 'test-service-key');
+      const uid = decodeURIComponent(u.match(/user_id=eq\.([^&]+)/)[1]);
+      return { ok: true, json: async () => (table.has(uid) ? [table.get(uid)] : []) };
+    }
+    if (u.endsWith('/rest/v1/line_bot_memory')) { const row = JSON.parse(o.body); table.set(row.user_id, row); return { ok: true }; }
+    if (u.endsWith('/message/reply')) replies.push(JSON.parse(o.body));
+    return { ok: true, json: async () => ({}) };
+  };
+  try {
+    const { default: handler } = await import('../api/line-webhook.mjs?mem');
+    const send = async (text) => {
+      const raw = Buffer.from(JSON.stringify({ events: [{ type: 'message', replyToken: 'r', source: { type: 'user', userId: 'U9' }, message: { type: 'text', text } }] }));
+      const req = Readable.from([raw]);
+      req.method = 'POST';
+      req.headers = { 'x-line-signature': crypto.createHmac('sha256', 'test-secret').update(raw).digest('base64') };
+      await handler(req, { status() { return this; }, send() { return this; } });
+      return replies.at(-1).messages.map((m) => m.text).join('\n');
+    };
+    await send('พนักงาน 25 คน ราคาเท่าไหร่');
+    assert.equal(table.get('U9').mem.n, 25);
+    // จำลองเซิร์ฟเวอร์รีสตาร์ต: โหลดโมดูลใหม่ ความจำในเครื่องหาย แต่ยังอ่านจากตารางได้
+    const { default: fresh } = await import('../api/line-webhook.mjs?restart');
+    const raw = Buffer.from(JSON.stringify({ events: [{ type: 'message', replyToken: 'r2', source: { type: 'user', userId: 'U9' }, message: { type: 'text', text: '📅 จ่ายรายปีล่ะ' } }] }));
+    const req = Readable.from([raw]);
+    req.method = 'POST';
+    req.headers = { 'x-line-signature': crypto.createHmac('sha256', 'test-secret').update(raw).digest('base64') };
+    await fresh(req, { status() { return this; }, send() { return this; } });
+    assert.match(replies.at(-1).messages.map((m) => m.text).join('\n'), /25 คน[\s\S]*5,900 บาท\/ปี/);
+  } finally { globalThis.fetch = realFetch; delete process.env.SUPABASE_SERVICE_ROLE_KEY; }
+});
