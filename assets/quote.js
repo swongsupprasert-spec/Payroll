@@ -38,6 +38,11 @@
     return {sub, disc, total:r2(sub-disc)};
   }
 
+  // โลโก้ eSimPayroll (เหมือน brand/logo-mark.svg) ฝังเป็น SVG ในเอกสาร — พิมพ์ได้คมชัด ไม่ต้องโหลดรูป
+  const LOGO=`<svg viewBox="0 0 44 44" width="58" height="58" aria-label="eSimPayroll" style="flex:none">
+    <defs><linearGradient id="qtLogo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs>
+    <rect width="44" height="44" rx="12" fill="url(#qtLogo)"/>
+    <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const fmt=n=>(+n||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
   const thDate=d=>{ if(!d) return '-'; const x=new Date(typeof d==='string'&&d.length===10?d+'T00:00:00+07:00':d);
@@ -53,6 +58,7 @@
     return `<!doctype html><html lang="th"><head><meta charset="utf-8"><title>${esc(q.quote_no||'ใบเสนอราคา')}</title>
 <style>
  *{box-sizing:border-box;margin:0;padding:0}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}   /* พิมพ์สีพื้น (แถวยอดรวม/หัวตาราง) ด้วย ไม่งั้นตัวหนังสือขาวหาย */
  body{font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;color:#0f2438;font-size:13px;line-height:1.55;padding:14mm}
  .hd{display:flex;align-items:flex-start;gap:14px;border-bottom:2px solid #0e3a5c;padding-bottom:12px;margin-bottom:16px}
  .bn{font-size:23px;font-weight:800}.bn span{color:#0e3a5c}
@@ -72,8 +78,9 @@
 </style></head><body>
 <div class="noprint"><button onclick="window.print()">🖨️ พิมพ์ / บันทึกเป็น PDF</button></div>
 <div class="hd">
-  <div><div class="bn">eSim<span>Payroll</span></div>
-    <div style="font-size:12px;color:#5b7186">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย<br>esimpayroll.com · hello@esimpayroll.com</div></div>
+  <div style="display:flex;align-items:center;gap:12px">${LOGO}
+    <div><div class="bn">eSim<span>Payroll</span></div>
+    <div style="font-size:12px;color:#5b7186">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย<br>esimpayroll.com · hello@esimpayroll.com</div></div></div>
   <div class="r"><h1>ใบเสนอราคา</h1><div style="font-size:11.5px;color:#5b7186">Quotation</div>
     <div style="margin-top:5px">เลขที่ <b>${esc(q.quote_no||'(ยังไม่บันทึก)')}</b><br>วันที่ <b>${thDate(q.date)}</b><br>ยืนราคาถึง <b>${thDate(q.valid_until)}</b></div></div>
 </div>

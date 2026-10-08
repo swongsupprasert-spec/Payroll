@@ -67,6 +67,7 @@
 <title>${esc(o.docNo)}</title>
 <style>
  *{box-sizing:border-box;margin:0;padding:0}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}   /* พิมพ์สีพื้น (แถวยอดรวม/หัวตาราง) ด้วย ไม่งั้นตัวหนังสือขาวหาย */
  body{font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;color:#0f2438;font-size:13px;line-height:1.55;padding:14mm}
  .hd{display:flex;align-items:flex-start;gap:14px;border-bottom:2px solid #0e3a5c;padding-bottom:12px;margin-bottom:16px}
  .bn{font-size:23px;font-weight:800}.bn span{color:#0e3a5c}
