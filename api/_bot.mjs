@@ -50,8 +50,9 @@ const quick = (items) => ({
 });
 const clip = (s) => (s.length > MAX_TEXT ? s.slice(0, MAX_TEXT - 1) + '…' : s);
 // ชุดบับเบิล (สูงสุด 5) — ปุ่มลัดติดที่บับเบิลสุดท้ายเท่านั้น (LINE แสดงเฉพาะอันสุดท้าย)
+// แต่ละรายการเป็นข้อความ (string) หรือ LINE message ที่สร้างไว้แล้ว (เช่น การ์ด Flex)
 function reply(texts, buttons = MENU) {
-  const msgs = texts.filter(Boolean).slice(0, 5).map((text) => ({ type: 'text', text: clip(text) }));
+  const msgs = texts.filter(Boolean).slice(0, 5).map((x) => (typeof x === 'string' ? { type: 'text', text: clip(x) } : x));
   msgs[msgs.length - 1].quickReply = quick(buttons);
   return msgs;
 }
@@ -78,43 +79,107 @@ const HOURS = 'จ.–ศ. 09.00–18.00 น.';
 
 function tierFor(n, list) { return list.find((t) => n >= t.min && (t.max == null || n <= t.max)); }
 
+// ---------- การ์ด Flex (สีแบรนด์: กรมท่า #0e3a5c · เขียว #10b981) ----------
+const C = { navy: '#0e3a5c', green: '#10b981', mint: '#eaf6f1', gray: '#64748b', line: '#e2e8f0' };
+const T = (text, o = {}) => ({ type: 'text', text, wrap: true, ...o });
+const msgBtn = (label, text, o = {}) => ({ type: 'button', height: 'sm', action: { type: 'message', label, text: text || label }, ...o });
+const uriBtn = (label, uri, o = {}) => ({ type: 'button', height: 'sm', style: 'primary', color: C.green, action: { type: 'uri', label, uri }, ...o });
+const flex = (altText, contents) => ({ type: 'flex', altText, contents });
+const header = (title, sub) => ({
+  type: 'box', layout: 'vertical', backgroundColor: C.navy, paddingAll: '16px', spacing: '2px',
+  contents: [T(title, { color: '#ffffff', weight: 'bold', size: 'lg' }), ...(sub ? [T(sub, { color: '#a7f3d0', size: 'sm' })] : [])],
+});
+const TRIAL_URL = `${SITE}/pricing`;
+
+// การ์ดเมนูหลัก (ทักทาย / เพิ่มเพื่อน)
+const MENU_CARD = () => flex('เมนูน้อง eSim: ราคา · ทดลองฟรี · ฟีเจอร์ · คุยกับแอดมิน', {
+  type: 'bubble', size: 'kilo',
+  header: {
+    type: 'box', layout: 'horizontal', backgroundColor: C.navy, paddingAll: '14px', alignItems: 'center',
+    contents: [
+      { type: 'box', layout: 'vertical', flex: 3, spacing: '2px', contents: [
+        T('น้อง eSim', { color: '#ffffff', weight: 'bold', size: 'xl' }),
+        T('ผู้ช่วยตอบคำถาม eSimPayroll', { color: '#a7f3d0', size: 'xs' }),
+        T('ตอบได้ 24 ชม. 🤖', { color: '#cbd5e1', size: 'xxs' })] },
+      { type: 'image', url: `${SITE}/media/esim/e2c.png`, flex: 2, size: 'full', aspectMode: 'fit', aspectRatio: '1:1' },
+    ],
+  },
+  body: { type: 'box', layout: 'vertical', spacing: 'sm', paddingAll: '12px', contents: [
+    T('อยากรู้อะไร กดได้เลยครับ 👇', { size: 'sm', color: C.gray }),
+    msgBtn('💰 ดูราคา', 'ราคา', { style: 'secondary' }),
+    msgBtn('✨ ทำอะไรได้บ้าง', 'ทำอะไรได้บ้าง', { style: 'secondary' }),
+    msgBtn('📱 สแกนหน้าลงเวลา', 'สแกนหน้าลงเวลา', { style: 'secondary' }),
+    msgBtn('👩‍💼 คุยกับแอดมิน', 'คุยกับแอดมิน', { style: 'secondary' }),
+  ] },
+  footer: { type: 'box', layout: 'vertical', paddingAll: '12px', contents: [uriBtn('🎁 ทดลองฟรี 30 วัน', TRIAL_URL)] },
+});
+
+const planRow = (name, sub, price, unit, hl) => ({
+  type: 'box', layout: 'horizontal', paddingAll: '12px', cornerRadius: '10px', alignItems: 'center',
+  backgroundColor: hl ? C.mint : '#f8fafc', borderColor: hl ? C.green : C.line, borderWidth: '1px',
+  contents: [
+    { type: 'box', layout: 'vertical', flex: 3, contents: [T(name, { weight: 'bold', color: C.navy }), T(sub, { size: 'xxs', color: C.gray })] },
+    { type: 'box', layout: 'vertical', flex: 2, contents: [T(price, { weight: 'bold', size: 'lg', align: 'end', color: hl ? C.green : C.navy }), T(unit, { size: 'xxs', align: 'end', color: C.gray })] },
+  ],
+});
+
 function priceReply(n, focus) {
   const ym = KB.yearMonths, free = 12 - ym;
-  const trial = `ลองใช้ฟรี 30 วันก่อนได้นะครับ ครบทุกฟีเจอร์ ไม่ต้องใช้บัตรเครดิต 👉 ${SITE}/pricing`;
   if (!n) {
-    const rows = KB.tiers.map((t) => (t.price == null ? `• ${t.min}+ คน: ขอใบเสนอราคา`
-      : `• ${t.min}-${t.max} คน: ${t.price ? baht(t.price) : 'ฟรี'} / ${baht(t.prem)} บาท`));
+    const row = (t) => ({ type: 'box', layout: 'horizontal', contents: [
+      T(t.max == null ? `${t.min}+ คน` : `${t.min}-${t.max} คน`, { size: 'sm', flex: 3, color: C.navy }),
+      T(t.price == null ? 'ขอใบเสนอราคา' : t.price ? baht(t.price) : 'ฟรี', { size: 'sm', flex: t.price == null ? 6 : 3, align: 'end', weight: 'bold', color: t.price === 0 ? C.green : C.navy }),
+      ...(t.price == null ? [] : [T(baht(t.prem), { size: 'sm', flex: 3, align: 'end', color: C.gray })]),
+    ] });
     const firm = KB.firm.find((x) => x.price != null);
-    return reply([
-      'ราคาคิดตามจำนวนพนักงานครับ 💰\n(มาตรฐาน / พรีเมียม ต่อเดือน)\n' + rows.join('\n') +
-        (firm ? `\n\n🏦 สำนักงานบัญชี (หลายบริษัท) เริ่ม ${baht(firm.price)} บาท/เดือน` : '') +
-        `\n\nจ่ายรายปีคิดแค่ ${ym} เดือน (ฟรี ${free} เดือน)`,
-      'บริษัทมีพนักงานกี่คนครับ? พิมพ์มาได้เลย เช่น "25 คน" เดี๋ยวคิดให้ 😊',
-    ], [B.prem, B.trial, B.admin]);
+    const card = flex('ราคา eSimPayroll คิดตามจำนวนพนักงาน 1-10 คนฟรี', {
+      type: 'bubble', header: header('💰 ราคาตามจำนวนพนักงาน', 'บาท / เดือน'),
+      body: { type: 'box', layout: 'vertical', spacing: 'sm', contents: [
+        { type: 'box', layout: 'horizontal', contents: [T('พนักงาน', { size: 'xs', flex: 3, color: C.gray }), T('มาตรฐาน', { size: 'xs', flex: 3, align: 'end', color: C.gray }), T('พรีเมียม', { size: 'xs', flex: 3, align: 'end', color: C.gray })] },
+        { type: 'separator', color: C.line },
+        ...KB.tiers.map(row),
+        { type: 'separator', color: C.line, margin: 'md' },
+        ...(firm ? [T(`🏦 สำนักงานบัญชี (หลายบริษัท) เริ่ม ${baht(firm.price)} บาท/เดือน`, { size: 'xs', color: C.gray })] : []),
+        T(`📅 จ่ายรายปีคิดแค่ ${ym} เดือน (ฟรี ${free} เดือน)`, { size: 'xs', color: C.gray }),
+      ] },
+      footer: { type: 'box', layout: 'vertical', spacing: 'sm', contents: [uriBtn('🎁 ทดลองฟรี 30 วัน', TRIAL_URL), msgBtn('💎 พรีเมียมมีอะไร', 'พรีเมียมมีอะไร')] },
+    });
+    return reply([card, 'บริษัทมีพนักงานกี่คนครับ? พิมพ์มาได้เลย เช่น "25 คน" เดี๋ยวคิดให้ 😊'], [B.prem, B.trial, B.admin]);
   }
   const t = tierFor(n, KB.tiers);
   if (!t || t.price == null) {
     return reply([`${n} คน เป็นองค์กรขนาดใหญ่ เราทำใบเสนอราคาพิเศษให้ พร้อมช่วยตั้งค่าเริ่มต้นครับ 🙌`,
       `กด "คุยกับแอดมิน" ได้เลย แอดมินจะติดต่อกลับใน${HOURS}`], [B.admin, B.trial]);
   }
-  const head = `พนักงาน ${n} คน อยู่ช่วง ${t.min}-${t.max} คนครับ`;
-  if (focus === 'year') {
-    return reply([`${head}\nถ้าจ่ายรายปี คิดแค่ ${ym} เดือน (ฟรี ${free} เดือน) 📅\n` +
-      (t.price ? `• มาตรฐาน ${baht(t.price * ym)} บาท/ปี\n` : '• มาตรฐาน ฟรีตลอดอยู่แล้วครับ\n') +
-      `• พรีเมียม ${baht(t.prem * ym)} บาท/ปี`, trial], [B.prem, B.trial, B.admin]);
-  }
-  const body = t.price
-    ? `• มาตรฐาน ${baht(t.price)} บาท/เดือน\n• พรีเมียม ${baht(t.prem)} บาท/เดือน (เพิ่มลงเวลา ลา กะ OT)`
-    : `• มาตรฐาน ใช้ฟรีตลอดเลยครับ 🎉\n• พรีเมียม ${baht(t.prem)} บาท/เดือน (เพิ่มลงเวลา ลา กะ OT)`;
-  return reply([`${head}\n${body}`, trial], [B.prem, B.year, B.trial, B.admin]);
+  const year = focus === 'year';
+  const mul = year ? ym : 1, unit = year ? 'บาท / ปี' : 'บาท / เดือน';
+  const std = t.price ? baht(t.price * mul) : 'ฟรี';
+  const card = flex(`พนักงาน ${n} คน: มาตรฐาน ${std}${t.price ? ' บาท' : ''} · พรีเมียม ${baht(t.prem * mul)} บาท${year ? '/ปี' : '/เดือน'}`, {
+    type: 'bubble',
+    header: header(`พนักงาน ${n} คน`, `ช่วง ${t.min}-${t.max} คน · ${year ? `จ่ายรายปี (ฟรี ${free} เดือน)` : 'จ่ายรายเดือน'}`),
+    body: { type: 'box', layout: 'vertical', spacing: 'md', contents: [
+      planRow('มาตรฐาน', 'เงินเดือน ภาษี ปกส. เอกสารราชการครบ', std, t.price ? unit : 'ตลอดไป', !t.price),
+      planRow('💎 พรีเมียม', 'เพิ่มสแกนหน้าลงเวลา ลางาน กะ OT', baht(t.prem * mul), unit, !!t.price),
+      T(year ? `เทียบรายเดือน: ${t.price ? baht(t.price) + ' / ' : ''}${baht(t.prem)} บาท/เดือน`
+        : `จ่ายรายปีเหลือ ${t.price ? baht(t.price * ym) + ' / ' : ''}${baht(t.prem * ym)} บาท (ฟรี ${free} เดือน)`, { size: 'xs', color: C.gray }),
+    ] },
+    footer: { type: 'box', layout: 'vertical', spacing: 'sm', contents: [
+      uriBtn('🎁 ทดลองฟรี 30 วัน', TRIAL_URL),
+      T('ครบทุกฟีเจอร์ ไม่ต้องใช้บัตรเครดิต', { size: 'xxs', color: C.gray, align: 'center' }),
+    ] },
+  });
+  return reply([`ได้เลยครับ คิดให้แล้ว 👇`, card], year ? [B.prem, B.trial, B.admin] : [B.prem, B.year, B.trial, B.admin]);
 }
 
-const PREMIUM = () => reply([
-  'แพ็กเกจพรีเมียมได้ทุกอย่างของมาตรฐาน แล้วเพิ่มอีกพวกนี้ครับ 💎\n' +
-  '📱 สแกนหน้า + GPS ลงเวลาผ่านมือถือ\n⏰ เวลาเข้างาน สรุปมาสาย/ขาด\n🌴 ลางานผ่านมือถือ + สายอนุมัติ\n' +
-  '🔄 ระบบกะ หมุนกะอัตโนมัติ\n⚡ อนุมัติ OT รายวัน\n📅 ปฏิทินวันหยุดบริษัท\n💸 เบิกจ่ายล่วงหน้า',
-  `ช่วงทดลอง 30 วันใช้ได้ครบทุกอย่างเลยครับ 👉 ${SITE}/features`,
-], [B.price, B.face, B.trial, B.admin]);
+const PREMIUM_ITEMS = [['📱', 'สแกนหน้า + GPS ลงเวลาผ่านมือถือ'], ['⏰', 'เวลาเข้างาน สรุปมาสาย/ขาด'], ['🌴', 'ลางานผ่านมือถือ + สายอนุมัติ'],
+  ['🔄', 'ระบบกะ หมุนกะอัตโนมัติ'], ['⚡', 'อนุมัติ OT รายวัน'], ['📅', 'ปฏิทินวันหยุดบริษัท'], ['💸', 'เบิกจ่ายล่วงหน้า']];
+const PREMIUM = () => reply([flex('แพ็กเกจพรีเมียม: ' + PREMIUM_ITEMS.map((x) => x[1]).join(' · '), {
+  type: 'bubble', header: header('💎 แพ็กเกจพรีเมียม', 'ได้ทุกอย่างของมาตรฐาน + เพิ่มอีก 7 ระบบ'),
+  body: { type: 'box', layout: 'vertical', spacing: 'sm', contents: PREMIUM_ITEMS.map(([i, s]) => ({
+    type: 'box', layout: 'horizontal', spacing: 'md', contents: [T(i, { flex: 0, size: 'sm' }), T(s, { size: 'sm', color: C.navy })] })) },
+  footer: { type: 'box', layout: 'vertical', spacing: 'sm', contents: [uriBtn('🎁 ทดลองฟรี 30 วัน', TRIAL_URL), msgBtn('💰 ดูราคา', 'ราคา'), {
+    type: 'button', height: 'sm', action: { type: 'uri', label: 'ดูฟีเจอร์ทั้งหมด', uri: `${SITE}/features` } }] },
+})], [B.price, B.face, B.trial, B.admin]);
 
 // ---------- คุยเล่น / มารยาท ----------
 const SMALL = [
@@ -182,8 +247,7 @@ export function answer(raw, ctx = {}) {
   const hi = ctx.name ? `สวัสดีครับคุณ${ctx.name} 😊` : 'สวัสดีครับ 😊';
 
   if (!t || isGreeting(text)) {
-    return reply([`${hi} ผมน้อง eSim ผู้ช่วยของ eSimPayroll เองครับ`,
-      'ถามเรื่องราคา การใช้งาน หรือเรื่องเงินเดือน ภาษี ประกันสังคม ได้เลยนะครับ\nเช่น "พนักงาน 25 คน ราคาเท่าไหร่" หรือกดปุ่มด้านล่างก็ได้ 👇']);
+    return reply([`${hi} ผมน้อง eSim ผู้ช่วยของ eSimPayroll เองครับ\nพิมพ์ถามได้เลย เช่น "พนักงาน 25 คน ราคาเท่าไหร่" หรือกดจากการ์ดนี้ก็ได้ 👇`, MENU_CARD()]);
   }
   if (/แอดมิน|admin|เจ้าหน้าที่|คุยกับคน|ติดต่อ(คน|พนักงาน)|ขอคุย|โทรหา/i.test(t)) {
     mem.handoff = Date.now() + HANDOFF_MS;

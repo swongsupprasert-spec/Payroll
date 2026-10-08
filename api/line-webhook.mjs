@@ -71,6 +71,15 @@ function validSignature(raw, sig, secret) {
 async function post(path, body) {
   const r = await fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json', ...auth() }, body: JSON.stringify(body) });
   if (!r.ok) console.error('LINE', path, r.status, await r.text());
+  return r.ok;
+}
+// ส่งคำตอบ — ถ้า LINE ไม่รับการ์ด Flex (เช่นรูปแบบผิด) ให้ส่งซ้ำเป็นข้อความธรรมดาแทน ลูกค้าจะไม่เจอบอทเงียบ
+// (replyToken ที่ถูกปฏิเสธยังไม่ถูกใช้ จึงส่งซ้ำได้)
+async function sendReply(replyToken, messages) {
+  if (await post('/message/reply', { replyToken, messages })) return;
+  if (!messages.some((m) => m.type === 'flex')) return;
+  const plain = messages.map((m) => (m.type === 'flex' ? { type: 'text', text: m.altText, quickReply: m.quickReply } : m));
+  await post('/message/reply', { replyToken, messages: plain });
 }
 // ชื่อในโปรไฟล์ LINE (ฟรี) — ใช้ทักทายด้วยชื่อ
 async function displayName(uid) {
@@ -117,7 +126,7 @@ export default async function handler(req, res) {
         if (uid && JSON.stringify(mem) !== before) await saveMem(uid, mem);
         await pause(msgs);
       }
-      if (msgs) await post('/message/reply', { replyToken: ev.replyToken, messages: msgs });
+      if (msgs) await sendReply(ev.replyToken, msgs);
     } catch (e) { console.error('bot', e); }
   }));
   res.status(200).send('ok');

@@ -5,14 +5,17 @@ import crypto from 'node:crypto';
 import { Readable } from 'node:stream';
 import { answer, answerMedia, shorten } from '../api/_bot.mjs';
 
-const say = (q, ctx) => answer(q, ctx).map((m) => m.text).join('\n');
+// ข้อความทั้งหมดที่ลูกค้าเห็น — รวมตัวหนังสือในการ์ด Flex ด้วย
+const flat = (x) => (Array.isArray(x) ? x.map(flat).join('\n') : x && typeof x === 'object'
+  ? [x.type === 'text' || x.type === 'flex' ? (x.text ?? '') : '', x.action?.label ?? '', ...Object.entries(x).filter(([k]) => !['text', 'action', 'quickReply'].includes(k)).map(([, v]) => flat(v))].filter(Boolean).join('\n') : '');
+const say = (q, ctx) => flat(answer(q, ctx));
 
 test('ราคาตามจำนวนพนักงาน คิดจากตารางในหน้าราคา', () => {
-  assert.match(say('พนักงาน 25 คน ราคาเท่าไหร่'), /11-30 คน[\s\S]*มาตรฐาน 590[\s\S]*พรีเมียม 790/);
-  assert.match(say('มี 8 คน ใช้ฟรีไหม'), /ฟรีตลอด/);
+  assert.match(say('พนักงาน 25 คน ราคาเท่าไหร่'), /11-30 คน[\s\S]*มาตรฐาน[\s\S]*590[\s\S]*พรีเมียม[\s\S]*790/);
+  assert.match(say('มี 8 คน ใช้ฟรีไหม'), /มาตรฐาน[\s\S]*\nฟรี\nตลอดไป/);
   assert.match(say('40 คนครับ'), /31-50 คน/);
   assert.match(say('มีพนักงาน 200 คน ราคา'), /ใบเสนอราคา/);
-  assert.match(say('💰 ราคา'), /101-150 คน: 2,990 \/ 4,490/);
+  assert.match(say('💰 ราคา'), /101-150 คน\n2,990\n4,490/);
 });
 
 test('ตอบจากคำถามที่พบบ่อยบนเว็บ', () => {
@@ -39,7 +42,7 @@ test('ตอบแบบคนคุย: เรียกชื่อ คุย�
   const mem = {};
   say('พนักงาน 25 คน ราคาเท่าไหร่', { mem });
   assert.equal(mem.n, 25);
-  assert.match(say('📅 จ่ายรายปีล่ะ', { mem }), /25 คน[\s\S]*5,900 บาท\/ปี[\s\S]*7,900 บาท\/ปี/);
+  assert.match(say('📅 จ่ายรายปีล่ะ', { mem }), /25 คน[\s\S]*รายปี[\s\S]*5,900[\s\S]*7,900\nบาท \/ ปี/);
   assert.match(say('💎 พรีเมียมมีอะไร', { mem }), /สแกนหน้า/);
   const long = 'ก'.repeat(40) + ' ' + 'ข'.repeat(60) + ' ' + 'ค'.repeat(90) + ' ' + 'ง'.repeat(50);
   assert.equal(shorten(long), 'ก'.repeat(40) + ' ' + 'ข'.repeat(60) + ' …');
@@ -51,7 +54,10 @@ test('ทุกคำตอบอยู่ในขอบเขตที่ LINE
   for (const q of ['สวัสดี', 'ราคา', 'พนักงาน 25 คน', '200 คน', 'ประกันสังคมคิดยังไง', 'OT คิดยังไง', 'คุยกับแอดมิน', 'ขอบคุณ', 'แพงจัง', 'ทำอะไรได้บ้าง', 'xyz']) {
     const msgs = answer(q);
     assert.ok(msgs.length >= 1 && msgs.length <= 5, q);
-    for (const m of msgs) assert.ok(m.text.length > 0 && m.text.length <= 5000, q);
+    for (const m of msgs) {
+      if (m.type === 'text') assert.ok(m.text.length > 0 && m.text.length <= 5000, q);
+      else { assert.equal(m.type, 'flex'); assert.ok(m.altText.length > 0 && m.altText.length <= 400, q); assert.ok(JSON.stringify(m.contents).length < 30000); }
+    }
     const qr = msgs.at(-1).quickReply;
     assert.ok(qr.items.length <= 13);
     for (const it of qr.items) assert.ok(it.action.label.length <= 20, it.action.label);
@@ -110,7 +116,7 @@ test('webhook: จำจำนวนพนักงานข้ามรอบ�
       req.method = 'POST';
       req.headers = { 'x-line-signature': crypto.createHmac('sha256', 'test-secret').update(raw).digest('base64') };
       await handler(req, { status() { return this; }, send() { return this; } });
-      return replies.at(-1).messages.map((m) => m.text).join('\n');
+      return replies.at(-1).messages.map((m) => m.text ?? m.altText).join('\n');
     };
     await send('พนักงาน 25 คน ราคาเท่าไหร่');
     assert.equal(table.get('U9').mem.n, 25);
@@ -121,7 +127,7 @@ test('webhook: จำจำนวนพนักงานข้ามรอบ�
     req.method = 'POST';
     req.headers = { 'x-line-signature': crypto.createHmac('sha256', 'test-secret').update(raw).digest('base64') };
     await fresh(req, { status() { return this; }, send() { return this; } });
-    assert.match(replies.at(-1).messages.map((m) => m.text).join('\n'), /25 คน[\s\S]*5,900 บาท\/ปี/);
+    assert.match(replies.at(-1).messages.map((m) => m.text ?? m.altText).join('\n'), /25 คน[\s\S]*5,900 บาท/);
   } finally { globalThis.fetch = realFetch; delete process.env.SUPABASE_SERVICE_ROLE_KEY; }
 });
 
@@ -173,4 +179,32 @@ test('webhook: เงียบระหว่างส่งต่อแอด�
     await send('เมนู');
     assert.equal(replies.length, n + 1);
   } finally { globalThis.fetch = realFetch; delete process.env.SUPABASE_SERVICE_ROLE_KEY; }
+});
+
+test('webhook: ถ้า LINE ไม่รับการ์ด Flex ส่งซ้ำเป็นข้อความธรรมดา', async () => {
+  process.env.LINE_CHANNEL_SECRET = 'test-secret';
+  const calls = [];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (u, o = {}) => {
+    if (String(u).endsWith('/message/reply')) {
+      const body = JSON.parse(o.body);
+      calls.push(body);
+      const hasFlex = body.messages.some((m) => m.type === 'flex');
+      return { ok: !hasFlex, status: hasFlex ? 400 : 200, text: async () => 'invalid flex' };
+    }
+    return { ok: true, json: async () => ({}) };
+  };
+  const realErr = console.error; console.error = () => {};
+  try {
+    const { default: handler } = await import('../api/line-webhook.mjs?fallback');
+    const raw = Buffer.from(JSON.stringify({ events: [{ type: 'message', replyToken: 'r', source: { type: 'user', userId: 'U5' }, message: { type: 'text', text: '25 คน' } }] }));
+    const req = Readable.from([raw]);
+    req.method = 'POST';
+    req.headers = { 'x-line-signature': crypto.createHmac('sha256', 'test-secret').update(raw).digest('base64') };
+    await handler(req, { status() { return this; }, send() { return this; } });
+    assert.equal(calls.length, 2);
+    assert.ok(calls[1].messages.every((m) => m.type === 'text'));
+    assert.match(calls[1].messages.map((m) => m.text).join('\n'), /25 คน.*590/);
+    assert.ok(calls[1].messages.at(-1).quickReply);
+  } finally { globalThis.fetch = realFetch; console.error = realErr; }
 });
