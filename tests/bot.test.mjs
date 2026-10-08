@@ -124,3 +124,53 @@ test('webhook: จำจำนวนพนักงานข้ามรอบ�
     assert.match(replies.at(-1).messages.map((m) => m.text).join('\n'), /25 คน[\s\S]*5,900 บาท\/ปี/);
   } finally { globalThis.fetch = realFetch; delete process.env.SUPABASE_SERVICE_ROLE_KEY; }
 });
+
+test('ส่งต่อแอดมิน: บอทเงียบ 2 ชม. จนกว่าจะพิมพ์ "เมนู" หรือหมดเวลา', async () => {
+  const { silenced, HANDOFF_MS } = await import('../api/_bot.mjs');
+  const mem = {};
+  assert.match(say('👩‍💼 คุยกับแอดมิน', { mem }), /เงียบ/);
+  assert.ok(mem.handoff > Date.now());
+  assert.equal(silenced('ราคาเท่าไหร่', mem), true);
+  assert.equal(silenced('📋 เมนู', mem), false);
+  assert.equal(mem.handoff, undefined);
+  mem.handoff = Date.now() + HANDOFF_MS;
+  assert.equal(silenced('สวัสดี', mem, Date.now() + HANDOFF_MS + 1), false); // หมดเวลาแล้วกลับมาตอบ
+});
+
+test('บอกว่าคำถามไหนตอบไม่ได้ (ไว้บันทึกเพื่อเพิ่มคำตอบ)', () => {
+  const c1 = {}; answer('ราคาทองวันนี้', c1); assert.equal(c1.miss, 'none');
+  const c2 = {}; answer('ราคาเท่าไหร่', c2); assert.equal(c2.miss, undefined);
+});
+
+test('webhook: เงียบระหว่างส่งต่อแอดมิน และบันทึกคำถามที่ตอบไม่ได้ลง Supabase', async () => {
+  process.env.LINE_CHANNEL_SECRET = 'test-secret';
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-key';
+  const table = new Map(), misses = [], replies = [];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (u, o = {}) => {
+    u = String(u);
+    if (u.includes('/rest/v1/line_bot_memory?')) { const uid = decodeURIComponent(u.match(/user_id=eq\.([^&]+)/)[1]); return { ok: true, json: async () => (table.has(uid) ? [table.get(uid)] : []) }; }
+    if (u.endsWith('/rest/v1/line_bot_memory')) { const row = JSON.parse(o.body); table.set(row.user_id, row); return { ok: true }; }
+    if (u.endsWith('/rest/v1/line_bot_unanswered')) { misses.push(JSON.parse(o.body)); return { ok: true }; }
+    if (u.endsWith('/message/reply')) replies.push(JSON.parse(o.body));
+    return { ok: true, json: async () => ({}) };
+  };
+  try {
+    const { default: handler } = await import('../api/line-webhook.mjs?handoff');
+    const send = async (text) => {
+      const raw = Buffer.from(JSON.stringify({ events: [{ type: 'message', replyToken: 'r', source: { type: 'user', userId: 'U7' }, message: { type: 'text', text } }] }));
+      const req = Readable.from([raw]);
+      req.method = 'POST';
+      req.headers = { 'x-line-signature': crypto.createHmac('sha256', 'test-secret').update(raw).digest('base64') };
+      await handler(req, { status() { return this; }, send() { return this; } });
+    };
+    await send('ราคาทองวันนี้');
+    assert.deepEqual(misses.map((m) => [m.question, m.kind]), [['ราคาทองวันนี้', 'none']]);
+    await send('คุยกับแอดมิน');
+    const n = replies.length;
+    await send('สนใจแพ็กเกจพรีเมียมครับ');
+    assert.equal(replies.length, n, 'บอทต้องไม่ตอบแทรกแอดมิน');
+    await send('เมนู');
+    assert.equal(replies.length, n + 1);
+  } finally { globalThis.fetch = realFetch; delete process.env.SUPABASE_SERVICE_ROLE_KEY; }
+});

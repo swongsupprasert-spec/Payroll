@@ -4,7 +4,7 @@
 //   LINE_CHANNEL_SECRET        — ใช้ตรวจลายเซ็นว่าคำขอมาจาก LINE จริง
 //   LINE_CHANNEL_ACCESS_TOKEN  — ใช้ส่งข้อความตอบกลับ
 import crypto from 'node:crypto';
-import { answer, answerMedia, isGreeting } from './_bot.mjs';
+import { answer, answerMedia, isGreeting, silenced } from './_bot.mjs';
 
 const API = 'https://api.line.me/v2/bot';
 const auth = () => ({ Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}` });
@@ -41,6 +41,17 @@ async function saveMem(uid, mem) {
     });
     if (Math.random() < 0.02) await sb('rpc/line_bot_memory_cleanup', { method: 'POST', body: '{}' }); // เก็บกวาดเป็นครั้งคราว
   } catch (e) { console.error('memory', e.message); }
+}
+// บันทึกคำถามที่บอทตอบไม่ได้ (none) หรือได้แค่แนะนำบทความ (weak) → ดูใน Supabase เพื่อเพิ่มคำตอบ
+async function logMiss(uid, text, kind) {
+  console.log('bot-miss', kind, text.slice(0, 200)); // เห็นใน Vercel Logs ด้วย
+  if (!SB_KEY()) return;
+  try {
+    await sb('line_bot_unanswered', {
+      method: 'POST', headers: { Prefer: 'return=minimal' },
+      body: JSON.stringify({ user_id: uid || null, question: text.slice(0, 500), kind }),
+    });
+  } catch (e) { console.error('miss-log', e.message); }
 }
 
 const readRaw = (req) => new Promise((resolve, reject) => {
@@ -89,19 +100,21 @@ export default async function handler(req, res) {
       if (ev.type === 'follow') {
         msgs = answer('สวัสดี', { name: uid ? await displayName(uid) : '' });
       } else if (ev.type === 'message') {
+        const text = ev.message?.type === 'text' ? ev.message.text : '';
+        const mem = uid ? await loadMem(uid) : {};
+        const before = JSON.stringify(mem);
+        // ลูกค้าขอคุยกับแอดมินอยู่ → บอทเงียบ ไม่ตอบแทรก (แอดมินตอบเองในหน้าแชต)
+        if (silenced(text, mem)) return;
         if (uid) await typing(uid);
         if (ev.message?.type === 'text') {
-          const text = ev.message.text;
-          const [name, mem] = await Promise.all([
-            uid && isGreeting(text) ? displayName(uid) : '',
-            uid ? loadMem(uid) : {},
-          ]);
-          const before = JSON.stringify(mem);
-          msgs = answer(text, { name, mem });
-          if (uid && JSON.stringify(mem) !== before) await saveMem(uid, mem);
+          const name = uid && isGreeting(text) ? await displayName(uid) : '';
+          const ctx = { name, mem };
+          msgs = answer(text, ctx);
+          if (ctx.miss) await logMiss(uid, text, ctx.miss);
         } else {
           msgs = answerMedia(ev.message?.type);
         }
+        if (uid && JSON.stringify(mem) !== before) await saveMem(uid, mem);
         await pause(msgs);
       }
       if (msgs) await post('/message/reply', { replyToken: ev.replyToken, messages: msgs });

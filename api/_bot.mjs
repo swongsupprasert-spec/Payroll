@@ -159,6 +159,16 @@ function topicButtons(q) {
   return [B.price, B.trial, B.feat, B.admin];
 }
 
+// ---------- ส่งต่อแอดมิน ----------
+// หลังลูกค้าขอคุยกับแอดมิน บอทเงียบ 2 ชม. ไม่ตอบแทรกระหว่างแอดมินคุย — พิมพ์ "เมนู" เพื่อกลับมาคุยกับบอท
+export const HANDOFF_MS = 2 * 60 * 60 * 1000;
+const RESUME = /^[^\p{L}\p{N}]*(เมนู|menu|คุยกับบอท|บอท|น้อง ?esim|เริ่มใหม่|start)/iu;
+export function silenced(raw, mem = {}, now = Date.now()) {
+  if (!mem.handoff) return false;
+  if (mem.handoff <= now || RESUME.test(raw || '')) { delete mem.handoff; return false; }
+  return true;
+}
+
 export const isGreeting = (s) => /^[^\p{L}\p{N}]*(สวัสดี|หวัดดี|ดีครับ|ดีค่ะ|ดีจ้า|hello|hi\b|เมนู|menu|เริ่ม|start)/iu.test(s || '');
 
 /**
@@ -176,8 +186,9 @@ export function answer(raw, ctx = {}) {
       'ถามเรื่องราคา การใช้งาน หรือเรื่องเงินเดือน ภาษี ประกันสังคม ได้เลยนะครับ\nเช่น "พนักงาน 25 คน ราคาเท่าไหร่" หรือกดปุ่มด้านล่างก็ได้ 👇']);
   }
   if (/แอดมิน|admin|เจ้าหน้าที่|คุยกับคน|ติดต่อ(คน|พนักงาน)|ขอคุย|โทรหา/i.test(t)) {
-    return reply(['ได้เลยครับ 🙌 เดี๋ยวแอดมินเข้ามาตอบในแชตนี้นะครับ',
-      `แอดมินตอบใน${HOURS} ภายใน 1 วันทำการ ระหว่างนี้พิมพ์รายละเอียดทิ้งไว้ได้เลยครับ\nหรืออีเมล hello@esimpayroll.com`], [B.price, B.trial]);
+    mem.handoff = Date.now() + HANDOFF_MS;
+    return reply(['ได้เลยครับ 🙌 ส่งเรื่องให้แอดมินแล้ว เดี๋ยวแอดมินเข้ามาตอบในแชตนี้นะครับ',
+      `แอดมินตอบใน${HOURS} ภายใน 1 วันทำการ พิมพ์รายละเอียดทิ้งไว้ได้เลย น้อง eSim จะเงียบไว้ไม่ตอบแทรกครับ\nถ้าอยากกลับมาคุยกับน้อง eSim พิมพ์ "เมนู" ได้ตลอด`], [['📋 เมนู']]);
   }
   for (const [re, fn] of SMALL) if (re.test(t)) return reply(fn(ctx), topicButtons(new Set()));
 
@@ -220,6 +231,7 @@ export function answer(raw, ctx = {}) {
     return reply([`${pick(OPEN)}\n${a}`, link], topicButtons(q));
   }
   const arts = topArticles(q);
+  ctx.miss = arts.length ? 'weak' : 'none'; // ให้ webhook บันทึกคำถามที่บอทตอบไม่ได้ / ตอบได้ไม่ตรง
   if (arts.length) {
     return reply(['เรื่องนี้มีบทความอธิบายไว้ละเอียดเลยครับ 📚\n\n' + arts.map((x) => `• ${x.t}\n${x.url}`).join('\n\n'),
       'ถ้ายังไม่ตรงกับที่ถาม กด "คุยกับแอดมิน" ได้เลยนะครับ'], topicButtons(q));
