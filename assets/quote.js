@@ -97,7 +97,9 @@
  .opt td{vertical-align:middle}.optn{display:inline-block;background:#0e3a5c;color:#fff;border-radius:6px;padding:1px 9px;font-size:13.5px;font-weight:700;margin-bottom:4px}
  .oprice{font-size:21px;font-weight:800;color:#0e3a5c}
  .tick{display:inline-block;width:20px;height:20px;border:2px solid #0e3a5c;border-radius:4px}
- @media print{body{padding:0}@page{size:A4;margin:12mm}.noprint{display:none}}
+ /* ขอบกระดาษ 0 = เบราว์เซอร์ไม่พิมพ์หัว/ท้ายกระดาษ (วันที่ เลขเอกสาร about:blank เลขหน้า) · เว้นขอบด้วย padding แทน */
+ @page{size:A4;margin:0}
+ @media print{body{padding:12mm 13mm}.noprint{display:none}}
  .noprint{text-align:center;margin-bottom:14px}
  .noprint button{padding:10px 22px;border:0;border-radius:9px;background:#0e3a5c;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
 </style></head><body>

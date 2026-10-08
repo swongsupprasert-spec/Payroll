@@ -82,7 +82,9 @@
  .tot{background:#0e3a5c;color:#fff;font-weight:800}
  .paid{display:inline-block;margin-top:6px;border:2px solid #10b981;color:#0b8a63;border-radius:6px;padding:1px 9px;font-weight:800;font-size:14.5px}
  .note{margin-top:16px;font-size:14px;color:#475569;border-top:1px solid #e2e8f0;padding-top:9px}
- @media print{body{padding:0}@page{size:A4;margin:12mm}.noprint{display:none}}
+ /* ขอบกระดาษ 0 = เบราว์เซอร์ไม่พิมพ์หัว/ท้ายกระดาษ (วันที่ เลขเอกสาร about:blank เลขหน้า) · เว้นขอบด้วย padding แทน */
+ @page{size:A4;margin:0}
+ @media print{body{padding:12mm 13mm}.noprint{display:none}}
  .noprint{text-align:center;margin-bottom:14px}
  .noprint button{padding:10px 22px;border:0;border-radius:9px;background:#0e3a5c;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
 </style></head><body>
