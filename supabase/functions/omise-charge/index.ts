@@ -50,6 +50,30 @@ function priceFor(count: number, cycle: string, ptype: string, edition: string) 
            amount: cycle === 'yearly' ? mo * YEAR_MONTHS : mo };
 }
 
+// ---------- ต่ออายุให้ (เหมือนใน omise-webhook) ----------
+// "จอง" รายการแบบ atomic: เปลี่ยน pending → activating ได้เพียงครั้งเดียว กันต่ออายุซ้ำกับ webhook
+async function activatePayment(admin: any, chargeId: string) {
+  const { data: row } = await admin.from('payments').update({ status: 'activating' })
+    .eq('charge_id', chargeId).eq('status', 'pending').select('*').maybeSingle();
+  if (!row) return { done: false };
+  const { data: until, error } = await admin.rpc('activate_verified_order', {
+    p_user: row.user_id, p_employees: row.employees, p_cycle: row.cycle,
+    p_amount: row.amount, p_plan: row.plan,
+    p_name: row.buyer_name, p_email: row.buyer_email, p_phone: row.buyer_phone,
+    p_btype: row.buyer_type, p_tax_id: row.tax_id, p_branch: row.branch, p_addr: row.address,
+    p_slip: null, p_trans_ref: chargeId, p_ptype: row.ptype,
+    p_edition: row.edition ?? 'single',
+  });
+  if (error) {
+    await admin.from('payments').update({ status: 'pending' }).eq('charge_id', chargeId);
+    return { done: false, error: error.message };
+  }
+  await admin.from('payments')
+    .update({ status: 'successful', paid_at: new Date().toISOString(), paid_until: until })
+    .eq('charge_id', chargeId);
+  return { done: true, until };
+}
+
 // เรียก Omise แบบ Basic auth (คีย์เป็น username รหัสผ่านว่าง)
 async function omise(path: string, body: Record<string, string>) {
   const r = await fetch('https://api.omise.co' + path, {
@@ -174,10 +198,18 @@ Deno.serve(async (req) => {
     employees, cycle, ptype, edition, plan: quote.plan,
     buyer_name: name, buyer_email: email, buyer_phone: phone,
     buyer_type: btype, tax_id: taxId, branch, address: addr,
-    status: chg.data.status === 'successful' ? 'successful' : 'pending',
+    // บันทึกเป็น pending เสมอ — ต่ออายุผ่าน activatePayment เท่านั้น
+    // (เดิมบัตรที่จ่ายจบทันทีถูกบันทึกเป็น successful แล้ว webhook ข้ามไป ลูกค้าจ่ายแต่ไม่ได้เปิดใช้งาน)
+    status: 'pending',
     qr_uri: chg.data?.source?.scannable_code?.image?.download_uri ?? null, method,
   });
   if (error) return fail('db', 'บันทึกรายการไม่สำเร็จ', 'Could not record the payment', 500);
+
+  // บัตรที่ไม่ต้องยืนยัน 3-D Secure จ่ายจบทันที → เปิดใช้งานเลย (ถ้าพลาด webhook จาก Omise จะมาทำซ้ำให้)
+  if (chg.data.status === 'successful' && chg.data.paid === true && Number(chg.data.amount) === satang) {
+    const r = await activatePayment(admin, chg.data.id);
+    if (r.error) console.error('activate failed (webhook will retry):', r.error);
+  }
 
   return json({
     ok: true, method, charge_id: chg.data.id,

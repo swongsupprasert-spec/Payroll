@@ -80,27 +80,36 @@ Deno.serve(async (req) => {
     return ok('not paid');
   }
 
-  // ---------- กันทำซ้ำ: ถ้าเคยต่ออายุไปแล้วก็จบ ----------
-  if (row.status === 'successful') return ok('already processed');
-
   // ยอดต้องตรงกับที่เราตั้งไว้ (กันกรณีถูกแก้ยอด)
   if (Math.round(Number(row.amount) * 100) !== Number(charge.amount))
     return bad('amount mismatch', 409);
 
-  // ---------- ต่ออายุให้ ----------
+  const r = await activatePayment(admin, charge.id);
+  if (r.error) return bad('activate failed: ' + r.error, 500);
+  return ok(r.done ? 'activated' : 'already processed');
+});
+
+// ---------- ต่ออายุให้ (ใช้แบบเดียวกันใน omise-charge) ----------
+// "จอง" รายการแบบ atomic: เปลี่ยน pending → activating ได้เพียงครั้งเดียว
+// กันไม่ให้ webhook กับ omise-charge (บัตรที่จ่ายจบทันที) ต่ออายุซ้ำซ้อนกัน
+async function activatePayment(admin: any, chargeId: string) {
+  const { data: row } = await admin.from('payments').update({ status: 'activating' })
+    .eq('charge_id', chargeId).eq('status', 'pending').select('*').maybeSingle();
+  if (!row) return { done: false };                    // มีคนทำไปแล้ว / กำลังทำอยู่
   const { data: until, error } = await admin.rpc('activate_verified_order', {
     p_user: row.user_id, p_employees: row.employees, p_cycle: row.cycle,
     p_amount: row.amount, p_plan: row.plan,
     p_name: row.buyer_name, p_email: row.buyer_email, p_phone: row.buyer_phone,
     p_btype: row.buyer_type, p_tax_id: row.tax_id, p_branch: row.branch, p_addr: row.address,
-    p_slip: null, p_trans_ref: charge.id, p_ptype: row.ptype,
+    p_slip: null, p_trans_ref: chargeId, p_ptype: row.ptype,
     p_edition: row.edition ?? 'single',
   });
-  if (error) return bad('activate failed: ' + error.message, 500);
-
+  if (error) {                                          // คืนสถานะ ให้ webhook รอบถัดไปลองใหม่ได้
+    await admin.from('payments').update({ status: 'pending' }).eq('charge_id', chargeId);
+    return { done: false, error: error.message };
+  }
   await admin.from('payments')
     .update({ status: 'successful', paid_at: new Date().toISOString(), paid_until: until })
-    .eq('charge_id', charge.id);
-
-  return ok('activated');
-});
+    .eq('charge_id', chargeId);
+  return { done: true, until };
+}

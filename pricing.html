@@ -716,56 +716,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       count=Math.max(t.min,Math.min(t.max===Infinity?170:t.max,count));
       if(count<t.min||count>t.max) count=t.min;
       $('cnt').value=count;   // sync() อ่านจำนวนจากช่องนี้ — ต้องตั้งก่อน ไม่งั้นได้แพ็กเกจเดิม
-      /* ---------- กลับมาจากหน้ายืนยัน 3-D Secure ของธนาคาร ----------
-     ธนาคารส่งลูกค้ากลับมาที่หน้านี้ · เราเช็คสถานะจากตาราง payments เอง
-     (ไม่เชื่อว่า "กลับมาถึง = จ่ายสำเร็จ" เพราะผู้ใช้พิมพ์ URL เองได้) */
-  async function resume3DS(){
-    let chg=null; try{ chg=sessionStorage.getItem('pendingChg'); }catch(e){}
-    if(!chg || !sb) return;
-    try{ sessionStorage.removeItem('pendingChg'); }catch(e){}
-
-    open3DSWait();
-    let tries=0;
-    const check=async()=>{
-      tries++;
-      try{
-        const {data}=await sb.from('payments')
-          .select('status,paid_until,amount,plan,employees,cycle,ptype,buyer_name,buyer_email,buyer_phone,buyer_type,tax_id,branch,address')
-          .eq('charge_id',chg).maybeSingle();
-        if(data && data.status==='successful' && data.paid_until){
-          count=data.employees||count; cycle=data.cycle==='yearly'?'y':'m'; ptype=data.ptype||ptype; sync();
-          showSuccess({ paidUntil:data.paid_until, transRef:chg,
-            t:tierOf(count), p:Number(data.amount),
-            name:data.buyer_name, email:data.buyer_email, phone:data.buyer_phone,
-            btype:data.buyer_type, taxId:data.tax_id, branch:data.branch, addr:data.address });
-          return;
-        }
-        if(data && ['failed','expired'].includes(data.status)){
-          const s=$('payStat'); if(s){ s.style.color='#dc2626'; s.textContent=L('payFailed'); }
-          return;
-        }
-      }catch(e){}
-      if(tries>=40){                                  // ~2 นาที
-        const s=$('payStat'); if(s){ s.style.color='#b45309'; s.textContent=L('payTimeout'); }
-        return;
-      }
-      setTimeout(check, 3000);
-    };
-    setTimeout(check, 1200);
-  }
-  function open3DSWait(){
-    $('mTitle').textContent=L('payTitle');
-    $('mBody').innerHTML=`<div style="text-align:center;padding:26px 8px">
-      <div style="font-size:44px">⏳</div>
-      <div id="payStat" style="margin-top:12px;font-size:15px;font-weight:700;color:var(--brand)">${L('payBackWait')}</div>
-      <button class="btn ghost" id="payClose" style="width:100%;margin-top:18px">${L('close')}</button>
-    </div>`;
-    const pc=$('payClose'); if(pc) pc.onclick=close;
-    $('bd').classList.add('on');
-  }
-
-  sync();
-  resume3DS(); openOrder();
+      sync(); openOrder();
     });
   }
 
@@ -1033,7 +984,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         if(out.code==='not_configured') return {notReady:true};
         return {error:(LANG()?out.message_en:out.message)||L('failed')};
       }
-      if(!out.qr_uri) return {notReady:true};
+      if(out.method!=='card' && !out.qr_uri) return {notReady:true};   // พร้อมเพย์ต้องมี QR · บัตรไม่มี QR
       return {ok:true, ...out};
     }catch(e){ return {notReady:true}; }   // เรียกไม่ได้ → ถอยไปใช้สลิป
   }
@@ -1123,7 +1074,11 @@ footer .ft-mail{color:#6ee7b7 !important}
         try{ sessionStorage.setItem('pendingChg', omise.charge_id); }catch(e){}
         location.href=omise.authorize_uri; return;
       }
-      showQrScreen(omise, buyer, t, p); return;      // พร้อมเพย์ หรือบัตรที่จ่ายจบแล้ว
+      if(omise.method==='card'){                     // บัตรที่ไม่ต้องยืนยัน 3-D Secure — รอระบบยืนยันแล้วเปิดใช้งาน
+        try{ sessionStorage.setItem('pendingChg', omise.charge_id); }catch(e){}
+        resume3DS(); return;
+      }
+      showQrScreen(omise, buyer, t, p); return;      // พร้อมเพย์
     }
     if(omise.error){ $('oSend').disabled=false; return bad(omise.error); }
     // ---- Omise ใช้ไม่ได้ → ไม่มีช่องทางสำรองแล้ว บอกให้ติดต่อทีมงาน ----
