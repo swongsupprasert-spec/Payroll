@@ -162,5 +162,11 @@
       "destination": "https://esimpayroll.com/$1",
       "permanent": true
     }
-  ]
+  ],
+  "functions": {
+    "api/line-webhook.mjs": {
+      "includeFiles": "api/_kb.json",
+      "maxDuration": 10
+    }
+  }
 }
