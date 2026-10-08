@@ -39,7 +39,7 @@
   }
 
   // โลโก้ eSimPayroll (เหมือน brand/logo-mark.svg) ฝังเป็น SVG ในเอกสาร — พิมพ์ได้คมชัด ไม่ต้องโหลดรูป
-  const LOGO=`<svg viewBox="0 0 44 44" width="58" height="58" aria-label="eSimPayroll" style="flex:none">
+  const LOGO=`<svg viewBox="0 0 44 44" width="64" height="64" aria-label="eSimPayroll" style="flex:none">
     <defs><linearGradient id="qtLogo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs>
     <rect width="44" height="44" rx="12" fill="url(#qtLogo)"/>
     <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
@@ -59,19 +59,19 @@
 <style>
  *{box-sizing:border-box;margin:0;padding:0}
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}   /* พิมพ์สีพื้น (แถวยอดรวม/หัวตาราง) ด้วย ไม่งั้นตัวหนังสือขาวหาย */
- body{font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;color:#0f2438;font-size:13px;line-height:1.55;padding:14mm}
+ body{font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;color:#0f2438;font-size:15.5px;line-height:1.55;padding:14mm}
  .hd{display:flex;align-items:flex-start;gap:14px;border-bottom:2px solid #0e3a5c;padding-bottom:12px;margin-bottom:16px}
- .bn{font-size:23px;font-weight:800}.bn span{color:#0e3a5c}
- .hd .r{margin-left:auto;text-align:right}.hd .r h1{font-size:20px;color:#0e3a5c}
+ .bn{font-size:28px;font-weight:800}.bn span{color:#0e3a5c}
+ .hd .r{margin-left:auto;text-align:right}.hd .r h1{font-size:26px;color:#0e3a5c}
  .grid2{display:flex;gap:12px;margin-bottom:6px}.grid2>div{flex:1}
- .box{border:1px solid #d7e5dd;border-radius:8px;padding:11px 13px;font-size:12.5px}
+ .box{border:1px solid #d7e5dd;border-radius:8px;padding:11px 13px;font-size:15px}
  table{width:100%;border-collapse:collapse;margin-top:12px}
- th,td{border:1px solid #b9cddb;padding:7px 9px;text-align:left;vertical-align:top}
- th{background:#eaf6f1;font-size:12.5px}.tr{text-align:right}.c{text-align:center}
+ th,td{border:1px solid #b9cddb;padding:9px 10px;text-align:left;vertical-align:top}
+ th{background:#eaf6f1;font-size:15px}.tr{text-align:right}.c{text-align:center}
  .sum td{border:0;padding:4px 9px}.sum .tot td{background:#0e3a5c;color:#fff;font-weight:800;padding:8px 9px}
- .ft{display:flex;gap:14px;margin-top:28px}.sig{flex:1;text-align:center;font-size:12px;padding-top:36px}
+ .ft{display:flex;gap:14px;margin-top:28px}.sig{flex:1;text-align:center;font-size:14.5px;padding-top:36px}
  .sig .ln{border-top:1px dotted #7d95a8;margin-bottom:5px}
- .note{margin-top:14px;font-size:12px;color:#334155}
+ .note{margin-top:14px;font-size:14.5px;color:#334155}
  @media print{body{padding:0}@page{size:A4;margin:12mm}.noprint{display:none}}
  .noprint{text-align:center;margin-bottom:14px}
  .noprint button{padding:10px 22px;border:0;border-radius:9px;background:#0e3a5c;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
@@ -80,8 +80,8 @@
 <div class="hd">
   <div style="display:flex;align-items:center;gap:12px">${LOGO}
     <div><div class="bn">eSim<span>Payroll</span></div>
-    <div style="font-size:12px;color:#5b7186">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย<br>esimpayroll.com · hello@esimpayroll.com</div></div></div>
-  <div class="r"><h1>ใบเสนอราคา</h1><div style="font-size:11.5px;color:#5b7186">Quotation</div>
+    <div style="font-size:14.5px;color:#475569">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย<br>esimpayroll.com · hello@esimpayroll.com</div></div></div>
+  <div class="r"><h1>ใบเสนอราคา</h1><div style="font-size:14px;color:#475569">Quotation</div>
     <div style="margin-top:5px">เลขที่ <b>${esc(q.quote_no||'(ยังไม่บันทึก)')}</b><br>วันที่ <b>${thDate(q.date)}</b><br>ยืนราคาถึง <b>${thDate(q.valid_until)}</b></div></div>
 </div>
 <div class="grid2">
@@ -100,7 +100,7 @@
   <tr class="tot"><td>ยอดรวมทั้งสิ้น (บาท)</td><td class="tr">${fmt(total)}</td></tr>
 </table>
 ${words?`<div style="text-align:right;margin-top:6px">(${words})</div>`:''}
-<div style="font-size:11.5px;color:#5b7186;margin-top:4px;text-align:right">ผู้ให้บริการไม่ได้จดทะเบียนภาษีมูลค่าเพิ่ม — ราคานี้ไม่มีภาษีมูลค่าเพิ่ม</div>
+<div style="font-size:14px;color:#475569;margin-top:4px;text-align:right">ผู้ให้บริการไม่ได้จดทะเบียนภาษีมูลค่าเพิ่ม — ราคานี้ไม่มีภาษีมูลค่าเพิ่ม</div>
 ${q.notes?`<div class="note"><b>เงื่อนไข / หมายเหตุ</b><br>${lines(q.notes)}</div>`:''}
 <div class="ft">
   <div class="sig"><div class="ln"></div>ผู้เสนอราคา<br>วันที่ ......./......./.......</div>

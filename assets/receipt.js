@@ -68,20 +68,20 @@
 <style>
  *{box-sizing:border-box;margin:0;padding:0}
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}   /* พิมพ์สีพื้น (แถวยอดรวม/หัวตาราง) ด้วย ไม่งั้นตัวหนังสือขาวหาย */
- body{font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;color:#0f2438;font-size:13px;line-height:1.55;padding:14mm}
+ body{font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;color:#0f2438;font-size:15.5px;line-height:1.55;padding:14mm}
  .hd{display:flex;align-items:flex-start;gap:14px;border-bottom:2px solid #0e3a5c;padding-bottom:12px;margin-bottom:16px}
- .bn{font-size:23px;font-weight:800}.bn span{color:#0e3a5c}
+ .bn{font-size:28px;font-weight:800}.bn span{color:#0e3a5c}
  .hd .r{margin-left:auto;text-align:right}
- .hd .r h1{font-size:19px;color:#0e3a5c}
+ .hd .r h1{font-size:26px;color:#0e3a5c}
  table{width:100%;border-collapse:collapse;margin-top:12px}
- th,td{border:1px solid #b9cddb;padding:8px 10px;text-align:left}
- th{background:#eaf6f1;font-size:12.5px}
+ th,td{border:1px solid #b9cddb;padding:9px 11px;text-align:left}
+ th{background:#eaf6f1;font-size:15px}
  .tr{text-align:right}
- .box{border:1px solid #d7e5dd;border-radius:8px;padding:11px 13px;font-size:12.5px}
+ .box{border:1px solid #d7e5dd;border-radius:8px;padding:11px 13px;font-size:15px}
  .grid2{display:flex;gap:12px;margin-bottom:6px}.grid2>div{flex:1}
  .tot{background:#0e3a5c;color:#fff;font-weight:800}
- .paid{display:inline-block;margin-top:6px;border:2px solid #10b981;color:#0b8a63;border-radius:6px;padding:1px 9px;font-weight:800;font-size:12px}
- .note{margin-top:16px;font-size:11.5px;color:#5b7186;border-top:1px solid #e2e8f0;padding-top:9px}
+ .paid{display:inline-block;margin-top:6px;border:2px solid #10b981;color:#0b8a63;border-radius:6px;padding:1px 9px;font-weight:800;font-size:14.5px}
+ .note{margin-top:16px;font-size:14px;color:#475569;border-top:1px solid #e2e8f0;padding-top:9px}
  @media print{body{padding:0}@page{size:A4;margin:12mm}.noprint{display:none}}
  .noprint{text-align:center;margin-bottom:14px}
  .noprint button{padding:10px 22px;border:0;border-radius:9px;background:#0e3a5c;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
@@ -89,9 +89,9 @@
 <div class="noprint"><button onclick="window.print()">${L('dPrint')}</button></div>
 <div class="hd">
   <div><div class="bn">eSim<span>Payroll</span></div>
-    <div style="font-size:12px;color:#5b7186">${L('dTagline')}<br>esimpayroll.com · hello@esimpayroll.com</div></div>
+    <div style="font-size:14.5px;color:#475569">${L('dTagline')}<br>esimpayroll.com · hello@esimpayroll.com</div></div>
   <div class="r"><h1>${L('dTitle')}</h1>
-    <div style="font-size:11.5px;color:#5b7186">${L('dSub')}</div>
+    <div style="font-size:14px;color:#475569">${L('dSub')}</div>
     <div style="margin-top:5px">${L('dNo')} <b>${esc(o.docNo)}</b><br>${L('dDate')} <b>${dstr}</b></div>
     <div class="paid">✓ ${L('dPaid')}</div></div>
 </div>
@@ -107,18 +107,18 @@
 <table>
   <thead><tr><th style="width:50%">${L('dItem')}</th><th style="width:15%">${L('dQty')}</th><th style="width:15%">${L('dCycle')}</th><th class="tr" style="width:20%">${L('dAmt')}</th></tr></thead>
   <tbody>
-    <tr><td>${L('dService')}<br><span style="font-size:11.5px;color:#5b7186">${L('dPlanLbl')} ${esc(o.plan)}</span></td>
+    <tr><td>${L('dService')}<br><span style="font-size:14px;color:#475569">${L('dPlanLbl')} ${esc(o.plan)}</span></td>
         <td>${o.employees??''} ${qty}</td><td>${yearly?L('cyYear'):L('cyMonth')}</td>
         <td class="tr">${fmt(o.amount)}</td></tr>
     <tr class="tot"><td colspan="3" class="tr">${L('dSum')}</td><td class="tr">${fmt(o.amount)}</td></tr>
     <tr><td colspan="4">${L('dWords')} — <b>(${bahtText(o.amount)})</b></td></tr>
   </tbody>
 </table>
-<div style="font-size:11.5px;color:#5b7186;margin-top:6px">${L('dNoVat')}</div>
+<div style="font-size:14px;color:#475569;margin-top:6px">${L('dNoVat')}</div>
 
 <div style="margin-top:14px">
   <div class="box"><b>${L('dPayCh')}</b> ${o.method==='card'?L('dCard'):L('dPPay')}
-    ${o.transRef?`<br><span style="color:#5b7186">${L('transRef')} <b>${esc(o.transRef)}</b></span>`:''}</div>
+    ${o.transRef?`<br><span style="color:#475569">${L('transRef')} <b>${esc(o.transRef)}</b></span>`:''}</div>
 </div>
 
 <div class="note">${L('dNote')}</div>
