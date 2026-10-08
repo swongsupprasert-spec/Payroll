@@ -22,20 +22,35 @@
     const t=(firm?FIRM_TIERS:TIERS).find(x=>count>=x.min&&count<=x.max);
     const mo=t?(firm?t.price:(ptype==='premium'?t.prem:t.price)):null;
     const range=t?`${t.min}-${t.max} ${firm?'บริษัท':'คน'}`:`${count} ${firm?'บริษัท':'คน'}`;
-    const pkg=firm?'สำนักงานบัญชี (หลายบริษัท พนักงานไม่จำกัด)':(ptype==='premium'?'พรีเมียม (เงินเดือน + ลงเวลา ลา กะ OT)':'มาตรฐาน (เงินเดือน ภาษี ประกันสังคม เอกสารราชการ)');
+    const pkg=firm?'สำนักงานบัญชี':(ptype==='premium'?'พรีเมียม':'มาตรฐาน');
+    // สิ่งที่ลูกค้าได้รับ — ใส่ไว้ใต้ชื่อแพ็กเกจ ให้ลูกค้าเห็นว่าจ่ายแล้วได้อะไร
+    const gets=firm
+      ? [`ดูแลบริษัทลูกค้า ${range} ในบัญชีเดียว พนักงานไม่จำกัด`, 'คำนวณเงินเดือน OT ภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ', 'ออกสลิป 50 ทวิ ภ.ง.ด.1 ภ.ง.ด.1ก สปส.1-10 กท.20ก']
+      : [`รองรับพนักงาน ${range}`, 'คำนวณเงินเดือน OT ภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ', 'ออกสลิป 50 ทวิ ภ.ง.ด.1 ภ.ง.ด.1ก สปส.1-10 กท.20ก',
+         ...(ptype==='premium'?['เพิ่ม: ลงเวลาสแกนหน้า + GPS · ลางาน + สายอนุมัติ · กะ / OT · ปฏิทินวันหยุด']:[])];
+    const term=yearly?`ระยะเวลาบริการ 12 เดือน (จ่ายรายปีคิด ${YEAR_MONTHS} เดือน) นับจากวันที่ชำระ`:'ค่าบริการรายเดือน ต่ออายุทุกเดือน ยกเลิกได้ทุกเมื่อ';
     return {
-      desc:`ค่าบริการระบบเงินเดือน eSimPayroll · แพ็กเกจ${pkg} · ${range}`+
-           (yearly?` · รายปี (12 เดือน คิด ${YEAR_MONTHS} เดือน)`:' · รายเดือน'),
+      desc:`ค่าบริการระบบเงินเดือน eSimPayroll · แพ็กเกจ${pkg} · ${range} · ${yearly?'รายปี':'รายเดือน'}\n`+
+           gets.map(g=>'• '+g).join('\n')+'\n• '+term,
       qty:Math.max(1,+periods||1), unit:yearly?'ปี':'เดือน',
       price:mo==null?null:(yearly?mo*YEAR_MONTHS:mo),
     };
   }
 
   const r2=n=>Math.round((+n||0)*100)/100;
+  /* ยอดรวม — รายการที่เป็น "ตัวเลือก" (option) แสดงแยกให้ลูกค้าเลือก ไม่นำมารวมยอด */
   function totals(items, discount){
-    const sub=r2((items||[]).reduce((s,i)=>s+r2((+i.qty||0)*(+i.price||0)),0));
+    const base=(items||[]).filter(i=>!i.option);
+    const sub=r2(base.reduce((s,i)=>s+r2((+i.qty||0)*(+i.price||0)),0));
     const disc=Math.min(sub, Math.max(0, r2(discount)));
-    return {sub, disc, total:r2(sub-disc)};
+    return {sub, disc, total:r2(sub-disc), options:(items||[]).length-base.length};
+  }
+  /* ป้ายยอดรวม: ถ้าทุกรายการเป็นค่าบริการ 1 เดือน บอกให้ชัดว่าเป็นยอดต่อเดือน */
+  function totalLabel(items){
+    const base=(items||[]).filter(i=>!i.option);
+    if(base.length && base.every(i=>i.unit==='เดือน' && +i.qty===1)) return 'ยอดรวมต่อเดือน (บาท)';
+    if(base.length && base.every(i=>i.unit==='ปี' && +i.qty===1)) return 'ยอดรวมต่อปี (บาท)';
+    return 'ยอดรวมทั้งสิ้น (บาท)';
   }
 
   // โลโก้ eSimPayroll (เหมือน brand/logo-mark.svg) ฝังเป็น SVG ในเอกสาร — พิมพ์ได้คมชัด ไม่ต้องโหลดรูป
@@ -53,8 +68,13 @@
     const s=q.seller||{}, c=q.customer||{};
     const {sub,disc,total}=totals(q.items,q.discount);
     const words=(window.ESIM_RECEIPT&&ESIM_RECEIPT.bahtText)?ESIM_RECEIPT.bahtText(total):'';
-    const rows=(q.items||[]).map((i,k)=>`<tr><td class="c">${k+1}</td><td>${lines(i.desc)}</td>
+    const base=(q.items||[]).filter(i=>!i.option), opts=(q.items||[]).filter(i=>i.option);
+    const descHtml=d=>{ const [first,...rest]=String(d||'').split('\n');
+      return `<b>${esc(first)}</b>${rest.length?`<div class="gets">${rest.map(esc).join('<br>')}</div>`:''}`; };
+    const rows=base.map((i,k)=>`<tr><td class="c">${k+1}</td><td>${descHtml(i.desc)}</td>
       <td class="c">${(+i.qty||0).toLocaleString('th-TH')} ${esc(i.unit||'')}</td><td class="tr">${fmt(i.price)}</td><td class="tr">${fmt((+i.qty||0)*(+i.price||0))}</td></tr>`).join('');
+    const optRows=opts.map((i,k)=>`<tr><td class="c"><span class="tick"></span></td><td><div class="optn">ตัวเลือกที่ ${k+1}</div>${descHtml(i.desc)}</td>
+      <td class="tr" style="white-space:nowrap"><div class="oprice">${fmt((+i.qty||0)*(+i.price||0))}</div>บาท${i.unit?` / ${+i.qty>1?`${(+i.qty).toLocaleString('th-TH')} `:''}${esc(i.unit)}`:''}</td></tr>`).join('');
     return `<!doctype html><html lang="th"><head><meta charset="utf-8"><title>${esc(q.quote_no||'ใบเสนอราคา')}</title>
 <style>
  *{box-sizing:border-box;margin:0;padding:0}
@@ -72,6 +92,11 @@
  .ft{display:flex;gap:14px;margin-top:28px}.sig{flex:1;text-align:center;font-size:14.5px;padding-top:36px}
  .sig .ln{border-top:1px dotted #7d95a8;margin-bottom:5px}
  .note{margin-top:14px;font-size:14.5px;color:#334155}
+ .gets{font-size:14px;color:#334155;margin-top:4px;line-height:1.6}
+ .sec{margin-top:16px;font-weight:800;color:#0e3a5c}.sec span{font-weight:400;font-size:14px;color:#475569}
+ .opt td{vertical-align:middle}.optn{display:inline-block;background:#0e3a5c;color:#fff;border-radius:6px;padding:1px 9px;font-size:13.5px;font-weight:700;margin-bottom:4px}
+ .oprice{font-size:21px;font-weight:800;color:#0e3a5c}
+ .tick{display:inline-block;width:20px;height:20px;border:2px solid #0e3a5c;border-radius:4px}
  @media print{body{padding:0}@page{size:A4;margin:12mm}.noprint{display:none}}
  .noprint{text-align:center;margin-bottom:14px}
  .noprint button{padding:10px 22px;border:0;border-radius:9px;background:#0e3a5c;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
@@ -86,21 +111,27 @@
 </div>
 <div class="grid2">
   <div class="box"><b>ผู้เสนอราคา</b><br>${esc(s.name||'eSimPayroll')}${s.taxId?`<br>เลขประจำตัวผู้เสียภาษี ${esc(s.taxId)}`:''}${s.addr?`<br>${lines(s.addr)}`:''}
-    <br>${esc(s.email||'hello@esimpayroll.com')}${s.phone?' · '+esc(s.phone):''}${s.contact?`<br>ผู้ติดต่อ ${esc(s.contact)}`:''}</div>
+    <br>${esc(s.email||'hello@esimpayroll.com')}${s.phone?' · โทร '+esc(s.phone):''}
+    ${s.line?`<br>LINE ${esc(s.line)}`:''}${s.contact?`<br>ผู้ติดต่อฝ่ายขาย <b>${esc(s.contact)}</b>`:''}</div>
   <div class="box"><b>เสนอราคาให้</b><br>${esc(c.name)}${c.taxId?`<br>เลขประจำตัวผู้เสียภาษี ${esc(c.taxId)}${c.branch?` (${esc(c.branch)})`:''}`:''}${c.addr?`<br>${lines(c.addr)}`:''}
     ${c.contact?`<br>เรียน ${esc(c.contact)}`:''}${c.email||c.phone?`<br>${esc(c.email||'')}${c.email&&c.phone?' · ':''}${esc(c.phone||'')}`:''}</div>
 </div>
-<table>
+${opts.length?`<div class="sec">ตัวเลือกแพ็กเกจ — กรุณาเลือก ${opts.length>1?'1 ตัวเลือก':'รายการนี้'} <span>(ราคาแต่ละตัวเลือกแยกกัน ไม่นำมารวมกัน)</span></div>
+<table class="opt">
+  <thead><tr><th class="c" style="width:7%">เลือก</th><th style="width:68%">แพ็กเกจ / สิ่งที่ได้รับ</th><th class="tr" style="width:25%">ราคา</th></tr></thead>
+  <tbody>${optRows}</tbody>
+</table>`:''}
+${base.length?`${opts.length?'<div class="sec">รายการอื่น</div>':''}<table>
   <thead><tr><th class="c" style="width:6%">ลำดับ</th><th style="width:50%">รายการ</th><th class="c" style="width:12%">จำนวน</th><th class="tr" style="width:15%">ราคาต่อหน่วย</th><th class="tr" style="width:17%">จำนวนเงิน (บาท)</th></tr></thead>
   <tbody>${rows}</tbody>
 </table>
 <table class="sum" style="width:46%;margin-left:auto;margin-top:6px">
   <tr><td>รวมเป็นเงิน</td><td class="tr">${fmt(sub)}</td></tr>
   ${disc?`<tr><td>ส่วนลด</td><td class="tr">-${fmt(disc)}</td></tr>`:''}
-  <tr class="tot"><td>ยอดรวมทั้งสิ้น (บาท)</td><td class="tr">${fmt(total)}</td></tr>
+  <tr class="tot"><td>${totalLabel(q.items)}${opts.length?' ไม่รวมตัวเลือก':''}</td><td class="tr">${fmt(total)}</td></tr>
 </table>
-${words?`<div style="text-align:right;margin-top:6px">(${words})</div>`:''}
-<div style="font-size:14px;color:#475569;margin-top:4px;text-align:right">ผู้ให้บริการไม่ได้จดทะเบียนภาษีมูลค่าเพิ่ม — ราคานี้ไม่มีภาษีมูลค่าเพิ่ม</div>
+${words?`<div style="text-align:right;margin-top:6px">(${words})</div>`:''}`:''}
+<div style="font-size:14px;color:#475569;margin-top:6px;text-align:right">ผู้ให้บริการไม่ได้จดทะเบียนภาษีมูลค่าเพิ่ม — ราคานี้ไม่มีภาษีมูลค่าเพิ่ม</div>
 ${q.notes?`<div class="note"><b>เงื่อนไข / หมายเหตุ</b><br>${lines(q.notes)}</div>`:''}
 <div class="ft">
   <div class="sig"><div class="ln"></div>ผู้เสนอราคา<br>วันที่ ......./......./.......</div>
@@ -117,5 +148,5 @@ ${q.notes?`<div class="note"><b>เงื่อนไข / หมายเหต
     return true;
   }
 
-  window.ESIM_QUOTE={ TIERS, FIRM_TIERS, YEAR_MONTHS, planLine, totals, html, open };
+  window.ESIM_QUOTE={ TIERS, FIRM_TIERS, YEAR_MONTHS, planLine, totals, totalLabel, html, open };
 })();

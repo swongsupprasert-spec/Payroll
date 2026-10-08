@@ -38,9 +38,9 @@ test('รายการแพ็กเกจ: รายปีคิด 10 เ�
 });
 
 test('ยอดรวม: ส่วนลดไม่ติดลบ และปัดเศษสตางค์', () => {
-  assert.deepEqual({ ...Q.totals([{ qty: 1, price: 14900 }, { qty: 3, price: 33.333 }], 900) }, { sub: 15000, disc: 900, total: 14100 }); // 99.999 → 100.00
-  assert.deepEqual({ ...Q.totals([{ qty: 1, price: 500 }], 9999) }, { sub: 500, disc: 500, total: 0 });
-  assert.deepEqual({ ...Q.totals([{ qty: 1, price: 500 }], -50) }, { sub: 500, disc: 0, total: 500 });
+  assert.deepEqual({ ...Q.totals([{ qty: 1, price: 14900 }, { qty: 3, price: 33.333 }], 900) }, { sub: 15000, disc: 900, total: 14100, options: 0 }); // 99.999 → 100.00
+  assert.deepEqual({ ...Q.totals([{ qty: 1, price: 500 }], 9999) }, { sub: 500, disc: 500, total: 0, options: 0 });
+  assert.deepEqual({ ...Q.totals([{ qty: 1, price: 500 }], -50) }, { sub: 500, disc: 0, total: 500, options: 0 });
 });
 
 test('เอกสาร: เลขที่ วันยืนราคา ยอดตัวอักษร ไม่มี VAT และกันโค้ดแทรก', () => {
@@ -61,4 +61,33 @@ test('เอกสาร: เลขที่ วันยืนราคา ย�
   assert.match(h, /บริษัท อีซิม จำกัด/);
   assert.match(h, /&lt;ลูกค้า&gt;/);
   assert.doesNotMatch(h, /<ลูกค้า>/);
+});
+
+test('ตัวเลือกแพ็กเกจ: มาตรฐาน/พรีเมียมให้ลูกค้าเลือก ไม่นำราคามารวมกัน', () => {
+  const std = { ...Q.planLine({ count: 120, cycle: 'monthly' }), option: true };
+  const prem = { ...Q.planLine({ count: 120, ptype: 'premium', cycle: 'monthly' }), option: true };
+  assert.equal(std.price, 2990); assert.equal(prem.price, 4490);
+  assert.deepEqual({ ...Q.totals([std, prem], 0) }, { sub: 0, disc: 0, total: 0, options: 2 });
+  const h = Q.html({ quote_no: 'QT2569-0003', date: '2026-10-08T03:00:00Z', customer: { name: 'ลูกค้า' }, items: [std, prem] });
+  assert.match(h, /ตัวเลือกที่ 1/); assert.match(h, /ตัวเลือกที่ 2/);
+  assert.match(h, /ไม่นำมารวมกัน/);
+  assert.doesNotMatch(h, /7,480/);                        // ห้ามบวก 2,990 + 4,490
+  assert.doesNotMatch(h, /ยอดรวมทั้งสิ้น/);
+  // มีค่าตั้งค่าระบบด้วย → ยอดรวมเฉพาะรายการอื่น และบอกว่าไม่รวมตัวเลือก
+  const h2 = Q.html({ quote_no: 'QT2569-0004', date: '2026-10-08T03:00:00Z', customer: { name: 'ลูกค้า' },
+    items: [std, prem, { desc: 'ค่าตั้งค่าระบบ', qty: 1, unit: 'ครั้ง', price: 5000 }] });
+  assert.match(h2, /ไม่รวมตัวเลือก/); assert.match(h2, /5,000\.00/); assert.doesNotMatch(h2, /12,480/);
+});
+
+test('ใบเสนอราคาบอกสิ่งที่ได้รับ ระยะเวลาบริการ และยอดต่อเดือนให้ชัด', () => {
+  const m = Q.planLine({ count: 120, ptype: 'premium', cycle: 'monthly' });
+  assert.match(m.desc, /รองรับพนักงาน 101-150 คน/);
+  assert.match(m.desc, /ลงเวลาสแกนหน้า/);
+  assert.match(m.desc, /รายเดือน/);
+  assert.match(Q.planLine({ count: 40 }).desc, /ระยะเวลาบริการ 12 เดือน/);
+  assert.equal(Q.totalLabel([m]), 'ยอดรวมต่อเดือน (บาท)');
+  assert.equal(Q.totalLabel([Q.planLine({ count: 40 })]), 'ยอดรวมต่อปี (บาท)');
+  const h = Q.html({ quote_no: 'QT2569-0005', date: '2026-10-08T03:00:00Z', customer: { name: 'ลูกค้า' },
+    seller: { name: 'eSimPayroll', line: '@esimpayroll', contact: 'คุณเอ' }, items: [m] });
+  assert.match(h, /ยอดรวมต่อเดือน/); assert.match(h, /LINE @esimpayroll/); assert.match(h, /ผู้ติดต่อฝ่ายขาย <b>คุณเอ<\/b>/);
 });

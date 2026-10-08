@@ -4,7 +4,7 @@
    ตัวสร้างเอกสาร + ตารางราคา: /assets/quote.js (ESIM_QUOTE)
    ============================================================ */
 const QUOTE_SELLER_KEY='quote_seller';
-const QUOTE_NOTES='1. ราคานี้ยืนราคาถึงวันที่ระบุในใบเสนอราคา\n2. ชำระผ่านพร้อมเพย์ หรือบัตรเครดิต/เดบิต — เปิดใช้งานทันทีหลังชำระ และออกใบเสร็จรับเงินให้อัตโนมัติ\n3. ทดลองใช้ฟรี 30 วันก่อนตัดสินใจได้ที่ esimpayroll.com';
+const QUOTE_NOTES='1. ราคานี้ยืนราคาถึงวันที่ระบุในใบเสนอราคา\n2. เริ่มใช้งานได้ทันทีหลังชำระค่าบริการ (พร้อมเพย์ หรือบัตรเครดิต/เดบิต) ระบบเปิดแพ็กเกจและออกใบเสร็จรับเงินให้อัตโนมัติ\n3. ทดลองใช้ฟรี 30 วันก่อนตัดสินใจได้ที่ esimpayroll.com';
 const QST={issued:['ออกแล้ว','#e0f2fe'],accepted:['ลูกค้าตกลง','#dcfce7'],cancelled:['ยกเลิก','#fee2e2']};
 function quoteSeller(){ try{ return JSON.parse(localStorage.getItem(QUOTE_SELLER_KEY)||'{}'); }catch(e){ return {}; } }
 const qIsoDay=(d)=>new Date(d.getTime()+7*3600e3).toISOString().slice(0,10);   // วันที่ตามเวลาไทย
@@ -60,7 +60,7 @@ async function vQuotes(v){
 function quoteEditor(v, base){
   const copying=!!base;
   base=base||{};
-  const S={name:'eSimPayroll', email:'hello@esimpayroll.com', ...quoteSeller(), ...(base.seller||{})};
+  const S={name:'eSimPayroll', email:'hello@esimpayroll.com', line:'@esimpayroll', ...quoteSeller(), ...(base.seller||{})};
   const C={...(base.customer||{})};
   const items=(base.items||[]).map(x=>({...x}));
   v.innerHTML='';
@@ -87,9 +87,9 @@ function quoteEditor(v, base){
           <div class="field"><label id="qpPerL">จำนวน (ปี)</label><input id="qpPer" type="number" min="1" value="1"></div>
         </div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px">
-          <button class="btn sm" id="qpAdd">➕ เพิ่มลงรายการ</button><span class="muted" id="qpHint" style="font-size:12.5px"></span></div>
+          <button class="btn sm" id="qpAdd">➕ เพิ่มลงรายการ</button><button class="btn ghost sm" id="qpOpt" title="ให้ลูกค้าเลือก 1 แพ็กเกจ ราคาไม่นำมารวมกัน">⚖️ เพิ่มมาตรฐาน + พรีเมียมเป็นตัวเลือก</button><span class="muted" id="qpHint" style="font-size:12.5px"></span></div>
       </div>
-      <div class="tbl-wrap"><table><thead><tr><th style="width:46%">รายการ</th><th style="width:10%">จำนวน</th><th style="width:10%">หน่วย</th><th class="num" style="width:15%">ราคาต่อหน่วย</th><th class="num" style="width:14%">จำนวนเงิน</th><th></th></tr></thead>
+      <div class="tbl-wrap"><table><thead><tr><th style="width:7%" title="ติ๊ก = ให้ลูกค้าเลือก ไม่รวมยอด">ตัวเลือก</th><th style="width:41%">รายการ</th><th style="width:10%">จำนวน</th><th style="width:10%">หน่วย</th><th class="num" style="width:15%">ราคาต่อหน่วย</th><th class="num" style="width:14%">จำนวนเงิน</th><th></th></tr></thead>
         <tbody id="qItems"></tbody></table></div>
       <button class="btn ghost sm" id="qAddRow" style="margin-top:8px">➕ เพิ่มรายการเอง</button>
       <div class="grid3" style="margin-top:14px">
@@ -102,7 +102,7 @@ function quoteEditor(v, base){
     <div class="panel"><div class="phead"><h2>ผู้เสนอราคา <span class="muted" style="font-size:12px;font-weight:400">(จำไว้ในเครื่องนี้ ใช้กับใบถัดไป)</span></h2></div><div class="pbody"><div class="grid2">
       ${f('qsName','ชื่อผู้ขาย / บริษัท',S.name)}${f('qsTax','เลขประจำตัวผู้เสียภาษี',S.taxId)}
       ${ta('qsAddr','ที่อยู่',S.addr)}
-      ${f('qsEmail','อีเมล',S.email)}${f('qsPhone','โทรศัพท์',S.phone)}${f('qsContact','ผู้เสนอราคา',S.contact)}
+      ${f('qsEmail','อีเมล',S.email)}${f('qsPhone','โทรศัพท์',S.phone)}${f('qsLine','LINE',S.line)}${f('qsContact','ผู้ติดต่อฝ่ายขาย (ชื่อ)',S.contact)}
     </div></div></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 20px">
       <button class="btn" id="qSave">💾 บันทึกและพิมพ์</button>
@@ -112,17 +112,19 @@ function quoteEditor(v, base){
 
   const val=id=>($('#'+id).value||'').trim();
   const sumUp=()=>{ const t=ESIM_QUOTE.totals(items.map(i=>({...i,price:+i.price||0})), +val('qDisc')||0);
-    $('#qTotal').textContent=money(t.total)+(t.disc?`  (ส่วนลด ${money(t.disc)})`:''); };
+    $('#qTotal').textContent=(t.options&&t.total===0&&!items.some(i=>!i.option))?`ตามตัวเลือก (${t.options} ตัวเลือก)`
+      :money(t.total)+(t.disc?`  (ส่วนลด ${money(t.disc)})`:'')+(t.options?`  + ตัวเลือก ${t.options} รายการ (ไม่รวมยอด)`:''); };
   const drawItems=()=>{
     const tb=$('#qItems');
     tb.innerHTML=items.length?items.map((it,i)=>`<tr>
-      <td><textarea data-k="desc" data-i="${i}" rows="2" style="${cell}">${esc(it.desc)}</textarea></td>
+      <td style="text-align:center"><input type="checkbox" data-opt="${i}" ${it.option?'checked':''} title="ตัวเลือก — ไม่รวมยอด"></td>
+      <td><textarea data-k="desc" data-i="${i}" rows="${Math.min(7,String(it.desc||'').split('\n').length+1)}" style="${cell}">${esc(it.desc)}</textarea></td>
       <td><input data-k="qty" data-i="${i}" type="number" min="0" step="any" value="${esc(it.qty)}" style="${cell}"></td>
       <td><input data-k="unit" data-i="${i}" value="${esc(it.unit||'')}" style="${cell}"></td>
       <td><input data-k="price" data-i="${i}" type="number" min="0" step="any" value="${it.price==null?'':esc(it.price)}" placeholder="กรอกราคา" style="${cell};text-align:right;${it.price==null?'border-color:#f59e0b':''}"></td>
       <td class="num" data-amt="${i}">${money((+it.qty||0)*(+it.price||0))}</td>
       <td><button class="btn ghost sm" data-rm="${i}" title="ลบรายการ">✕</button></td></tr>`).join('')
-      :'<tr><td colspan="6" class="empty">ยังไม่มีรายการ — เพิ่มแพ็กเกจด้านบน หรือกด “เพิ่มรายการเอง”</td></tr>';
+      :'<tr><td colspan="7" class="empty">ยังไม่มีรายการ — เพิ่มแพ็กเกจด้านบน หรือกด “เพิ่มรายการเอง”</td></tr>';
     tb.querySelectorAll('[data-k]').forEach(inp=>inp.oninput=()=>{
       const i=+inp.dataset.i, it=items[i], k=inp.dataset.k;
       it[k]=(k==='qty'||k==='price')?(inp.value===''?null:+inp.value):inp.value;
@@ -130,6 +132,7 @@ function quoteEditor(v, base){
       if(k==='price') inp.style.borderColor=inp.value===''?'#f59e0b':'';
       sumUp();
     });
+    tb.querySelectorAll('[data-opt]').forEach(c=>c.onchange=()=>{ items[+c.dataset.opt].option=c.checked; sumUp(); });
     tb.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ items.splice(+b.dataset.rm,1); drawItems(); });
     sumUp();
   };
@@ -147,6 +150,11 @@ function quoteEditor(v, base){
   };
   ['qpEd','qpCnt','qpPt','qpCy','qpPer'].forEach(id=>{ $('#'+id).oninput=hint; $('#'+id).onchange=hint; });
   $('#qpAdd').onclick=()=>{ items.push(ESIM_QUOTE.planLine(pkgOpts())); drawItems(); };
+  // มาตรฐานกับพรีเมียมเป็น "ตัวเลือก" ให้ลูกค้าเลือก 1 อย่าง — แสดงแยก ไม่บวกรวมกัน
+  $('#qpOpt').onclick=()=>{ const o=pkgOpts();
+    const kinds=o.edition==='firm'?['standard']:['standard','premium'];
+    kinds.forEach(pt=>items.push({...ESIM_QUOTE.planLine({...o,ptype:pt}), option:true}));
+    drawItems(); toast('เพิ่มเป็นตัวเลือกแล้ว — ราคาจะแสดงแยก ไม่นำมารวมกัน'); };
   $('#qAddRow').onclick=()=>{ items.push({desc:'',qty:1,unit:'รายการ',price:null}); drawItems(); };
   $('#qBack').onclick=()=>render();
   hint(); drawItems();
@@ -175,11 +183,11 @@ function quoteEditor(v, base){
   }
 
   const collect=()=>{
-    const seller={name:val('qsName'),taxId:val('qsTax'),addr:val('qsAddr'),email:val('qsEmail'),phone:val('qsPhone'),contact:val('qsContact')};
+    const seller={name:val('qsName'),taxId:val('qsTax'),addr:val('qsAddr'),email:val('qsEmail'),phone:val('qsPhone'),contact:val('qsContact'),line:val('qsLine')};
     try{ localStorage.setItem(QUOTE_SELLER_KEY, JSON.stringify(seller)); }catch(e){}
     return { seller,
       customer:{name:val('qcName'),contact:val('qcContact'),taxId:val('qcTax'),branch:val('qcBranch'),addr:val('qcAddr'),email:val('qcEmail'),phone:val('qcPhone')},
-      items:items.map(i=>({desc:String(i.desc||'').trim(),qty:+i.qty||0,unit:i.unit||'',price:+i.price||0})),
+      items:items.map(i=>({desc:String(i.desc||'').trim(),qty:+i.qty||0,unit:i.unit||'',price:+i.price||0,...(i.option?{option:true}:{})})),
       discount:+val('qDisc')||0, notes:$('#qNotes').value.trim(), valid_until:val('qValid') };
   };
   const ok=(d)=>{
@@ -188,6 +196,7 @@ function quoteEditor(v, base){
     if(items.some(i=>i.price==null||i.price==='')){ toast('มีรายการที่ยังไม่ได้กรอกราคา'); return false; }
     if(d.items.some(i=>!i.desc)){ toast('มีรายการที่ยังไม่ได้ใส่คำอธิบาย'); return false; }
     if(d.items.some(i=>i.qty<=0)){ toast('จำนวนต้องมากกว่า 0'); return false; }
+    if(d.items.filter(i=>i.option).length===1 && !d.items.some(i=>!i.option)){ toast('มีตัวเลือกเดียว — เอาติ๊ก "ตัวเลือก" ออก หรือเพิ่มตัวเลือกอื่น'); return false; }
     return true;
   };
   $('#qPrev').onclick=()=>{ const d=collect(); if(ok(d)) ESIM_QUOTE.open({...d, date:new Date()}); };
