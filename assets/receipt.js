@@ -63,6 +63,7 @@
     const jur=o.btype==='juristic';
     const yearly=o.cycle==='y'||o.cycle==='yearly';
     const qty=o.edition==='firm'?L('cos'):L('ppl');
+    const P=pdfTools(`${lang?'Receipt':'ใบเสร็จรับเงิน'} ${o.docNo||''}`.trim(), lang);
     return `<!doctype html><html lang="${lang?'en':'th'}"><head><meta charset="utf-8">
 <title>${esc(o.docNo)}</title>
 <style>
@@ -87,8 +88,10 @@
  @media print{body{padding:12mm 13mm}.noprint{display:none}}
  .noprint{text-align:center;margin-bottom:14px}
  .noprint button{padding:10px 22px;border:0;border-radius:9px;background:#0e3a5c;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+${P.css}
 </style></head><body>
-<div class="noprint"><button onclick="window.print()">${L('dPrint')}</button></div>
+${P.bar}
+<div id="doc">
 <div class="hd">
   <div><div class="bn">eSim<span>Payroll</span></div>
     <div style="font-size:14.5px;color:#475569">${L('dTagline')}<br>esimpayroll.com · hello@esimpayroll.com</div></div>
@@ -124,11 +127,38 @@
 </div>
 
 <div class="note">${L('dNote')}</div>
-<script>window.onload=function(){setTimeout(function(){window.print();},350)}<\/script>
+</div>
+${P.script}
 </body></html>`;
   }
 
   // win = หน้าต่างที่เปิดไว้แล้วตอนผู้ใช้กด (ถ้าต้องรอโหลดข้อมูลก่อน — กันเบราว์เซอร์บล็อกป๊อปอัป)
+  /* แถบปุ่มบนเอกสาร: "ดาวน์โหลด PDF" สร้างไฟล์จากเนื้อหา (#doc) โดยตรงด้วย html2pdf
+     — ไม่ผ่านหน้าต่างพิมพ์ของเบราว์เซอร์ จึงไม่มีหัว/ท้ายกระดาษ (วันที่ about:blank เลขหน้า) ติดมา
+     ใช้ร่วมกับใบเสนอราคา (ESIM_QUOTE) */
+  const H2P='https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js';
+  function pdfTools(filename, lang){
+    const T=lang?{dl:'⬇️ Download PDF',pr:'🖨️ Print',busy:'⏳ Creating PDF…',fail:'Could not load the PDF maker — check your connection and try again',
+                  hint:'If printing adds a date or about:blank at the page edge, use Download PDF instead'}
+               :{dl:'⬇️ ดาวน์โหลด PDF',pr:'🖨️ พิมพ์',busy:'⏳ กำลังสร้าง PDF…',fail:'โหลดตัวสร้าง PDF ไม่สำเร็จ — ตรวจอินเทอร์เน็ตแล้วลองใหม่',
+                  hint:'ถ้าสั่งพิมพ์แล้วมีวันที่หรือ about:blank ติดขอบกระดาษ ให้ใช้ปุ่ม “ดาวน์โหลด PDF” แทน'};
+    const css=` #doc{max-width:182mm;margin:0 auto;background:#fff}
+ .noprint .alt{background:#fff;color:#0e3a5c;border:1.5px solid #0e3a5c;margin-left:8px}
+ .noprint .hint{font-size:13px;color:#64748b;margin-top:8px}`;
+    const bar=`<div class="noprint"><button id="dlb" onclick="dlPdf()">${T.dl}</button><button class="alt" onclick="window.print()">${T.pr}</button><div class="hint">${T.hint}</div></div>`;
+    const script=`<script>
+function dlPdf(){var b=document.getElementById('dlb');if(b.disabled)return;b.disabled=true;b.textContent=${JSON.stringify(T.busy)};
+ var done=function(){b.disabled=false;b.textContent=${JSON.stringify(T.dl)};};
+ var go=function(){html2pdf().set({margin:[12,13,12,13],filename:${JSON.stringify(String(filename||'document').replace(/[\\/:*?"<>|]/g,'-')+'.pdf')},
+   image:{type:'jpeg',quality:0.96},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff'},
+   jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['tr','.box','.ft']}})
+   .from(document.getElementById('doc')).save().then(done,function(){done();alert(${JSON.stringify(T.fail)});});};
+ if(window.html2pdf)return go();
+ var s=document.createElement('script');s.src=${JSON.stringify(H2P)};s.onload=go;s.onerror=function(){done();alert(${JSON.stringify(T.fail)});};document.head.appendChild(s);}
+<\/script>`;
+    return {css, bar, script};
+  }
+
   function open(o, lang, win){
     const w=win||window.open('','_blank');
     if(!w){ alert(TX.popupBlocked[lang?1:0]); return false; }
@@ -136,5 +166,5 @@
     return true;
   }
 
-  window.ESIM_RECEIPT={ open, html, bahtText };
+  window.ESIM_RECEIPT={ open, html, bahtText, pdfTools };
 })();

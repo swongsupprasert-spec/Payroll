@@ -66,6 +66,10 @@
 
   function html(q){
     const s=q.seller||{}, c=q.customer||{};
+    // ปุ่มดาวน์โหลด PDF (ตัวช่วยอยู่ใน receipt.js) — ชื่อไฟล์ เช่น "ใบเสนอราคา QT2569-0002 บริษัท ก จำกัด.pdf"
+    const P=(window.ESIM_RECEIPT&&ESIM_RECEIPT.pdfTools)
+      ? ESIM_RECEIPT.pdfTools(['ใบเสนอราคา',q.quote_no,c.name].filter(Boolean).join(' '), false)
+      : {css:'', bar:'<div class="noprint"><button onclick="window.print()">🖨️ พิมพ์ / บันทึกเป็น PDF</button></div>', script:''};
     const {sub,disc,total}=totals(q.items,q.discount);
     const words=(window.ESIM_RECEIPT&&ESIM_RECEIPT.bahtText)?ESIM_RECEIPT.bahtText(total):'';
     const base=(q.items||[]).filter(i=>!i.option), opts=(q.items||[]).filter(i=>i.option);
@@ -102,8 +106,10 @@
  @media print{body{padding:12mm 13mm}.noprint{display:none}}
  .noprint{text-align:center;margin-bottom:14px}
  .noprint button{padding:10px 22px;border:0;border-radius:9px;background:#0e3a5c;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+${P.css}
 </style></head><body>
-<div class="noprint"><button onclick="window.print()">🖨️ พิมพ์ / บันทึกเป็น PDF</button></div>
+${P.bar}
+<div id="doc">
 <div class="hd">
   <div style="display:flex;align-items:center;gap:12px">${LOGO}
     <div><div class="bn">eSim<span>Payroll</span></div>
@@ -139,7 +145,8 @@ ${q.notes?`<div class="note"><b>เงื่อนไข / หมายเหต
   <div class="sig"><div class="ln"></div>ผู้เสนอราคา<br>วันที่ ......./......./.......</div>
   <div class="sig"><div class="ln"></div>ผู้อนุมัติสั่งซื้อ (ลูกค้า)<br>วันที่ ......./......./.......</div>
 </div>
-<script>window.onload=function(){setTimeout(function(){window.print();},350)}<\/script>
+</div>
+${P.script}
 </body></html>`;
   }
 
