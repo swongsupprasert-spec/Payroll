@@ -66,14 +66,26 @@ async function vFeedback(v){
   if(error){ box.innerHTML=`<div class="empty">โหลดไม่ได้: ${esc(error.message)}<br><span style="font-size:12px">(ยังไม่ได้สร้างตาราง feedback ใน Supabase?)</span></div>`; return; }
   if(!data||!data.length){ box.innerHTML='<div class="empty">ยังไม่มีข้อความจากผู้ใช้</div>'; return; }
   const kc={'ปัญหา':'#fee2e2;color:#dc2626','คำแนะนำ':'#dcfce7;color:#16a34a','สอบถาม':'#eaf6f1;color:#092942'};
-  box.innerHTML=`<div style="margin-bottom:12px" class="muted">ทั้งหมด ${data.length} ข้อความ</div>`+data.map(f=>`
+  box.innerHTML=`<div style="margin-bottom:12px" class="muted">ทั้งหมด ${data.length} ข้อความ</div>`+data.map((f,i)=>`
     <div style="border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px">
       <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap">
         <span class="chip" style="background:${kc[f.kind]||'#eaf6f1;color:#092942'}">${esc(f.kind||'-')}</span>
         <strong>${esc(f.name||'ไม่ระบุชื่อ')}</strong>
         ${f.email?`<a href="mailto:${esc(f.email)}" class="muted" style="font-size:12px">${esc(f.email)}</a>`:''}
         <span class="muted" style="font-size:12px;margin-left:auto">${esc(fmtDateTime(f.created_at))}</span>
+        <button class="btn ghost sm" data-fbdel="${i}" title="ลบข้อความนี้" style="padding:3px 9px">🗑️ ลบ</button>
       </div>
       <div style="white-space:pre-wrap">${esc(f.message)}</div>
     </div>`).join('');
-}
+  box.querySelectorAll('[data-fbdel]').forEach(b=>b.onclick=()=>{
+    const f=data[+b.dataset.fbdel];
+    openModal('ลบข้อความ',`<p>ลบข้อความจาก <b>${esc(f.name||'ไม่ระบุชื่อ')}</b> ใช่ไหม? ลบแล้วกู้คืนไม่ได้</p>
+      <div class="muted" style="font-size:13px;margin-top:8px;white-space:pre-wrap;max-height:120px;overflow:auto">${esc(f.message)}</div>`,
+      [['ยกเลิก','ghost',closeModal],['ลบ','danger',async()=>{ closeModal();
+        // .select() คืนแถวที่ลบจริง — ถ้าว่างแปลว่าสิทธิ์ลบยังไม่เปิด (RLS ไม่ขึ้น error แต่ไม่ลบ)
+        const {data:gone,error}=await sb.from('feedback').delete().eq('id',f.id).select('id');
+        if(error){ toast('ลบไม่สำเร็จ: '+error.message); return; }
+        if(!gone||!gone.length){ toast('ลบไม่ได้ — ต้องรัน sql/32-supabase-feedback-delete.sql ใน Supabase ก่อน'); return; }
+        toast('ลบข้อความแล้ว'); render(); }]]);
+  });
+}
