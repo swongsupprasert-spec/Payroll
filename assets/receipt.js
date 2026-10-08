@@ -6,11 +6,21 @@
                             plan, employees, cycle, amount, transRef, method, edition }, lang)
    ============================================================ */
 (function(){
+  /* ผู้ให้บริการ eSimPayroll (นิติบุคคลผู้รับเงิน) — ใช้ทั้งใบเสร็จและใบเสนอราคา (ESIM_QUOTE) */
+  const SELLER={
+    name:'บริษัท บีกิน ทัวร์ จำกัด (สำนักงานใหญ่)',
+    taxId:'0835566030044',
+    addr:'324/126 ถ.พระบารมี ต.ป่าตอง อ.กะทู้ จ.ภูเก็ต 83150',
+    phone:'063-223-7363',
+    email:'hello@esimpayroll.com',
+  };
+  window.ESIM_SELLER=SELLER;
   const TX={
     dTitle:['ใบเสร็จรับเงิน','Receipt'], dSub:['Receipt','ใบเสร็จรับเงิน'], dNo:['เลขที่','No.'], dDate:['วันที่','Date'],
     dSeller:['ผู้ให้บริการ / ผู้รับเงิน','Service provider / Payee'], dBuyer:['ผู้ชำระเงิน','Customer'],
     btJur:['นิติบุคคล','Company'], btIndiv:['บุคคลทั่วไป','Individual'], brHQ:['สำนักงานใหญ่','Head office'], brBr:['สาขา','Branch'],
-    dTaxIdLbl:['เลขประจำตัวผู้เสียภาษี','Tax ID'],
+    dTaxIdLbl:['เลขประจำตัวผู้เสียภาษี','Tax ID'], dPhone:['โทร','Tel.'],
+    dBrand:['ผู้ให้บริการระบบ eSimPayroll · esimpayroll.com','Operator of eSimPayroll · esimpayroll.com'],
     dItem:['รายการ','Description'], dQty:['จำนวน','Qty'], dCycle:['รอบชำระ','Cycle'], dAmt:['จำนวนเงิน (บาท)','Amount (THB)'],
     dService:['ค่าบริการระบบเงินเดือน eSimPayroll','eSimPayroll payroll service'], dPlanLbl:['แพ็กเกจ','Plan'],
     ppl:['คน','employees'], cos:['บริษัท','companies'],
@@ -97,7 +107,8 @@
 </div>
 
 <div class="grid2">
-  <div class="box"><b>${L('dSeller')}</b><br>eSimPayroll<br>esimpayroll.com<br>hello@esimpayroll.com</div>
+  <div class="box"><b>${L('dSeller')}</b><br>${esc(SELLER.name)}<br>${L('dTaxIdLbl')} ${esc(SELLER.taxId)}<br>${esc(SELLER.addr)}
+    <br>${L('dPhone')} ${esc(SELLER.phone)} · ${esc(SELLER.email)}<br><span style="color:#475569">${L('dBrand')}</span></div>
   <div class="box"><b>${L('dBuyer')} (${jur?L('btJur'):L('btIndiv')})</b><br>${esc(o.name)}
     ${jur&&o.taxId?`<br>${L('dTaxIdLbl')} ${esc(o.taxId)}${o.branch?` (${o.branch==='สาขา'?L('brBr'):L('brHQ')})`:''}`:''}
     ${o.addr?`<br>${esc(o.addr)}`:''}
