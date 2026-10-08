@@ -476,6 +476,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 </div>
 
 <script src="https://cdn.omise.co/omise.js"></script>
+<script src="/assets/receipt.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 <script>
@@ -589,6 +590,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     okUntil:['ใช้งานได้ถึง','Active until'],
     goApp:['🚀 เข้าใช้งานโปรแกรม','🚀 Open the app'],
     dlReceipt:['🧾 ดาวน์โหลดใบเสร็จ (PDF)','🧾 Download receipt (PDF)'],
+    rcLater:['ดาวน์โหลดใบเสร็จย้อนหลังได้ทุกเมื่อ ในโปรแกรม → ตั้งค่า → ประวัติการชำระเงิน','You can re-download receipts anytime in the app → Settings → Payment history'],
     /* ตรวจสอบ */
     eName:['กรุณากรอกชื่อและอีเมล','Please enter your name and email'],
     eEmail:['รูปแบบอีเมลไม่ถูกต้อง','Invalid email format'],
@@ -839,109 +841,27 @@ footer .ft-mail{color:#6ee7b7 !important}
   $('ptS').onclick=()=>{ ptype='standard'; $('ptS').classList.add('on'); $('ptP').classList.remove('on'); sync(); };
   $('ptP').onclick=()=>{ ptype='premium';  $('ptP').classList.add('on'); $('ptS').classList.remove('on'); sync(); };
 
-  /* ---- อ่านจำนวนเงินเป็นตัวอักษรไทย ---- */
-  function bahtText(n){
-    n=Math.round((+n||0)*100)/100;
-    const bt=Math.floor(n), st=Math.round((n-bt)*100);
-    const d=['ศูนย์','หนึ่ง','สอง','สาม','สี่','ห้า','หก','เจ็ด','แปด','เก้า'];
-    const pos=['','สิบ','ร้อย','พัน','หมื่น','แสน','ล้าน'];
-    const readInt=s=>{
-      if(s==='0') return '';
-      let out='', L=s.length;
-      for(let i=0;i<L;i++){
-        const dg=+s[i], p=(L-1-i)%6;
-        if(dg!==0){
-          if(p===1&&dg===1) out+='สิบ';
-          else if(p===1&&dg===2) out+='ยี่สิบ';
-          else if(p===0&&dg===1&&L>1&&out!=='') out+='เอ็ด';
-          else out+=d[dg]+pos[p];
-        }
-        if((L-1-i)%6===0 && (L-1-i)!==0) out+='ล้าน';
-      }
-      return out;
-    };
-    return (bt===0?'ศูนย์':readInt(String(bt)))+'บาท'+(st===0?'ถ้วน':readInt(String(st))+'สตางค์');
-  }
 
-  /* ---- ออกเอกสาร (ใบแจ้งชำระเงิน) ---- */
+  /* ---- ใบเสร็จรับเงิน (ตัวสร้างเอกสารอยู่ที่ /assets/receipt.js ใช้ร่วมกับในโปรแกรม) ---- */
   let LAST_DOC=null;
-  function openDoc(){
-    const o=LAST_DOC; if(!o) return;
-    const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-    const dt=o.date, dstr=`${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()+(LANG()?0:543)}`;
-    const jur=o.btype==='juristic';
-    const html=`<!doctype html><html lang="${LANG()?'en':'th'}"><head><meta charset="utf-8">
-<title>${o.docNo}</title>
-<style>
- *{box-sizing:border-box;margin:0;padding:0}
- body{font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;color:#0f2438;font-size:13px;line-height:1.55;padding:14mm}
- .hd{display:flex;align-items:flex-start;gap:14px;border-bottom:2px solid #0e3a5c;padding-bottom:12px;margin-bottom:16px}
- .bn{font-size:23px;font-weight:800}.bn span{color:#0e3a5c}
- .hd .r{margin-left:auto;text-align:right}
- .hd .r h1{font-size:19px;color:#0e3a5c}
- table{width:100%;border-collapse:collapse;margin-top:12px}
- th,td{border:1px solid #b9cddb;padding:8px 10px;text-align:left}
- th{background:#eaf6f1;font-size:12.5px}
- .tr{text-align:right}
- .box{border:1px solid #d7e5dd;border-radius:8px;padding:11px 13px;font-size:12.5px}
- .grid2{display:flex;gap:12px;margin-bottom:6px}.grid2>div{flex:1}
- .tot{background:#0e3a5c;color:#fff;font-weight:800}
- .ft{display:flex;gap:14px;margin-top:20px}
- .sig{flex:1;text-align:center;font-size:12px;padding-top:34px}
- .sig .ln{border-top:1px dotted #7d95a8;margin-bottom:5px}
- .note{margin-top:14px;font-size:11.5px;color:#5b7186;border-top:1px solid #e2e8f0;padding-top:9px}
- @media print{body{padding:0}@page{size:A4;margin:12mm}.noprint{display:none}}
- .noprint{text-align:center;margin-bottom:14px}
- .noprint button{padding:10px 22px;border:0;border-radius:9px;background:#0e3a5c;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
-</style></head><body>
-<div class="noprint"><button onclick="window.print()">${L('dPrint')}</button></div>
-<div class="hd">
-  <div><div class="bn">eSim<span>Payroll</span></div>
-    <div style="font-size:12px;color:#5b7186">${L('dTagline')}<br>hello@esimpayroll.com</div></div>
-  <div class="r"><h1>${L('dTitle')}</h1>
-    <div style="font-size:11.5px;color:#5b7186">Payment Notice</div>
-    <div style="margin-top:5px">${L('dNo')} <b>${esc(o.docNo)}</b><br>${L('dDate')} <b>${dstr}</b></div></div>
-</div>
-
-<div class="grid2">
-  <div class="box"><b>${L('dSeller')}</b><br>eSimPayroll<br>hello@esimpayroll.com</div>
-  <div class="box"><b>${L('dBuyer')} (${jur?L('btJur'):L('btIndiv')})</b><br>${esc(o.name)}
-    ${jur&&o.taxId?`<br>${L('dTaxIdLbl')} ${esc(o.taxId)}${o.branch?` (${o.branch==='สาขา'?L('brBr'):L('brHQ')})`:''}`:''}
-    ${jur&&o.addr?`<br>${esc(o.addr)}`:''}
-    <br>${esc(o.email)}${o.phone?' · '+esc(o.phone):''}</div>
-</div>
-
-<table>
-  <thead><tr><th style="width:52%">${L('dItem')}</th><th style="width:14%">${L('dQty')}</th><th style="width:17%">${L('dCycle')}</th><th class="tr" style="width:17%">${L('dAmt')}</th></tr></thead>
-  <tbody>
-    <tr><td>${L('dService')}<br><span style="font-size:11.5px;color:#5b7186">${L('dPlanLbl')} ${esc(o.plan)}</span></td>
-        <td>${o.employees} ${L('ppl')}</td><td>${o.cycle==='y'?L('cyYear'):L('cyMonth')}</td>
-        <td class="tr">${fmt(o.amount)}</td></tr>
-    <tr class="tot"><td colspan="3" class="tr">${L('dSum')}</td><td class="tr">${fmt(o.amount)}</td></tr>
-    <tr><td colspan="4">${L('dWords')} — <b>(${bahtText(o.amount)})</b></td></tr>
-  </tbody>
-</table>
-
-<div style="margin-top:14px">
-  <div class="box"><b>${L('dPayCh')}</b> ${o.method==='card'?L('dCard'):L('dPPay')}<br>
-    <span style="color:#5b7186">${o.transRef?L('transRef')+' <b>'+esc(o.transRef)+'</b><br>':''}${L('dPaid')}</span></div>
-</div>
-
-<div class="ft">
-  <div class="sig"><div class="ln"></div>${L('dPayer')}<br>${L('dDateLine')}</div>
-  <div class="sig"><div class="ln"></div>${L('dReceiver')}<br>${L('dDateLine')}</div>
-</div>
-
-<div class="note">
-  ${L('dNote1')}<br>
-  ${L('dNote2')}
-</div>
-<script>window.onload=function(){setTimeout(function(){window.print();},350)}<\/script>
-
-</body></html>`;
-    const w=window.open('','_blank');
-    if(!w){ alert(L('popupBlocked')); return; }
-    w.document.write(html); w.document.close();
+  async function loadReceiptNo(){
+    const o=LAST_DOC; if(!o) return '';
+    if(o.docNo) return o.docNo;
+    for(let i=0;i<5 && sb && o.transRef;i++){            // trigger ออกเลขพร้อมสถานะ successful — เผื่อหน่วงเล็กน้อย
+      try{
+        const {data}=await sb.from('payments').select('receipt_no,paid_at,method').eq('charge_id',o.transRef).maybeSingle();
+        if(data && data.receipt_no){ o.docNo=data.receipt_no; if(data.paid_at) o.date=new Date(data.paid_at); if(data.method) o.method=data.method; return o.docNo; }
+      }catch(e){}
+      await new Promise(r=>setTimeout(r,800));
+    }
+    return (o.docNo='REF-'+String(o.transRef||'').slice(-10));  // ยังไม่ได้รัน sql/30 — ใช้เลขอ้างอิงรายการแทน
+  }
+  async function openDoc(){
+    if(!LAST_DOC) return;
+    const w=window.open('','_blank');              // เปิดหน้าต่างทันทีตอนกด (กันเบราว์เซอร์บล็อกป๊อปอัป) แล้วค่อยใส่เอกสาร
+    if(w) w.document.write('<p style="font-family:sans-serif;padding:24px">⏳ …</p>');
+    await loadReceiptNo();
+    if(window.ESIM_RECEIPT) ESIM_RECEIPT.open(LAST_DOC, LANG(), w);
   }
 
   /* ---- กล่องสั่งซื้อ ---- */
@@ -1214,12 +1134,13 @@ footer .ft-mail{color:#6ee7b7 !important}
 
   /* หน้าจอ "เปิดใช้งานแล้ว" — ชำระผ่าน Omise (พร้อมเพย์ / บัตร) */
   function showSuccess({paidUntil, transRef, t, p, name, email, phone, btype, taxId, branch, addr}){
+      // เลขที่ใบเสร็จออกโดยฐานข้อมูล (sql/30) — ดึงตามรหัสรายการ ไม่สุ่มเองในเบราว์เซอร์
       LAST_DOC={
-        docNo:'INV-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(Math.floor(Math.random()*9000)+1000),
-        date:new Date(), name, email, phone, btype, taxId, branch, addr,
+        docNo:null, date:new Date(), name, email, phone, btype, taxId, branch, addr,
         plan:planName(t), employees:count, cycle, amount:p, transRef,
-        method:PAY_METHOD
+        method:PAY_METHOD, edition
       };
+      loadReceiptNo().then(no=>{ const e=$('docNoTxt'); if(e) e.textContent=no; });
       const dUntil=new Date(paidUntil);
       const untilStr=String(dUntil.getDate()).padStart(2,'0')+'/'+String(dUntil.getMonth()+1).padStart(2,'0')+'/'+(dUntil.getFullYear()+(LANG()?0:543));
       $('mTitle').textContent=L('okActive');
@@ -1230,11 +1151,12 @@ footer .ft-mail{color:#6ee7b7 !important}
         <div style="background:var(--accent-bg);border:1px solid #d6ebe1;border-radius:11px;padding:13px 14px;margin:14px 0">
           <div style="font-size:13px;color:var(--muted)">${L('okUntil')}</div>
           <div style="font-size:24px;font-weight:800;color:var(--brand)">${untilStr}</div>
-          <div style="font-size:12.5px;color:var(--muted);margin-top:6px">${L('docNo')} <b>${LAST_DOC.docNo}</b></div>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:6px">${L('docNo')} <b id="docNoTxt">…</b></div>
           ${transRef?`<div style="font-size:12.5px;color:var(--muted)">${L('transRef')} <b>${transRef}</b></div>`:''}
         </div>
         <a href="/app" class="btn green" style="width:100%;padding:12px;font-size:15px">${L('goApp')}</a>
         <button class="btn ghost" id="dlDoc" style="width:100%;margin-top:8px;padding:11px">${L('dlReceipt')}</button>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px">${L('rcLater')}</div>
         <button class="btn ghost" id="doneBtn" style="width:100%;margin-top:8px">${L('close')}</button>
       </div>`;
       $('dlDoc').onclick=openDoc;

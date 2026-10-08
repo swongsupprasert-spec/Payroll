@@ -98,6 +98,7 @@ function vSettings(v){
   };
 
   vHolidayPanel(v);
+  vReceiptsPanel(v);
 
   // ส่วน "ข้อมูลระบบ" (สำรอง/นำเข้า/รีเซ็ต) — เห็นเฉพาะผู้ดูแลระบบ
   if(IS_ADMIN){
@@ -116,6 +117,39 @@ function vSettings(v){
   }
 }
 
+
+/* 🧾 ประวัติการชำระเงิน / ใบเสร็จ — ดาวน์โหลดย้อนหลังได้ทุกเมื่อ เลขที่เดิมทุกครั้ง
+   อ่านจากตาราง payments ของบัญชีตัวเอง (RLS: read own payments) · เลขที่ออกโดย trigger ใน sql/30 */
+function vReceiptsPanel(v){
+  if(DEMO || GUEST || !sb || !MY_UID) return;
+  const p=el(`<div class="panel"><div class="phead"><h2>🧾 ประวัติการชำระเงิน / ใบเสร็จ</h2></div><div class="pbody" id="rcBody"><p class="muted">กำลังโหลด…</p></div></div>`);
+  v.appendChild(p);
+  const body=p.querySelector('#rcBody');
+  (async()=>{
+    const {data,error}=await sb.from('payments')
+      .select('charge_id,receipt_no,paid_at,created_at,amount,plan,employees,cycle,edition,method,buyer_name,buyer_email,buyer_phone,buyer_type,tax_id,branch,address')
+      .eq('user_id',MY_UID).eq('status','successful').order('paid_at',{ascending:false});
+    if(error){ body.innerHTML=`<p class="muted">โหลดประวัติไม่สำเร็จ ลองรีเฟรชหน้าอีกครั้ง</p>`; return; }
+    if(!data || !data.length){ body.innerHTML=`<p class="muted">ยังไม่มีรายการชำระเงิน — ชำระผ่านหน้า <a href="/pricing">แพ็กเกจและราคา</a> แล้วใบเสร็จจะขึ้นที่นี่</p>`; return; }
+    body.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>วันที่ชำระ</th><th>เลขที่ใบเสร็จ</th><th>แพ็กเกจ</th><th class="num">จำนวนเงิน</th><th></th></tr></thead><tbody>
+      ${data.map((r,i)=>`<tr><td>${fmtDate(new Date(Date.parse(r.paid_at||r.created_at)+7*3600e3).toISOString().slice(0,10))}</td><td>${esc(r.receipt_no||'—')}</td>
+        <td>${esc(r.plan||'')} · ${r.cycle==='yearly'?'รายปี':'รายเดือน'}</td><td class="num">${num(+r.amount)}</td>
+        <td><button class="btn ghost sm" data-rc="${i}">🧾 ดาวน์โหลด</button></td></tr>`).join('')}
+    </tbody></table></div>
+    <p class="muted" style="margin-top:10px;font-size:12.5px">ใบเสร็จออกในชื่อที่กรอกตอนชำระเงิน · ต้องการแก้ชื่อหรือที่อยู่ ติดต่อ hello@esimpayroll.com</p>`;
+    body.querySelectorAll('[data-rc]').forEach(b=>b.onclick=()=>{
+      const r=data[+b.dataset.rc];
+      if(!window.ESIM_RECEIPT){ toast('โหลดตัวสร้างใบเสร็จไม่สำเร็จ ลองรีเฟรชหน้า'); return; }
+      ESIM_RECEIPT.open({
+        docNo:r.receipt_no||('REF-'+String(r.charge_id).slice(-10)), date:r.paid_at||r.created_at,
+        name:r.buyer_name, email:r.buyer_email, phone:r.buyer_phone, btype:r.buyer_type,
+        taxId:r.tax_id, branch:r.branch, addr:r.address,
+        plan:r.plan, employees:r.employees, cycle:r.cycle, edition:r.edition,
+        amount:+r.amount, transRef:r.charge_id, method:r.method,
+      }, LANG==='en');
+    });
+  })();
+}
 
 /* ============================================================
    ⏰ เวลาเข้างาน — บันทึกเวลาเข้า/ออก นำเข้าจาก CSV
@@ -1355,4 +1389,4 @@ function pushAttendToPayroll(){
       save(); closeModal(); toast(`ส่งข้อมูลแล้ว · วันทำงาน ${d} คน · OT ${o} คน`);
     }]]);
 }
-
+
