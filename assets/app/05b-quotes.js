@@ -150,6 +150,29 @@ function quoteEditor(v, base){
   $('#qAddRow').onclick=()=>{ items.push({desc:'',qty:1,unit:'รายการ',price:null}); drawItems(); };
   $('#qBack').onclick=()=>render();
   hint(); drawItems();
+  rememberCustomers();
+
+  /* จำลูกค้าเก่า: พิมพ์ชื่อบริษัทแล้วมีรายชื่อจากใบเสนอราคาที่เคยออกให้เลือก
+     เลือกแล้วเติมผู้ติดต่อ เลขภาษี สาขา ที่อยู่ อีเมล โทร ให้อัตโนมัติ (ใช้ข้อมูลใบล่าสุดของลูกค้ารายนั้น) */
+  async function rememberCustomers(){
+    const {data}=await sb.from('quotes').select('doc,created_at').order('created_at',{ascending:false}).limit(500);
+    const known=new Map();
+    (data||[]).forEach(q=>{ const c=q.doc&&q.doc.customer; const k=c&&String(c.name||'').trim().toLowerCase();
+      if(k && !known.has(k)) known.set(k,c); });
+    if(!known.size) return;
+    const inp=$('#qcName'); if(!inp) return;
+    const dl=document.createElement('datalist'); dl.id='qcNameList';
+    dl.innerHTML=[...known.values()].map(c=>`<option value="${esc(c.name)}">${esc([c.contact,c.taxId].filter(Boolean).join(' · '))}</option>`).join('');
+    inp.after(dl); inp.setAttribute('list','qcNameList'); inp.setAttribute('autocomplete','off');
+    inp.placeholder='พิมพ์ชื่อ หรือเลือกลูกค้าเดิมจากรายการ';
+    const fill=()=>{
+      const c=known.get(inp.value.trim().toLowerCase()); if(!c) return;
+      const set={qcContact:c.contact,qcTax:c.taxId,qcBranch:c.branch,qcAddr:c.addr,qcEmail:c.email,qcPhone:c.phone};
+      Object.entries(set).forEach(([id,v])=>{ const e=$('#'+id); if(e) e.value=v||''; });
+      toast('เติมข้อมูลลูกค้าเดิมให้แล้ว');
+    };
+    inp.addEventListener('change',fill);
+  }
 
   const collect=()=>{
     const seller={name:val('qsName'),taxId:val('qsTax'),addr:val('qsAddr'),email:val('qsEmail'),phone:val('qsPhone'),contact:val('qsContact')};
