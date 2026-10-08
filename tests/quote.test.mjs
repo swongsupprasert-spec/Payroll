@@ -37,13 +37,6 @@ test('รายการแพ็กเกจ: รายปีคิด 10 เ�
   assert.equal(Q.planLine({ edition: 'firm', count: 60 }).price, null);
 });
 
-test('ผู้เสนอราคาตั้งต้นเป็นนิติบุคคลเจ้าของ eSimPayroll เมื่อใบไม่มีข้อมูลผู้ขาย', () => {
-  const h = Q.html({ quote_no: 'QT2569-0002', date: '2026-10-08T03:00:00Z', seller: { name: 'eSimPayroll' }, customer: { name: 'ลูกค้า' }, items: [{ desc: 'x', qty: 1, unit: 'ปี', price: 100 }] });
-  assert.match(h, /บริษัท บีกิน ทัวร์ จำกัด/);
-  assert.match(h, /0835566030044/);
-  assert.match(h, /063-223-7363/);
-});
-
 test('ยอดรวม: ส่วนลดไม่ติดลบ และปัดเศษสตางค์', () => {
   assert.deepEqual({ ...Q.totals([{ qty: 1, price: 14900 }, { qty: 3, price: 33.333 }], 900) }, { sub: 15000, disc: 900, total: 14100 }); // 99.999 → 100.00
   assert.deepEqual({ ...Q.totals([{ qty: 1, price: 500 }], 9999) }, { sub: 500, disc: 500, total: 0 });

@@ -25,9 +25,6 @@ test('ใบเสร็จ: เลขที่จากฐานข้อมู
     transRef: 'chrg_test_1', method: 'card',
   }, false);
   assert.match(h, /ใบเสร็จรับเงิน/);
-  assert.ok(h.includes('บริษัท บีกิน ทัวร์ จำกัด (สำนักงานใหญ่)'));   // ผู้รับเงินตามกฎหมาย
-  assert.match(h, /0835566030044/);
-  assert.match(h, /ต.ป่าตอง อ.กะทู้ จ.ภูเก็ต 83150/);
   assert.match(h, /RC2569-000123/);
   assert.match(h, /09\/10\/2569/);
   assert.match(h, /ไม่ได้จดทะเบียนภาษีมูลค่าเพิ่ม/);

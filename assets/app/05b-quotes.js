@@ -60,10 +60,7 @@ async function vQuotes(v){
 function quoteEditor(v, base){
   const copying=!!base;
   base=base||{};
-  // ผู้เสนอราคา: ค่าเริ่มต้นคือนิติบุคคลเจ้าของ eSimPayroll (ESIM_SELLER ใน receipt.js)
-  // ถ้าเคยแก้ข้อมูลผู้ขายเองในเครื่องนี้ (มีเลขภาษี) ใช้ค่าที่แก้ไว้ · ค่าเก่าแบบมีแค่ "eSimPayroll" ไม่นำมาใช้
-  const saved=quoteSeller();
-  const S={...(window.ESIM_SELLER||{name:'eSimPayroll',email:'hello@esimpayroll.com'}), ...(saved.taxId?saved:{}), ...(base.seller&&base.seller.taxId?base.seller:{})};
+  const S={name:'eSimPayroll', email:'hello@esimpayroll.com', ...quoteSeller(), ...(base.seller||{})};
   const C={...(base.customer||{})};
   const items=(base.items||[]).map(x=>({...x}));
   v.innerHTML='';

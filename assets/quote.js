@@ -50,7 +50,7 @@
   const lines=s=>esc(s).replace(/\n/g,'<br>');
 
   function html(q){
-    const s=(q.seller&&q.seller.taxId)?q.seller:(window.ESIM_SELLER||q.seller||{}), c=q.customer||{};   // ไม่มีข้อมูลนิติบุคคล → ใช้ผู้ให้บริการตั้งต้น
+    const s=q.seller||{}, c=q.customer||{};
     const {sub,disc,total}=totals(q.items,q.discount);
     const words=(window.ESIM_RECEIPT&&ESIM_RECEIPT.bahtText)?ESIM_RECEIPT.bahtText(total):'';
     const rows=(q.items||[]).map((i,k)=>`<tr><td class="c">${k+1}</td><td>${lines(i.desc)}</td>
