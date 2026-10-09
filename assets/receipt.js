@@ -136,7 +136,9 @@ ${P.script}
   /* แถบปุ่มบนเอกสาร: "ดาวน์โหลด PDF" สร้างไฟล์จากเนื้อหา (#doc) โดยตรงด้วย html2pdf
      — ไม่ผ่านหน้าต่างพิมพ์ของเบราว์เซอร์ จึงไม่มีหัว/ท้ายกระดาษ (วันที่ about:blank เลขหน้า) ติดมา
      ใช้ร่วมกับใบเสนอราคา (ESIM_QUOTE) */
-  const H2P='https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js';
+  // วาดเอกสารเป็นรูปด้วย html2canvas แล้วย่อให้พอดีกว้างหน้า A4 ด้วย jsPDF เอง
+  // (เดิมใช้ html2pdf ซึ่งตัดขอบขวาทิ้งเมื่อ Windows ตั้งขยายหน้าจอ 125%/150% — ข้อความหายครึ่ง)
+  const LIBS=['https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js','https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js'];
   function pdfTools(filename, lang){
     const T=lang?{dl:'⬇️ Download PDF',pr:'🖨️ Print',busy:'⏳ Creating PDF…',fail:'Could not load the PDF maker — check your connection and try again',
                   hint:'If printing adds a date or about:blank at the page edge, use Download PDF instead'}
@@ -149,12 +151,28 @@ ${P.script}
     const script=`<script>
 function dlPdf(){var b=document.getElementById('dlb');if(b.disabled)return;b.disabled=true;b.textContent=${JSON.stringify(T.busy)};
  var done=function(){b.disabled=false;b.textContent=${JSON.stringify(T.dl)};};
- var go=function(){html2pdf().set({margin:[12,13,12,13],filename:${JSON.stringify(String(filename||'document').replace(/[\\/:*?"<>|]/g,'-')+'.pdf')},
-   image:{type:'jpeg',quality:0.96},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff'},
-   jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['tr','.box','.ft']}})
-   .from(document.getElementById('doc')).save().then(done,function(){done();alert(${JSON.stringify(T.fail)});});};
- if(window.html2pdf)return go();
- var s=document.createElement('script');s.src=${JSON.stringify(H2P)};s.onload=go;s.onerror=function(){done();alert(${JSON.stringify(T.fail)});};document.head.appendChild(s);}
+ var fail=function(){done();alert(${JSON.stringify(T.fail)});};
+ var go=function(){
+  var el=document.getElementById('doc'), keep=el.getAttribute('style')||'';
+  el.setAttribute('style','width:760px;max-width:none;margin:0;padding:0;background:#fff');   /* วางเลย์เอาต์ที่ความกว้างคงที่ ไม่ขึ้นกับขนาดจอ/การขยายของ Windows */
+  html2canvas(el,{scale:2,backgroundColor:'#ffffff',useCORS:true,windowWidth:1000,width:el.scrollWidth,height:el.scrollHeight}).then(function(cv){
+   el.setAttribute('style',keep);
+   var J=window.jspdf.jsPDF, pdf=new J({unit:'mm',format:'a4',orientation:'portrait'});
+   var M=12, W=210-2*M, H=297-2*M;                          /* ขอบ 12 มม. · ย่อทั้งภาพให้พอดีความกว้าง */
+   var pxPerMm=cv.width/W, pageH=Math.floor(H*pxPerMm), y=0, first=true;
+   while(y<cv.height){                                       /* ยาวเกิน 1 หน้า → ตัดเป็นหลายหน้า */
+    var h=Math.min(pageH,cv.height-y), part=document.createElement('canvas');
+    part.width=cv.width; part.height=h; part.getContext('2d').drawImage(cv,0,y,cv.width,h,0,0,cv.width,h);
+    if(!first) pdf.addPage();
+    pdf.addImage(part.toDataURL('image/jpeg',0.95),'JPEG',M,M,W,h/pxPerMm);
+    y+=h; first=false;
+   }
+   pdf.save(${JSON.stringify(String(filename||'document').replace(/[\\/:*?"<>|]/g,'-')+'.pdf')}); done();
+  },function(){el.setAttribute('style',keep);fail();});
+ };
+ var need=${JSON.stringify(LIBS)}.filter(function(u){return u.indexOf('html2canvas')>0?!window.html2canvas:!(window.jspdf&&window.jspdf.jsPDF);});
+ if(!need.length)return go();
+ var left=need.length;need.forEach(function(u){var s=document.createElement('script');s.src=u;s.onload=function(){if(--left===0)go();};s.onerror=fail;document.head.appendChild(s);});}
 <\/script>`;
     return {css, bar, script};
   }
