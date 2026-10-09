@@ -10,6 +10,11 @@
     "test": "node --test \"tests/*.test.mjs\"",
     "build:partials": "node scripts/build-partials.mjs",
     "check:partials": "node scripts/build-partials.mjs --check",
-    "build:bot": "node scripts/build-bot-kb.mjs"
+    "build:bot": "node scripts/build-bot-kb.mjs",
+    "backup": "node scripts/backup/backup.mjs",
+    "backup:setup": "node scripts/backup/setup.mjs"
+  },
+  "devDependencies": {
+    "pg": "^8.23.1"
   }
 }
