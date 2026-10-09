@@ -309,6 +309,18 @@
     if(!$('vid').videoWidth){ return; }
     var photo=snap(); closeCam(); submitPunch(photo);
   };
+  /* ขอตั๋วอัปโหลด (ใช้ได้ครั้งเดียว) แล้วส่งไฟล์ JPEG เข้า bucket punch-photos — คืน "sb:<path>" หรือ null ถ้าไม่สำเร็จ */
+  function uploadPhoto(dataUrl, enrolling){
+    if(!dataUrl) return Promise.resolve(null);
+    return rpc('checkin_photo_ticket',{p_token:ls(TK),p_face:!!enrolling}).then(function(path){
+      var b=atob(dataUrl.split(',')[1]), a=new Uint8Array(b.length);
+      for(var i=0;i<b.length;i++) a[i]=b.charCodeAt(i);
+      return fetch(SB_URL+'/storage/v1/object/punch-photos/'+path,{method:'POST',
+        headers:{'apikey':SB_ANON,'Authorization':'Bearer '+SB_ANON,'Content-Type':'image/jpeg','x-upsert':'false'},
+        body:new Blob([a],{type:'image/jpeg'})})
+        .then(function(r){ return r.ok?'sb:'+path:null; });
+    }).catch(function(){ return null; });
+  }
   function submitPunch(photo){
     $('bIn').disabled=$('bOut').disabled=true;
     var s0=ME&&ME.sites&&ME.sites[0], sim=!!(s0&&s0.sim&&s0.lat!=null), desc=null;
@@ -319,8 +331,12 @@
     (faceNeeded()?faceDesc($('cv')).then(function(d){ desc=d; msg('mMsg','กำลังหาตำแหน่งและบันทึกเวลา…',true); }):Promise.resolve())
     .then(function(){ return sim?{latitude:s0.lat,longitude:s0.lng,accuracy:0}:getPos(); })
     .then(function(pos){
-      return rpc('checkin_punch',{p_token:ls(TK),p_kind:KIND,p_lat:pos?pos.latitude:null,p_lng:pos?pos.longitude:null,
-        p_acc:pos?Math.round(pos.accuracy):null,p_photo:small,p_desc:desc,p_consent:CONSENT});
+      /* อัปโหลดรูปเข้า Supabase Storage ก่อน แล้วส่งแค่ที่อยู่ไฟล์ ("sb:<path>") — ไม่เก็บรูปในฐานข้อมูล
+         ถ้าอัปโหลดไม่ได้ (เช่น ยังไม่ได้รัน sql/35) ส่งรูปแบบเดิมแทน ลงเวลาได้เหมือนเดิม */
+      return uploadPhoto(small, faceNeeded()&&!ME.face_enrolled).then(function(ref){
+        return rpc('checkin_punch',{p_token:ls(TK),p_kind:KIND,p_lat:pos?pos.latitude:null,p_lng:pos?pos.longitude:null,
+          p_acc:pos?Math.round(pos.accuracy):null,p_photo:ref||small,p_desc:desc,p_consent:CONSENT});
+      });
     }).then(function(j){
       ME.last_kind=j.kind; ME.last_ts=j.ts; if(j.enrolled) ME.face_enrolled=true; renderMe();
       var t=new Date(j.ts);

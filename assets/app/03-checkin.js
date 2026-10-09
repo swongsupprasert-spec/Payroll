@@ -38,8 +38,34 @@ function guessRole(e){
   return 'staff';
 }
 function empRole(e){ return (e&&e.ckRole) || guessRole(e); }
+/* รูปลงเวลา: แบบใหม่เก็บใน Supabase Storage ("sb:<path>" ใน bucket punch-photos) · แบบเก่าเป็น data URL ในตาราง
+   โหลดไฟล์แล้วแปลงเป็น data URL เพื่อแสดง (นโยบายความปลอดภัยของเว็บอนุญาตรูป data: แต่ไม่อนุญาตลิงก์ภายนอก) */
+async function ckPhotoSrc(v){
+  if(!v) return null;
+  if(!String(v).startsWith('sb:')) return v;
+  const {data,error}=await sb.storage.from('punch-photos').download(String(v).slice(3));
+  if(error||!data) return null;
+  return await new Promise(r=>{ const fr=new FileReader(); fr.onload=()=>r(fr.result); fr.onerror=()=>r(null); fr.readAsDataURL(data); });
+}
+/* ลบรูปลงเวลาใน Storage ที่เก่ากว่า 90 วัน (PDPA — เก็บเท่าที่จำเป็น) · รูปลงทะเบียนใบหน้า (โฟลเดอร์ face) ไม่ลบ
+   ทำวันละครั้งตอนเจ้าของบริษัทเปิดหน้าลงเวลา */
+async function ckPurgeOldPhotos(){
+  const owner=TARGET_UID||MY_UID; if(!sb||!owner||DEMO) return;
+  const key='ck_purge_'+owner, today=new Date().toISOString().slice(0,10);
+  try{ if(localStorage.getItem(key)===today) return; localStorage.setItem(key,today); }catch(e){}
+  const cutoff=new Date(Date.now()-90*864e5+7*3600e3).toISOString().slice(0,10);
+  try{
+    const {data:days}=await sb.storage.from('punch-photos').list(owner,{limit:1000});
+    for(const d of (days||[])){
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(d.name) || d.name>=cutoff) continue;
+      const {data:files}=await sb.storage.from('punch-photos').list(owner+'/'+d.name,{limit:1000});
+      const paths=(files||[]).map(f=>owner+'/'+d.name+'/'+f.name);
+      if(paths.length) await sb.storage.from('punch-photos').remove(paths);
+    }
+  }catch(e){ /* ไม่ให้การเก็บกวาดรบกวนหน้าจอ */ }
+}
 function vCheckin(v){
-  ckAutoMerge(); ckLeaveSync();
+  ckAutoMerge(); ckLeaveSync(); ckPurgeOldPhotos();
   if(!CK_STATE.loaded){ v.appendChild(el(`<div class="panel"><div class="empty">กำลังโหลด…</div></div>`));
     ckLoad().then(()=>{ if(PAGE==='checkin') render(); }); return; }
   const S=CK_STATE; S.loaded=false;          // เข้าหน้านี้ครั้งหน้าให้โหลดใหม่เสมอ
@@ -339,10 +365,11 @@ function vCheckin(v){
       sb.from('checkin_users').update(Object.assign({dept:(e.dept||'').trim(),emp_name:e.name,role:empRole(e)},u.position!==undefined?{position:(e.position||'').trim()}:{})).eq('id',u.id).then(()=>{}); }); }
   accP.querySelectorAll('[data-face]').forEach(im=>im.onclick=()=>{ const u=S.users.find(x=>x.id===im.dataset.face);
     openModal('🙂 ใบหน้าที่ลงทะเบียน — '+esc(u.emp_name||u.emp_code),'<div class="empty">กำลังโหลดรูป…</div>',[['ปิด','',closeModal]]);
-    sb.from('checkin_users').select('face_photo').eq('id',u.id).maybeSingle().then(({data,error})=>{
+    sb.from('checkin_users').select('face_photo').eq('id',u.id).maybeSingle().then(async({data,error})=>{
+      const src=data&&await ckPhotoSrc(data.face_photo);
       const box=$('#modal').querySelector('.mbody'); if(!box) return;
-      box.innerHTML = (data&&data.face_photo)
-        ? `<img src="${data.face_photo}" alt="" style="width:100%;max-width:320px;border-radius:14px;display:block;margin:0 auto">
+      box.innerHTML = src
+        ? `<img src="${src}" alt="" style="width:100%;max-width:320px;border-radius:14px;display:block;margin:0 auto">
            <p class="muted" style="text-align:center;margin-top:8px;font-size:13px">ลงทะเบียนเมื่อ ${esc(ckBkk(u.face_enrolled_at).join(' '))}</p>`
         : `<div class="empty">${error?'โหลดรูปไม่สำเร็จ: '+esc(error.message):'ไม่มีรูป'}</div>`;
     }); });
@@ -549,10 +576,11 @@ function vCheckin(v){
     const p=S.punches.find(x=>String(x.id)===im.dataset.ph); const [d,t]=ckBkk(p.ts);
     openModal(`${esc(p.emp_name||p.emp_code)} · ${p.kind==='in'?'เข้างาน':'ออกงาน'} ${d.slice(8)}/${d.slice(5,7)} ${t}`,
       '<div class="empty">กำลังโหลดรูป…</div>',[['ปิด','',closeModal]]);
-    sb.from('punches').select('photo').eq('id',p.id).maybeSingle().then(({data,error})=>{
+    sb.from('punches').select('photo').eq('id',p.id).maybeSingle().then(async({data,error})=>{
+      const src=data&&await ckPhotoSrc(data.photo);
       const box=$('#modal').querySelector('.mbody'); if(!box) return;
-      box.innerHTML = (data&&data.photo)
-        ? `<img src="${data.photo}" alt="" style="width:100%;max-width:360px;border-radius:14px;display:block;margin:0 auto">`
+      box.innerHTML = src
+        ? `<img src="${src}" alt="" style="width:100%;max-width:360px;border-radius:14px;display:block;margin:0 auto">`
         : `<div class="empty">${error?'โหลดรูปไม่สำเร็จ: '+esc(error.message):'ไม่มีรูป (ระบบลบรูปอัตโนมัติหลัง 90 วัน)'}</div>`;
     });
   });
@@ -659,4 +687,4 @@ async function ckLeaveSync(force){
     if(changed){ save(); if(added) toast(`📱 มีใบลาใหม่จากมือถือ ${num(added)} ใบ`); if(['leave','attend','checkin'].includes(PAGE)) render(); }
   }catch(e){} finally{ _lvSyncBusy=false; }
 }
-
+
