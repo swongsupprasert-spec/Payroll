@@ -42,6 +42,25 @@ async function saveMem(uid, mem) {
     if (Math.random() < 0.02) await sb('rpc/line_bot_memory_cleanup', { method: 'POST', body: '{}' }); // เก็บกวาดเป็นครั้งคราว
   } catch (e) { console.error('memory', e.message); }
 }
+// ---------- รายชื่อแชตสำหรับหน้า "แชต LINE" ของแอดมิน (sql/36) ----------
+// paused_until = บอทเงียบถึงเวลานี้ — แอดมินกด "ฉันตอบเอง" ในโปรแกรม หรือลูกค้ากด "คุยกับแอดมิน"
+async function loadChat(uid) {
+  if (!SB_KEY()) return null;
+  try {
+    const r = await sb(`line_bot_chats?user_id=eq.${encodeURIComponent(uid)}&select=name,paused_until,paused_by`);
+    const rows = r.ok ? await r.json() : null;
+    return Array.isArray(rows) ? (rows[0] || {}) : null;
+  } catch { return null; }
+}
+async function saveChat(uid, row) {
+  if (!SB_KEY()) return;
+  try {
+    await sb('line_bot_chats', {
+      method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=minimal' },
+      body: JSON.stringify({ user_id: uid, ...row }),
+    });
+  } catch (e) { console.error('chats', e.message); }
+}
 // บันทึกคำถามที่บอทตอบไม่ได้ (none) หรือได้แค่แนะนำบทความ (weak) → ดูใน Supabase เพื่อเพิ่มคำตอบ
 async function logMiss(uid, text, kind) {
   console.log('bot-miss', kind, text.slice(0, 200)); // เห็นใน Vercel Logs ด้วย
@@ -110,10 +129,16 @@ export default async function handler(req, res) {
         msgs = answer('สวัสดี', { name: uid ? await displayName(uid) : '' });
       } else if (ev.type === 'message') {
         const text = ev.message?.type === 'text' ? ev.message.text : '';
-        const mem = uid ? await loadMem(uid) : {};
+        const [mem, chat] = uid ? await Promise.all([loadMem(uid), loadChat(uid)]) : [{}, null];
+        // สถานะหยุดบอทจากหน้าแอดมิน (ตาราง line_bot_chats) มาก่อน — แอดมินกด "ให้บอทตอบต่อ" ก็ล้างของลูกค้าด้วย
+        if (chat) { if (chat.paused_until) mem.handoff = Date.parse(chat.paused_until); else delete mem.handoff; }
         const before = JSON.stringify(mem);
-        // ลูกค้าขอคุยกับแอดมินอยู่ → บอทเงียบ ไม่ตอบแทรก (แอดมินตอบเองในหน้าแชต)
-        if (silenced(text, mem)) return;
+        const preview = text || ({ sticker: '[สติกเกอร์]', image: '[รูปภาพ]', video: '[วิดีโอ]', file: '[ไฟล์]', audio: '[เสียง]', location: '[ตำแหน่ง]' }[ev.message?.type] || '[ข้อความ]');
+        const record = async (extra = {}) => uid && saveChat(uid, {
+          last_text: preview.slice(0, 300), last_at: new Date().toISOString(),
+          ...(chat && !chat.name ? { name: (await displayName(uid)) || null } : {}), ...extra });
+        // แอดมินกำลังคุยเอง / ลูกค้าขอคุยกับแอดมิน → บอทเงียบ ไม่ตอบแทรก (แต่ยังบันทึกข้อความล่าสุดให้แอดมินเห็น)
+        if (silenced(text, mem)) { await record(); return; }
         if (uid) await typing(uid);
         if (ev.message?.type === 'text') {
           const name = uid && isGreeting(text) ? await displayName(uid) : '';
@@ -124,6 +149,9 @@ export default async function handler(req, res) {
           msgs = answerMedia(ev.message?.type);
         }
         if (uid && JSON.stringify(mem) !== before) await saveMem(uid, mem);
+        // บันทึกแชตล่าสุด + สถานะหยุดบอท (ลูกค้าเพิ่งขอคุยกับแอดมิน / พิมพ์ "เมนู" กลับมาคุยกับบอท)
+        await record(mem.handoff ? { paused_until: new Date(mem.handoff).toISOString(), paused_by: chat?.paused_until ? chat.paused_by : 'customer' }
+                                 : { paused_until: null, paused_by: null });
         await pause(msgs);
       }
       if (msgs) await sendReply(ev.replyToken, msgs);

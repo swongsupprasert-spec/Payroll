@@ -8,7 +8,7 @@ function restorePage(){
   let id; try{ id=localStorage.getItem(PAGE_KEY); }catch(e){}
   if(!id) return 'dashboard';
   const isNormal = pagesForEdition().some(p=>p[0]===id);
-  const isAdminOnly = ['orders','quotes','feedback','admin'].includes(id);
+  const isAdminOnly = ['orders','quotes','linechats','feedback','admin'].includes(id);
   if(!isNormal && !isAdminOnly) return 'dashboard';      // ชื่อหน้าไม่รู้จัก / ไม่มีในบัญชีประเภทนี้
   if(isAdminOnly && !IS_ADMIN) return 'dashboard';        // ไม่ใช่แอดมินแล้ว
   if(pageLocked(id)) return 'dashboard';                  // หมดสิทธิ์พรีเมี่ยมแล้ว
@@ -81,6 +81,7 @@ const NAV_ICONS={
   settings:  ICO('<circle cx="12" cy="12" r="3.1"/><path d="M19.2 14.6a1.6 1.6 0 0 0 .3 1.8l.1.1a1.9 1.9 0 1 1-2.7 2.7l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.3a1.9 1.9 0 1 1-3.8 0v-.2a1.6 1.6 0 0 0-2.8-1.1l-.1.1a1.9 1.9 0 1 1-2.7-2.7l.1-.1a1.6 1.6 0 0 0-1.1-2.7h-.3a1.9 1.9 0 1 1 0-3.8h.2a1.6 1.6 0 0 0 1.1-2.8l-.1-.1a1.9 1.9 0 1 1 2.7-2.7l.1.1a1.6 1.6 0 0 0 1.8.3h.1a1.6 1.6 0 0 0 1-1.5v-.3a1.9 1.9 0 1 1 3.8 0v.2a1.6 1.6 0 0 0 2.7 1.1l.1-.1a1.9 1.9 0 1 1 2.7 2.7l-.1.1a1.6 1.6 0 0 0 1.1 2.7h.3a1.9 1.9 0 1 1 0 3.8h-.2a1.6 1.6 0 0 0-1.5 1z"/>'),
   orders:    ICO('<circle cx="9.4" cy="20" r="1.4"/><circle cx="17.6" cy="20" r="1.4"/><path d="M2.6 3.4h2.8l2.4 11.4h10.4l2.2-8.4H6.2"/>'),
   quotes:    ICO('<path d="M7 2.8h7.4l4.6 4.6v12.4a1.4 1.4 0 0 1-1.4 1.4H7a1.4 1.4 0 0 1-1.4-1.4V4.2A1.4 1.4 0 0 1 7 2.8z"/><path d="M14.2 2.8v4.8H19"/><path d="M12.2 10.6v6.8M14.2 11.8h-2.9a1.3 1.3 0 0 0 0 2.6h1.8a1.3 1.3 0 0 1 0 2.6h-3"/>'),
+  linechats: ICO('<path d="M12 3.6c-5 0-9 3.2-9 7.2 0 3.6 3.2 6.6 7.6 7.1l-.4 2.5 3.4-2.5c4.3-.6 7.4-3.6 7.4-7.1 0-4-4-7.2-9-7.2z"/><path d="M8 10.8h.01M12 10.8h.01M16 10.8h.01"/>'),
   feedback:  ICO('<path d="M20.4 12.6a7.4 7.4 0 0 1-8 7.4L4 21.4l1.4-8.4a7.4 7.4 0 1 1 15 -.4z"/><path d="M8.6 11h.01M12 11h.01M15.4 11h.01"/>'),
   companies: ICO('<rect x="2.8" y="7" width="18.4" height="13.4" rx="2.2"/><path d="M8.6 7V5.2a2 2 0 0 1 2-2h2.8a2 2 0 0 1 2 2V7"/><path d="M2.8 12.4h18.4M10.4 12.4v2.2h3.2v-2.2"/>'),
   admin:     ICO('<path d="M3 7.4 6.8 11 12 4.6 17.2 11 21 7.4l-1.6 11.2a1.6 1.6 0 0 1-1.6 1.4H6.2a1.6 1.6 0 0 1-1.6-1.4z"/>'),
@@ -90,7 +91,7 @@ const LOCK_ICO='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stro
 const NAV_COLORS = {
   dashboard:'#17557f', employees:'#8b5cf6', attend:'#0891b2', checkin:'#0d9488', leave:'#84cc16', resign:'#f43f5e', advance:'#f97316', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
-  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', companies:'#a855f7', feedback:'#f97316', orders:'#22c55e', quotes:'#0ea5e9', admin:'#eab308'
+  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', companies:'#a855f7', feedback:'#f97316', orders:'#22c55e', quotes:'#0ea5e9', linechats:'#06c755', admin:'#eab308'
 };
 /* เมนูตามประเภทบัญชี — สำนักงานบัญชีไม่มีลงเวลา/ลางาน แต่มีหน้าบริษัทลูกค้าเพิ่ม */
 function pagesForEdition(){
@@ -99,7 +100,7 @@ function pagesForEdition(){
           ...PAGES.filter(p=>!['attend','checkin','leave'].includes(p[0]))];
 }
 function pageAllowed(id){
-  if(['orders','quotes','feedback','admin'].includes(id)) return IS_ADMIN;
+  if(['orders','quotes','linechats','feedback','admin'].includes(id)) return IS_ADMIN;
   return pagesForEdition().some(p=>p[0]===id);
 }
 /* ตัวสลับบริษัทบนแถบเมนู */
@@ -123,7 +124,7 @@ function renderCoSwitch(){
 function renderNav(){
   const nav = $('#nav'); nav.innerHTML='';
   const base = pagesForEdition();
-  const items = IS_ADMIN ? [...base, ['orders','คำสั่งซื้อ/ต่ออายุ','🧾'], ['quotes','ใบเสนอราคา','📄'], ['feedback','แจ้งปัญหา/คำแนะนำ','💬'], ['admin','ผู้ดูแลระบบ','👑']] : base;
+  const items = IS_ADMIN ? [...base, ['orders','คำสั่งซื้อ/ต่ออายุ','🧾'], ['quotes','ใบเสนอราคา','📄'], ['linechats','แชต LINE','💬'], ['feedback','แจ้งปัญหา/คำแนะนำ','💬'], ['admin','ผู้ดูแลระบบ','👑']] : base;
   items.forEach(([id,label,ico])=>{
     const col = NAV_COLORS[id] || '#17557f';
     const lock = pageLocked(id);
@@ -190,7 +191,7 @@ function render(){
   $('#pageTitle').textContent = tr('nav_'+PAGE);
   const pl=$('#periodLab'); if(pl) pl.textContent=tr('period');
   // หน้าที่ไม่ผูกกับงวดเดือน — ซ่อนตัวเลือกงวดเดือนด้านบน
-  const pbox=$('#periodBox'); if(pbox) pbox.style.display = (PAGE==='resign'||PAGE==='employees'||PAGE==='leave') ? 'none' : '';
+  const pbox=$('#periodBox'); if(pbox) pbox.style.display = ['resign','employees','leave','quotes','linechats'].includes(PAGE) ? 'none' : '';
   renderPeriodSel();
   // ถ้าหน้าที่เปิดอยู่ถูกล็อก ให้เด้งกลับแดชบอร์ด
   if(pageLocked(PAGE)){ PAGE='dashboard'; savePage(PAGE); renderNav(); }
@@ -199,6 +200,6 @@ function render(){
   // สำนักงานบัญชีที่ยังไม่ได้เลือกบริษัท — ให้เพิ่ม/เลือกบริษัทก่อน
   if(isFirm() && !CUR_CO && PAGE!=='companies' && PAGE!=='admin'){ PAGE='companies'; savePage(PAGE); renderNav(); }
   ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, checkin:vCheckin, leave:vLeave, resign:vResign, advance:vAdvance, payroll:vPayroll, summary:vSummary,
-    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders, quotes:vQuotes,
+    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders, quotes:vQuotes, linechats:vLineChats,
     admin:vAdmin, companies:vCompanies}[PAGE])(v);
-}
+}

@@ -208,3 +208,46 @@ test('webhook: ถ้า LINE ไม่รับการ์ด Flex ส่ง�
     assert.ok(calls[1].messages.at(-1).quickReply);
   } finally { globalThis.fetch = realFetch; console.error = realErr; }
 });
+
+test('webhook: แอดมินกด "ฉันตอบเอง" → บอทเงียบ แต่ยังบันทึกข้อความล่าสุด · กด "ให้บอทตอบต่อ" → บอทตอบ', async () => {
+  process.env.LINE_CHANNEL_SECRET = 'test-secret';
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-key';
+  const chats = new Map(), mems = new Map(), replies = [];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (u, o = {}) => {
+    u = String(u); const m = (o.method || 'GET');
+    const uidOf = () => decodeURIComponent(u.match(/user_id=eq\.([^&]+)/)[1]);
+    if (u.includes('/rest/v1/line_bot_chats?') && m === 'GET') return { ok: true, json: async () => (chats.has(uidOf()) ? [chats.get(uidOf())] : []) };
+    if (u.endsWith('/rest/v1/line_bot_chats')) { const r = JSON.parse(o.body); chats.set(r.user_id, { ...(chats.get(r.user_id) || {}), ...r }); return { ok: true }; }
+    if (u.includes('/rest/v1/line_bot_memory?')) return { ok: true, json: async () => (mems.has(uidOf()) ? [mems.get(uidOf())] : []) };
+    if (u.endsWith('/rest/v1/line_bot_memory')) { const r = JSON.parse(o.body); mems.set(r.user_id, r); return { ok: true }; }
+    if (u.endsWith('/message/reply')) replies.push(JSON.parse(o.body));
+    if (u.includes('/profile/')) return { ok: true, json: async () => ({ displayName: 'คุณเอ' }) };
+    return { ok: true, json: async () => ({}) };
+  };
+  try {
+    const { default: handler } = await import('../api/line-webhook.mjs?adminpause');
+    const send = async (text) => {
+      const raw = Buffer.from(JSON.stringify({ events: [{ type: 'message', replyToken: 'r', source: { type: 'user', userId: 'U3' }, message: { type: 'text', text } }] }));
+      const req = Readable.from([raw]); req.method = 'POST';
+      req.headers = { 'x-line-signature': crypto.createHmac('sha256', 'test-secret').update(raw).digest('base64') };
+      await handler(req, { status() { return this; }, send() { return this; } });
+    };
+    await send('ราคาเท่าไหร่');
+    assert.equal(replies.length, 1);
+    assert.equal(chats.get('U3').name, 'คุณเอ');                  // บันทึกชื่อให้หน้าแอดมิน
+    assert.equal(chats.get('U3').last_text, 'ราคาเท่าไหร่');
+    // แอดมินกด "ฉันตอบเอง" ในโปรแกรม
+    chats.get('U3').paused_until = new Date(Date.now() + 2 * 3600e3).toISOString(); chats.get('U3').paused_by = 'admin';
+    await send('ขอส่วนลดได้ไหม');
+    assert.equal(replies.length, 1, 'บอทต้องไม่ตอบแทรกแอดมิน');
+    assert.equal(chats.get('U3').last_text, 'ขอส่วนลดได้ไหม', 'แอดมินยังเห็นข้อความล่าสุด');
+    // แอดมินกด "ให้บอทตอบต่อ"
+    chats.get('U3').paused_until = null; chats.get('U3').paused_by = null;
+    await send('ทดลองฟรีได้ไหม');
+    assert.equal(replies.length, 2);
+    // ลูกค้าขอคุยกับแอดมินเอง → สถานะขึ้นในหน้าแอดมินว่าลูกค้าขอ
+    await send('คุยกับแอดมิน');
+    assert.ok(Date.parse(chats.get('U3').paused_until) > Date.now()); assert.equal(chats.get('U3').paused_by, 'customer');
+  } finally { globalThis.fetch = realFetch; delete process.env.SUPABASE_SERVICE_ROLE_KEY; }
+});
