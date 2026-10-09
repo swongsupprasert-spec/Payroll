@@ -36,11 +36,13 @@ async function vQuotes(v){
         ${Object.entries(QST).map(([k,[t]])=>`<option value="${k}" ${k===q.status?'selected':''}>${t}</option>`).join('')}</select></td>
       <td style="white-space:nowrap;text-align:right">
         <button class="btn ghost sm" data-qo="${i}" title="เปิด / พิมพ์">🖨️</button>
+        <button class="btn ghost sm" data-qe="${i}" title="แก้ไขใบเสนอราคา (บันทึกทับ เลขที่เดิม)">📝</button>
         <button class="btn ghost sm" data-qc="${i}" title="คัดลอกเป็นใบใหม่">📋</button>
         <button class="btn ghost sm" data-qd="${i}" title="ลบ">🗑️</button></td></tr>`; }).join('')}
   </tbody></table>`;
   const docOf=q=>({ ...(q.doc||{}), quote_no:q.quote_no, date:q.created_at, valid_until:q.valid_until });
   box.querySelectorAll('[data-qo]').forEach(b=>b.onclick=()=>ESIM_QUOTE.open(docOf(data[+b.dataset.qo])));
+  box.querySelectorAll('[data-qe]').forEach(b=>b.onclick=()=>{ const q=data[+b.dataset.qe]; quoteEditor(v, q.doc||{}, q); });
   box.querySelectorAll('[data-qc]').forEach(b=>b.onclick=()=>quoteEditor(v, data[+b.dataset.qc].doc||{}));
   box.querySelectorAll('[data-qs]').forEach(s=>s.onchange=async()=>{
     const q=data[+s.dataset.qs];
@@ -74,8 +76,9 @@ async function vQuotes(v){
 }
 
 /* ฟอร์มสร้างใบเสนอราคา — base = ข้อมูลใบเดิม (กรณีคัดลอก) */
-function quoteEditor(v, base){
-  const copying=!!base;
+/* ฟอร์มใบเสนอราคา — base = ข้อมูลในใบ (คัดลอก/แก้ไข) · editing = แถวในตาราง quotes (โหมดแก้ไขใบเดิม) */
+function quoteEditor(v, base, editing){
+  const copying=!!base && !editing;
   base=base||{};
   const S={name:'eSimPayroll', email:'hello@esimpayroll.com', line:'@esimpayroll', ...quoteSeller(), ...(base.seller||{})};
   const C={...(base.customer||{})};
@@ -85,7 +88,7 @@ function quoteEditor(v, base){
   const ta=(id,label,val,rows=2,full=true)=>`<div class="field"${full?' style="grid-column:1/-1"':''}><label>${label}</label><textarea id="${id}" rows="${rows}">${esc(val??'')}</textarea></div>`;
   const cell='width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:7px;font-family:inherit';
   v.appendChild(el(`<div>
-    <div class="toolbar"><h2 style="font-size:16px">📄 ${copying?'คัดลอกเป็นใบเสนอราคาใหม่':'สร้างใบเสนอราคา'}</h2>
+    <div class="toolbar"><h2 style="font-size:16px">📄 ${editing?'แก้ไขใบเสนอราคา '+esc(editing.quote_no||''):copying?'คัดลอกเป็นใบเสนอราคาใหม่':'สร้างใบเสนอราคา'}</h2>
       <button class="btn ghost sm" id="qBack" style="margin-left:auto">← กลับไปรายการ</button></div>
     <div class="panel"><div class="phead"><h2>ลูกค้า</h2></div><div class="pbody"><div class="grid2">
       ${f('qcName','ชื่อบริษัท / ลูกค้า *',C.name)}${f('qcContact','ผู้ติดต่อ (เรียน)',C.contact)}
@@ -111,7 +114,7 @@ function quoteEditor(v, base){
       <button class="btn ghost sm" id="qAddRow" style="margin-top:8px">➕ เพิ่มรายการเอง</button>
       <div class="grid3" style="margin-top:14px">
         ${f('qDisc','ส่วนลด (บาท)',base.discount||'')}
-        <div class="field"><label>ยืนราคาถึง</label><input id="qValid" type="date" value="${esc(qAddDays(30))}"></div>
+        <div class="field"><label>ยืนราคาถึง</label><input id="qValid" type="date" value="${esc(editing&&editing.valid_until?editing.valid_until:qAddDays(30))}"></div>
         <div class="field"><label>ยอดรวมทั้งสิ้น (บาท)</label><div id="qTotal" style="font-size:22px;font-weight:800;color:var(--brand);padding-top:4px">0</div></div>
       </div>
       <div class="grid2">${ta('qNotes','เงื่อนไข / หมายเหตุ',base.notes!=null?base.notes:QUOTE_NOTES,4)}</div>
@@ -122,7 +125,7 @@ function quoteEditor(v, base){
       ${f('qsEmail','อีเมล',S.email)}${f('qsPhone','โทรศัพท์',S.phone)}${f('qsLine','LINE',S.line)}${f('qsContact','ผู้ติดต่อฝ่ายขาย (ชื่อ)',S.contact)}
     </div></div></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 20px">
-      <button class="btn" id="qSave">💾 บันทึกและพิมพ์</button>
+      <button class="btn" id="qSave">💾 ${editing?'บันทึกการแก้ไข':'บันทึกและพิมพ์'}</button>
       <button class="btn ghost" id="qPrev">👁️ ดูตัวอย่าง (ยังไม่บันทึก)</button>
     </div>
   </div>`));
@@ -223,11 +226,14 @@ function quoteEditor(v, base){
     if(w) w.document.write('<p style="font-family:sans-serif;padding:24px">⏳ กำลังบันทึก…</p>');
     $('#qSave').disabled=true;
     const t=ESIM_QUOTE.totals(d.items, d.discount);
-    const {data,error}=await sb.from('quotes').insert({ customer:d.customer.name, total:t.total, valid_until:d.valid_until||null, doc:d })
-      .select('quote_no,created_at').single();
+    const fields={ customer:d.customer.name, total:t.total, valid_until:d.valid_until||null, doc:d };
+    // แก้ไขใบเดิม → บันทึกทับ เลขที่และวันที่เดิม · ใบใหม่ → ระบบออกเลขถัดไปให้
+    const {data,error}=await (editing
+      ? sb.from('quotes').update(fields).eq('id',editing.id).select('quote_no,created_at').single()
+      : sb.from('quotes').insert(fields).select('quote_no,created_at').single());
     $('#qSave').disabled=false;
     if(error){ if(w) w.close(); toast('บันทึกไม่สำเร็จ: '+error.message); return; }
     ESIM_QUOTE.open({...d, quote_no:data.quote_no, date:data.created_at}, w);
-    toast('บันทึกใบเสนอราคา '+data.quote_no+' แล้ว'); render();
+    toast((editing?'บันทึกการแก้ไข ':'บันทึกใบเสนอราคา ')+data.quote_no+' แล้ว'); render();
   };
 }
