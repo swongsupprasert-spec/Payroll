@@ -33,7 +33,11 @@ async function applyPlan(u, patch, msg){
 }
 async function vAdmin(v){
   v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">👑 รายชื่อผู้ใช้ที่สมัครทั้งหมด</h2>
+    <span class="chip" id="userTotal" style="font-weight:700">👥 …</span>
     <button class="btn ghost sm" id="refreshUsers" style="margin-left:auto">↻ รีเฟรช</button></div>`));
+  // ปุ่มนับจำนวนไอดีแยกตามสถานะ — กดเพื่อกรองตาราง
+  const counts=el(`<div class="admCounts" id="userCounts"></div>`);
+  v.appendChild(counts);
   const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap" id="usersTbl"><div class="empty">กำลังโหลด…</div></div></div></div>`);
   v.appendChild(panel);
   $('#refreshUsers').onclick=()=>render();
@@ -76,7 +80,7 @@ async function vAdmin(v){
     if((u.edition||'single')==='single') return {t:'ฟรี 1-10 คน',c:'#f1f5f9;color:#475569',d:0,e:null};
     return {t:'หมดอายุ',c:'#fee2e2;color:#dc2626',d:0,e:u.paid_until||new Date(trialEnd).toISOString()};
   };
-  const rows=(data||[]).map(u=>{ const s=stat(u); return `<tr>
+  const rows=(data||[]).map(u=>{ const s=stat(u); return `<tr data-st="${esc(s.t)}">
     <td><strong>${esc(u.email||'(ไม่มีอีเมล)')}</strong>${u.id===MY_UID?' <span class="chip">คุณ</span>':''}
       <div class="muted" style="font-size:12px;margin-top:3px">สมัคร ${esc(fmtDateTime(u.created_at))}${u.plan?` · ${esc(u.plan)}`:''}</div></td>
     <td><span class="chip" style="background:${s.c}">${s.t}</span>
@@ -95,6 +99,24 @@ async function vAdmin(v){
   const tbl=el(`<table class="admUsers"><thead><tr><th>ผู้ใช้</th><th>สถานะ / แพ็กเกจ</th><th></th></tr></thead>
     <tbody>${rows||'<tr><td colspan="3" class="empty">ยังไม่มีผู้ใช้</td></tr>'}</tbody></table>`);
   tbl.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>adminOpen(b.dataset.open, b.dataset.email));
+  // จำนวนไอดีทั้งหมด + แยกตามสถานะ (กดเพื่อกรอง กดซ้ำ/กด "ทั้งหมด" เพื่อดูทุกคน)
+  {
+    const list=data||[], by={};
+    list.forEach(u=>{ const s=stat(u); (by[s.t]=by[s.t]||{n:0,c:s.c}).n++; });
+    const tot=$('#userTotal'); if(tot) tot.textContent=`👥 ทั้งหมด ${list.length} ไอดี`;
+    const box=$('#userCounts');
+    if(box){
+      const order=['ทดลองใช้','ชำระแล้ว','ฟรี 1-10 คน','♾️ ไม่จำกัด','หมดอายุ'];
+      const keys=Object.keys(by).sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+      box.innerHTML=`<button type="button" class="admCnt on" data-f="">ทั้งหมด <b>${list.length}</b></button>`
+        +keys.map(k=>`<button type="button" class="admCnt" data-f="${esc(k)}"><span class="chip" style="background:${by[k].c}">${esc(k)}</span> <b>${by[k].n}</b></button>`).join('');
+      box.querySelectorAll('.admCnt').forEach(b=>b.onclick=()=>{
+        const f=(b.classList.contains('on')&&b.dataset.f)?'':b.dataset.f;      // กดปุ่มที่เลือกอยู่ซ้ำ = กลับไปดูทั้งหมด
+        box.querySelectorAll('.admCnt').forEach(x=>x.classList.toggle('on',x.dataset.f===f));
+        tbl.querySelectorAll('tbody tr[data-st]').forEach(tr=>{ tr.style.display = (!f||tr.dataset.st===f)?'':'none'; });
+      });
+    }
+  }
   // ♾️ ให้/ยกเลิกสิทธิ์ใช้งานไม่จำกัด
   tbl.querySelectorAll('[data-unl]').forEach(b=>b.onclick=async()=>{
     const u=data.find(x=>x.id===b.dataset.unl), off=b.dataset.off==='1';

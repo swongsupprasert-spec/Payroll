@@ -175,6 +175,11 @@
   .admUsers td:first-child,.admUsers td:nth-child(2){white-space:normal}
   .admUsers td:first-child{overflow-wrap:anywhere;min-width:120px}
   .admUsers td:nth-child(2){min-width:130px;font-size:13px}
+  .admCounts{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 12px}
+  .admCnt{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1.5px solid var(--line);border-radius:100px;background:var(--card);color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+  .admCnt:hover{border-color:var(--brand)}
+  .admCnt.on{border-color:var(--brand);box-shadow:0 0 0 2px var(--accent-bg)}
+  .admCnt .chip{margin:0}
   .admActs>div{display:grid;grid-template-columns:repeat(2,max-content);gap:5px;justify-content:end}
   .admActs .btn.sm{justify-content:center;white-space:nowrap;padding-left:7px;padding-right:7px}
   tfoot td{font-weight:700;background:#f6faf8;border-top:2px solid var(--line)}
