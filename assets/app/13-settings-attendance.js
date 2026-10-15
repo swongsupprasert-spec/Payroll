@@ -6,6 +6,16 @@
 function holidayMap(){ if(!DB.holidays||typeof DB.holidays!=='object') DB.holidays={}; return DB.holidays; }
 function isHoliday(iso){ return !!(DB.holidays && DB.holidays[iso]); }
 function holidayName(iso){ return (DB.holidays && DB.holidays[iso]) || ''; }
+/* วันหยุดที่ลูกจ้างรายวันได้ค่าจ้าง (ม.56 วันหยุดตามประเพณี) — ทุกวันในปฏิทินได้ค่าจ้าง เว้นแต่ติ๊กออก (DB.holidayUnpaid) */
+function holidayPaid(iso){ return isHoliday(iso) && !(DB.holidayUnpaid && DB.holidayUnpaid[iso]); }
+/* วันทำงานประจำสัปดาห์: emp.offDays=[0..6] (ตั้งเฉพาะคน) ไม่ตั้ง = ใช้ของบริษัท DB.ckWorkDays (ค่าเริ่มต้น จ–ศ) */
+function companyWorkDays(){ return (Array.isArray(DB.ckWorkDays)&&DB.ckWorkDays.length===7) ? DB.ckWorkDays : [false,true,true,true,true,true,false]; }
+function hasOwnOffDays(emp){ return !!(emp && Array.isArray(emp.offDays) && emp.offDays.length); }
+/* ตั้งวันหยุดประจำสัปดาห์ไว้จริงไหม (บริษัทกดเลือกแล้ว หรือคนนี้ตั้งเอง) — ยังไม่ตั้ง = ไม่เปลี่ยนการคิด OT/วันลาแบบเดิม */
+function weekOffKnown(emp){ return hasOwnOffDays(emp) || !!DB.weekOffSet; }
+function isWeeklyOff(emp, iso){ return weekOffKnown(emp) && !isWorkDayFor(emp, iso); }
+function setCompanyWorkDay(i, on){ const a=companyWorkDays().slice(); a[i]=on; DB.ckWorkDays=a; DB.weekOffSet=true; }
+function isWorkDayFor(emp, iso){ const wd=new Date(iso+'T00:00:00').getDay(); return hasOwnOffDays(emp) ? !emp.offDays.includes(wd) : !!companyWorkDays()[wd]; }
 /* วันหยุดตามประเพณีที่ใช้บ่อยในภาคเอกชน — วันตามจันทรคติเปลี่ยนทุกปี ใส่ให้เฉพาะปีที่ตรวจแล้ว
    ปีอื่นเติมเฉพาะวันที่ตายตัว แล้วให้บริษัทเพิ่มวันพระเอง */
 const HOLIDAY_FIXED=[['01-01','วันขึ้นปีใหม่'],['04-06','วันจักรี'],['04-13','วันสงกรานต์'],['04-14','วันสงกรานต์'],['04-15','วันสงกรานต์'],
@@ -20,8 +30,17 @@ function vHolidayPanel(v){
   const TH_M=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
   const WDN=['อา','จ','อ','พ','พฤ','ศ','ส'];
   const fmt=d=>`${WDN[new Date(d+'T00:00:00').getDay()]} ${+d.slice(8)} ${TH_M[+d.slice(5,7)-1]}`;
+  /* ปฏิทินรายเดือน กดวันที่ = เพิ่ม/ลบวันหยุด */
+  if(window._hyMon==null || window._hyMonY!==Y){ window._hyMonY=Y; window._hyMon=(+PERIOD.split('-')[0]===Y)?(+PERIOD.split('-')[1]-1):0; }
+  const M=window._hyMon, cw=companyWorkDays(), first=new Date(Y,M,1).getDay(), nd=new Date(Y,M+1,0).getDate();
+  const TH_MF=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  let cells=WDN.map((n,i)=>`<div class="hyH${cw[i]?'':' off'}">${n}</div>`).join('')+'<div></div>'.repeat(first);
+  for(let d=1; d<=nd; d++){
+    const iso=`${Y}-${String(M+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`, wk=(first+d-1)%7, h=H[iso];
+    cells+=`<button type="button" class="hyC${h?' hol':''}${!cw[wk]?' off':''}" data-hyday="${iso}" title="${h?esc(h)+' — กดเพื่อลบ':(cw[wk]?'กดเพื่อตั้งเป็นวันหยุด':'วันหยุดประจำสัปดาห์ — กดเพื่อเพิ่มเป็นวันหยุดพิเศษ')}"><b>${d}</b>${h?`<i>${esc(h)}</i>`:''}</button>`;
+  }
   const p=el(`<div class="panel"><div class="phead"><h2>📅 ปฏิทินวันหยุดบริษัท</h2></div><div class="pbody">
-    <p class="muted" style="font-size:13px;margin-bottom:10px">วันหยุดของบริษัทนี้เท่านั้น (แต่ละบริษัทตั้งไม่เหมือนกันได้) · ใช้กับ <strong>ไม่นับขาดงาน</strong> และ <strong>OT วันหยุด</strong></p>
+    <p class="muted" style="font-size:13px;margin-bottom:10px">วันหยุดของบริษัทนี้เท่านั้น (แต่ละบริษัทตั้งไม่เหมือนกันได้) · ใช้กับ <strong>ไม่นับขาดงาน</strong> · <strong>OT วันหยุด</strong> · <strong>ลูกจ้างรายวันได้ค่าจ้างวันหยุดตามประเพณี</strong> (นับเป็นวันได้ค่าจ้างให้เอง ถ้าตรงวันทำงานของคนนั้น)</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
       <button class="btn ghost sm" id="hyPrev">‹</button><strong style="font-size:16px">ปี ${Y+543}</strong><button class="btn ghost sm" id="hyNext">›</button>
       <span class="chip" style="${list.length<13?'background:#fef3c7;color:#b45309':'background:#dcfce7;color:#16a34a'}">${num(list.length)} วัน${list.length<13?' — กฎหมายกำหนดวันหยุดตามประเพณีอย่างน้อย 13 วัน':''}</span>
@@ -30,15 +49,22 @@ function vHolidayPanel(v){
         <button class="btn ghost sm" id="hyCopy">📋 คัดลอกจากปี ${Y+542}</button>
       </span>
     </div>
+    <div class="hyWeek"><b>🗓️ วันหยุดประจำสัปดาห์</b>
+      <span class="hyWd">${WDN.map((n,i)=>`<button type="button" class="${cw[i]?'':'on'}" data-hywd="${i}" title="${cw[i]?'วันทำงาน — กดเพื่อตั้งเป็นวันหยุด':'วันหยุด — กดเพื่อตั้งเป็นวันทำงาน'}">${n}</button>`).join('')}</span>
+      <span class="muted" style="font-size:12px">กดวันที่บริษัท<b>หยุด</b> (สีแดง) · ใช้ทั้งระบบ: ขาดงาน · OT วันหยุด · นับวันลา · ค่าจ้างวันหยุดรายวัน${DB.weekOffSet?'':' · <b style="color:#b45309">ยังไม่ได้ตั้ง (ตอนนี้ถือ จ–ศ)</b>'} · ใครหยุดไม่ตรงบริษัท ตั้งได้ที่ข้อมูลพนักงาน</span></div>
+    <div class="hyCalWrap"><div class="hyCalHead"><button class="btn ghost sm" id="hyMPrev">‹</button><b>${TH_MF[M]} ${Y+543}</b><button class="btn ghost sm" id="hyMNext">›</button>
+      <span class="muted" style="font-size:12px;margin-left:auto">กดวันที่ = เพิ่ม/ลบวันหยุด (ชื่อใช้จากช่อง “ชื่อวันหยุด” ถ้าว่างใช้ “วันหยุดบริษัท”)</span></div>
+      <div class="hyCal">${cells}</div></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px">
       <div class="field"><label>วันที่</label><input type="date" id="hyD" value="${Y}-01-01" min="${Y}-01-01" max="${Y}-12-31"></div>
       <div class="field" style="flex:1;min-width:180px"><label>ชื่อวันหยุด</label><input id="hyN" placeholder="เช่น หยุดชดเชยสงกรานต์ / วันหยุดประจำปีบริษัท"></div>
       <button class="btn sm" id="hyAdd">＋ เพิ่มวันหยุด</button>
     </div>
-    <div class="tbl-wrap" style="max-height:340px;overflow:auto"><table><thead><tr><th>วันที่</th><th>ชื่อวันหยุด</th><th></th></tr></thead><tbody>
+    <div class="tbl-wrap" style="max-height:340px;overflow:auto"><table><thead><tr><th>วันที่</th><th>ชื่อวันหยุด</th><th title="ลูกจ้างรายวันได้ค่าจ้างวันนี้แม้ไม่ได้มาทำงาน">รายวันได้ค่าจ้าง</th><th></th></tr></thead><tbody>
       ${list.length?list.map(d=>`<tr><td style="white-space:nowrap">${fmt(d)}</td><td>${esc(H[d])}</td>
+        <td><label style="display:inline-flex;gap:5px;align-items:center;cursor:pointer;font-size:12.5px"><input type="checkbox" data-hypaid="${d}" ${holidayPaid(d)?'checked':''}> ${holidayPaid(d)?'ได้':'ไม่ได้'}</label></td>
         <td style="text-align:right"><button class="btn ghost sm" data-hydel="${d}" style="color:#dc2626">ลบ</button></td></tr>`).join('')
-        :`<tr><td colspan="3"><div class="empty">ยังไม่มีวันหยุดปี ${Y+543} — กด “เติมวันหยุดทั่วไป” แล้วลบวันที่บริษัทไม่หยุด</div></td></tr>`}
+        :`<tr><td colspan="4"><div class="empty">ยังไม่มีวันหยุดปี ${Y+543} — กด “เติมวันหยุดทั่วไป” แล้วลบวันที่บริษัทไม่หยุด</div></td></tr>`}
     </tbody></table></div>
     <div class="settings-row" style="margin-top:12px"><label>ตัวคูณ OT เมื่อทำงานล่วงเวลาในวันหยุด</label>
       <select id="hyMul">${[1.5,2,3].map(m=>`<option value="${m}" ${(+DB.holidayOtMult||3)===m?'selected':''}>${m} เท่า</option>`).join('')}</select>
@@ -49,10 +75,20 @@ function vHolidayPanel(v){
   const q=s=>p.querySelector(s);
   q('#hyPrev').onclick=()=>{ window._hyYear--; render(); };
   q('#hyNext').onclick=()=>{ window._hyYear++; render(); };
+  q('#hyMPrev').onclick=()=>{ if(window._hyMon>0) window._hyMon--; else { window._hyYear--; window._hyMonY=window._hyYear; window._hyMon=11; } render(); };
+  q('#hyMNext').onclick=()=>{ if(window._hyMon<11) window._hyMon++; else { window._hyYear++; window._hyMonY=window._hyYear; window._hyMon=0; } render(); };
+  p.querySelectorAll('[data-hywd]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.hywd; setCompanyWorkDay(i, !companyWorkDays()[i]); save(); render();
+    toast('วันทำงานของบริษัท: '+(WDN.filter((n,k)=>companyWorkDays()[k]).join(' ')||'-')); });
+  p.querySelectorAll('[data-hyday]').forEach(b=>b.onclick=()=>{ const d=b.dataset.hyday;
+    if(H[d]){ delete H[d]; if(DB.holidayUnpaid) delete DB.holidayUnpaid[d]; toast('ลบวันหยุด '+fmt(d)); }
+    else { H[d]=q('#hyN').value.trim()||'วันหยุดบริษัท'; toast('เพิ่มวันหยุด '+fmt(d)); }
+    save(); render(); });
   q('#hyAdd').onclick=()=>{ const d=q('#hyD').value, n=q('#hyN').value.trim();
     if(!d){ toast('เลือกวันที่ก่อน'); return; } if(!n){ toast('ใส่ชื่อวันหยุด'); return; }
     H[d]=n; if(+d.slice(0,4)!==Y) window._hyYear=+d.slice(0,4); save(); render(); toast('เพิ่มวันหยุดแล้ว'); };
-  p.querySelectorAll('[data-hydel]').forEach(b=>b.onclick=()=>{ delete H[b.dataset.hydel]; save(); render(); });
+  p.querySelectorAll('[data-hydel]').forEach(b=>b.onclick=()=>{ delete H[b.dataset.hydel]; if(DB.holidayUnpaid) delete DB.holidayUnpaid[b.dataset.hydel]; save(); render(); });
+  p.querySelectorAll('[data-hypaid]').forEach(c=>c.onchange=()=>{ DB.holidayUnpaid=DB.holidayUnpaid||{}; const d=c.dataset.hypaid;
+    if(c.checked) delete DB.holidayUnpaid[d]; else DB.holidayUnpaid[d]=true; save(); render(); });
   q('#hyFill').onclick=()=>{
     const add=[...HOLIDAY_FIXED.map(([md,n])=>[`${Y}-${md}`,n]), ...(HOLIDAY_LUNAR[Y]||[])];
     let n=0; add.forEach(([d,name])=>{ if(!H[d]){ H[d]=name; n++; } }); save(); render();
@@ -226,10 +262,13 @@ function otMultWeekday(i){
   const v=Array.isArray(a)?+a[i]:0;
   return v>0?v:1.5;
 }
-function otMultFor(iso){
+function otMultFor(iso, emp){
   if(DB.otMultDates && DB.otMultDates[iso]!=null){ const v=+DB.otMultDates[iso]; if(v>0) return v; }
   if(isHoliday(iso)) return +DB.holidayOtMult||3;      // ทำงานล่วงเวลาในวันหยุดบริษัท
-  return otMultWeekday(weekdayOf(iso));
+  const wd=weekdayOf(iso), a=DB.otMultWeekdays;
+  if(hasOwnOffDays(emp)) return emp.offDays.includes(wd) ? (+DB.holidayOtMult||3) : 1.5;   // คนนี้หยุดไม่ตรงบริษัท
+  if(!(Array.isArray(a) && +a[wd]>0) && isWeeklyOff(null, iso)) return +DB.holidayOtMult||3;   // วันหยุดประจำสัปดาห์ของบริษัท
+  return otMultWeekday(wd);
 }
 function otMultOverridden(iso){ return !!(DB.otMultDates && DB.otMultDates[iso]!=null); }
 // พนักงานคนนี้เปิดให้คิด OT ไหม (ไม่ตั้งค่า = เปิด)
@@ -335,7 +374,7 @@ function attendStats(emp, p, range){
           const cap=otCapDay(emp, rec[d]);
           const h=(cap>=0 && raw>cap) ? cap : raw;   // เกินเพดาน (หรือ OT อนุมัติของวันนั้น) → ตัดเหลือเท่าเพดาน
           otH+=h;
-          const mul=otMultFor(d);
+          const mul=otMultFor(d, emp);
           otBy[mul]=Math.round(((otBy[mul]||0)+h)*100)/100;
           if(h<raw){ capH+=raw-h; capDays++; }
         }
@@ -344,7 +383,19 @@ function attendStats(emp, p, range){
     }
     else if(om<we) early++;
   });
-  return { days, late, lateMin, otHours:Math.round(otH*100)/100, otBy,
+  /* วันหยุดตามประเพณีที่ได้ค่าจ้างแม้ไม่ได้มา (เฉพาะรายวัน · ตรงวันทำงานของคนนั้น · วันนั้นไม่มีเวลาเข้างาน) */
+  let holDays=0;
+  if(emp.payType==='daily'){
+    let a, b; if(range){ a=range.from; b=range.to; } else { const pr=periodRange(p); a=isoOf(pr.from); b=isoOf(pr.to); }
+    if(emp.startDate && emp.startDate>a) a=emp.startDate;
+    if(emp.resignDate && emp.resignDate<b) b=emp.resignDate;
+    Object.keys(DB.holidays||{}).forEach(d=>{
+      if(d<a || d>b || !holidayPaid(d) || !isWorkDayFor(emp,d)) return;
+      const x=rec[d]; if(x && (x.i||x.o)) return;          // มาทำงานวันหยุด = นับเป็นวันทำงานไปแล้ว
+      holDays++;
+    });
+  }
+  return { days, holDays, late, lateMin, otHours:Math.round(otH*100)/100, otBy,
            skipHours:Math.round(skipH*100)/100, skipDays,
            capHours:Math.round(capH*100)/100, capDays, early, noOut,
            otOff:!otPerson(emp) };
@@ -543,7 +594,7 @@ function shiftPlanPanel(shown){
   const dates=periodDates(PERIOD);
   const head=dates.map(d=>{
     const wk=weekdayOf(d);
-    return `<th style="min-width:38px;padding:5px 2px;font-size:11px;${isHoliday(d)?'background:#fee2e2':(wk===0||wk===6?'background:#f1f5f9':'')}" ${isHoliday(d)?`title="🎌 ${esc(holidayName(d))}"`:''}>
+    return `<th style="min-width:38px;padding:5px 2px;font-size:11px;${isHoliday(d)?'background:#fee2e2':(!companyWorkDays()[wk]?'background:#f1f5f9':'')}" ${isHoliday(d)?`title="🎌 ${esc(holidayName(d))}"`:''}>
       ${+d.slice(8)}<br><span style="font-weight:400;color:${isHoliday(d)?'#b91c1c':'#94a3b8'}">${isHoliday(d)?'หยุด':WD_S[wk]}</span></th>`;
   }).join('');
   const body=shown.map(e=>{
@@ -1222,7 +1273,7 @@ function attendDetailModal(empId){
     const dayCap=(r.c!=null && r.c!=='') ? r.c : '';
     const capped=over<rawOver;
     const okOT=otAllowedFor(emp, d);
-    return `<tr style="${isHoliday(d)?'background:#fff1f2':(wk===0||wk===6?'background:#f8fafc':'')}">
+    return `<tr style="${isHoliday(d)?'background:#fff1f2':(isWeeklyOff(emp,d)||!companyWorkDays()[wk]?'background:#f8fafc':'')}">
       <td style="white-space:nowrap">${d.slice(8)}/${d.slice(5,7)}<br><span class="muted" style="font-size:11px">${WD_S[wk]}</span>${isHoliday(d)?`<br><span class="chip" style="background:#fee2e2;color:#b91c1c;font-size:10.5px;padding:1px 6px" title="${esc(holidayName(d))}">🎌 วันหยุด</span>`:''}</td>
       <td>${t24(`data-ai="${d}"`, r.i||'', isLate?'color:#dc2626;font-weight:700':'')}</td>
       <td>${t24(`data-ao="${d}"`, r.o||'')}</td>
@@ -1376,7 +1427,7 @@ function pushAttendToPayroll(){
       let d=0, o=0;
       targets.forEach(({e,s})=>{
         const r=getRec(PERIOD, e.id);
-        if(e.payType==='daily'){ r.days=s.days; d++; }
+        if(e.payType==='daily'){ r.days=s.days+(s.holDays||0); d++; }
         if(s.otHours>0){
           // แยกเป็นแถวละตัวคูณ เรียงจากน้อยไปมาก
           const by=s.otBy||{};

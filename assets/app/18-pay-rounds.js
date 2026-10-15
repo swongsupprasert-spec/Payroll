@@ -49,6 +49,32 @@ function empWindow(e, from, to){
   if(e.resignDate && e.resignDate<b) b=e.resignDate;
   return a<=b ? {from:a, to:b} : null;
 }
+function winLen(w){ return w ? Math.round((new Date(w.to+'T00:00:00')-new Date(w.from+'T00:00:00'))/864e5)+1 : 0; }
+/* วันได้ค่าจ้างของรายวันในรอบ: กรอกเอง (ไม่เกินจำนวนวันในช่วง) หรือ วันมาทำงาน + วันหยุดตามประเพณีที่ได้ค่าจ้าง */
+function roundDays(win, s, man){
+  if(man && man.days!=null) return Math.min(+man.days||0, winLen(win));
+  return Math.min((s.days||0)+(s.holDays||0), winLen(win));
+}
+/* วันทำงาน/OT ของทุกรอบรวมกัน → เขียนลงหน้าคำนวณเงินได้/เงินหักของเดือน (ให้ 2 หน้าตรงกันเสมอ) */
+function syncRoundMonth(p, cycle, e){
+  let days=0, manOT=false; const by={};
+  payRounds(p, cycle).forEach(rd=>{
+    const win=empWindow(e, rd.from, rd.to); if(!win) return;
+    const man=roundManual(p, cycle, rd.i, e.id)||{}, s=attendStats(e, p, win);
+    const paid=!rd.last && roundPaid(p, cycle, rd.i), snap=paid&&paid.emps&&paid.emps[e.id];
+    if(e.payType==='daily') days+= snap ? (+snap.days||0) : roundDays(win, s, man);
+    if(man.otH!=null){ manOT=true; by[1.5]=(by[1.5]||0)+(+man.otH||0); }
+    else Object.keys(s.otBy||{}).forEach(k=>{ by[k]=(by[k]||0)+(+s.otBy[k]||0); });
+  });
+  const r=getRec(p, e.id);
+  if(e.payType==='daily') r.days=r2(days);
+  if(manOT){   // มีกรอก OT เองในรอบ → แถว OT ของเดือนมาจากรอบทั้งหมด
+    const ks=Object.keys(by).filter(k=>by[k]>0).sort((a,b)=>a-b);
+    r.earn.otRows=ks.map(k=>({h:r2(by[k]), m:+k})); delete r.earn.otHours; delete r.earn.otMult;
+    r.earn.ot=otTotal(e, r);
+  }
+  autoDeductions(e, r);
+}
 /* ยอดของรอบที่ยังไม่ใช่รอบสุดท้าย (คำนวณสด) */
 function roundCalcRaw(e, p, rd, prev){
   const win=empWindow(e, rd.from, rd.to);
@@ -57,7 +83,7 @@ function roundCalcRaw(e, p, rd, prev){
   const s=attendStats(e, p, win);
   const man=roundManual(p, rd.cycle, rd.i, e.id)||{};
   let base=0, days=0;
-  if(e.payType==='daily'){ days=(man.days!=null)?man.days:s.days; base=r2(salaryOnDate(e, win.to)*days); }
+  if(e.payType==='daily'){ days=roundDays(win, s, man); base=r2(salaryOnDate(e, win.to)*days); }
   else {
     const {from,to}=periodRange(p); const dim=Math.round((to-from)/864e5)+1;
     let sum=0; for(let d=new Date(win.from+'T00:00:00'); isoOf(d)<=win.to; d=addDays(d,1)){ sum+=salaryOnDate(e, isoOf(d)); days++; }
@@ -77,7 +103,7 @@ function roundCalcRaw(e, p, rd, prev){
   if(!(taxM>0)) taxM=estTax(e, +p.split('-')[0], {earn:{}, days:e.payType==='daily'?(DB.workDaysDefault||26):0}).monthly;
   const proj=e.payType==='daily' ? salaryFor(e,p)*(DB.workDaysDefault||26) : salaryFor(e,p);
   const tax=proj>0 ? r2(taxM*gross/proj) : 0;
-  return {days, base, ot, otH, gross, ssoBase, tax, sso, net:r2(gross-tax-sso), attDays:s.days, man:(man.days!=null||man.otH!=null)};
+  return {days, base, ot, otH, gross, ssoBase, tax, sso, net:r2(gross-tax-sso), attDays:s.days, holDays:s.holDays||0, maxDays:winLen(win), man:(man.days!=null||man.otH!=null)};
 }
 /* ยอดของทุกรอบของคนหนึ่ง (รอบที่บันทึกจ่ายแล้วใช้ตัวเลขที่เก็บไว้) */
 function empRounds(e, p, cycle){
@@ -90,7 +116,8 @@ function empRounds(e, p, cycle){
       const c=calc(e, p), r=c.r;
       const tax=r2((+r.ded.tax||0)-prev.tax), sso=r2((+r.ded.sso||0)-prev.sso);
       const other=r2(c.dedTotal-(+r.ded.tax||0)-(+r.ded.sso||0)-(+r.ded.advance||0));
-      v={last:true, days:e.payType==='daily'?Math.max(0,(+r.days||0)-out.reduce((s,x)=>s+(x.days||0),0)):null,
+      const lw=empWindow(e, rd.from, rd.to);
+      v={last:true, maxDays:winLen(lw), days:e.payType==='daily'?Math.max(0,(+r.days||0)-out.reduce((s,x)=>s+(x.days||0),0)):null,
          gross:r2(c.gross-prev.gross), tax, sso, other, needDays:e.payType==='daily'&&!(+r.days>0)};
       v.net=r2(v.gross-v.tax-v.sso-v.other);   // = เงินสุทธิสิ้นเดือน − ที่จ่ายไปแล้ว (เท่ากันเมื่อบันทึกจ่ายรอบก่อนครบ)
     } else {
@@ -172,23 +199,25 @@ function vRounds(v){
   const needDays=rd.last ? rows.filter(x=>x.v.needDays).length : 0;
   const notes=[];
   if(rd.last) notes.push('รอบสุดท้าย = ยอดทั้งเดือนจากหน้า <b>คำนวณเงินได้ / เงินหัก</b> ลบส่วนที่จ่ายไปแล้ว — เงินหักอื่น ๆ (เงินกู้ กยศ. ขาดงาน ฯลฯ) หักในรอบนี้ทั้งหมด');
-  if(needDays) notes.push(`⚠️ พนักงานรายวัน ${needDays} คนยังไม่มีจำนวนวันทำงานของเดือน — ไปหน้า <b>เวลาเข้างาน</b> แล้วกด <b>➡️ ส่งเข้าเงินได้ / เงินหัก</b> ก่อน`);
+  if(needDays) notes.push(`⚠️ พนักงานรายวัน ${needDays} คนยังไม่มีจำนวนวันทำงานของเดือน — กรอกในช่อง <b>วันทำงาน</b> ด้านล่าง หรือกด <button class="btn sm" id="rnSyncDays" style="padding:3px 10px">📥 ใช้วันทำงานจากทุกรอบ</button>`);
   if(unpaidBefore) notes.push(`⚠️ มี ${unpaidBefore} รอบก่อนหน้าที่ยังไม่ได้บันทึกว่าจ่าย — ยอดรอบนี้คิดโดยถือว่ารอบก่อนจ่ายตามตัวเลขที่แสดง`);
   const noDays=!rd.last&&!paid ? rows.filter(x=>x.e.payType==='daily'&&!(+x.v.days>0)).length : 0;
   if(noDays) notes.push(`พนักงานรายวัน ${noDays} คนยังไม่มีเวลาเข้างานในช่วงนี้ — <b>กรอกจำนวนวันทำงานในตารางได้เลย</b> หรือใส่เวลาที่หน้า <b>เวลาเข้างาน</b>`);
+  if(!paid && rows.some(x=>x.e.payType==='daily')) notes.push('วันที่กรอกในแต่ละรอบรวมกันเป็น <b>จำนวนวันทำงานของเดือน</b> ในหน้าคำนวณเงินได้/เงินหักให้เอง · วันหยุดตามประเพณีนับเป็นวันได้ค่าจ้างของรายวันให้เอง');
   if(paid) notes.push(`✅ บันทึกว่าจ่ายแล้ว${paid.payDate?' วันที่ '+esc(fmtDate(paid.payDate)):''} — ตัวเลขรอบนี้ถูกเก็บไว้ ไม่เปลี่ยนตามข้อมูลที่แก้ทีหลัง`);
 
   const head=rd.last
-    ? `<th>รหัส</th><th>ชื่อ</th><th class="num">เงินได้ส่วนที่เหลือ</th><th class="num">ภาษี</th><th class="num">ประกันสังคม</th><th class="num">หักอื่น ๆ</th><th class="num">รับสุทธิ</th>`
+    ? `<th>รหัส</th><th>ชื่อ</th><th class="num">วันทำงาน</th><th class="num">เงินได้ส่วนที่เหลือ</th><th class="num">ภาษี</th><th class="num">ประกันสังคม</th><th class="num">หักอื่น ๆ</th><th class="num">รับสุทธิ</th>`
     : `<th>รหัส</th><th>ชื่อ</th><th class="num">วันทำงาน</th><th class="num">ค่าจ้าง</th><th class="num">OT</th><th class="num">เงินได้รวม</th><th class="num">ภาษี</th><th class="num">ประกันสังคม</th><th class="num">รับสุทธิ</th>`;
   const body=rows.map(({e,v:x})=>rd.last
     ? `<tr><td><span class="chip">${esc(e.code)}</span></td><td><strong>${esc(e.name)}</strong>${x.needDays?' <span class="chip" style="background:#fef3c7;color:#b45309">ยังไม่มีวันทำงาน</span>':''}</td>
+        <td class="num">${e.payType==='daily'?`<input type="number" min="0" max="${x.maxDays}" step="0.5" class="rnIn" data-emp="${e.id}" data-k="days" data-max="${x.maxDays}" value="${x.days||0}" title="วันได้ค่าจ้างในรอบสุดท้าย (สูงสุด ${x.maxDays} วัน)">`:'<span class="muted">-</span>'}</td>
         <td class="num">${money(x.gross)}</td><td class="num neg">${money(x.tax)}</td><td class="num neg">${money(x.sso)}</td><td class="num neg">${money(x.other)}</td><td class="num"><b>${money(x.net)}</b></td></tr>`
     : `<tr><td><span class="chip">${esc(e.code)}</span></td><td><strong>${esc(e.name)}</strong><div class="muted" style="font-size:11px">${e.payType==='daily'?'รายวัน':'รายเดือน'}</div></td>
-        <td class="num">${(!paid&&e.payType==='daily')?`<input type="number" min="0" max="7" step="0.5" class="rnIn" data-emp="${e.id}" data-k="days" value="${x.days||0}" title="วันทำงานในรอบนี้ (จากเวลาเข้างาน ${num(x.attDays||0)} วัน) — แก้ได้">`:num(x.days||0)}</td><td class="num">${money(x.base)}</td><td class="num">${!paid?`<input type="number" min="0" step="0.5" class="rnIn ot" data-emp="${e.id}" data-k="otH" value="${x.otH||''}" placeholder="ชม." title="ชั่วโมง OT (1.5 เท่า) — เว้นว่าง = ใช้จากเวลาเข้างาน"><div class="muted" style="font-size:11px">${x.ot?money(x.ot):''}</div>`:(x.ot?money(x.ot):'-')}</td><td class="num pos">${money(x.gross)}</td>
+        <td class="num">${(!paid&&e.payType==='daily')?`<input type="number" min="0" max="${x.maxDays}" step="0.5" class="rnIn" data-emp="${e.id}" data-k="days" data-max="${x.maxDays}" value="${x.days||0}" title="วันได้ค่าจ้างในรอบนี้ (มาทำงาน ${num(x.attDays||0)} วัน${x.holDays?' + วันหยุดตามประเพณี '+num(x.holDays)+' วัน':''}) · สูงสุด ${x.maxDays} วัน — แก้ได้">${x.holDays?`<div class="muted" style="font-size:11px">รวมวันหยุด ${num(x.holDays)}</div>`:''}`:num(x.days||0)}</td><td class="num">${money(x.base)}</td><td class="num">${!paid?`<input type="number" min="0" step="0.5" class="rnIn ot" data-emp="${e.id}" data-k="otH" value="${x.otH||''}" placeholder="ชม." title="ชั่วโมง OT (1.5 เท่า) — เว้นว่าง = ใช้จากเวลาเข้างาน"><div class="muted" style="font-size:11px">${x.ot?money(x.ot):''}</div>`:(x.ot?money(x.ot):'-')}</td><td class="num pos">${money(x.gross)}</td>
         <td class="num neg">${money(x.tax)}</td><td class="num neg">${money(x.sso)}</td><td class="num"><b>${money(x.net)}</b></td></tr>`).join('');
   const foot=rd.last
-    ? `<td colspan="2">รวม ${num(rows.length)} คน</td><td class="num">${money(tot('gross'))}</td><td class="num">${money(tot('tax'))}</td><td class="num">${money(tot('sso'))}</td><td class="num">${money(tot('other'))}</td><td class="num">${money(tot('net'))}</td>`
+    ? `<td colspan="3">รวม ${num(rows.length)} คน</td><td class="num">${money(tot('gross'))}</td><td class="num">${money(tot('tax'))}</td><td class="num">${money(tot('sso'))}</td><td class="num">${money(tot('other'))}</td><td class="num">${money(tot('net'))}</td>`
     : `<td colspan="3">รวม ${num(rows.length)} คน</td><td class="num">${money(tot('base'))}</td><td class="num">${money(tot('ot'))}</td><td class="num">${money(tot('gross'))}</td><td class="num">${money(tot('tax'))}</td><td class="num">${money(tot('sso'))}</td><td class="num">${money(tot('net'))}</td>`;
   const panel=el(`<div class="panel"><div class="phead"><h2>📆 รอบ ${rd.i}${rd.last?' (สุดท้าย)':''} — ${lab(rd)}</h2>
       <div class="sp" style="display:flex;gap:8px;flex-wrap:wrap;margin-left:auto">
@@ -201,7 +230,14 @@ function vRounds(v){
     <div class="pbody" style="padding:0"><div class="tbl-wrap"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody><tfoot><tr>${foot}</tr></tfoot></table></div></div></div>`);
   v.appendChild(panel);
 
-  panel.querySelectorAll('.rnIn').forEach(inp=>inp.onchange=()=>{ setRoundManual(PERIOD, cycle, rd.i, inp.dataset.emp, inp.dataset.k, inp.value); render(); });
+  panel.querySelectorAll('.rnIn').forEach(inp=>inp.onchange=()=>{
+    let val=inp.value; const mx=+inp.dataset.max;
+    if(val!=='' && inp.dataset.max!=null && +val>mx){ val=String(mx); toast(`รอบนี้มี ${mx} วัน — ใส่ได้ไม่เกิน ${mx} วัน`); }
+    setRoundManual(PERIOD, cycle, rd.i, inp.dataset.emp, inp.dataset.k, val);
+    const e=DB.employees.find(x=>x.id===inp.dataset.emp); if(e){ syncRoundMonth(PERIOD, cycle, e); save(); }
+    render(); });
+  const sd=panel.querySelector('#rnSyncDays');
+  if(sd) sd.onclick=()=>{ emps.forEach(e=>syncRoundMonth(PERIOD, cycle, e)); save(); toast('ตั้งวันทำงานของเดือนจากทุกรอบแล้ว'); render(); };
   const pb=panel.querySelector('#rnPay');
   if(pb) pb.onclick=()=>{
     if(unpaidBefore){ toast('กรุณาบันทึกจ่ายรอบก่อนหน้าให้ครบก่อน'); return; }

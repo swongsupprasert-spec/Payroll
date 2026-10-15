@@ -23,16 +23,17 @@ function hrsToDays(h){ return Math.round((+h||0)/lvHPD()*10000)/10000; }
 function daysToHrs(d){ return Math.round((+d||0)*lvHPD()*100)/100; }
 // แสดงจำนวนวันลาให้อ่านง่าย — ถ้าไม่เต็มวันบอกเป็นชั่วโมงกำกับ
 function leaveAmountText(l){
-  const d=Number(l.days||leaveDaysCount(l.from,l.to||l.from)||0);
+  const d=Number(l.days||leaveDaysCount(l.from,l.to||l.from,l.empId)||0);
   const h=(l.hours!=null && l.hours!=='') ? Number(l.hours) : null;
   if(h!=null) return `${num(h)} ชม.<br><span class="muted" style="font-size:11.5px">= ${num(Math.round(d*100)/100)} วัน</span>`;
   return num(d);
 }
 /* จำนวนวันลาในช่วง — ไม่นับวันหยุดบริษัท (ปฏิทินวันหยุด) */
-function leaveDaysCount(a,b){
+function leaveDaysCount(a,b,empId){
+  const emp=empId?DB.employees.find(e=>e.id===empId):null;
   const n=daysBetween(a,b); if(!n) return 0;
   const [y,m,d]=a.split('-').map(Number); let k=0;
-  for(let i=0;i<n;i++){ const x=new Date(y,m-1,d+i); const iso=`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`; if(!isHoliday(iso)) k++; }
+  for(let i=0;i<n;i++){ const x=new Date(y,m-1,d+i); const iso=`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`; if(!isHoliday(iso) && !isWeeklyOff(emp,iso)) k++; }
   return k;
 }
 function daysBetween(a,b){
@@ -50,8 +51,8 @@ function leaveDaysInPeriod(lv, p){
   if(A<from) A=from; if(B>to) B=to;
   if(A>B) return 0;
   const iso=x=>`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
-  const span=leaveDaysCount(iso(A), iso(B));
-  const total=leaveDaysCount(lv.from, lv.to||lv.from) || 1;
+  const span=leaveDaysCount(iso(A), iso(B), lv.empId);
+  const total=leaveDaysCount(lv.from, lv.to||lv.from, lv.empId) || 1;
   // ถ้าผู้ใช้ระบุจำนวนวันเอง (เช่นลาครึ่งวัน) เฉลี่ยตามสัดส่วน
   return Math.round((Number(lv.days||total) * span/total)*100)/100;
 }
@@ -132,7 +133,7 @@ function quotaFor(emp, type, year){
 function leaveUsed(empId, year, type){
   return leaveList().filter(l=>l.empId===empId && l.type===type && l.status!=='rejected'
       && String(l.from||'').slice(0,4)===String(year))
-    .reduce((s,l)=>s+Number(l.days||leaveDaysCount(l.from,l.to||l.from)||0),0);
+    .reduce((s,l)=>s+Number(l.days||leaveDaysCount(l.from,l.to||l.from,l.empId)||0),0);
 }
 /* จำนวนวันลาไม่รับค่าจ้าง/ขาดงานที่ตกอยู่ในงวดนี้ (ใบที่ไม่อนุมัติไม่นับ) */
 function unpaidDays(emp, p){
@@ -172,9 +173,9 @@ function vLeave(v){
   rows=rows.slice().sort((a,b)=>String(b.from).localeCompare(String(a.from)));
 
   const yrAll=lst.filter(inYr);
-  const totDays=yrAll.filter(l=>l.status!=='rejected').reduce((s,l)=>s+Number(l.days||leaveDaysCount(l.from,l.to||l.from)||0),0);
+  const totDays=yrAll.filter(l=>l.status!=='rejected').reduce((s,l)=>s+Number(l.days||leaveDaysCount(l.from,l.to||l.from,l.empId)||0),0);
   const byType={}; LEAVE_TYPES.forEach(([k])=>byType[k]=0);
-  yrAll.filter(l=>l.status!=='rejected').forEach(l=>{ byType[l.type]=(byType[l.type]||0)+Number(l.days||leaveDaysCount(l.from,l.to||l.from)||0); });
+  yrAll.filter(l=>l.status!=='rejected').forEach(l=>{ byType[l.type]=(byType[l.type]||0)+Number(l.days||leaveDaysCount(l.from,l.to||l.from,l.empId)||0); });
   const pend=yrAll.filter(l=>l.status==='pending').length;
 
   v.appendChild(el(`<div class="cards">
@@ -238,7 +239,7 @@ function vLeave(v){
   const stLab={approved:'อนุมัติ', pending:'รออนุมัติ', rejected:'ไม่อนุมัติ'};
   const body=rows.length? rows.map(l=>{
     const e=DB.employees.find(x=>x.id===l.empId);
-    const dd=Number(l.days||leaveDaysCount(l.from,l.to||l.from)||0);
+    const dd=Number(l.days||leaveDaysCount(l.from,l.to||l.from,l.empId)||0);
     return `<tr>
       <td>${e?`<strong>${esc(e.name)}</strong><br><span class="muted" style="font-size:12px">${esc(e.code)} · ${esc(e.dept||'-')}</span>`
              :'<span class="muted">— ไม่พบพนักงาน —</span>'}</td>
@@ -360,7 +361,7 @@ function leaveModal(id){
       let days, hours=null;
       if(manualH!==''){ hours=+manualH; days=hrsToDays(hours); }
       else if(manual!==''){ days=+manual; }
-      else { days=leaveDaysCount(f,t); }
+      else { days=leaveDaysCount(f,t,empId); }
       if(!(days>0)){ toast(manualH!==''?'จำนวนชั่วโมงต้องมากกว่า 0':'จำนวนวันต้องมากกว่า 0'); return; }
       const rec={ empId, type, status, from:f, to:t, days, hours, reason:$('#lvR').value.trim() };
       if(cur) Object.assign(cur, rec); else leaveList().push({ id:uid(), ...rec });
@@ -396,10 +397,10 @@ function leaveModal(id){
     const syncFromDates=()=>{
       if(!auto) return;
       const f=fIn?fIn.value:'', t=(tIn&&tIn.value)||f;
-      const d=leaveDaysCount(f,t), hol=daysBetween(f,t)-d;
+      const d=leaveDaysCount(f,t,($('#lvE')||{}).value), hol=daysBetween(f,t)-d;
       if(daysBetween(f,t)>0){
         lock=true; dIn.value=String(d); hIn.value=''; lock=false;
-        showNote('นับจากช่วงวันที่ให้'+(hol?` (ไม่นับวันหยุดบริษัท ${hol} วัน)`:'')+' — พิมพ์ทับได้ถ้าลาไม่เต็มวัน');
+        showNote('นับจากช่วงวันที่ให้'+(hol?` (ไม่นับวันหยุด ${hol} วัน)`:'')+' — พิมพ์ทับได้ถ้าลาไม่เต็มวัน');
       }else{
         lock=true; dIn.value=''; hIn.value=''; lock=false;
         showNote('');
@@ -420,6 +421,7 @@ function leaveModal(id){
     // เลือกวันที่ใหม่ = ตั้งใจลาเป็นวัน ให้กลับมานับให้อัตโนมัติ
     const onDate=()=>{ auto=true; syncFromDates(); };
     [fIn,tIn].forEach(n=>{ if(n){ n.addEventListener('change',onDate); n.addEventListener('input',onDate); } });
+    const eSel=$('#lvE'); if(eSel) eSel.addEventListener('change',()=>{ if(auto) syncFromDates(); });   // คนละคนอาจหยุดคนละวัน
     syncFromDates();
   }
 }
@@ -498,4 +500,4 @@ function pushUnpaidToPayroll(){
       save(); closeModal(); toast(`หักเงินขาดงานแล้ว ${n} คน`);
     }]]);
 }
-
+

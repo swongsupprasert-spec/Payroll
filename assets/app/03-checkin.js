@@ -102,8 +102,7 @@ function vCheckin(v){
       if(inT){ const sh=shiftFor(e,d), s=hm(sh.start), t=hm(inT);
         if(s!=null && t!=null && t>s+(+sh.grace||0)) lateRows.push({e,d,t:inT,min:t-s}); return; }
       if(pr||(rec&&rec.o)) return;                              // มีลงเวลาออกอย่างเดียว = มาทำงาน
-      const wd=new Date(d+'T00:00:00').getDay();
-      if(!DB.ckWorkDays[wd]) return;                             // วันหยุดประจำสัปดาห์
+      if(!isWorkDayFor(e,d)) return;                             // วันหยุดประจำสัปดาห์ (ของคนนี้ หรือของบริษัท)
       if(isHoliday(d)) return;                                   // วันหยุดบริษัท (ปฏิทินวันหยุด)
       if(onLeave(e.id,d)) return;                                // ลาแล้ว
       absentRows.push({e,d});
@@ -118,12 +117,12 @@ function vCheckin(v){
   </div>`);
   v.appendChild(kp);
   const sub=el(`<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:-6px 0 14px;font-size:13px;color:var(--muted)">
-    <span>นับถึงวันนี้ · เฉพาะคนที่มีบัญชีลงเวลา นับตั้งแต่วันที่สร้างบัญชี · วันทำงาน:</span>
+    <span>นับถึงวันนี้ · เฉพาะคนที่มีบัญชีลงเวลา นับตั้งแต่วันที่สร้างบัญชี · วันทำงานของบริษัท:</span>
     ${WD.map((n,i)=>`<button class="btn ghost sm" data-ckwd="${i}" style="padding:3px 9px;${DB.ckWorkDays[i]?'background:#0e3a5c;color:#fff;border-color:#0e3a5c':''}">${n}</button>`).join('')}
-    <span style="margin-left:6px">· ลงเวลา ${num(S.punches.length)} ครั้ง · นอกพื้นที่ ${num(S.punches.filter(p=>p.in_zone===false).length)} · รอนำเข้า ${num(unmerged)}</span>
+    <span style="margin-left:6px">· ลงเวลา ${num(S.punches.length)} ครั้ง · นอกพื้นที่ ${num(S.punches.filter(p=>p.in_zone===false).length)} · รอนำเข้า ${num(unmerged)} · คนที่หยุดไม่ตรงบริษัท ตั้งได้ที่ ข้อมูลพนักงาน → วันหยุดประจำสัปดาห์</span>
   </div>`);
   v.appendChild(sub);
-  sub.querySelectorAll('[data-ckwd]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.ckwd; DB.ckWorkDays[i]=!DB.ckWorkDays[i]; save(); CK_STATE.loaded=true; S.loaded=true; render(); });
+  sub.querySelectorAll('[data-ckwd]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.ckwd; setCompanyWorkDay(i, !DB.ckWorkDays[i]); save(); CK_STATE.loaded=true; S.loaded=true; render(); });
   kp.querySelectorAll('[data-kl]').forEach(c=>c.onclick=()=>{
     const late=c.dataset.kl==='late'; const rows=(late?lateRows:absentRows).slice().sort((a,b)=>a.d<b.d?-1:(a.d>b.d?1:(a.e.code<b.e.code?-1:1)));
     const fmt=d=>`${d.slice(8)}/${d.slice(5,7)} (${WD[new Date(d+'T00:00:00').getDay()]})`;
@@ -657,7 +656,7 @@ async function ckLeaveSync(force){
       const hours=q.hours!=null?+q.hours:null;
       const by=q.decided_by_name?` · ${q.status==='approved'?'อนุมัติ':'ไม่อนุมัติ'}โดย ${q.decided_by_name}${q.decide_note?' ('+q.decide_note+')':''}`:(q.approver_name?` · ผู้อนุมัติ ${q.approver_name}`:'');
       L.push({ id:uid(), reqId:q.id, reqStatus:q.status, files:Array.isArray(q.attachments)?q.attachments.length:0, empId:q.emp_id, type:q.type, status:q.status, from:q.from_date, to:q.to_date,
-               days: hours!=null?hrsToDays(hours):leaveDaysCount(q.from_date,q.to_date), hours,
+               days: hours!=null?hrsToDays(hours):leaveDaysCount(q.from_date,q.to_date,q.emp_id), hours,
                reason:(q.reason?q.reason+' · ':'')+'ยื่นจากมือถือ'+by });
       added++; changed=true;
     });

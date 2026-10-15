@@ -476,3 +476,26 @@
   .rnIn{width:64px;text-align:right;padding:5px 7px;border:1.5px solid #bfdbfe;border-radius:8px;font:inherit;font-size:13px;background:#f8fbff;color:var(--ink)}
   .rnIn:focus{outline:none;border-color:#2563eb}
   html[data-theme="dark"] .rnIn{background:#12233a;border-color:#2b4a72}
+
+  /* ปฏิทินวันหยุด: ปุ่มวันหยุดประจำสัปดาห์ + ปฏิทินกดเลือก */
+  .hyWeek{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 12px;padding:10px 12px;background:#f8fafc;border:1px solid var(--line);border-radius:12px}
+  .hyWd{display:inline-flex;gap:4px;flex-wrap:wrap}
+  .hyWd button,.offDay{min-width:38px;padding:6px 8px;border:1.5px solid #cbd5e1;border-radius:9px;background:#fff;color:#334155;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+  .hyWd button.on,.offDay.on{background:#dc2626;border-color:#dc2626;color:#fff}
+  .hyCalWrap{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+  .hyCalHead{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+  .hyCal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .hyH{text-align:center;font-size:12px;font-weight:700;color:#64748b;padding:2px 0}
+  .hyH.off{color:#dc2626}
+  .hyC{min-height:48px;min-width:0;border:1px solid #e2e8f0;border-radius:9px;background:#fff;cursor:pointer;padding:4px;display:flex;flex-direction:column;align-items:center;gap:1px;font:inherit;color:var(--ink);overflow:hidden}
+  .hyC b{font-size:13.5px}
+  .hyC i{font-style:normal;font-size:10px;line-height:1.15;color:#b91c1c;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hyC.off{background:#f1f5f9;color:#94a3b8}
+  .hyC.hol{background:#fee2e2;border-color:#fca5a5;color:#b91c1c}
+  .hyC:hover{border-color:#2563eb}
+  html[data-theme="dark"] .hyWeek,html[data-theme="dark"] .hyC,html[data-theme="dark"] .hyWd button,html[data-theme="dark"] .offDay{background:#12233a;border-color:#2b4a72;color:#e2e8f0}
+  html[data-theme="dark"] .hyC.off{background:#0b1726;color:#64748b}
+  html[data-theme="dark"] .hyC.hol,html[data-theme="dark"] .hyWd button.on,html[data-theme="dark"] .offDay.on{background:#7f1d1d;border-color:#dc2626;color:#fff}
+  html[data-theme="dark"] .hyC.hol i{color:#fecaca}
+  #f_offDays.inh .offDay.on{background:#fee2e2;border-color:#fca5a5;color:#b91c1c}
+  html[data-theme="dark"] #f_offDays.inh .offDay.on{background:#3b1a1a;border-color:#7f1d1d;color:#fecaca}

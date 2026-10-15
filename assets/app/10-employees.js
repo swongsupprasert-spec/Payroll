@@ -376,6 +376,9 @@ function empForm(id){
         <option value="semi" ${e.payCycle==='semi'?'selected':''}>เดือนละ 2 รอบ (ครึ่งเดือน)</option>
         <option value="weekly" ${e.payCycle==='weekly'?'selected':''}>รายสัปดาห์</option></select>
         <div class="muted" style="font-size:11px;margin-top:3px">2 รอบ / รายสัปดาห์ จ่ายที่เมนู “เบิกจ่ายล่วงหน้า” แท็บ “จ่ายรายรอบ” · ภาษีและประกันสังคมยังรวมเป็นรายเดือน</div></div>
+      <div class="field"><label>วันหยุดประจำสัปดาห์ <span id="f_offMode" class="chip" style="font-size:10.5px;padding:1px 7px;margin-left:4px"></span></label>
+        <div id="f_offDays" data-own="${hasOwnOffDays(e)?1:0}" style="display:flex;gap:4px;flex-wrap:wrap">${['อา','จ','อ','พ','พฤ','ศ','ส'].map((n,i)=>`<button type="button" class="offDay${(hasOwnOffDays(e)?e.offDays.includes(i):!companyWorkDays()[i])?' on':''}" data-off="${i}">${n}</button>`).join('')}</div>
+        <div class="muted" style="font-size:11px;margin-top:3px"><span id="f_offHint"></span> <a href="#" id="f_offReset" style="display:none">↩️ ใช้ตามบริษัท</a></div></div>
       <div class="field"><label id="f_salaryLab">${isDaily?'ค่าจ้างต่อวัน (บาท) *':'เงินเดือน (บาท) *'}</label><input id="f_salary" type="number" step="0.01" value="${e.salary||0}">
         <div class="muted" style="font-size:11px;margin-top:3px">อัตราปัจจุบัน · แก้ตรงนี้จะเปลี่ยนย้อนหลังทุกงวด</div></div>
       <div class="field"><label>วันที่เริ่มงาน</label><input id="f_startDate" type="date" value="${e.startDate||''}"></div>
@@ -439,7 +442,7 @@ function empForm(id){
     const tid=g('f_taxId').trim(), ph=g('f_phone').trim();
     if(tid && !/^[0-9]{13}$/.test(tid)){ bad('#f_taxId',`เลขบัตรประชาชนต้องครบ 13 หลัก (ตอนนี้ ${tid.replace(/[^0-9]/g,'').length} หลัก)`); return; }
     if(ph && !/^0[0-9]{8,9}$/.test(ph)){ bad('#f_phone',`เบอร์โทรต้องขึ้นต้นด้วย 0 และมี 9–10 หลัก (ตอนนี้ ${ph.replace(/[^0-9]/g,'').length} หลัก)`); return; }
-    const rec={code,name,gender:g('f_gender'),birthDate:g('f_birth'),position:g('f_position').trim(),phone:g('f_phone').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),payCycle:g('f_payCycle')||'monthly',salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,pvdEr:(g('f_pvdEr')===''?null:Math.max(0,+g('f_pvdEr')||0)),wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,ckRole:g('f_ckRole')||'staff',photo:photoData||''};
+    const rec={code,name,gender:g('f_gender'),birthDate:g('f_birth'),position:g('f_position').trim(),phone:g('f_phone').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),payCycle:g('f_payCycle')||'monthly',salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,pvdEr:(g('f_pvdEr')===''?null:Math.max(0,+g('f_pvdEr')||0)),wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,ckRole:g('f_ckRole')||'staff',photo:photoData||'',offDays:readOffDays()};
     // เพิ่มคนใหม่ หรือปลดสถานะลาออกให้กลับมาทำงาน = กินโควตาเพิ่ม ต้องเช็คก่อน
     const willCount = !rec.resignDate;
     const wasCount  = id ? !e.resignDate : false;
@@ -462,6 +465,23 @@ function empForm(id){
     }
     save(); closeModal(); render(); toast(msg);
   }]]);
+  /* อ่านวันหยุดที่เลือก: ตามบริษัท (หรือเลือกเหมือนบริษัท) = [] ให้เปลี่ยนตามบริษัท · ตั้งเองแต่ไม่หยุดเลย = [-1] */
+  function readOffDays(){ const box=$('#f_offDays'); if(!box||box.dataset.own!=='1') return [];
+    const sel=[...box.querySelectorAll('.offDay.on')].map(b=>+b.dataset.off), cw=companyWorkDays();
+    if(sel.length===cw.filter(x=>!x).length && sel.every(i=>!cw[i])) return [];
+    return sel.length?sel:[-1]; }
+  /* วันหยุดประจำสัปดาห์: เริ่มต้นแสดงตามปฏิทินวันหยุดบริษัท · กดเปลี่ยน = ตั้งเฉพาะคนนี้ */
+  const offBox=$('#f_offDays');
+  const offUi=()=>{ const own=offBox.dataset.own==='1';
+    offBox.classList.toggle('inh', !own);
+    $('#f_offMode').textContent=own?'ตั้งเฉพาะคนนี้':'ตามบริษัท';
+    $('#f_offMode').style.cssText+=own?';background:#fef3c7;color:#b45309':';background:#e0f2fe;color:#0369a1';
+    $('#f_offHint').textContent=own?'คนนี้หยุดไม่ตรงบริษัท — เปลี่ยนวันหยุดบริษัททีหลัง คนนี้จะไม่เปลี่ยนตาม':'ตามวันหยุดในปฏิทินบริษัท (หน้าตั้งค่า) · ถ้าคนนี้หยุดไม่เหมือนคนอื่น กดเลือกวันใหม่ได้เลย';
+    $('#f_offReset').style.display=own?'':'none'; };
+  offBox.querySelectorAll('.offDay').forEach(b=>b.onclick=()=>{ offBox.dataset.own='1'; b.classList.toggle('on'); offUi(); });
+  $('#f_offReset').onclick=ev=>{ ev.preventDefault(); offBox.dataset.own='0';
+    offBox.querySelectorAll('.offDay').forEach(b=>b.classList.toggle('on', !companyWorkDays()[+b.dataset.off])); offUi(); };
+  offUi();
   $('#f_payType').onchange=(ev)=>{ $('#f_salaryLab').textContent = ev.target.value==='daily' ? 'ค่าจ้างต่อวัน (บาท) *' : 'เงินเดือน (บาท) *'; };
   // แสดงส่วนต่างสด ๆ ให้เห็นว่าขึ้นเท่าไร กี่เปอร์เซ็นต์ ก่อนกดบันทึก
   const nsIn=$('#f_newSal'), nfIn=$('#f_newFrom'), nHint=$('#f_newHint');
