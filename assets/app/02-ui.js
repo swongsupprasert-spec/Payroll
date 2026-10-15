@@ -202,4 +202,45 @@ function render(){
   ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, checkin:vCheckin, leave:vLeave, resign:vResign, advance:vAdvance, payroll:vPayroll, summary:vSummary,
     dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders, quotes:vQuotes, linechats:vLineChats,
     admin:vAdmin, companies:vCompanies}[PAGE])(v);
+  enhanceKpis(v);
 }
+/* ---------- การ์ด KPI ทุกหน้าให้เป็นสไตล์เดียวกับแดชบอร์ด ----------
+   แปลงการ์ดเดิม <div class="kpi bN"><div class="lab">😀 ชื่อ</div><div class="val">…
+   เป็น: ไอคอนสี่เหลี่ยมสี + ชื่อ อยู่แถวบน แล้วตัวเลขเต็มความกว้าง
+   ไอคอนเลือกจากอีโมจิเดิมของการ์ด (ไม่มีอีโมจิ = ใช้ตามสีการ์ด) */
+const KPI_SVG=(d)=>'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
+const KPI_ICONS={
+  users:KPI_SVG('<circle cx="9" cy="8" r="3.2"/><path d="M2.8 20a6.2 6.2 0 0 1 12.4 0"/><path d="M16.2 5.4a3.2 3.2 0 0 1 0 6.2"/><path d="M17.4 14.3A6.2 6.2 0 0 1 21.2 20"/>'),
+  money:KPI_SVG('<rect x="2.6" y="5.6" width="18.8" height="12.8" rx="2.4"/><circle cx="12" cy="12" r="2.8"/><path d="M6.2 9.4h.01M17.8 14.6h.01"/>'),
+  plus:KPI_SVG('<circle cx="12" cy="12" r="8.6"/><path d="M12 8v8M8 12h8"/>'),
+  minus:KPI_SVG('<circle cx="12" cy="12" r="8.6"/><path d="M8 12h8"/>'),
+  clock:KPI_SVG('<circle cx="12" cy="12" r="8.6"/><path d="M12 7.2V12l3.2 2"/>'),
+  cal:KPI_SVG('<rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 9.6h17.2M8.2 3v4M15.8 3v4"/>'),
+  doc:KPI_SVG('<path d="M6 2.8h8.4L19 7.4v13.8H6z"/><path d="M14.2 2.8v4.8H19M9 12h6M9 16h6"/>'),
+  check:KPI_SVG('<circle cx="12" cy="12" r="8.6"/><path d="m8.2 12.2 2.6 2.6 5-5.2"/>'),
+  bolt:KPI_SVG('<path d="M13 2.8 5 13.4h6.4L10.6 21.2 19 10.4h-6.4z"/>'),
+  door:KPI_SVG('<path d="M14.5 3.5h3.6a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-3.6"/><path d="M10 8 6 12l4 4"/><path d="M6 12h9"/>'),
+  phone:KPI_SVG('<rect x="6.5" y="2.8" width="11" height="18.4" rx="2.4"/><path d="M11 17.6h2"/>'),
+  user:KPI_SVG('<circle cx="12" cy="8" r="3.6"/><path d="M4.8 20.4a7.2 7.2 0 0 1 14.4 0"/>')
+};
+const KPI_EMOJI={'👥':'users','🟢':'users','🆕':'user','👤':'user','💵':'money','💰':'money','💸':'money','💼':'money','➕':'plus','➖':'minus',
+  '⏳':'clock','🕒':'clock','⏰':'clock','📅':'cal','📆':'cal','🧾':'doc','📝':'doc','📄':'doc','✅':'check','⚡':'bolt','🚪':'door','📱':'phone'};
+const KPI_BY_COLOR={b1:'users',b2:'money',b3:'plus',b4:'minus',b5:'money'};
+function enhanceKpis(root){
+  (root||document).querySelectorAll('.cards .kpi:not(.kx)').forEach(k=>{
+    if(k.closest('.kv2')) return;                       // แดชบอร์ดทำไว้แล้ว
+    const lab=k.querySelector(':scope > .lab'); if(!lab) return;
+    k.classList.add('kx');
+    const m=lab.innerHTML.match(/^\s*((?:\p{Extended_Pictographic}|\p{Regional_Indicator})[️‍\p{Extended_Pictographic}]*)\s*/u);
+    let key=null;
+    if(m){ key=KPI_EMOJI[m[1].replace(/️/g,'')]||null; lab.innerHTML=lab.innerHTML.slice(m[0].length); }
+    const col=(k.className.match(/\bb[1-5]\b/)||['b1'])[0];
+    if(!key) key=KPI_BY_COLOR[col]||'users';
+    const head=document.createElement('div'); head.className='khead';
+    head.innerHTML=`<div class="kico kc-${col}">${KPI_ICONS[key]}</div>`;
+    lab.parentNode.insertBefore(head,lab); head.appendChild(lab);
+  });
+}
+/* หน้าที่วาดเพิ่มทีหลัง (โหลดข้อมูลแบบ async) ก็ให้ได้สไตล์เดียวกัน */
+(function(){ const v=document.getElementById('view'); if(!v||!window.MutationObserver) return;
+  let t=null; new MutationObserver(()=>{ clearTimeout(t); t=setTimeout(()=>enhanceKpis(v),0); }).observe(v,{childList:true,subtree:true}); })();

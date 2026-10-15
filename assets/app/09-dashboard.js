@@ -437,8 +437,9 @@ function vDashboard(v){
     ded:KI('<circle cx="12" cy="12" r="8.6"/><path d="M8 12h8"/>'),
     net:KI('<rect x="2.6" y="5.6" width="18.8" height="12.8" rx="2.4"/><circle cx="12" cy="12" r="2.8"/><path d="M6.2 9.4h.01M17.8 14.6h.01"/>')
   };
-  const khead=(k,lab,val,cur)=>`<div class="khead"><div class="kico ${k}">${kico[k]}</div><div class="kbody">
-      <div class="lab">${lab}</div><div class="val${k==='count'?'':' money'}">${val}</div>${trend(cur,k)}</div></div>`;
+  /* ไอคอน+ชื่ออยู่แถวบน ตัวเลขลงมาเต็มความกว้างการ์ด — ยอดหลักล้านจะได้ไม่ล้นการ์ด */
+  const khead=(k,lab,val,cur)=>`<div class="khead"><div class="kico ${k}">${kico[k]}</div><div class="lab">${lab}</div></div>
+      <div class="val${k==='count'?'':' money'}">${val}</div>${trend(cur,k)}`;
   v.appendChild(el(`<div class="cards kv2">
     <div class="kpi b1">${khead('count',tr('kpi_count'),`${num(actives.length)} <span class="muted" style="font-size:14px">${tr('unit_person')}</span>`,actives.length)}
       <div style="margin-top:6px;display:flex;gap:12px;font-size:12px">

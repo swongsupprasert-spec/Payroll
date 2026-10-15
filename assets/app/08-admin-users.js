@@ -237,5 +237,29 @@ async function vAdmin(v){
       }]]);
   });
   box.innerHTML=''; box.appendChild(tbl);
+  helpMissesPanel(v);
+}
+/* คำถามที่ "ถามน้อง eSim" ตอบไม่ได้ — ใช้ดูว่าลูกค้าติดตรงไหน แล้วเพิ่มคำตอบใน 17-help-bot.js */
+async function helpMissesPanel(v){
+  const p=el(`<div class="panel"><div class="phead"><h2>🤖 คำถามที่น้อง eSim ตอบไม่ได้</h2>
+    <button class="btn ghost sm" id="hmClear" style="margin-left:auto">🗑️ ล้างทั้งหมด</button></div>
+    <div class="pbody" id="hmBody"><div class="empty">กำลังโหลด…</div></div></div>`);
+  v.appendChild(p);
+  const body=p.querySelector('#hmBody');
+  const {data,error}=await sb.from('help_questions').select('question,page,created_at').order('created_at',{ascending:false}).limit(300);
+  if(error){ body.innerHTML=`<div class="empty">ยังไม่มีตารางบันทึกคำถาม — รันไฟล์ <b>sql/37-supabase-help-bot.sql</b> ใน Supabase SQL Editor ก่อน</div>`; p.querySelector('#hmClear').style.display='none'; return; }
+  if(!data.length){ body.innerHTML='<div class="empty">ยังไม่มีคำถามที่ตอบไม่ได้ 🎉</div>'; p.querySelector('#hmClear').style.display='none'; return; }
+  const g={};
+  data.forEach(r=>{ const k=r.question.trim().toLowerCase().replace(/\s+/g,' '); const o=g[k]=g[k]||{q:r.question.trim(),n:0,last:r.created_at,pages:new Set()}; o.n++; if(r.page) o.pages.add(r.page); });
+  const rows=Object.values(g).sort((a,b)=>b.n-a.n||String(b.last).localeCompare(String(a.last))).slice(0,50);
+  body.style.padding='0';
+  body.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>คำถาม</th><th class="num">ครั้ง</th><th>หน้าที่ถาม</th><th>ล่าสุด</th></tr></thead><tbody>${
+    rows.map(r=>`<tr><td style="white-space:normal">${esc(r.q)}</td><td class="num"><b>${num(r.n)}</b></td><td class="muted" style="white-space:normal">${esc([...r.pages].map(x=>tr('nav_'+x)||x).join(', '))}</td><td class="muted">${esc(fmtDateTime(r.last))}</td></tr>`).join('')
+  }</tbody></table></div><div class="muted" style="font-size:12px;padding:10px 14px">แสดง ${num(rows.length)} คำถาม จาก ${num(data.length)} ครั้งล่าสุด · เพิ่มคำตอบได้ที่ assets/app/17-help-bot.js</div>`;
+  p.querySelector('#hmClear').onclick=async()=>{
+    if(!confirm('ลบคำถามที่บันทึกไว้ทั้งหมด?')) return;
+    const {error}=await sb.from('help_questions').delete().gt('id',0);
+    toast(error?('ลบไม่สำเร็จ: '+error.message):'ล้างรายการแล้ว'); render();
+  };
 }
 
