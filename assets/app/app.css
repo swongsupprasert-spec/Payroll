@@ -511,3 +511,5 @@
   .fsList{display:flex;flex-direction:column;gap:8px}
   .fsItem{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#f8fafc}
   html[data-theme="dark"] .fsItem{background:#12233a}
+  .fsGroup{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+  .fsHead{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}

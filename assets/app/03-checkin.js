@@ -230,19 +230,19 @@ function vCheckin(v){
     for(const p of pats){ const m=t.match(p); if(m){ const la=+m[1], lo=+m[2]; if(Math.abs(la)<=90&&Math.abs(lo)<=180) return [la,lo]; } }
     return null;
   };
-  const useGmap=()=>{
+  const useGmap=async()=>{
     const t=q('#ckGmap').value; if(!t.trim()){ toast('วางลิงก์หรือพิกัดก่อน'); return; }
-    const p=parseGmap(t);
+    let p=parseGmap(t);
     if(!p){
-      if(/goo\.gl|maps\.app/i.test(t)) toast('ลิงก์แบบย่อ (maps.app.goo.gl) อ่านพิกัดไม่ได้ — เปิดลิงก์นั้นก่อน แล้วคัดลอกลิงก์ยาวจากแถบที่อยู่ หรือคลิกขวาที่หมุดเพื่อคัดลอกพิกัด');
-      else toast('หาพิกัดในข้อความนี้ไม่เจอ — ลองคลิกขวาที่หมุดใน Google Maps แล้วคัดลอกพิกัดมาวาง');
-      return;
+      if(!/https?:\/\//i.test(t)){ toast('หาพิกัดในข้อความนี้ไม่เจอ — ลองคลิกขวาที่หมุดใน Google Maps แล้วคัดลอกพิกัดมาวาง'); return; }
+      toast('กำลังอ่านพิกัดจากลิงก์…');
+      try{ p=await ckMapCoords(t); }catch(e){ toast(e.message); return; }
     }
     q('#ckLat').value=p[0].toFixed(7); q('#ckLng').value=p[1].toFixed(7); upMap();
     toast('ได้พิกัดแล้ว — อย่าลืมกดบันทึกการตั้งค่า');
   };
   q('#ckGmapGo').onclick=useGmap;
-  q('#ckGmap').addEventListener('paste',()=>setTimeout(()=>{ if(parseGmap(q('#ckGmap').value)) useGmap(); },0));
+  q('#ckGmap').addEventListener('paste',()=>setTimeout(()=>{ const t=q('#ckGmap').value; if(parseGmap(t)||/https?:\/\//i.test(t)) useGmap(); },0));
   q('#ckHere').onclick=()=>{
     if(!navigator.geolocation){ toast('เบราว์เซอร์นี้หาตำแหน่งไม่ได้'); return; }
     toast('กำลังหาตำแหน่ง…');
@@ -274,19 +274,32 @@ function vCheckin(v){
   const extras=(cfg.sites||[]).slice(1);
   const fieldOk=cfg.field_sites!=null, mainOk=!!(cfg.sites&&cfg.sites[0]&&cfg.sites[0].lat!=null);
   const empName=id=>{ const e=DB.employees.find(x=>x.id===id); return e?e.name:'(ไม่พบพนักงาน)'; };
+  /* แยก 2 แบบ: สาขาประจำ (ไม่มีช่วงวันที่) · งานนอกสถานที่ชั่วคราว (มีช่วงวันที่) — หมุดเก่าที่ไม่มี kind ดูจากวันที่ */
+  const kindOf=s=>s.kind||((s.from||s.to)?'temp':'branch');
+  const withIdx=extras.map((s,i)=>({s,i}));
+  const branches=withIdx.filter(x=>kindOf(x.s)==='branch');
+  const temps=withIdx.filter(x=>kindOf(x.s)==='temp' && !(x.s.to && x.s.to<todayIso)).sort((a,b)=>String(a.s.from||'').localeCompare(String(b.s.from||'')));
+  const expired=withIdx.filter(x=>kindOf(x.s)==='temp' && x.s.to && x.s.to<todayIso);
+  const fsItem=({s,i})=>`<div class="fsItem">
+      <div style="flex:1;min-width:0"><b>📍 ${esc(s.name||'')}</b> <span class="muted" style="font-size:12px">· รัศมี ${num(s.radius||100)} ม. · <a target="_blank" rel="noopener" href="https://www.google.com/maps?q=${+s.lat},${+s.lng}">ดูแผนที่</a></span>
+        <div style="font-size:12.5px;margin-top:3px">👥 ${Array.isArray(s.emps)&&s.emps.length?s.emps.map(id=>esc(empName(id))).join(', '):'<b>ทุกคน</b>'}</div>
+        ${kindOf(s)==='temp'?`<div class="muted" style="font-size:12px">📅 ${s.from?fmtDate(s.from):'…'} – ${s.to?fmtDate(s.to):'…'}${s.from&&s.from>todayIso?' <b style="color:#0369a1">(ยังไม่ถึงวัน)</b>':s.to&&s.to<todayIso?' <b style="color:#b91c1c">(หมดช่วงแล้ว)</b>':' <b style="color:#15803d">(ใช้อยู่)</b>'}</div>`:''}</div>
+      <div style="display:flex;gap:6px;align-items:flex-start"><button class="btn ghost sm" data-fsed="${i}">✏️ แก้</button><button class="btn ghost sm" data-fsdel="${i}" style="color:#dc2626">ลบ</button></div></div>`;
 
   const fp=el(`<div class="panel"><div style="padding:18px 20px">
     <h3 style="margin-bottom:6px">🗺️ หมุดนอกสถานที่ / สาขา</h3>
     <p class="muted" style="font-size:12.5px;margin:0 0 12px">พนักงานไปทำงานที่อื่น (หน้างานลูกค้า) หรือบริษัทมีหลายสาขา — ปักหมุดเพิ่ม แล้วเลือกว่า<b>ใครสแกนที่หมุดนั้นได้</b> (ไม่เลือก = ทุกคน) และ<b>ช่วงวันที่</b> · ในรายการลงเวลาจะขึ้นชื่อหมุดที่สแกน ดูเวลาเทียบกะได้ว่าไปถึงตรงเวลาไหม</p>
     ${!fieldOk?'<div style="background:#fef3c7;color:#92400e;border-radius:10px;padding:10px 12px;font-size:13px">⚠️ ต้องรัน <b>sql/39</b> ใน Supabase ก่อนจึงเพิ่มหมุดได้</div>'
      : !mainOk?'<div class="muted" style="font-size:13px">ปักหมุดบริษัทด้านบนแล้วกดบันทึกก่อน</div>'
-     : `<div class="fsList">${extras.length?extras.map((s,i)=>`<div class="fsItem">
-          <div style="flex:1;min-width:0"><b>📍 ${esc(s.name||'')}</b> <span class="muted" style="font-size:12px">· รัศมี ${num(s.radius||100)} ม. · <a target="_blank" rel="noopener" href="https://www.google.com/maps?q=${+s.lat},${+s.lng}">ดูแผนที่</a></span>
-            <div style="font-size:12.5px;margin-top:3px">👥 ${Array.isArray(s.emps)&&s.emps.length?s.emps.map(id=>esc(empName(id))).join(', '):'<b>ทุกคน</b>'}</div>
-            <div class="muted" style="font-size:12px">📅 ${s.from||s.to?`${s.from?fmtDate(s.from):'…'} – ${s.to?fmtDate(s.to):'…'}`:'ทุกวัน'}${s.to&&s.to<todayIso?' <b style="color:#b91c1c">(หมดช่วงแล้ว)</b>':''}</div></div>
-          <div style="display:flex;gap:6px;align-items:flex-start"><button class="btn ghost sm" data-fsed="${i}">✏️ แก้</button><button class="btn ghost sm" data-fsdel="${i}" style="color:#dc2626">ลบ</button></div></div>`).join('')
-        :'<div class="muted" style="font-size:13px">ยังไม่มีหมุดเพิ่ม</div>'}</div>
-       <button class="btn sm" id="fsAdd" style="margin-top:10px">＋ เพิ่มหมุด</button>`}
+     : `<div class="fsGroup"><div class="fsHead"><b>🏢 สาขาประจำ</b> <span class="chip">${num(branches.length)}</span>
+          <span class="muted" style="font-size:12px">ใช้ได้ทุกวัน</span><button class="btn sm" data-fsadd="branch" style="margin-left:auto">＋ เพิ่มสาขา</button></div>
+        <div class="fsList">${branches.length?branches.map(fsItem).join(''):'<div class="muted" style="font-size:13px">ยังไม่มีสาขา</div>'}</div></div>
+       <div class="fsGroup"><div class="fsHead"><b>🚗 งานนอกสถานที่ (ชั่วคราว)</b> <span class="chip">${num(temps.length)}</span>
+          <span class="muted" style="font-size:12px">ใช้ได้เฉพาะช่วงวันที่ · พ้นช่วงแล้วสแกนไม่ได้เอง</span><button class="btn sm" data-fsadd="temp" style="margin-left:auto">＋ เพิ่มหมุดชั่วคราว</button></div>
+        <div class="fsList">${temps.length?temps.map(fsItem).join(''):'<div class="muted" style="font-size:13px">ไม่มีงานนอกสถานที่ที่ยังใช้อยู่</div>'}</div>
+        ${expired.length?`<details style="margin-top:8px"><summary class="muted" style="cursor:pointer;font-size:13px">หมดช่วงแล้ว ${num(expired.length)} หมุด</summary>
+          <div class="fsList" style="margin-top:8px">${expired.map(fsItem).join('')}</div>
+          <button class="btn ghost sm" id="fsClean" style="margin-top:8px;color:#dc2626">🧹 ลบหมุดที่หมดช่วงทั้งหมด</button></details>`:''}</div>`}
   </div></div>`);
   v.appendChild(fp);
   const saveSites=async list=>{
@@ -295,36 +308,59 @@ function vCheckin(v){
     if(error){ toast('บันทึกไม่สำเร็จ: '+error.message); return false; }
     cfg.sites=all; if(S.cfg) S.cfg.sites=all; return true;
   };
-  const editSite=i=>{
+  const editSite=(i, kind0)=>{
     const s=i==null?{name:'',lat:null,lng:null,radius:150,emps:[],from:'',to:''}:{...extras[i]};
+    const kind=i==null?kind0:kindOf(s), temp=kind==='temp';
     const staff=DB.employees.filter(e=>!e.resignDate||e.resignDate>=todayIso);
-    openModal(i==null?'＋ เพิ่มหมุดนอกสถานที่':'✏️ แก้หมุดนอกสถานที่', `
-      <div class="field"><label>ชื่อสถานที่ *</label><input id="fsName" value="${esc(s.name||'')}" placeholder="เช่น หน้างานลูกค้า ABC / สาขาบางนา"></div>
-      <div class="field" style="margin-top:8px"><label>ลิงก์ Google Maps หรือพิกัด *</label><input id="fsGmap" value="${s.lat!=null?s.lat+', '+s.lng:''}" placeholder="คลิกขวาที่ตำแหน่งใน Google Maps → กดพิกัดเพื่อคัดลอก แล้ววางที่นี่" autocomplete="off"></div>
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px">
+    openModal((i==null?'＋ เพิ่ม':'✏️ แก้')+(temp?'หมุดงานนอกสถานที่ (ชั่วคราว)':'สาขาประจำ'), `
+      <div class="field"><label>${temp?'ชื่องาน / สถานที่':'ชื่อสาขา'} *</label><input id="fsName" value="${esc(s.name||'')}" placeholder="${temp?'เช่น ติดตั้งแอร์ บ้านลูกค้า ABC':'เช่น สาขาบางนา'}"></div>
+      <div class="field" style="margin-top:8px"><label>ลิงก์ Google Maps หรือพิกัด *</label><input id="fsGmap" value="${s.lat!=null?s.lat+', '+s.lng:''}" placeholder="วางลิงก์ที่แชร์จาก Google Maps หรือพิกัด เช่น 13.7563, 100.5018" autocomplete="off">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px">
+          <button type="button" class="btn ghost sm" id="fsHere">📌 ใช้ตำแหน่งปัจจุบัน</button>
+          <a id="fsMap" target="_blank" rel="noopener" style="font-size:13px;${s.lat!=null?'':'display:none'}" href="${s.lat!=null?`https://www.google.com/maps?q=${+s.lat},${+s.lng}`:'#'}">🗺️ ดูหมุดในแผนที่</a>
+          <span id="fsSt" class="muted" style="font-size:12px"></span></div></div>
+      <div style="display:grid;grid-template-columns:repeat(${temp?3:1},minmax(0,1fr));gap:8px;margin-top:8px">
         <div class="field"><label>รัศมี (เมตร)</label><input id="fsRad" type="number" min="30" step="10" value="${s.radius||150}"></div>
-        <div class="field"><label>ใช้ได้ตั้งแต่</label><input id="fsFrom" type="date" value="${s.from||''}"></div>
-        <div class="field"><label>ถึงวันที่</label><input id="fsTo" type="date" value="${s.to||''}"></div></div>
-      <div class="muted" style="font-size:12px;margin-top:2px">เว้นวันที่ว่าง = ใช้ได้ทุกวัน (เหมาะกับสาขา)</div>
+        ${temp?`<div class="field"><label>ใช้ได้ตั้งแต่ *</label><input id="fsFrom" type="date" value="${s.from||todayIso}"></div>
+        <div class="field"><label>ถึงวันที่ *</label><input id="fsTo" type="date" value="${s.to||s.from||todayIso}"></div>`:''}</div>
+      ${temp?'<div class="muted" style="font-size:12px;margin-top:2px">พ้นวันที่สิ้นสุดแล้วสแกนที่หมุดนี้ไม่ได้เอง และย้ายไปกลุ่ม "หมดช่วงแล้ว"</div>':'<div class="muted" style="font-size:12px;margin-top:2px">สาขาประจำใช้ได้ทุกวัน ไม่มีวันหมดอายุ</div>'}
       <div class="field" style="margin-top:10px"><label>ใครสแกนที่หมุดนี้ได้ <span class="muted" style="font-weight:400">(ไม่เลือก = ทุกคน)</span></label>
         <input id="fsQ" placeholder="🔍 ค้นหาชื่อ / รหัส" style="margin-bottom:6px" autocomplete="off">
         <div id="fsEmps" style="max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:9px;padding:6px 8px">
           ${staff.map(e=>`<label style="display:flex;gap:8px;align-items:center;padding:4px 2px;font-size:13.5px;cursor:pointer" data-q="${esc((e.code+' '+e.name).toLowerCase())}"><input type="checkbox" value="${esc(e.id)}" ${(s.emps||[]).includes(e.id)?'checked':''}> <span class="chip">${esc(e.code)}</span> ${esc(e.name)}</label>`).join('')}
         </div></div>`,
       [['ยกเลิก','ghost',closeModal],['บันทึก','',async()=>{
-        const name=$('#fsName').value.trim(), p=parseGmap($('#fsGmap').value);
+        const name=$('#fsName').value.trim(); let p=parseGmap($('#fsGmap').value);
         if(!name){ toast('ใส่ชื่อสถานที่'); return; }
-        if(!p){ toast('อ่านพิกัดไม่ได้ — วางพิกัด เช่น 13.7563, 100.5018 หรือลิงก์ Google Maps แบบยาว'); return; }
-        const from=$('#fsFrom').value, to=$('#fsTo').value;
+        if(!p){ try{ p=await ckMapCoords($('#fsGmap').value); }catch(e){ toast(e.message); return; } }
+        const from=temp?$('#fsFrom').value:'', to=temp?$('#fsTo').value:'';
+        if(temp && (!from||!to)){ toast('ใส่วันที่เริ่มและวันที่สิ้นสุดของงาน'); return; }
         if(from&&to&&to<from){ toast('วันที่สิ้นสุดต้องไม่ก่อนวันเริ่ม'); return; }
         const emps=[...document.querySelectorAll('#fsEmps input:checked')].map(x=>x.value);
-        const ns={name, lat:+p[0].toFixed(7), lng:+p[1].toFixed(7), radius:Math.max(30,+$('#fsRad').value||150), emps, from, to};
+        if(temp && !emps.length && !confirm('ยังไม่ได้เลือกพนักงาน — ทุกคนจะสแกนที่หมุดนี้ได้ในช่วงวันที่นี้ ตกลงไหม?')) return;
+        const ns={kind, name, lat:+p[0].toFixed(7), lng:+p[1].toFixed(7), radius:Math.max(30,+$('#fsRad').value||150), emps, from, to};
         const list=extras.slice(); if(i==null) list.push(ns); else list[i]=ns;
         if(await saveSites(list)){ closeModal(); toast(emps.length?`บันทึกหมุดแล้ว · สแกนได้ ${emps.length} คน`:'บันทึกหมุดแล้ว · ทุกคนสแกนได้'); render(); }
       }]]);
+    /* วางลิงก์ที่แชร์จากมือถือ → แปลงเป็นพิกัดทันที · ปุ่มใช้ตำแหน่งปัจจุบัน */
+    const gi=$('#fsGmap'), st=$('#fsSt'), mp=$('#fsMap');
+    const showPin=p=>{ gi.value=p[0].toFixed(7)+', '+p[1].toFixed(7); mp.href=`https://www.google.com/maps?q=${p[0]},${p[1]}`; mp.style.display=''; st.textContent='✅ ได้พิกัดแล้ว'; };
+    const readLink=async()=>{ const t=gi.value.trim(); if(!t) return; const p=parseGmap(t); if(p){ showPin(p); return; }
+      if(!/https?:\/\//i.test(t)) return; st.textContent='กำลังอ่านพิกัดจากลิงก์…';
+      try{ showPin(await ckMapCoords(t)); }catch(e){ st.textContent=''; toast(e.message); } };
+    gi.addEventListener('paste',()=>setTimeout(readLink,0)); gi.addEventListener('change',readLink);
+    $('#fsHere').onclick=()=>{
+      if(!navigator.geolocation){ toast('เบราว์เซอร์นี้หาตำแหน่งไม่ได้'); return; }
+      st.textContent='กำลังหาตำแหน่ง…';
+      navigator.geolocation.getCurrentPosition(p=>{ showPin([p.coords.latitude,p.coords.longitude]); st.textContent=`✅ ได้ตำแหน่งแล้ว (คลาดเคลื่อน ±${Math.round(p.coords.accuracy)} ม.)`; },
+        ()=>{ st.textContent=''; toast('ไม่ได้รับอนุญาตให้ใช้ตำแหน่ง'); }, {enableHighAccuracy:true,timeout:15000,maximumAge:0});
+    };
     const qi=$('#fsQ'); if(qi) qi.oninput=()=>{ const t=qi.value.trim().toLowerCase(); document.querySelectorAll('#fsEmps label').forEach(l=>l.style.display=!t||l.dataset.q.includes(t)?'':'none'); };
   };
-  const fsA=fp.querySelector('#fsAdd'); if(fsA) fsA.onclick=()=>editSite(null);
+  fp.querySelectorAll('[data-fsadd]').forEach(b=>b.onclick=()=>editSite(null, b.dataset.fsadd));
+  const fsC=fp.querySelector('#fsClean');
+  if(fsC) fsC.onclick=async()=>{ if(!confirm(`ลบหมุดงานนอกสถานที่ที่หมดช่วงแล้ว ${expired.length} หมุด?\n(ประวัติการลงเวลาเดิมไม่หาย)`)) return;
+    const gone=new Set(expired.map(x=>x.i)); if(await saveSites(extras.filter((x,k)=>!gone.has(k)))){ toast('ลบหมุดที่หมดช่วงแล้ว'); render(); } };
   fp.querySelectorAll('[data-fsed]').forEach(b=>b.onclick=()=>editSite(+b.dataset.fsed));
   fp.querySelectorAll('[data-fsdel]').forEach(b=>b.onclick=async()=>{
     const i=+b.dataset.fsdel; if(!confirm(`ลบหมุด "${extras[i].name}"?`)) return;
@@ -696,6 +732,17 @@ async function ckMergePunches(todo, redo){
 }
 /* ส่งเวลากะของพนักงานขึ้นไปให้ระบบสแกน (ใช้กันสแกนเข้างานเร็วเกิน) — sql/38
    {d:"08:00-17:00", x:{วันที่: "22:00-06:00" | "off"}} ล่วงหน้า 35 วัน เขียนเฉพาะคนที่เปลี่ยน */
+/* ลิงก์ Google Maps ที่ "แชร์" จากมือถือ (maps.app.goo.gl/…) ไม่มีพิกัดในตัว → ให้เซิร์ฟเวอร์ตามลิงก์ให้ (api/map-coords)
+   คืน [lat,lng] หรือ throw ข้อความภาษาไทย */
+async function ckMapCoords(text){
+  const m=String(text||'').match(/https?:\/\/\S+/); if(!m) throw new Error('หาพิกัดในข้อความนี้ไม่เจอ — วางพิกัด เช่น 13.7563, 100.5018');
+  let r, j={};
+  try{ r=await fetch('/api/map-coords?u='+encodeURIComponent(m[0])); j=await r.json().catch(()=>({})); }
+  catch(e){ throw new Error('เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง'); }
+  if(r.ok && isFinite(j.lat) && isFinite(j.lng)) return [+j.lat, +j.lng];
+  if(j.error==='not_google_maps') throw new Error('ลิงก์นี้ไม่ใช่ Google Maps');
+  throw new Error('ลิงก์นี้เป็นชื่อสถานที่ ไม่มีพิกัด — ใน Google Maps ให้กดค้างตรงตำแหน่งจนมีหมุดแดง แล้วกดแชร์อีกครั้ง หรือคัดลอกตัวเลขพิกัดมาวาง');
+}
 let _ckPlanAt=0;
 /* นาทีที่สแกนเข้างานก่อนเวลากะได้ (ชม. + นาที ที่ตั้งเอง) · 0 = ไม่จำกัด */
 function ckEarlyMin(){ const h=+((document.getElementById('ckEarlyH')||{}).value)||0, m=+((document.getElementById('ckEarlyM')||{}).value)||0;
