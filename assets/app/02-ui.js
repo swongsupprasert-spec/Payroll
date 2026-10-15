@@ -69,6 +69,7 @@ const NAV_ICONS={
   checkin:   ICO('<rect x="6.5" y="2.8" width="11" height="18.4" rx="2.4"/><circle cx="12" cy="10" r="2.6"/><path d="M8.8 15.6a3.4 3.4 0 0 1 6.4 0"/>'),
   leave:     ICO('<rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 9.6h17.2M8.2 3v4M15.8 3v4"/><path d="m9 14.6 2.1 2.1 3.9-4"/>'),
   resign:    ICO('<path d="M14.5 3.5h3.6a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-3.6"/><path d="M10 8 6 12l4 4"/><path d="M6 12h9"/>'),
+  rounds:    ICO('<rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 9.6h17.2M8.2 3v4M15.8 3v4"/><path d="M7.6 13.6h2.4M10.8 13.6h2.4M14 13.6h2.4M7.6 17h2.4M10.8 17h2.4"/>'),
   advance:   ICO('<rect x="2.6" y="5.6" width="18.8" height="12.8" rx="2.4"/><circle cx="12" cy="12" r="2.8"/><path d="M6.2 9.4h.01M17.8 14.6h.01"/>'),
   payroll:   ICO('<rect x="4.4" y="2.6" width="15.2" height="18.8" rx="2.4"/><rect x="7.6" y="6" width="8.8" height="3.2"/><path d="M8 13.4h.01M12 13.4h.01M16 13.4h.01M8 17.4h.01M12 17.4h.01M16 17.4h.01"/>'),
   summary:   ICO('<rect x="5" y="4" width="14" height="17" rx="2.2"/><path d="M9 3h6v3H9z"/><path d="M8.6 11h6.8M8.6 15h4.6"/>'),
@@ -89,7 +90,7 @@ const NAV_ICONS={
 const LOCK_ICO='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.6" y="10.4" width="14.8" height="10.4" rx="2.2"/><path d="M8.2 10.4V7.6a3.8 3.8 0 0 1 7.6 0v2.8"/></svg>';
 
 const NAV_COLORS = {
-  dashboard:'#17557f', employees:'#8b5cf6', attend:'#0891b2', checkin:'#0d9488', leave:'#84cc16', resign:'#f43f5e', advance:'#f97316', payroll:'#06b6d4', summary:'#10b981',
+  dashboard:'#17557f', employees:'#8b5cf6', attend:'#0891b2', checkin:'#0d9488', leave:'#84cc16', resign:'#f43f5e', advance:'#f97316', rounds:'#0ea5e9', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
   pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', companies:'#a855f7', feedback:'#f97316', orders:'#22c55e', quotes:'#0ea5e9', linechats:'#06c755', admin:'#eab308'
 };
@@ -188,6 +189,8 @@ function renderPeriodSel(){
 
 /* ---------- Router ---------- */
 function render(){
+  /* จ่ายรายรอบอยู่ในหน้าเบิกจ่ายล่วงหน้า (แท็บ) — ลิงก์/ค่าที่จำไว้แบบเดิมพาไปแท็บนั้น */
+  if(PAGE==='rounds'){ PAGE='advance'; ADV_TAB='rounds'; savePage(PAGE); renderNav(); }
   $('#pageTitle').textContent = tr('nav_'+PAGE);
   const pl=$('#periodLab'); if(pl) pl.textContent=tr('period');
   // หน้าที่ไม่ผูกกับงวดเดือน — ซ่อนตัวเลือกงวดเดือนด้านบน
@@ -199,7 +202,7 @@ function render(){
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
   // สำนักงานบัญชีที่ยังไม่ได้เลือกบริษัท — ให้เพิ่ม/เลือกบริษัทก่อน
   if(isFirm() && !CUR_CO && PAGE!=='companies' && PAGE!=='admin'){ PAGE='companies'; savePage(PAGE); renderNav(); }
-  ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, checkin:vCheckin, leave:vLeave, resign:vResign, advance:vAdvance, payroll:vPayroll, summary:vSummary,
+  ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, checkin:vCheckin, leave:vLeave, resign:vResign, advance:vAdvance, rounds:(x)=>vRounds(x), payroll:vPayroll, summary:vSummary,
     dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders, quotes:vQuotes, linechats:vLineChats,
     admin:vAdmin, companies:vCompanies}[PAGE])(v);
   enhanceKpis(v);

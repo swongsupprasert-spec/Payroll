@@ -17,7 +17,7 @@ async function loadAllStores(){
 }
 /* ตั้งค่าที่ก๊อปข้ามบริษัทได้ — ไม่รวมข้อมูลบริษัท พนักงาน และเงินเดือน */
 const COPY_KEYS=['ssoRate','ssoMaxBase','otDays','otHours','workDaysDefault',
-                 'cutoffDay','workStart','workEnd','lateGrace','wfRateDefault','otMultWeekdays','advPct'];
+                 'cutoffDay','workStart','workEnd','lateGrace','wfRateDefault','otMultWeekdays','advPct','weekEnd'];
 
 /* ============ บริษัทลูกค้า (เฉพาะแบบสำนักงานบัญชี) ============ */
 async function vCompanies(v){
@@ -281,4 +281,4 @@ async function setArchived(id, on){
   renderNav(); render();
   toast(on?'เก็บเข้าคลังแล้ว':'นำกลับมาดูแลแล้ว');
 }
-
+

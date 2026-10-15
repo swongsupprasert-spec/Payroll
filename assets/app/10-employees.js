@@ -371,6 +371,11 @@ function empForm(id){
       <div class="field"><label>ประเภทการจ้าง *</label><select id="f_payType">
         <option value="monthly" ${!isDaily?'selected':''}>รายเดือน</option>
         <option value="daily" ${isDaily?'selected':''}>รายวัน</option></select></div>
+      <div class="field"><label>รอบจ่ายเงิน</label><select id="f_payCycle">
+        <option value="monthly" ${(e.payCycle||'monthly')==='monthly'?'selected':''}>เดือนละครั้ง</option>
+        <option value="semi" ${e.payCycle==='semi'?'selected':''}>เดือนละ 2 รอบ (ครึ่งเดือน)</option>
+        <option value="weekly" ${e.payCycle==='weekly'?'selected':''}>รายสัปดาห์</option></select>
+        <div class="muted" style="font-size:11px;margin-top:3px">2 รอบ / รายสัปดาห์ จ่ายที่เมนู “เบิกจ่ายล่วงหน้า” แท็บ “จ่ายรายรอบ” · ภาษีและประกันสังคมยังรวมเป็นรายเดือน</div></div>
       <div class="field"><label id="f_salaryLab">${isDaily?'ค่าจ้างต่อวัน (บาท) *':'เงินเดือน (บาท) *'}</label><input id="f_salary" type="number" step="0.01" value="${e.salary||0}">
         <div class="muted" style="font-size:11px;margin-top:3px">อัตราปัจจุบัน · แก้ตรงนี้จะเปลี่ยนย้อนหลังทุกงวด</div></div>
       <div class="field"><label>วันที่เริ่มงาน</label><input id="f_startDate" type="date" value="${e.startDate||''}"></div>
@@ -434,7 +439,7 @@ function empForm(id){
     const tid=g('f_taxId').trim(), ph=g('f_phone').trim();
     if(tid && !/^[0-9]{13}$/.test(tid)){ bad('#f_taxId',`เลขบัตรประชาชนต้องครบ 13 หลัก (ตอนนี้ ${tid.replace(/[^0-9]/g,'').length} หลัก)`); return; }
     if(ph && !/^0[0-9]{8,9}$/.test(ph)){ bad('#f_phone',`เบอร์โทรต้องขึ้นต้นด้วย 0 และมี 9–10 หลัก (ตอนนี้ ${ph.replace(/[^0-9]/g,'').length} หลัก)`); return; }
-    const rec={code,name,gender:g('f_gender'),birthDate:g('f_birth'),position:g('f_position').trim(),phone:g('f_phone').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,pvdEr:(g('f_pvdEr')===''?null:Math.max(0,+g('f_pvdEr')||0)),wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,ckRole:g('f_ckRole')||'staff',photo:photoData||''};
+    const rec={code,name,gender:g('f_gender'),birthDate:g('f_birth'),position:g('f_position').trim(),phone:g('f_phone').trim(),dept:g('f_dept').trim(),payType:g('f_payType'),payCycle:g('f_payCycle')||'monthly',salary:+g('f_salary')||0,startDate:g('f_startDate'),resignDate:g('f_resignDate'),taxId:g('f_taxId').trim(),nationality:g('f_nationality').trim(),address:g('f_address').trim(),bank:g('f_bank').trim(),bankNo:g('f_bankNo').trim(),pvdRate:+g('f_pvdRate')||0,pvdEr:(g('f_pvdEr')===''?null:Math.max(0,+g('f_pvdEr')||0)),wfRate:(+g('f_pvdRate')||0)>0?0:(+g('f_wfRate')||0),noSSO:+g('f_noSSO')||0,noOT:+g('f_noOT')||0,ckRole:g('f_ckRole')||'staff',photo:photoData||''};
     // เพิ่มคนใหม่ หรือปลดสถานะลาออกให้กลับมาทำงาน = กินโควตาเพิ่ม ต้องเช็คก่อน
     const willCount = !rec.resignDate;
     const wasCount  = id ? !e.resignDate : false;
@@ -519,4 +524,4 @@ function nextCode(){
   do{ code='EMP'+String(n).padStart(3,'0'); n++; } while(used.has(code.toLowerCase()));  // กันชนซ้ำ
   return code;
 }
-
+

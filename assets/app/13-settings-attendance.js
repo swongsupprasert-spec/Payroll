@@ -309,13 +309,14 @@ function otByLabel(by){
     + ks.map(function(k){ return k+'× '+num(Math.round(by[k]*100)/100); }).join('<br>')
     + '</span>';
 }
-function attendStats(emp, p){
+function attendStats(emp, p, range){
   const rec=attendOf(p, emp.id);
   ensureShifts();
   let days=0, late=0, lateMin=0, otH=0, skipH=0, skipDays=0, capH=0, capDays=0, early=0, noOut=0;
   const otBy={};                                   // แยกชั่วโมงตามตัวคูณ เช่น {1.5:8, 3:4}
   Object.keys(rec).forEach(d=>{
     if(!inPeriod(d,p)) return;
+    if(range && (d<range.from || d>range.to)) return;   // จำกัดช่วงวันที่ (ใช้กับจ่ายรายรอบ/รายสัปดาห์)
     // ใช้กะของคนนี้ในวันนี้ (รองรับสลับกะ + กะข้ามคืน)
     const sh=shiftFor(emp, d);
     const {IM:im, OM:om, S:ws, E:we, grace}=punchMinutes(sh, rec[d].i, rec[d].o);

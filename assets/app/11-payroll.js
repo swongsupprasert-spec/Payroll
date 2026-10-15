@@ -28,9 +28,20 @@ function advSet(emp, val){
   r.ded.advance=Math.max(0, Math.round(Number(val||0)*100)/100);
   save();
 }
+/* หน้าเบิกจ่ายล่วงหน้ามี 2 แท็บ: เบิกกลางเดือน (เดิม) / จ่ายรายสัปดาห์-2 รอบ (18-pay-rounds.js) */
+let ADV_TAB='adv';
 function vAdvance(v){
+  const tabs=el(`<div class="toolbar" style="margin-bottom:14px"><div class="seg" style="display:inline-flex;background:#eaf6f1;border-radius:10px;padding:3px">
+    <button class="segbtn ${ADV_TAB==='adv'?'on':''}" data-at="adv">💸 เบิกกลางเดือน</button>
+    <button class="segbtn ${ADV_TAB==='rounds'?'on':''}" data-at="rounds">📆 จ่ายรายสัปดาห์ / 2 รอบ</button></div></div>`);
+  v.appendChild(tabs);
+  tabs.querySelectorAll('[data-at]').forEach(b=>b.onclick=()=>{ ADV_TAB=b.dataset.at; render(); });
+  if(ADV_TAB==='rounds'){ vRounds(v); return; }
   const [py,pm]=PERIOD.split('-').map(Number);
-  const list=DB.employees.filter(e=>activeInMonth(e,py,pm));
+  /* คนที่ตั้งรอบจ่าย 2 รอบ/รายสัปดาห์ จ่ายที่เมนู "จ่ายรายรอบ" แทน — ไม่ให้หน้านี้เขียนทับยอด */
+  const roundEmps=DB.employees.filter(e=>activeInMonth(e,py,pm) && (e.payCycle==='weekly'||e.payCycle==='semi'));
+  const list=DB.employees.filter(e=>activeInMonth(e,py,pm) && !roundEmps.includes(e));
+  if(roundEmps.length) v.appendChild(el(`<div class="panel" style="border-color:#bfdbfe"><div class="pbody" style="font-size:13px;color:#1e3a8a;background:#eff6ff">📆 พนักงาน ${roundEmps.length} คนตั้งรอบจ่ายเป็นรายสัปดาห์ / 2 รอบ — จัดการที่แท็บ <b>📆 จ่ายรายสัปดาห์ / 2 รอบ</b> ด้านบน (ไม่แสดงในแท็บนี้)</div></div>`));
   if(!list.length){ v.appendChild(el(`<div class="panel"><div class="pbody empty">ไม่มีพนักงานในงวด ${periodLabel(PERIOD)}</div></div>`)); return; }
 
   const pct = advPct();
@@ -597,4 +608,4 @@ function taxModal(emp, r){
     <p class="muted" style="font-size:12px">* ค่าจ้างรวมทั้งปีคิดจาก<strong>เงินที่ได้รับจริงของแต่ละเดือน</strong> เดือนที่เข้างานหรือลาออกกลางเดือนหารตามวันทำงาน (ตัวเลขข้างบนจึงเป็นค่าเฉลี่ยต่อเดือน) · เงินเพิ่มประจำคูณตามจำนวนเดือนที่ทำงาน โบนัสบวกครั้งเดียว · ปรับค่าลดหย่อนได้ที่ข้อมูลพนักงาน</p>`;
   openModal(`คำนวณภาษี — ${emp.name}`, body, [['ปิด','ghost',closeModal]]);
 }
-
+
