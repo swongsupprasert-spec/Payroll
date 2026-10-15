@@ -12,7 +12,8 @@ function holidayPaid(iso){ return isHoliday(iso) && !(DB.holidayUnpaid && DB.hol
 function companyWorkDays(){ return (Array.isArray(DB.ckWorkDays)&&DB.ckWorkDays.length===7) ? DB.ckWorkDays : [false,true,true,true,true,true,false]; }
 function hasOwnOffDays(emp){ return !!(emp && Array.isArray(emp.offDays) && emp.offDays.length); }
 /* ตั้งวันหยุดประจำสัปดาห์ไว้จริงไหม (บริษัทกดเลือกแล้ว หรือคนนี้ตั้งเอง) — ยังไม่ตั้ง = ไม่เปลี่ยนการคิด OT/วันลาแบบเดิม */
-function weekOffKnown(emp){ return hasOwnOffDays(emp) || !!DB.weekOffSet; }
+function weekOffKnown(emp){ return hasOwnOffDays(emp) || !!DB.weekOffSet
+  || (Array.isArray(DB.ckWorkDays) && DB.ckWorkDays.join()!=='false,true,true,true,true,true,false'); }   // เคยตั้งวันทำงานเองไว้ก่อนแล้ว
 function isWeeklyOff(emp, iso){ return weekOffKnown(emp) && !isWorkDayFor(emp, iso); }
 function setCompanyWorkDay(i, on){ const a=companyWorkDays().slice(); a[i]=on; DB.ckWorkDays=a; DB.weekOffSet=true; }
 function isWorkDayFor(emp, iso){ const wd=new Date(iso+'T00:00:00').getDay(); return hasOwnOffDays(emp) ? !emp.offDays.includes(wd) : !!companyWorkDays()[wd]; }
@@ -262,13 +263,18 @@ function otMultWeekday(i){
   const v=Array.isArray(a)?+a[i]:0;
   return v>0?v:1.5;
 }
+/* ตัวคูณที่ตั้งเองรายวันในสัปดาห์ (ไม่ใช่ค่าเริ่มต้น 1.5) — 0 = ไม่ได้ตั้ง */
+function otMultWeekdaySet(i){ const a=DB.otMultWeekdays, v=Array.isArray(a)?+a[i]:0; return (v>0 && v!==1.5) ? v : 0; }
+/* ตัวคูณของวันนั้นถ้าไม่ได้กำหนดเฉพาะวัน: วันหยุดบริษัท → ตั้งรายวันในสัปดาห์ → วันหยุดประจำสัปดาห์ (ของคนนี้/บริษัท) → 1.5 */
+function otMultAuto(iso, emp){
+  if(isHoliday(iso)) return +DB.holidayOtMult||3;      // ทำงานล่วงเวลาในวันหยุดบริษัท
+  const set=otMultWeekdaySet(weekdayOf(iso)); if(set) return set;
+  if(isWeeklyOff(emp, iso)) return +DB.holidayOtMult||3;   // วันหยุดประจำสัปดาห์
+  return 1.5;
+}
 function otMultFor(iso, emp){
   if(DB.otMultDates && DB.otMultDates[iso]!=null){ const v=+DB.otMultDates[iso]; if(v>0) return v; }
-  if(isHoliday(iso)) return +DB.holidayOtMult||3;      // ทำงานล่วงเวลาในวันหยุดบริษัท
-  const wd=weekdayOf(iso), a=DB.otMultWeekdays;
-  if(hasOwnOffDays(emp)) return emp.offDays.includes(wd) ? (+DB.holidayOtMult||3) : 1.5;   // คนนี้หยุดไม่ตรงบริษัท
-  if(!(Array.isArray(a) && +a[wd]>0) && isWeeklyOff(null, iso)) return +DB.holidayOtMult||3;   // วันหยุดประจำสัปดาห์ของบริษัท
-  return otMultWeekday(wd);
+  return otMultAuto(iso, emp);
 }
 function otMultOverridden(iso){ return !!(DB.otMultDates && DB.otMultDates[iso]!=null); }
 // พนักงานคนนี้เปิดให้คิด OT ไหม (ไม่ตั้งค่า = เปิด)
@@ -1065,7 +1071,7 @@ function otDaysPanel(){
   }).join('');
 
   const wdMulBtns=WD_TH.map((lab,i)=>{
-    const cur=otMultWeekday(i);
+    const cur=otMultWeekdaySet(i) || ((weekOffKnown(null) && !companyWorkDays()[i]) ? (+DB.holidayOtMult||3) : 1.5);
     return `<div style="text-align:center">
       <div class="muted" style="font-size:12px;margin-bottom:3px">${WD_S[i]}</div>
       <select data-wdm="${i}" style="padding:5px 4px;font-size:12.5px;width:66px">
@@ -1150,8 +1156,8 @@ function otDaysPanel(){
   });
   // ตัวคูณตามวันในสัปดาห์
   panel.querySelectorAll('[data-wdm]').forEach(s=>s.onchange=()=>{
-    if(!Array.isArray(DB.otMultWeekdays)) DB.otMultWeekdays=[1.5,1.5,1.5,1.5,1.5,1.5,1.5];
-    DB.otMultWeekdays[+s.dataset.wdm]=+s.value||1.5; save(); render();
+    if(!Array.isArray(DB.otMultWeekdays)) DB.otMultWeekdays=[0,0,0,0,0,0,0];   // 0 = ใช้ค่าอัตโนมัติ
+    DB.otMultWeekdays[+s.dataset.wdm]=+s.value||0; save(); render();
     toast('ตั้งตัวคูณวัน'+WD_TH[+s.dataset.wdm]+' = '+(+s.value)+'×');
   });
   // ตัวคูณเฉพาะวัน — กดวนไปเรื่อย ๆ ถ้าวนมาตรงกับค่ารายสัปดาห์จะล้างการกำหนดเอง
@@ -1161,7 +1167,7 @@ function otDaysPanel(){
     const cur=otMultFor(d);
     const i=OT_MULT_STEPS.indexOf(cur);
     const next=OT_MULT_STEPS[(i+1)%OT_MULT_STEPS.length];
-    const base=isHoliday(d)?(+DB.holidayOtMult||3):otMultWeekday(weekdayOf(d));   // ค่าที่ใช้ถ้าไม่กำหนดเอง
+    const base=otMultAuto(d);   // ค่าที่ใช้ถ้าไม่กำหนดเอง
     if(next===base) delete DB.otMultDates[d];
     else DB.otMultDates[d]=next;
     save(); render();

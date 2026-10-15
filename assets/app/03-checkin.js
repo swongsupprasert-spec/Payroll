@@ -199,8 +199,11 @@ function vCheckin(v){
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;font-size:13.5px">
       <label for="ckEarly">⏰ สแกนเข้างานก่อนเวลาเข้ากะได้ไม่เกิน</label>
-      <select id="ckEarly" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">${[0,15,30,45,60,90,120].map(m=>`<option value="${m}" ${(+cfg.early_in_min||0)===m?'selected':''}>${m?m+' นาที':'ไม่จำกัด'}</option>`).join('')}</select>
-      <span class="muted" style="font-size:12px">กันมาสแกนก่อนแล้วออกไป · ยึดเวลาเข้ากะของแต่ละคน (รวมสลับกะ) · วันหยุดสแกนได้ทุกเวลา${cfg.early_in_min==null&&S.cfg?' · <b style="color:#b45309">ต้องรัน sql/38 ก่อน</b>':''}</span>
+      <span id="ckEarly" style="display:inline-flex;gap:6px;align-items:center">
+        <input type="number" id="ckEarlyH" min="0" max="12" step="1" value="${Math.floor((+cfg.early_in_min||0)/60)}" style="width:60px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;text-align:right"> ชม.
+        <input type="number" id="ckEarlyM" min="0" max="59" step="5" value="${(+cfg.early_in_min||0)%60}" style="width:60px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;text-align:right"> นาที</span>
+      <b id="ckEarlyEx" style="font-size:12.5px;color:#0369a1"></b>
+      <span class="muted" style="font-size:12px;flex-basis:100%">ใส่ 0 ชม. 0 นาที = ไม่จำกัด · กันมาสแกนก่อนแล้วออกไป · ยึดเวลาเข้ากะของแต่ละคน (รวมสลับกะ) · วันหยุดสแกนได้ทุกเวลา${cfg.early_in_min==null&&S.cfg?' · <b style="color:#b45309">ต้องรัน sql/38 ก่อน</b>':''}</span>
     </div>
     <div style="border-top:1px solid var(--line);margin:18px 0"></div>
 
@@ -267,6 +270,13 @@ function vCheckin(v){
     if(error){ toast('ลบไม่สำเร็จ: '+error.message); return; }
     toast('ล้างข้อมูลทดลองแล้ว'); render();
   };
+  /* สแกนเข้างานก่อนเวลา: ตัวอย่างสดตามกะแรก */
+  const exEl=document.getElementById('ckEarlyEx');
+  const exUpd=()=>{ if(!exEl) return; const m=ckEarlyMin(), sh=ensureShifts()[0], st=hm2min(sh.start)??480;
+    if(!m){ exEl.textContent='= ไม่จำกัด'; return; }
+    const t=((st-m)%1440+1440)%1440, p2=n=>String(n).padStart(2,'0');
+    exEl.textContent=`เช่น กะ ${sh.start} → สแกนได้ตั้งแต่ ${p2(Math.floor(t/60))}:${p2(t%60)} น.`; };
+  ['ckEarlyH','ckEarlyM'].forEach(id=>{ const n=document.getElementById(id); if(n) n.oninput=exUpd; }); exUpd();
   q('#ckSave').onclick=async()=>{
     const lat=q('#ckLat').value===''?null:+q('#ckLat').value, lng=q('#ckLng').value===''?null:+q('#ckLng').value;
     const hasPin=lat!=null&&lng!=null&&isFinite(lat)&&isFinite(lng)&&Math.abs(lat)<=90&&Math.abs(lng)<=180;
@@ -278,7 +288,7 @@ function vCheckin(v){
     if(cfg.code && want && want!==cfg.code && !confirm(`เปลี่ยนรหัสบริษัทจาก ${cfg.code} เป็น ${want}?
 ลิงก์เดิมที่ส่งให้พนักงานจะใช้ไม่ได้ ต้องส่งลิงก์ใหม่`)) return;
     const row={ owner_id:MY_UID, code:want||cfg.code||ckCode(), company_name:q('#ckName').value.trim(),
-      sites: hasPin?[site]:[], require_zone:q('#ckZone').checked, require_photo:q('#ckPhoto').checked, require_face:q('#ckFace').checked, early_in_min:+q('#ckEarly').value||0, updated_at:new Date().toISOString() };
+      sites: hasPin?[site]:[], require_zone:q('#ckZone').checked, require_photo:q('#ckPhoto').checked, require_face:q('#ckFace').checked, early_in_min:ckEarlyMin(), updated_at:new Date().toISOString() };
     if(row.require_face) row.require_photo=true;       // จดจำใบหน้าต้องมีรูปเสมอ
     let {error}=await sb.from('checkin_config').upsert(row);
     if(error && /early_in_min/.test(error.message)){ toast('ยังไม่ได้รัน sql/38 (กันสแกนเร็วเกิน) — บันทึกส่วนอื่นแล้ว'); delete row.early_in_min; ({error}=await sb.from('checkin_config').upsert(row)); }
@@ -628,6 +638,9 @@ async function ckMergePunches(todo, redo){
 /* ส่งเวลากะของพนักงานขึ้นไปให้ระบบสแกน (ใช้กันสแกนเข้างานเร็วเกิน) — sql/38
    {d:"08:00-17:00", x:{วันที่: "22:00-06:00" | "off"}} ล่วงหน้า 35 วัน เขียนเฉพาะคนที่เปลี่ยน */
 let _ckPlanAt=0;
+/* นาทีที่สแกนเข้างานก่อนเวลากะได้ (ชม. + นาที ที่ตั้งเอง) · 0 = ไม่จำกัด */
+function ckEarlyMin(){ const h=+((document.getElementById('ckEarlyH')||{}).value)||0, m=+((document.getElementById('ckEarlyM')||{}).value)||0;
+  return Math.max(0, Math.min(720, Math.round(h*60+m))); }
 function ckShiftPlanOf(e){
   const sh=x=>`${x.start||'08:00'}-${x.end||'17:00'}`;
   const base=(ensureShifts().find(s=>s.id===e.shiftId))||ensureShifts()[0];

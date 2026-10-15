@@ -53,6 +53,8 @@ function leaveDaysInPeriod(lv, p){
   const iso=x=>`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
   const span=leaveDaysCount(iso(A), iso(B), lv.empId);
   const total=leaveDaysCount(lv.from, lv.to||lv.from, lv.empId) || 1;
+  let oldAuto=0; { const n=daysBetween(lv.from, lv.to||lv.from), [y,m,d]=lv.from.split('-').map(Number); for(let i=0;i<n;i++){ if(!isHoliday(isoOf(new Date(y,m-1,d+i)))) oldAuto++; } }          // นับแบบเดิม (ไม่ตัดวันหยุดประจำสัปดาห์)
+  if(lv.hours==null && oldAuto!==total && Number(lv.days)===oldAuto) return Math.round(span*100)/100;   // เป็นตัวเลขอัตโนมัติแบบเดิม → นับวันจริงในงวด
   // ถ้าผู้ใช้ระบุจำนวนวันเอง (เช่นลาครึ่งวัน) เฉลี่ยตามสัดส่วน
   return Math.round((Number(lv.days||total) * span/total)*100)/100;
 }

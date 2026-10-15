@@ -194,9 +194,9 @@ function repairOtZero(){
   if(!DB || DB._fixOt20261015 || !DB.payroll) return;
   const keep=PERIOD; let n=0;
   try{
-    Object.keys(DB.payroll).forEach(p=>{ const pp=DB.payroll[p]||{};
+    Object.keys(DB.payroll).filter(p=>p>='2026-09').forEach(p=>{ const pp=DB.payroll[p]||{};   // บั๊กอยู่แค่คืน 15 ต.ค. — งวดเก่ากว่านี้ไม่แตะ
       Object.keys(pp).forEach(id=>{ const r=pp[id], e=DB.employees.find(x=>x.id===id);
-        if(!e || !r || !r.earn || +r.earn.ot) return;
+        if(!e || !r || !r.earn || +r.earn.ot || (r.manual && r.manual.ot)) return;
         const has=Array.isArray(r.earn.otRows) ? r.earn.otRows.some(x=>+x.h>0 && +x.m>0) : +r.earn.otHours>0;   // แบบเก่าเก็บ otHours แถวเดียว
         if(!has) return;
         PERIOD=p; r.earn.ot=otTotal(e, r); autoDeductions(e, r); n++; }); });

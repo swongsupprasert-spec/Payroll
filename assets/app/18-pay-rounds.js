@@ -78,17 +78,26 @@ function roundDays(win, s, man){
 /* วันทำงาน/OT ของทุกรอบรวมกัน → เขียนลงหน้าคำนวณเงินได้/เงินหักของเดือน (ให้ 2 หน้าตรงกันเสมอ) */
 function syncRoundMonth(p, cycle, e){
   let days=0, manOT=false; const by={};
-  payRounds(p, cycle).forEach(rd=>{
+  const r=getRec(p, e.id), rounds=payRounds(p, cycle);
+  rounds.forEach(rd=>{
     const win=empWindow(e, rd.from, rd.to); if(!win) return;
     const man=roundManual(p, cycle, rd.i, e.id)||{}, s=attendStats(e, p, win);
     const paid=!rd.last && roundPaid(p, cycle, rd.i), snap=paid&&paid.emps&&paid.emps[e.id];
-    if(e.payType==='daily') days+= snap ? (+snap.days||0) : roundDays(win, s, man);
+    if(e.payType==='daily'){
+      if(rd.last && man.days==null && !((s.days||0)+(s.holDays||0))){ rd._keepRest=true; }   // รอบสุดท้ายยังไม่มีเวลาเข้างาน → คงวันที่เหลือของเดือนไว้
+      else days+= snap ? (+snap.days||0) : roundDays(win, s, man);
+    }
     if(hasManOT(man)) manOT=true;
     const ob=roundOtBy(man, s); Object.keys(ob).forEach(k=>{ by[k]=(by[k]||0)+(+ob[k]||0); });
   });
-  const r=getRec(p, e.id);
-  if(e.payType==='daily') r.days=r2(days);
-  if(manOT){   // มีกรอก OT เองในรอบ → แถว OT ของเดือนมาจากรอบทั้งหมด
+  if(e.payType==='daily'){
+    const last=rounds[rounds.length-1];
+    // วันของเดือนที่เคยกรอกไว้ (เช่นกรอกหน้าเงินเดือน 22 วัน) ไม่หาย: ส่วนที่เกินรอบก่อน ๆ ยกไปอยู่รอบสุดท้าย
+    const rest=last&&last._keepRest ? Math.max(0, (+r.days||0)-days) : 0;
+    r.days=r2(days+rest);
+  }
+  if(manOT || r.otFromRounds){   // มีกรอก OT เองในรอบ (หรือเพิ่งล้างที่กรอก) → แถว OT ของเดือนมาจากรอบทั้งหมด
+    if(manOT) r.otFromRounds=1; else delete r.otFromRounds;
     const ks=Object.keys(by).filter(k=>by[k]>0).sort((a,b)=>a-b);
     r.earn.otRows=ks.map(k=>({h:r2(by[k]), m:+k})); delete r.earn.otHours; delete r.earn.otMult;
     r.earn.ot=otTotal(e, r);
@@ -206,7 +215,8 @@ function vRounds(v){
   bar.querySelectorAll('[data-cy]').forEach(b=>b.onclick=()=>{ RND_CYCLE=b.dataset.cy; render(); });
   const we=bar.querySelector('#rnWe');
   if(we) we.onchange=()=>{
-    if(Object.keys(roundStore(PERIOD,'weekly')).length){ toast('งวดนี้บันทึกจ่ายรายสัปดาห์ไปแล้ว — ยกเลิกการบันทึกก่อนจึงเปลี่ยนวันสิ้นสัปดาห์ได้'); we.value=(DB.weekEnd==null?0:+DB.weekEnd); return; }
+    if(Object.keys(roundStore(PERIOD,'weekly')).some(k=>k!=='_man')){ toast('งวดนี้บันทึกจ่ายรายสัปดาห์ไปแล้ว — ยกเลิกการบันทึกก่อนจึงเปลี่ยนวันสิ้นสัปดาห์ได้'); we.value=(DB.weekEnd==null?0:+DB.weekEnd); return; }
+    delete roundStore(PERIOD,'weekly')._man;   // วันที่กรอกเองผูกกับลำดับรอบ เปลี่ยนวันสิ้นสัปดาห์แล้วรอบเลื่อน
     DB.weekEnd=+we.value; Object.keys(RND_IDX).forEach(k=>{ if(k.endsWith('|weekly')) delete RND_IDX[k]; }); save(); render();
   };
 
