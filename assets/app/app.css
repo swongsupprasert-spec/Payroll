@@ -37,8 +37,15 @@
     border-radius:10px;font:inherit;font-weight:700;font-size:15.5px;cursor:pointer;box-shadow:0 2px 8px rgba(15,36,56,.16);transition:transform .12s,box-shadow .12s,filter .12s}
   .authBtn:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(15,36,56,.22)}
   .authBtn:disabled{opacity:.6;cursor:default;transform:none}
-  #authSignup.authBtn{background:#0284c7!important;color:#fff!important;border:1.5px solid #0284c7!important}
-  #authSignup.authBtn:hover{filter:brightness(1.07)}
+  .authPrimary.authBtn{background:#0284c7!important;color:#fff!important;border:1.5px solid #0284c7!important}
+  .authPrimary.authBtn:hover{filter:brightness(1.07)}
+  .authTabs{display:flex;gap:4px;padding:4px;margin-bottom:16px;border-radius:12px;background:#eef2f6}
+  .authTab{flex:1;min-height:42px;border:0;border-radius:9px;background:transparent;font:inherit;font-weight:700;color:#5b7186;cursor:pointer}
+  .authTab.on{background:#fff;color:#0284c7;box-shadow:0 1px 4px rgba(15,36,56,.15)}
+  html[data-theme="dark"] .authTabs{background:#0e1a28}
+  html[data-theme="dark"] .authTab.on{background:var(--card);color:#38bdf8}
+  .authLink{background:none;border:0;padding:0;font:inherit;color:var(--brand);font-weight:700;cursor:pointer;text-decoration:underline}
+  #authMsg .authLink{font-size:13px}
   #authGoogle.authBtn{background:#fff!important;color:#1f1f1f!important;border:1.5px solid #c6ccd3!important}
   #authGoogle.authBtn:hover{background:#f7f9fb!important}
   html[data-theme="dark"] #authGoogle.authBtn{border-color:#fff!important}

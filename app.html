@@ -41,9 +41,15 @@
         <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg></div>
     <div style="text-align:center;font-size:26px;font-weight:800;margin-bottom:4px">eSim<span style="color:var(--brand)">Payroll</span></div>
-    <div style="text-align:center;color:#5b7186;margin-bottom:22px">สมัครใช้งานฟรี 30 วัน · ไม่ต้องใช้บัตรเครดิต</div>
+    <div style="text-align:center;color:#5b7186;margin-bottom:18px">สมัครใช้งานฟรี 30 วัน · ไม่ต้องใช้บัตรเครดิต</div>
+    <!-- แท็บ: เข้าสู่ระบบ / สมัครใหม่ — ลูกค้าเก่าเคยกดปุ่มสมัครซ้ำเพราะปุ่มเข้าสู่ระบบเป็นแค่ลิงก์เล็ก ๆ -->
+    <div class="authTabs" id="authTabs" role="tablist">
+      <button type="button" class="authTab" id="tabLogin" role="tab">เข้าสู่ระบบ</button>
+      <button type="button" class="authTab" id="tabSignup" role="tab">สมัครใหม่</button>
+    </div>
+    <div id="authCreds">
     <div class="field" style="margin-bottom:12px"><label>อีเมล</label><input id="authEmail" type="email" autocomplete="username" style="width:100%;padding:11px;border:1px solid #e5e7eb;border-radius:9px"></div>
-    <div class="field" style="margin-bottom:16px"><label>ตั้งรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)</label>
+    <div class="field" style="margin-bottom:16px"><label id="authPassLbl">รหัสผ่าน</label>
       <div class="pwwrap" style="position:relative">
         <input id="authPass" type="password" autocomplete="current-password" style="width:100%;padding:11px 44px 11px 11px;border:1px solid #e5e7eb;border-radius:9px">
         <button type="button" id="pwEye" class="pweye" aria-label="แสดงรหัสผ่าน" aria-pressed="false"
@@ -53,22 +59,44 @@
           <svg class="eye-off" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M2.5 12S6 5.5 12 5.5c1.5 0 2.9.4 4.1 1M21.5 12s-3.5 6.5-9.5 6.5c-1.5 0-2.9-.4-4.1-1"/><path d="M4 4l16 16"/></svg>
         </button>
       </div></div>
-    
+    </div>
+
+    <!-- เข้าสู่ระบบ -->
+    <div id="loginBox">
+      <button type="button" class="authBtn authPrimary" id="authLoginBtn">เข้าสู่ระบบ</button>
+      <div style="text-align:right;margin:-4px 0 12px"><button type="button" class="authLink" id="authForgot">ลืมรหัสผ่าน?</button></div>
+    </div>
+
+    <!-- ตั้งรหัสผ่านใหม่ (กลับมาจากลิงก์ในอีเมล "ลืมรหัสผ่าน") -->
+    <div id="authRecover" style="display:none">
+      <div style="text-align:center;font-weight:700;margin-bottom:10px">ตั้งรหัสผ่านใหม่</div>
+      <div class="field" style="margin-bottom:14px"><label>รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร)</label>
+        <div class="pwwrap" style="position:relative">
+        <input id="authNewPass" type="password" autocomplete="new-password" style="width:100%;padding:11px 44px 11px 11px;border:1px solid #e5e7eb;border-radius:9px">
+        <button type="button" id="pwEye2" class="pweye" aria-label="แสดงรหัสผ่าน" aria-pressed="false"
+          style="position:absolute;right:6px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;
+          background:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;color:#6b7280">
+          <svg class="eye-on" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg>
+          <svg class="eye-off" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M2.5 12S6 5.5 12 5.5c1.5 0 2.9.4 4.1 1M21.5 12s-3.5 6.5-9.5 6.5c-1.5 0-2.9-.4-4.1-1"/><path d="M4 4l16 16"/></svg>
+        </button></div></div>
+      <button type="button" class="authBtn authPrimary" id="authSetPass">บันทึกรหัสผ่านใหม่</button>
+    </div>
+
     <!-- ประเภทการใช้งาน — มีผลตอนสมัครใหม่เท่านั้น ผู้ใช้เดิมยึดตามแพ็กเกจที่ซื้อไว้ -->
-    <div style="border-top:1px solid #e5e7eb;padding-top:14px">
+    <div id="signupBox" style="border-top:1px solid #e5e7eb;padding-top:14px">
       <div style="font-size:12.5px;color:#5b7186;margin-bottom:8px;text-align:center">สมัครใหม่ — เลือกประเภทการใช้งาน</div>
       <div style="display:flex;gap:8px;margin-bottom:10px">
         <button type="button" id="edPickS" class="edpick on" style="flex:1">🏢 บริษัทเดียว</button>
         <button type="button" id="edPickF" class="edpick" style="flex:1">🏦 สำนักงานบัญชี</button>
       </div>
       <div id="edPickNote" style="font-size:12px;color:#5b7186;text-align:center;margin-bottom:12px;line-height:1.6"></div>
-      <button type="button" class="authBtn" id="authSignup">สมัครสมาชิกใหม่</button>
-<button type="button" class="authBtn" id="authGoogle">
-      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-      สมัครด้วย Google — ใช้เวลา 10 วินาที
-    </button>
+      <button type="button" class="authBtn authPrimary" id="authSignup">สมัครสมาชิกใหม่</button>
     </div>
-<div style="text-align:center;margin-top:18px;font-size:14px;color:#5b7186">มีบัญชีอยู่แล้ว? <button type="button" id="authLogin" style="background:none;border:0;padding:0;font:inherit;color:var(--brand);font-weight:700;cursor:pointer;text-decoration:underline">เข้าสู่ระบบ</button></div>
+    <button type="button" class="authBtn" id="authGoogle">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span id="authGoogleTxt">สมัครด้วย Google — ใช้เวลา 10 วินาที</span>
+    </button>
+<div id="authSwitch" style="text-align:center;margin-top:14px;font-size:14px;color:#5b7186"><span id="authSwitchTxt">มีบัญชีอยู่แล้ว?</span> <button type="button" class="authLink" id="authLogin">เข้าสู่ระบบ</button></div>
     
     <div id="authMsg" style="font-size:13px;margin-top:12px;text-align:center;min-height:18px;color:#dc2626"></div>
   </div>

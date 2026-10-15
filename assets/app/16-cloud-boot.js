@@ -3,6 +3,8 @@
 const SB_URL='https://sfzzswzyoqshlppsturd.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenpzd3p5b3FzaGxwcHN0dXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4OTE1ODAsImV4cCI6MjEwMDQ2NzU4MH0.5IVEuvp6JM-JZUKGfCEoVgQ_CwiLLsU8tUJxbW85eac';
 let sb=null;
+// กลับมาจากลิงก์ "ลืมรหัสผ่าน" ในอีเมล — ต้องจับก่อนสร้าง client เพราะ Supabase ล้าง hash ออกจาก URL
+const PW_RECOVERY = /type=recovery/.test(location.hash) || /type=recovery/.test(location.search);
 try{ sb = window.supabase.createClient(SB_URL, SB_ANON); }catch(e){}
 
 let MY_UID=null, MY_EMAIL='', TARGET_UID=null, TARGET_EMAIL='', IS_ADMIN=false, GUEST=false;
@@ -345,15 +347,99 @@ async function boot(){
   const guest = new URLSearchParams(location.search).has('guest') || location.hash==='#guest';
   if(guest){ enterGuest(); return; }
   if(!sb || SB_ANON.indexOf('__PASTE')===0){ showLogin('ยังไม่ได้ตั้งค่า Supabase anon key ในไฟล์ (บรรทัด SB_ANON)'); return; }
+  if(PW_RECOVERY){ setAuthMode('recover'); $('#authGate').style.display='flex'; return; }
   try{ const {data:{session}}=await sb.auth.getSession(); if(session){ afterAuth(session.user); return; } }catch(e){}
   showLogin();
 }
+/* ---------- หน้าเข้าสู่ระบบ: แท็บ / ข้อความภาษาไทย / ลืมรหัสผ่าน ---------- */
+let AUTH_MODE='login';
+function setAuthMode(mode){
+  AUTH_MODE=mode;
+  const rec = mode==='recover', sign = mode==='signup';
+  const show=(id,on)=>{ const e=$(id); if(e) e.style.display=on?'':'none'; };
+  show('#authTabs',!rec); show('#authCreds',!rec); show('#authRecover',rec);
+  show('#loginBox',mode==='login'); show('#signupBox',sign);
+  show('#authGoogle',!rec); show('#authSwitch',!rec);
+  $('#tabLogin').classList.toggle('on',mode==='login'); $('#tabSignup').classList.toggle('on',sign);
+  $('#tabLogin').setAttribute('aria-selected',String(mode==='login')); $('#tabSignup').setAttribute('aria-selected',String(sign));
+  $('#authPassLbl').textContent = sign ? 'ตั้งรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)' : 'รหัสผ่าน';
+  $('#authPass').setAttribute('autocomplete', sign ? 'new-password' : 'current-password');
+  $('#authGoogleTxt').textContent = sign ? 'สมัครด้วย Google — ใช้เวลา 10 วินาที' : 'เข้าสู่ระบบด้วย Google';
+  $('#authSwitchTxt').textContent = sign ? 'มีบัญชีอยู่แล้ว?' : 'ยังไม่มีบัญชี?';
+  $('#authLogin').textContent = sign ? 'เข้าสู่ระบบ' : 'สมัครใหม่ ฟรี 30 วัน';
+  authMsg('');
+}
+/* ข้อความใต้ปุ่ม — kind: err / ok / info · html ใช้เฉพาะข้อความที่เราเขียนเอง (มีปุ่มลิงก์) */
+function authMsg(text, kind, html){
+  const m=$('#authMsg'); if(!m) return;
+  m.style.color = kind==='ok' ? '#059669' : kind==='info' ? '#5b7186' : '#dc2626';
+  if(html) m.innerHTML=html; else m.textContent=text||'';
+}
+/* แปลข้อความจาก Supabase เป็นภาษาไทย พร้อมบอกวิธีแก้ */
+function thAuthErr(error){
+  const s=String((error&&(error.message||error.msg))||error||'');
+  if(/invalid login credentials/i.test(s)) return 'อีเมลหรือรหัสผ่านไม่ถูกต้อง — ลองใหม่ หรือกด "ลืมรหัสผ่าน?"';
+  if(/email not confirmed/i.test(s)) return 'NOT_CONFIRMED';
+  if(/already registered|already been registered|user already exists/i.test(s)) return 'อีเมลนี้สมัครไว้แล้ว — กดแท็บ "เข้าสู่ระบบ" แล้วใช้รหัสผ่านเดิม';
+  if(/rate limit|too many|for security purposes|over_email_send_rate_limit/i.test(s)) return 'ส่งคำขอบ่อยเกินไป กรุณารอประมาณ 1 นาทีแล้วลองใหม่';
+  if(/unable to validate email|invalid email|email address .* is invalid|invalid format/i.test(s)) return 'รูปแบบอีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง';
+  if(/password should be at least|password is too short/i.test(s)) return 'รหัสผ่านอย่างน้อย 6 ตัวอักษร';
+  if(/weak|pwned|easy to guess/i.test(s)) return 'รหัสผ่านนี้คาดเดาง่ายเกินไป กรุณาตั้งรหัสใหม่ที่ยากขึ้น';
+  if(/same.*password|different from the old/i.test(s)) return 'รหัสผ่านใหม่ต้องไม่ซ้ำกับรหัสเดิม';
+  if(/signups? not allowed|signup is disabled/i.test(s)) return 'ปิดรับสมัครชั่วคราว กรุณาติดต่อ hello@esimpayroll.com';
+  if(/failed to fetch|network|load failed|timeout/i.test(s)) return 'เชื่อมต่ออินเทอร์เน็ตไม่ได้ กรุณาตรวจสอบแล้วลองใหม่';
+  if(/session.*missing|expired|invalid.*(token|link)|otp/i.test(s)) return 'ลิงก์หมดอายุหรือใช้ไปแล้ว — กด "ลืมรหัสผ่าน?" เพื่อขอลิงก์ใหม่';
+  return 'เกิดข้อผิดพลาด: '+s;
+}
+/* แสดงข้อผิดพลาด — ถ้ายังไม่ยืนยันอีเมล ให้มีปุ่มส่งอีเมลยืนยันอีกครั้ง */
+function showAuthErr(error){
+  const t=thAuthErr(error);
+  if(t==='NOT_CONFIRMED'){
+    authMsg('', 'err', 'ยังไม่ได้ยืนยันอีเมล — เปิดอีเมลจาก eSimPayroll แล้วกดลิงก์ยืนยัน (ดูในโฟลเดอร์สแปม/โปรโมชันด้วย)<br>'
+      +'<button type="button" class="authLink" id="authResend">ส่งอีเมลยืนยันอีกครั้ง</button>');
+    const b=$('#authResend'); if(b) b.onclick=resendConfirm;
+    return;
+  }
+  authMsg(t,'err');
+}
+function readCreds(needPass){
+  const email=$('#authEmail').value.trim(), pass=$('#authPass').value;
+  if(!email){ authMsg('กรุณากรอกอีเมล','err'); $('#authEmail').focus(); return null; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ authMsg('รูปแบบอีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง','err'); $('#authEmail').focus(); return null; }
+  if(needPass && !pass){ authMsg('กรุณากรอกรหัสผ่าน','err'); $('#authPass').focus(); return null; }
+  return {email,pass};
+}
+const AUTH_BACK = () => window.location.origin + window.location.pathname;
+async function resendConfirm(){
+  const c=readCreds(false); if(!c) return;
+  authMsg('กำลังส่งอีเมลยืนยัน…','info');
+  const {error}=await sb.auth.resend({type:'signup', email:c.email, options:{emailRedirectTo:AUTH_BACK()}});
+  if(error){ showAuthErr(error); return; }
+  authMsg('ส่งอีเมลยืนยันไปที่ '+c.email+' แล้ว — เปิดอีเมลแล้วกดลิงก์ จากนั้นกลับมากด "เข้าสู่ระบบ" (ดูในสแปมด้วย)','ok');
+}
+async function doForgot(){
+  const c=readCreds(false); if(!c) return;
+  authMsg('กำลังส่งลิงก์ตั้งรหัสผ่านใหม่…','info');
+  const {error}=await sb.auth.resetPasswordForEmail(c.email, {redirectTo:AUTH_BACK()});
+  if(error){ showAuthErr(error); return; }
+  authMsg('ถ้าอีเมลนี้มีบัญชีอยู่ เราส่งลิงก์ตั้งรหัสผ่านใหม่ไปที่ '+c.email+' แล้ว — เปิดอีเมลแล้วกดลิงก์ (ดูในสแปมด้วย)','ok');
+}
+async function doSetNewPass(){
+  const p=$('#authNewPass').value;
+  if(p.length<6){ authMsg('รหัสผ่านอย่างน้อย 6 ตัวอักษร','err'); return; }
+  authMsg('กำลังบันทึก…','info');
+  const {data,error}=await sb.auth.updateUser({password:p});
+  if(error){ showAuthErr(error); return; }
+  try{ history.replaceState(null,'',AUTH_BACK()); }catch(e){}
+  authMsg('ตั้งรหัสผ่านใหม่เรียบร้อย กำลังเข้าสู่ระบบ…','ok');
+  afterAuth(data.user);
+}
 async function doLogin(){
-  const email=$('#authEmail').value.trim(), pass=$('#authPass').value; const m=$('#authMsg');
-  m.style.color='#5b7186'; m.textContent='กำลังเข้าสู่ระบบ…';
+  const c=readCreds(true); if(!c) return;
+  authMsg('กำลังเข้าสู่ระบบ…','info');
   markPendingEdition();          // ถ้าผู้ใช้กดเลือกประเภทไว้ ให้มีผลกับบัญชีที่ยังไม่เคยจ่ายเงิน
-  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
-  if(error){ m.style.color='#dc2626'; m.textContent=error.message; return; }
+  const {data,error}=await sb.auth.signInWithPassword({email:c.email,password:c.pass});
+  if(error){ showAuthErr(error); return; }
   afterAuth(data.user);
 }
 /* ---------- ประเภทการใช้งานที่เลือกตอนสมัคร ----------
@@ -395,15 +481,26 @@ async function applyPendingEdition(uid){
   return true;
 }
 async function doSignup(){
-  const email=$('#authEmail').value.trim(), pass=$('#authPass').value; const m=$('#authMsg');
-  if(pass.length<6){ m.style.color='#dc2626'; m.textContent='รหัสผ่านอย่างน้อย 6 ตัวอักษร'; return; }
-  m.style.color='#5b7186'; m.textContent='กำลังสมัคร…';
+  const c=readCreds(true); if(!c) return;
+  if(c.pass.length<6){ authMsg('รหัสผ่านอย่างน้อย 6 ตัวอักษร','err'); return; }
+  authMsg('กำลังสมัคร…','info');
   markPendingEdition(true);      // สมัครใหม่ = ยึดตามที่เลือกเสมอ
-  const {data,error}=await sb.auth.signUp({email,password:pass});
-  if(error){ m.style.color='#dc2626'; m.textContent=error.message; return; }
-  if(data.session){ afterAuth(data.user); }
-  else { m.style.color='#059669';
-         m.textContent='สมัครสำเร็จ! กรุณายืนยันอีเมลก่อน แล้วเข้าสู่ระบบ'; }
+  const {data,error}=await sb.auth.signUp({email:c.email,password:c.pass,options:{emailRedirectTo:AUTH_BACK()}});
+  if(error){ showAuthErr(error); return; }
+  if(data.session){ afterAuth(data.user); return; }
+  /* อีเมลนี้มีบัญชีอยู่แล้ว: Supabase ไม่แจ้ง error (กันการเดาอีเมล) แต่คืน user ที่ไม่มี identities
+     ลูกค้าเก่าที่เผลอกด "สมัคร" — ลองเข้าสู่ระบบให้เลยด้วยรหัสที่กรอก */
+  if(data.user && Array.isArray(data.user.identities) && data.user.identities.length===0){
+    const r=await sb.auth.signInWithPassword({email:c.email,password:c.pass});
+    if(!r.error){ afterAuth(r.data.user); return; }
+    setAuthMode('login');
+    if(/email not confirmed/i.test(r.error.message||'')){ showAuthErr(r.error); return; }
+    authMsg('อีเมลนี้มีบัญชีอยู่แล้ว แต่รหัสผ่านไม่ตรง — ใส่รหัสผ่านเดิมแล้วกด "เข้าสู่ระบบ" หรือกด "ลืมรหัสผ่าน?"','err');
+    return;
+  }
+  authMsg('', 'ok', 'สมัครสำเร็จ! เราส่งอีเมลยืนยันไปที่ <b>'+esc(c.email)+'</b> แล้ว — เปิดอีเมลแล้วกดลิงก์ยืนยัน จากนั้นกลับมากดแท็บ "เข้าสู่ระบบ" (ดูในสแปม/โปรโมชันด้วย)<br>'
+    +'<button type="button" class="authLink" id="authResend">ไม่ได้รับอีเมล? ส่งอีกครั้ง</button>');
+  const b=$('#authResend'); if(b) b.onclick=resendConfirm;
 }
 
 /* ---------- Boot ---------- */
@@ -424,8 +521,16 @@ if(themeBtn){
 const langBtn=$('#langToggle');
 if(langBtn){ langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH';
   langBtn.onclick=()=>{ LANG = LANG==='th'?'en':'th'; localStorage.setItem('lang',LANG); langBtn.textContent = LANG==='th'?'🌐 EN':'🌐 TH'; renderNav(); render(); }; }
-$('#authLogin').onclick=doLogin;
+$('#authLoginBtn').onclick=doLogin;
 $('#authSignup').onclick=doSignup;
+$('#authForgot').onclick=doForgot;
+$('#authSetPass').onclick=doSetNewPass;
+$('#tabLogin').onclick=()=>setAuthMode('login');
+$('#tabSignup').onclick=()=>setAuthMode('signup');
+$('#authLogin').onclick=()=>setAuthMode(AUTH_MODE==='signup'?'login':'signup');
+// มาจากปุ่ม "ทดลองใช้ฟรี" บนเว็บ (/app#signup) = เปิดแท็บสมัคร · นอกนั้นเปิดแท็บเข้าสู่ระบบ
+setAuthMode(PW_RECOVERY ? 'recover' : (/signup/.test(location.hash)||new URLSearchParams(location.search).has('signup')) ? 'signup' : 'login');
+if(sb) sb.auth.onAuthStateChange(ev=>{ if(ev==='PASSWORD_RECOVERY'){ setAuthMode('recover'); $('#authGate').style.display='flex'; } });
 $('#edPickS').onclick=()=>setSignupEd('single',true);
 $('#edPickF').onclick=()=>setSignupEd('firm',true);
 setSignupEd('single');   // ตั้งค่าเริ่มต้น ไม่นับว่าผู้ใช้เลือก
@@ -433,8 +538,9 @@ $('#authGoogle').onclick=async()=>{
   const m=$('#authMsg'); m.style.color='#5b7186'; m.textContent='กำลังเปิดหน้าเข้าสู่ระบบ Google…';
   markPendingEdition();      // Google ต้องออกไปหน้าอื่นแล้วเด้งกลับ ต้องจำไว้ก่อน
   const {error}=await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.origin + window.location.pathname } });
-  if(error){ m.style.color='#dc2626'; m.textContent='เข้าสู่ระบบด้วย Google ไม่สำเร็จ: '+error.message; }
+  if(error){ authMsg('เข้าสู่ระบบด้วย Google ไม่สำเร็จ: '+thAuthErr(error),'err'); }
 };
-$('#authPass').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+$('#authPass').addEventListener('keydown',e=>{ if(e.key==='Enter') (AUTH_MODE==='signup'?doSignup:doLogin)(); });
+$('#authNewPass').addEventListener('keydown',e=>{ if(e.key==='Enter') doSetNewPass(); });
 window.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
-boot();
+boot();

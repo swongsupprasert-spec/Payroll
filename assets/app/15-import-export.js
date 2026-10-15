@@ -221,10 +221,11 @@ function importEmpCSV(){
 }
 
 /* ---------- Modal ---------- */
-/* ปุ่มเปิด-ปิดตาดูรหัสผ่านหน้าเข้าสู่ระบบ */
+/* ปุ่มเปิด-ปิดตาดูรหัสผ่านหน้าเข้าสู่ระบบ (ช่องรหัสผ่าน + ช่องตั้งรหัสผ่านใหม่) */
 (function(){
-  function wire(){
-    const inp=document.getElementById('authPass'), btn=document.getElementById('pwEye');
+  function wire(){ wireOne('authPass','pwEye'); wireOne('authNewPass','pwEye2'); }
+  function wireOne(inpId, btnId){
+    const inp=document.getElementById(inpId), btn=document.getElementById(btnId);
     if(!inp||!btn||btn.dataset.wired) return;
     btn.dataset.wired='1';
     btn.onclick=()=>{
@@ -303,4 +304,4 @@ function bahtText(n){
   txt += st===0 ? 'ถ้วน' : readInt(String(st))+'สตางค์';
   return (neg?'ลบ':'')+txt;
 }
-
+
