@@ -197,6 +197,11 @@ function vCheckin(v){
       <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="ckPhoto" ${cfg.require_photo?'checked':''}> ต้องถ่ายรูปทุกครั้ง</label>
       <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="ckFace" ${cfg.require_face!==false?'checked':''}> 🙂 จดจำใบหน้า (ใบหน้าไม่ตรง = ลงเวลาไม่ได้)</label>
     </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;font-size:13.5px">
+      <label for="ckEarly">⏰ สแกนเข้างานก่อนเวลาเข้ากะได้ไม่เกิน</label>
+      <select id="ckEarly" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px">${[0,15,30,45,60,90,120].map(m=>`<option value="${m}" ${(+cfg.early_in_min||0)===m?'selected':''}>${m?m+' นาที':'ไม่จำกัด'}</option>`).join('')}</select>
+      <span class="muted" style="font-size:12px">กันมาสแกนก่อนแล้วออกไป · ยึดเวลาเข้ากะของแต่ละคน (รวมสลับกะ) · วันหยุดสแกนได้ทุกเวลา${cfg.early_in_min==null&&S.cfg?' · <b style="color:#b45309">ต้องรัน sql/38 ก่อน</b>':''}</span>
+    </div>
     <div style="border-top:1px solid var(--line);margin:18px 0"></div>
 
     <h3 style="margin-bottom:8px">โหมดจำลอง GPS (สำหรับทดสอบ)</h3>
@@ -273,9 +278,11 @@ function vCheckin(v){
     if(cfg.code && want && want!==cfg.code && !confirm(`เปลี่ยนรหัสบริษัทจาก ${cfg.code} เป็น ${want}?
 ลิงก์เดิมที่ส่งให้พนักงานจะใช้ไม่ได้ ต้องส่งลิงก์ใหม่`)) return;
     const row={ owner_id:MY_UID, code:want||cfg.code||ckCode(), company_name:q('#ckName').value.trim(),
-      sites: hasPin?[site]:[], require_zone:q('#ckZone').checked, require_photo:q('#ckPhoto').checked, require_face:q('#ckFace').checked, updated_at:new Date().toISOString() };
+      sites: hasPin?[site]:[], require_zone:q('#ckZone').checked, require_photo:q('#ckPhoto').checked, require_face:q('#ckFace').checked, early_in_min:+q('#ckEarly').value||0, updated_at:new Date().toISOString() };
     if(row.require_face) row.require_photo=true;       // จดจำใบหน้าต้องมีรูปเสมอ
     let {error}=await sb.from('checkin_config').upsert(row);
+    if(error && /early_in_min/.test(error.message)){ toast('ยังไม่ได้รัน sql/38 (กันสแกนเร็วเกิน) — บันทึกส่วนอื่นแล้ว'); delete row.early_in_min; ({error}=await sb.from('checkin_config').upsert(row)); }
+    if(!error && row.early_in_min) ckSyncShiftPlans(true);
     if(error && /require_face/.test(error.message)){ toast('ยังไม่ได้รัน supabase-checkin-3.sql — บันทึกโดยไม่เปิดจดจำใบหน้า'); delete row.require_face; ({error}=await sb.from('checkin_config').upsert(row)); }
     if(error && /duplicate|unique/i.test(error.message)){
       if(want){ toast(`รหัส ${want} มีบริษัทอื่นใช้แล้ว — ลองรหัสอื่น`); return; }
@@ -618,10 +625,37 @@ async function ckMergePunches(todo, redo){
   for(let i=0;i<ids.length;i+=200){ const {error}=await sb.from('punches').update({merged:true}).in('id',ids.slice(i,i+200)); if(error){ err=error.message; break; } }
   return {n, skipped, err};
 }
+/* ส่งเวลากะของพนักงานขึ้นไปให้ระบบสแกน (ใช้กันสแกนเข้างานเร็วเกิน) — sql/38
+   {d:"08:00-17:00", x:{วันที่: "22:00-06:00" | "off"}} ล่วงหน้า 35 วัน เขียนเฉพาะคนที่เปลี่ยน */
+let _ckPlanAt=0;
+function ckShiftPlanOf(e){
+  const sh=x=>`${x.start||'08:00'}-${x.end||'17:00'}`;
+  const base=(ensureShifts().find(s=>s.id===e.shiftId))||ensureShifts()[0];
+  const d=sh(base), x={}, t=new Date();
+  for(let i=-1;i<=35;i++){ const iso=isoOf(new Date(t.getFullYear(),t.getMonth(),t.getDate()+i));
+    const v=(isHoliday(iso)||!isWorkDayFor(e,iso)) ? 'off' : sh(shiftFor(e,iso));
+    if(v!==d) x[iso]=v; }
+  return {d, x};
+}
+async function ckSyncShiftPlans(force){
+  if(DEMO || !sb || !MY_UID || isFirm() || !hasPremium()) return;
+  if(!force && Date.now()-_ckPlanAt<10*60000) return;
+  _ckPlanAt=Date.now();
+  try{
+    const {data,error}=await sb.from('checkin_users').select('id,emp_id,shift_plan').eq('owner_id',MY_UID);
+    if(error || !data) return;                               // ยังไม่ได้รัน sql/38 → ข้าม
+    const byId=new Map(DB.employees.map(e=>[e.id,e]));
+    for(const u of data){ const e=byId.get(u.emp_id); if(!e) continue;
+      const plan=ckShiftPlanOf(e);
+      if(JSON.stringify(plan)===JSON.stringify(u.shift_plan||null)) continue;
+      await sb.from('checkin_users').update({shift_plan:plan}).eq('id',u.id); }
+  }catch(e){}
+}
 /* นำเข้าอัตโนมัติ — เรียกตอนเปิดหน้าเวลาเข้างาน/ลงเวลาผ่านมือถือ (เงียบ ๆ ไม่รบกวนถ้าไม่มีอะไรใหม่) */
 let _ckAutoBusy=false, _ckAutoAt=0;
 async function ckAutoMerge(){
   if(_ckAutoBusy || DEMO || !sb || !MY_UID || isFirm() || !hasPremium()) return;
+  ckSyncShiftPlans();
   if(Date.now()-_ckAutoAt<60000) return;              // ไม่เกินนาทีละครั้ง
   _ckAutoBusy=true; _ckAutoAt=Date.now();
   try{

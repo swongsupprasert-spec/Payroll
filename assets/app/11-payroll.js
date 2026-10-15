@@ -318,7 +318,7 @@ function vPayroll(v){
   });
   // OT auto-calc: รวมทุกแถว (อัตรา/ชม. × ชั่วโมง × ตัวคูณ)
   const otA=panel.querySelector('#otAmt'), otBox=panel.querySelector('#otRows');
-  const recalcOT=()=>{
+  const recalcOT=(init)=>{
     const rows=otRowsOf(r);
     otBox.querySelectorAll('.otrow').forEach(function(el,i){
       if(!rows[i]) rows[i]={h:0,m:1.5};
@@ -326,10 +326,12 @@ function vPayroll(v){
       rows[i].m=+el.querySelector('.otM').value||0;
       el.querySelector('.otSub').textContent=money(otAmount(emp,rows[i].h,rows[i].m))+' บาท';
     });
+    // เปิดดูเฉย ๆ: ไม่มีชั่วโมง OT แต่มียอดเงินที่กรอกเอง → เก็บยอดเดิมไว้ ไม่ล้างเป็น 0
+    if(init===true && !rows.some(x=>+x.h>0) && +r.earn.ot>0){ otA.value=r.earn.ot; return; }
     const amt=otTotal(emp,r);
     r.earn.ot=amt; otA.value=amt; refreshAutoDed(); save(); drawPeTot(emp);
   };
-  const drawOTRows=()=>{
+  const drawOTRows=(init)=>{
     const rows=otRowsOf(r);
     otBox.innerHTML=rows.map(function(row,i){
       return '<div class="otrow" style="display:grid;grid-template-columns:1fr 1.6fr auto auto;gap:10px;align-items:end;margin-bottom:8px">'
@@ -350,9 +352,9 @@ function vPayroll(v){
         drawOTRows(); recalcOT();
       };
     });
-    recalcOT();
+    recalcOT(init);
   };
-  drawOTRows();
+  drawOTRows(true);
   panel.querySelector('#otAdd').onclick=()=>{ otRowsOf(r).push({h:0,m:1.5}); drawOTRows(); };
   // พนักงานรายวัน: เปลี่ยนจำนวนวัน → อัปเดตค่าจ้างฐาน
   const wd=panel.querySelector('#workDays');

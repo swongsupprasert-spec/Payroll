@@ -66,7 +66,7 @@ function roundOtBy(man, s){
   if(man && man.otH!=null) return {1.5:+man.otH||0};
   return s.otBy||{};
 }
-function otRowsOf(e, by){ return Object.keys(by||{}).map(Number).filter(m=>+by[m]>0).sort((a,b)=>a-b).map(m=>({m, h:r2(by[m]), amt:r2(otAmount(e, +by[m], m))})); }
+function roundOtRows(e, by){ return Object.keys(by||{}).map(Number).filter(m=>+by[m]>0).sort((a,b)=>a-b).map(m=>({m, h:r2(by[m]), amt:r2(otAmount(e, +by[m], m))})); }
 function otRowsHtml(rows){ return (rows||[]).map(o=>`<div class="rnOt"><b>${o.m}×</b> ${num(o.h)} ชม. <span>${money(o.amt)}</span></div>`).join(''); }
 function hasManOT(man){ return !!(man && (man.otH!=null || man.otBy)); }
 function winLen(w){ return w ? Math.round((new Date(w.to+'T00:00:00')-new Date(w.from+'T00:00:00'))/864e5)+1 : 0; }
@@ -109,7 +109,7 @@ function roundCalcRaw(e, p, rd, prev){
     let sum=0; for(let d=new Date(win.from+'T00:00:00'); isoOf(d)<=win.to; d=addDays(d,1)){ sum+=salaryOnDate(e, isoOf(d)); days++; }
     base=r2(sum/dim);
   }
-  const otRows=otRowsOf(e, roundOtBy(man, s));
+  const otRows=roundOtRows(e, roundOtBy(man, s));
   let ot=otRows.reduce((a,o)=>a+o.amt,0), otH=otRows.reduce((a,o)=>a+o.h,0);
   ot=r2(ot);
   const gross=r2(base+ot);

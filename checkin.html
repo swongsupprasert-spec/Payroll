@@ -198,6 +198,7 @@
     consent_required:'ต้องยินยอมการเก็บข้อมูลใบหน้าก่อน',bad_face:'อ่านใบหน้าไม่สำเร็จ ลองใหม่อีกครั้ง'};
   function errText(e){ var m=String(e&&e.message||e);
     if(/face_mismatch/.test(m)) return '❌ ใบหน้าไม่ตรงกับที่ลงทะเบียนไว้ — ถ่ายใหม่ในที่สว่าง หน้าตรง ไม่สวมแมสก์/แว่นดำ (ถ้าเป็นคุณจริงแต่ยังไม่ผ่าน แจ้งผู้ดูแลให้รีเซ็ตใบหน้า)';
+    var te=m.match(/too_early:(\d{1,2}:\d{2})/); if(te) return '⏰ ยังไม่ถึงเวลาลงเวลาเข้างาน — สแกนเข้างานได้ตั้งแต่ '+te[1]+' น.';
     var z=m.match(/out_of_zone:(\d+)/); if(z) return 'อยู่นอกพื้นที่ลงเวลา (ห่างจุดที่ใกล้ที่สุด '+Number(z[1]).toLocaleString('th-TH')+' เมตร)';
     for(var k in ERR) if(m.indexOf(k)>=0) return ERR[k];
     if(/schema cache|PGRST202/i.test(m)) return 'ระบบลงเวลายังไม่พร้อมใช้งาน กรุณาแจ้งผู้ดูแลของบริษัท';

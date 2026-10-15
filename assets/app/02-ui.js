@@ -188,7 +188,25 @@ function renderPeriodSel(){
 }
 
 /* ---------- Router ---------- */
+/* ซ่อมข้อมูลครั้งเดียวต่อบริษัท: 15 ต.ค. 2569 ฟังก์ชันชื่อซ้ำทำให้ยอด OT ถูกบันทึกเป็น 0
+   ทั้งที่ชั่วโมง OT (otRows) ยังอยู่ครบ → คำนวณยอด OT และเงินหักอัตโนมัติของงวดนั้นใหม่ */
+function repairOtZero(){
+  if(!DB || DB._fixOt20261015 || !DB.payroll) return;
+  const keep=PERIOD; let n=0;
+  try{
+    Object.keys(DB.payroll).forEach(p=>{ const pp=DB.payroll[p]||{};
+      Object.keys(pp).forEach(id=>{ const r=pp[id], e=DB.employees.find(x=>x.id===id);
+        if(!e || !r || !r.earn || +r.earn.ot) return;
+        const has=Array.isArray(r.earn.otRows) ? r.earn.otRows.some(x=>+x.h>0 && +x.m>0) : +r.earn.otHours>0;   // แบบเก่าเก็บ otHours แถวเดียว
+        if(!has) return;
+        PERIOD=p; r.earn.ot=otTotal(e, r); autoDeductions(e, r); n++; }); });
+  } finally { PERIOD=keep; }
+  DB._fixOt20261015=1;                 // ไม่มีอะไรซ่อม = ไม่ต้องบันทึก (กันบันทึกข้อมูลว่างตอนกำลังโหลด)
+  if(n) save();
+  if(n) console.info('repairOtZero: คำนวณยอด OT ใหม่', n, 'รายการ');
+}
 function render(){
+  repairOtZero();
   /* จ่ายรายรอบอยู่ในหน้าเบิกจ่ายล่วงหน้า (แท็บ) — ลิงก์/ค่าที่จำไว้แบบเดิมพาไปแท็บนั้น */
   if(PAGE==='rounds'){ PAGE='advance'; ADV_TAB='rounds'; savePage(PAGE); renderNav(); }
   $('#pageTitle').textContent = tr('nav_'+PAGE);
