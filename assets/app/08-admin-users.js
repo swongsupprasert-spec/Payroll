@@ -36,7 +36,8 @@ async function vAdmin(v){
     <span class="chip" id="userTotal" style="font-weight:700">👥 …</span>
     <button class="btn ghost sm" id="refreshUsers" style="margin-left:auto">↻ รีเฟรช</button></div>`));
   // ปุ่มนับจำนวนไอดีแยกตามสถานะ — กดเพื่อกรองตาราง
-  const counts=el(`<div class="admCounts" id="userCounts"></div>`);
+  const counts=el(`<div class="admBar"><div class="admCounts" id="userCounts"></div>
+    <div class="admSearch"><input type="search" id="userSearch" placeholder="🔍 ค้นหาอีเมล…" autocomplete="off"></div></div>`);
   v.appendChild(counts);
   const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap" id="usersTbl"><div class="empty">กำลังโหลด…</div></div></div></div>`);
   v.appendChild(panel);
@@ -80,7 +81,7 @@ async function vAdmin(v){
     if((u.edition||'single')==='single') return {t:'ฟรี 1-10 คน',c:'#f1f5f9;color:#475569',d:0,e:null};
     return {t:'หมดอายุ',c:'#fee2e2;color:#dc2626',d:0,e:u.paid_until||new Date(trialEnd).toISOString()};
   };
-  const rows=(data||[]).map(u=>{ const s=stat(u); return `<tr data-st="${esc(s.t)}">
+  const rows=(data||[]).map(u=>{ const s=stat(u); return `<tr data-st="${esc(s.t)}" data-em="${esc((u.email||'').toLowerCase())}">
     <td><strong>${esc(u.email||'(ไม่มีอีเมล)')}</strong>${u.id===MY_UID?' <span class="chip">คุณ</span>':''}
       <div class="muted" style="font-size:12px;margin-top:3px">สมัคร ${esc(fmtDateTime(u.created_at))}${u.plan?` · ${esc(u.plan)}`:''}</div></td>
     <td><span class="chip" style="background:${s.c}">${s.t}</span>
@@ -110,11 +111,49 @@ async function vAdmin(v){
       const keys=Object.keys(by).sort((a,b)=>order.indexOf(a)-order.indexOf(b));
       box.innerHTML=`<button type="button" class="admCnt on" data-f="">ทั้งหมด <b>${list.length}</b></button>`
         +keys.map(k=>`<button type="button" class="admCnt" data-f="${esc(k)}"><span class="chip" style="background:${by[k].c}">${esc(k)}</span> <b>${by[k].n}</b></button>`).join('');
+      // กรองตาราง = สถานะที่เลือก + คำค้นอีเมล (ใช้ร่วมกันได้) แล้วแบ่งหน้า หน้าละ 10 ราย
+      const PER=10;
+      let F='', P=1;
+      const sInp=$('#userSearch');
+      const pager=el(`<div class="admPager" id="userPager"></div>`);
+      v.appendChild(pager);
+      const apply=()=>{
+        const q=(sInp?sInp.value:'').trim().toLowerCase();
+        const all=[...tbl.querySelectorAll('tbody tr[data-st]')];
+        const hit=all.filter(tr=>(!F||tr.dataset.st===F) && (!q||tr.dataset.em.includes(q)));
+        const pages=Math.max(1,Math.ceil(hit.length/PER));
+        if(P>pages) P=pages;
+        const from=(P-1)*PER, show=new Set(hit.slice(from,from+PER));
+        all.forEach(tr=>{ tr.style.display=show.has(tr)?'':'none'; });
+        let none=tbl.querySelector('#userNone');
+        if(!hit.length){ if(!none){ none=el(`<tr id="userNone"><td colspan="3" class="empty">ไม่พบอีเมลที่ค้นหา</td></tr>`); tbl.querySelector('tbody').appendChild(none); } }
+        else if(none) none.remove();
+        if(tot) tot.textContent = (F||q) ? `👥 พบ ${hit.length} จาก ${list.length} ไอดี` : `👥 ทั้งหมด ${list.length} ไอดี`;
+        // ปุ่มเปลี่ยนหน้า — ซ่อนเมื่อมีหน้าเดียว
+        if(pages<=1){ pager.innerHTML=''; pager.style.display='none'; return; }
+        pager.style.display='';
+        const nums=[];
+        for(let i=1;i<=pages;i++){
+          if(i===1||i===pages||Math.abs(i-P)<=1) nums.push(i);
+          else if(nums[nums.length-1]!=='…') nums.push('…');
+        }
+        pager.innerHTML=`<span class="muted">แสดง ${from+1}–${Math.min(from+PER,hit.length)} จาก ${hit.length}</span>
+          <button type="button" class="btn ghost sm" data-pg="${P-1}" ${P<=1?'disabled':''}>‹ ก่อนหน้า</button>
+          ${nums.map(n=>n==='…'?'<span class="muted">…</span>'
+            :`<button type="button" class="btn ${n===P?'':'ghost '}sm admPg" data-pg="${n}">${n}</button>`).join('')}
+          <button type="button" class="btn ghost sm" data-pg="${P+1}" ${P>=pages?'disabled':''}>ถัดไป ›</button>`;
+        pager.querySelectorAll('[data-pg]').forEach(b=>b.onclick=()=>{
+          P=+b.dataset.pg; apply();
+          const head=$('#usersTbl'); if(head) head.scrollIntoView({block:'start',behavior:'smooth'});
+        });
+      };
       box.querySelectorAll('.admCnt').forEach(b=>b.onclick=()=>{
-        const f=(b.classList.contains('on')&&b.dataset.f)?'':b.dataset.f;      // กดปุ่มที่เลือกอยู่ซ้ำ = กลับไปดูทั้งหมด
-        box.querySelectorAll('.admCnt').forEach(x=>x.classList.toggle('on',x.dataset.f===f));
-        tbl.querySelectorAll('tbody tr[data-st]').forEach(tr=>{ tr.style.display = (!f||tr.dataset.st===f)?'':'none'; });
+        F=(b.classList.contains('on')&&b.dataset.f)?'':b.dataset.f;      // กดปุ่มที่เลือกอยู่ซ้ำ = กลับไปดูทั้งหมด
+        box.querySelectorAll('.admCnt').forEach(x=>x.classList.toggle('on',x.dataset.f===F));
+        P=1; apply();
       });
+      if(sInp){ sInp.oninput=()=>{ P=1; apply(); }; sInp.onkeydown=e=>{ if(e.key==='Escape'){ sInp.value=''; P=1; apply(); } }; }
+      apply();
     }
   }
   // ♾️ ให้/ยกเลิกสิทธิ์ใช้งานไม่จำกัด

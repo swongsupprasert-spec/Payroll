@@ -374,6 +374,22 @@ function vDashboard(v){
   const opts=(sel)=>Array.from({length:12},(_,i)=>i+1).map(m=>
     `<option value="${m}" ${m===sel?'selected':''}>${avail.includes(m)?'':'· '}${THAI_MONTHS_ABBR[m-1]}</option>`).join('');
 
+  /* ── แบนเนอร์หัวหน้า: ชื่อบริษัท + งวดที่ดู + น้อง eSim ── */
+  const coName=(DB.company&&DB.company.name)||'บริษัทของคุณ';
+  const nowD=new Date();
+  v.appendChild(el(`<div class="dhero">
+    <div class="dhero-tx">
+      <div class="dhero-k">eSimPayroll · ภาพรวมเงินเดือน</div>
+      <h1>${esc(coName)}</h1>
+      <p>ข้อมูล <b>${esc(scopeLabel)}</b> · อัปเดต ${nowD.getDate()} ${THAI_MONTHS_ABBR[nowD.getMonth()]} ${nowD.getFullYear()+543}</p>
+      <div class="dhero-tag">“เงินเดือนถูกต้อง ทีมงานมั่นใจ”</div>
+    </div>
+    <div class="dhero-art" aria-hidden="true">
+      <span class="dh-b b1">🧾</span><span class="dh-b b2">💰</span><span class="dh-b b3">📊</span>
+      <img src="/media/esim/e1c.png" alt="" loading="lazy">
+    </div>
+  </div>`));
+
   // mode toggle
   const tb=el(`<div class="toolbar" style="margin-bottom:18px">
     <div class="seg" style="display:inline-flex;background:#eaf6f1;border-radius:10px;padding:3px">
@@ -398,22 +414,47 @@ function vDashboard(v){
   const refM = isYear ? 12 : (t.lastM || curM);
   const actives=DB.employees.filter(e=>activeInMonth(e,curY,refM));
   const mCount=actives.filter(e=>e.gender==='M').length, fCount=actives.filter(e=>e.gender==='F').length, uCount=actives.filter(e=>!e.gender).length;
-  v.appendChild(el(`<div class="cards">
-    <div class="kpi b1"><div class="lab">👥 ${tr('kpi_count')}</div><div class="val">${num(actives.length)} <span class="muted" style="font-size:14px">${tr('unit_person')}</span></div>
+  /* เทียบกับเดือนก่อน — เฉพาะตอนดูเดือนเดียว และเดือนก่อนทำเงินเดือนไว้แล้ว */
+  let prev=null;
+  if(!isYear && cf===ct){
+    const pm=cf===1?12:cf-1, py=cf===1?curY-1:curY;
+    if(periodHasData(`${py}-${String(pm).padStart(2,'0')}`)){
+      const pc=monthCompute(py,pm);
+      prev={count:DB.employees.filter(e=>activeInMonth(e,py,pm)).length, salary:pc.salary, gross:pc.gross, ded:pc.ded, net:pc.net};
+    }
+  }
+  const trend=(cur,key)=>{
+    if(!prev || !(prev[key]>0)) return `<div class="ktrend muted">${isYear?'ประมาณการทั้งปี':cf===ct?'ยังไม่มีเดือนก่อน':`รวม ${num(t.months||0)} เดือน`}</div>`;
+    const d=(cur-prev[key])/prev[key]*100;
+    if(Math.abs(d)<0.05) return `<div class="ktrend muted">เท่ากับเดือนก่อน</div>`;
+    return `<div class="ktrend ${d>0?'up':'down'}">${d>0?'▲':'▼'} ${Math.abs(d).toFixed(1)}% <span class="muted">จากเดือนก่อน</span></div>`;
+  };
+  const KI=(d)=>'<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
+  const kico={
+    count:KI('<circle cx="9" cy="8" r="3.2"/><path d="M2.8 20a6.2 6.2 0 0 1 12.4 0"/><path d="M16.2 5.4a3.2 3.2 0 0 1 0 6.2"/><path d="M17.4 14.3A6.2 6.2 0 0 1 21.2 20"/>'),
+    salary:KI('<rect x="2.6" y="6" width="18.8" height="13" rx="2.4"/><path d="M2.6 10.4h18.8"/><path d="M16.4 14.8h1.6"/>'),
+    gross:KI('<circle cx="12" cy="12" r="8.6"/><path d="M12 8v8M8 12h8"/>'),
+    ded:KI('<circle cx="12" cy="12" r="8.6"/><path d="M8 12h8"/>'),
+    net:KI('<rect x="2.6" y="5.6" width="18.8" height="12.8" rx="2.4"/><circle cx="12" cy="12" r="2.8"/><path d="M6.2 9.4h.01M17.8 14.6h.01"/>')
+  };
+  const khead=(k,lab,val,cur)=>`<div class="khead"><div class="kico ${k}">${kico[k]}</div><div class="kbody">
+      <div class="lab">${lab}</div><div class="val${k==='count'?'':' money'}">${val}</div>${trend(cur,k)}</div></div>`;
+  v.appendChild(el(`<div class="cards kv2">
+    <div class="kpi b1">${khead('count',tr('kpi_count'),`${num(actives.length)} <span class="muted" style="font-size:14px">${tr('unit_person')}</span>`,actives.length)}
       <div style="margin-top:6px;display:flex;gap:12px;font-size:12px">
         <span style="color:#0e3a5c">♂ ${tr('male')} ${num(mCount)}</span>
         <span style="color:#db2777">♀ ${tr('female')} ${num(fCount)}</span>
         ${uCount?`<span class="muted">– ${tr('unspec')} ${num(uCount)}</span>`:''}
       </div></div>
-    <div class="kpi b2"><div class="lab">💼 ${tr('kpi_salary')}</div><div class="val money">${money(t.salary)}</div>
+    <div class="kpi b2">${khead('salary',tr('kpi_salary'),money(t.salary),t.salary)}
       ${kpiBreak({monthly:t.salMonthly, daily:t.salDaily},
         [['monthly','รายเดือน ('+num(t.nMonthly||0)+' คน)'],['daily','รายวัน ('+num(t.nDaily||0)+' คน)']], t.salary)}</div>
-    <div class="kpi b3"><div class="lab">➕ ${tr('kpi_income')}</div><div class="val money">${money(t.gross)}</div>
+    <div class="kpi b3">${khead('gross',tr('kpi_income'),money(t.gross),t.gross)}
       ${kpiBreak(Object.assign({_base:t.salary}, t.earnBy),
         [['_base','ค่าจ้างฐาน']].concat(EARN_FIELDS.map(f=>[f[0],FL(f)])), t.gross)}</div>
-    <div class="kpi b4"><div class="lab">➖ ${tr('kpi_deduct')}</div><div class="val money">${money(t.ded)}</div>
+    <div class="kpi b4">${khead('ded',tr('kpi_deduct'),money(t.ded),t.ded)}
       ${kpiBreak(t.dedBy, DED_FIELDS.map(f=>[f[0],FL(f)]), t.ded)}</div>
-    <div class="kpi b5"><div class="lab">💰 ${tr('kpi_net')}</div><div class="val money">${money(t.net)}</div>
+    <div class="kpi b5">${khead('net',tr('kpi_net'),money(t.net),t.net)}
       <div class="kpi-brk">
         <div class="kpi-brk-row"><span class="kpi-brk-lab">เงินได้รวม</span><span class="kpi-brk-val">${money(t.gross)}</span></div>
         <div class="kpi-brk-row"><span class="kpi-brk-lab">หัก เงินหักรวม</span><span class="kpi-brk-val" style="color:var(--bad)">− ${money(t.ded)}</span></div>
@@ -448,7 +489,7 @@ function vDashboard(v){
   const dTot=dsplit.reduce((s,x)=>s+x.value,0)||1;
   const depts = isYear ? deptSummaryYear(curY) : deptSummaryRange(curY, cf, ct);
   const deptItems = depts.map((d,i)=>({label:d.dept,value:d.net,has:true,color:[C.brand,C.green,C.purple,C.warn,C.slate][i%5]}));
-  const row=el(`<div style="display:grid;grid-template-columns:1fr 1.3fr;gap:20px;margin-bottom:20px;align-items:start" class="dash2"></div>`);
+  const row=el(`<div class="dash3"></div>`);
   row.appendChild(el(`<div class="panel" style="margin:0"><div class="phead"><h2>🍩 รายได้ทั้งหมดไปไหน</h2></div>
     <div class="pbody" style="display:flex;flex-direction:column;align-items:center;gap:16px">
       ${donutChart(dsplit)}
@@ -456,6 +497,30 @@ function vDashboard(v){
     </div></div>`));
   row.appendChild(el(`<div class="panel" style="margin:0"><div class="phead"><h2>🏢 เงินสุทธิตามแผนก</h2></div>
     <div class="pbody">${hbarChart(deptItems)}</div></div>`));
+  /* คอลัมน์ขวา: เมนูด่วน + พนักงานล่าสุด */
+  const QUICK=[['employees','➕','เพิ่มพนักงาน','g'],['payroll','🧮','คำนวณเงินเดือน','b'],['slip','🧾','สลิปเงินเดือน','p'],
+    ['wht','📄','50 ทวิ','o'],['pnd1','🗂️','ภ.ง.ด.1','r'],['sso','🛡️','สปส.1-10','t']].filter(q=>!pageLocked(q[0]));
+  const recent=DB.employees.filter(e=>!e.resignDate).slice()
+    .sort((a,b)=>String(b.startDate||'').localeCompare(String(a.startDate||''))).slice(0,5);
+  const AV=['#3b82f6','#22c55e','#f59e0b','#8b5cf6','#ec4899'];
+  const side=el(`<div class="dside">
+    <div class="panel" style="margin:0"><div class="phead"><h2>⚡ เมนูด่วน</h2></div>
+      <div class="pbody"><div class="qgrid">${QUICK.map(q=>`<button type="button" class="qbtn ${q[3]}" data-go="${q[0]}"><span class="qi">${q[1]}</span>${esc(q[2])}</button>`).join('')}</div></div></div>
+    <div class="panel" style="margin:0"><div class="phead"><h2>🆕 พนักงานล่าสุด</h2>
+      <button type="button" class="btn ghost sm" data-go="employees" style="margin-left:auto">ดูทั้งหมด ›</button></div>
+      <div class="pbody" style="padding:6px 14px 10px">${recent.length?recent.map((e,i)=>`<div class="rrow">
+        <span class="rav" style="background:${e.photo?'transparent':AV[i%AV.length]}">${e.photo?`<img src="${esc(e.photo)}" alt="">`:esc(String(e.name||'?').trim().charAt(0))}</span>
+        <span class="rtx"><b>${esc(e.name||'-')}</b><span class="muted">${esc([e.position,e.dept].filter(Boolean).join(' · ')||'—')}</span></span>
+        <span class="rmeta"><span class="chip ${e.payType==='daily'?'rd':'rm'}">${e.payType==='daily'?'รายวัน':'รายเดือน'}</span>
+          <span class="muted">${e.startDate?esc(fmtDate(e.startDate)):''}</span></span></div>`).join('')
+        :'<div class="empty" style="padding:14px">ยังไม่มีพนักงาน</div>'}</div></div>
+  </div>`);
+  side.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.go;
+    if(id==='payroll'){ askPeriodThen(()=>{ PAGE=id; savePage(id); renderNav(); render(); }); return; }
+    PAGE=id; savePage(id); renderNav(); render();
+  });
+  row.appendChild(side);
   v.appendChild(row);
 
   // Dept table
@@ -479,4 +544,4 @@ function deptSummary(p){
   });
   return Object.values(map).sort((a,b)=>a.dept.localeCompare(b.dept,'th'));
 }
-
+
