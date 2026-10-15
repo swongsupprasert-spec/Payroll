@@ -41,6 +41,12 @@ function setRoundManual(p, cycle, i, empId, key, val){
   if(!Object.keys(o).length) delete m[empId];
   save();
 }
+function setRoundOT(p, cycle, i, empId, by){
+  const st=roundStore(p,cycle); st._man=st._man||{}; const m=st._man[String(i)]=st._man[String(i)]||{}; const o=m[empId]=m[empId]||{};
+  if(by) o.otBy=by; else delete o.otBy;
+  if(!Object.keys(o).length) delete m[empId];
+  save();
+}
 function roundPaid(p, cycle, i){ const st=DB.payRounds&&DB.payRounds[p]&&DB.payRounds[p][cycle]; return (st&&st[String(i)])||null; }
 /* ช่วงที่คนนี้ทำงานจริงภายในรอบ (ตัดวันเริ่มงาน/ลาออก) — null = ไม่ได้ทำงานในรอบนี้ */
 function empWindow(e, from, to){
@@ -49,6 +55,20 @@ function empWindow(e, from, to){
   if(e.resignDate && e.resignDate<b) b=e.resignDate;
   return a<=b ? {from:a, to:b} : null;
 }
+/* ป้ายบอกที่มาของตัวเลขในช่อง: 📱 จากลงเวลา / ✏️ กรอกเอง (กดเพื่อกลับไปใช้ลงเวลา) */
+function rnSrc(manual, hol){
+  return manual ? `<div style="font-size:10.5px;margin-top:2px"><a href="#" class="rnAuto" title="ลบที่กรอกเอง แล้วใช้ตัวเลขจากลงเวลา">✏️ กรอกเอง · ↩️ ใช้ลงเวลา</a></div>`
+    : `<div class="muted" style="font-size:10.5px;margin-top:2px">📱 จากลงเวลา${hol?` (+วันหยุด ${num(hol)})`:''}</div>`;
+}
+/* OT ของรอบแยกตามตัวคูณ: กรอกเอง (man.otBy หรือแบบเก่า man.otH = 1.5 เท่า) ไม่งั้นมาจากลงเวลา */
+function roundOtBy(man, s){
+  if(man && man.otBy && typeof man.otBy==='object') return man.otBy;
+  if(man && man.otH!=null) return {1.5:+man.otH||0};
+  return s.otBy||{};
+}
+function otRowsOf(e, by){ return Object.keys(by||{}).map(Number).filter(m=>+by[m]>0).sort((a,b)=>a-b).map(m=>({m, h:r2(by[m]), amt:r2(otAmount(e, +by[m], m))})); }
+function otRowsHtml(rows){ return (rows||[]).map(o=>`<div class="rnOt"><b>${o.m}×</b> ${num(o.h)} ชม. <span>${money(o.amt)}</span></div>`).join(''); }
+function hasManOT(man){ return !!(man && (man.otH!=null || man.otBy)); }
 function winLen(w){ return w ? Math.round((new Date(w.to+'T00:00:00')-new Date(w.from+'T00:00:00'))/864e5)+1 : 0; }
 /* วันได้ค่าจ้างของรายวันในรอบ: กรอกเอง (ไม่เกินจำนวนวันในช่วง) หรือ วันมาทำงาน + วันหยุดตามประเพณีที่ได้ค่าจ้าง */
 function roundDays(win, s, man){
@@ -63,8 +83,8 @@ function syncRoundMonth(p, cycle, e){
     const man=roundManual(p, cycle, rd.i, e.id)||{}, s=attendStats(e, p, win);
     const paid=!rd.last && roundPaid(p, cycle, rd.i), snap=paid&&paid.emps&&paid.emps[e.id];
     if(e.payType==='daily') days+= snap ? (+snap.days||0) : roundDays(win, s, man);
-    if(man.otH!=null){ manOT=true; by[1.5]=(by[1.5]||0)+(+man.otH||0); }
-    else Object.keys(s.otBy||{}).forEach(k=>{ by[k]=(by[k]||0)+(+s.otBy[k]||0); });
+    if(hasManOT(man)) manOT=true;
+    const ob=roundOtBy(man, s); Object.keys(ob).forEach(k=>{ by[k]=(by[k]||0)+(+ob[k]||0); });
   });
   const r=getRec(p, e.id);
   if(e.payType==='daily') r.days=r2(days);
@@ -89,9 +109,8 @@ function roundCalcRaw(e, p, rd, prev){
     let sum=0; for(let d=new Date(win.from+'T00:00:00'); isoOf(d)<=win.to; d=addDays(d,1)){ sum+=salaryOnDate(e, isoOf(d)); days++; }
     base=r2(sum/dim);
   }
-  let ot=0, otH=0;
-  if(man.otH!=null){ otH=man.otH; ot=otAmount(e, otH, 1.5); }          // กรอกเอง = OT วันทำงานปกติ 1.5 เท่า
-  else Object.keys(s.otBy||{}).forEach(m=>{ const h=+s.otBy[m]||0; otH+=h; ot+=otAmount(e,h,+m); });
+  const otRows=otRowsOf(e, roundOtBy(man, s));
+  let ot=otRows.reduce((a,o)=>a+o.amt,0), otH=otRows.reduce((a,o)=>a+o.h,0);
   ot=r2(ot);
   const gross=r2(base+ot);
   /* ประกันสังคมสะสม: ค่าจ้าง (ไม่รวม OT) สะสมถึงรอบนี้ แล้วหักส่วนที่หักไปแล้ว */
@@ -103,7 +122,7 @@ function roundCalcRaw(e, p, rd, prev){
   if(!(taxM>0)) taxM=estTax(e, +p.split('-')[0], {earn:{}, days:e.payType==='daily'?(DB.workDaysDefault||26):0}).monthly;
   const proj=e.payType==='daily' ? salaryFor(e,p)*(DB.workDaysDefault||26) : salaryFor(e,p);
   const tax=proj>0 ? r2(taxM*gross/proj) : 0;
-  return {days, base, ot, otH, gross, ssoBase, tax, sso, net:r2(gross-tax-sso), attDays:s.days, holDays:s.holDays||0, maxDays:winLen(win), man:(man.days!=null||man.otH!=null)};
+  return {days, base, ot, otH, otRows, gross, ssoBase, tax, sso, net:r2(gross-tax-sso), attDays:s.days, holDays:s.holDays||0, maxDays:winLen(win), manDays:man.days!=null, manOT:hasManOT(man), man:(man.days!=null||hasManOT(man))};
 }
 /* ยอดของทุกรอบของคนหนึ่ง (รอบที่บันทึกจ่ายแล้วใช้ตัวเลขที่เก็บไว้) */
 function empRounds(e, p, cycle){
@@ -117,7 +136,7 @@ function empRounds(e, p, cycle){
       const tax=r2((+r.ded.tax||0)-prev.tax), sso=r2((+r.ded.sso||0)-prev.sso);
       const other=r2(c.dedTotal-(+r.ded.tax||0)-(+r.ded.sso||0)-(+r.ded.advance||0));
       const lw=empWindow(e, rd.from, rd.to);
-      v={last:true, maxDays:winLen(lw), days:e.payType==='daily'?Math.max(0,(+r.days||0)-out.reduce((s,x)=>s+(x.days||0),0)):null,
+      v={last:true, maxDays:winLen(lw), manDays:(roundManual(p,cycle,rd.i,e.id)||{}).days!=null, days:e.payType==='daily'?Math.max(0,(+r.days||0)-out.reduce((s,x)=>s+(x.days||0),0)):null,
          gross:r2(c.gross-prev.gross), tax, sso, other, needDays:e.payType==='daily'&&!(+r.days>0)};
       v.net=r2(v.gross-v.tax-v.sso-v.other);   // = เงินสุทธิสิ้นเดือน − ที่จ่ายไปแล้ว (เท่ากันเมื่อบันทึกจ่ายรอบก่อนครบ)
     } else {
@@ -157,6 +176,7 @@ function vRounds(v){
     $('#rnGoEmp').onclick=()=>{ PAGE='employees'; savePage(PAGE); renderNav(); render(); };
     return;
   }
+  if(typeof ckAutoMerge==='function') ckAutoMerge();   // แพ็กเกจพรีเมียม: ดึงเวลาจากมือถือเข้าก่อน แล้ววันทำงาน/OT ขึ้นเอง
   if(!cycles.includes(RND_CYCLE)) RND_CYCLE=cycles[0];
   const cycle=RND_CYCLE, emps=byC[cycle], rounds=payRounds(PERIOD, cycle);
   const key=PERIOD+'|'+cycle;
@@ -211,10 +231,10 @@ function vRounds(v){
     : `<th>รหัส</th><th>ชื่อ</th><th class="num">วันทำงาน</th><th class="num">ค่าจ้าง</th><th class="num">OT</th><th class="num">เงินได้รวม</th><th class="num">ภาษี</th><th class="num">ประกันสังคม</th><th class="num">รับสุทธิ</th>`;
   const body=rows.map(({e,v:x})=>rd.last
     ? `<tr><td><span class="chip">${esc(e.code)}</span></td><td><strong>${esc(e.name)}</strong>${x.needDays?' <span class="chip" style="background:#fef3c7;color:#b45309">ยังไม่มีวันทำงาน</span>':''}</td>
-        <td class="num">${e.payType==='daily'?`<input type="number" min="0" max="${x.maxDays}" step="0.5" class="rnIn" data-emp="${e.id}" data-k="days" data-max="${x.maxDays}" value="${x.days||0}" title="วันได้ค่าจ้างในรอบสุดท้าย (สูงสุด ${x.maxDays} วัน)">`:'<span class="muted">-</span>'}</td>
+        <td class="num">${e.payType==='daily'?`<input type="number" min="0" max="${x.maxDays}" step="0.5" class="rnIn" data-emp="${e.id}" data-k="days" data-max="${x.maxDays}" value="${x.days||0}" title="วันได้ค่าจ้างในรอบสุดท้าย (สูงสุด ${x.maxDays} วัน)">${x.manDays?rnSrc(true):''}`:'<span class="muted">-</span>'}</td>
         <td class="num">${money(x.gross)}</td><td class="num neg">${money(x.tax)}</td><td class="num neg">${money(x.sso)}</td><td class="num neg">${money(x.other)}</td><td class="num"><b>${money(x.net)}</b></td></tr>`
     : `<tr><td><span class="chip">${esc(e.code)}</span></td><td><strong>${esc(e.name)}</strong><div class="muted" style="font-size:11px">${e.payType==='daily'?'รายวัน':'รายเดือน'}</div></td>
-        <td class="num">${(!paid&&e.payType==='daily')?`<input type="number" min="0" max="${x.maxDays}" step="0.5" class="rnIn" data-emp="${e.id}" data-k="days" data-max="${x.maxDays}" value="${x.days||0}" title="วันได้ค่าจ้างในรอบนี้ (มาทำงาน ${num(x.attDays||0)} วัน${x.holDays?' + วันหยุดตามประเพณี '+num(x.holDays)+' วัน':''}) · สูงสุด ${x.maxDays} วัน — แก้ได้">${x.holDays?`<div class="muted" style="font-size:11px">รวมวันหยุด ${num(x.holDays)}</div>`:''}`:num(x.days||0)}</td><td class="num">${money(x.base)}</td><td class="num">${!paid?`<input type="number" min="0" step="0.5" class="rnIn ot" data-emp="${e.id}" data-k="otH" value="${x.otH||''}" placeholder="ชม." title="ชั่วโมง OT (1.5 เท่า) — เว้นว่าง = ใช้จากเวลาเข้างาน"><div class="muted" style="font-size:11px">${x.ot?money(x.ot):''}</div>`:(x.ot?money(x.ot):'-')}</td><td class="num pos">${money(x.gross)}</td>
+        <td class="num">${(!paid&&e.payType==='daily')?`<input type="number" min="0" max="${x.maxDays}" step="0.5" class="rnIn" data-emp="${e.id}" data-k="days" data-max="${x.maxDays}" value="${x.days||0}" title="วันได้ค่าจ้างในรอบนี้ (มาทำงาน ${num(x.attDays||0)} วัน${x.holDays?' + วันหยุดตามประเพณี '+num(x.holDays)+' วัน':''}) · สูงสุด ${x.maxDays} วัน — แก้ได้">${rnSrc(x.manDays, x.holDays)}`:num(x.days||0)}</td><td class="num">${money(x.base)}</td><td class="num">${otRowsHtml(x.otRows)||(x.ot?money(x.ot):(paid?'-':''))}${!paid?`<div style="margin-top:3px"><button type="button" class="rnOtEdit" data-emp="${e.id}">${x.otRows&&x.otRows.length?'✏️ แก้ OT':'＋ OT'}</button></div>${x.manOT?rnSrc(true).replace('class="rnAuto"','class="rnAuto" data-k="ot"'):''}`:''}</td><td class="num pos">${money(x.gross)}</td>
         <td class="num neg">${money(x.tax)}</td><td class="num neg">${money(x.sso)}</td><td class="num"><b>${money(x.net)}</b></td></tr>`).join('');
   const foot=rd.last
     ? `<td colspan="3">รวม ${num(rows.length)} คน</td><td class="num">${money(tot('gross'))}</td><td class="num">${money(tot('tax'))}</td><td class="num">${money(tot('sso'))}</td><td class="num">${money(tot('other'))}</td><td class="num">${money(tot('net'))}</td>`
@@ -236,6 +256,27 @@ function vRounds(v){
     setRoundManual(PERIOD, cycle, rd.i, inp.dataset.emp, inp.dataset.k, val);
     const e=DB.employees.find(x=>x.id===inp.dataset.emp); if(e){ syncRoundMonth(PERIOD, cycle, e); save(); }
     render(); });
+  panel.querySelectorAll('.rnAuto').forEach(a=>a.onclick=ev=>{ ev.preventDefault();
+    const td=a.closest('td'), inp=td.querySelector('.rnIn'), ob=td.querySelector('.rnOtEdit');
+    const empId=inp?inp.dataset.emp:(ob&&ob.dataset.emp); if(!empId) return;
+    if(a.dataset.k==='ot'){ setRoundManual(PERIOD, cycle, rd.i, empId, 'otH', ''); setRoundOT(PERIOD, cycle, rd.i, empId, null); }
+    else setRoundManual(PERIOD, cycle, rd.i, empId, inp.dataset.k, '');
+    const e=DB.employees.find(x=>x.id===empId); if(e){ syncRoundMonth(PERIOD, cycle, e); save(); }
+    render(); });
+  panel.querySelectorAll('.rnOtEdit').forEach(b=>b.onclick=()=>{
+    const e=DB.employees.find(x=>x.id===b.dataset.emp); if(!e) return;
+    const x=(rows.find(r=>r.e.id===e.id)||{}).v||{}, cur={}; (x.otRows||[]).forEach(o=>cur[o.m]=o.h);
+    const steps=[...new Set([1,1.5,2,3,...Object.keys(cur).map(Number)])].sort((a,b)=>a-b);
+    const lab={1:'1 เท่า (วันหยุด ในเวลางาน · รายเดือน)',1.5:'1.5 เท่า (ล่วงเวลาวันทำงาน)',2:'2 เท่า (วันหยุด ในเวลางาน · รายวัน)',3:'3 เท่า (ล่วงเวลาในวันหยุด)'};
+    openModal(`⏱️ OT รอบ ${rd.i} — ${esc(e.name)}`,
+      `<p class="muted" style="font-size:12.5px;margin:0 0 10px">ใส่ชั่วโมงแยกตามตัวคูณ · ค่าเริ่มต้นมาจากลงเวลา (ตัวคูณตามวันหยุด/วันในสัปดาห์ที่ตั้งไว้)</p>
+       ${steps.map(m=>`<div class="field" style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><label style="flex:1;margin:0">${lab[m]||m+' เท่า'}</label>
+         <input type="number" min="0" step="0.5" data-otm="${m}" value="${cur[m]||''}" placeholder="ชม." style="width:90px;text-align:right"></div>`).join('')}`,
+      [['ยกเลิก','ghost',closeModal],['บันทึก','',()=>{
+        const by={}; document.querySelectorAll('[data-otm]').forEach(i=>{ const h=+i.value; if(h>0) by[i.dataset.otm]=h; });
+        setRoundManual(PERIOD, cycle, rd.i, e.id, 'otH', ''); setRoundOT(PERIOD, cycle, rd.i, e.id, by);
+        syncRoundMonth(PERIOD, cycle, e); save(); closeModal(); render(); }]]);
+  });
   const sd=panel.querySelector('#rnSyncDays');
   if(sd) sd.onclick=()=>{ emps.forEach(e=>syncRoundMonth(PERIOD, cycle, e)); save(); toast('ตั้งวันทำงานของเดือนจากทุกรอบแล้ว'); render(); };
   const pb=panel.querySelector('#rnPay');
@@ -249,7 +290,7 @@ function vRounds(v){
       [['ยกเลิก','ghost',closeModal],['บันทึก','',()=>{
         const st=roundStore(PERIOD,cycle);
         st[String(rd.i)]={at:new Date().toISOString(), payDate:($('#rnPayDate')||{}).value||today,
-          emps:Object.fromEntries(rows.map(({e,v:x})=>[e.id,{days:x.days,base:x.base,ot:x.ot,otH:x.otH,gross:x.gross,ssoBase:x.ssoBase,tax:x.tax,sso:x.sso,net:x.net}]))};
+          emps:Object.fromEntries(rows.map(({e,v:x})=>[e.id,{days:x.days,base:x.base,ot:x.ot,otH:x.otH,otRows:x.otRows||[],gross:x.gross,ssoBase:x.ssoBase,tax:x.tax,sso:x.sso,net:x.net}]))};
         syncRoundAdvance(PERIOD,cycle); closeModal();
         const nx=rounds.find(x=>x.i>rd.i); if(nx) RND_IDX[key]=nx.i;
         toast(`บันทึกจ่ายรอบ ${rd.i} แล้ว`); render();
@@ -263,8 +304,8 @@ function vRounds(v){
     delete roundStore(PERIOD,cycle)[String(rd.i)]; syncRoundAdvance(PERIOD,cycle); toast('ยกเลิกแล้ว'); render();
   };
   panel.querySelector('#rnCsv').onclick=()=>{
-    const hd=['รหัส','ชื่อ','ธนาคาร','เลขที่บัญชี','วันทำงาน','ค่าจ้าง','OT','เงินได้รวม','ภาษี','ประกันสังคม','หักอื่น','รับสุทธิ'];
-    const lines=[hd.map(csvEsc).join(',')].concat(rows.map(({e,v:x})=>[e.code,e.name,e.bank||'',e.bankNo||'',x.days??'',x.base??'',x.ot??'',x.gross,x.tax,x.sso,x.other||0,x.net].map(csvEsc).join(',')));
+    const hd=['รหัส','ชื่อ','ธนาคาร','เลขที่บัญชี','วันทำงาน','ค่าจ้าง','OT (ชม. × ตัวคูณ)','OT','เงินได้รวม','ภาษี','ประกันสังคม','หักอื่น','รับสุทธิ'];
+    const lines=[hd.map(csvEsc).join(',')].concat(rows.map(({e,v:x})=>[e.code,e.name,e.bank||'',e.bankNo||'',x.days??'',x.base??'',(x.otRows||[]).map(o=>`${o.m}x ${o.h} ชม.`).join(' / '),x.ot??'',x.gross,x.tax,x.sso,x.other||0,x.net].map(csvEsc).join(',')));
     downloadFile(`pay-round_${PERIOD}_${cycle}_${rd.i}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8'); toast('ส่งออกแล้ว');
   };
   panel.querySelector('#rnSheet').onclick=()=>roundSheet(rows, rd, cycle, paid);
@@ -304,6 +345,6 @@ function roundSlips(rows, rd, cycle, paid){
     <div class="meta">${esc(e.code)} ${esc(e.name)}${e.dept?' · '+esc(e.dept):''} · ช่วง ${fmtDate(rd.from)} – ${fmtDate(rd.to)} · งวด ${periodLabel(PERIOD)}${paid&&paid.payDate?' · จ่าย '+fmtDate(paid.payDate):''}</div>
     <table>${rd.last
       ? row('เงินได้ส่วนที่เหลือของเดือน',money(x.gross))+row('ภาษีหัก ณ ที่จ่าย','− '+money(x.tax))+row('ประกันสังคม','− '+money(x.sso))+(x.other?row('เงินหักอื่น ๆ','− '+money(x.other)):'')+row('รับสุทธิรอบนี้',money(x.net),'tot')
-      : row(e.payType==='daily'?`ค่าจ้าง (${num(x.days||0)} วัน)`:'เงินเดือน (ตามสัดส่วนวัน)',money(x.base))+(x.ot?row(`ค่าล่วงเวลา (${num(x.otH||0)} ชม.)`,money(x.ot)):'')+row('รวมเงินได้',money(x.gross))+row('ภาษีหัก ณ ที่จ่าย (เฉลี่ย)','− '+money(x.tax))+row('ประกันสังคม','− '+money(x.sso))+row('รับสุทธิรอบนี้',money(x.net),'tot')}
+      : row(e.payType==='daily'?`ค่าจ้าง (${num(x.days||0)} วัน)`:'เงินเดือน (ตามสัดส่วนวัน)',money(x.base))+((x.otRows&&x.otRows.length)?x.otRows.map(o=>row(`ค่าล่วงเวลา ${o.m} เท่า (${num(o.h)} ชม.)`,money(o.amt))).join(''):(x.ot?row(`ค่าล่วงเวลา (${num(x.otH||0)} ชม.)`,money(x.ot)):''))+row('รวมเงินได้',money(x.gross))+row('ภาษีหัก ณ ที่จ่าย (เฉลี่ย)','− '+money(x.tax))+row('ประกันสังคม','− '+money(x.sso))+row('รับสุทธิรอบนี้',money(x.net),'tot')}
     </table></div>`).join(''));
 }

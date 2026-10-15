@@ -629,7 +629,7 @@ async function ckAutoMerge(){
     const {data,error}=await sb.from('punches').select('id,emp_id,kind,ts').eq('owner_id',MY_UID).eq('merged',false).gte('ts',since).limit(2000);
     if(error || !data || !data.length) return;
     const res=await ckMergePunches(data);
-    if(res.n){ toast(`📱 นำเข้าเวลาจากมือถืออัตโนมัติ ${num(res.n)} รายการ`); if(PAGE==='attend'||PAGE==='checkin') render(); }
+    if(res.n){ toast(`📱 นำเข้าเวลาจากมือถืออัตโนมัติ ${num(res.n)} รายการ`); if(PAGE==='attend'||PAGE==='checkin'||PAGE==='advance') render(); }
   }catch(e){} finally{ _ckAutoBusy=false; }
 }
 
