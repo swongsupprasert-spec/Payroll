@@ -78,24 +78,22 @@ async function vAdmin(v){
   };
   const rows=(data||[]).map(u=>{ const s=stat(u); return `<tr>
     <td><strong>${esc(u.email||'(ไม่มีอีเมล)')}</strong>${u.id===MY_UID?' <span class="chip">คุณ</span>':''}
-      ${u.plan?`<br><span class="muted" style="font-size:12px">${esc(u.plan)}</span>`:''}</td>
-    <td>${esc(fmtDateTime(u.created_at))}</td>
+      <div class="muted" style="font-size:12px;margin-top:3px">สมัคร ${esc(fmtDateTime(u.created_at))}${u.plan?` · ${esc(u.plan)}`:''}</div></td>
     <td><span class="chip" style="background:${s.c}">${s.t}</span>
-      ${s.d?`<br><span class="muted" style="font-size:12px">เหลือ ${s.d} วัน</span>`:''}</td>
-    <td>${s.unlimited?'<b style="color:#6d28d9">ตลอดไป</b>':(s.e?esc(fmtDate(s.e.slice(0,10))):'-')}</td>
-    <td>${planBadge(u,s)}</td>
-    <td style="text-align:right;white-space:nowrap">
+      <span class="muted" style="font-size:12px">${s.unlimited?'ใช้ได้ตลอดไป':(s.e?'<span style="white-space:nowrap">ถึง '+esc(fmtDate(s.e.slice(0,10)))+'</span>':'')}${s.d?` · <span style="white-space:nowrap">เหลือ ${s.d} วัน</span>`:''}</span>
+      <div style="margin-top:5px">${planBadge(u,s)}</div></td>
+    <td class="admActs"><div>
       <button class="btn ghost sm" data-ext="${u.id}" data-mo="1" title="ต่ออายุ 1 เดือน">➕1 เดือน</button>
       <button class="btn ghost sm" data-ext="${u.id}" data-mo="12" title="ต่ออายุ 1 ปี">➕1 ปี</button>
-      <button class="btn ghost sm" data-pt="${u.id}" title="สลับระดับแพ็กเกจ">⇄ ${isPrem(u)?'เป็นมาตรฐาน':'เป็นพรีเมี่ยม'}</button>
+      <button class="btn ghost sm" data-pt="${u.id}" title="สลับระดับแพ็กเกจ">⇄ ${isPrem(u)?'มาตรฐาน':'พรีเมี่ยม'}</button>
       ${s.unlimited
-        ? `<button class="btn ghost sm" data-unl="${u.id}" data-off="1" title="ยกเลิกสิทธิ์ไม่จำกัด">↩️ ยกเลิกไม่จำกัด</button>`
+        ? `<button class="btn ghost sm" data-unl="${u.id}" data-off="1" title="ยกเลิกสิทธิ์ไม่จำกัด">↩️ เลิกไม่จำกัด</button>`
         : `<button class="btn ghost sm" data-unl="${u.id}" title="ให้ใช้งานได้ตลอดไป">♾️ ไม่จำกัด</button>`}
       <button class="btn ghost sm" data-edt="${u.id}" title="แก้ไขสิทธิ์ทั้งหมด">⚙️ แก้สิทธิ์</button>
-      <button class="btn sm" data-open="${u.id}" data-email="${esc(u.email||'')}">✏️ ดูข้อมูล</button></td>
+      <button class="btn sm" data-open="${u.id}" data-email="${esc(u.email||'')}">✏️ ดูข้อมูล</button></div></td>
   </tr>`;}).join('');
-  const tbl=el(`<table><thead><tr><th>อีเมล</th><th>สมัครเมื่อ</th><th>สถานะ</th><th>ใช้ได้ถึง</th><th>แพ็กเกจ</th><th></th></tr></thead>
-    <tbody>${rows||'<tr><td colspan="6" class="empty">ยังไม่มีผู้ใช้</td></tr>'}</tbody></table>`);
+  const tbl=el(`<table class="admUsers"><thead><tr><th>ผู้ใช้</th><th>สถานะ / แพ็กเกจ</th><th></th></tr></thead>
+    <tbody>${rows||'<tr><td colspan="3" class="empty">ยังไม่มีผู้ใช้</td></tr>'}</tbody></table>`);
   tbl.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>adminOpen(b.dataset.open, b.dataset.email));
   // ♾️ ให้/ยกเลิกสิทธิ์ใช้งานไม่จำกัด
   tbl.querySelectorAll('[data-unl]').forEach(b=>b.onclick=async()=>{
@@ -179,4 +177,4 @@ async function vAdmin(v){
   });
   box.innerHTML=''; box.appendChild(tbl);
 }
-
+

@@ -170,6 +170,13 @@
   tbody tr:hover{background:#f9fafb}
   td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   .tbl-wrap{overflow-x:auto}
+  /* ตารางผู้ดูแลระบบ: รวมเหลือ 3 คอลัมน์ ปุ่ม 6 ปุ่มจัดเป็น 2×3 ให้ตารางพอดีจอ ไม่ต้องเลื่อนซ้ายขวา */
+  .admUsers td,.admUsers th{padding-left:8px;padding-right:8px}
+  .admUsers td:first-child,.admUsers td:nth-child(2){white-space:normal}
+  .admUsers td:first-child{overflow-wrap:anywhere;min-width:120px}
+  .admUsers td:nth-child(2){min-width:130px;font-size:13px}
+  .admActs>div{display:grid;grid-template-columns:repeat(2,max-content);gap:5px;justify-content:end}
+  .admActs .btn.sm{justify-content:center;white-space:nowrap;padding-left:7px;padding-right:7px}
   tfoot td{font-weight:700;background:#f6faf8;border-top:2px solid var(--line)}
   .muted{color:var(--muted)}
   .chip{display:inline-block;background:var(--chip);color:var(--brand-d);padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600}
