@@ -490,19 +490,21 @@ function vDashboard(v){
   const dTot=dsplit.reduce((s,x)=>s+x.value,0)||1;
   const depts = isYear ? deptSummaryYear(curY) : deptSummaryRange(curY, cf, ct);
   const deptItems = depts.map((d,i)=>({label:d.dept,value:d.net,has:true,color:[C.brand,C.green,C.purple,C.warn,C.slate][i%5]}));
+  /* ซ้าย: กราฟ 2 อัน + ตารางสรุปแผนกต่อใต้ · ขวา: เมนูด่วน + พนักงานล่าสุด — สองฝั่งสูงใกล้กัน ไม่มีช่องว่าง */
   const row=el(`<div class="dash3"></div>`);
-  row.appendChild(el(`<div class="panel" style="margin:0"><div class="phead"><h2>🍩 รายได้ทั้งหมดไปไหน</h2></div>
+  const dmain=el(`<div class="dmain"><div class="dcharts"></div></div>`), charts=dmain.firstChild;
+  charts.appendChild(el(`<div class="panel" style="margin:0"><div class="phead"><h2>🍩 รายได้ทั้งหมดไปไหน</h2></div>
     <div class="pbody" style="display:flex;flex-direction:column;align-items:center;gap:16px">
       ${donutChart(dsplit)}
       <div class="vz-legend">${dsplit.filter(s=>s.value>0).map(s=>`<div class="row"><span class="sw" style="background:${s.color}"></span><span class="lab">${esc(s.label)}</span><span class="val">${money(s.value)}</span><span class="pct">${(s.value/dTot*100).toFixed(s.value/dTot<0.1?1:0)}%</span></div>`).join('')}</div>
     </div></div>`));
-  row.appendChild(el(`<div class="panel" style="margin:0"><div class="phead"><h2>🏢 เงินสุทธิตามแผนก</h2></div>
+  charts.appendChild(el(`<div class="panel" style="margin:0"><div class="phead"><h2>🏢 เงินสุทธิตามแผนก</h2></div>
     <div class="pbody">${hbarChart(deptItems)}</div></div>`));
   /* คอลัมน์ขวา: เมนูด่วน + พนักงานล่าสุด */
   const QUICK=[['employees','➕','เพิ่มพนักงาน','g'],['payroll','🧮','คำนวณเงินเดือน','b'],['slip','🧾','สลิปเงินเดือน','p'],
     ['wht','📄','50 ทวิ','o'],['pnd1','🗂️','ภ.ง.ด.1','r'],['sso','🛡️','สปส.1-10','t']].filter(q=>!pageLocked(q[0]));
   const recent=DB.employees.filter(e=>!e.resignDate).slice()
-    .sort((a,b)=>String(b.startDate||'').localeCompare(String(a.startDate||''))).slice(0,5);
+    .sort((a,b)=>String(b.startDate||'').localeCompare(String(a.startDate||''))).slice(0,8);
   const AV=['#3b82f6','#22c55e','#f59e0b','#8b5cf6','#ec4899'];
   const side=el(`<div class="dside">
     <div class="panel" style="margin:0"><div class="phead"><h2>⚡ เมนูด่วน</h2></div>
@@ -521,6 +523,7 @@ function vDashboard(v){
     if(id==='payroll'){ askPeriodThen(()=>{ PAGE=id; savePage(id); renderNav(); render(); }); return; }
     PAGE=id; savePage(id); renderNav(); render();
   });
+  row.appendChild(dmain);
   row.appendChild(side);
   v.appendChild(row);
 
@@ -532,7 +535,7 @@ function vDashboard(v){
     <tbody>${rows||`<tr><td colspan="6" class="empty">${tr('no_data')}</td></tr>`}</tbody>
     <tfoot><tr><td>${tr('grand_total')}</td><td class="num">${num(t.count)}</td><td class="num">${money(t.salary)}</td><td class="num">${money(t.gross)}</td><td class="num">${money(t.ded)}</td><td class="num">${money(t.net)}</td></tr></tfoot>
   </table>`));
-  v.appendChild(panel);
+  panel.style.margin="0"; dmain.appendChild(panel);
 
   /* ภาพรวม HR: กำลังคน · เวลา&การลา · โครงสร้างพนักงาน · ต้นทุนบุคลากร (อยู่ใต้ส่วนเงินเดือน) */
   v.appendChild(el(hrOverview(curY, cf, ct)));
