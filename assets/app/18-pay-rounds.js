@@ -27,11 +27,19 @@ function payRounds(p, cycle){
       if(d.getDay()===we || isoOf(d)===isoOf(to)){ out.push([s,d]); s=addDays(d,1); }
     }
   }
-  return out.map(([a,b],i)=>({i:i+1, from:isoOf(a), to:isoOf(b), last:i===out.length-1}));
+  return out.map(([a,b],i)=>({i:i+1, from:isoOf(a), to:isoOf(b), last:i===out.length-1, cycle}));
 }
 function roundStore(p, cycle){
   DB.payRounds=DB.payRounds||{}; DB.payRounds[p]=DB.payRounds[p]||{}; DB.payRounds[p][cycle]=DB.payRounds[p][cycle]||{};
   return DB.payRounds[p][cycle];
+}
+/* วันทำงาน/ชม. OT ที่กรอกเองในรอบ (กรณีไม่มีเวลาเข้างาน) — เก็บแยกใน _man ไม่ปนกับรอบที่บันทึกจ่าย */
+function roundManual(p, cycle, i, empId){ const st=DB.payRounds&&DB.payRounds[p]&&DB.payRounds[p][cycle]; const m=st&&st._man&&st._man[String(i)]; return (m&&m[empId])||null; }
+function setRoundManual(p, cycle, i, empId, key, val){
+  const st=roundStore(p,cycle); st._man=st._man||{}; const m=st._man[String(i)]=st._man[String(i)]||{}; const o=m[empId]=m[empId]||{};
+  if(val===''||val==null) delete o[key]; else o[key]=Math.max(0,+val||0);
+  if(!Object.keys(o).length) delete m[empId];
+  save();
 }
 function roundPaid(p, cycle, i){ const st=DB.payRounds&&DB.payRounds[p]&&DB.payRounds[p][cycle]; return (st&&st[String(i)])||null; }
 /* ช่วงที่คนนี้ทำงานจริงภายในรอบ (ตัดวันเริ่มงาน/ลาออก) — null = ไม่ได้ทำงานในรอบนี้ */
@@ -47,14 +55,17 @@ function roundCalcRaw(e, p, rd, prev){
   const zero={days:0, base:0, ot:0, otH:0, gross:0, ssoBase:0, tax:0, sso:0, net:0};
   if(!win) return zero;
   const s=attendStats(e, p, win);
+  const man=roundManual(p, rd.cycle, rd.i, e.id)||{};
   let base=0, days=0;
-  if(e.payType==='daily'){ days=s.days; base=r2(salaryOnDate(e, win.to)*days); }
+  if(e.payType==='daily'){ days=(man.days!=null)?man.days:s.days; base=r2(salaryOnDate(e, win.to)*days); }
   else {
     const {from,to}=periodRange(p); const dim=Math.round((to-from)/864e5)+1;
     let sum=0; for(let d=new Date(win.from+'T00:00:00'); isoOf(d)<=win.to; d=addDays(d,1)){ sum+=salaryOnDate(e, isoOf(d)); days++; }
     base=r2(sum/dim);
   }
-  let ot=0, otH=0; Object.keys(s.otBy||{}).forEach(m=>{ const h=+s.otBy[m]||0; otH+=h; ot+=otAmount(e,h,+m); });
+  let ot=0, otH=0;
+  if(man.otH!=null){ otH=man.otH; ot=otAmount(e, otH, 1.5); }          // กรอกเอง = OT วันทำงานปกติ 1.5 เท่า
+  else Object.keys(s.otBy||{}).forEach(m=>{ const h=+s.otBy[m]||0; otH+=h; ot+=otAmount(e,h,+m); });
   ot=r2(ot);
   const gross=r2(base+ot);
   /* ประกันสังคมสะสม: ค่าจ้าง (ไม่รวม OT) สะสมถึงรอบนี้ แล้วหักส่วนที่หักไปแล้ว */
@@ -66,7 +77,7 @@ function roundCalcRaw(e, p, rd, prev){
   if(!(taxM>0)) taxM=estTax(e, +p.split('-')[0], {earn:{}, days:e.payType==='daily'?(DB.workDaysDefault||26):0}).monthly;
   const proj=e.payType==='daily' ? salaryFor(e,p)*(DB.workDaysDefault||26) : salaryFor(e,p);
   const tax=proj>0 ? r2(taxM*gross/proj) : 0;
-  return {days, base, ot, otH, gross, ssoBase, tax, sso, net:r2(gross-tax-sso)};
+  return {days, base, ot, otH, gross, ssoBase, tax, sso, net:r2(gross-tax-sso), attDays:s.days, man:(man.days!=null||man.otH!=null)};
 }
 /* ยอดของทุกรอบของคนหนึ่ง (รอบที่บันทึกจ่ายแล้วใช้ตัวเลขที่เก็บไว้) */
 function empRounds(e, p, cycle){
@@ -96,7 +107,7 @@ function syncRoundAdvance(p, cycle){
   const [py,pm]=p.split('-').map(Number);
   DB.employees.filter(e=>cycleOf(e)===cycle && activeInMonth(e,py,pm)).forEach(e=>{
     const st=roundStore(p, cycle);
-    const paidNet=Object.keys(st).reduce((s,k)=>s+((st[k].emps&&st[k].emps[e.id]&&+st[k].emps[e.id].net)||0),0);
+    const paidNet=Object.keys(st).filter(k=>k!=='_man').reduce((s,k)=>s+((st[k].emps&&st[k].emps[e.id]&&+st[k].emps[e.id].net)||0),0);
     const r=getRec(p, e.id);
     if(paidNet>0 || (r.manual&&r.manual.advanceRounds)){
       r.manual=r.manual||{}; r.manual.advance=1; r.manual.advanceRounds=1;
@@ -163,6 +174,8 @@ function vRounds(v){
   if(rd.last) notes.push('รอบสุดท้าย = ยอดทั้งเดือนจากหน้า <b>คำนวณเงินได้ / เงินหัก</b> ลบส่วนที่จ่ายไปแล้ว — เงินหักอื่น ๆ (เงินกู้ กยศ. ขาดงาน ฯลฯ) หักในรอบนี้ทั้งหมด');
   if(needDays) notes.push(`⚠️ พนักงานรายวัน ${needDays} คนยังไม่มีจำนวนวันทำงานของเดือน — ไปหน้า <b>เวลาเข้างาน</b> แล้วกด <b>➡️ ส่งเข้าเงินได้ / เงินหัก</b> ก่อน`);
   if(unpaidBefore) notes.push(`⚠️ มี ${unpaidBefore} รอบก่อนหน้าที่ยังไม่ได้บันทึกว่าจ่าย — ยอดรอบนี้คิดโดยถือว่ารอบก่อนจ่ายตามตัวเลขที่แสดง`);
+  const noDays=!rd.last&&!paid ? rows.filter(x=>x.e.payType==='daily'&&!(+x.v.days>0)).length : 0;
+  if(noDays) notes.push(`พนักงานรายวัน ${noDays} คนยังไม่มีเวลาเข้างานในช่วงนี้ — <b>กรอกจำนวนวันทำงานในตารางได้เลย</b> หรือใส่เวลาที่หน้า <b>เวลาเข้างาน</b>`);
   if(paid) notes.push(`✅ บันทึกว่าจ่ายแล้ว${paid.payDate?' วันที่ '+esc(fmtDate(paid.payDate)):''} — ตัวเลขรอบนี้ถูกเก็บไว้ ไม่เปลี่ยนตามข้อมูลที่แก้ทีหลัง`);
 
   const head=rd.last
@@ -172,7 +185,7 @@ function vRounds(v){
     ? `<tr><td><span class="chip">${esc(e.code)}</span></td><td><strong>${esc(e.name)}</strong>${x.needDays?' <span class="chip" style="background:#fef3c7;color:#b45309">ยังไม่มีวันทำงาน</span>':''}</td>
         <td class="num">${money(x.gross)}</td><td class="num neg">${money(x.tax)}</td><td class="num neg">${money(x.sso)}</td><td class="num neg">${money(x.other)}</td><td class="num"><b>${money(x.net)}</b></td></tr>`
     : `<tr><td><span class="chip">${esc(e.code)}</span></td><td><strong>${esc(e.name)}</strong><div class="muted" style="font-size:11px">${e.payType==='daily'?'รายวัน':'รายเดือน'}</div></td>
-        <td class="num">${num(x.days||0)}</td><td class="num">${money(x.base)}</td><td class="num">${x.ot?money(x.ot):'-'}</td><td class="num pos">${money(x.gross)}</td>
+        <td class="num">${(!paid&&e.payType==='daily')?`<input type="number" min="0" max="7" step="0.5" class="rnIn" data-emp="${e.id}" data-k="days" value="${x.days||0}" title="วันทำงานในรอบนี้ (จากเวลาเข้างาน ${num(x.attDays||0)} วัน) — แก้ได้">`:num(x.days||0)}</td><td class="num">${money(x.base)}</td><td class="num">${!paid?`<input type="number" min="0" step="0.5" class="rnIn ot" data-emp="${e.id}" data-k="otH" value="${x.otH||''}" placeholder="ชม." title="ชั่วโมง OT (1.5 เท่า) — เว้นว่าง = ใช้จากเวลาเข้างาน"><div class="muted" style="font-size:11px">${x.ot?money(x.ot):''}</div>`:(x.ot?money(x.ot):'-')}</td><td class="num pos">${money(x.gross)}</td>
         <td class="num neg">${money(x.tax)}</td><td class="num neg">${money(x.sso)}</td><td class="num"><b>${money(x.net)}</b></td></tr>`).join('');
   const foot=rd.last
     ? `<td colspan="2">รวม ${num(rows.length)} คน</td><td class="num">${money(tot('gross'))}</td><td class="num">${money(tot('tax'))}</td><td class="num">${money(tot('sso'))}</td><td class="num">${money(tot('other'))}</td><td class="num">${money(tot('net'))}</td>`
@@ -188,6 +201,7 @@ function vRounds(v){
     <div class="pbody" style="padding:0"><div class="tbl-wrap"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody><tfoot><tr>${foot}</tr></tfoot></table></div></div></div>`);
   v.appendChild(panel);
 
+  panel.querySelectorAll('.rnIn').forEach(inp=>inp.onchange=()=>{ setRoundManual(PERIOD, cycle, rd.i, inp.dataset.emp, inp.dataset.k, inp.value); render(); });
   const pb=panel.querySelector('#rnPay');
   if(pb) pb.onclick=()=>{
     if(unpaidBefore){ toast('กรุณาบันทึกจ่ายรอบก่อนหน้าให้ครบก่อน'); return; }
