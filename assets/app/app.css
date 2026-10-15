@@ -506,3 +506,8 @@
   .rnOtEdit{border:1px solid #bfdbfe;background:#f8fbff;color:#1d4ed8;border-radius:7px;padding:2px 8px;font:inherit;font-size:11.5px;cursor:pointer}
   html[data-theme="dark"] .rnOt b{background:#0c2d48;color:#7dd3fc}
   html[data-theme="dark"] .rnOtEdit{background:#12233a;border-color:#2b4a72;color:#93c5fd}
+
+  /* หมุดนอกสถานที่ */
+  .fsList{display:flex;flex-direction:column;gap:8px}
+  .fsItem{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#f8fafc}
+  html[data-theme="dark"] .fsItem{background:#12233a}

@@ -270,6 +270,65 @@ function vCheckin(v){
     if(error){ toast('ลบไม่สำเร็จ: '+error.message); return; }
     toast('ล้างข้อมูลทดลองแล้ว'); render();
   };
+  /* ---- 1b) หมุดนอกสถานที่ / สาขา: เลือกคนที่สแกนได้ + ช่วงวันที่ (sql/39) ---- */
+  const extras=(cfg.sites||[]).slice(1);
+  const fieldOk=cfg.field_sites!=null, mainOk=!!(cfg.sites&&cfg.sites[0]&&cfg.sites[0].lat!=null);
+  const empName=id=>{ const e=DB.employees.find(x=>x.id===id); return e?e.name:'(ไม่พบพนักงาน)'; };
+
+  const fp=el(`<div class="panel"><div style="padding:18px 20px">
+    <h3 style="margin-bottom:6px">🗺️ หมุดนอกสถานที่ / สาขา</h3>
+    <p class="muted" style="font-size:12.5px;margin:0 0 12px">พนักงานไปทำงานที่อื่น (หน้างานลูกค้า) หรือบริษัทมีหลายสาขา — ปักหมุดเพิ่ม แล้วเลือกว่า<b>ใครสแกนที่หมุดนั้นได้</b> (ไม่เลือก = ทุกคน) และ<b>ช่วงวันที่</b> · ในรายการลงเวลาจะขึ้นชื่อหมุดที่สแกน ดูเวลาเทียบกะได้ว่าไปถึงตรงเวลาไหม</p>
+    ${!fieldOk?'<div style="background:#fef3c7;color:#92400e;border-radius:10px;padding:10px 12px;font-size:13px">⚠️ ต้องรัน <b>sql/39</b> ใน Supabase ก่อนจึงเพิ่มหมุดได้</div>'
+     : !mainOk?'<div class="muted" style="font-size:13px">ปักหมุดบริษัทด้านบนแล้วกดบันทึกก่อน</div>'
+     : `<div class="fsList">${extras.length?extras.map((s,i)=>`<div class="fsItem">
+          <div style="flex:1;min-width:0"><b>📍 ${esc(s.name||'')}</b> <span class="muted" style="font-size:12px">· รัศมี ${num(s.radius||100)} ม. · <a target="_blank" rel="noopener" href="https://www.google.com/maps?q=${+s.lat},${+s.lng}">ดูแผนที่</a></span>
+            <div style="font-size:12.5px;margin-top:3px">👥 ${Array.isArray(s.emps)&&s.emps.length?s.emps.map(id=>esc(empName(id))).join(', '):'<b>ทุกคน</b>'}</div>
+            <div class="muted" style="font-size:12px">📅 ${s.from||s.to?`${s.from?fmtDate(s.from):'…'} – ${s.to?fmtDate(s.to):'…'}`:'ทุกวัน'}${s.to&&s.to<todayIso?' <b style="color:#b91c1c">(หมดช่วงแล้ว)</b>':''}</div></div>
+          <div style="display:flex;gap:6px;align-items:flex-start"><button class="btn ghost sm" data-fsed="${i}">✏️ แก้</button><button class="btn ghost sm" data-fsdel="${i}" style="color:#dc2626">ลบ</button></div></div>`).join('')
+        :'<div class="muted" style="font-size:13px">ยังไม่มีหมุดเพิ่ม</div>'}</div>
+       <button class="btn sm" id="fsAdd" style="margin-top:10px">＋ เพิ่มหมุด</button>`}
+  </div></div>`);
+  v.appendChild(fp);
+  const saveSites=async list=>{
+    const all=[cfg.sites[0], ...list];
+    const {error}=await sb.from('checkin_config').update({sites:all, updated_at:new Date().toISOString()}).eq('owner_id',MY_UID);
+    if(error){ toast('บันทึกไม่สำเร็จ: '+error.message); return false; }
+    cfg.sites=all; if(S.cfg) S.cfg.sites=all; return true;
+  };
+  const editSite=i=>{
+    const s=i==null?{name:'',lat:null,lng:null,radius:150,emps:[],from:'',to:''}:{...extras[i]};
+    const staff=DB.employees.filter(e=>!e.resignDate||e.resignDate>=todayIso);
+    openModal(i==null?'＋ เพิ่มหมุดนอกสถานที่':'✏️ แก้หมุดนอกสถานที่', `
+      <div class="field"><label>ชื่อสถานที่ *</label><input id="fsName" value="${esc(s.name||'')}" placeholder="เช่น หน้างานลูกค้า ABC / สาขาบางนา"></div>
+      <div class="field" style="margin-top:8px"><label>ลิงก์ Google Maps หรือพิกัด *</label><input id="fsGmap" value="${s.lat!=null?s.lat+', '+s.lng:''}" placeholder="คลิกขวาที่ตำแหน่งใน Google Maps → กดพิกัดเพื่อคัดลอก แล้ววางที่นี่" autocomplete="off"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px">
+        <div class="field"><label>รัศมี (เมตร)</label><input id="fsRad" type="number" min="30" step="10" value="${s.radius||150}"></div>
+        <div class="field"><label>ใช้ได้ตั้งแต่</label><input id="fsFrom" type="date" value="${s.from||''}"></div>
+        <div class="field"><label>ถึงวันที่</label><input id="fsTo" type="date" value="${s.to||''}"></div></div>
+      <div class="muted" style="font-size:12px;margin-top:2px">เว้นวันที่ว่าง = ใช้ได้ทุกวัน (เหมาะกับสาขา)</div>
+      <div class="field" style="margin-top:10px"><label>ใครสแกนที่หมุดนี้ได้ <span class="muted" style="font-weight:400">(ไม่เลือก = ทุกคน)</span></label>
+        <input id="fsQ" placeholder="🔍 ค้นหาชื่อ / รหัส" style="margin-bottom:6px" autocomplete="off">
+        <div id="fsEmps" style="max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:9px;padding:6px 8px">
+          ${staff.map(e=>`<label style="display:flex;gap:8px;align-items:center;padding:4px 2px;font-size:13.5px;cursor:pointer" data-q="${esc((e.code+' '+e.name).toLowerCase())}"><input type="checkbox" value="${esc(e.id)}" ${(s.emps||[]).includes(e.id)?'checked':''}> <span class="chip">${esc(e.code)}</span> ${esc(e.name)}</label>`).join('')}
+        </div></div>`,
+      [['ยกเลิก','ghost',closeModal],['บันทึก','',async()=>{
+        const name=$('#fsName').value.trim(), p=parseGmap($('#fsGmap').value);
+        if(!name){ toast('ใส่ชื่อสถานที่'); return; }
+        if(!p){ toast('อ่านพิกัดไม่ได้ — วางพิกัด เช่น 13.7563, 100.5018 หรือลิงก์ Google Maps แบบยาว'); return; }
+        const from=$('#fsFrom').value, to=$('#fsTo').value;
+        if(from&&to&&to<from){ toast('วันที่สิ้นสุดต้องไม่ก่อนวันเริ่ม'); return; }
+        const emps=[...document.querySelectorAll('#fsEmps input:checked')].map(x=>x.value);
+        const ns={name, lat:+p[0].toFixed(7), lng:+p[1].toFixed(7), radius:Math.max(30,+$('#fsRad').value||150), emps, from, to};
+        const list=extras.slice(); if(i==null) list.push(ns); else list[i]=ns;
+        if(await saveSites(list)){ closeModal(); toast(emps.length?`บันทึกหมุดแล้ว · สแกนได้ ${emps.length} คน`:'บันทึกหมุดแล้ว · ทุกคนสแกนได้'); render(); }
+      }]]);
+    const qi=$('#fsQ'); if(qi) qi.oninput=()=>{ const t=qi.value.trim().toLowerCase(); document.querySelectorAll('#fsEmps label').forEach(l=>l.style.display=!t||l.dataset.q.includes(t)?'':'none'); };
+  };
+  const fsA=fp.querySelector('#fsAdd'); if(fsA) fsA.onclick=()=>editSite(null);
+  fp.querySelectorAll('[data-fsed]').forEach(b=>b.onclick=()=>editSite(+b.dataset.fsed));
+  fp.querySelectorAll('[data-fsdel]').forEach(b=>b.onclick=async()=>{
+    const i=+b.dataset.fsdel; if(!confirm(`ลบหมุด "${extras[i].name}"?`)) return;
+    const list=extras.filter((x,k)=>k!==i); if(await saveSites(list)){ toast('ลบหมุดแล้ว'); render(); } });
   /* สแกนเข้างานก่อนเวลา: ตัวอย่างสดตามกะแรก */
   const exEl=document.getElementById('ckEarlyEx');
   const exUpd=()=>{ if(!exEl) return; const m=ckEarlyMin(), sh=ensureShifts()[0], st=hm2min(sh.start)??480;
@@ -288,7 +347,7 @@ function vCheckin(v){
     if(cfg.code && want && want!==cfg.code && !confirm(`เปลี่ยนรหัสบริษัทจาก ${cfg.code} เป็น ${want}?
 ลิงก์เดิมที่ส่งให้พนักงานจะใช้ไม่ได้ ต้องส่งลิงก์ใหม่`)) return;
     const row={ owner_id:MY_UID, code:want||cfg.code||ckCode(), company_name:q('#ckName').value.trim(),
-      sites: hasPin?[site]:[], require_zone:q('#ckZone').checked, require_photo:q('#ckPhoto').checked, require_face:q('#ckFace').checked, early_in_min:ckEarlyMin(), updated_at:new Date().toISOString() };
+      sites: hasPin?[site, ...(cfg.sites||[]).slice(1)]:[], require_zone:q('#ckZone').checked, require_photo:q('#ckPhoto').checked, require_face:q('#ckFace').checked, early_in_min:ckEarlyMin(), updated_at:new Date().toISOString() };
     if(row.require_face) row.require_photo=true;       // จดจำใบหน้าต้องมีรูปเสมอ
     let {error}=await sb.from('checkin_config').upsert(row);
     if(error && /early_in_min/.test(error.message)){ toast('ยังไม่ได้รัน sql/38 (กันสแกนเร็วเกิน) — บันทึกส่วนอื่นแล้ว'); delete row.early_in_min; ({error}=await sb.from('checkin_config').upsert(row)); }
