@@ -184,3 +184,127 @@ function vKT20(v, year){
     downloadFile(`kt20k_${year+543}.csv`, '﻿'+lines.join('\r\n'),'text/csv;charset=utf-8'); toast('ส่งออก กท.20 ก แล้ว');
   };
 }
+
+/* ============ แบบสรุปกองทุนสำรองเลี้ยงชีพ / กองทุนสงเคราะห์ลูกจ้าง ============
+   ใช้ตัวเลขจากหน้าคำนวณเงินได้/เงินหัก (ded.pvd / ded.wf) ของแต่ละงวด
+   - กองทุนสำรองเลี้ยงชีพ: นายจ้างสมทบตามอัตราที่ตั้งในข้อมูลพนักงาน (pvdEr) ไม่ตั้ง = เท่ากับเงินสะสมของพนักงาน
+   - กองทุนสงเคราะห์ลูกจ้าง: นายจ้างจ่ายสมทบเท่ากับที่หักจากลูกจ้าง */
+const FUND_KIND={
+  pvd:{title:'กองทุนสำรองเลี้ยงชีพ', short:'PVD', ico:'🏦', emp:'เงินสะสม (ลูกจ้าง)', er:'เงินสมทบ (นายจ้าง)', file:'pvd'},
+  wf: {title:'กองทุนสงเคราะห์ลูกจ้าง', short:'WF', ico:'🤝', emp:'เงินสะสม (ลูกจ้าง)', er:'เงินสมทบ (นายจ้าง)', file:'welfare-fund'}
+};
+let fundForm={pvd:'month', wf:'month'};   // month | year
+/* รายการของงวด p: คนละแถว เฉพาะคนที่มีเงินเข้ากองทุน */
+function fundRows(kind, p){
+  const [y,m]=p.split('-').map(Number);
+  const out=[];
+  DB.employees.forEach(e=>{
+    if(!activeInMonth(e,y,m)) return;
+    const r=readRec(p,e.id), base=+basePay(e,r,p)||0;
+    let own, er, rEmp, rEr;
+    if(kind==='pvd'){
+      if(!(+e.pvdRate>0 || +e.pvdEr>0)) return;
+      own=+(r.ded&&r.ded.pvd)||0;
+      const erSet=!(e.pvdEr==null||e.pvdEr==='');
+      er=erSet ? Math.round(base*(+e.pvdEr)/100) : own;
+      rEmp=+e.pvdRate||0; rEr=erSet ? +e.pvdEr : rEmp;
+    } else {
+      own=+(r.ded&&r.ded.wf)||0; er=own;
+      rEmp=+e.wfRate||0; rEr=rEmp;
+    }
+    if(!(own>0 || er>0)) return;
+    out.push({e, base, own, er, rEmp, rEr, total:own+er});
+  });
+  return out;
+}
+function fundYear(kind, year){
+  return Array.from({length:12},(_,i)=>{
+    const rows=fundRows(kind, `${year}-${String(i+1).padStart(2,'0')}`);
+    return {count:rows.length, base:rows.reduce((s,x)=>s+x.base,0), own:rows.reduce((s,x)=>s+x.own,0), er:rows.reduce((s,x)=>s+x.er,0)};
+  });
+}
+function vPVD(v){ vFund(v,'pvd'); }
+function vWF(v){ vFund(v,'wf'); }
+function vFund(v, kind){
+  const K=FUND_KIND[kind], [py,pm]=PERIOD.split('-').map(Number);
+  const seg=el(`<div class="toolbar no-print" style="margin-bottom:6px">
+    <div class="seg" style="display:inline-flex;background:#eaf6f1;border-radius:10px;padding:3px">
+      <button class="segbtn ${fundForm[kind]==='month'?'on':''}" data-f="month">${K.ico} รายเดือน (รายคน)</button>
+      <button class="segbtn ${fundForm[kind]==='year'?'on':''}" data-f="year">📅 สรุปทั้งปี</button>
+    </div></div>`);
+  v.appendChild(seg);
+  seg.querySelectorAll('.segbtn').forEach(b=>b.onclick=()=>{ fundForm[kind]=b.dataset.f; render(); });
+  const area=el('<div class="print-area"></div>');
+
+  if(fundForm[kind]==='year'){
+    const months=fundYear(kind, py);
+    const S=months.reduce((a,x)=>({base:a.base+x.base, own:a.own+x.own, er:a.er+x.er}),{base:0,own:0,er:0});
+    v.appendChild(el(`<div class="toolbar no-print"><h2 style="font-size:16px">สรุป${K.title} — ประจำปี ${py+543}</h2>
+      <button class="btn ghost sm" style="margin-left:auto" id="fdCsv">⬇️ CSV</button>
+      <button class="btn" onclick="window.print()">🖨️ พิมพ์</button></div>`));
+    v.appendChild(area);
+    area.appendChild(el(`<div class="doc">
+      <h2 class="dt">สรุปการนำส่ง${K.title}</h2>
+      <div style="text-align:center;margin-bottom:8px">ประจำปี พ.ศ. ${py+543}</div>
+      <table class="dtbl"><tr><td style="width:60%"><strong>ชื่อนายจ้าง:</strong> ${esc(DB.company.name)}</td>
+        <td><strong>เลขประจำตัวผู้เสียภาษี:</strong> ${esc(DB.company.taxId||'-')}</td></tr></table>
+      <table class="dtbl" style="margin-top:8px">
+        <thead><tr><th>เดือน</th><th style="text-align:center">จำนวนลูกจ้าง</th><th style="text-align:right">ค่าจ้างที่ใช้คำนวณ</th>
+          <th style="text-align:right">${K.emp}</th><th style="text-align:right">${K.er}</th><th style="text-align:right">รวมนำส่ง</th></tr></thead>
+        <tbody>${months.map((x,i)=>`<tr><td>${THAI_MONTHS[i]}</td><td style="text-align:center">${x.count||''}</td>
+          <td style="text-align:right">${x.base?money(x.base):''}</td><td style="text-align:right">${x.own?money(x.own):''}</td>
+          <td style="text-align:right">${x.er?money(x.er):''}</td><td style="text-align:right">${(x.own+x.er)?money(x.own+x.er):''}</td></tr>`).join('')}</tbody>
+        <tfoot><tr><th colspan="2" style="text-align:right">รวมทั้งปี</th><th style="text-align:right">${money(S.base)}</th>
+          <th style="text-align:right">${money(S.own)}</th><th style="text-align:right">${money(S.er)}</th><th style="text-align:right">${money(S.own+S.er)}</th></tr></tfoot>
+      </table>
+      <div style="margin-top:6px;font-size:12px">รวมนำส่งทั้งปี ${money(S.own+S.er)} บาท (${bahtText(S.own+S.er)})</div>
+      <div class="sign"><div><div class="line"></div>ลายมือชื่อนายจ้าง / ผู้รับมอบอำนาจ<br>( ${esc(DB.company.signer||'')} )<br>วันที่ ......./......./.......</div></div>
+    </div>`));
+    $('#fdCsv').onclick=()=>{
+      const lines=['เดือน,จำนวนลูกจ้าง,ค่าจ้าง,เงินสะสมลูกจ้าง,เงินสมทบนายจ้าง,รวม'];
+      months.forEach((x,i)=>lines.push([THAI_MONTHS[i],x.count,x.base,x.own,x.er,x.own+x.er].join(',')));
+      lines.push(['รวม','',S.base,S.own,S.er,S.own+S.er].join(','));
+      downloadFile(`${K.file}_${py+543}.csv`, '\ufeff'+lines.join('\r\n'),'text/csv;charset=utf-8'); toast('ส่งออกแล้ว');
+    };
+    return;
+  }
+
+  const rows=fundRows(kind, PERIOD);
+  const T=rows.reduce((a,x)=>({base:a.base+x.base, own:a.own+x.own, er:a.er+x.er}),{base:0,own:0,er:0});
+  v.appendChild(el(`<div class="toolbar no-print"><h2 style="font-size:16px">แบบสรุป${K.title} — ${periodLabel(PERIOD)}</h2>
+    <button class="btn ghost sm" style="margin-left:auto" id="fdCsv">⬇️ CSV</button>
+    <button class="btn" onclick="window.print()">🖨️ พิมพ์</button></div>`));
+  if(!rows.length) v.appendChild(el(`<div class="panel no-print"><div class="pbody" style="font-size:13px;color:var(--muted)">
+    ยังไม่มีพนักงานที่มี${K.title}ในงวดนี้ — ตั้ง${kind==='pvd'?'อัตรากองทุนสำรองเลี้ยงชีพ':'อัตรากองทุนสงเคราะห์ลูกจ้าง'}ได้ที่ <b>ข้อมูลพนักงาน</b> → ✏️ แก้ไข${kind==='wf'?' (คนที่มีกองทุนสำรองเลี้ยงชีพแล้วไม่ต้องจ่ายกองทุนสงเคราะห์)':''}</div></div>`));
+  v.appendChild(area);
+  area.appendChild(el(`<div class="doc">
+    <h2 class="dt">แบบสรุปการนำส่ง${K.title}</h2>
+    <div style="text-align:center;margin-bottom:8px">ประจำเดือน ${THAI_MONTHS[pm-1]} พ.ศ. ${py+543}</div>
+    <table class="dtbl"><tr><td style="width:60%"><strong>ชื่อนายจ้าง:</strong> ${esc(DB.company.name)}</td>
+      <td><strong>เลขประจำตัวผู้เสียภาษี:</strong> ${esc(DB.company.taxId||'-')}</td></tr></table>
+    <table class="dtbl" style="margin-top:8px">
+      <thead><tr><th style="width:6%">ลำดับ</th><th>เลขบัตรประชาชน</th><th>ชื่อ-สกุล</th><th style="text-align:right">ค่าจ้าง</th>
+        <th style="text-align:right">อัตราสะสม</th><th style="text-align:right">${K.emp}</th>
+        <th style="text-align:right">อัตราสมทบ</th><th style="text-align:right">${K.er}</th><th style="text-align:right">รวม</th></tr></thead>
+      <tbody>${rows.map((x,i)=>`<tr><td style="text-align:center">${i+1}</td><td>${esc(x.e.taxId||'-')}</td><td>${esc(x.e.name)}</td>
+        <td style="text-align:right">${money(x.base)}</td><td style="text-align:right">${num(x.rEmp)}%</td><td style="text-align:right">${money(x.own)}</td>
+        <td style="text-align:right">${num(x.rEr)}%</td><td style="text-align:right">${money(x.er)}</td><td style="text-align:right">${money(x.own+x.er)}</td></tr>`).join('')
+        ||'<tr><td colspan="9" style="text-align:center">ไม่มีข้อมูล</td></tr>'}</tbody>
+      <tfoot><tr><th colspan="3" style="text-align:right">รวม</th><th style="text-align:right">${money(T.base)}</th><th></th>
+        <th style="text-align:right">${money(T.own)}</th><th></th><th style="text-align:right">${money(T.er)}</th><th style="text-align:right">${money(T.own+T.er)}</th></tr></tfoot>
+    </table>
+    <table class="dtbl" style="margin-top:8px">
+      <tr><td>1. ${K.emp} รวม</td><td style="text-align:right;width:28%">${money(T.own)} บาท</td></tr>
+      <tr><td>2. ${K.er} รวม</td><td style="text-align:right">${money(T.er)} บาท</td></tr>
+      <tr><td><strong>3. รวมเงินที่นำส่งทั้งสิ้น (ข้อ 1 + ข้อ 2)</strong></td><td style="text-align:right"><strong>${money(T.own+T.er)} บาท</strong></td></tr>
+    </table>
+    <div style="margin-top:6px;font-size:12px">จำนวนลูกจ้าง ${num(rows.length)} ราย · รวมนำส่ง ${money(T.own+T.er)} บาท (${bahtText(T.own+T.er)})</div>
+    <div class="sign"><div><div class="line"></div>ลายมือชื่อนายจ้าง / ผู้รับมอบอำนาจ<br>( ${esc(DB.company.signer||'')} )<br>วันที่ ......./......./.......</div></div>
+  </div>`));
+  $('#fdCsv').onclick=()=>{
+    const lines=['ลำดับ,เลขบัตรประชาชน,ชื่อ,ค่าจ้าง,อัตราสะสม%,เงินสะสมลูกจ้าง,อัตราสมทบ%,เงินสมทบนายจ้าง,รวม'];
+    rows.forEach((x,i)=>lines.push([i+1,x.e.taxId||'',`"${String(x.e.name).replace(/"/g,'""')}"`,x.base,x.rEmp,x.own,x.rEr,x.er,x.own+x.er].join(',')));
+    lines.push(['รวม','','',T.base,'',T.own,'',T.er,T.own+T.er].join(','));
+    downloadFile(`${K.file}_${PERIOD}.csv`, '\ufeff'+lines.join('\r\n'),'text/csv;charset=utf-8'); toast('ส่งออกแล้ว');
+  };
+}

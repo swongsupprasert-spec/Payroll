@@ -57,6 +57,8 @@ const PAGES = [
   ['wht','หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)','📄'],
   ['pnd1','แบบ ภ.ง.ด.1','🗂️'],
   ['sso','แบบประกันสังคม (สปส.1-10)','🛡️'],
+  ['pvd','แบบสรุปกองทุนสำรองเลี้ยงชีพ','🏦'],
+  ['wf','แบบสรุปกองทุนสงเคราะห์ลูกจ้าง','🤝'],
   ['settings','ตั้งค่า','⚙️'],
 ];
 
@@ -79,6 +81,8 @@ const NAV_ICONS={
   wht:       ICO('<path d="M8 3.4h8l3.4 3.4v8.4a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5.4a2 2 0 0 1 2-2z"/><path d="M16 3.4v3.4h3.4"/><circle cx="12" cy="19" r="2.4"/><path d="m9.9 20.6-.5 2.6 2.6-1.3 2.6 1.3-.5-2.6"/>'),
   pnd1:      ICO('<path d="M3.4 7.4a2 2 0 0 1 2-2h3.4l2 2.4h7.8a2 2 0 0 1 2 2v8.8a2 2 0 0 1-2 2H5.4a2 2 0 0 1-2-2z"/><path d="M8.6 13h6.8"/>'),
   sso:       ICO('<path d="M12 2.8 4.6 5.9v5.4c0 4.6 3.1 8.8 7.4 9.9 4.3-1.1 7.4-5.3 7.4-9.9V5.9z"/><path d="m8.9 11.9 2.2 2.2 4-4.3"/>'),
+  pvd:       ICO('<path d="M3.2 9.4 12 4l8.8 5.4"/><path d="M4.6 9.6v8.6M9.2 9.6v8.6M14.8 9.6v8.6M19.4 9.6v8.6"/><path d="M3 20.4h18"/>'),
+  wf:        ICO('<path d="M12 20.2s-7.4-4.4-7.4-9.8a4.2 4.2 0 0 1 7.4-2.7 4.2 4.2 0 0 1 7.4 2.7c0 5.4-7.4 9.8-7.4 9.8z"/><path d="M9.2 12.2h5.6M12 9.4V15"/>'),
   settings:  ICO('<circle cx="12" cy="12" r="3.1"/><path d="M19.2 14.6a1.6 1.6 0 0 0 .3 1.8l.1.1a1.9 1.9 0 1 1-2.7 2.7l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.3a1.9 1.9 0 1 1-3.8 0v-.2a1.6 1.6 0 0 0-2.8-1.1l-.1.1a1.9 1.9 0 1 1-2.7-2.7l.1-.1a1.6 1.6 0 0 0-1.1-2.7h-.3a1.9 1.9 0 1 1 0-3.8h.2a1.6 1.6 0 0 0 1.1-2.8l-.1-.1a1.9 1.9 0 1 1 2.7-2.7l.1.1a1.6 1.6 0 0 0 1.8.3h.1a1.6 1.6 0 0 0 1-1.5v-.3a1.9 1.9 0 1 1 3.8 0v.2a1.6 1.6 0 0 0 2.7 1.1l.1-.1a1.9 1.9 0 1 1 2.7 2.7l-.1.1a1.6 1.6 0 0 0 1.1 2.7h.3a1.9 1.9 0 1 1 0 3.8h-.2a1.6 1.6 0 0 0-1.5 1z"/>'),
   orders:    ICO('<circle cx="9.4" cy="20" r="1.4"/><circle cx="17.6" cy="20" r="1.4"/><path d="M2.6 3.4h2.8l2.4 11.4h10.4l2.2-8.4H6.2"/>'),
   quotes:    ICO('<path d="M7 2.8h7.4l4.6 4.6v12.4a1.4 1.4 0 0 1-1.4 1.4H7a1.4 1.4 0 0 1-1.4-1.4V4.2A1.4 1.4 0 0 1 7 2.8z"/><path d="M14.2 2.8v4.8H19"/><path d="M12.2 10.6v6.8M14.2 11.8h-2.9a1.3 1.3 0 0 0 0 2.6h1.8a1.3 1.3 0 0 1 0 2.6h-3"/>'),
@@ -92,7 +96,7 @@ const LOCK_ICO='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stro
 const NAV_COLORS = {
   dashboard:'#17557f', employees:'#8b5cf6', attend:'#0891b2', checkin:'#0d9488', leave:'#84cc16', resign:'#f43f5e', advance:'#f97316', rounds:'#0ea5e9', payroll:'#06b6d4', summary:'#10b981',
   dept:'#f59e0b', detail:'#ec4899', slip:'#14b8a6', wht:'#ef4444',
-  pnd1:'#6366f1', sso:'#0ea5e9', settings:'#5b7186', companies:'#a855f7', feedback:'#f97316', orders:'#22c55e', quotes:'#0ea5e9', linechats:'#06c755', admin:'#eab308'
+  pnd1:'#6366f1', sso:'#0ea5e9', pvd:'#0f766e', wf:'#db2777', settings:'#5b7186', companies:'#a855f7', feedback:'#f97316', orders:'#22c55e', quotes:'#0ea5e9', linechats:'#06c755', admin:'#eab308'
 };
 /* เมนูตามประเภทบัญชี — สำนักงานบัญชีไม่มีลงเวลา/ลางาน แต่มีหน้าบริษัทลูกค้าเพิ่ม */
 function pagesForEdition(){
@@ -221,7 +225,7 @@ function render(){
   // สำนักงานบัญชีที่ยังไม่ได้เลือกบริษัท — ให้เพิ่ม/เลือกบริษัทก่อน
   if(isFirm() && !CUR_CO && PAGE!=='companies' && PAGE!=='admin'){ PAGE='companies'; savePage(PAGE); renderNav(); }
   ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, checkin:vCheckin, leave:vLeave, resign:vResign, advance:vAdvance, rounds:(x)=>vRounds(x), payroll:vPayroll, summary:vSummary,
-    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, settings:vSettings, feedback:vFeedback, orders:vOrders, quotes:vQuotes, linechats:vLineChats,
+    dept:vDept, detail:vDetail, slip:vSlip, wht:vWHT, pnd1:vPND1, sso:vSSO, pvd:vPVD, wf:vWF, settings:vSettings, feedback:vFeedback, orders:vOrders, quotes:vQuotes, linechats:vLineChats,
     admin:vAdmin, companies:vCompanies}[PAGE])(v);
   enhanceKpis(v);
 }
