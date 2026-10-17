@@ -83,6 +83,7 @@ const NAV_ICONS={
   sso:       ICO('<path d="M12 2.8 4.6 5.9v5.4c0 4.6 3.1 8.8 7.4 9.9 4.3-1.1 7.4-5.3 7.4-9.9V5.9z"/><path d="m8.9 11.9 2.2 2.2 4-4.3"/>'),
   pvd:       ICO('<path d="M3.2 9.4 12 4l8.8 5.4"/><path d="M4.6 9.6v8.6M9.2 9.6v8.6M14.8 9.6v8.6M19.4 9.6v8.6"/><path d="M3 20.4h18"/>'),
   wf:        ICO('<path d="M12 20.2s-7.4-4.4-7.4-9.8a4.2 4.2 0 0 1 7.4-2.7 4.2 4.2 0 0 1 7.4 2.7c0 5.4-7.4 9.8-7.4 9.8z"/><path d="M9.2 12.2h5.6M12 9.4V15"/>'),
+  docs:      ICO('<path d="M8 3.4h6.4l4.2 4.2v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5.4a2 2 0 0 1 2-2z"/><path d="M14.4 3.4v4.2h4.2"/><path d="M9 12h6M9 15.4h6M9 8.6h2.4"/>'),
   settings:  ICO('<circle cx="12" cy="12" r="3.1"/><path d="M19.2 14.6a1.6 1.6 0 0 0 .3 1.8l.1.1a1.9 1.9 0 1 1-2.7 2.7l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.3a1.9 1.9 0 1 1-3.8 0v-.2a1.6 1.6 0 0 0-2.8-1.1l-.1.1a1.9 1.9 0 1 1-2.7-2.7l.1-.1a1.6 1.6 0 0 0-1.1-2.7h-.3a1.9 1.9 0 1 1 0-3.8h.2a1.6 1.6 0 0 0 1.1-2.8l-.1-.1a1.9 1.9 0 1 1 2.7-2.7l.1.1a1.6 1.6 0 0 0 1.8.3h.1a1.6 1.6 0 0 0 1-1.5v-.3a1.9 1.9 0 1 1 3.8 0v.2a1.6 1.6 0 0 0 2.7 1.1l.1-.1a1.9 1.9 0 1 1 2.7 2.7l-.1.1a1.6 1.6 0 0 0 1.1 2.7h.3a1.9 1.9 0 1 1 0 3.8h-.2a1.6 1.6 0 0 0-1.5 1z"/>'),
   orders:    ICO('<circle cx="9.4" cy="20" r="1.4"/><circle cx="17.6" cy="20" r="1.4"/><path d="M2.6 3.4h2.8l2.4 11.4h10.4l2.2-8.4H6.2"/>'),
   quotes:    ICO('<path d="M7 2.8h7.4l4.6 4.6v12.4a1.4 1.4 0 0 1-1.4 1.4H7a1.4 1.4 0 0 1-1.4-1.4V4.2A1.4 1.4 0 0 1 7 2.8z"/><path d="M14.2 2.8v4.8H19"/><path d="M12.2 10.6v6.8M14.2 11.8h-2.9a1.3 1.3 0 0 0 0 2.6h1.8a1.3 1.3 0 0 1 0 2.6h-3"/>'),
@@ -126,11 +127,38 @@ function renderCoSwitch(){
   const sel=box.querySelector('#coSel');
   if(sel) sel.onchange=()=>switchCompany(sel.value);
 }
+const NAV_DOCS=['wht','pnd1','sso','pvd','wf'];
+const NAV_DOC_LAB={wht:'หนังสือรับรอง 50 ทวิ', pnd1:'ภ.ง.ด.1', sso:'ประกันสังคม (สปส.1-10)', pvd:'กองทุนสำรองเลี้ยงชีพ', wf:'กองทุนสงเคราะห์ลูกจ้าง'};
 function renderNav(){
   const nav = $('#nav'); nav.innerHTML='';
   const base = pagesForEdition();
   const items = IS_ADMIN ? [...base, ['orders','คำสั่งซื้อ/ต่ออายุ','🧾'], ['quotes','ใบเสนอราคา','📄'], ['linechats','แชต LINE','💬'], ['feedback','แจ้งปัญหา/คำแนะนำ','💬'], ['admin','ผู้ดูแลระบบ','👑']] : base;
+  /* เมนูกลุ่ม "เอกสารราชการ": รวม 50 ทวิ / ภ.ง.ด.1 / สปส. / กองทุน เป็นเมนูเดียวที่กดกางดูข้อย่อยได้ */
+  const inDocs=NAV_DOCS.includes(PAGE);
+  let docOpen; try{ docOpen=localStorage.getItem('navDocsOpen'); }catch(e){}
+  docOpen = inDocs || docOpen==='1';
+  let docBox=null;
   items.forEach(([id,label,ico])=>{
+    if(NAV_DOCS.includes(id)){
+      if(!docBox){
+        const kids=items.filter(x=>NAV_DOCS.includes(x[0]));
+        const head=el(`<button class="navGrp${inDocs?' active':''}${docOpen?' open':''}" title="เอกสารราชการ">
+          <span class="ico">${NAV_ICONS.docs}</span><span class="t">${tr('nav_docs')}</span>
+          <span class="navCnt">${kids.length}</span><span class="navChev">›</span></button>`);
+        docBox=el(`<div class="navSub${docOpen?' open':''}"></div>`);
+        head.onclick=()=>{
+          if(window.matchMedia('(max-width:1024px) and (min-width:721px)').matches){   // เมนูแบบไอคอน: กดแล้วไปเอกสารแรก
+            if(!inDocs){ PAGE=kids[0][0]; savePage(PAGE); renderNav(); render(); } return; }
+          const o=!docBox.classList.contains('open'); docBox.classList.toggle('open',o); head.classList.toggle('open',o);
+          try{ localStorage.setItem('navDocsOpen', o?'1':'0'); }catch(e){}
+        };
+        nav.appendChild(head); nav.appendChild(docBox);
+      }
+      const c=el(`<button data-p="${id}" class="navKid${id===PAGE?' active':''}"><span class="ico">${NAV_ICONS[id]||ico}</span><span class="t">${(LANG!=='en'&&NAV_DOC_LAB[id])||tr('nav_'+id)}</span></button>`);
+      c.onclick=()=>{ sideOpen(false); window.scrollTo(0,0); PAGE=id; savePage(id); renderNav(); render(); };
+      docBox.appendChild(c);
+      return;
+    }
     const col = NAV_COLORS[id] || '#17557f';
     const lock = pageLocked(id);
     const b = el(`<button data-p="${id}" ${lock?'title="ต้องใช้แพ็กเกจพรีเมี่ยม"':''}>

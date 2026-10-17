@@ -513,3 +513,23 @@
   html[data-theme="dark"] .fsItem{background:#12233a}
   .fsGroup{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
   .fsHead{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+  /* ===== เมนูกลุ่ม (เอกสารราชการ) — กดกางข้อย่อย ===== */
+  .nav button.navGrp .navCnt{margin-left:auto;min-width:24px;padding:1px 8px;border-radius:999px;background:rgba(255,255,255,.14);color:#e8f1fb;font-size:12px;font-weight:700;text-align:center}
+  .nav button.navGrp.active .navCnt{background:rgba(255,255,255,.25)}
+  .nav button.navGrp .navChev{display:inline-block;font-size:16px;line-height:1;opacity:.75;transition:transform .2s}
+  .nav button.navGrp.open .navChev{transform:rotate(90deg)}
+  .navSub{display:none;flex-direction:column;gap:2px;margin:2px 0 6px 25px;padding-left:12px;border-left:1.5px solid rgba(255,255,255,.16)}
+  .navSub.open{display:flex}
+  .nav .navSub button.navKid{padding:8px 12px;font-size:13.5px;border-radius:10px;color:#c6d4e2;box-shadow:none}
+  .nav .navSub button.navKid .ico{display:none}
+  .nav .navSub button.navKid:hover{background:rgba(255,255,255,.07);color:#fff}
+  .nav .navSub button.navKid.active{background:rgba(255,255,255,.14);color:#fff;font-weight:700;box-shadow:none}
+  @media(max-width:1024px) and (min-width:721px){
+    .nav button.navGrp .navCnt,.nav button.navGrp .navChev{display:none}
+    .navSub{margin-left:0;padding-left:0;border-left:0}
+    .navSub.open{display:none}
+    .navSub:has(.navKid.active){display:flex}
+    .nav .navSub button.navKid{justify-content:center;padding:9px 8px}
+    .nav .navSub button.navKid .ico{display:flex}
+  }
+  .nav button.navGrp .t{white-space:nowrap}
