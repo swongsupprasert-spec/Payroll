@@ -366,8 +366,7 @@ if('IntersectionObserver' in window) document.documentElement.className+=' rv-on
   .fcar .dots button.on{background:var(--brand);border-color:var(--brand);width:24px}
   @media(max-width:560px){.fcar .nav{display:none}}
   /* ส่วนฟีเจอร์เด่น: พื้นกรมท่าเข้ม + ตัวอักษรสว่าง */
-  section#features{background:#0b1b2b;color:#e6eef6;overflow:hidden;
-    background-image:radial-gradient(rgba(125,211,252,.07) 1px,transparent 1.4px);background-size:18px 18px}
+  section#features{background:#0b1b2b;color:#e6eef6;overflow:hidden}
   #features .sec-head .badge{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#a7f3d0;box-shadow:none}
   #features .sec-head h2{color:#fff}
   #features .sec-head p{color:#9fb3c8}
@@ -674,9 +673,9 @@ footer .ft-mail{color:#6ee7b7 !important}
   </div>
   <div class="h2shade" aria-hidden="true"></div>
   <div class="h2labels" id="h2labels">
-    <div class="h2lab"><b data-en="Easy to use">ใช้งานง่าย</b><span data-en="Nothing to install">ไม่ต้องติดตั้ง</span></div>
+    <div class="h2lab"><b data-en="Mobile face check-in">ลงเวลาด้วยมือถือ</b><span data-en="Face scan + GPS">สแกนหน้า + GPS</span></div>
     <div class="h2lab"><b data-en="Data is safe">ข้อมูลปลอดภัย</b><span data-en="Encrypted, backed up on the cloud">เข้ารหัส สำรองบนคลาวด์</span></div>
-    <div class="h2lab"><b data-en="Every pay type">รองรับทุกแบบ</b><span data-en="Monthly and daily staff">ทั้งรายเดือนและรายวัน</span></div>
+    <div class="h2lab"><b data-en="Every way you pay">จ่ายได้ทุกรูปแบบ</b><span data-en="Daily · weekly · monthly">รายวัน · รายสัปดาห์</span></div>
   </div>
   <div class="hdots" id="hdots" role="tablist" aria-label="ภาพปก">
     <button type="button" aria-label="ภาพปก 2"></button><button type="button" class="on" aria-label="ภาพปก 1"></button>
@@ -688,7 +687,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         <button id="mSingle" class="on" data-en="🏢 One company">🏢 บริษัทเดียว</button>
         <button id="mFirm" class="firm" data-en="🏦 Accounting firm">🏦 สำนักงานบัญชี</button>
       </div>
-      <span class="badge only-single" data-en="🇹🇭 Built for Thai businesses">🇹🇭 ออกแบบสำหรับธุรกิจไทย</span>
+      <span class="badge free only-single" data-en="🎁 1–10 employees: free forever">🎁 พนักงาน 1–10 คน ใช้ฟรีตลอด</span>
       <span class="badge only-firm" data-en="🏦 For accounting firms">🏦 สำหรับสำนักงานบัญชี</span>
       <h1 class="only-single" data-en="<span class=&quot;t1&quot;>Online payroll software</span><span class=&quot;t2&quot;><span>Everything</span> <span>in one place</span></span>"><span class="t1">โปรแกรม Payroll ออนไลน์</span><span class="t2"><span>ครบ จบ</span> <span>ในที่เดียว</span></span></h1>
       <h1 class="only-firm" data-en="<span class=&quot;t1&quot;>Payroll for every client company</span><span class=&quot;t2&quot;><span>In one</span> <span>account</span></span>"><span class="t1">ทำเงินเดือนลูกค้าทุกบริษัท</span><span class="t2"><span>จบใน</span> <span>บัญชีเดียว</span></span></h1>
@@ -711,105 +710,15 @@ footer .ft-mail{color:#6ee7b7 !important}
           <span data-en="&lt;b&gt;Every form&lt;/b&gt;Ready to file"><b>เอกสารครบ</b>ยื่นราชการได้ทุกแบบ</span></div>
       </div>
       <div class="hpts only-single">
-        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 4.4 6v6c0 4.4 3.1 7.9 7.6 9.2 4.5-1.3 7.6-4.8 7.6-9.2V6z"/><path d="m8.9 12.2 2.2 2.2 4-4.4"/></svg></span>
-          <span data-en="&lt;b&gt;Easy to use&lt;/b&gt;Nothing to install"><b>ใช้งานง่าย</b>ไม่ต้องติดตั้ง</span></div>
-        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4.4" y="10.4" width="15.2" height="10.4" rx="2.2"/><path d="M8.2 10.4V7.6a3.8 3.8 0 0 1 7.6 0v2.8"/><path d="M12 14.6v2.2"/></svg></span>
-          <span data-en="&lt;b&gt;Data is safe&lt;/b&gt;Encrypted, backed up on the cloud"><b>ข้อมูลปลอดภัย</b>เข้ารหัส สำรองบนคลาวด์</span></div>
-        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.4" r="3.2"/><path d="M2.8 20a6.2 6.2 0 0 1 12.4 0"/><path d="M16.4 5.8a3.2 3.2 0 0 1 0 6"/><path d="M17.6 14.4A6.2 6.2 0 0 1 21.2 20"/></svg></span>
-          <span data-en="&lt;b&gt;Every pay type&lt;/b&gt;Monthly and daily staff"><b>รองรับทุกแบบ</b>ทั้งรายเดือนและรายวัน</span></div>
+        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5.6A1.6 1.6 0 0 1 5.6 4H8M16 4h2.4A1.6 1.6 0 0 1 20 5.6V8M20 16v2.4a1.6 1.6 0 0 1-1.6 1.6H16M8 20H5.6A1.6 1.6 0 0 1 4 18.4V16"/><circle cx="12" cy="10.4" r="2.6"/><path d="M8.2 16.4a4.2 4.2 0 0 1 7.6 0"/></svg></span>
+          <span data-en="&lt;b&gt;Face + GPS check-in&lt;/b&gt;No scanner to buy"><b>สแกนหน้า + GPS</b>ไม่ต้องซื้อเครื่องสแกน</span></div>
+        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 9.6h17.2M8.2 3v4M15.8 3v4"/><path d="M7.6 13.6h2.4M10.8 13.6h2.4M14 13.6h2.4M7.6 17h2.4"/></svg></span>
+          <span data-en="&lt;b&gt;Weekly or twice-monthly pay&lt;/b&gt;Tax still matches"><b>จ่ายรายสัปดาห์ / 2 รอบ</b>ภาษียังตรงทุกบาท</span></div>
+        <div class="hpt"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7.6 2.8h7.2l4 4v14.4H7.6z"/><path d="M14.8 2.8v4h4"/><path d="M10.4 12h6M10.4 16h6"/></svg></span>
+          <span data-en="&lt;b&gt;Every official form&lt;/b&gt;50 Bis · PND.1 · SSO"><b>เอกสารราชการครบ</b>50 ทวิ · ภ.ง.ด.1 · สปส.</span></div>
       </div>
     </div>
     <div class="cover">
-      <div class="shots" id="shots" hidden>
-        <div class="shot" role="img" aria-label="ตัวอย่างหน้าสรุปเงินเดือนในระบบ eSimPayroll">
-          <div class="shot-side">
-            <div class="shot-brand"><i></i>eSimPayroll</div>
-            <div class="shot-nav"><b style="background:#17557f"></b>แดชบอร์ด</div>
-            <div class="shot-nav"><b style="background:#8b5cf6"></b>ข้อมูลพนักงาน</div>
-            <div class="shot-nav"><b style="background:#0d9488"></b>ลงเวลาผ่านมือถือ</div>
-            <div class="shot-nav"><b style="background:#0891b2"></b>เวลาเข้างาน</div>
-            <div class="shot-nav"><b style="background:#84cc16"></b>ระบบลางาน</div>
-            <div class="shot-nav"><b style="background:#f43f5e"></b>การลาออก</div>
-            <div class="shot-nav"><b style="background:#f97316"></b>เบิกจ่ายล่วงหน้า</div>
-            <div class="shot-nav"><b style="background:#06b6d4"></b>คำนวณเงินได้ / เงินหัก</div>
-            <div class="shot-nav on"><b style="background:#10b981"></b>สรุปเงินเดือน</div>
-            <div class="shot-nav"><b style="background:#f59e0b"></b>สรุปตามแผนก</div>
-            <div class="shot-nav"><b style="background:#ec4899"></b>สรุปรายละเอียดทั้งหมด</div>
-            <div class="shot-nav"><b style="background:#14b8a6"></b>สลิปเงินเดือน</div>
-            <div class="shot-nav"><b style="background:#ef4444"></b>หนังสือรับรอง 50 ทวิ</div>
-            <div class="shot-nav"><b style="background:#6366f1"></b>แบบ ภ.ง.ด.1</div>
-            <div class="shot-nav"><b style="background:#0ea5e9"></b>แบบประกันสังคม</div>
-            <div class="shot-nav"><b style="background:#5b7186"></b>ตั้งค่า</div>
-          </div>
-          <div class="shot-main">
-            <div class="shot-top"><h4>สรุปเงินเดือน</h4><span class="shot-pill">งวด สิงหาคม 2569</span></div>
-            <div class="shot-kpi">
-              <div><div class="k">พนักงาน</div><div class="v">5 คน</div></div>
-              <div><div class="k">เงินเดือนรวม</div><div class="v">93,480</div></div>
-              <div><div class="k">เงินได้รวม</div><div class="v">115,815</div></div>
-              <div><div class="k">จ่ายสุทธิ</div><div class="v">110,010</div></div>
-            </div>
-            <div class="shot-tbl">
-              <div class="r h"><span>พนักงาน</span><span class="n">รายได้</span><span class="n">หัก</span><span class="n">สุทธิ</span></div>
-              <div class="r "><span>สมชาย ใจดี</span><span class="n">42,000</span><span class="n">2,137</span><span class="n">39,863</span></div>
-              <div class="r "><span>สุดา พงษ์ศรี</span><span class="n">21,375</span><span class="n">1,445</span><span class="n">19,930</span></div>
-              <div class="r "><span>อนุชา แก้วมณี</span><span class="n">25,000</span><span class="n">913</span><span class="n">24,087</span></div>
-              <div class="r "><span>มาลี ศรีสุข</span><span class="n">13,400</span><span class="n">655</span><span class="n">12,745</span></div>
-              <div class="r "><span>ประยุทธ ทองดี</span><span class="n">14,040</span><span class="n">655</span><span class="n">13,385</span></div>
-              <div class="r tot"><span>รวมทั้งบริษัท</span><span class="n">115,815</span><span class="n">5,805</span><span class="n">110,010</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="shot" role="img" aria-label="ตัวอย่างสลิปเงินเดือนที่ระบบออกให้">
-          <div class="shot-side">
-            <div class="shot-brand"><i></i>eSimPayroll</div>
-            <div class="shot-nav"><b style="background:#17557f"></b>แดชบอร์ด</div>
-            <div class="shot-nav"><b style="background:#8b5cf6"></b>ข้อมูลพนักงาน</div>
-            <div class="shot-nav"><b style="background:#0d9488"></b>ลงเวลาผ่านมือถือ</div>
-            <div class="shot-nav"><b style="background:#0891b2"></b>เวลาเข้างาน</div>
-            <div class="shot-nav"><b style="background:#84cc16"></b>ระบบลางาน</div>
-            <div class="shot-nav"><b style="background:#f43f5e"></b>การลาออก</div>
-            <div class="shot-nav"><b style="background:#f97316"></b>เบิกจ่ายล่วงหน้า</div>
-            <div class="shot-nav"><b style="background:#06b6d4"></b>คำนวณเงินได้ / เงินหัก</div>
-            <div class="shot-nav"><b style="background:#10b981"></b>สรุปเงินเดือน</div>
-            <div class="shot-nav"><b style="background:#f59e0b"></b>สรุปตามแผนก</div>
-            <div class="shot-nav"><b style="background:#ec4899"></b>สรุปรายละเอียดทั้งหมด</div>
-            <div class="shot-nav on"><b style="background:#14b8a6"></b>สลิปเงินเดือน</div>
-            <div class="shot-nav"><b style="background:#ef4444"></b>หนังสือรับรอง 50 ทวิ</div>
-            <div class="shot-nav"><b style="background:#6366f1"></b>แบบ ภ.ง.ด.1</div>
-            <div class="shot-nav"><b style="background:#0ea5e9"></b>แบบประกันสังคม</div>
-            <div class="shot-nav"><b style="background:#5b7186"></b>ตั้งค่า</div>
-          </div>
-          <div class="shot-main">
-            <div class="shot-top"><h4>สลิปเงินเดือน</h4><span class="shot-pill">พร้อมพิมพ์ทั้งบริษัท</span></div>
-            <div class="slip">
-              <div class="slip-h"><b>ห้างหุ้นส่วนจำกัด ศรีสมบูรณ์ เทรดดิ้ง</b>
-                <div>ใบแจ้งเงินเดือน · งวดสิงหาคม 2569</div></div>
-              <div class="slip-emp"><span>รหัส <b>EMP001</b></span><span>ชื่อ <b>สมชาย ใจดี</b></span>
-                <span>ตำแหน่ง <b>ผู้จัดการทั่วไป</b></span></div>
-              <div class="slip-cols">
-                <div class="slip-col">
-                  <div class="ch">เงินได้</div>
-                  <div class="cr"><span>เงินเดือน</span><span>35,000</span></div>
-                  <div class="cr"><span>ค่าตำแหน่ง</span><span>5,000</span></div>
-                  <div class="cr"><span>ค่าเดินทาง</span><span>2,000</span></div>
-                  <div class="cs"><span>รวมเงินได้</span><span>42,000</span></div>
-                </div>
-                <div class="slip-col">
-                  <div class="ch">เงินหัก</div>
-                  <div class="cr"><span>ภาษีหัก ณ ที่จ่าย</span><span>212</span></div>
-                  <div class="cr"><span>ประกันสังคม</span><span>875</span></div>
-                  <div class="cr"><span>กองทุนสำรองเลี้ยงชีพ</span><span>1,050</span></div>
-                  <div class="cs"><span>รวมเงินหัก</span><span>2,137</span></div>
-                </div>
-              </div>
-              <div class="slip-net"><span style="font-weight:700;color:var(--ink)">เงินสุทธิที่ได้รับ</span>
-                <b>39,863 บาท</b></div>
-              <div class="slip-words">(สามหมื่นเก้าพันแปดร้อยหกสิบสามบาทถ้วน)</div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -833,7 +742,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   @media(max-width:440px){.whys{grid-template-columns:1fr}}
 
   /* ---------- ภาพรวมเงินเดือนแบบเรียลไทม์ ---------- */
-  .rt{background:var(--bg);border-radius:0;margin:44px calc(50% - 50vw) 0;padding:58px calc(50vw - 50%);
+  .rt{background:transparent;border-radius:0;margin:44px calc(50% - 50vw) 0;padding:58px calc(50vw - 50%);
     display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,1fr);gap:46px;align-items:center}
   .rt-img{min-width:0;border-radius:18px;overflow:hidden;box-shadow:var(--sh-md);background:#0b1b2b}
   .rt-img .shots{border-radius:18px}
@@ -863,6 +772,104 @@ footer .ft-mail{color:#6ee7b7 !important}
     .rtlist .ri svg{width:20px;height:20px}
   }
 </style>
+<!-- ภาพหน้าจอจริง 2 แถว สลับซ้าย-ขวา (ต่อจากภาพปก) -->
+<section class="showcase">
+  <div class="wrap">
+    <div class="sc-row">
+      <div class="sc-copy rv">
+        <span class="sc-chip" data-en="Mobile check-in">ลงเวลาผ่านมือถือ</span> <span class="sc-chip prem" data-en="Premium">แพ็กเกจพรีเมียม</span>
+        <h2 data-en="Face scan + GPS.&lt;br&gt;No scanner to buy.">สแกนหน้า + GPS<br>ไม่ต้องซื้อเครื่องสแกน</h2>
+        <p data-en="Staff clock in from their own phone with a selfie. eSimPayroll matches their face and checks GPS that they are really on site. Nothing to install — it even opens from LINE — and no fingerprint scanner or time clock to buy.">พนักงานลงเวลาจากมือถือตัวเอง ถ่ายเซลฟี่ ระบบจับคู่ใบหน้าและเช็ก GPS ว่าอยู่ในพื้นที่บริษัทจริง ไม่ต้องติดตั้งแอป เปิดผ่าน LINE ได้ และไม่ต้องลงทุนซื้อเครื่องสแกนนิ้วหรือเครื่องตอกบัตร</p>
+        <ul class="sc-pts">
+          <li data-en="No buddy punching — a different face can't clock in">กันลงเวลาแทนกัน ใบหน้าไม่ตรงลงเวลาไม่ได้</li>
+          <li data-en="Several branches and job sites, set per person">หลายสาขา + หน้างานนอกสถานที่ ปักหมุดได้รายคน</li>
+          <li data-en="Times flow into payroll — late and OT worked out for you">เวลาเข้าระบบเงินเดือนเอง คิดสายและ OT ให้</li>
+        </ul>
+      </div>
+      <div class="sc-phonewrap rv">
+        <div class="sc-phone"><img src="/media/lp-checkin.jpg" width="780" height="1520" loading="lazy" decoding="async"
+             alt="หน้าลงเวลาบนมือถือของพนักงาน eSimPayroll สแกนหน้าและเช็ก GPS"
+             data-en-alt="eSimPayroll employee check-in screen on a phone with face scan and GPS"></div>
+        <span class="sc-float p1" data-en="🙂 Face matched">🙂 ใบหน้าตรง · ผ่าน</span>
+        <span class="sc-float p2" data-en="📍 On site · 35 m">📍 อยู่ในพื้นที่ · 35 ม.</span>
+        <span class="sc-float p3" data-en="💸 No scanner to buy">💸 ไม่ต้องซื้อเครื่องสแกน</span>
+      </div>
+    </div>
+    <div class="sc-row rev">
+      <div class="sc-copy rv">
+        <span class="sc-chip" data-en="Pay cycles">รอบจ่ายเงิน</span>
+        <h2 data-en="Pay salaries any way you need">จ่ายเงินเดือนได้ทุกรูปแบบ</h2>
+        <p data-en="Monthly, daily, weekly or twice a month — set per employee. Tax and social security are spread across every round, and the month still matches PND.1 and SSO 1-10 to the baht.">รายเดือน รายวัน รายสัปดาห์ หรือเดือนละ 2 รอบ ตั้งได้เป็นรายคน ภาษีและประกันสังคมเฉลี่ยหักให้ทุกรอบ ยอดรวมทั้งเดือนยังตรงกับ ภ.ง.ด.1 และ สปส.1-10 ทุกบาท</p>
+        <ul class="sc-pts">
+          <li data-en="Days and OT pulled from attendance automatically">วันทำงานและ OT ดึงจากลงเวลาให้เอง</li>
+          <li data-en="Payslip and bank transfer sheet for every round">สลิปและใบสรุปยอดโอนแยกทุกรอบ</li>
+        </ul>
+      </div>
+      <div class="sc-shot rv">
+        <img src="/media/lp-rounds.jpg" width="1280" height="800" loading="lazy" decoding="async"
+             alt="หน้าจ่ายเงินเดือนรายสัปดาห์ในโปรแกรม eSimPayroll แยกรอบ แยก OT ตามตัวคูณ"
+             data-en-alt="Weekly pay rounds screen in eSimPayroll with OT split by multiplier">
+        <span class="sc-float f1" data-en="OT 1.5× · 3× split for you">⏱️ OT 1.5× · 3× แยกให้เอง</span>
+        <span class="sc-float f2" data-en="✓ Matches PND.1">✓ ตรงกับ ภ.ง.ด.1</span>
+      </div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-copy rv">
+        <span class="sc-chip" data-en="Built-in helper">ผู้ช่วยในโปรแกรม</span> <span class="sc-chip free" data-en="Free">ฟรี</span>
+        <h2 data-en="Stuck? Help is right there">ใช้ไม่เป็น ก็มีคนช่วย</h2>
+        <p data-en="Ask “น้อง eSim” inside the program — how to add OT, set holidays, print PND.1 — and get step-by-step answers with a button that takes you straight to the right page. Outside the program, chat with our LINE @esimpayroll any time, 24 hours.">กดปุ่ม “ถามน้อง eSim” ในโปรแกรม พิมพ์ถามได้เลย เช่น ใส่ OT ยังไง ตั้งวันหยุดยังไง พิมพ์ ภ.ง.ด.1 ตรงไหน ตอบเป็นขั้นตอน พร้อมปุ่มพาไปหน้านั้นทันที และทัก LINE @esimpayroll ได้ตลอด 24 ชม.</p>
+        <ul class="sc-pts">
+          <li data-en="Step-by-step answers, one click to the right page">ตอบเป็นขั้นตอน กดปุ่มเดียวไปหน้านั้นเลย</li>
+          <li data-en="LINE @esimpayroll answers 24 hours a day">ทัก LINE @esimpayroll ตอบได้ตลอด 24 ชม.</li>
+          <li data-en="No extra cost on every plan">ใช้ได้ทุกแพ็กเกจ ไม่มีค่าใช้จ่ายเพิ่ม</li>
+        </ul>
+      </div>
+      <div class="sc-shot rv">
+        <img src="/media/lp-help.jpg" width="1300" height="898" loading="lazy" decoding="async"
+             alt="ผู้ช่วยถามน้อง eSim ในโปรแกรม eSimPayroll ตอบวิธีใช้เป็นขั้นตอน"
+             data-en-alt="The ‘Ask น้อง eSim’ helper inside eSimPayroll answering how-to questions step by step">
+        <span class="sc-float f1" data-en="💬 Instant answers">💬 ถามปุ๊บ ตอบปั๊บ</span>
+        <span class="sc-float f2" data-en="🟢 LINE 24 hrs">🟢 LINE ตอบ 24 ชม.</span>
+      </div>
+    </div>
+  </div>
+  <style>
+    .showcase .sc-row{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center}
+    .showcase .sc-row+.sc-row{margin-top:72px}
+    .showcase .sc-row.rev .sc-copy{order:2}
+    .showcase .sc-copy h2{margin:10px 0 14px}
+    .showcase .sc-copy p{color:var(--muted);font-size:16.5px;line-height:1.75;margin:0 0 14px}
+    .sc-chip{display:inline-block;padding:6px 16px;border:1px solid var(--line);border-radius:999px;font-size:13px;font-weight:700;background:#fff}
+    .sc-pts{list-style:none;margin:0;padding:0}
+    .sc-pts li{position:relative;padding-left:28px;margin:8px 0;font-size:15px;color:var(--ink);font-weight:600}
+    .sc-pts li::before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:12px;display:grid;place-items:center}
+    .sc-shot{position:relative;padding:10px;border-radius:22px;background:linear-gradient(135deg,#dbeafe,#d1fae5);box-shadow:0 22px 50px rgba(14,58,92,.16)}
+    .sc-shot img{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .sc-float{position:absolute;padding:9px 14px;border-radius:14px;background:#fff;color:var(--ink);font-size:13.5px;font-weight:800;white-space:nowrap;box-shadow:0 12px 26px rgba(14,58,92,.18);border:1px solid #e2e8f0}
+    .sc-float.f1{top:-16px;right:24px}
+    .sc-float.f2{bottom:-16px;left:24px;color:#047857}
+    .sc-chip.free{background:linear-gradient(90deg,#22c55e,#16a34a);color:#fff;border-color:transparent}
+    .sc-row.rev .sc-float.f1{right:auto;left:24px}
+    .sc-row.rev .sc-float.f2{left:auto;right:24px}
+    .sc-chip.prem{background:linear-gradient(90deg,#f59e0b,#f97316);color:#fff;border-color:transparent}
+    .sc-phonewrap{position:relative;display:flex;justify-content:center;padding:20px 0}
+    .sc-phonewrap::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);
+      background:radial-gradient(circle,rgba(16,185,129,.22),rgba(59,130,246,.14) 55%,transparent 70%)}
+    .sc-phone{position:relative;width:300px;padding:11px;border-radius:46px;background:#0b1b2b;box-shadow:0 30px 60px rgba(11,27,43,.28),inset 0 0 0 2px #22364d}
+    .sc-phone img{display:block;width:100%;height:auto;border-radius:36px}
+    .sc-float.p1{top:70px;left:max(0px,calc(50% - 250px))}
+    .sc-float.p2{top:46%;right:max(0px,calc(50% - 260px));color:#0369a1}
+    .sc-float.p3{bottom:60px;left:max(0px,calc(50% - 240px));color:#047857}
+    @media(max-width:900px){
+      .sc-phone{width:240px}
+      .showcase .sc-row{grid-template-columns:minmax(0,1fr);gap:30px}
+      .showcase .sc-row.rev .sc-copy{order:0}
+      .showcase .sc-row+.sc-row{margin-top:56px}
+      .sc-float{font-size:12px;padding:7px 11px}
+    }
+  </style>
+</section>
+
 <section class="whysec">
   <div class="wrap">
     <div class="sec-head rv">
@@ -898,27 +905,27 @@ footer .ft-mail{color:#6ee7b7 !important}
     </div>
 
     <div class="rt rv">
-      <div class="rt-img" id="rtimg"></div>
+      <div class="rt-img rt-real"><img src="/media/lp-dashboard.jpg" width="1200" height="963" loading="lazy" decoding="async" alt="แดชบอร์ดโปรแกรมเงินเดือน eSimPayroll สรุปเงินเดือนรวม เงินได้ เงินหัก และเงินสุทธิของทั้งบริษัท" data-en-alt="eSimPayroll dashboard summarising total salary, earnings, deductions and net pay for the company"></div>
       <div class="rt-copy">
-        <span class="eyebrow" data-en="Payroll summary">หน้าสรุปเงินเดือน</span>
-        <h2 data-en="Know what the month costs before you pay it">รู้ยอดทั้งเดือน ก่อนกดจ่ายจริง</h2>
-        <p class="rt-lead" data-en="Every figure updates as you enter the period, so the total is never a surprise on payday.">ทุกตัวเลขอัปเดตทันทีที่กรอกข้อมูลของงวด ยอดรวมจึงไม่ใช่เรื่องเซอร์ไพรส์ในวันจ่ายเงิน</p>
+        <span class="eyebrow" data-en="Dashboard">แดชบอร์ด</span>
+        <h2 data-en="Your whole payroll at a glance">เห็นภาพรวมเงินเดือน ครบในหน้าเดียว</h2>
+        <p class="rt-lead" data-en="Open eSimPayroll and you already know what this period pays, deducts and transfers — before you press pay.">เปิดมาก็รู้ทันทีว่างวดนี้จ่ายเท่าไหร่ หักเท่าไหร่ ต้องโอนจริงเท่าไหร่ ก่อนกดจ่ายจริง</p>
         <ul class="rtlist">
           <li>
             <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="4.4" width="17.6" height="15.2" rx="2.4"/><path d="M3.2 9.2h17.6"/><path d="M7.6 13.2h3.2M7.6 16.4h5.6M16.4 16.4h.01M16.4 13.2h.01"/></svg></span>
-            <span><b data-en="The whole period on one screen">สรุปยอดทั้งงวดในหน้าเดียว</b><span class="d" data-en="Gross pay, total deductions and net transfer, for every employee and the company total.">เงินได้รวม เงินหักรวม และยอดโอนสุทธิ ทั้งรายคนและยอดรวมทั้งบริษัท</span></span>
+            <span><b data-en="The key numbers on one card each">ตัวเลขสำคัญครบในการ์ดเดียว</b><span class="d" data-en="Headcount, total salary, gross pay, deductions and net pay — updated the moment you enter the period.">จำนวนพนักงาน เงินเดือนรวม เงินได้ เงินหัก และเงินสุทธิ อัปเดตทันทีที่กรอกข้อมูลงวด</span></span>
           </li>
           <li>
-            <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 9.8h17.2M8.2 3v4M15.8 3v4"/><path d="m9.2 14.8 2 2 3.6-3.8"/></svg></span>
-            <span><b data-en="See which periods are ready">รู้ทันทีว่างวดไหนพร้อมแล้ว</b><span class="d" data-en="Periods still missing data show up before payday, not after.">งวดที่ยังกรอกไม่ครบจะเห็นตั้งแต่ก่อนถึงวันจ่าย ไม่ใช่มารู้ทีหลัง</span></span>
+            <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2a8.8 8.8 0 1 0 8.8 8.8H12z"/><path d="M15 2.9a8.8 8.8 0 0 1 6.1 6.1H15z"/></svg></span>
+            <span><b data-en="Every item broken down in %">เจาะดูทุกรายการเป็นสัดส่วน %</b><span class="d" data-en="Base pay, OT, commission, tax, social security and funds — see what makes up each total.">ค่าจ้าง OT ค่าคอม ภาษี ประกันสังคม และกองทุน แยกให้เห็นว่าแต่ละยอดมาจากอะไร</span></span>
           </li>
           <li>
-            <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><rect x="9.2" y="2.8" width="5.6" height="4.8" rx="1.2"/><rect x="2.8" y="16.4" width="5.6" height="4.8" rx="1.2"/><rect x="15.6" y="16.4" width="5.6" height="4.8" rx="1.2"/><path d="M12 7.6v4.4M5.6 16.4v-2.2h12.8v2.2M12 12v2.2"/></svg></span>
-            <span><b data-en="Split by department or company">แยกตามแผนกหรือรายบริษัท</b><span class="d" data-en="See cost per department — or per client company if you run payroll for several.">ดูต้นทุนรายแผนก หรือแยกรายบริษัทลูกค้าสำหรับสำนักงานบัญชี</span></span>
+            <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><rect x="3.4" y="5" width="17.2" height="15.6" rx="2.4"/><path d="M3.4 9.8h17.2M8.2 3v4M15.8 3v4"/><path d="M7.6 14h2.4M10.8 14h2.4M14 14h2.4M7.6 17.2h2.4"/></svg></span>
+            <span><b data-en="Monthly or yearly, any range">ดูรายเดือน รายปี หรือเลือกช่วงเดือน</b><span class="d" data-en="Compare against the previous month and see the trend across the year.">เทียบกับเดือนก่อน และเห็นแนวโน้มเงินเดือนตลอดทั้งปี</span></span>
           </li>
           <li>
-            <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4v10.8"/><path d="m8.2 10.6 3.8 3.8 3.8-3.8"/><path d="M4.2 15.6v3a2 2 0 0 0 2 2h11.6a2 2 0 0 0 2-2v-3"/></svg></span>
-            <span><b data-en="Take the numbers with you">เอาตัวเลขออกไปใช้ต่อได้</b><span class="d" data-en="Export to CSV for Excel, or print to PDF — your data is never locked in.">ส่งออก CSV เปิดใน Excel ต่อ หรือพิมพ์เป็น PDF ข้อมูลไม่ถูกล็อกไว้กับระบบ</span></span>
+            <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 20.4h16.8"/><rect x="5" y="11" width="3.4" height="7"/><rect x="10.3" y="6.2" width="3.4" height="11.8"/><rect x="15.6" y="13.4" width="3.4" height="4.6"/></svg></span>
+            <span><b data-en="Charts and department costs">กราฟและต้นทุนรายแผนก</b><span class="d" data-en="Net-pay trend chart, where the money goes, and cost per department in one view.">กราฟเงินสุทธิรายเดือน รายได้ไปไหนบ้าง และต้นทุนแต่ละแผนก ดูได้ในหน้าเดียว</span></span>
           </li>
         </ul>
       </div>
@@ -986,6 +993,119 @@ footer .ft-mail{color:#6ee7b7 !important}
   html[lang="en"] .proofsec .proof-html{display:block}
 </style>
 
+<!-- ราคาย่อ -->
+<section class="pricesec" id="price-teaser">
+  <div class="wrap">
+    <div style="text-align:center">
+      <span class="pt-chip" data-en="Pricing">ราคา</span>
+      <h2 class="only-single" data-en="Priced by headcount · Free forever for 1–10 employees">ราคาตามจำนวนพนักงาน · 1–10 คนใช้ฟรีตลอด</h2>
+      <h2 class="only-firm" data-en="Accounting firms: priced by client companies">สำนักงานบัญชี คิดตามจำนวนบริษัทลูกค้า</h2>
+      <p class="pt-lead only-single" data-en="Monthly price by headcount. Pay yearly and get 2 months free. Every plan includes all statutory forms.">ราคาต่อเดือนตามจำนวนพนักงาน จ่ายรายปีได้ฟรี 2 เดือน ทุกแพ็กเกจออกเอกสารราชการได้ครบ</p>
+      <p class="pt-lead only-firm" data-en="Unlimited employees per company. Pay yearly and get 2 months free.">พนักงานไม่จำกัดต่อบริษัท จ่ายรายปีได้ฟรี 2 เดือน</p>
+    </div>
+    <div class="pt-grid only-single">
+      <div class="pt-card free">
+        <div class="pt-n" data-en="1–10 employees">พนักงาน 1–10 คน</div>
+        <div class="pt-p"><b data-en="Free">ฟรี</b><span data-en="forever">ตลอด</span></div>
+        <div class="pt-s" data-en="Standard plan: payroll, tax, social security, every form">แพ็กเกจมาตรฐาน: เงินเดือน ภาษี ประกันสังคม เอกสารครบ</div>
+        <div class="pt-x" data-en="Premium (face check-in, leave, shifts) ฿590/month">พรีเมียม (สแกนหน้า ลางาน กะ) 590 บาท/เดือน</div>
+      </div>
+      <div class="pt-card hot">
+        <span class="pt-tag" data-en="Most popular">ยอดนิยม</span>
+        <div class="pt-n" data-en="11–30 employees">พนักงาน 11–30 คน</div>
+        <div class="pt-p"><b>590</b><span data-en="baht/month">บาท/เดือน</span></div>
+        <div class="pt-s" data-en="Standard plan">แพ็กเกจมาตรฐาน</div>
+        <div class="pt-x" data-en="Premium ฿790/month">พรีเมียม 790 บาท/เดือน</div>
+      </div>
+      <div class="pt-card">
+        <div class="pt-n" data-en="31–50 employees">พนักงาน 31–50 คน</div>
+        <div class="pt-p"><b>990</b><span data-en="baht/month">บาท/เดือน</span></div>
+        <div class="pt-s" data-en="Standard plan">แพ็กเกจมาตรฐาน</div>
+        <div class="pt-x" data-en="Premium ฿1,490/month">พรีเมียม 1,490 บาท/เดือน</div>
+      </div>
+    </div>
+    <div class="pt-grid only-firm" style="grid-template-columns:repeat(auto-fit,minmax(240px,320px));justify-content:center">
+      <div class="pt-card hot">
+        <span class="pt-tag" data-en="Most popular">ยอดนิยม</span>
+        <div class="pt-n" data-en="1–15 client companies">บริษัทลูกค้า 1–15 แห่ง</div>
+        <div class="pt-p"><b>3,990</b><span data-en="baht/month">บาท/เดือน</span></div>
+        <div class="pt-s" data-en="Unlimited employees">พนักงานไม่จำกัด</div>
+      </div>
+      <div class="pt-card">
+        <div class="pt-n" data-en="16–40 client companies">บริษัทลูกค้า 16–40 แห่ง</div>
+        <div class="pt-p"><b>6,990</b><span data-en="baht/month">บาท/เดือน</span></div>
+        <div class="pt-s" data-en="Unlimited employees">พนักงานไม่จำกัด</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="/pricing" class="btn ghost pt-more only-single" data-en="See every plan (51+ employees) →">ดูราคาทั้งหมด (51 คนขึ้นไป) →</a>
+      <a href="/pricing?for=firm" class="btn ghost pt-more only-firm" data-en="See accounting-firm pricing →">ดูราคาสำนักงานบัญชีทั้งหมด →</a>
+      <a href="/app#signup" class="btn primary" data-en="Try every feature free for 30 days">ทดลองครบทุกฟีเจอร์ฟรี 30 วัน</a>
+    </div>
+  </div>
+  <style>
+    .pricesec{background:#fff;border-top:1px solid var(--line)}
+    .pt-chip{display:inline-block;padding:6px 16px;border:1px solid var(--line);border-radius:999px;font-size:13px;font-weight:700;margin-bottom:12px;background:#fff}
+    .pricesec h2{margin:0 0 8px}
+    .pt-lead{color:var(--muted);margin:0 auto 26px;max-width:640px}
+    .pt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:980px;margin:0 auto}
+    .pt-card{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:22px 22px 20px;box-shadow:0 6px 18px rgba(14,58,92,.06)}
+    .pt-card.free{border-color:#6ee7b7;background:linear-gradient(180deg,#ecfdf5,#fff 60%)}
+    .pt-card.hot{border-color:#0f766e;box-shadow:0 10px 26px rgba(15,118,110,.16)}
+    .pt-tag{position:absolute;top:-12px;right:18px;background:#0f766e;color:#fff;font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px}
+    .pt-n{font-weight:700;color:var(--muted);font-size:14.5px}
+    .pt-p{margin:6px 0 8px;display:flex;align-items:baseline;gap:6px}
+    .pt-p b{font-size:38px;font-weight:800;color:var(--ink);line-height:1.1}
+    .pt-card.free .pt-p b{color:#059669}
+    .pt-p span{color:var(--muted);font-size:14px}
+    .pt-s{font-size:14px;color:var(--ink)}
+    .pt-x{font-size:13px;color:var(--muted);margin-top:6px;padding-top:8px;border-top:1px dashed var(--line)}
+    /* ภาพบรรยากาศออฟฟิศจาง ๆ ตรึงอยู่ข้างหลังส่วนพื้นขาว/เทาอ่อน (มือถือที่ไม่รองรับ fixed จะเลื่อนตามปกติ) */
+    section.whysec,section.pricesec,section.proofsec,section#how,section#homefaq,section.artsec,section.cta-sec,section.showcase{
+      background-image:linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.45)),url(/media/bg-office.jpg);
+      background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed}
+    @media(max-width:720px){section.whysec,section.pricesec,section.proofsec,section#how,section#homefaq,section.artsec,section.cta-sec,section.showcase{background-attachment:scroll}}
+    #homefaq details{background:#fff}
+    /* แถบ CTA: รูปออฟฟิศมินิมอลโทนสว่าง (Unsplash) · ตัวหนังสือเข้ม */
+    .cta-band.cta-full{background:#f4f6f8;color:var(--ink)}
+    .cta-band.cta-full::after{display:none}
+    .cta-band.cta-full::before{width:auto;height:auto;inset:0;top:0;right:0;border-radius:0;z-index:1;background:radial-gradient(ellipse 55% 75% at 50% 50%,rgba(255,255,255,.88) 0%,rgba(255,255,255,.62) 55%,rgba(255,255,255,.18) 100%)}
+    .cta-band.cta-full>*:not(.cta-bg){z-index:2}
+    .cta-band.cta-full>.cta-bg{opacity:1;filter:none;transform:none;object-position:50% 60%}
+    .cta-band.cta-full h2{color:var(--ink)}
+    .cta-band.cta-full p{color:var(--muted);opacity:1}
+    .cta-band.cta-full .btn.primary{background:var(--ink);color:#fff;box-shadow:0 14px 30px rgba(11,27,43,.22)}
+    .cta-band.cta-full .btn.primary:hover{background:#17324d}
+    .rt-img.rt-real{background:linear-gradient(135deg,#dbeafe,#d1fae5);padding:10px;border-radius:22px;box-shadow:0 22px 50px rgba(14,58,92,.16)}
+    .rt-img.rt-real img{display:block;width:100%;height:auto;border-radius:14px}
+    /* ไอคอนการ์ด "ทำไมต้องเลือกเรา" — สีไล่เฉดแบบเดียวกับการ์ดสรุปในระบบ */
+    .why .wi{color:#fff!important;box-shadow:0 8px 18px rgba(0,0,0,.14)}
+    .why:nth-child(5n+1) .wi{background:linear-gradient(135deg,#3b82f6,#2563eb)!important}
+    .why:nth-child(5n+2) .wi{background:linear-gradient(135deg,#22c55e,#16a34a)!important}
+    .why:nth-child(5n+3) .wi{background:linear-gradient(135deg,#fbbf24,#f59e0b)!important}
+    .why:nth-child(5n+4) .wi{background:linear-gradient(135deg,#f87171,#ef4444)!important}
+    .why:nth-child(5n+5) .wi{background:linear-gradient(135deg,#a78bfa,#7c3aed)!important}
+    /* 5 ขั้นตอน: แผ่นเฉียงสีขาวสูงพอดีข้อความ (เดิมสูงคงที่ ข้อความยาวล้นออก) · ไอคอนสีตามเลขขั้น */
+    .bstep{display:flex}
+    .bstep .fold{left:26px;background:#fff;height:auto;bottom:0;border-radius:0;filter:drop-shadow(-6px 6px 12px rgba(11,27,43,.10))}
+    .bstep .body{padding:26px 16px 18px 70px;flex:1}
+    .bstep .ic{color:var(--c2);opacity:1}
+    /* ขอบล่างภาพปกแบบสามเหลี่ยม (มาสก์ SVG): ตัดภาพปกจริง แล้วให้ส่วนถัดไปเลื่อนขึ้นไปรองข้างใต้ → ช่องที่ตัดเห็นรูปพื้นหลัง ไม่ใช่สีขาว */
+    :root{--hcut:110px}
+    @media(max-width:900px){:root{--hcut:50px}}
+    .hero{z-index:1;-webkit-mask:linear-gradient(#000,#000) top/100% calc(100% - var(--hcut) + 1px) no-repeat,url(/media/hero-edge-mask.svg) bottom/100% var(--hcut) no-repeat;mask:linear-gradient(#000,#000) top/100% calc(100% - var(--hcut) + 1px) no-repeat,url(/media/hero-edge-mask.svg) bottom/100% var(--hcut) no-repeat}
+    section.showcase{border-top:0!important;margin-top:calc(-1 * var(--hcut));padding-top:calc(40px + var(--hcut));padding-bottom:70px}
+    @media(min-width:901px){.hero{padding-bottom:110px;min-height:700px}}
+    @media(min-width:901px){.hero .hdots{bottom:calc(var(--hcut) + 6px)}}
+    /* น้อง eSim */
+    .faq-esim{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 auto 22px;max-width:620px}
+    .faq-esim img{width:84px;height:auto;flex-shrink:0;filter:drop-shadow(0 6px 10px rgba(14,58,92,.18))}
+    .faq-esim .bub{position:relative;background:#fff;border:1.5px solid #bfdbfe;border-radius:16px;padding:10px 14px;font-size:14.5px;line-height:1.55;color:var(--ink);box-shadow:0 6px 16px rgba(14,58,92,.07)}
+    .faq-esim .bub::before{content:"";position:absolute;left:-8px;top:50%;width:14px;height:14px;background:#fff;border-left:1.5px solid #bfdbfe;border-bottom:1.5px solid #bfdbfe;transform:translateY(-50%) rotate(45deg)}
+    .badge.free{background:linear-gradient(90deg,#10b981,#0ea5e9);color:#fff;border-color:transparent;font-weight:800;box-shadow:0 6px 18px rgba(16,185,129,.35)}
+  </style>
+</section>
+
 <!-- ทดลองแล้วตัดสินเอง -->
 <section class="proofsec">
   <div class="wrap">
@@ -1050,7 +1170,9 @@ footer .ft-mail{color:#6ee7b7 !important}
 <!-- คำถามที่พบบ่อย -->
 <section id="homefaq">
   <div class="wrap" style="max-width:860px">
-    <h2 style="text-align:center;margin-bottom:22px">คำถามที่พบบ่อยเกี่ยวกับโปรแกรม Payroll</h2>
+    <h2 style="text-align:center;margin-bottom:14px">คำถามที่พบบ่อยเกี่ยวกับโปรแกรม Payroll</h2>
+    <div class="faq-esim"><img src="/media/esim/e1c.png" width="200" height="200" alt="น้อง eSim มาสคอตของ eSimPayroll" data-en-alt="eSim, the eSimPayroll mascot" loading="lazy" decoding="async">
+      <div class="bub" data-en="Hi, I&amp;rsquo;m eSim! Stuck on something after you sign up? Tap &lt;b&gt;Ask eSim&lt;/b&gt; inside the app any time.">สวัสดีครับ น้อง eSim เอง! สมัครแล้วติดตรงไหน กด <b>ถามน้อง eSim</b> ในโปรแกรมได้ตลอดเลยครับ</div></div>
     <div class="hfaq">
       <details><summary>โปรแกรม Payroll คืออะไร</summary><p>โปรแกรม Payroll หรือโปรแกรมเงินเดือน คือระบบที่คำนวณเงินเดือน ค่าล่วงเวลา เงินเพิ่มและเงินหักของพนักงาน หักภาษี ณ ที่จ่ายและประกันสังคมให้อัตโนมัติ แล้วออกสลิปเงินเดือนและเอกสารที่ต้องยื่นหน่วยงานราชการ แทนการทำใน Excel ด้วยมือทุกเดือน</p></details>
       <details><summary>eSimPayroll ราคาเท่าไหร่</summary><p>พนักงาน 1-10 คนใช้แพ็กเกจมาตรฐานได้ฟรีตลอด แพ็กเกจเสียเงินเริ่มต้น 590 บาทต่อเดือน คิดตามจำนวนพนักงาน ไม่มีค่าติดตั้งและไม่มีค่าใช้จ่ายแอบแฝง ดูราคาทุกแพ็กเกจได้ที่หน้าราคา</p></details>
@@ -1077,7 +1199,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <section class="cta-sec" style="padding-left:0;padding-right:0">
   <div>
     <div class="cta-band cta-full rv">
-      <img class="cta-bg" src="/media/cta-bg.jpg" alt="" loading="lazy" decoding="async" aria-hidden="true">
+      <img class="cta-bg" src="/media/cta-office.jpg" alt="" loading="lazy" decoding="async" aria-hidden="true">
       <h2 data-en="Ready to make payroll easy?">พร้อมทำเงินเดือนให้ง่ายขึ้นแล้วหรือยัง?</h2>
       <p data-en="30-day free trial. No installation needed.">ทดลองใช้ฟรี 30 วัน ไม่ต้องติดตั้งอะไร</p>
       <a href="/app#signup" class="btn primary" data-en="🚀 Start your free 30 days">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -1574,16 +1696,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 })();
 </script>
 <script>
-/* ใช้ภาพแดชบอร์ดชุดเดียวกับหน้าปก โคลนมาวางในส่วนภาพรวมเรียลไทม์
-   ทำด้วยสคริปต์เพื่อไม่ให้มาร์กอัปยาวซ้ำสองที่ และแก้ที่เดียวจบ */
-(function(){
-  var src=document.querySelector('.hero .shots'), box=document.getElementById('rtimg');
-  if(!src||!box) return;
-  src.removeAttribute('hidden');
-  src.removeAttribute('id');
-  src.querySelectorAll('[id]').forEach(function(n){ n.removeAttribute('id'); });
-  box.appendChild(src);                 /* ย้ายมาเลย ไม่โคลน จะได้ไม่มี id ซ้ำ */
-})();
+
 </script>
 <script>
 /* กดโลโก้ตอนอยู่หน้าแรกอยู่แล้ว = เลื่อนขึ้นบนสุด ไม่ต้องโหลดหน้าใหม่
