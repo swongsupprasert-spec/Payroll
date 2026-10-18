@@ -178,90 +178,90 @@ footer .ft-mail{color:#6ee7b7 !important}
 <!--/header-->
 
 <div class="wrap backbar">
-  <a href="/articles">← ดูบทความทั้งหมด</a>
+  <a href="/articles" data-en="← All articles">← ดูบทความทั้งหมด</a>
 </div>
 
 <div class="wrap">
 <article>
-    <div class="meta">เครื่องมือฟรี · ภาษีเงินได้บุคคลธรรมดา ปี 2569</div>
+    <div class="meta" data-en="Free tool · Thai personal income tax 2026">เครื่องมือฟรี · ภาษีเงินได้บุคคลธรรมดา ปี 2569</div>
     <div class="h1row">
       <span class="h1ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.2" y="2.8" width="15.6" height="18.4" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M7.6 6.4h8.8M7.8 11h.01M12 11h.01M16.2 11h.01M7.8 14.8h.01M12 14.8h.01M16.2 14.8v3.6M7.8 18.4h4.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></span>
-      <h1>คำนวณภาษีเงินเดือน ฟรี ปี 2569</h1>
+      <h1 data-en="Free Thai salary tax calculator 2026">คำนวณภาษีเงินเดือน ฟรี ปี 2569</h1>
     </div>
-    <p>ใส่เงินเดือนและค่าลดหย่อนของคุณ รู้ทันทีว่า<strong>เสียภาษีปีละเท่าไหร่</strong> และ<strong>ถูกหัก ณ ที่จ่ายเดือนละเท่าไหร่</strong> คำนวณบนเครื่องของคุณ ไม่ต้องสมัคร ไม่เก็บข้อมูล</p>
+    <p data-en="Enter your salary and allowances to see &lt;strong&gt;how much tax you pay a year&lt;/strong&gt; and &lt;strong&gt;how much is withheld each month&lt;/strong&gt;. It runs in your browser, no sign-up, nothing stored.">ใส่เงินเดือนและค่าลดหย่อนของคุณ รู้ทันทีว่า<strong>เสียภาษีปีละเท่าไหร่</strong> และ<strong>ถูกหัก ณ ที่จ่ายเดือนละเท่าไหร่</strong> คำนวณบนเครื่องของคุณ ไม่ต้องสมัคร ไม่เก็บข้อมูล</p>
 
     <div class="tc">
       <div class="tc-form">
-        <h2 class="tc-h">1. เงินได้</h2>
+        <h2 class="tc-h" data-en="1. Income">1. เงินได้</h2>
         <div class="tc-grid">
-          <label>เงินเดือน (บาท/เดือน)<input type="number" id="salary" value="30000" min="0" step="500" inputmode="decimal"></label>
-          <label>จำนวนเดือนที่ได้รับในปีนี้<input type="number" id="months" value="12" min="1" max="12" step="1"></label>
-          <label>โบนัส / เงินได้อื่นทั้งปี<input type="number" id="bonus" value="0" min="0" step="1000" inputmode="decimal"></label>
-          <label class="tc-chk"><input type="checkbox" id="sso" checked> หักประกันสังคม 5% (สูงสุด 875 บาท/เดือน)</label>
+          <label><span data-en="Salary (baht/month)">เงินเดือน (บาท/เดือน)</span><input type="number" id="salary" value="30000" min="0" step="500" inputmode="decimal"></label>
+          <label><span data-en="Months paid this year">จำนวนเดือนที่ได้รับในปีนี้</span><input type="number" id="months" value="12" min="1" max="12" step="1"></label>
+          <label><span data-en="Bonus / other income for the year">โบนัส / เงินได้อื่นทั้งปี</span><input type="number" id="bonus" value="0" min="0" step="1000" inputmode="decimal"></label>
+          <label class="tc-chk"><input type="checkbox" id="sso" checked> <span data-en="Deduct social security 5% (max 875 baht/month)">หักประกันสังคม 5% (สูงสุด 875 บาท/เดือน)</span></label>
         </div>
 
-        <h2 class="tc-h">2. ค่าลดหย่อน</h2>
+        <h2 class="tc-h" data-en="2. Allowances">2. ค่าลดหย่อน</h2>
         <div class="tc-grid">
-          <label>คู่สมรส (ไม่มีเงินได้)<select id="spouse"><option value="0">ไม่มี</option><option value="1">มี</option></select></label>
-          <label>จำนวนบุตร<input type="number" id="kids" value="0" min="0" max="10" step="1"></label>
-          <label>บิดามารดาที่อุปการะ (คน)<input type="number" id="parents" value="0" min="0" max="4" step="1"></label>
-          <label>เบี้ยประกันชีวิต / ปี<input type="number" id="life" value="0" min="0" step="1000"></label>
-          <label>เบี้ยประกันสุขภาพตัวเอง / ปี<input type="number" id="health" value="0" min="0" step="1000"></label>
-          <label>กองทุนสำรองเลี้ยงชีพ / ปี<input type="number" id="pvd" value="0" min="0" step="1000"></label>
-          <label>ดอกเบี้ยเงินกู้ซื้อบ้าน / ปี<input type="number" id="home" value="0" min="0" step="1000"></label>
-          <label>ลดหย่อนอื่น ๆ / ปี<input type="number" id="other" value="0" min="0" step="1000"></label>
+          <label><span data-en="Spouse (no income)">คู่สมรส (ไม่มีเงินได้)</span><select id="spouse"><option value="0" data-en="No">ไม่มี</option><option value="1" data-en="Yes">มี</option></select></label>
+          <label><span data-en="Children">จำนวนบุตร</span><input type="number" id="kids" value="0" min="0" max="10" step="1"></label>
+          <label><span data-en="Parents supported">บิดามารดาที่อุปการะ (คน)</span><input type="number" id="parents" value="0" min="0" max="4" step="1"></label>
+          <label><span data-en="Life insurance / year">เบี้ยประกันชีวิต / ปี</span><input type="number" id="life" value="0" min="0" step="1000"></label>
+          <label><span data-en="Own health insurance / year">เบี้ยประกันสุขภาพตัวเอง / ปี</span><input type="number" id="health" value="0" min="0" step="1000"></label>
+          <label><span data-en="Provident fund / year">กองทุนสำรองเลี้ยงชีพ / ปี</span><input type="number" id="pvd" value="0" min="0" step="1000"></label>
+          <label><span data-en="Home loan interest / year">ดอกเบี้ยเงินกู้ซื้อบ้าน / ปี</span><input type="number" id="home" value="0" min="0" step="1000"></label>
+          <label><span data-en="Other allowances / year">ลดหย่อนอื่น ๆ / ปี</span><input type="number" id="other" value="0" min="0" step="1000"></label>
         </div>
       </div>
 
       <div class="tc-res" aria-live="polite">
-        <div class="tc-big"><span>ภาษีทั้งปี</span><strong id="rYear">0</strong><em>บาท</em></div>
-        <div class="tc-big tc-m"><span>หัก ณ ที่จ่าย ประมาณ</span><strong id="rMonth">0</strong><em>บาท/เดือน</em></div>
-        <div class="tc-rate">อัตราภาษีที่แท้จริง <strong id="rEff">0%</strong> ของเงินได้ · ขั้นสูงสุด <strong id="rTop">ยกเว้น</strong></div>
+        <div class="tc-big"><span data-en="Tax for the year">ภาษีทั้งปี</span><strong id="rYear">0</strong><em data-en="baht">บาท</em></div>
+        <div class="tc-big tc-m"><span data-en="Withheld, approx.">หัก ณ ที่จ่าย ประมาณ</span><strong id="rMonth">0</strong><em data-en="baht/month">บาท/เดือน</em></div>
+        <div class="tc-rate"><span data-en="Effective rate">อัตราภาษีที่แท้จริง</span> <strong id="rEff">0%</strong> <span data-en="of income · top band">ของเงินได้ · ขั้นสูงสุด</span> <strong id="rTop">ยกเว้น</strong></div>
         <table class="tc-tbl"><tbody id="rBreak"></tbody></table>
-        <a href="/app#signup" class="btn primary tc-cta">คิดภาษีทั้งบริษัทอัตโนมัติ ทดลองฟรี 30 วัน</a>
+        <a href="/app#signup" class="btn primary tc-cta" data-en="Automate tax for your whole company, 30 days free">คิดภาษีทั้งบริษัทอัตโนมัติ ทดลองฟรี 30 วัน</a>
       </div>
     </div>
 
-    <h2>ภาษีคิดทีละขั้น</h2>
-    <p>ภาษีเงินได้บุคคลธรรมดาเป็น<strong>อัตราก้าวหน้า</strong> แต่ละขั้นเก็บเฉพาะส่วนที่อยู่ในขั้นนั้น ไม่ได้เก็บทั้งก้อน ตารางด้านล่างแสดงภาษีของคุณแยกตามขั้น</p>
+    <h2 data-en="Tax is charged band by band">ภาษีคิดทีละขั้น</h2>
+    <p data-en="Thai personal income tax is &lt;strong&gt;progressive&lt;/strong&gt;: each band only taxes the part of income inside it, not the whole amount. The table below breaks your tax down by band.">ภาษีเงินได้บุคคลธรรมดาเป็น<strong>อัตราก้าวหน้า</strong> แต่ละขั้นเก็บเฉพาะส่วนที่อยู่ในขั้นนั้น ไม่ได้เก็บทั้งก้อน ตารางด้านล่างแสดงภาษีของคุณแยกตามขั้น</p>
     <div class="tbl-wrap"><table>
-      <thead><tr><th>เงินได้สุทธิ (บาท)</th><th class="num">อัตรา</th><th class="num">ส่วนที่อยู่ในขั้น</th><th class="num">ภาษีในขั้นนี้</th></tr></thead>
+      <thead><tr><th data-en="Net income (baht)">เงินได้สุทธิ (บาท)</th><th class="num" data-en="Rate">อัตรา</th><th class="num" data-en="Amount in band">ส่วนที่อยู่ในขั้น</th><th class="num" data-en="Tax in band">ภาษีในขั้นนี้</th></tr></thead>
       <tbody id="rSteps"></tbody>
     </table></div>
 
-    <h2>เกณฑ์ที่เครื่องคำนวณนี้ใช้</h2>
+    <h2 data-en="Rules this calculator uses">เกณฑ์ที่เครื่องคำนวณนี้ใช้</h2>
     <div class="tbl-wrap"><table>
-      <thead><tr><th>รายการ</th><th>เกณฑ์</th></tr></thead>
+      <thead><tr><th data-en="Item">รายการ</th><th data-en="Rule">เกณฑ์</th></tr></thead>
       <tbody>
-        <tr><td>ค่าใช้จ่ายเงินเดือน</td><td>50% ของเงินได้ ไม่เกิน 100,000 บาท</td></tr>
-        <tr><td>ลดหย่อนส่วนตัว</td><td>60,000 บาท</td></tr>
-        <tr><td>คู่สมรสไม่มีเงินได้</td><td>60,000 บาท</td></tr>
-        <tr><td>บุตร</td><td>คนละ 30,000 บาท</td></tr>
-        <tr><td>บิดามารดา</td><td>คนละ 30,000 บาท (สูงสุด 4 คน)</td></tr>
-        <tr><td>ประกันสังคม</td><td>ตามที่จ่ายจริง 5% ของค่าจ้างฐาน 1,650–17,500 บาท/เดือน</td></tr>
-        <tr><td>ประกันชีวิต + ประกันสุขภาพ</td><td>ประกันชีวิตไม่เกิน 100,000 · สุขภาพไม่เกิน 25,000 · รวมกันไม่เกิน 100,000 บาท</td></tr>
-        <tr><td>กองทุนสำรองเลี้ยงชีพ</td><td>ไม่เกิน 15% ของค่าจ้าง และไม่เกิน 500,000 บาท</td></tr>
-        <tr><td>ดอกเบี้ยเงินกู้ซื้อบ้าน</td><td>ไม่เกิน 100,000 บาท</td></tr>
+        <tr><td data-en="Employment expense">ค่าใช้จ่ายเงินเดือน</td><td data-en="50% of income, up to 100,000 baht">50% ของเงินได้ ไม่เกิน 100,000 บาท</td></tr>
+        <tr><td data-en="Personal allowance">ลดหย่อนส่วนตัว</td><td data-en="60,000 baht">60,000 บาท</td></tr>
+        <tr><td data-en="Spouse with no income">คู่สมรสไม่มีเงินได้</td><td data-en="60,000 baht">60,000 บาท</td></tr>
+        <tr><td data-en="Children">บุตร</td><td data-en="30,000 baht each">คนละ 30,000 บาท</td></tr>
+        <tr><td data-en="Parents">บิดามารดา</td><td data-en="30,000 baht each (up to 4)">คนละ 30,000 บาท (สูงสุด 4 คน)</td></tr>
+        <tr><td data-en="Social security">ประกันสังคม</td><td data-en="Actual 5% paid on a wage base of 1,650–17,500 baht/month">ตามที่จ่ายจริง 5% ของค่าจ้างฐาน 1,650–17,500 บาท/เดือน</td></tr>
+        <tr><td data-en="Life + health insurance">ประกันชีวิต + ประกันสุขภาพ</td><td data-en="Life up to 100,000 · health up to 25,000 · combined up to 100,000 baht">ประกันชีวิตไม่เกิน 100,000 · สุขภาพไม่เกิน 25,000 · รวมกันไม่เกิน 100,000 บาท</td></tr>
+        <tr><td data-en="Provident fund">กองทุนสำรองเลี้ยงชีพ</td><td data-en="Up to 15% of wages and 500,000 baht">ไม่เกิน 15% ของค่าจ้าง และไม่เกิน 500,000 บาท</td></tr>
+        <tr><td data-en="Home loan interest">ดอกเบี้ยเงินกู้ซื้อบ้าน</td><td data-en="Up to 100,000 baht">ไม่เกิน 100,000 บาท</td></tr>
       </tbody>
     </table></div>
     <div class="note">
-      <p style="margin-bottom:0"><strong>ใช้เพื่อประมาณการ</strong> ยังไม่รวมค่าลดหย่อนบางประเภท เช่น บุตรคนที่ 2 ที่เกิดตั้งแต่ปี 2561 กองทุน SSF/RMF หรือเงินบริจาค ซึ่งมีเงื่อนไขเพิ่มเติม ค่าลดหย่อนเหล่านี้ใส่รวมในช่อง "ลดหย่อนอื่น ๆ" ได้ ตรวจสอบเกณฑ์ล่าสุดกับกรมสรรพากรก่อนยื่นจริง ยอดหักรายเดือนจริงขึ้นกับวิธีที่นายจ้างใช้ โดยเฉพาะเดือนที่ได้โบนัส</p>
+      <p style="margin-bottom:0" data-en="&lt;strong&gt;For estimates only.&lt;/strong&gt; Some allowances are not included, such as a second child born from 2018, SSF/RMF or donations, which have extra conditions. Add them under &quot;Other allowances&quot;. Check current Revenue Department rules before filing. Actual monthly withholding depends on your employer’s method, especially in a bonus month."><strong>ใช้เพื่อประมาณการ</strong> ยังไม่รวมค่าลดหย่อนบางประเภท เช่น บุตรคนที่ 2 ที่เกิดตั้งแต่ปี 2561 กองทุน SSF/RMF หรือเงินบริจาค ซึ่งมีเงื่อนไขเพิ่มเติม ค่าลดหย่อนเหล่านี้ใส่รวมในช่อง "ลดหย่อนอื่น ๆ" ได้ ตรวจสอบเกณฑ์ล่าสุดกับกรมสรรพากรก่อนยื่นจริง ยอดหักรายเดือนจริงขึ้นกับวิธีที่นายจ้างใช้ โดยเฉพาะเดือนที่ได้โบนัส</p>
     </div>
 
-    <p>อ่านเพิ่ม: <a href="/article-salary-tax-threshold">เงินเดือนเท่าไหร่ถึงเสียภาษี</a> · <a href="/article-withholding-tax">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</a> · <a href="/article-50tawi-pnd1">50 ทวิ และ ภ.ง.ด.1</a></p>
+    <p data-en="Read more: &lt;a href=&quot;/article-salary-tax-threshold&quot;&gt;What salary starts paying tax&lt;/a&gt; · &lt;a href=&quot;/article-withholding-tax&quot;&gt;How salary withholding tax is calculated&lt;/a&gt; · &lt;a href=&quot;/article-50tawi-pnd1&quot;&gt;50 Bis and PND.1&lt;/a&gt;">อ่านเพิ่ม: <a href="/article-salary-tax-threshold">เงินเดือนเท่าไหร่ถึงเสียภาษี</a> · <a href="/article-withholding-tax">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</a> · <a href="/article-50tawi-pnd1">50 ทวิ และ ภ.ง.ด.1</a></p>
 
     <div class="note sources">
-      <h3>แหล่งอ้างอิงทางการ</h3>
-      <ul style="margin:6px 0 0 18px"><li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและค่าลดหย่อน</a></li></ul>
+      <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
+      <ul style="margin:6px 0 0 18px"><li><a href="https://www.rd.go.th" target="_blank" rel="noopener" data-en="Revenue Department: personal income tax and allowances">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและค่าลดหย่อน</a></li></ul>
     </div>
 
-    <h2>คำถามที่พบบ่อย</h2>
+    <h2 data-en="FAQ">คำถามที่พบบ่อย</h2>
     <div class="faq">
-      <details><summary>คำนวณภาษีเงินเดือนยังไง</summary><p>เอาเงินได้ทั้งปี (เงินเดือนคูณจำนวนเดือนบวกโบนัสและเงินได้อื่น) หักค่าใช้จ่าย 50% ไม่เกิน 100,000 บาท แล้วหักค่าลดหย่อน เช่น ส่วนตัว 60,000 บาท และประกันสังคม ได้เป็นเงินได้สุทธิ จากนั้นคิดภาษีแบบขั้นบันได 150,000 บาทแรกยกเว้น ส่วนถัดไปคิด 5% 10% 15% ตามลำดับ</p></details>
-      <details><summary>เงินเดือนเท่าไหร่ถึงเริ่มเสียภาษี</summary><p>คนโสดที่มีแค่ลดหย่อนส่วนตัวและประกันสังคม เริ่มเสียภาษีเมื่อเงินเดือนเกินประมาณ 26,708 บาทต่อเดือน ถ้ามีค่าลดหย่อนอื่นเกณฑ์จะสูงขึ้น</p></details>
-      <details><summary>ภาษีหัก ณ ที่จ่ายรายเดือนคิดยังไง</summary><p>นายจ้างประมาณภาษีทั้งปีจากเงินได้ทั้งปี แล้วหารด้วยจำนวนเดือนที่จ่ายเงินเดือน ได้เป็นยอดหักแต่ละเดือน เดือนที่ได้โบนัสมักถูกหักเพิ่มในเดือนนั้น</p></details>
-      <details><summary>เครื่องคำนวณนี้แม่นแค่ไหน</summary><p>ใช้อัตราภาษีเงินได้บุคคลธรรมดาและเกณฑ์ค่าลดหย่อนหลักตามที่ใช้ปี 2569 เหมาะสำหรับประมาณการ กรณีมีเงินได้หลายประเภทหรือค่าลดหย่อนพิเศษ ควรตรวจสอบกับกรมสรรพากรก่อนยื่นจริง</p></details>
-      <details><summary>ข้อมูลที่กรอกถูกเก็บไหม</summary><p>ไม่ถูกเก็บ การคำนวณทำบนเครื่องของคุณทั้งหมด ไม่มีการส่งตัวเลขไปที่เซิร์ฟเวอร์</p></details>
+      <details><summary data-en="How is salary tax calculated?">คำนวณภาษีเงินเดือนยังไง</summary><p data-en="Take income for the year (salary × months, plus bonus and other income), deduct the 50% expense capped at 100,000 baht, then allowances such as the 60,000 personal allowance and social security. That gives net income, taxed in bands: the first 150,000 is exempt, then 5%, 10%, 15% and up.">เอาเงินได้ทั้งปี (เงินเดือนคูณจำนวนเดือนบวกโบนัสและเงินได้อื่น) หักค่าใช้จ่าย 50% ไม่เกิน 100,000 บาท แล้วหักค่าลดหย่อน เช่น ส่วนตัว 60,000 บาท และประกันสังคม ได้เป็นเงินได้สุทธิ จากนั้นคิดภาษีแบบขั้นบันได 150,000 บาทแรกยกเว้น ส่วนถัดไปคิด 5% 10% 15% ตามลำดับ</p></details>
+      <details><summary data-en="At what salary do you start paying tax?">เงินเดือนเท่าไหร่ถึงเริ่มเสียภาษี</summary><p data-en="A single person with only the personal allowance and social security starts paying tax at a salary above roughly 26,708 baht a month. More allowances raise that threshold.">คนโสดที่มีแค่ลดหย่อนส่วนตัวและประกันสังคม เริ่มเสียภาษีเมื่อเงินเดือนเกินประมาณ 26,708 บาทต่อเดือน ถ้ามีค่าลดหย่อนอื่นเกณฑ์จะสูงขึ้น</p></details>
+      <details><summary data-en="How is monthly withholding worked out?">ภาษีหัก ณ ที่จ่ายรายเดือนคิดยังไง</summary><p data-en="The employer estimates tax for the whole year from annual income, then divides by the number of pay months. In a bonus month extra tax is usually withheld.">นายจ้างประมาณภาษีทั้งปีจากเงินได้ทั้งปี แล้วหารด้วยจำนวนเดือนที่จ่ายเงินเดือน ได้เป็นยอดหักแต่ละเดือน เดือนที่ได้โบนัสมักถูกหักเพิ่มในเดือนนั้น</p></details>
+      <details><summary data-en="How accurate is this calculator?">เครื่องคำนวณนี้แม่นแค่ไหน</summary><p data-en="It uses the 2026 personal income tax rates and the main allowances, which suits estimates. With several kinds of income or special allowances, check with the Revenue Department before filing.">ใช้อัตราภาษีเงินได้บุคคลธรรมดาและเกณฑ์ค่าลดหย่อนหลักตามที่ใช้ปี 2569 เหมาะสำหรับประมาณการ กรณีมีเงินได้หลายประเภทหรือค่าลดหย่อนพิเศษ ควรตรวจสอบกับกรมสรรพากรก่อนยื่นจริง</p></details>
+      <details><summary data-en="Is what I type stored?">ข้อมูลที่กรอกถูกเก็บไหม</summary><p data-en="No. Everything is calculated in your browser and no numbers are sent to a server.">ไม่ถูกเก็บ การคำนวณทำบนเครื่องของคุณทั้งหมด ไม่มีการส่งตัวเลขไปที่เซิร์ฟเวอร์</p></details>
     </div>
 
 <style>
@@ -297,6 +297,8 @@ footer .ft-mail{color:#6ee7b7 !important}
   var $=function(id){return document.getElementById(id)};
   var n=function(id){var v=parseFloat($(id).value);return isFinite(v)&&v>0?v:0};
   var f=function(x){return Math.round(x).toLocaleString('th-TH')};
+  var EN=function(){return document.documentElement.lang==='en'};
+  var L=function(th,en){return EN()?en:th};
   var f2=function(x){return (Math.round(x*100)/100).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:2})};
   function calc(){
     var sal=n('salary'), mon=Math.min(12,Math.max(1,Math.round(n('months')||12))), bonus=n('bonus');
@@ -309,24 +311,24 @@ footer .ft-mail{color:#6ee7b7 !important}
     var ins=Math.min(life+health,100000);
     var pvd=Math.min(n('pvd'), sal*mon*0.15, 500000);
     var al=[
-      ['ลดหย่อนส่วนตัว',60000],
-      ['คู่สมรส',+$('spouse').value?60000:0],
-      ['บุตร',Math.round(n('kids'))*30000],
-      ['บิดามารดา',Math.min(4,Math.round(n('parents')))*30000],
-      ['ประกันสังคม',sso],
-      ['ประกันชีวิต/สุขภาพ',ins],
-      ['กองทุนสำรองเลี้ยงชีพ',pvd],
-      ['ดอกเบี้ยบ้าน',Math.min(n('home'),100000)],
-      ['ลดหย่อนอื่น ๆ',n('other')]
+      [L('ลดหย่อนส่วนตัว','Personal allowance'),60000],
+      [L('คู่สมรส','Spouse'),+$('spouse').value?60000:0],
+      [L('บุตร','Children'),Math.round(n('kids'))*30000],
+      [L('บิดามารดา','Parents'),Math.min(4,Math.round(n('parents')))*30000],
+      [L('ประกันสังคม','Social security'),sso],
+      [L('ประกันชีวิต/สุขภาพ','Life/health insurance'),ins],
+      [L('กองทุนสำรองเลี้ยงชีพ','Provident fund'),pvd],
+      [L('ดอกเบี้ยบ้าน','Home loan interest'),Math.min(n('home'),100000)],
+      [L('ลดหย่อนอื่น ๆ','Other allowances'),n('other')]
     ];
     var totalAl=al.reduce(function(s,a){return s+a[1]},0);
     var net=Math.max(0,income-expense-totalAl);
-    var tax=0, prev=0, top='ยกเว้น', rows='';
+    var tax=0, prev=0, top=L('ยกเว้น','Exempt'), rows='';
     BANDS.forEach(function(b){
       var part=Math.max(0,Math.min(net,b[0])-prev), t=part*b[1];
       if(part>0){ tax+=t; if(b[1]>0) top=Math.round(b[1]*100)+'%'; }
-      var label=prev===0?'0 – 150,000':(f(prev+1)+(b[0]===Infinity?' ขึ้นไป':' – '+f(b[0])));
-      rows+='<tr class="'+(part>0?'on':'')+'"><td>'+label+'</td><td class="num">'+(b[1]?Math.round(b[1]*100)+'%':'ยกเว้น')+'</td><td class="num">'+(part?f(part):'-')+'</td><td class="num">'+(t?f2(t):'-')+'</td></tr>';
+      var label=prev===0?'0 – 150,000':(f(prev+1)+(b[0]===Infinity?L(' ขึ้นไป',' and above'):' – '+f(b[0])));
+      rows+='<tr class="'+(part>0?'on':'')+'"><td>'+label+'</td><td class="num">'+(b[1]?Math.round(b[1]*100)+'%':L('ยกเว้น','Exempt'))+'</td><td class="num">'+(part?f(part):'-')+'</td><td class="num">'+(t?f2(t):'-')+'</td></tr>';
       prev=b[0];
     });
     $('rYear').textContent=f2(tax);
@@ -334,14 +336,15 @@ footer .ft-mail{color:#6ee7b7 !important}
     $('rEff').textContent=(income?(tax/income*100).toFixed(2):'0.00')+'%';
     $('rTop').textContent=top;
     $('rSteps').innerHTML=rows;
-    var br='<tr><td>เงินได้ทั้งปี</td><td>'+f(income)+'</td></tr>'
-      +'<tr><td>หักค่าใช้จ่าย</td><td>−'+f(expense)+'</td></tr>'
+    var br='<tr><td>'+L('เงินได้ทั้งปี','Income for the year')+'</td><td>'+f(income)+'</td></tr>'
+      +'<tr><td>'+L('หักค่าใช้จ่าย','Less expenses')+'</td><td>−'+f(expense)+'</td></tr>'
       +al.filter(function(a){return a[1]>0}).map(function(a){return '<tr><td>'+a[0]+'</td><td>−'+f(a[1])+'</td></tr>'}).join('')
-      +'<tr class="tot"><td>เงินได้สุทธิ</td><td>'+f(net)+'</td></tr>';
+      +'<tr class="tot"><td>'+L('เงินได้สุทธิ','Net income')+'</td><td>'+f(net)+'</td></tr>';
     $('rBreak').innerHTML=br;
   }
   document.querySelectorAll('.tc-form input,.tc-form select').forEach(function(el){el.addEventListener('input',calc);el.addEventListener('change',calc)});
   calc();
+  window.__taxCalc=calc;
 })();
 </script>
   </article>
@@ -357,25 +360,25 @@ footer .ft-mail{color:#6ee7b7 !important}
       <a href="/article-welfare-fund" class="card">
         <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
         <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
-          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
+          <h3 data-en="Employee Welfare Fund: 0.25% from 1 October 2026, the complete guide">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-withholding-tax" class="card">
         <div class="cover"><img width="760" height="507" loading="lazy" alt="วิธีคำนวณภาษีหัก ณ ที่จ่ายจากเงินเดือน" src="/media/covers/payroll-withholding-tax-calculation-card.jpg"></div>
         <div class="body"><span class="tag" data-en="Tax">ภาษี</span>
-          <h3 data-en="ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</h3>
+          <h3 data-en="How Thai salary withholding tax is calculated">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-monthly-vs-daily" class="card">
         <div class="cover"><img width="760" height="498" loading="lazy" alt="เปรียบเทียบพนักงานรายเดือนกับพนักงานรายวัน" src="/media/covers/monthly-vs-daily-employees-card.jpg"></div>
         <div class="body"><span class="tag" data-en="Payroll">เงินเดือน</span>
-          <h3 data-en="พนักงานรายเดือน vs รายวัน ต่างกันยังไง">พนักงานรายเดือน vs รายวัน ต่างกันยังไง</h3>
+          <h3 data-en="Monthly vs daily-wage employees: the differences">พนักงานรายเดือน vs รายวัน ต่างกันยังไง</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-50tawi-pnd1" class="card">
         <div class="cover"><img width="760" height="507" loading="lazy" alt="เอกสารภาษี 50 ทวิ และแบบ ภ.ง.ด.1 ที่นายจ้างต้องยื่น" src="/media/covers/50-bis-pnd1-tax-documents-card.jpg"></div>
         <div class="body"><span class="tag" data-en="Documents">เอกสาร</span>
-          <h3 data-en="50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่">50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</h3>
+          <h3 data-en="50 Bis and PND.1: what they are and when to file">50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
       </div>
     </div>
@@ -478,9 +481,9 @@ footer .ft-mail{color:#6ee7b7 !important}
   var cur='th'; try{ cur = localStorage.getItem(KEY)||'th'; }catch(e){}
   window.__setLang=apply;
   document.addEventListener('DOMContentLoaded',function(){
-    apply(cur);
+    apply(cur); if(window.__taxCalc) window.__taxCalc();
     var b=document.getElementById('langBtn');
-    if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); };
+    if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); if(window.__taxCalc) window.__taxCalc(); };
   });
 })();
 </script>

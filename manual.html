@@ -148,9 +148,10 @@
 <body>
 
 <div class="bar no-print">
-  <b>📘 คู่มือการใช้งาน eSimPayroll</b>
-  <a href="/brochure">📄 โบรชัวร์</a>
-  <button onclick="window.print()">🖨️ พิมพ์ / บันทึกเป็น PDF</button>
+  <b data-en="📘 eSimPayroll User Manual">📘 คู่มือการใช้งาน eSimPayroll</b>
+  <a href="/brochure" data-en="📄 Brochure">📄 โบรชัวร์</a>
+  <button onclick="window.print()">🖨️ <span data-en="Print / Save as PDF">พิมพ์ / บันทึกเป็น PDF</span></button>
+  <button id="langBtn" type="button" style="margin-left:0;background:rgba(255,255,255,.15)">🌐 EN</button>
 </div>
 
 <div class="wrap">
@@ -159,73 +160,73 @@
 <div class="sheet">
   <div class="top mhead">
     <div class="logo">eS</div>
-    <div><h1>คู่มือการใช้งาน</h1>
-      <div class="muted">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย · esimpayroll.com</div></div>
+    <div><h1 data-en="User Manual">คู่มือการใช้งาน</h1>
+      <div class="muted" data-en="eSimPayroll, online payroll software for Thai businesses · esimpayroll.com">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย · esimpayroll.com</div></div>
   </div>
 
-  <p>คู่มือนี้อธิบายการใช้งานทุกเมนูตามลำดับที่ควรทำจริง ตั้งแต่เปิดใช้ครั้งแรกจนถึงพิมพ์เอกสารยื่นราชการ
+  <p data-en="This manual explains every menu in the order you would actually use them, from first sign-in to printing statutory filing forms. New users should read sections 1 to 6 in order first, and refer to the rest when needed.">คู่มือนี้อธิบายการใช้งานทุกเมนูตามลำดับที่ควรทำจริง ตั้งแต่เปิดใช้ครั้งแรกจนถึงพิมพ์เอกสารยื่นราชการ
      ผู้ที่เพิ่งเริ่มใช้แนะนำให้อ่านตามลำดับหัวข้อ 1–6 ก่อน ส่วนที่เหลืออ่านเมื่อต้องใช้งาน</p>
 
-  <div class="note">
+  <div class="note" data-en="Menus marked &lt;span class=&quot;prem&quot;&gt;Premium&lt;/span&gt; are available only on the Premium plan (the 30-day trial includes every feature) · Menus marked &lt;span class=&quot;firmtag&quot;&gt;Accounting Firm&lt;/span&gt; are available only on Accounting Firm accounts.">
     เมนูที่มีป้าย <span class="prem">พรีเมี่ยม</span> ใช้ได้เฉพาะแพ็กเกจพรีเมี่ยม
     (ช่วงทดลองใช้ 30 วันได้ใช้ครบทุกฟีเจอร์) · เมนูที่มีป้าย <span class="firmtag">สำนักงานบัญชี</span>
     มีเฉพาะบัญชีแบบสำนักงานบัญชี
   </div>
 
   <div class="toc">
-    <h3>สารบัญ</h3>
+    <h3 data-en="Contents">สารบัญ</h3>
     <ol>
-      <li><a href="#s1">เริ่มต้นใช้งานครั้งแรก</a></li>
-      <li><a href="#s2">ตั้งค่าบริษัท</a></li>
-      <li><a href="#s3">ข้อมูลพนักงาน</a></li>
-      <li><a href="#s4">คำนวณเงินได้ / เงินหัก</a></li>
-      <li><a href="#s5">สลิปเงินเดือน</a></li>
-      <li><a href="#s6">เอกสารยื่นราชการ</a></li>
-      <li><a href="#s7">แดชบอร์ดและรายงานสรุป</a></li>
-      <li><a href="#s8">การลาออก</a></li>
-      <li><a href="#s9m">ลงเวลาผ่านมือถือ</a></li>
-      <li><a href="#s9">เวลาเข้างาน กะ OT และวันหยุด</a></li>
-      <li><a href="#s10">ระบบลางานและสายอนุมัติ</a></li>
-      <li><a href="#s11">เบิกล่วงหน้ากลางเดือน</a></li>
-      <li><a href="#s12">สำหรับสำนักงานบัญชี</a></li>
-      <li><a href="#s13">แพ็กเกจและการชำระเงิน</a></li>
-      <li><a href="#s14">ปัญหาที่พบบ่อย</a></li>
+      <li><a href="#s1" data-en="Getting started">เริ่มต้นใช้งานครั้งแรก</a></li>
+      <li><a href="#s2" data-en="Company settings">ตั้งค่าบริษัท</a></li>
+      <li><a href="#s3" data-en="Employee data">ข้อมูลพนักงาน</a></li>
+      <li><a href="#s4" data-en="Calculate Earnings / Deductions">คำนวณเงินได้ / เงินหัก</a></li>
+      <li><a href="#s5" data-en="Payslip">สลิปเงินเดือน</a></li>
+      <li><a href="#s6" data-en="Statutory forms">เอกสารยื่นราชการ</a></li>
+      <li><a href="#s7" data-en="Dashboard and summary reports">แดชบอร์ดและรายงานสรุป</a></li>
+      <li><a href="#s8" data-en="Resignation">การลาออก</a></li>
+      <li><a href="#s9m" data-en="Mobile check-in">ลงเวลาผ่านมือถือ</a></li>
+      <li><a href="#s9" data-en="Attendance, shifts, OT and holidays">เวลาเข้างาน กะ OT และวันหยุด</a></li>
+      <li><a href="#s10" data-en="Leave and approval chain">ระบบลางานและสายอนุมัติ</a></li>
+      <li><a href="#s11" data-en="Mid-month advance payment">เบิกล่วงหน้ากลางเดือน</a></li>
+      <li><a href="#s12" data-en="For accounting firms">สำหรับสำนักงานบัญชี</a></li>
+      <li><a href="#s13" data-en="Plans and payment">แพ็กเกจและการชำระเงิน</a></li>
+      <li><a href="#s14" data-en="Troubleshooting">ปัญหาที่พบบ่อย</a></li>
     </ol>
   </div>
 </div>
 
 <!-- ═══════ 1 ═══════ -->
 <div class="sheet" id="s1">
-  <h2>1 · เริ่มต้นใช้งานครั้งแรก</h2>
+  <h2 data-en="1 · Getting started">1 · เริ่มต้นใช้งานครั้งแรก</h2>
 
-  <h3>สมัครใช้งาน</h3>
+  <h3 data-en="Sign up">สมัครใช้งาน</h3>
   <ol class="steps">
-    <li>เข้า <code>esimpayroll.com</code> แล้วกด <b>เริ่มใช้งานฟรี 30 วัน</b></li>
-    <li>เลือกประเภทบัญชี <b>บริษัทเดียว</b> หรือ <b>สำนักงานบัญชี</b></li>
-    <li>กรอกอีเมลและตั้งรหัสผ่าน</li>
-    <li>เปิดอีเมลที่ระบบส่งไปแล้วกดยืนยัน</li>
-    <li>เข้าสู่ระบบ เริ่มใช้งานได้ทันที</li>
+    <li data-en="Go to &lt;code&gt;esimpayroll.com&lt;/code&gt; and click &lt;b&gt;Start free for 30 days&lt;/b&gt;">เข้า <code>esimpayroll.com</code> แล้วกด <b>เริ่มใช้งานฟรี 30 วัน</b></li>
+    <li data-en="Choose an account type: &lt;b&gt;Single company&lt;/b&gt; or &lt;b&gt;Accounting firm&lt;/b&gt;">เลือกประเภทบัญชี <b>บริษัทเดียว</b> หรือ <b>สำนักงานบัญชี</b></li>
+    <li data-en="Enter your email and set a password">กรอกอีเมลและตั้งรหัสผ่าน</li>
+    <li data-en="Open the email the system sends you and click confirm">เปิดอีเมลที่ระบบส่งไปแล้วกดยืนยัน</li>
+    <li data-en="Sign in and start using it right away">เข้าสู่ระบบ เริ่มใช้งานได้ทันที</li>
   </ol>
 
-  <div class="warn">
+  <div class="warn" data-en="&lt;b&gt;Choose the right account type from the start&lt;/b&gt; A &lt;b&gt;Single company&lt;/b&gt; account is for running your own company's payroll and includes attendance and leave · An &lt;b&gt;Accounting firm&lt;/b&gt; account is for managing many client companies with unlimited employees, but has no attendance or leave system. If you chose the wrong one, our team can switch it for you before you pay.">
     <b>เลือกประเภทบัญชีให้ถูกตั้งแต่แรก</b> บัญชี<b>บริษัทเดียว</b>ใช้ทำเงินเดือนของบริษัทตัวเอง
     มีระบบลงเวลาและระบบลา · บัญชี<b>สำนักงานบัญชี</b>ใช้ดูแลบริษัทลูกค้าหลายราย พนักงานไม่จำกัด
     แต่ไม่มีระบบลงเวลาและระบบลา หากเลือกผิดสามารถแจ้งทีมงานเปลี่ยนให้ได้ก่อนชำระเงิน
   </div>
 
-  <h3>หน้าตาของระบบ</h3>
+  <h3 data-en="The interface">หน้าตาของระบบ</h3>
   <table>
-    <thead><tr><th style="width:26%">ส่วน</th><th>ทำอะไร</th></tr></thead>
+    <thead><tr><th style="width:26%" data-en="Part">ส่วน</th><th data-en="What it does">ทำอะไร</th></tr></thead>
     <tbody>
-      <tr><td><b>แถบเมนูซ้าย</b></td><td>สลับหน้าต่าง ๆ ของระบบ · บนมือถือกดปุ่มขีดสามขีดเพื่อเปิด</td></tr>
-      <tr><td><b>ช่องงวดเดือนด้านบน</b></td><td>เลือกงวดเงินเดือนที่กำลังทำ ทุกหน้าจะแสดงข้อมูลของงวดที่เลือกไว้</td></tr>
-      <tr><td><b>แถบแจ้งวันทดลอง</b></td><td>บอกจำนวนวันที่เหลือของช่วงทดลองใช้ หรือวันหมดอายุแพ็กเกจ</td></tr>
-      <tr><td><b>โหมดมืด / สว่าง</b></td><td>กดปุ่มสลับโหมดมืดหรือโหมดสว่างได้ตามถนัด · สลับภาษาไทย / อังกฤษได้เช่นกัน</td></tr>
-      <tr><td><b>ปุ่มบันทึก</b></td><td>ระบบบันทึกให้อัตโนมัติทุกครั้งที่แก้ ไม่ต้องกดบันทึกเอง</td></tr>
+      <tr><td data-en="&lt;b&gt;Left menu bar&lt;/b&gt;"><b>แถบเมนูซ้าย</b></td><td data-en="Switches between the system's pages · On mobile, tap the three-line button to open it">สลับหน้าต่าง ๆ ของระบบ · บนมือถือกดปุ่มขีดสามขีดเพื่อเปิด</td></tr>
+      <tr><td data-en="&lt;b&gt;Pay period box at the top&lt;/b&gt;"><b>ช่องงวดเดือนด้านบน</b></td><td data-en="Selects the pay period you are working on; every page shows data for the selected period">เลือกงวดเงินเดือนที่กำลังทำ ทุกหน้าจะแสดงข้อมูลของงวดที่เลือกไว้</td></tr>
+      <tr><td data-en="&lt;b&gt;Trial banner&lt;/b&gt;"><b>แถบแจ้งวันทดลอง</b></td><td data-en="Shows the days left in your trial, or your plan's expiry date">บอกจำนวนวันที่เหลือของช่วงทดลองใช้ หรือวันหมดอายุแพ็กเกจ</td></tr>
+      <tr><td data-en="&lt;b&gt;Dark / light mode&lt;/b&gt;"><b>โหมดมืด / สว่าง</b></td><td data-en="Toggle dark or light mode as you prefer · You can also switch between Thai and English">กดปุ่มสลับโหมดมืดหรือโหมดสว่างได้ตามถนัด · สลับภาษาไทย / อังกฤษได้เช่นกัน</td></tr>
+      <tr><td data-en="&lt;b&gt;Save button&lt;/b&gt;"><b>ปุ่มบันทึก</b></td><td data-en="Everything saves automatically whenever you edit; no need to press save">ระบบบันทึกให้อัตโนมัติทุกครั้งที่แก้ ไม่ต้องกดบันทึกเอง</td></tr>
     </tbody>
   </table>
 
-  <div class="note">
+  <div class="note" data-en="&lt;b&gt;Data is stored in the cloud&lt;/b&gt; Use it from any device with the same account, and if you close the browser and come back you return to the same page.">
     <b>ข้อมูลเก็บบนคลาวด์</b> เปิดใช้จากเครื่องไหนก็ได้ด้วยบัญชีเดียวกัน
     และปิดเบราว์เซอร์ไปแล้วกลับมาก็อยู่หน้าเดิม
   </div>
@@ -233,35 +234,35 @@
 
 <!-- ═══════ 2 ═══════ -->
 <div class="sheet" id="s2">
-  <h2>2 · ตั้งค่าบริษัท</h2>
-  <p>เมนู <b>⚙️ ตั้งค่า</b> ควรทำก่อนเริ่มใช้งานจริง เพราะข้อมูลตรงนี้จะไปแสดงบนสลิปและเอกสารยื่นทุกใบ</p>
+  <h2 data-en="2 · Company settings">2 · ตั้งค่าบริษัท</h2>
+  <p data-en="The &lt;b&gt;⚙️ Settings&lt;/b&gt; menu should be set up before real use, because this information appears on payslips and every filing form.">เมนู <b>⚙️ ตั้งค่า</b> ควรทำก่อนเริ่มใช้งานจริง เพราะข้อมูลตรงนี้จะไปแสดงบนสลิปและเอกสารยื่นทุกใบ</p>
 
-  <h3>ข้อมูลบริษัท</h3>
+  <h3 data-en="Company information">ข้อมูลบริษัท</h3>
   <table>
-    <thead><tr><th style="width:30%">ช่อง</th><th>คำอธิบาย</th></tr></thead>
+    <thead><tr><th style="width:30%" data-en="Field">ช่อง</th><th data-en="Description">คำอธิบาย</th></tr></thead>
     <tbody>
-      <tr><td>ชื่อบริษัท</td><td>ชื่อเต็มตามหนังสือรับรอง ใช้แสดงบนสลิปและเอกสารทุกใบ</td></tr>
-      <tr><td>ที่อยู่</td><td>ที่อยู่ตามที่จดทะเบียน</td></tr>
-      <tr><td>เลขประจำตัวผู้เสียภาษี</td><td>13 หลัก ใช้ในแบบ ภ.ง.ด.1 และ 50 ทวิ</td></tr>
-      <tr><td>เลขที่บัญชีนายจ้าง</td><td>เลขทะเบียนประกันสังคม ใช้ในแบบ สปส.1-10</td></tr>
-      <tr><td>ผู้ลงนาม</td><td>ชื่อ/ตำแหน่งผู้มีอำนาจลงนามท้ายเอกสาร</td></tr>
+      <tr><td data-en="Company name">ชื่อบริษัท</td><td data-en="Full name as on the company certificate, shown on payslips and every document">ชื่อเต็มตามหนังสือรับรอง ใช้แสดงบนสลิปและเอกสารทุกใบ</td></tr>
+      <tr><td data-en="Address">ที่อยู่</td><td data-en="Registered address">ที่อยู่ตามที่จดทะเบียน</td></tr>
+      <tr><td data-en="Tax ID">เลขประจำตัวผู้เสียภาษี</td><td data-en="13 digits, used on the PND.1 and 50 Bis forms">13 หลัก ใช้ในแบบ ภ.ง.ด.1 และ 50 ทวิ</td></tr>
+      <tr><td data-en="Employer account number">เลขที่บัญชีนายจ้าง</td><td data-en="Social security registration number, used on the SSO 1-10 form">เลขทะเบียนประกันสังคม ใช้ในแบบ สปส.1-10</td></tr>
+      <tr><td data-en="Signatory">ผู้ลงนาม</td><td data-en="Name/position of the authorized signatory at the end of documents">ชื่อ/ตำแหน่งผู้มีอำนาจลงนามท้ายเอกสาร</td></tr>
     </tbody>
   </table>
 
-  <h3>ค่าคำนวณ</h3>
+  <h3 data-en="Calculation settings">ค่าคำนวณ</h3>
   <table>
-    <thead><tr><th style="width:30%">ช่อง</th><th>ค่ามาตรฐาน</th></tr></thead>
+    <thead><tr><th style="width:30%" data-en="Field">ช่อง</th><th data-en="Default">ค่ามาตรฐาน</th></tr></thead>
     <tbody>
-      <tr><td>อัตราประกันสังคม</td><td><b>5%</b> ของค่าจ้าง</td></tr>
-      <tr><td>เพดานฐานประกันสังคม</td><td><b>17,500 บาท</b> สมทบสูงสุด 875 บาท/เดือน</td></tr>
-      <tr><td>ฐานคำนวณ OT</td><td>เงินเดือน ÷ <b>30 วัน</b> ÷ <b>8 ชั่วโมง</b></td></tr>
-      <tr><td>วันทำงาน/เดือน</td><td><b>26 วัน</b> ใช้ประมาณการภาษีของพนักงานรายวัน</td></tr>
-      <tr><td>กองทุนสงเคราะห์ลูกจ้าง</td><td><b>0.25%</b> (1 ต.ค. 2569 – 30 ก.ย. 2574 แล้วขึ้นเป็น 0.50%)</td></tr>
-      <tr><td>วันตัดรอบเงินเดือน</td><td><b>สิ้นเดือน</b> เปลี่ยนได้หากบริษัทตัดรอบวันอื่น</td></tr>
+      <tr><td data-en="Social security rate">อัตราประกันสังคม</td><td data-en="&lt;b&gt;5%&lt;/b&gt; of wages"><b>5%</b> ของค่าจ้าง</td></tr>
+      <tr><td data-en="Social security wage ceiling">เพดานฐานประกันสังคม</td><td data-en="&lt;b&gt;17,500 baht&lt;/b&gt;, maximum contribution 875 baht/month"><b>17,500 บาท</b> สมทบสูงสุด 875 บาท/เดือน</td></tr>
+      <tr><td data-en="OT calculation base">ฐานคำนวณ OT</td><td data-en="Salary ÷ &lt;b&gt;30 days&lt;/b&gt; ÷ &lt;b&gt;8 hours&lt;/b&gt;">เงินเดือน ÷ <b>30 วัน</b> ÷ <b>8 ชั่วโมง</b></td></tr>
+      <tr><td data-en="Working days/month">วันทำงาน/เดือน</td><td data-en="&lt;b&gt;26 days&lt;/b&gt;, used to estimate tax for daily-wage employees"><b>26 วัน</b> ใช้ประมาณการภาษีของพนักงานรายวัน</td></tr>
+      <tr><td data-en="Employee Welfare Fund">กองทุนสงเคราะห์ลูกจ้าง</td><td data-en="&lt;b&gt;0.25%&lt;/b&gt; (1 Oct 2026 to 30 Sep 2031, then rising to 0.50%)"><b>0.25%</b> (1 ต.ค. 2569 – 30 ก.ย. 2574 แล้วขึ้นเป็น 0.50%)</td></tr>
+      <tr><td data-en="Payroll cut-off day">วันตัดรอบเงินเดือน</td><td data-en="&lt;b&gt;End of month&lt;/b&gt;, change it if your company cuts off on another day"><b>สิ้นเดือน</b> เปลี่ยนได้หากบริษัทตัดรอบวันอื่น</td></tr>
     </tbody>
   </table>
 
-  <div class="warn">
+  <div class="warn" data-en="&lt;b&gt;Payroll cut-off day&lt;/b&gt; affects the date range of each period and pro-rated pay for new hires. If your company cuts off on the 25th, set it to 25 and the period becomes the 26th of the previous month to the 25th of the current month.">
     <b>วันตัดรอบเงินเดือน</b> มีผลกับช่วงวันของงวดและการคิดเงินเดือนตามสัดส่วนของพนักงานเข้าใหม่
     หากบริษัทตัดรอบวันที่ 25 ให้ตั้งเป็น 25 งวดจะกลายเป็นวันที่ 26 เดือนก่อน ถึงวันที่ 25 เดือนปัจจุบัน
   </div>
@@ -269,95 +270,95 @@
 
 <!-- ═══════ 3 ═══════ -->
 <div class="sheet" id="s3">
-  <h2>3 · ข้อมูลพนักงาน</h2>
-  <p>เมนู <b>👥 ข้อมูลพนักงาน</b> เพิ่ม แก้ไข ค้นหา และนำเข้า/ส่งออกรายชื่อ</p>
+  <h2 data-en="3 · Employee data">3 · ข้อมูลพนักงาน</h2>
+  <p data-en="The &lt;b&gt;👥 Employees&lt;/b&gt; menu: add, edit, search and import/export employee lists">เมนู <b>👥 ข้อมูลพนักงาน</b> เพิ่ม แก้ไข ค้นหา และนำเข้า/ส่งออกรายชื่อ</p>
 
-  <h3>เพิ่มพนักงาน</h3>
+  <h3 data-en="Add an employee">เพิ่มพนักงาน</h3>
   <ol class="steps">
-    <li>กดปุ่ม <b>➕ เพิ่มพนักงาน</b></li>
-    <li>กรอกข้อมูล รหัสพนักงานระบบตั้งให้อัตโนมัติ แก้เองได้</li>
-    <li>เลือก <b>ประเภทการจ้าง</b> รายเดือน หรือ รายวัน</li>
-    <li>ใส่ <b>วันเริ่มงาน</b> ให้ครบทุกคน (สำคัญมาก)</li>
-    <li>กด <b>บันทึก</b></li>
+    <li data-en="Click &lt;b&gt;➕ Add employee&lt;/b&gt;">กดปุ่ม <b>➕ เพิ่มพนักงาน</b></li>
+    <li data-en="Fill in the details; the employee ID is generated automatically and can be edited">กรอกข้อมูล รหัสพนักงานระบบตั้งให้อัตโนมัติ แก้เองได้</li>
+    <li data-en="Choose the &lt;b&gt;employment type&lt;/b&gt;: monthly or daily">เลือก <b>ประเภทการจ้าง</b> รายเดือน หรือ รายวัน</li>
+    <li data-en="Enter the &lt;b&gt;start date&lt;/b&gt; for every employee (very important)">ใส่ <b>วันเริ่มงาน</b> ให้ครบทุกคน (สำคัญมาก)</li>
+    <li data-en="Click &lt;b&gt;Save&lt;/b&gt;">กด <b>บันทึก</b></li>
   </ol>
 
-  <div class="danger">
+  <div class="danger" data-en="&lt;b&gt;Always enter the start date&lt;/b&gt; The system uses the start date and resignation date to decide in which months an employee needs a payslip and must appear on the PND.1 and SSO 1-10 forms, and to pro-rate pay for the first month. &lt;b&gt;If it is left blank, the system treats the employee as employed the whole time&lt;/b&gt;, so forms will list people who had not yet started.">
     <b>ต้องกรอกวันเริ่มงานเสมอ</b> ระบบใช้วันเริ่มงานและวันที่ลาออกตัดสินว่าเดือนไหนพนักงานคนนั้น
     ต้องมีสลิป ต้องขึ้นในแบบ ภ.ง.ด.1 และ สปส.1-10 หรือไม่ และใช้คิดเงินเดือนตามสัดส่วนของเดือนแรก
     <b>ถ้าไม่กรอก ระบบจะถือว่าทำงานอยู่ตลอด</b> ทำให้เอกสารมีชื่อคนที่ยังไม่เข้างาน
   </div>
 
-  <h3>ช่องข้อมูลที่มีผลต่อการคำนวณ</h3>
+  <h3 data-en="Fields that affect calculations">ช่องข้อมูลที่มีผลต่อการคำนวณ</h3>
   <table>
-    <thead><tr><th style="width:30%">ช่อง</th><th>มีผลอย่างไร</th></tr></thead>
+    <thead><tr><th style="width:30%" data-en="Field">ช่อง</th><th data-en="Effect">มีผลอย่างไร</th></tr></thead>
     <tbody>
-      <tr><td>เงินเดือน / ค่าจ้างต่อวัน</td><td>ฐานคำนวณทุกอย่าง เงินเดือน OT ประกันสังคม ภาษี</td></tr>
-      <tr><td>วันเริ่มงาน</td><td>คิดเงินเดือนตามสัดส่วนเดือนแรก และกรองรายชื่อในเอกสาร</td></tr>
-      <tr><td>วันที่ลาออก</td><td>คิดเงินเดือนตามสัดส่วนเดือนสุดท้าย และตัดออกจากเอกสารเดือนถัดไป</td></tr>
-      <tr><td>คู่สมรส / จำนวนบุตร</td><td>ลดหย่อนภาษี คู่สมรส 60,000 · บุตรคนละ 30,000 บาท/ปี</td></tr>
-      <tr><td>อัตรากองทุนสำรองเลี้ยงชีพ</td><td>% ที่หักจากเงินเดือน · ถ้าตั้งมากกว่า 0 ระบบจะไม่หักกองทุนสงเคราะห์ลูกจ้าง</td></tr>
-      <tr><td>ไม่หักประกันสังคม</td><td>ติ๊กสำหรับกรรมการหรือผู้ที่ได้รับยกเว้น จะถูกแยกออกจากแบบ สปส.1-10</td></tr>
-      <tr><td>ไม่คิด OT</td><td>ติ๊กสำหรับพนักงานระดับบริหารที่ไม่มีสิทธิ์ได้ OT</td></tr>
-      <tr><td>ธนาคาร / เลขที่บัญชี</td><td>ใช้ในใบสรุปยอดโอน</td></tr>
+      <tr><td data-en="Salary / daily wage">เงินเดือน / ค่าจ้างต่อวัน</td><td data-en="The base for everything: salary, OT, social security, tax">ฐานคำนวณทุกอย่าง เงินเดือน OT ประกันสังคม ภาษี</td></tr>
+      <tr><td data-en="Start date">วันเริ่มงาน</td><td data-en="Pro-rates first-month pay and filters names on forms">คิดเงินเดือนตามสัดส่วนเดือนแรก และกรองรายชื่อในเอกสาร</td></tr>
+      <tr><td data-en="Resignation date">วันที่ลาออก</td><td data-en="Pro-rates last-month pay and removes the employee from the following month's forms">คิดเงินเดือนตามสัดส่วนเดือนสุดท้าย และตัดออกจากเอกสารเดือนถัดไป</td></tr>
+      <tr><td data-en="Spouse / number of children">คู่สมรส / จำนวนบุตร</td><td data-en="Tax allowances: spouse 60,000 · 30,000 baht/year per child">ลดหย่อนภาษี คู่สมรส 60,000 · บุตรคนละ 30,000 บาท/ปี</td></tr>
+      <tr><td data-en="Provident fund rate">อัตรากองทุนสำรองเลี้ยงชีพ</td><td data-en="% deducted from salary · If set above 0, the Employee Welfare Fund is not deducted">% ที่หักจากเงินเดือน · ถ้าตั้งมากกว่า 0 ระบบจะไม่หักกองทุนสงเคราะห์ลูกจ้าง</td></tr>
+      <tr><td data-en="No social security deduction">ไม่หักประกันสังคม</td><td data-en="Tick for directors or exempt persons; they are excluded from the SSO 1-10 form">ติ๊กสำหรับกรรมการหรือผู้ที่ได้รับยกเว้น จะถูกแยกออกจากแบบ สปส.1-10</td></tr>
+      <tr><td data-en="No OT">ไม่คิด OT</td><td data-en="Tick for management staff who are not entitled to OT">ติ๊กสำหรับพนักงานระดับบริหารที่ไม่มีสิทธิ์ได้ OT</td></tr>
+      <tr><td data-en="Bank / account number">ธนาคาร / เลขที่บัญชี</td><td data-en="Used on the transfer summary">ใช้ในใบสรุปยอดโอน</td></tr>
     </tbody>
   </table>
 
-  <h3>นำเข้าจากไฟล์ CSV</h3>
-  <p>ถ้ามีรายชื่ออยู่ใน Excel แล้ว ให้กด <b>⬇️ ส่งออก CSV</b> ก่อนเพื่อดูรูปแบบคอลัมน์ที่ระบบต้องการ
+  <h3 data-en="Import from a CSV file">นำเข้าจากไฟล์ CSV</h3>
+  <p data-en="If your list is already in Excel, click &lt;b&gt;⬇️ Export CSV&lt;/b&gt; first to see the column format the system expects, arrange your data to match, then click &lt;b&gt;⬆️ Import CSV&lt;/b&gt;">ถ้ามีรายชื่ออยู่ใน Excel แล้ว ให้กด <b>⬇️ ส่งออก CSV</b> ก่อนเพื่อดูรูปแบบคอลัมน์ที่ระบบต้องการ
      แล้วจัดข้อมูลให้ตรงกัน จากนั้นกด <b>⬆️ นำเข้า CSV</b></p>
-  <div class="note">ติดปัญหาเรื่องรูปแบบไฟล์ ทีมงานช่วยจัดให้ฟรี
+  <div class="note" data-en="Stuck on the file format? Our team will format it for you free &lt;a class=&quot;linebtn sm&quot; href=&quot;https://line.me/R/ti/p/@esimpayroll&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;span class=&quot;lico&quot;&gt;LINE&lt;/span&gt; Chat with our team&lt;/a&gt;">ติดปัญหาเรื่องรูปแบบไฟล์ ทีมงานช่วยจัดให้ฟรี
     <a class="linebtn sm" href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener">
       <span class="lico">LINE</span> ทักหาทีมงาน</a></div>
 </div>
 
 <!-- ═══════ 4 ═══════ -->
 <div class="sheet" id="s4">
-  <h2>4 · คำนวณเงินได้ / เงินหัก</h2>
-  <p>เมนู <b>🧮 คำนวณเงินได้ / เงินหัก</b> หน้าหลักที่ใช้ทำเงินเดือนแต่ละงวด</p>
+  <h2 data-en="4 · Calculate Earnings / Deductions">4 · คำนวณเงินได้ / เงินหัก</h2>
+  <p data-en="The &lt;b&gt;🧮 Calculate Earnings / Deductions&lt;/b&gt; menu is the main page for running payroll each period">เมนู <b>🧮 คำนวณเงินได้ / เงินหัก</b> หน้าหลักที่ใช้ทำเงินเดือนแต่ละงวด</p>
 
   <ol class="steps">
-    <li>เลือก <b>งวดเดือน</b> ที่ต้องการทำ จากช่องด้านบนขวา</li>
-    <li>เลือกพนักงานจากช่อง <b>เลือกพนักงาน</b> หรือเลือก <b>— ทั้งหมด —</b> เพื่อกรอกแบบตาราง</li>
-    <li>กรอกรายการเงินได้และเงินหักที่มีในงวดนั้น</li>
-    <li>ตรวจตัวเลข แล้วเปลี่ยนไปทำคนถัดไป ระบบบันทึกให้เอง</li>
+    <li data-en="Choose the &lt;b&gt;pay period&lt;/b&gt; from the box at the top right">เลือก <b>งวดเดือน</b> ที่ต้องการทำ จากช่องด้านบนขวา</li>
+    <li data-en="Choose an employee from the &lt;b&gt;Select employee&lt;/b&gt; box, or choose &lt;b&gt;All&lt;/b&gt; to enter data in a table">เลือกพนักงานจากช่อง <b>เลือกพนักงาน</b> หรือเลือก <b>— ทั้งหมด —</b> เพื่อกรอกแบบตาราง</li>
+    <li data-en="Enter the earnings and deductions for that period">กรอกรายการเงินได้และเงินหักที่มีในงวดนั้น</li>
+    <li data-en="Check the figures, then move on to the next employee; the system saves automatically">ตรวจตัวเลข แล้วเปลี่ยนไปทำคนถัดไป ระบบบันทึกให้เอง</li>
   </ol>
 
-  <h3>ช่องที่ระบบคำนวณให้อัตโนมัติ</h3>
-  <p>ช่องพื้นหลัง<b>สีเขียว</b>คือช่องที่ระบบคิดให้เอง ได้แก่ <b>ภาษีเงินได้</b>, <b>ประกันสังคม</b>
+  <h3 data-en="Automatically calculated fields">ช่องที่ระบบคำนวณให้อัตโนมัติ</h3>
+  <p data-en="Fields with a &lt;b&gt;green&lt;/b&gt; background are calculated by the system: &lt;b&gt;income tax&lt;/b&gt;, &lt;b&gt;social security&lt;/b&gt; and &lt;b&gt;provident fund&lt;/b&gt;. If you type over one, it turns &lt;b&gt;yellow&lt;/b&gt; and shows (manual). Click &lt;b&gt;↻ Reset to auto&lt;/b&gt; to let the system recalculate.">ช่องพื้นหลัง<b>สีเขียว</b>คือช่องที่ระบบคิดให้เอง ได้แก่ <b>ภาษีเงินได้</b>, <b>ประกันสังคม</b>
      และ <b>กองทุนสำรองเลี้ยงชีพ</b> หากพิมพ์ทับเอง ช่องจะเปลี่ยนเป็น<b>สีเหลือง</b>พร้อมคำว่า (แก้เอง)
      กด <b>↻ คืนค่าอัตโนมัติ</b> เพื่อให้ระบบคิดใหม่</p>
 
-  <h3>ค่าล่วงเวลา (OT)</h3>
-  <p>กรอกจำนวนชั่วโมงและเลือกตัวคูณ ระบบคูณอัตราต่อชั่วโมงให้เอง หรือจะพิมพ์ยอดรวมเองก็ได้</p>
+  <h3 data-en="Overtime (OT)">ค่าล่วงเวลา (OT)</h3>
+  <p data-en="Enter the hours and choose a multiplier; the system applies the hourly rate, or you can type the total yourself">กรอกจำนวนชั่วโมงและเลือกตัวคูณ ระบบคูณอัตราต่อชั่วโมงให้เอง หรือจะพิมพ์ยอดรวมเองก็ได้</p>
   <table>
-    <thead><tr><th>ตัวคูณ</th><th>ใช้เมื่อ</th></tr></thead>
+    <thead><tr><th data-en="Multiplier">ตัวคูณ</th><th data-en="When used">ใช้เมื่อ</th></tr></thead>
     <tbody>
-      <tr><td>1 เท่า</td><td>ทำงานวันหยุด (ในเวลาทำงานปกติ)</td></tr>
-      <tr><td>1.5 เท่า</td><td>ล่วงเวลาในวันทำงานปกติ</td></tr>
-      <tr><td>2 เท่า</td><td>ค่าทำงานในวันหยุด</td></tr>
-      <tr><td>3 เท่า</td><td>ล่วงเวลาในวันหยุด</td></tr>
+      <tr><td data-en="1x">1 เท่า</td><td data-en="Holiday work (within normal working hours)">ทำงานวันหยุด (ในเวลาทำงานปกติ)</td></tr>
+      <tr><td data-en="1.5x">1.5 เท่า</td><td data-en="Overtime on a normal working day">ล่วงเวลาในวันทำงานปกติ</td></tr>
+      <tr><td data-en="2x">2 เท่า</td><td data-en="Holiday work pay">ค่าทำงานในวันหยุด</td></tr>
+      <tr><td data-en="3x">3 เท่า</td><td data-en="Overtime on a holiday">ล่วงเวลาในวันหยุด</td></tr>
     </tbody>
   </table>
 
-  <h3>ตรวจสอบวิธีคำนวณภาษี</h3>
-  <p>กดปุ่ม <b>🔍 ดูวิธีคำนวณภาษี</b> ระบบจะแสดงทีละขั้น ตั้งแต่เงินได้ทั้งปี หักค่าใช้จ่าย
+  <h3 data-en="Check how tax is calculated">ตรวจสอบวิธีคำนวณภาษี</h3>
+  <p data-en="Click &lt;b&gt;🔍 Show tax calculation&lt;/b&gt; to see each step, from annual income, expense deduction and allowances to the tax withheld each month. Use it to explain to employees or auditors.">กดปุ่ม <b>🔍 ดูวิธีคำนวณภาษี</b> ระบบจะแสดงทีละขั้น ตั้งแต่เงินได้ทั้งปี หักค่าใช้จ่าย
      ลดหย่อน จนถึงภาษีที่หักต่อเดือน ใช้อธิบายให้พนักงานหรือผู้ตรวจสอบบัญชีดูได้</p>
 
   <div class="ex">
-    <h4>ตัวอย่าง พนักงานเงินเดือน 30,000 บาท (โสด ไม่มีบุตร ไม่มีกองทุน)</h4>
+    <h4 data-en="Example: employee earning 30,000 baht (single, no children, no fund)">ตัวอย่าง พนักงานเงินเดือน 30,000 บาท (โสด ไม่มีบุตร ไม่มีกองทุน)</h4>
     <table>
-      <tr><td>เงินเดือน</td><td class="num">30,000.00</td></tr>
-      <tr><td>หัก ประกันสังคม 5% (คุมเพดาน 17,500)</td><td class="num">− 875.00</td></tr>
-      <tr><td>หัก ภาษีหัก ณ ที่จ่าย</td><td class="num">− 164.58</td></tr>
-      <tr><td>เงินสุทธิที่ได้รับ</td><td class="num">28,960.42</td></tr>
+      <tr><td data-en="Salary">เงินเดือน</td><td class="num">30,000.00</td></tr>
+      <tr><td data-en="Less social security 5% (capped at 17,500)">หัก ประกันสังคม 5% (คุมเพดาน 17,500)</td><td class="num">− 875.00</td></tr>
+      <tr><td data-en="Less withholding tax">หัก ภาษีหัก ณ ที่จ่าย</td><td class="num">− 164.58</td></tr>
+      <tr><td data-en="Net pay">เงินสุทธิที่ได้รับ</td><td class="num">28,960.42</td></tr>
     </table>
   </div>
 
-  <div class="note">
+  <div class="note" data-en="&lt;b&gt;Employees who start mid-month&lt;/b&gt; A yellow box shows how many days of the period are counted, and pay is pro-rated automatically; no manual calculation needed.">
     <b>พนักงานเข้างานกลางเดือน</b> ระบบขึ้นกล่องสีเหลืองแสดงว่าคิดจากกี่วันในงวดกี่วัน
     และคิดเงินเดือนตามสัดส่วนให้เอง ไม่ต้องคำนวณเอง
   </div>
-  <div class="note">
+  <div class="note" data-en="&lt;b&gt;Daily-wage employees&lt;/b&gt; must have &lt;b&gt;working days&lt;/b&gt; entered first before the system can calculate base pay (daily wage × number of days)">
     <b>พนักงานรายวัน</b> ต้องกรอก <b>จำนวนวันทำงาน</b> ก่อน ระบบจึงคิดค่าจ้างฐานให้
     (ค่าจ้างต่อวัน × จำนวนวัน)
   </div>
@@ -365,19 +366,19 @@
 
 <!-- ═══════ 5 ═══════ -->
 <div class="sheet" id="s5">
-  <h2>5 · สลิปเงินเดือน</h2>
-  <p>เมนู <b>🧾 สลิปเงินเดือน</b></p>
+  <h2 data-en="5 · Payslip">5 · สลิปเงินเดือน</h2>
+  <p data-en="The &lt;b&gt;🧾 Payslip&lt;/b&gt; menu">เมนู <b>🧾 สลิปเงินเดือน</b></p>
   <ol class="steps">
-    <li>เลือกงวดเดือน</li>
-    <li>เลือก <b>— ทุกคน —</b> เพื่อพิมพ์ทั้งบริษัท หรือเลือกรายชื่อเพื่อพิมพ์เฉพาะคน</li>
-    <li>กด <b>🖨️ พิมพ์สลิป</b></li>
-    <li>ในหน้าต่างพิมพ์ เลือกเครื่องพิมพ์ หรือเลือก <b>Save as PDF</b> เพื่อบันทึกเป็นไฟล์</li>
+    <li data-en="Choose the pay period">เลือกงวดเดือน</li>
+    <li data-en="Choose &lt;b&gt;Everyone&lt;/b&gt; to print for the whole company, or pick a name to print for that person only">เลือก <b>— ทุกคน —</b> เพื่อพิมพ์ทั้งบริษัท หรือเลือกรายชื่อเพื่อพิมพ์เฉพาะคน</li>
+    <li data-en="Click &lt;b&gt;🖨️ Print payslips&lt;/b&gt;">กด <b>🖨️ พิมพ์สลิป</b></li>
+    <li data-en="In the print window, choose a printer, or choose &lt;b&gt;Save as PDF&lt;/b&gt; to save a file">ในหน้าต่างพิมพ์ เลือกเครื่องพิมพ์ หรือเลือก <b>Save as PDF</b> เพื่อบันทึกเป็นไฟล์</li>
   </ol>
-  <div class="note">
+  <div class="note" data-en="Only employees &lt;b&gt;actually employed in that period&lt;/b&gt; are shown. Those who have not started yet or left earlier get no payslip, while the month in which someone resigns still has a payslip because they are still paid that month.">
     ระบบแสดงเฉพาะพนักงานที่<b>ทำงานอยู่จริงในงวดนั้น</b> คนที่ยังไม่เข้างานหรือลาออกไปก่อนหน้าแล้ว
     จะไม่มีสลิป ส่วนเดือนที่ลาออกพอดียังมีสลิปให้ เพราะเดือนนั้นยังได้รับเงิน
   </div>
-  <div class="warn">
+  <div class="warn" data-en="Payslips show only items &lt;b&gt;greater than zero&lt;/b&gt;; items left blank do not appear, keeping payslips short and easy to read.">
     สลิปแสดงเฉพาะรายการที่<b>มีตัวเลขมากกว่าศูนย์</b> รายการที่ไม่ได้กรอกจะไม่ขึ้น
     ทำให้สลิปสั้นและอ่านง่าย
   </div>
@@ -385,75 +386,75 @@
 
 <!-- ═══════ 6 ═══════ -->
 <div class="sheet" id="s6">
-  <h2>6 · เอกสารยื่นราชการ</h2>
+  <h2 data-en="6 · Statutory forms">6 · เอกสารยื่นราชการ</h2>
 
-  <h3>📄 หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)</h3>
-  <p>ออกให้พนักงานปีละครั้ง หรือเมื่อลาออก แสดงเงินได้ทั้งปีและภาษีที่หักไว้
+  <h3 data-en="📄 Withholding Cert. (50 Bis)">📄 หนังสือรับรองหัก ณ ที่จ่าย (50 ทวิ)</h3>
+  <p data-en="Issued to employees once a year or on resignation, showing annual income and tax withheld. Choose the tax year and click print; the system totals every period in that year.">ออกให้พนักงานปีละครั้ง หรือเมื่อลาออก แสดงเงินได้ทั้งปีและภาษีที่หักไว้
      เลือกปีภาษีแล้วกดพิมพ์ ระบบรวมยอดทุกงวดในปีนั้นให้เอง</p>
 
-  <h3>🗂️ แบบ ภ.ง.ด.1</h3>
-  <p>ยื่นกรมสรรพากรทุกเดือน ภายในวันที่ 7 ของเดือนถัดไป (ยื่นออนไลน์ได้ถึงวันที่ 15)</p>
+  <h3 data-en="🗂️ PND.1 Form">🗂️ แบบ ภ.ง.ด.1</h3>
+  <p data-en="Filed with the Revenue Department every month, by the 7th of the following month (online filing allowed until the 15th)">ยื่นกรมสรรพากรทุกเดือน ภายในวันที่ 7 ของเดือนถัดไป (ยื่นออนไลน์ได้ถึงวันที่ 15)</p>
   <ul>
-    <li>เลือกงวดเดือน แล้วตั้ง <b>วันที่จ่ายเงิน</b> ให้ตรงกับวันที่จ่ายจริง</li>
-    <li>กด <b>🖨️ พิมพ์</b> หรือ <b>⬇️ CSV</b> เพื่อนำไปอัปโหลดในระบบ e-Filing</li>
+    <li data-en="Choose the pay period, then set the &lt;b&gt;payment date&lt;/b&gt; to the actual date paid">เลือกงวดเดือน แล้วตั้ง <b>วันที่จ่ายเงิน</b> ให้ตรงกับวันที่จ่ายจริง</li>
+    <li data-en="Click &lt;b&gt;🖨️ Print&lt;/b&gt; or &lt;b&gt;⬇️ CSV&lt;/b&gt; to upload to the e-Filing system">กด <b>🖨️ พิมพ์</b> หรือ <b>⬇️ CSV</b> เพื่อนำไปอัปโหลดในระบบ e-Filing</li>
   </ul>
 
-  <h3>🛡️ แบบประกันสังคม (สปส.1-10)</h3>
-  <p>ยื่นสำนักงานประกันสังคมทุกเดือน ภายในวันที่ 15 ของเดือนถัดไป</p>
+  <h3 data-en="🛡️ Social Security Form (SSO 1-10)">🛡️ แบบประกันสังคม (สปส.1-10)</h3>
+  <p data-en="Filed with the Social Security Office every month, by the 15th of the following month">ยื่นสำนักงานประกันสังคมทุกเดือน ภายในวันที่ 15 ของเดือนถัดไป</p>
   <ul>
-    <li>ระบบแยกกรรมการหรือผู้ที่ติ๊ก "ไม่หักประกันสังคม" ออกให้อัตโนมัติ</li>
-    <li>มีทั้งแบบ สปส.1-10 ส่วนที่ 1 และส่วนที่ 2 รวมถึง <b>กท.20ก</b> (กองทุนเงินทดแทน)</li>
+    <li data-en="Directors and anyone ticked &quot;No social security deduction&quot; are excluded automatically">ระบบแยกกรรมการหรือผู้ที่ติ๊ก "ไม่หักประกันสังคม" ออกให้อัตโนมัติ</li>
+    <li data-en="Includes SSO 1-10 Part 1 and Part 2, plus &lt;b&gt;KT.20 Kor&lt;/b&gt; (Workmen's Compensation Fund)">มีทั้งแบบ สปส.1-10 ส่วนที่ 1 และส่วนที่ 2 รวมถึง <b>กท.20ก</b> (กองทุนเงินทดแทน)</li>
   </ul>
 
-  <div class="note">
+  <div class="note" data-en="Every form shows only employees working in that month. &lt;b&gt;Totals and headcounts always match the names listed.&lt;/b&gt;">
     เอกสารทุกใบแสดงเฉพาะพนักงานที่ทำงานอยู่ในเดือนนั้น
     <b>ยอดรวมและจำนวนรายที่แจ้งจะตรงกับรายชื่อที่แสดงเสมอ</b>
   </div>
 
-  <h3>🏦 แบบสรุปกองทุนสำรองเลี้ยงชีพ / 🤝 กองทุนสงเคราะห์ลูกจ้าง</h3>
-  <p>เงินสะสมลูกจ้าง เงินสมทบนายจ้าง และยอดนำส่ง แยก<b>รายเดือนรายคน</b> และ<b>สรุปทั้งปี</b> พิมพ์หรือส่งออก CSV ได้ ·
+  <h3 data-en="🏦 Provident Fund Summary / 🤝 Employee Welfare Fund Summary">🏦 แบบสรุปกองทุนสำรองเลี้ยงชีพ / 🤝 กองทุนสงเคราะห์ลูกจ้าง</h3>
+  <p data-en="Employee contributions, employer contributions and amounts remitted, broken down &lt;b&gt;by month per employee&lt;/b&gt; and as an &lt;b&gt;annual summary&lt;/b&gt;; print or export to CSV · All form menus are in the &lt;b&gt;📄 Statutory forms&lt;/b&gt; group on the left menu.">เงินสะสมลูกจ้าง เงินสมทบนายจ้าง และยอดนำส่ง แยก<b>รายเดือนรายคน</b> และ<b>สรุปทั้งปี</b> พิมพ์หรือส่งออก CSV ได้ ·
      เมนูเอกสารทั้งหมดอยู่ในกลุ่ม <b>📄 เอกสารราชการ</b> บนเมนูซ้าย</p>
 
-  <h3>กำหนดเวลายื่นที่ต้องจำ</h3>
+  <h3 data-en="Filing deadlines to remember">กำหนดเวลายื่นที่ต้องจำ</h3>
   <table>
-    <thead><tr><th>เอกสาร</th><th>ยื่นที่</th><th>กำหนด</th></tr></thead>
+    <thead><tr><th data-en="Form">เอกสาร</th><th data-en="File with">ยื่นที่</th><th data-en="Deadline">กำหนด</th></tr></thead>
     <tbody>
-      <tr><td>ภ.ง.ด.1</td><td>กรมสรรพากร</td><td>ภายในวันที่ 7 ของเดือนถัดไป (ออนไลน์ถึงวันที่ 15)</td></tr>
-      <tr><td>สปส.1-10</td><td>สำนักงานประกันสังคม</td><td>ภายในวันที่ 15 ของเดือนถัดไป</td></tr>
-      <tr><td>ภ.ง.ด.1ก</td><td>กรมสรรพากร</td><td>ภายในเดือนกุมภาพันธ์ของปีถัดไป</td></tr>
-      <tr><td>50 ทวิ</td><td>ให้พนักงาน</td><td>ภายในวันที่ 15 กุมภาพันธ์ของปีถัดไป</td></tr>
+      <tr><td data-en="PND.1">ภ.ง.ด.1</td><td data-en="Revenue Department">กรมสรรพากร</td><td data-en="By the 7th of the following month (online until the 15th)">ภายในวันที่ 7 ของเดือนถัดไป (ออนไลน์ถึงวันที่ 15)</td></tr>
+      <tr><td data-en="SSO 1-10">สปส.1-10</td><td data-en="Social Security Office">สำนักงานประกันสังคม</td><td data-en="By the 15th of the following month">ภายในวันที่ 15 ของเดือนถัดไป</td></tr>
+      <tr><td data-en="PND.1 Kor">ภ.ง.ด.1ก</td><td data-en="Revenue Department">กรมสรรพากร</td><td data-en="By the end of February of the following year">ภายในเดือนกุมภาพันธ์ของปีถัดไป</td></tr>
+      <tr><td data-en="50 Bis">50 ทวิ</td><td data-en="Give to employees">ให้พนักงาน</td><td data-en="By 15 February of the following year">ภายในวันที่ 15 กุมภาพันธ์ของปีถัดไป</td></tr>
     </tbody>
   </table>
 </div>
 
 <!-- ═══════ 7–8 ═══════ -->
 <div class="sheet" id="s7">
-  <h2>7 · แดชบอร์ดและรายงานสรุป</h2>
+  <h2 data-en="7 · Dashboard and summary reports">7 · แดชบอร์ดและรายงานสรุป</h2>
   <table>
-    <thead><tr><th style="width:32%">เมนู</th><th>ใช้ดูอะไร</th></tr></thead>
+    <thead><tr><th style="width:32%" data-en="Menu">เมนู</th><th data-en="Shows">ใช้ดูอะไร</th></tr></thead>
     <tbody>
-      <tr><td><b>📊 แดชบอร์ด</b></td><td>ภาพรวมของงวด จำนวนพนักงาน เงินเดือนรวม เงินได้รวม เงินหักรวม เงินสุทธิรวม พร้อมกราฟ</td></tr>
-      <tr><td><b>📋 สรุปเงินเดือน</b></td><td>ตารางรายคน แสดงรายได้รวม หักรวม เงินสุทธิ ใช้ตรวจก่อนโอนเงิน</td></tr>
-      <tr><td><b>🏢 สรุปตามแผนก</b></td><td>รวมยอดตามแผนก ใช้ดูต้นทุนบุคลากรแต่ละฝ่าย</td></tr>
-      <tr><td><b>📑 สรุปรายละเอียดทั้งหมด</b></td><td>ตารางใหญ่ แจกแจงทุกรายการเงินได้และเงินหักรายคน ส่งออก CSV ให้ฝ่ายบัญชีได้</td></tr>
+      <tr><td data-en="&lt;b&gt;📊 Dashboard&lt;/b&gt;"><b>📊 แดชบอร์ด</b></td><td data-en="Period overview: headcount, total salary, total earnings, total deductions and total net pay, with charts">ภาพรวมของงวด จำนวนพนักงาน เงินเดือนรวม เงินได้รวม เงินหักรวม เงินสุทธิรวม พร้อมกราฟ</td></tr>
+      <tr><td data-en="&lt;b&gt;📋 Payroll Summary&lt;/b&gt;"><b>📋 สรุปเงินเดือน</b></td><td data-en="Per-employee table of total income, total deductions and net pay; use it to check before transferring">ตารางรายคน แสดงรายได้รวม หักรวม เงินสุทธิ ใช้ตรวจก่อนโอนเงิน</td></tr>
+      <tr><td data-en="&lt;b&gt;🏢 By Department&lt;/b&gt;"><b>🏢 สรุปตามแผนก</b></td><td data-en="Totals by department, to see staff costs for each department">รวมยอดตามแผนก ใช้ดูต้นทุนบุคลากรแต่ละฝ่าย</td></tr>
+      <tr><td data-en="&lt;b&gt;📑 Full Details&lt;/b&gt;"><b>📑 สรุปรายละเอียดทั้งหมด</b></td><td data-en="A large table itemizing every earning and deduction per employee; export to CSV for the accounting team">ตารางใหญ่ แจกแจงทุกรายการเงินได้และเงินหักรายคน ส่งออก CSV ให้ฝ่ายบัญชีได้</td></tr>
     </tbody>
   </table>
-  <div class="note">
+  <div class="note" data-en="The &lt;b&gt;Payroll Summary&lt;/b&gt; page shows only 3 total columns. To see each deduction on its own line, use &lt;b&gt;Payslip&lt;/b&gt; or &lt;b&gt;Full Details&lt;/b&gt;.">
     หน้า <b>สรุปเงินเดือน</b> แสดงเฉพาะยอดรวม 3 ช่อง หากต้องการเห็นรายการหักแยกทีละบรรทัด
     ให้ดูที่ <b>สลิปเงินเดือน</b> หรือ <b>สรุปรายละเอียดทั้งหมด</b>
   </div>
 
-  <h2 id="s8" style="margin-top:26px">8 · การลาออก</h2>
-  <p>เมนู <b>🚪 การลาออก</b> บันทึกวันที่ลาออกและดูรายชื่อผู้ที่ลาออกแล้ว</p>
+  <h2 id="s8" style="margin-top:26px" data-en="8 · Resignation">8 · การลาออก</h2>
+  <p data-en="The &lt;b&gt;🚪 Resignation&lt;/b&gt; menu records resignation dates and lists employees who have left">เมนู <b>🚪 การลาออก</b> บันทึกวันที่ลาออกและดูรายชื่อผู้ที่ลาออกแล้ว</p>
   <ol class="steps">
-    <li>เลือกพนักงานที่จะลาออก</li>
-    <li>ใส่วันที่ลาออกวันสุดท้ายที่ทำงาน</li>
-    <li>บันทึก</li>
+    <li data-en="Choose the employee who is leaving">เลือกพนักงานที่จะลาออก</li>
+    <li data-en="Enter the resignation date (last working day)">ใส่วันที่ลาออกวันสุดท้ายที่ทำงาน</li>
+    <li data-en="Save">บันทึก</li>
   </ol>
-  <p>หลังบันทึก ระบบจะคิดเงินเดือนเดือนสุดท้ายตามสัดส่วนวันที่ทำงานให้อัตโนมัติ
+  <p data-en="After saving, the system automatically pro-rates the final month's pay by days worked and removes the name from payslips and filing forms from the following month. &lt;b&gt;Past data stays intact&lt;/b&gt;, so you can always look back and reprint old documents.">หลังบันทึก ระบบจะคิดเงินเดือนเดือนสุดท้ายตามสัดส่วนวันที่ทำงานให้อัตโนมัติ
      และตัดชื่อออกจากสลิปกับเอกสารยื่นของเดือนถัดไป <b>ข้อมูลเก่ายังอยู่ครบ</b>
      ย้อนดูและพิมพ์เอกสารย้อนหลังได้เสมอ</p>
-  <div class="warn">
+  <div class="warn" data-en="Do not delete employees who have resigned; enter a resignation date instead, because the data is needed to issue the 50 Bis and file the PND.1 Kor at year end.">
     อย่าลบพนักงานที่ลาออกทิ้ง ให้ใส่วันที่ลาออกแทน เพราะต้องใช้ข้อมูลออก 50 ทวิ
     และยื่น ภ.ง.ด.1ก ตอนสิ้นปี
   </div>
@@ -461,285 +462,314 @@
 
 <!-- ═══════ 9 มือถือ ═══════ -->
 <div class="sheet" id="s9m">
-  <h2>9 · ลงเวลาผ่านมือถือ <span class="prem">พรีเมี่ยม</span></h2>
-  <p>เมนู <b>ลงเวลาผ่านมือถือ</b> พนักงานลงเวลาด้วย<b>เซลฟี + สแกนใบหน้า + ตรวจตำแหน่ง GPS</b>
+  <h2 data-en="9 · Mobile check-in &lt;span class=&quot;prem&quot;&gt;Premium&lt;/span&gt;">9 · ลงเวลาผ่านมือถือ <span class="prem">พรีเมี่ยม</span></h2>
+  <p data-en="The &lt;b&gt;Mobile check-in&lt;/b&gt; menu: employees clock in with a &lt;b&gt;selfie + face scan + GPS location check&lt;/b&gt; through a personal link on their phone. No app to install, no scanner to buy.">เมนู <b>ลงเวลาผ่านมือถือ</b> พนักงานลงเวลาด้วย<b>เซลฟี + สแกนใบหน้า + ตรวจตำแหน่ง GPS</b>
      ผ่านลิงก์ส่วนตัวบนมือถือ ไม่ต้องติดตั้งแอป ไม่ต้องซื้อเครื่องสแกน</p>
 
-  <h3>ตั้งค่าครั้งแรก</h3>
+  <h3 data-en="First-time setup">ตั้งค่าครั้งแรก</h3>
   <ol class="steps">
-    <li>ตั้ง<b>รหัสบริษัท</b>ของคุณเอง (ใช้ตอนพนักงานเข้าสู่ระบบ)</li>
-    <li>ปัก<b>หมุดบริษัท</b> วางลิงก์ Google Maps (รวมลิงก์ที่แชร์จากมือถือ) หรือพิกัด แล้วตั้งรัศมี ระบบตรวจว่าพนักงานอยู่ในพื้นที่บริษัทจริง</li>
-    <li>สร้าง<b>บัญชีพนักงาน</b> แอดมินตั้งชื่อผู้ใช้และรหัสผ่านให้แต่ละคน</li>
-    <li>ส่ง<b>ลิงก์ส่วนตัว</b>ให้พนักงานเปิดบนมือถือ (เปิดจากแอป LINE ได้ ระบบจะพาเปิดในเบราว์เซอร์ให้กล้องใช้งานได้)</li>
+    <li data-en="Set your own &lt;b&gt;company code&lt;/b&gt; (used when employees sign in)">ตั้ง<b>รหัสบริษัท</b>ของคุณเอง (ใช้ตอนพนักงานเข้าสู่ระบบ)</li>
+    <li data-en="Drop the &lt;b&gt;company pin&lt;/b&gt;: paste a Google Maps link (including links shared from a phone) or coordinates, then set a radius. The system checks that employees are actually on company premises.">ปัก<b>หมุดบริษัท</b> วางลิงก์ Google Maps (รวมลิงก์ที่แชร์จากมือถือ) หรือพิกัด แล้วตั้งรัศมี ระบบตรวจว่าพนักงานอยู่ในพื้นที่บริษัทจริง</li>
+    <li data-en="Create &lt;b&gt;employee accounts&lt;/b&gt;: the admin sets a username and password for each person">สร้าง<b>บัญชีพนักงาน</b> แอดมินตั้งชื่อผู้ใช้และรหัสผ่านให้แต่ละคน</li>
+    <li data-en="Send each employee their &lt;b&gt;personal link&lt;/b&gt; to open on their phone (it can be opened from the LINE app; the system will switch to the browser so the camera works)">ส่ง<b>ลิงก์ส่วนตัว</b>ให้พนักงานเปิดบนมือถือ (เปิดจากแอป LINE ได้ ระบบจะพาเปิดในเบราว์เซอร์ให้กล้องใช้งานได้)</li>
   </ol>
 
-  <h3>หมุดนอกสถานที่ / สาขา</h3>
+  <h3 data-en="Off-site / branch pins">หมุดนอกสถานที่ / สาขา</h3>
   <ul>
-    <li><b>🏢 สาขาประจำ</b> ปักหมุดสาขาเพิ่ม ใช้ได้ทุกวัน เลือกพนักงานของสาขานั้น (ไม่เลือก = ทุกคน)</li>
-    <li><b>🚗 งานนอกสถานที่ (ชั่วคราว)</b> ปักหมุดหน้างาน ระบุช่วงวันที่และคนที่ต้องไป พ้นช่วงแล้วสแกนไม่ได้เอง</li>
-    <li>ในรายการลงเวลาจะขึ้น<b>ชื่อหมุดที่สแกน</b> พร้อมระยะห่างและรูป ดูเวลาเทียบกะได้ว่าไปถึงตรงเวลาไหม</li>
-    <li>ปักหมุดง่าย ๆ ด้วยปุ่ม <b>📌 ใช้ตำแหน่งปัจจุบัน</b> หรือวางลิงก์ที่แชร์จาก Google Maps</li>
+    <li data-en="&lt;b&gt;🏢 Permanent branch&lt;/b&gt;: add a branch pin usable every day and choose that branch's employees (none selected = everyone)"><b>🏢 สาขาประจำ</b> ปักหมุดสาขาเพิ่ม ใช้ได้ทุกวัน เลือกพนักงานของสาขานั้น (ไม่เลือก = ทุกคน)</li>
+    <li data-en="&lt;b&gt;🚗 Off-site job (temporary)&lt;/b&gt;: pin the job site, set the date range and who must go; scanning stops automatically once the period ends"><b>🚗 งานนอกสถานที่ (ชั่วคราว)</b> ปักหมุดหน้างาน ระบุช่วงวันที่และคนที่ต้องไป พ้นช่วงแล้วสแกนไม่ได้เอง</li>
+    <li data-en="Check-in records show the &lt;b&gt;name of the pin scanned&lt;/b&gt; with distance and photo, so you can compare times with the shift to see if people arrived on time">ในรายการลงเวลาจะขึ้น<b>ชื่อหมุดที่สแกน</b> พร้อมระยะห่างและรูป ดูเวลาเทียบกะได้ว่าไปถึงตรงเวลาไหม</li>
+    <li data-en="Drop pins easily with the &lt;b&gt;📌 Use current location&lt;/b&gt; button, or paste a link shared from Google Maps">ปักหมุดง่าย ๆ ด้วยปุ่ม <b>📌 ใช้ตำแหน่งปัจจุบัน</b> หรือวางลิงก์ที่แชร์จาก Google Maps</li>
   </ul>
 
-  <h3>กันสแกนก่อนเวลา</h3>
-  <p>ตั้ง <b>"สแกนเข้างานก่อนเวลาเข้ากะได้ไม่เกิน"</b> เป็นชั่วโมง/นาที เช่น กะ 08:00 ตั้ง 1 ชม. = สแกนได้ตั้งแต่ 07:00
+  <h3 data-en="Prevent early scans">กันสแกนก่อนเวลา</h3>
+  <p data-en="Set &lt;b&gt;&quot;Earliest check-in before shift start&quot;&lt;/b&gt; in hours/minutes, e.g. for an 08:00 shift, 1 hr = scanning allowed from 07:00. It follows each person's shift (including shift swaps); on days off scanning is allowed at any time · Enter 0 = no limit">ตั้ง <b>"สแกนเข้างานก่อนเวลาเข้ากะได้ไม่เกิน"</b> เป็นชั่วโมง/นาที เช่น กะ 08:00 ตั้ง 1 ชม. = สแกนได้ตั้งแต่ 07:00
      ยึดกะของแต่ละคน (รวมสลับกะ) วันหยุดสแกนได้ทุกเวลา · ใส่ 0 = ไม่จำกัด</p>
 
-  <h3>ลงทะเบียนใบหน้า</h3>
-  <p>ไม่ต้องลงทะเบียนล่วงหน้า ระบบ<b>ลงทะเบียนใบหน้าให้อัตโนมัติตอนลงเวลาครั้งแรก</b>
+  <h3 data-en="Face registration">ลงทะเบียนใบหน้า</h3>
+  <p data-en="No advance registration needed: the system &lt;b&gt;registers the face automatically at the first check-in&lt;/b&gt; and asks for consent to store face data under the PDPA · Photos are deleted automatically after 90 days">ไม่ต้องลงทะเบียนล่วงหน้า ระบบ<b>ลงทะเบียนใบหน้าให้อัตโนมัติตอนลงเวลาครั้งแรก</b>
      และขอความยินยอมเก็บข้อมูลใบหน้าตาม PDPA · รูปถ่ายลบอัตโนมัติหลัง 90 วัน</p>
 
-  <h3>นำเวลาเข้าระบบ</h3>
+  <h3 data-en="Importing times">นำเวลาเข้าระบบ</h3>
   <ul>
-    <li>เวลาจากมือถือ<b>นำเข้าหน้าเวลาเข้างานอัตโนมัติ</b> โดยใช้เวลาเข้าเร็วสุดและออกช้าสุดของวัน</li>
-    <li>แก้หรือลบรายการได้ และกด<b>นำเข้าใหม่</b>ได้หากมีการแก้ไข</li>
-    <li>สรุปงวดแสดงจำนวนคนมาสาย วันสายรวม และ<b>ขาดงานโดยไม่ได้ลา</b> ซึ่งส่งเป็นลาไม่รับค่าจ้างได้</li>
+    <li data-en="Mobile times are &lt;b&gt;imported into the Attendance page automatically&lt;/b&gt;, using the earliest in and latest out of each day">เวลาจากมือถือ<b>นำเข้าหน้าเวลาเข้างานอัตโนมัติ</b> โดยใช้เวลาเข้าเร็วสุดและออกช้าสุดของวัน</li>
+    <li data-en="Records can be edited or deleted, and you can click &lt;b&gt;Re-import&lt;/b&gt; after changes">แก้หรือลบรายการได้ และกด<b>นำเข้าใหม่</b>ได้หากมีการแก้ไข</li>
+    <li data-en="The period summary shows the number of people late, total late days and &lt;b&gt;absences without leave&lt;/b&gt;, which can be sent as unpaid leave">สรุปงวดแสดงจำนวนคนมาสาย วันสายรวม และ<b>ขาดงานโดยไม่ได้ลา</b> ซึ่งส่งเป็นลาไม่รับค่าจ้างได้</li>
   </ul>
 </div>
 
 <!-- ═══════ 10–11 ═══════ -->
 <div class="sheet" id="s9">
-  <h2>10 · เวลาเข้างาน กะ OT และวันหยุด <span class="prem">พรีเมี่ยม</span></h2>
-  <p>เมนู <b>⏰ เวลาเข้างาน</b></p>
+  <h2 data-en="10 · Attendance, shifts, OT and holidays &lt;span class=&quot;prem&quot;&gt;Premium&lt;/span&gt;">10 · เวลาเข้างาน กะ OT และวันหยุด <span class="prem">พรีเมี่ยม</span></h2>
+  <p data-en="The &lt;b&gt;⏰ Attendance&lt;/b&gt; menu">เมนู <b>⏰ เวลาเข้างาน</b></p>
   <ul>
-    <li>รับเวลาจาก<b>ลงเวลาผ่านมือถือ</b> (หัวข้อ 9) บันทึกเวลาเข้า–ออกรายวันเอง หรือ<b>นำเข้าจากไฟล์ CSV</b> ของเครื่องสแกนนิ้ว</li>
-    <li>ระบบคิด<b>จำนวนวันทำงาน</b> <b>มาสาย</b> และ<b>ชั่วโมง OT</b> ให้</li>
-    <li>กดส่งผลลัพธ์เข้าหน้าเงินได้/เงินหักได้ทันที ไม่ต้องพิมพ์ซ้ำ</li>
+    <li data-en="Receives times from &lt;b&gt;Mobile check-in&lt;/b&gt; (section 9), lets you record daily in/out times manually, or &lt;b&gt;import a CSV file&lt;/b&gt; from a fingerprint scanner">รับเวลาจาก<b>ลงเวลาผ่านมือถือ</b> (หัวข้อ 9) บันทึกเวลาเข้า–ออกรายวันเอง หรือ<b>นำเข้าจากไฟล์ CSV</b> ของเครื่องสแกนนิ้ว</li>
+    <li data-en="The system calculates &lt;b&gt;working days&lt;/b&gt;, &lt;b&gt;late arrivals&lt;/b&gt; and &lt;b&gt;OT hours&lt;/b&gt;">ระบบคิด<b>จำนวนวันทำงาน</b> <b>มาสาย</b> และ<b>ชั่วโมง OT</b> ให้</li>
+    <li data-en="Send the results to the Earnings / Deductions page with one click, no retyping">กดส่งผลลัพธ์เข้าหน้าเงินได้/เงินหักได้ทันที ไม่ต้องพิมพ์ซ้ำ</li>
   </ul>
 
-  <h3>ระบบกะการทำงาน</h3>
+  <h3 data-en="Shifts">ระบบกะการทำงาน</h3>
   <ul>
-    <li>ตั้งกะได้ไม่จำกัด กำหนดเวลาเข้า–ออกและเวลาอนุโลมสายของแต่ละกะ</li>
-    <li>รองรับ<b>กะข้ามคืน</b> เช่น 22:00 – 06:00 · ชั่วโมงของกะคำนวณให้ทันทีขณะพิมพ์</li>
-    <li><b>สลับกะยกชุด</b> เลือกหลายคนหลายวันแล้วเปลี่ยนกะพร้อมกัน</li>
+    <li data-en="Unlimited shifts, each with its own in/out times and late grace period">ตั้งกะได้ไม่จำกัด กำหนดเวลาเข้า–ออกและเวลาอนุโลมสายของแต่ละกะ</li>
+    <li data-en="Supports &lt;b&gt;overnight shifts&lt;/b&gt;, e.g. 22:00 to 06:00 · Shift hours are calculated as you type">รองรับ<b>กะข้ามคืน</b> เช่น 22:00 – 06:00 · ชั่วโมงของกะคำนวณให้ทันทีขณะพิมพ์</li>
+    <li data-en="&lt;b&gt;Bulk shift change&lt;/b&gt;: select several people and days, then change their shift all at once"><b>สลับกะยกชุด</b> เลือกหลายคนหลายวันแล้วเปลี่ยนกะพร้อมกัน</li>
   </ul>
 
-  <h3>หมุนเวียนกะอัตโนมัติ</h3>
+  <h3 data-en="Automatic shift rotation">หมุนเวียนกะอัตโนมัติ</h3>
   <ul>
-    <li>ตั้งรอบหมุนเวียนได้ทุก <b>1 / 2 / 3 วัน</b>, <b>1 / 2 สัปดาห์</b> (เลือกวันที่สลับได้) หรือ <b>1 / 2 / 3 เดือน</b></li>
-    <li><b>สลับกะ 2 กลุ่ม A↔B</b> เลือกสลับครั้งเดียว หรือสลับเป็นรอบ ๆ ต่อเนื่องไปเรื่อย ๆ</li>
+    <li data-en="Rotate every &lt;b&gt;1 / 2 / 3 days&lt;/b&gt;, &lt;b&gt;1 / 2 weeks&lt;/b&gt; (choose the switch day) or &lt;b&gt;1 / 2 / 3 months&lt;/b&gt;">ตั้งรอบหมุนเวียนได้ทุก <b>1 / 2 / 3 วัน</b>, <b>1 / 2 สัปดาห์</b> (เลือกวันที่สลับได้) หรือ <b>1 / 2 / 3 เดือน</b></li>
+    <li data-en="&lt;b&gt;Swap shifts between 2 groups A↔B&lt;/b&gt;: swap once, or keep swapping on a repeating cycle"><b>สลับกะ 2 กลุ่ม A↔B</b> เลือกสลับครั้งเดียว หรือสลับเป็นรอบ ๆ ต่อเนื่องไปเรื่อย ๆ</li>
   </ul>
 
-  <h3>กฎการคิด OT</h3>
+  <h3 data-en="OT rules">กฎการคิด OT</h3>
   <ul>
-    <li>เลือกว่าวันไหนของสัปดาห์คิด OT ได้บ้าง หรือกำหนดเป็นรายวันที่</li>
-    <li>ตั้ง<b>ตัวคูณ OT ตามวัน</b> (1.5 / 2 / 3 เท่า)</li>
-    <li><b>อนุมัติ OT รายวันรายคน</b> กำหนดชั่วโมง OT ที่อนุมัติของแต่ละคนในแต่ละวัน แต่ละวันไม่เท่ากันได้</li>
-    <li>ปิด OT เฉพาะบางคน เช่น ระดับผู้จัดการ</li>
-    <li>ระบบ<b>ปัดเศษลงทีละครึ่งชั่วโมง</b>เสมอ</li>
+    <li data-en="Choose which days of the week allow OT, or set it by specific date">เลือกว่าวันไหนของสัปดาห์คิด OT ได้บ้าง หรือกำหนดเป็นรายวันที่</li>
+    <li data-en="Set &lt;b&gt;OT multipliers by day&lt;/b&gt; (1.5 / 2 / 3x)">ตั้ง<b>ตัวคูณ OT ตามวัน</b> (1.5 / 2 / 3 เท่า)</li>
+    <li data-en="&lt;b&gt;Approve OT per person per day&lt;/b&gt;: set each person's approved OT hours for each day; they can differ from day to day"><b>อนุมัติ OT รายวันรายคน</b> กำหนดชั่วโมง OT ที่อนุมัติของแต่ละคนในแต่ละวัน แต่ละวันไม่เท่ากันได้</li>
+    <li data-en="Turn off OT for specific people, e.g. managers">ปิด OT เฉพาะบางคน เช่น ระดับผู้จัดการ</li>
+    <li data-en="The system always &lt;b&gt;rounds down to the nearest half hour&lt;/b&gt;">ระบบ<b>ปัดเศษลงทีละครึ่งชั่วโมง</b>เสมอ</li>
   </ul>
 
-  <h3>ปฏิทินวันหยุดบริษัท</h3>
+  <h3 data-en="Company holiday calendar">ปฏิทินวันหยุดบริษัท</h3>
   <ul>
-    <li>ใส่วันหยุดนักขัตฤกษ์และวันหยุดของบริษัทลงปฏิทิน</li>
-    <li>วันหยุดในปฏิทิน<b>ไม่นับเป็นขาดงาน</b>และ<b>ไม่นับเป็นวันลา</b></li>
-    <li>ถ้ามาทำงานในวันหยุด ระบบคิด <b>OT 3 เท่า</b>ให้อัตโนมัติ</li>
-    <li><b>กดวันที่ในปฏิทิน</b>เพื่อเพิ่ม/ลบวันหยุดได้ทันที</li>
-    <li><b>วันหยุดประจำสัปดาห์</b> กดปุ่ม อา–ส เลือกวันที่บริษัทหยุด ใครหยุดไม่ตรงกับคนอื่นตั้งรายคนได้ที่ <b>ข้อมูลพนักงาน</b></li>
-    <li><b>พนักงานรายวัน</b>ได้ค่าจ้างวันหยุดตามประเพณีให้อัตโนมัติ (ติ๊กออกได้ทีละวันในปฏิทิน)</li>
+    <li data-en="Add public holidays and company holidays to the calendar">ใส่วันหยุดนักขัตฤกษ์และวันหยุดของบริษัทลงปฏิทิน</li>
+    <li data-en="Calendar holidays &lt;b&gt;are not counted as absences&lt;/b&gt; and &lt;b&gt;are not counted as leave days&lt;/b&gt;">วันหยุดในปฏิทิน<b>ไม่นับเป็นขาดงาน</b>และ<b>ไม่นับเป็นวันลา</b></li>
+    <li data-en="If someone works on a holiday, the system automatically applies &lt;b&gt;3x OT&lt;/b&gt;">ถ้ามาทำงานในวันหยุด ระบบคิด <b>OT 3 เท่า</b>ให้อัตโนมัติ</li>
+    <li data-en="&lt;b&gt;Click a date in the calendar&lt;/b&gt; to add or remove a holiday instantly"><b>กดวันที่ในปฏิทิน</b>เพื่อเพิ่ม/ลบวันหยุดได้ทันที</li>
+    <li data-en="&lt;b&gt;Weekly days off&lt;/b&gt;: click the Sun to Sat buttons to choose the company's days off; anyone with different days off can be set individually in &lt;b&gt;Employees&lt;/b&gt;"><b>วันหยุดประจำสัปดาห์</b> กดปุ่ม อา–ส เลือกวันที่บริษัทหยุด ใครหยุดไม่ตรงกับคนอื่นตั้งรายคนได้ที่ <b>ข้อมูลพนักงาน</b></li>
+    <li data-en="&lt;b&gt;Daily-wage employees&lt;/b&gt; are paid for traditional holidays automatically (untick individual days in the calendar)"><b>พนักงานรายวัน</b>ได้ค่าจ้างวันหยุดตามประเพณีให้อัตโนมัติ (ติ๊กออกได้ทีละวันในปฏิทิน)</li>
   </ul>
 
-  <h2 id="s10" style="margin-top:26px">11 · ระบบลางานและสายอนุมัติ <span class="prem">พรีเมี่ยม</span></h2>
-  <p>เมนู <b>🌴 ระบบลางาน</b>: HR บันทึกใบลาเองในระบบ หรือให้พนักงานยื่นจากมือถือก็ได้</p>
+  <h2 id="s10" style="margin-top:26px" data-en="11 · Leave and approval chain &lt;span class=&quot;prem&quot;&gt;Premium&lt;/span&gt;">11 · ระบบลางานและสายอนุมัติ <span class="prem">พรีเมี่ยม</span></h2>
+  <p data-en="The &lt;b&gt;🌴 Leave&lt;/b&gt; menu: HR can record leave in the system, or employees can submit requests from their phones">เมนู <b>🌴 ระบบลางาน</b>: HR บันทึกใบลาเองในระบบ หรือให้พนักงานยื่นจากมือถือก็ได้</p>
   <ol class="steps">
-    <li>กด <b>เพิ่มใบลา</b> เลือกพนักงานและประเภทการลา</li>
-    <li>ใส่ช่วงวันที่ลา บันทึกเป็นวันหรือชั่วโมงก็ได้</li>
-    <li>ระบบตัดโควตาและแสดงวันคงเหลือให้ทันที</li>
+    <li data-en="Click &lt;b&gt;Add leave&lt;/b&gt;, then choose the employee and leave type">กด <b>เพิ่มใบลา</b> เลือกพนักงานและประเภทการลา</li>
+    <li data-en="Enter the leave dates, recorded in days or hours">ใส่ช่วงวันที่ลา บันทึกเป็นวันหรือชั่วโมงก็ได้</li>
+    <li data-en="The system deducts from the quota and shows the remaining days instantly">ระบบตัดโควตาและแสดงวันคงเหลือให้ทันที</li>
   </ol>
 
-  <h3>พนักงานยื่นใบลาผ่านมือถือ</h3>
+  <h3 data-en="Employees submitting leave by phone">พนักงานยื่นใบลาผ่านมือถือ</h3>
   <ul>
-    <li>ยื่นผ่านลิงก์ส่วนตัวเดียวกับที่ใช้ลงเวลา ลาป่วย ลากิจ ลาพักร้อน ลาคลอด ลาบวช ลาไม่รับค่าจ้าง หรืออื่น ๆ เป็นวันหรือชั่วโมง</li>
-    <li><b>แนบรูปได้ 3 รูป</b> เช่น ใบรับรองแพทย์</li>
-    <li>พนักงานเห็นสถานะใบลาในมือถือ · HR แก้สถานะในระบบได้</li>
+    <li data-en="Submit through the same personal link used for check-in: sick, personal, annual, maternity, ordination, unpaid or other leave, in days or hours">ยื่นผ่านลิงก์ส่วนตัวเดียวกับที่ใช้ลงเวลา ลาป่วย ลากิจ ลาพักร้อน ลาคลอด ลาบวช ลาไม่รับค่าจ้าง หรืออื่น ๆ เป็นวันหรือชั่วโมง</li>
+    <li data-en="&lt;b&gt;Attach up to 3 photos&lt;/b&gt;, e.g. a medical certificate"><b>แนบรูปได้ 3 รูป</b> เช่น ใบรับรองแพทย์</li>
+    <li data-en="Employees see their leave status on their phone · HR can change the status in the system">พนักงานเห็นสถานะใบลาในมือถือ · HR แก้สถานะในระบบได้</li>
   </ul>
 
-  <h3>สายอนุมัติและบัญชีผู้อนุมัติ</h3>
+  <h3 data-en="Approval chain and approver accounts">สายอนุมัติและบัญชีผู้อนุมัติ</h3>
   <ol class="steps">
-    <li><b>หัวหน้าแผนก</b>อนุมัติก่อน</li>
-    <li>ถ้าหัวหน้าลาเองหรือแผนกไม่มีหัวหน้า ใบลาส่งไปที่ <b>CEO</b></li>
-    <li>ถ้า CEO ลาเอง ใบลาส่งไปที่ <b>HR</b></li>
+    <li data-en="The &lt;b&gt;department head&lt;/b&gt; approves first"><b>หัวหน้าแผนก</b>อนุมัติก่อน</li>
+    <li data-en="If the head is the one on leave, or the department has no head, the request goes to the &lt;b&gt;CEO&lt;/b&gt;">ถ้าหัวหน้าลาเองหรือแผนกไม่มีหัวหน้า ใบลาส่งไปที่ <b>CEO</b></li>
+    <li data-en="If the CEO is the one on leave, the request goes to &lt;b&gt;HR&lt;/b&gt;">ถ้า CEO ลาเอง ใบลาส่งไปที่ <b>HR</b></li>
   </ol>
   <ul>
-    <li>หัวหน้า / CEO กดอนุมัติจากมือถือได้เลย</li>
-    <li>สร้าง<b>บัญชีผู้บริหารแบบอนุมัติอย่างเดียว</b>ได้ (ไม่ต้องลงเวลา)</li>
-    <li>ตั้ง<b>ผู้อนุมัติแทนชั่วคราว</b>ได้ เช่น ช่วงหัวหน้าไม่อยู่</li>
-    <li>ใบลาที่อนุมัติแล้วเข้าระบบลางาน ตัดโควตารายปี และหักเงินเข้าเงินเดือนให้เอง</li>
+    <li data-en="Heads and the CEO can approve right from their phones">หัวหน้า / CEO กดอนุมัติจากมือถือได้เลย</li>
+    <li data-en="Create &lt;b&gt;approval-only executive accounts&lt;/b&gt; (no check-in required)">สร้าง<b>บัญชีผู้บริหารแบบอนุมัติอย่างเดียว</b>ได้ (ไม่ต้องลงเวลา)</li>
+    <li data-en="Set a &lt;b&gt;temporary substitute approver&lt;/b&gt;, e.g. while the head is away">ตั้ง<b>ผู้อนุมัติแทนชั่วคราว</b>ได้ เช่น ช่วงหัวหน้าไม่อยู่</li>
+    <li data-en="Approved leave goes into the Leave system, deducts from the annual quota and feeds deductions into payroll automatically">ใบลาที่อนุมัติแล้วเข้าระบบลางาน ตัดโควตารายปี และหักเงินเข้าเงินเดือนให้เอง</li>
   </ul>
   <table>
-    <thead><tr><th>ประเภท</th><th>โควตามาตรฐาน</th><th>หมายเหตุ</th></tr></thead>
+    <thead><tr><th data-en="Type">ประเภท</th><th data-en="Default quota">โควตามาตรฐาน</th><th data-en="Notes">หมายเหตุ</th></tr></thead>
     <tbody>
-      <tr><td>ลาป่วย</td><td>30 วัน/ปี</td><td>ตามกฎหมายแรงงาน</td></tr>
-      <tr><td>ลากิจ</td><td>3 วัน/ปี</td><td>ลากิจธุระจำเป็น</td></tr>
-      <tr><td>ลาพักร้อน</td><td>6 วัน/ปี</td><td>ได้สิทธิ์เมื่อทำงานครบ 1 ปี</td></tr>
+      <tr><td data-en="Sick leave">ลาป่วย</td><td data-en="30 days/year">30 วัน/ปี</td><td data-en="Per labour law">ตามกฎหมายแรงงาน</td></tr>
+      <tr><td data-en="Personal leave">ลากิจ</td><td data-en="3 days/year">3 วัน/ปี</td><td data-en="For necessary personal business">ลากิจธุระจำเป็น</td></tr>
+      <tr><td data-en="Annual leave">ลาพักร้อน</td><td data-en="6 days/year">6 วัน/ปี</td><td data-en="Entitled after 1 year of service">ได้สิทธิ์เมื่อทำงานครบ 1 ปี</td></tr>
     </tbody>
   </table>
-  <div class="note">
+  <div class="note" data-en="&lt;b&gt;Annual leave quotas can be set per employee&lt;/b&gt; For senior staff who get more annual leave than others, set it on the employee's page; the system uses the individual value instead of the company default.">
     <b>ตั้งโควตาลาพักร้อนเฉพาะรายคนได้</b> พนักงานอาวุโสที่ได้พักร้อนมากกว่าคนอื่น
     ให้ไปตั้งในหน้าข้อมูลพนักงาน ระบบจะใช้ค่าเฉพาะคนแทนค่ากลางของบริษัท
   </div>
-  <p>การลาที่ไม่ได้รับค่าจ้างจะถูกส่งไปเป็นรายการหัก <b>หักขาดงาน/ลาไม่รับค่าจ้าง</b> ในหน้าเงินหักให้อัตโนมัติ</p>
+  <p data-en="Unpaid leave is automatically sent as an &lt;b&gt;Absence / unpaid leave&lt;/b&gt; deduction on the deductions page">การลาที่ไม่ได้รับค่าจ้างจะถูกส่งไปเป็นรายการหัก <b>หักขาดงาน/ลาไม่รับค่าจ้าง</b> ในหน้าเงินหักให้อัตโนมัติ</p>
 </div>
 
 <!-- ═══════ 12 ═══════ -->
 <div class="sheet" id="s11">
-  <h2>12 · เบิกล่วงหน้ากลางเดือน <span class="prem">พรีเมี่ยม</span></h2>
-  <p>เมนู <b>💸 เบิกล่วงหน้ากลางเดือน</b> สำหรับบริษัทที่จ่ายเงินเดือน <b>2 รอบต่อเดือน</b></p>
+  <h2 data-en="12 · Mid-month advance payment &lt;span class=&quot;prem&quot;&gt;Premium&lt;/span&gt;">12 · เบิกล่วงหน้ากลางเดือน <span class="prem">พรีเมี่ยม</span></h2>
+  <p data-en="The &lt;b&gt;💸 Advance Payment&lt;/b&gt; menu, for companies that pay salaries &lt;b&gt;twice a month&lt;/b&gt;">เมนู <b>💸 เบิกล่วงหน้ากลางเดือน</b> สำหรับบริษัทที่จ่ายเงินเดือน <b>2 รอบต่อเดือน</b></p>
 
-  <h3>หลักการทำงาน</h3>
+  <h3 data-en="How it works">หลักการทำงาน</h3>
   <table>
-    <thead><tr><th style="width:22%">รอบ</th><th>ทำอะไร</th></tr></thead>
+    <thead><tr><th style="width:22%" data-en="Round">รอบ</th><th data-en="What it does">ทำอะไร</th></tr></thead>
     <tbody>
-      <tr><td><b>กลางเดือน</b></td><td>จ่ายเงินเบิกล่วงหน้าให้พนักงาน <b>ยังไม่หักภาษีและประกันสังคม</b></td></tr>
-      <tr><td><b>สิ้นเดือน</b></td><td>ระบบคิดเงินเดือน<b>เต็มเดือน</b>ตามปกติ หักภาษี ประกันสังคม กองทุนครบ
+      <tr><td data-en="&lt;b&gt;Mid-month&lt;/b&gt;"><b>กลางเดือน</b></td><td data-en="Pay employees an advance, &lt;b&gt;without deducting tax or social security yet&lt;/b&gt;">จ่ายเงินเบิกล่วงหน้าให้พนักงาน <b>ยังไม่หักภาษีและประกันสังคม</b></td></tr>
+      <tr><td data-en="&lt;b&gt;End of month&lt;/b&gt;"><b>สิ้นเดือน</b></td><td data-en="The system calculates the &lt;b&gt;full month's&lt;/b&gt; pay as usual, deducting tax, social security and funds in full, then &lt;b&gt;subtracts the amount already advanced&lt;/b&gt; automatically">ระบบคิดเงินเดือน<b>เต็มเดือน</b>ตามปกติ หักภาษี ประกันสังคม กองทุนครบ
           แล้ว<b>หักยอดที่เบิกไปแล้วออกให้เอง</b></td></tr>
     </tbody>
   </table>
-  <div class="note">
+  <div class="note" data-en="&lt;b&gt;Why this method is legally correct&lt;/b&gt; PND.1 and social security are already filed monthly. Deducting tax and social security once at month end from the full month's pay is exactly what the Revenue Department and Social Security Office expect, so every form stays correct with nothing extra to fix.">
     <b>ทำไมวิธีนี้ถูกต้องตามกฎหมาย</b> ภ.ง.ด.1 และประกันสังคมยื่นเป็นรายเดือนอยู่แล้ว
     การหักภาษีและประกันสังคมรอบเดียวตอนสิ้นเดือนจากยอดเต็มเดือน คือแบบที่สรรพากรและประกันสังคมต้องการพอดี
     เอกสารทุกใบจึงยังถูกต้อง ไม่ต้องแก้อะไรเพิ่ม
   </div>
 
-  <h3>ขั้นตอนใช้งาน</h3>
+  <h3 data-en="Steps">ขั้นตอนใช้งาน</h3>
   <ol class="steps">
-    <li>เลือกงวดเดือน แล้วตั้ง <b>วันที่จ่ายรอบกลางเดือน</b> (ค่าเริ่มต้นคือวันที่ 15)</li>
-    <li>ตั้ง <b>% เติมอัตโนมัติ</b> เช่น 45% แล้วกด <b>⚡ เติมให้ทุกคน</b>
+    <li data-en="Choose the pay period, then set the &lt;b&gt;mid-month payment date&lt;/b&gt; (the default is the 15th)">เลือกงวดเดือน แล้วตั้ง <b>วันที่จ่ายรอบกลางเดือน</b> (ค่าเริ่มต้นคือวันที่ 15)</li>
+    <li data-en="Set the &lt;b&gt;auto-fill %&lt;/b&gt;, e.g. 45%, then click &lt;b&gt;⚡ Fill for everyone&lt;/b&gt;, or &lt;b&gt;tick individual employees&lt;/b&gt; as needed">ตั้ง <b>% เติมอัตโนมัติ</b> เช่น 45% แล้วกด <b>⚡ เติมให้ทุกคน</b>
         หรือ<b>ติ๊กเลือกรายคน</b>ที่ต้องการ</li>
-    <li>แก้ยอดรายคนได้ตามต้องการ ระบบบันทึกให้ทันที</li>
-    <li>กด <b>🖨️ พิมพ์ใบสรุปโอน</b> เพื่อได้รายการโอนพร้อมชื่อธนาคารและเลขที่บัญชี
+    <li data-en="Adjust individual amounts as needed; changes save instantly">แก้ยอดรายคนได้ตามต้องการ ระบบบันทึกให้ทันที</li>
+    <li data-en="Click &lt;b&gt;🖨️ Print transfer summary&lt;/b&gt; for a transfer list with bank names and account numbers, or click &lt;b&gt;⬇️ CSV&lt;/b&gt; to upload to your bank's system">กด <b>🖨️ พิมพ์ใบสรุปโอน</b> เพื่อได้รายการโอนพร้อมชื่อธนาคารและเลขที่บัญชี
         หรือกด <b>⬇️ CSV</b> เพื่อนำไปอัปโหลดในระบบธนาคาร</li>
-    <li>สิ้นเดือนทำเงินเดือนตามปกติ ระบบหักยอดเบิกให้เองแล้ว ไม่ต้องกรอกซ้ำ</li>
+    <li data-en="At month end, run payroll as usual; the advance is already deducted, so there is nothing to re-enter">สิ้นเดือนทำเงินเดือนตามปกติ ระบบหักยอดเบิกให้เองแล้ว ไม่ต้องกรอกซ้ำ</li>
   </ol>
 
   <div class="ex">
-    <h4>ตัวอย่าง เงินเดือน 30,000 บาท เบิกล่วงหน้า 45%</h4>
+    <h4 data-en="Example: salary 30,000 baht, 45% advance">ตัวอย่าง เงินเดือน 30,000 บาท เบิกล่วงหน้า 45%</h4>
     <table>
-      <tr><td>กลางเดือน (วันที่ 15) รับเงินเบิกล่วงหน้า</td><td class="num">13,500.00</td></tr>
-      <tr><td>สิ้นเดือน เงินเดือนเต็มเดือน</td><td class="num">30,000.00</td></tr>
-      <tr><td>&nbsp;&nbsp;หัก ประกันสังคม</td><td class="num">− 875.00</td></tr>
-      <tr><td>&nbsp;&nbsp;หัก ภาษีหัก ณ ที่จ่าย</td><td class="num">− 164.58</td></tr>
-      <tr><td>&nbsp;&nbsp;หัก เบิกล่วงหน้า (กลางเดือน)</td><td class="num">− 13,500.00</td></tr>
-      <tr><td>สิ้นเดือน รับเพิ่ม</td><td class="num">15,460.42</td></tr>
-      <tr><td>รวมทั้ง 2 รอบ (เท่ากับรับรอบเดียว)</td><td class="num">28,960.42</td></tr>
+      <tr><td data-en="Mid-month (15th): advance received">กลางเดือน (วันที่ 15) รับเงินเบิกล่วงหน้า</td><td class="num">13,500.00</td></tr>
+      <tr><td data-en="Month end: full monthly salary">สิ้นเดือน เงินเดือนเต็มเดือน</td><td class="num">30,000.00</td></tr>
+      <tr><td data-en="&amp;nbsp;&amp;nbsp;Less social security">&nbsp;&nbsp;หัก ประกันสังคม</td><td class="num">− 875.00</td></tr>
+      <tr><td data-en="&amp;nbsp;&amp;nbsp;Less withholding tax">&nbsp;&nbsp;หัก ภาษีหัก ณ ที่จ่าย</td><td class="num">− 164.58</td></tr>
+      <tr><td data-en="&amp;nbsp;&amp;nbsp;Less advance (mid-month)">&nbsp;&nbsp;หัก เบิกล่วงหน้า (กลางเดือน)</td><td class="num">− 13,500.00</td></tr>
+      <tr><td data-en="Month end: additional amount received">สิ้นเดือน รับเพิ่ม</td><td class="num">15,460.42</td></tr>
+      <tr><td data-en="Total for both rounds (same as one single payment)">รวมทั้ง 2 รอบ (เท่ากับรับรอบเดียว)</td><td class="num">28,960.42</td></tr>
     </table>
   </div>
 
-  <div class="warn">
+  <div class="warn" data-en="If the advance entered is &lt;b&gt;more than the employee will receive&lt;/b&gt;, a red warning bar appears, but it is still saved in case there is a genuine business reason. Always check before transferring.">
     หากกรอกยอดเบิก<b>มากกว่าเงินที่จะได้รับ</b> ระบบจะขึ้นแถบแดงเตือน
     แต่ยังบันทึกให้ เผื่อกรณีที่มีเหตุผลทางธุรกิจจริง ควรตรวจก่อนโอนทุกครั้ง
   </div>
 </div>
 
 <div class="sheet" id="s11b">
-  <h2>12.1 · จ่ายรายสัปดาห์ / เดือนละ 2 รอบ <span class="prem">พรีเมี่ยม</span></h2>
-  <p>เมนู <b>เบิกจ่ายล่วงหน้า</b> → แท็บ <b>📆 จ่ายรายสัปดาห์ / 2 รอบ</b></p>
+  <h2 data-en="12.1 · Weekly / twice-monthly pay &lt;span class=&quot;prem&quot;&gt;Premium&lt;/span&gt;">12.1 · จ่ายรายสัปดาห์ / เดือนละ 2 รอบ <span class="prem">พรีเมี่ยม</span></h2>
+  <p data-en="&lt;b&gt;Advance Payment&lt;/b&gt; menu → &lt;b&gt;📆 Pay Rounds&lt;/b&gt; tab">เมนู <b>เบิกจ่ายล่วงหน้า</b> → แท็บ <b>📆 จ่ายรายสัปดาห์ / 2 รอบ</b></p>
   <ol class="steps">
-    <li>ตั้ง <b>รอบจ่ายเงิน</b> ของแต่ละคนที่ <b>ข้อมูลพนักงาน</b> → ✏️ (รายสัปดาห์ / เดือนละ 2 รอบ)</li>
-    <li>วันทำงานและ OT (แยกตัวคูณ 1.5 / 2 / 3 เท่า) ดึงจากลงเวลาให้เอง แก้เองได้ในตาราง</li>
-    <li>ภาษีและประกันสังคม<b>เฉลี่ยหักทุกรอบ</b> รวมทั้งเดือนตรงกับ ภ.ง.ด.1 และ สปส.1-10</li>
-    <li>กด <b>บันทึกว่าจ่ายรอบนี้แล้ว</b> พิมพ์สลิปและใบสรุปยอดโอนแยกรอบ · รอบสุดท้ายปิดยอดเดือนพร้อมเงินหักอื่น ๆ</li>
+    <li data-en="Set each person's &lt;b&gt;pay round&lt;/b&gt; in &lt;b&gt;Employees&lt;/b&gt; → ✏️ (weekly / twice a month)">ตั้ง <b>รอบจ่ายเงิน</b> ของแต่ละคนที่ <b>ข้อมูลพนักงาน</b> → ✏️ (รายสัปดาห์ / เดือนละ 2 รอบ)</li>
+    <li data-en="Working days and OT (split by 1.5 / 2 / 3x multipliers) are pulled from attendance automatically and can be edited in the table">วันทำงานและ OT (แยกตัวคูณ 1.5 / 2 / 3 เท่า) ดึงจากลงเวลาให้เอง แก้เองได้ในตาราง</li>
+    <li data-en="Tax and social security are &lt;b&gt;spread evenly across every round&lt;/b&gt;; monthly totals match the PND.1 and SSO 1-10">ภาษีและประกันสังคม<b>เฉลี่ยหักทุกรอบ</b> รวมทั้งเดือนตรงกับ ภ.ง.ด.1 และ สปส.1-10</li>
+    <li data-en="Click &lt;b&gt;Mark this round as paid&lt;/b&gt;, then print payslips and transfer summaries per round · The final round closes the month's totals along with other deductions">กด <b>บันทึกว่าจ่ายรอบนี้แล้ว</b> พิมพ์สลิปและใบสรุปยอดโอนแยกรอบ · รอบสุดท้ายปิดยอดเดือนพร้อมเงินหักอื่น ๆ</li>
   </ol>
 </div>
 
 <!-- ═══════ 13 ═══════ -->
 <div class="sheet" id="s12">
-  <h2>13 · สำหรับสำนักงานบัญชี <span class="firmtag">สำนักงานบัญชี</span></h2>
-  <p>เมนู <b>🏦 บริษัทลูกค้า</b> มีเฉพาะบัญชีแบบสำนักงานบัญชี</p>
+  <h2 data-en="13 · For accounting firms &lt;span class=&quot;firmtag&quot;&gt;Accounting Firm&lt;/span&gt;">13 · สำหรับสำนักงานบัญชี <span class="firmtag">สำนักงานบัญชี</span></h2>
+  <p data-en="The &lt;b&gt;🏦 Client companies&lt;/b&gt; menu is available only on Accounting Firm accounts">เมนู <b>🏦 บริษัทลูกค้า</b> มีเฉพาะบัญชีแบบสำนักงานบัญชี</p>
 
-  <h3>เพิ่มบริษัทลูกค้า</h3>
+  <h3 data-en="Add a client company">เพิ่มบริษัทลูกค้า</h3>
   <ol class="steps">
-    <li>กด <b>➕ เพิ่มบริษัท</b></li>
-    <li>กรอกชื่อบริษัทและ<b>เลขประจำตัวผู้เสียภาษี 13 หลัก</b> (บังคับ)</li>
-    <li>บันทึก แล้วกดเข้าไปทำงานในบริษัทนั้นได้เลย</li>
+    <li data-en="Click &lt;b&gt;➕ Add company&lt;/b&gt;">กด <b>➕ เพิ่มบริษัท</b></li>
+    <li data-en="Enter the company name and &lt;b&gt;13-digit tax ID&lt;/b&gt; (required)">กรอกชื่อบริษัทและ<b>เลขประจำตัวผู้เสียภาษี 13 หลัก</b> (บังคับ)</li>
+    <li data-en="Save, then click into that company to start working">บันทึก แล้วกดเข้าไปทำงานในบริษัทนั้นได้เลย</li>
   </ol>
 
-  <h3>สลับบริษัท</h3>
-  <p>ใช้ช่องเลือกบริษัทที่อยู่<b>บนสุดของแถบเมนูซ้าย</b> เปลี่ยนได้ทันที
+  <h3 data-en="Switching companies">สลับบริษัท</h3>
+  <p data-en="Use the company selector at the &lt;b&gt;very top of the left menu&lt;/b&gt; to switch instantly. Each company's data is &lt;b&gt;strictly separate&lt;/b&gt; and never mixed.">ใช้ช่องเลือกบริษัทที่อยู่<b>บนสุดของแถบเมนูซ้าย</b> เปลี่ยนได้ทันที
      ข้อมูลของแต่ละบริษัท<b>แยกกันเด็ดขาด</b> ไม่ปนกัน</p>
 
-  <h3>เครื่องมือที่ช่วยประหยัดเวลา</h3>
+  <h3 data-en="Time-saving tools">เครื่องมือที่ช่วยประหยัดเวลา</h3>
   <table>
-    <thead><tr><th style="width:34%">เครื่องมือ</th><th>ใช้ทำอะไร</th></tr></thead>
+    <thead><tr><th style="width:34%" data-en="Tool">เครื่องมือ</th><th data-en="Purpose">ใช้ทำอะไร</th></tr></thead>
     <tbody>
-      <tr><td><b>⚙️ ก๊อปตั้งค่าข้ามบริษัท</b></td>
-          <td>คัดลอกค่าคำนวณ (อัตราประกันสังคม ฐาน OT วันตัดรอบ ฯลฯ) จากบริษัทหนึ่งไปอีกหลายบริษัทพร้อมกัน
+      <tr><td data-en="&lt;b&gt;⚙️ Copy settings across companies&lt;/b&gt;"><b>⚙️ ก๊อปตั้งค่าข้ามบริษัท</b></td>
+          <td data-en="Copies calculation settings (social security rate, OT base, cut-off day, etc.) from one company to several others at once, excluding employee and payroll data">คัดลอกค่าคำนวณ (อัตราประกันสังคม ฐาน OT วันตัดรอบ ฯลฯ) จากบริษัทหนึ่งไปอีกหลายบริษัทพร้อมกัน
               ไม่รวมข้อมูลพนักงานและเงินเดือน</td></tr>
-      <tr><td><b>⬇️ สรุปยื่นภาษีทุกบริษัท</b></td>
-          <td>ออกไฟล์ CSV รวมยอดภาษีและประกันสังคมของทุกบริษัทในงวดเดียวกัน
+      <tr><td data-en="&lt;b&gt;⬇️ Tax filing summary for all companies&lt;/b&gt;"><b>⬇️ สรุปยื่นภาษีทุกบริษัท</b></td>
+          <td data-en="Exports a CSV of tax and social security totals for every company in the same period, for planning monthly filings">ออกไฟล์ CSV รวมยอดภาษีและประกันสังคมของทุกบริษัทในงวดเดียวกัน
               ใช้วางแผนการยื่นประจำเดือน</td></tr>
     </tbody>
   </table>
 
-  <div class="warn">
+  <div class="warn" data-en="&lt;b&gt;The quota counts every company, including archived ones&lt;/b&gt; Archiving hides companies you no longer manage while keeping their data for past documents. &lt;b&gt;Only deleting a company frees up quota.&lt;/b&gt;">
     <b>โควตานับทุกบริษัท รวมที่เก็บเข้าคลังแล้ว</b> การเก็บเข้าคลัง (archive) ใช้ซ่อนบริษัทที่เลิกดูแลแล้ว
     แต่ยังเก็บข้อมูลไว้ออกเอกสารย้อนหลังได้ <b>ต้องลบทิ้งเท่านั้นจึงจะคืนโควตา</b>
   </div>
-  <div class="danger">
+  <div class="danger" data-en="&lt;b&gt;Deleting a company is permanent&lt;/b&gt; All of that company's payroll data is gone immediately and cannot be recovered. If you still need past documents, archive it instead.">
     <b>การลบบริษัทลบถาวร</b> ข้อมูลเงินเดือนทั้งหมดของบริษัทนั้นหายทันที กู้คืนไม่ได้
     หากยังต้องออกเอกสารย้อนหลัง ให้ใช้การเก็บเข้าคลังแทน
   </div>
-  <p class="muted">บัญชีแบบสำนักงานบัญชี<b>ไม่มี</b>เมนูเวลาเข้างานและระบบลางาน แต่<b>จำนวนพนักงานไม่จำกัด</b></p>
+  <p class="muted" data-en="Accounting Firm accounts have &lt;b&gt;no&lt;/b&gt; Attendance or Leave menus, but have &lt;b&gt;unlimited employees&lt;/b&gt;">บัญชีแบบสำนักงานบัญชี<b>ไม่มี</b>เมนูเวลาเข้างานและระบบลางาน แต่<b>จำนวนพนักงานไม่จำกัด</b></p>
 </div>
 
 <!-- ═══════ 14–15 ═══════ -->
 <div class="sheet" id="s13">
-  <h2>14 · แพ็กเกจและการชำระเงิน</h2>
+  <h2 data-en="14 · Plans and payment">14 · แพ็กเกจและการชำระเงิน</h2>
   <table>
-    <thead><tr><th style="width:26%">หัวข้อ</th><th>รายละเอียด</th></tr></thead>
+    <thead><tr><th style="width:26%" data-en="Topic">หัวข้อ</th><th data-en="Details">รายละเอียด</th></tr></thead>
     <tbody>
-      <tr><td><b>ทดลองใช้</b></td><td>30 วัน ใช้ได้ครบทุกฟีเจอร์รวมพรีเมี่ยม ไม่ต้องใส่บัตรเครดิต</td></tr>
-      <tr><td><b>มาตรฐาน</b></td><td>ระบบเงินเดือนครบ ออกเอกสารยื่นราชการได้ทุกใบ</td></tr>
-      <tr><td><b>พรีเมี่ยม</b></td><td>เพิ่ม ลงเวลาผ่านมือถือ (หลายสาขา + งานนอกสถานที่) · เวลาเข้างาน · ระบบกะและหมุนเวียนกะ · อนุมัติ OT รายวัน · ระบบลางานและสายอนุมัติ · เบิกล่วงหน้ากลางเดือน · จ่ายรายสัปดาห์ / 2 รอบ</td></tr>
-      <tr><td><b>จ่ายรายปี</b></td><td>จ่าย 10 เดือน ใช้ 12 เดือน ได้ฟรี 2 เดือน</td></tr>
-      <tr><td><b>ช่องทางชำระ</b></td><td>พร้อมเพย์ (สแกน QR) และบัตรเครดิต/เดบิต</td></tr>
-      <tr><td><b>ยกเลิก</b></td><td>ยกเลิกได้ทุกเมื่อ ไม่มีสัญญาผูกมัด</td></tr>
+      <tr><td data-en="&lt;b&gt;Trial&lt;/b&gt;"><b>ทดลองใช้</b></td><td data-en="30 days with every feature including Premium; no credit card required">30 วัน ใช้ได้ครบทุกฟีเจอร์รวมพรีเมี่ยม ไม่ต้องใส่บัตรเครดิต</td></tr>
+      <tr><td data-en="&lt;b&gt;Standard&lt;/b&gt;"><b>มาตรฐาน</b></td><td data-en="Complete payroll system with every statutory filing form">ระบบเงินเดือนครบ ออกเอกสารยื่นราชการได้ทุกใบ</td></tr>
+      <tr><td data-en="&lt;b&gt;Premium&lt;/b&gt;"><b>พรีเมี่ยม</b></td><td data-en="Adds Mobile check-in (multiple branches + off-site jobs) · Attendance · Shifts and shift rotation · Daily OT approval · Leave and approval chain · Mid-month advance payment · Weekly / twice-monthly pay">เพิ่ม ลงเวลาผ่านมือถือ (หลายสาขา + งานนอกสถานที่) · เวลาเข้างาน · ระบบกะและหมุนเวียนกะ · อนุมัติ OT รายวัน · ระบบลางานและสายอนุมัติ · เบิกล่วงหน้ากลางเดือน · จ่ายรายสัปดาห์ / 2 รอบ</td></tr>
+      <tr><td data-en="&lt;b&gt;Annual billing&lt;/b&gt;"><b>จ่ายรายปี</b></td><td data-en="Pay for 10 months, use for 12: 2 months free">จ่าย 10 เดือน ใช้ 12 เดือน ได้ฟรี 2 เดือน</td></tr>
+      <tr><td data-en="&lt;b&gt;Payment methods&lt;/b&gt;"><b>ช่องทางชำระ</b></td><td data-en="PromptPay (scan QR) and credit/debit cards">พร้อมเพย์ (สแกน QR) และบัตรเครดิต/เดบิต</td></tr>
+      <tr><td data-en="&lt;b&gt;Cancellation&lt;/b&gt;"><b>ยกเลิก</b></td><td data-en="Cancel any time, no contract">ยกเลิกได้ทุกเมื่อ ไม่มีสัญญาผูกมัด</td></tr>
     </tbody>
   </table>
 
-  <div class="warn">
+  <div class="warn" data-en="&lt;b&gt;Employee limits&lt;/b&gt; Each plan has a maximum number of employees; if you add more, the system prompts you to upgrade. &lt;b&gt;All existing data stays intact, nothing is lost&lt;/b&gt;, and you can still save edits to existing records as usual.">
     <b>เพดานจำนวนพนักงาน</b> แต่ละแพ็กเกจจำกัดจำนวนพนักงานสูงสุด เมื่อเพิ่มเกินระบบจะแจ้งให้อัปเกรด
     <b>ข้อมูลเดิมยังอยู่ครบ ไม่มีอะไรหาย</b> และยังบันทึกแก้ไขของเดิมได้ตามปกติ
   </div>
 
-  <h2 id="s14" style="margin-top:26px">15 · ปัญหาที่พบบ่อย</h2>
+  <h2 id="s14" style="margin-top:26px" data-en="15 · Troubleshooting">15 · ปัญหาที่พบบ่อย</h2>
   <table>
-    <thead><tr><th style="width:38%">อาการ</th><th>วิธีแก้</th></tr></thead>
+    <thead><tr><th style="width:38%" data-en="Problem">อาการ</th><th data-en="Solution">วิธีแก้</th></tr></thead>
     <tbody>
-      <tr><td><b>พนักงานไม่ขึ้นในสลิป / ภ.ง.ด.1</b></td>
-          <td>ตรวจ<b>วันเริ่มงาน</b>และ<b>วันที่ลาออก</b>ในหน้าข้อมูลพนักงาน
+      <tr><td data-en="&lt;b&gt;Employee missing from payslips / PND.1&lt;/b&gt;"><b>พนักงานไม่ขึ้นในสลิป / ภ.ง.ด.1</b></td>
+          <td data-en="Check the &lt;b&gt;start date&lt;/b&gt; and &lt;b&gt;resignation date&lt;/b&gt; on the employee's page. The system shows only people employed in that month.">ตรวจ<b>วันเริ่มงาน</b>และ<b>วันที่ลาออก</b>ในหน้าข้อมูลพนักงาน
               ระบบแสดงเฉพาะคนที่ทำงานอยู่ในเดือนนั้น</td></tr>
-      <tr><td><b>เงินเดือนเดือนแรกไม่เต็มจำนวน</b></td>
-          <td>ถูกต้องแล้ว พนักงานเข้างานกลางเดือน ระบบคิดตามสัดส่วนวันทำงาน
+      <tr><td data-en="&lt;b&gt;First month's salary is not the full amount&lt;/b&gt;"><b>เงินเดือนเดือนแรกไม่เต็มจำนวน</b></td>
+          <td data-en="This is correct: the employee started mid-month, so pay is pro-rated by days worked. See the details in the yellow box on the Earnings / Deductions page.">ถูกต้องแล้ว พนักงานเข้างานกลางเดือน ระบบคิดตามสัดส่วนวันทำงาน
               ดูรายละเอียดได้ในกล่องสีเหลืองหน้าเงินได้/เงินหัก</td></tr>
-      <tr><td><b>พนักงานรายวันไม่มีค่าจ้าง</b></td>
-          <td>ยังไม่ได้กรอก<b>จำนวนวันทำงาน</b> ในหน้าเงินได้/เงินหัก</td></tr>
-      <tr><td><b>ภาษีคิดได้ไม่ตรงกับที่คำนวณเอง</b></td>
-          <td>กด <b>🔍 ดูวิธีคำนวณภาษี</b> ตรวจทีละขั้น มักเกิดจากยังไม่ได้ใส่ข้อมูลคู่สมรสหรือบุตร</td></tr>
-      <tr><td><b>ประกันสังคมไม่ถึง 5% ของเงินเดือน</b></td>
-          <td>ถูกต้องแล้ว คุมเพดานฐาน 17,500 บาท สมทบสูงสุด 875 บาท</td></tr>
-      <tr><td><b>กดเมนูแล้วขึ้นกล่องชวนอัปเกรด</b></td>
-          <td>เมนูนั้นเป็นฟีเจอร์พรีเมี่ยม และช่วงทดลองใช้หมดแล้ว</td></tr>
-      <tr><td><b>เพิ่มพนักงานไม่ได้</b></td>
-          <td>จำนวนถึงเพดานของแพ็กเกจแล้ว ต้องอัปเกรดหรือลบพนักงานที่ไม่ใช้แล้ว</td></tr>
-      <tr><td><b>ข้อมูลไม่ตรงกับอีกเครื่อง</b></td>
-          <td>ลองรีเฟรชหน้าจอ ระบบจะดึงข้อมูลล่าสุดจากคลาวด์</td></tr>
+      <tr><td data-en="&lt;b&gt;Daily-wage employee has no pay&lt;/b&gt;"><b>พนักงานรายวันไม่มีค่าจ้าง</b></td>
+          <td data-en="&lt;b&gt;Working days&lt;/b&gt; have not been entered on the Earnings / Deductions page yet">ยังไม่ได้กรอก<b>จำนวนวันทำงาน</b> ในหน้าเงินได้/เงินหัก</td></tr>
+      <tr><td data-en="&lt;b&gt;Tax differs from my own calculation&lt;/b&gt;"><b>ภาษีคิดได้ไม่ตรงกับที่คำนวณเอง</b></td>
+          <td data-en="Click &lt;b&gt;🔍 Show tax calculation&lt;/b&gt; and check each step. It is usually because spouse or child details have not been entered.">กด <b>🔍 ดูวิธีคำนวณภาษี</b> ตรวจทีละขั้น มักเกิดจากยังไม่ได้ใส่ข้อมูลคู่สมรสหรือบุตร</td></tr>
+      <tr><td data-en="&lt;b&gt;Social security is less than 5% of salary&lt;/b&gt;"><b>ประกันสังคมไม่ถึง 5% ของเงินเดือน</b></td>
+          <td data-en="This is correct: it is capped at a 17,500 baht base, with a maximum contribution of 875 baht">ถูกต้องแล้ว คุมเพดานฐาน 17,500 บาท สมทบสูงสุด 875 บาท</td></tr>
+      <tr><td data-en="&lt;b&gt;Clicking a menu shows an upgrade prompt&lt;/b&gt;"><b>กดเมนูแล้วขึ้นกล่องชวนอัปเกรด</b></td>
+          <td data-en="That menu is a Premium feature and your trial has ended">เมนูนั้นเป็นฟีเจอร์พรีเมี่ยม และช่วงทดลองใช้หมดแล้ว</td></tr>
+      <tr><td data-en="&lt;b&gt;Cannot add employees&lt;/b&gt;"><b>เพิ่มพนักงานไม่ได้</b></td>
+          <td data-en="You have reached your plan's employee limit; upgrade or delete employees you no longer need">จำนวนถึงเพดานของแพ็กเกจแล้ว ต้องอัปเกรดหรือลบพนักงานที่ไม่ใช้แล้ว</td></tr>
+      <tr><td data-en="&lt;b&gt;Data differs from another device&lt;/b&gt;"><b>ข้อมูลไม่ตรงกับอีกเครื่อง</b></td>
+          <td data-en="Try refreshing the page; the system will load the latest data from the cloud">ลองรีเฟรชหน้าจอ ระบบจะดึงข้อมูลล่าสุดจากคลาวด์</td></tr>
     </tbody>
   </table>
 
   <div class="helpbox">
     <div class="qr"><svg role="img" aria-label="QR code เพิ่มเพื่อน LINE eSimPayroll" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 31 31" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h31v31H0z"/><path stroke="#000000" d="M1 1.5h7m1 0h3m4 0h2m1 0h1m1 0h1m1 0h7M1 2.5h1m5 0h1m3 0h2m1 0h2m1 0h3m3 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h2m1 0h1m2 0h4m1 0h2m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m3 0h1m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h7m1 0h2m3 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h3m4 0h1m4 0h1m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M11 8.5h1m1 0h1m1 0h3m2 0h2M1 9.5h1m1 0h1m3 0h2m3 0h4m3 0h1m1 0h1m2 0h1m2 0h1m1 0h1M1 10.5h4m1 0h1m2 0h2m1 0h4m3 0h2m2 0h1m4 0h2M1 11.5h1m4 0h5m5 0h1m3 0h1m4 0h3m1 0h1M1 12.5h1m3 0h1m2 0h2m4 0h1m4 0h1m3 0h2m1 0h1M1 13.5h3m3 0h4m1 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m4 0h1M2 14.5h1m1 0h3m1 0h2m1 0h3m3 0h1m1 0h3m1 0h2m3 0h2M3 15.5h1m2 0h3m1 0h1m3 0h2m1 0h2m1 0h2m2 0h1m4 0h1M2 16.5h1m5 0h4m3 0h3m3 0h2m1 0h2M2 17.5h1m1 0h1m1 0h4m2 0h1m1 0h2m1 0h1m1 0h2m2 0h2m4 0h1M4 18.5h2m3 0h4m1 0h2m2 0h4m1 0h2m2 0h3M1 19.5h2m4 0h1m1 0h1m2 0h1m3 0h5m2 0h1m1 0h2m2 0h1M5 20.5h2m1 0h1m4 0h2m2 0h1m2 0h3m2 0h1M1 21.5h3m1 0h3m3 0h2m1 0h1m2 0h1m3 0h6m1 0h1M9 22.5h1m3 0h1m2 0h2m1 0h1m1 0h1m3 0h3m1 0h1M1 23.5h7m1 0h3m1 0h4m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1M1 24.5h1m5 0h1m3 0h1m3 0h1m1 0h1m3 0h1m3 0h1M1 25.5h1m1 0h3m1 0h1m3 0h2m1 0h4m2 0h7m1 0h2M1 26.5h1m1 0h3m1 0h1m2 0h1m4 0h3m3 0h1m3 0h3m1 0h1M1 27.5h1m1 0h3m1 0h1m1 0h1m3 0h1m2 0h1m3 0h3m2 0h1m2 0h2M1 28.5h1m5 0h1m3 0h2m1 0h2m3 0h2m1 0h2m2 0h1M1 29.5h7m1 0h2m3 0h4m3 0h1m4 0h1m2 0h1"/></svg></div>
     <div class="helptxt">
-      <b>ติดปัญหาหรือต้องการคำแนะนำ</b>
-      <p>ทีมงานคนไทย ตอบภายในเวลาทำการ ให้คำปรึกษาฟรี<br>
+      <b data-en="Need help or advice?">ติดปัญหาหรือต้องการคำแนะนำ</b>
+      <p data-en="Thai support team, replies during business hours, free consultation&lt;br&gt;Scan the QR code or tap the button below to add us as a friend">ทีมงานคนไทย ตอบภายในเวลาทำการ ให้คำปรึกษาฟรี<br>
          สแกน QR หรือกดปุ่มด้านล่างเพื่อเพิ่มเพื่อน</p>
-      <a class="linebtn" href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener">
+      <a class="linebtn" href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener" data-en="&lt;span class=&quot;lico&quot;&gt;LINE&lt;/span&gt; Add friend">
         <span class="lico">LINE</span> เพิ่มเพื่อน</a>
-      <span class="muted" style="font-size:12.5px">หรือใช้ปุ่ม “แจ้งปัญหา / คำแนะนำ” ที่มุมขวาล่างของเว็บไซต์</span>
+      <span class="muted" style="font-size:12.5px" data-en="Or use the &quot;Report a problem / Feedback&quot; button at the bottom right of the website">หรือใช้ปุ่ม “แจ้งปัญหา / คำแนะนำ” ที่มุมขวาล่างของเว็บไซต์</span>
     </div>
   </div>
 </div>
 
 </div>
+<script>
+(function(){
+  var KEY='lang';
+  function apply(l){
+    document.documentElement.lang = (l==='en'?'en':'th');
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      if(!el.hasAttribute('data-th')) el.setAttribute('data-th', el.innerHTML);
+      el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-th');
+    });
+    document.querySelectorAll('[data-en-ph]').forEach(function(el){
+      if(!el.hasAttribute('data-th-ph')) el.setAttribute('data-th-ph', el.placeholder||'');
+      el.placeholder = (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-th-ph');
+    });
+    document.querySelectorAll('[data-en-alt]').forEach(function(el){
+      if(!el.hasAttribute('data-th-alt')) el.setAttribute('data-th-alt', el.alt||'');
+      el.alt = (l==='en') ? el.getAttribute('data-en-alt') : el.getAttribute('data-th-alt');
+    });
+    var b=document.getElementById('langBtn'); if(b) b.textContent = (l==='en'?'🌐 TH':'🌐 EN');
+    try{ localStorage.setItem(KEY,l); }catch(e){}
+  }
+  var cur='th'; try{ cur = localStorage.getItem(KEY)||'th'; }catch(e){}
+  window.__setLang=apply;
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(cur);
+    var b=document.getElementById('langBtn');
+    if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); };
+  });
+})();
+</script>
 </body>
 </html>
