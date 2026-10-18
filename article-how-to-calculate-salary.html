@@ -73,7 +73,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -92,7 +92,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -182,6 +182,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -218,7 +219,7 @@ footer .ft-mail{color:#6ee7b7 !important}
            data-en-alt="Calculating employee salary, social security and tax" width="1200" height="525" fetchpriority="high" decoding="async">
     </figure>
 
-    <p data-en="&lt;strong&gt;Calculating an employee&#39;s salary&lt;/strong&gt; is not one sum — it is seven steps in a fixed order, and the order matters. Get social security or tax computed from the wrong base and the net figure is wrong no matter how careful the rest was."><strong>วิธีคำนวณเงินเดือนพนักงาน</strong> ไม่ใช่การบวกลบครั้งเดียวจบ แต่เป็น 7 ขั้นตอนที่มีลำดับตายตัว และลำดับสำคัญมาก ถ้าคิดประกันสังคมหรือภาษีจากฐานผิด ยอดสุทธิก็ผิดทั้งก้อน ต่อให้ขั้นอื่นละเอียดแค่ไหนก็ตาม</p>
+    <p data-en="&lt;strong&gt;Calculating an employee&#39;s salary&lt;/strong&gt; is not one sum, it is seven steps in a fixed order, and the order matters. Get social security or tax computed from the wrong base and the net figure is wrong no matter how careful the rest was."><strong>วิธีคำนวณเงินเดือนพนักงาน</strong> ไม่ใช่การบวกลบครั้งเดียวจบ แต่เป็น 7 ขั้นตอนที่มีลำดับตายตัว และลำดับสำคัญมาก ถ้าคิดประกันสังคมหรือภาษีจากฐานผิด ยอดสุทธิก็ผิดทั้งก้อน ต่อให้ขั้นอื่นละเอียดแค่ไหนก็ตาม</p>
 
     <p data-en="The order is: &lt;strong&gt;base salary → overtime → allowances → deductions → social security → tax → net pay&lt;/strong&gt;. This article walks through each step, then works one complete example line by line.">ลำดับคือ <strong>เงินเดือน → OT → เงินเพิ่ม → เงินหัก → ประกันสังคม → ภาษี → เงินเดือนสุทธิ</strong> บทความนี้อธิบายทีละขั้น แล้วปิดท้ายด้วยตัวอย่างคำนวณจริงครบทุกบรรทัด</p>
 
@@ -259,17 +260,17 @@ footer .ft-mail{color:#6ee7b7 !important}
       <span class="num">5</span>
       <h4 data-en="Social security">ประกันสังคม</h4>
       <p data-en="Deducted at the statutory rate from the &lt;strong&gt;social security wage&lt;/strong&gt;, up to a wage ceiling. The employer contributes a matching amount separately.">หักตามอัตราที่กฎหมายกำหนดจาก <strong>ค่าจ้างตามนิยามประกันสังคม</strong> โดยมีเพดานฐานค่าจ้าง และนายจ้างสมทบอีกส่วนเท่ากันแยกต่างหาก</p>
-      <div class="chk" data-en="&lt;b&gt;The most common mistake:&lt;/b&gt; including overtime in the base. It is not part of the social security wage — neither are bonuses. Including them over-deducts every month. More in &lt;a href=&quot;article-social-security.html&quot;&gt;the social security guide&lt;/a&gt;."><b>ข้อผิดพลาดที่พบบ่อยที่สุด:</b> เอาค่าล่วงเวลาไปรวมในฐาน ทั้งที่ OT ไม่ใช่ค่าจ้างตามนิยามประกันสังคม เช่นเดียวกับโบนัส ถ้ารวมเข้าไปจะหักเกินทุกเดือน อ่านเพิ่มที่ <a href="/article-social-security">ประกันสังคมคิดยังไง</a></div>
+      <div class="chk" data-en="&lt;b&gt;The most common mistake:&lt;/b&gt; including overtime in the base. It is not part of the social security wage, neither are bonuses. Including them over-deducts every month. More in &lt;a href=&quot;article-social-security.html&quot;&gt;the social security guide&lt;/a&gt;."><b>ข้อผิดพลาดที่พบบ่อยที่สุด:</b> เอาค่าล่วงเวลาไปรวมในฐาน ทั้งที่ OT ไม่ใช่ค่าจ้างตามนิยามประกันสังคม เช่นเดียวกับโบนัส ถ้ารวมเข้าไปจะหักเกินทุกเดือน อ่านเพิ่มที่ <a href="/article-social-security">ประกันสังคมคิดยังไง</a></div>
     </div>
 
     <div class="feat">
       <span class="num">6</span>
       <h4 data-en="Withholding tax">ภาษีหัก ณ ที่จ่าย</h4>
       <p data-en="This is the step people get wrong most often, because Thai withholding tax is &lt;strong&gt;not computed month by month&lt;/strong&gt;:">ขั้นนี้ผิดกันมากที่สุด เพราะภาษีหัก ณ ที่จ่ายของไทย<strong>ไม่ได้คิดทีละเดือน</strong></p>
-      <ul data-en="&lt;li&gt;Project the &lt;strong&gt;whole year&#39;s income&lt;/strong&gt; from the current pay&lt;/li&gt;&lt;li&gt;Deduct expenses — 50% of income, capped at 100,000&lt;/li&gt;&lt;li&gt;Deduct allowances — 60,000 personal, 60,000 spouse, 30,000 per child, social security paid, provident fund, and others&lt;/li&gt;&lt;li&gt;Apply the progressive brackets to what is left&lt;/li&gt;&lt;li&gt;Divide the annual tax by the months worked&lt;/li&gt;">
+      <ul data-en="&lt;li&gt;Project the &lt;strong&gt;whole year&#39;s income&lt;/strong&gt; from the current pay&lt;/li&gt;&lt;li&gt;Deduct expenses, 50% of income, capped at 100,000&lt;/li&gt;&lt;li&gt;Deduct allowances, 60,000 personal, 60,000 spouse, 30,000 per child, social security paid, provident fund, and others&lt;/li&gt;&lt;li&gt;Apply the progressive brackets to what is left&lt;/li&gt;&lt;li&gt;Divide the annual tax by the months worked&lt;/li&gt;">
         <li>ประมาณ<strong>เงินได้ทั้งปี</strong>จากค่าจ้างปัจจุบัน</li>
         <li>หักค่าใช้จ่าย 50% ของเงินได้ สูงสุด 100,000</li>
-        <li>หักค่าลดหย่อน — ส่วนตัว 60,000 · คู่สมรส 60,000 · บุตรคนละ 30,000 · ประกันสังคมที่จ่ายจริง · กองทุนสำรองเลี้ยงชีพ และอื่น ๆ</li>
+        <li>หักค่าลดหย่อน ส่วนตัว 60,000 · คู่สมรส 60,000 · บุตรคนละ 30,000 · ประกันสังคมที่จ่ายจริง · กองทุนสำรองเลี้ยงชีพ และอื่น ๆ</li>
         <li>นำส่วนที่เหลือเข้า<strong>อัตราภาษีก้าวหน้า</strong></li>
         <li>หารภาษีทั้งปีด้วยจำนวนเดือนที่ทำงาน</li>
       </ul>
@@ -299,7 +300,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="calcbox">
       <h4 data-en="Step 5 · Social security">ขั้นที่ 5 · ประกันสังคม</h4>
       <table>
-        <tr><td data-en="Social security wage (salary + position + diligence — no OT)">ค่าจ้างตามนิยาม ปกส. (เงินเดือน + ค่าตำแหน่ง + เบี้ยขยัน — ไม่รวม OT)</td><td>27,500.00</td></tr>
+        <tr><td data-en="Social security wage (salary + position + diligence, no OT)">ค่าจ้างตามนิยาม ปกส. (เงินเดือน + ค่าตำแหน่ง + เบี้ยขยัน ไม่รวม OT)</td><td>27,500.00</td></tr>
         <tr><td data-en="Above the wage ceiling → capped">เกินเพดานฐานค่าจ้าง → คิดที่เพดาน</td><td>17,500.00</td></tr>
         <tr><td data-en="Social security 5% of the capped base">ประกันสังคม 5% ของฐานที่เพดาน</td><td>875.00</td></tr>
       </table>
@@ -329,7 +330,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       </table>
     </div>
 
-    <div class="box" data-en="Every figure above was produced by the same calculation engine eSimPayroll uses in production, then checked by hand — the 150,000 exemption plus 28,250 × 5% = 1,412.50.">ตัวเลขทุกบรรทัดข้างบนคำนวณด้วยชุดคำสั่งเดียวกับที่ eSimPayroll ใช้งานจริง แล้วตรวจทวนด้วยมืออีกรอบ — 150,000 แรกยกเว้น ส่วนเกิน 28,250 × 5% = 1,412.50</div>
+    <div class="box" data-en="Every figure above was produced by the same calculation engine eSimPayroll uses in production, then checked by hand, the 150,000 exemption plus 28,250 × 5% = 1,412.50.">ตัวเลขทุกบรรทัดข้างบนคำนวณด้วยชุดคำสั่งเดียวกับที่ eSimPayroll ใช้งานจริง แล้วตรวจทวนด้วยมืออีกรอบ 150,000 แรกยกเว้น ส่วนเกิน 28,250 × 5% = 1,412.50</div>
 
     <h2 data-en="Four mistakes that cost real money">4 จุดผิดที่เสียเงินจริง</h2>
     <div class="cmpwrap">
@@ -346,15 +347,15 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="warn" data-en="&lt;strong&gt;Note on the ceiling:&lt;/strong&gt; the social security wage ceiling is set by regulation and changes from time to time. Whatever you use to run payroll, make sure the figure is something you can edit rather than one fixed in the formula."><strong>หมายเหตุเรื่องเพดาน:</strong> เพดานฐานค่าจ้างประกันสังคมกำหนดโดยประกาศ และมีการเปลี่ยนแปลงเป็นระยะ ไม่ว่าจะใช้อะไรทำเงินเดือน ควรให้ตัวเลขนี้<strong>แก้ไขเองได้</strong> ไม่ใช่ฝังตายอยู่ในสูตร</div>
 
     <h2 data-en="In short">สรุป</h2>
-    <p data-en="&lt;strong&gt;Calculating salary&lt;/strong&gt; is seven steps in a fixed order, and two of them — the social security wage base and the annual tax spread — are where nearly every error starts. Get those two right and the rest is arithmetic."><strong>วิธีคำนวณเงินเดือนพนักงาน</strong> คือ 7 ขั้นตอนที่มีลำดับตายตัว และมีสองขั้นที่เป็นต้นตอของความผิดพลาดเกือบทั้งหมด คือ<strong>ฐานค่าจ้างประกันสังคม</strong>กับ<strong>การเฉลี่ยภาษีทั้งปี</strong> ถ้าสองข้อนี้ถูก ที่เหลือเป็นแค่การบวกลบ</p>
-    <p data-en="If you would rather not do this in Excel, &lt;a href=&quot;index.html&quot;&gt;eSimPayroll&lt;/a&gt; can calculate and manage all of your payroll data in one system — the same engine that produced every figure in this article.">หากไม่อยากคำนวณเงินเดือนด้วย Excel สามารถใช้ <a href="/">eSimPayroll</a> ช่วยคำนวณและจัดการข้อมูลเงินเดือนในระบบเดียว — ชุดคำสั่งเดียวกับที่คำนวณตัวเลขทุกบรรทัดในบทความนี้</p>
+    <p data-en="&lt;strong&gt;Calculating salary&lt;/strong&gt; is seven steps in a fixed order, and two of them, the social security wage base and the annual tax spread, are where nearly every error starts. Get those two right and the rest is arithmetic."><strong>วิธีคำนวณเงินเดือนพนักงาน</strong> คือ 7 ขั้นตอนที่มีลำดับตายตัว และมีสองขั้นที่เป็นต้นตอของความผิดพลาดเกือบทั้งหมด คือ<strong>ฐานค่าจ้างประกันสังคม</strong>กับ<strong>การเฉลี่ยภาษีทั้งปี</strong> ถ้าสองข้อนี้ถูก ที่เหลือเป็นแค่การบวกลบ</p>
+    <p data-en="If you would rather not do this in Excel, &lt;a href=&quot;index.html&quot;&gt;eSimPayroll&lt;/a&gt; can calculate and manage all of your payroll data in one system, the same engine that produced every figure in this article.">หากไม่อยากคำนวณเงินเดือนด้วย Excel สามารถใช้ <a href="/">eSimPayroll</a> ช่วยคำนวณและจัดการข้อมูลเงินเดือนในระบบเดียว ชุดคำสั่งเดียวกับที่คำนวณตัวเลขทุกบรรทัดในบทความนี้</p>
 
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
-        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน พ.ร.บ.คุ้มครองแรงงาน</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -364,9 +365,9 @@ footer .ft-mail{color:#6ee7b7 !important}
       <details><summary data-en="How is net pay calculated?">เงินเดือนสุทธิ คำนวณยังไง</summary>
         <p data-en="Net pay = total earnings − total deductions. Total earnings is base pay plus overtime plus every allowance; total deductions is social security plus withholding tax plus other items such as company loans or absence deductions. The order matters: social security and tax must be computed from the correct bases first."><strong>เงินเดือนสุทธิ</strong> = เงินได้รวม − เงินหักรวม โดยเงินได้รวมคือเงินเดือนฐาน + ค่าล่วงเวลา + เงินเพิ่มทุกรายการ ส่วนเงินหักรวมคือประกันสังคม + ภาษี + รายการหักอื่น เช่น เงินกู้บริษัทหรือหักขาดงาน ลำดับสำคัญ ต้องคิดประกันสังคมกับภาษีจากฐานที่ถูกต้องก่อน</p></details>
       <details><summary data-en="Is overtime subject to social security?">ค่าล่วงเวลาต้องหักประกันสังคมไหม</summary>
-        <p data-en="No. Overtime is not part of the social security wage, and neither are bonuses. Regular allowances — position, travel, diligence, commission — do count and must be included. Including overtime over-deducts every month.">ไม่ต้อง ค่าล่วงเวลาไม่นับเป็นค่าจ้างตามนิยามประกันสังคม เช่นเดียวกับโบนัส ส่วนค่าตอบแทนที่จ่ายประจำ เช่น ค่าตำแหน่ง ค่าเดินทาง เบี้ยขยัน ค่าคอมมิชชั่น นับเป็นค่าจ้างและต้องรวมเข้าฐาน การเอา OT มารวมจะทำให้หักเกินทุกเดือน</p></details>
+        <p data-en="No. Overtime is not part of the social security wage, and neither are bonuses. Regular allowances, position, travel, diligence, commission, do count and must be included. Including overtime over-deducts every month.">ไม่ต้อง ค่าล่วงเวลาไม่นับเป็นค่าจ้างตามนิยามประกันสังคม เช่นเดียวกับโบนัส ส่วนค่าตอบแทนที่จ่ายประจำ เช่น ค่าตำแหน่ง ค่าเดินทาง เบี้ยขยัน ค่าคอมมิชชั่น นับเป็นค่าจ้างและต้องรวมเข้าฐาน การเอา OT มารวมจะทำให้หักเกินทุกเดือน</p></details>
       <details><summary data-en="How do I work out the hourly overtime rate?">คำนวณ OT ต่อชั่วโมงยังไง</summary>
-        <p data-en="Monthly staff: salary ÷ days per month ÷ hours per day. Daily staff: daily wage ÷ hours per day. Then multiply by hours worked and the statutory multiplier — 1.5× on a working day, 3× on a holiday.">รายเดือน: เงินเดือน ÷ วันต่อเดือน ÷ ชั่วโมงต่อวัน · รายวัน: ค่าจ้างต่อวัน ÷ ชั่วโมงต่อวัน จากนั้นคูณจำนวนชั่วโมงที่ทำและตัวคูณตามกฎหมาย คือ 1.5 เท่าวันทำงาน และ 3 เท่าวันหยุด</p></details>
+        <p data-en="Monthly staff: salary ÷ days per month ÷ hours per day. Daily staff: daily wage ÷ hours per day. Then multiply by hours worked and the statutory multiplier, 1.5× on a working day, 3× on a holiday.">รายเดือน: เงินเดือน ÷ วันต่อเดือน ÷ ชั่วโมงต่อวัน · รายวัน: ค่าจ้างต่อวัน ÷ ชั่วโมงต่อวัน จากนั้นคูณจำนวนชั่วโมงที่ทำและตัวคูณตามกฎหมาย คือ 1.5 เท่าวันทำงาน และ 3 เท่าวันหยุด</p></details>
       <details><summary data-en="Is salary tax monthly or annual?">ภาษีเงินเดือนคิดทีละเดือนหรือคิดทั้งปี</summary>
         <p data-en="Annual. Thai withholding tax is derived from full-year income less expenses and allowances, run through the progressive brackets, then divided across the months worked. Computing it month by month gives the wrong figure, and a raise or bonus changes every remaining month.">คิดทั้งปี ภาษีหัก ณ ที่จ่ายคำนวณจากเงินได้ทั้งปี หักค่าใช้จ่ายและค่าลดหย่อน เข้าอัตราก้าวหน้า แล้วหารเฉลี่ยตามเดือนที่ทำงาน การคิดแยกทีละเดือนจะได้ตัวเลขผิด และเมื่อขึ้นเงินเดือนหรือจ่ายโบนัส ภาษีของทุกเดือนที่เหลือจะเปลี่ยนตาม</p></details>
     </div>
@@ -383,7 +384,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <a href="/article-welfare-fund" class="card">
         <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
         <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
-          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-withholding-tax" class="card">
@@ -410,7 +411,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -427,7 +428,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -528,7 +529,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

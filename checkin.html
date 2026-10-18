@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ลงเวลาเข้า-ออกงาน — eSimPayroll</title>
+<title>ลงเวลาเข้า-ออกงาน | eSimPayroll</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0e3a5c">
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=2">
@@ -138,7 +138,7 @@
     <button class="btn ghost" id="bConsentNo">ยกเลิก</button>
   </div>
   <div class="card" id="vLine" hidden style="margin-top:12px;background:#fffbeb;border:1px solid #fcd34d;color:#92400e;font-size:14.5px;line-height:1.6">
-    <strong>เปิดใน LINE อยู่</strong> — ถ้ากดถ่ายรูปไม่ได้ ให้กดปุ่ม <strong>⋮</strong> หรือ <strong>แชร์</strong> มุมขวาบน แล้วเลือก <strong>“เปิดในเบราว์เซอร์” / “Open in Safari/Chrome”</strong>
+    <strong>เปิดใน LINE อยู่</strong> ถ้ากดถ่ายรูปไม่ได้ ให้กดปุ่ม <strong>⋮</strong> หรือ <strong>แชร์</strong> มุมขวาบน แล้วเลือก <strong>“เปิดในเบราว์เซอร์” / “Open in Safari/Chrome”</strong>
   </div>
   <input type="file" id="fileCam" accept="image/*" capture="user" hidden>
   <div class="foot">ใช้งานผ่านเบราว์เซอร์ ไม่ต้องติดตั้งแอป<br>ต้องอนุญาตกล้องและตำแหน่งเมื่อเบราว์เซอร์ถาม</div>
@@ -197,8 +197,8 @@
     bad_hours:'จำนวนชั่วโมงไม่ถูกต้อง',exec_no_punch:'บัญชีผู้บริหารไม่ต้องลงเวลา',exec_no_leave:'บัญชีผู้บริหารยื่นใบลาผ่านฝ่ายบุคคล',note_required:'ต้องใส่เหตุผลที่ไม่อนุมัติ',too_many_files:'แนบรูปได้สูงสุด 3 รูป',bad_file:'รูปใหญ่หรือรูปแบบไม่ถูกต้อง ลองเลือกรูปใหม่',too_many:'มีใบลารออนุมัติมากเกินไป รอผู้ดูแลอนุมัติก่อน',not_pending:'ใบลานี้ถูกพิจารณาแล้ว ยกเลิกไม่ได้',face_required:'ต้องสแกนใบหน้าก่อนลงเวลา',
     consent_required:'ต้องยินยอมการเก็บข้อมูลใบหน้าก่อน',bad_face:'อ่านใบหน้าไม่สำเร็จ ลองใหม่อีกครั้ง'};
   function errText(e){ var m=String(e&&e.message||e);
-    if(/face_mismatch/.test(m)) return '❌ ใบหน้าไม่ตรงกับที่ลงทะเบียนไว้ — ถ่ายใหม่ในที่สว่าง หน้าตรง ไม่สวมแมสก์/แว่นดำ (ถ้าเป็นคุณจริงแต่ยังไม่ผ่าน แจ้งผู้ดูแลให้รีเซ็ตใบหน้า)';
-    var te=m.match(/too_early:(\d{1,2}:\d{2})/); if(te) return '⏰ ยังไม่ถึงเวลาลงเวลาเข้างาน — สแกนเข้างานได้ตั้งแต่ '+te[1]+' น.';
+    if(/face_mismatch/.test(m)) return '❌ ใบหน้าไม่ตรงกับที่ลงทะเบียนไว้ ถ่ายใหม่ในที่สว่าง หน้าตรง ไม่สวมแมสก์/แว่นดำ (ถ้าเป็นคุณจริงแต่ยังไม่ผ่าน แจ้งผู้ดูแลให้รีเซ็ตใบหน้า)';
+    var te=m.match(/too_early:(\d{1,2}:\d{2})/); if(te) return '⏰ ยังไม่ถึงเวลาลงเวลาเข้างาน สแกนเข้างานได้ตั้งแต่ '+te[1]+' น.';
     var z=m.match(/out_of_zone:(\d+)/); if(z) return 'อยู่นอกพื้นที่ลงเวลา (ห่างจุดที่ใกล้ที่สุด '+Number(z[1]).toLocaleString('th-TH')+' เมตร)';
     for(var k in ERR) if(m.indexOf(k)>=0) return ERR[k];
     if(/schema cache|PGRST202/i.test(m)) return 'ระบบลงเวลายังไม่พร้อมใช้งาน กรุณาแจ้งผู้ดูแลของบริษัท';
@@ -281,14 +281,14 @@
     if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ fileCam(); return; }
     navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:640}},audio:false})
       .then(function(s){ STREAM=s; $('vid').srcObject=s; $('cam').style.display='flex';
-        $('camHint').textContent=(kind==='in'?'ลงเวลาเข้างาน':'ลงเวลาออกงาน')+' — จัดหน้าให้อยู่ในวงรี'; })
+        $('camHint').textContent=(kind==='in'?'ลงเวลาเข้างาน':'ลงเวลาออกงาน')+' จัดหน้าให้อยู่ในวงรี'; })
       .catch(function(){ fileCam(); });   // เบราว์เซอร์ในแอป (LINE ฯลฯ) มักเปิดกล้องตรงไม่ได้ → ใช้กล้องของมือถือผ่านช่องเลือกรูปแทน
   }
-  /* ถ่ายด้วยแอปกล้องของมือถือ (input capture) — ใช้ได้แม้ในเบราว์เซอร์ของ LINE */
+  /* ถ่ายด้วยแอปกล้องของมือถือ (input capture) ใช้ได้แม้ในเบราว์เซอร์ของ LINE */
   function fileCam(){ var f=$('fileCam'); f.value=''; f.click(); }
   $('fileCam').onchange=function(){
     var file=this.files&&this.files[0]; if(!file) return;
-    var img=new Image(), rd=new FileReader(), W, H;   // ใช้ data URL — นโยบายความปลอดภัยของเว็บไม่อนุญาตรูปแบบ blob:
+    var img=new Image(), rd=new FileReader(), W, H;   // ใช้ data URL นโยบายความปลอดภัยของเว็บไม่อนุญาตรูปแบบ blob:
     img.onload=function(){ var c=$('cv');
       W=480; H=Math.round(W*img.naturalHeight/img.naturalWidth);
       c.width=W; c.height=H; c.getContext('2d').drawImage(img,0,0,W,H);
@@ -310,7 +310,7 @@
     if(!$('vid').videoWidth){ return; }
     var photo=snap(); closeCam(); submitPunch(photo);
   };
-  /* ขอตั๋วอัปโหลด (ใช้ได้ครั้งเดียว) แล้วส่งไฟล์ JPEG เข้า bucket punch-photos — คืน "sb:<path>" หรือ null ถ้าไม่สำเร็จ */
+  /* ขอตั๋วอัปโหลด (ใช้ได้ครั้งเดียว) แล้วส่งไฟล์ JPEG เข้า bucket punch-photos คืน "sb:<path>" หรือ null ถ้าไม่สำเร็จ */
   function uploadPhoto(dataUrl, enrolling){
     if(!dataUrl) return Promise.resolve(null);
     return rpc('checkin_photo_ticket',{p_token:ls(TK),p_face:!!enrolling}).then(function(path){
@@ -326,13 +326,13 @@
     $('bIn').disabled=$('bOut').disabled=true;
     var s0=ME&&ME.sites&&ME.sites[0], sim=!!(s0&&s0.sim&&s0.lat!=null), desc=null;
     msg('mMsg',faceNeeded()?'กำลังตรวจใบหน้า… (ครั้งแรกอาจใช้เวลาโหลดสักครู่)':'กำลังหาตำแหน่งและบันทึกเวลา…',true);
-    /* ย่อรูปที่เก็บให้เล็ก (360px) — ตรวจใบหน้าจากภาพใหญ่ก่อน */
+    /* ย่อรูปที่เก็บให้เล็ก (360px) ตรวจใบหน้าจากภาพใหญ่ก่อน */
     var small=(function(){ var c=$('cv'), o=document.createElement('canvas'), W=360, H=Math.round(W*c.height/c.width);
       o.width=W; o.height=H; o.getContext('2d').drawImage(c,0,0,W,H); return o.toDataURL('image/jpeg',0.6); })();
     (faceNeeded()?faceDesc($('cv')).then(function(d){ desc=d; msg('mMsg','กำลังหาตำแหน่งและบันทึกเวลา…',true); }):Promise.resolve())
     .then(function(){ return sim?{latitude:s0.lat,longitude:s0.lng,accuracy:0}:getPos(); })
     .then(function(pos){
-      /* อัปโหลดรูปเข้า Supabase Storage ก่อน แล้วส่งแค่ที่อยู่ไฟล์ ("sb:<path>") — ไม่เก็บรูปในฐานข้อมูล
+      /* อัปโหลดรูปเข้า Supabase Storage ก่อน แล้วส่งแค่ที่อยู่ไฟล์ ("sb:<path>") ไม่เก็บรูปในฐานข้อมูล
          ถ้าอัปโหลดไม่ได้ (เช่น ยังไม่ได้รัน sql/35) ส่งรูปแบบเดิมแทน ลงเวลาได้เหมือนเดิม */
       return uploadPhoto(small, faceNeeded()&&!ME.face_enrolled).then(function(ref){
         return rpc('checkin_punch',{p_token:ls(TK),p_kind:KIND,p_lat:pos?pos.latitude:null,p_lng:pos?pos.longitude:null,
@@ -343,7 +343,7 @@
       var t=new Date(j.ts);
       msg('mMsg',(j.enrolled?'✅ ลงทะเบียนใบหน้าแล้ว · ':'✅ ')+'บันทึก'+(j.kind==='in'?'เข้างาน':'ออกงาน')+' เวลา '+p2(t.getHours())+':'+p2(t.getMinutes())+' น.'+(j.site?' · '+j.site:''),true);
     }).catch(function(e){
-      if(e&&e.message==='noface'){ msg('mMsg','ไม่พบใบหน้าในรูป — ถ่ายใหม่ให้เห็นหน้าชัด ๆ ในที่สว่าง'); return; }
+      if(e&&e.message==='noface'){ msg('mMsg','ไม่พบใบหน้าในรูป ถ่ายใหม่ให้เห็นหน้าชัด ๆ ในที่สว่าง'); return; }
       if(/session/.test(e.message)){ ls(TK,null); show('login'); msg('lMsg',errText(e)); return; }
       msg('mMsg',errText(e));
     }).then(function(){ $('bIn').disabled=$('bOut').disabled=false; });
@@ -455,7 +455,7 @@
     if(isH && t!==f){ msg('lvMsg','ลาเป็นชั่วโมงเลือกได้วันเดียว'); return; }
     var b=this; b.disabled=true; b.textContent='กำลังส่ง…';
     rpc('checkin_leave_submit',{p_token:ls(TK),p_type:$('lvType').value,p_from:f,p_to:t,p_hours:h,p_reason:$('lvReason').value.trim(),p_files:LV_FILES})
-      .then(function(j){ msg('lvMsg','✅ ส่งใบลาแล้ว — รอ '+(j&&j.approver_name?j.approver_name:'ฝ่ายบุคคล (HR)')+' อนุมัติ',true); $('lvReason').value=''; $('lvHours').value=''; LV_FILES=[]; drawThumbs(); loadLeaves(); })
+      .then(function(j){ msg('lvMsg','✅ ส่งใบลาแล้ว รอ '+(j&&j.approver_name?j.approver_name:'ฝ่ายบุคคล (HR)')+' อนุมัติ',true); $('lvReason').value=''; $('lvHours').value=''; LV_FILES=[]; drawThumbs(); loadLeaves(); })
       .catch(function(e){ msg('lvMsg',errText(e)); })
       .then(function(){ b.disabled=false; b.textContent='ส่งใบลา'; });
   };

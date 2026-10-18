@@ -73,7 +73,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -92,7 +92,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -197,6 +197,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -225,7 +226,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="meta" data-en="Payroll basics · Updated 17 September 2026 · 8 min read">พื้นฐานเงินเดือน · อัปเดต 17 กันยายน 2569 · อ่าน 8 นาที</div>
     <div class="h1row">
       <span class="h1ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M4 20V9m5 11V5m5 15v-7m5 7V11"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M3 20h18"/></svg></span>
-      <h1 data-en="What salary do you start paying tax at? A 2026 table">เงินเดือนเท่าไหร่ถึงเสียภาษี — ตารางคำนวณปี 2569</h1>
+      <h1 data-en="What salary do you start paying tax at? A 2026 table">เงินเดือนเท่าไหร่ถึงเสียภาษี ตารางคำนวณปี 2569</h1>
     </div>
 
     <figure class="hero-img">
@@ -243,7 +244,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     </div>
 
     <h2 data-en="Where 26,708 comes from">26,708 มาจากไหน</h2>
-    <p data-en="Tax is never charged on your salary. It is charged on &lt;strong&gt;net income&lt;/strong&gt; — what is left after expenses and allowances. And the first 150,000 baht of net income is exempt. So the question becomes: what salary produces exactly 150,000 baht of net income?">ภาษีไม่เคยคิดจากเงินเดือน แต่คิดจาก <strong>เงินได้สุทธิ</strong> คือเงินที่เหลือหลังหักค่าใช้จ่ายและค่าลดหย่อนแล้ว และเงินได้สุทธิ <strong>150,000 บาทแรกได้รับยกเว้น</strong> คำถามจึงกลายเป็นว่า เงินเดือนเท่าไหร่ถึงจะเหลือเงินได้สุทธิพอดี 150,000</p>
+    <p data-en="Tax is never charged on your salary. It is charged on &lt;strong&gt;net income&lt;/strong&gt;: what is left after expenses and allowances. And the first 150,000 baht of net income is exempt. So the question becomes: what salary produces exactly 150,000 baht of net income?">ภาษีไม่เคยคิดจากเงินเดือน แต่คิดจาก <strong>เงินได้สุทธิ</strong> คือเงินที่เหลือหลังหักค่าใช้จ่ายและค่าลดหย่อนแล้ว และเงินได้สุทธิ <strong>150,000 บาทแรกได้รับยกเว้น</strong> คำถามจึงกลายเป็นว่า เงินเดือนเท่าไหร่ถึงจะเหลือเงินได้สุทธิพอดี 150,000</p>
 
     <div class="tbl-wrap">
       <table>
@@ -258,7 +259,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <p data-en="Add one more baht of salary and you cross into the 5% band — but only that one baht is taxed at 5%, not the whole salary. That is the part most people get wrong.">เพิ่มเงินเดือนอีก 1 บาทก็ข้ามเข้าช่วง 5% — แต่<strong>เฉพาะบาทที่เกินเท่านั้น</strong>ที่โดน 5% ไม่ใช่ทั้งเงินเดือน ตรงนี้คือจุดที่คนเข้าใจผิดกันมากที่สุด</p>
+    <p data-en="Add one more baht of salary and you cross into the 5% band, but only that one baht is taxed at 5%, not the whole salary. That is the part most people get wrong.">เพิ่มเงินเดือนอีก 1 บาทก็ข้ามเข้าช่วง 5% แต่<strong>เฉพาะบาทที่เกินเท่านั้น</strong>ที่โดน 5% ไม่ใช่ทั้งเงินเดือน ตรงนี้คือจุดที่คนเข้าใจผิดกันมากที่สุด</p>
 
     <h2 data-en="What you actually pay at each salary">แต่ละเงินเดือนเสียเท่าไหร่จริง ๆ</h2>
     <p data-en="Single, no other deductions, no bonus or overtime. Green rows pay nothing.">คนโสด ไม่มีลดหย่อนอื่น ไม่มีโบนัสหรือโอที แถวสีเขียวคือไม่เสียภาษี</p>
@@ -321,8 +322,8 @@ footer .ft-mail{color:#6ee7b7 !important}
         alt="อินโฟกราฟิกสรุปอัตราภาษีเงินได้บุคคลธรรมดาทุกขั้น พร้อมค่าลดหย่อนที่ควรรู้"
         data-en-alt="Infographic summarising every Thai personal income tax band and the main allowances">
       <figcaption style="text-align:center;font-size:14px;color:#64748b;margin-top:10px"
-        data-en="Save or share this summary — every band, plus the allowances that matter.">
-        บันทึกหรือแชร์ภาพนี้ไว้ดูได้เลย — ครบทุกขั้น พร้อมค่าลดหย่อนที่ควรรู้</figcaption>
+        data-en="Save or share this summary, every band, plus the allowances that matter.">
+        บันทึกหรือแชร์ภาพนี้ไว้ดูได้เลย ครบทุกขั้น พร้อมค่าลดหย่อนที่ควรรู้</figcaption>
     </figure>
 
     <h2 data-en="Things that raise your threshold">อะไรทำให้เกณฑ์สูงขึ้น</h2>
@@ -341,14 +342,14 @@ footer .ft-mail{color:#6ee7b7 !important}
     </div>
     <div class="note">
       <h3>อย่าลืมโบนัสกับโอที</h3>
-      <p style="margin-bottom:0">ภาษีคิดจาก<strong>เงินได้ทั้งปี</strong> ไม่ใช่แค่เงินเดือน — ค่าล่วงเวลา โบนัส ค่าคอมมิชชั่น เบี้ยขยัน ค่าตำแหน่ง นับรวมหมด<br>
+      <p style="margin-bottom:0">ภาษีคิดจาก<strong>เงินได้ทั้งปี</strong> ไม่ใช่แค่เงินเดือน ค่าล่วงเวลา โบนัส ค่าคอมมิชชั่น เบี้ยขยัน ค่าตำแหน่ง นับรวมหมด<br>
       คนที่เงินเดือน 25,000 (ต่ำกว่าเกณฑ์) แต่ได้โบนัส 2 เดือน จะมีเงินได้ทั้งปี 350,000 <strong>ซึ่งเกินเกณฑ์แล้ว</strong></p>
     </div>
 
     <h2 data-en="Three real-life cases">3 กรณีที่เจอบ่อย คิดให้ดูทีละบรรทัด</h2>
     <p>ตารางด้านบนเป็นกรณีคนโสดทำงานครบปี แต่ชีวิตจริงมีครอบครัว มีโบนัส และเข้างานกลางปี ตัวเลขเลยเปลี่ยนไปมาก</p>
 
-    <h3 data-en="Case 1: married with two children, salary 40,000">กรณีที่ 1 — แต่งงาน คู่สมรสไม่มีรายได้ ลูก 2 คน เงินเดือน 40,000</h3>
+    <h3 data-en="Case 1: married with two children, salary 40,000">กรณีที่ 1 แต่งงาน คู่สมรสไม่มีรายได้ ลูก 2 คน เงินเดือน 40,000</h3>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>รายการ</th><th class="num">โสด</th><th class="num">มีครอบครัว</th></tr></thead>
@@ -365,9 +366,9 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <p>เงินเดือนเท่ากัน แต่คนมีครอบครัวเสียภาษี<strong>น้อยกว่าราว 4 เท่า</strong> เกณฑ์เริ่มเสียภาษีของกรณีนี้ขยับขึ้นไปอยู่ราว <strong>36,700 บาท/เดือน</strong> — ข้อสำคัญคือพนักงานต้อง<strong>แจ้งข้อมูลลดหย่อนให้ฝ่ายบุคคล</strong> (แบบ ล.ย.01) ไม่งั้นบริษัทจะหักภาษีแบบคนโสดไปทั้งปี แล้วต้องไปขอคืนเอง</p>
+    <p>เงินเดือนเท่ากัน แต่คนมีครอบครัวเสียภาษี<strong>น้อยกว่าราว 4 เท่า</strong> เกณฑ์เริ่มเสียภาษีของกรณีนี้ขยับขึ้นไปอยู่ราว <strong>36,700 บาท/เดือน</strong> ข้อสำคัญคือพนักงานต้อง<strong>แจ้งข้อมูลลดหย่อนให้ฝ่ายบุคคล</strong> (แบบ ล.ย.01) ไม่งั้นบริษัทจะหักภาษีแบบคนโสดไปทั้งปี แล้วต้องไปขอคืนเอง</p>
 
-    <h3 data-en="Case 2: salary 25,000 plus a two-month bonus">กรณีที่ 2 — เงินเดือน 25,000 ได้โบนัส 2 เดือน</h3>
+    <h3 data-en="Case 2: salary 25,000 plus a two-month bonus">กรณีที่ 2 เงินเดือน 25,000 ได้โบนัส 2 เดือน</h3>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>รายการ</th><th class="num">ไม่มีโบนัส</th><th class="num">มีโบนัส 50,000</th></tr></thead>
@@ -381,7 +382,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     </div>
     <p>เดือนปกติไม่ถูกหักภาษีเลย แต่<strong>เดือนที่ได้โบนัสจะถูกหักรวดเดียว 1,475 บาท</strong> เพราะวิธีที่นายจ้างส่วนใหญ่ใช้คือ คิดภาษีทั้งปีแบบรวมโบนัส ลบด้วยภาษีแบบไม่รวมโบนัส แล้วหักส่วนต่างในเดือนที่จ่าย พนักงานหลายคนตกใจเดือนนั้น แต่ยอดทั้งปีถูกต้องแล้ว</p>
 
-    <h3 data-en="Case 3: started in July, salary 40,000">กรณีที่ 3 — เริ่มงานเดือนกรกฎาคม เงินเดือน 40,000</h3>
+    <h3 data-en="Case 3: started in July, salary 40,000">กรณีที่ 3 เริ่มงานเดือนกรกฎาคม เงินเดือน 40,000</h3>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>รายการ</th><th class="num">จำนวน (บาท)</th></tr></thead>
@@ -395,13 +396,13 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <p>เงินเดือน 40,000 ปกติต้องเสียเดือนละ 704 บาท แต่ปีแรกที่เข้างานกลางปี<strong>ไม่ต้องเสียเลย</strong> ถ้าบริษัทคิดภาษีเหมือนทำงานครบ 12 เดือน จะหักเกินไปรวม 4,225 บาท ซึ่งพนักงานต้องไปขอคืนตอนยื่น ภ.ง.ด.91 — ระบบเงินเดือนที่ดีควร<strong>เฉลี่ยตามจำนวนเดือนที่จ่ายจริงในปีนั้น</strong> ตั้งแต่แรก</p>
+    <p>เงินเดือน 40,000 ปกติต้องเสียเดือนละ 704 บาท แต่ปีแรกที่เข้างานกลางปี<strong>ไม่ต้องเสียเลย</strong> ถ้าบริษัทคิดภาษีเหมือนทำงานครบ 12 เดือน จะหักเกินไปรวม 4,225 บาท ซึ่งพนักงานต้องไปขอคืนตอนยื่น ภ.ง.ด.91 ระบบเงินเดือนที่ดีควร<strong>เฉลี่ยตามจำนวนเดือนที่จ่ายจริงในปีนั้น</strong> ตั้งแต่แรก</p>
     <div class="note">
       <p style="margin-bottom:0"><strong>ถ้าย้ายมาจากที่ทำงานเดิมในปีเดียวกัน</strong> เงินได้จากทั้งสองที่ต้องรวมกันตอนยื่นภาษี กรณีนี้อาจต้องเสียภาษีเพิ่มตอนยื่น เพราะแต่ละบริษัทคิดภาษีจากเงินที่ตัวเองจ่ายเท่านั้น เก็บ 50 ทวิ จากทุกที่ไว้ให้ครบ</p>
     </div>
 
     <h2 data-en="Allowances: how much tax each one really saves">ลดหย่อนแต่ละตัว ประหยัดภาษีได้จริงเท่าไหร่</h2>
-    <p>ลดหย่อน 10,000 บาท ไม่ได้ประหยัดภาษี 10,000 บาท — ประหยัดประมาณ<strong>ลดหย่อน × อัตราภาษีขั้นสูงสุดที่คุณอยู่</strong></p>
+    <p>ลดหย่อน 10,000 บาท ไม่ได้ประหยัดภาษี 10,000 บาท ประหยัดประมาณ<strong>ลดหย่อน × อัตราภาษีขั้นสูงสุดที่คุณอยู่</strong></p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>เงินเดือน (โสด)</th><th class="num">ขั้นภาษีสูงสุด</th><th class="num">ลดหย่อน 10,000 ประหยัดได้</th><th class="num">ลดหย่อน 100,000 ประหยัดได้</th></tr></thead>
@@ -424,7 +425,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <li>ดูสลิปเดือนแรก ๆ ว่าถูกหักภาษีสอดคล้องกับตารางในหน้านี้หรือไม่</li>
       <li>เดือนที่ได้โบนัส ถูกหักเยอะกว่าปกติเป็นเรื่องปกติ</li>
       <li>ขอ 50 ทวิ จากนายจ้างทุกแห่ง (ออกให้ภายใน 15 กุมภาพันธ์ หรือภายใน 1 เดือนหลังลาออก)</li>
-      <li>ยื่น ภ.ง.ด.91 ภายใน 31 มีนาคม แม้ไม่ต้องเสียภาษี — และขอคืนถ้าถูกหักเกิน</li>
+      <li>ยื่น ภ.ง.ด.91 ภายใน 31 มีนาคม แม้ไม่ต้องเสียภาษี และขอคืนถ้าถูกหักเกิน</li>
     </ul>
 
     <h2 data-en="Below the threshold? You still have to file">ไม่ถึงเกณฑ์ก็ยังต้องยื่น</h2>
@@ -438,7 +439,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <p data-en="Filing is also how you claim back withholding tax that was over-deducted during the year — for many people the refund is the whole point.">การยื่นยังเป็นช่องทาง<strong>ขอคืนภาษี</strong>ที่ถูกหัก ณ ที่จ่ายไว้เกินระหว่างปีด้วย สำหรับหลายคนนี่คือเหตุผลหลักที่ต้องยื่น</p>
+    <p data-en="Filing is also how you claim back withholding tax that was over-deducted during the year, for many people the refund is the whole point.">การยื่นยังเป็นช่องทาง<strong>ขอคืนภาษี</strong>ที่ถูกหัก ณ ที่จ่ายไว้เกินระหว่างปีด้วย สำหรับหลายคนนี่คือเหตุผลหลักที่ต้องยื่น</p>
 
     <div class="note" style="background:#0e3a5c;color:#fff;border-color:#0e3a5c">
       <p style="margin:0;color:#fff">🧮 <strong>อยากรู้ตัวเลขของตัวเอง?</strong> ใช้ <a href="/tax-calculator" style="color:#6ee7b7;font-weight:700">เครื่องคำนวณภาษีเงินเดือนฟรี</a> ใส่เงินเดือนและค่าลดหย่อน รู้ผลทันที</p>
@@ -447,8 +448,8 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -473,7 +474,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
     <div class="cta-band">
       <h2 data-en="Let the payroll do the tax">ให้ระบบคิดภาษีให้</h2>
-      <p data-en="eSimPayroll works out the progressive tax for every employee from their actual annual income — salary, overtime, bonus and allowances included — deducts social security and provident fund first, then spreads the tax evenly across the months worked. It produces the 50 Bis certificate and form P.N.D.1 ready to file. 30 days free, no credit card.">eSimPayroll คิดภาษีขั้นบันไดให้พนักงานทุกคนจากเงินได้ทั้งปีจริง — รวมเงินเดือน โอที โบนัส และเงินเพิ่มทุกประเภท หักประกันสังคมกับกองทุนก่อน แล้วเฉลี่ยภาษีตามเดือนที่ทำงาน พร้อมออกหนังสือรับรอง 50 ทวิ และแบบ ภ.ง.ด.1 ให้ยื่นได้เลย ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต</p>
+      <p data-en="eSimPayroll works out the progressive tax for every employee from their actual annual income, salary, overtime, bonus and allowances included, deducts social security and provident fund first, then spreads the tax evenly across the months worked. It produces the 50 Bis certificate and form P.N.D.1 ready to file. 30 days free, no credit card.">eSimPayroll คิดภาษีขั้นบันไดให้พนักงานทุกคนจากเงินได้ทั้งปีจริง รวมเงินเดือน โอที โบนัส และเงินเพิ่มทุกประเภท หักประกันสังคมกับกองทุนก่อน แล้วเฉลี่ยภาษีตามเดือนที่ทำงาน พร้อมออกหนังสือรับรอง 50 ทวิ และแบบ ภ.ง.ด.1 ให้ยื่นได้เลย ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต</p>
       <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
         <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มทดลองฟรี 30 วัน</a>
         <a href="/features" class="btn ghost" data-en="See all features">ดูฟีเจอร์ทั้งหมด</a>
@@ -521,7 +522,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -538,7 +539,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -639,7 +640,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

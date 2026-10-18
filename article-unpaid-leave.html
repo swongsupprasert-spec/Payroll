@@ -73,7 +73,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -92,7 +92,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -197,6 +197,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -225,7 +226,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="meta" data-en="Payroll basics · Updated 17 September 2026 · 7 min read">พื้นฐานเงินเดือน · อัปเดต 17 กันยายน 2569 · อ่าน 7 นาที</div>
     <div class="h1row">
       <span class="h1ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.6" y="4.8" width="16.8" height="15.6" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.9"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M8 2.8v4M16 2.8v4M3.6 10h16.8M9 15.4h6"/></svg></span>
-      <h1 data-en="Leave without pay: how much to deduct, and what to divide by">ลาไม่รับค่าจ้าง (LWOP) หักเงินยังไง — หาร 30 หรือหารวันทำงานจริง</h1>
+      <h1 data-en="Leave without pay: how much to deduct, and what to divide by">ลาไม่รับค่าจ้าง (LWOP) หักเงินยังไง หาร 30 หรือหารวันทำงานจริง</h1>
     </div>
 
     <figure class="hero-img">
@@ -233,9 +234,9 @@ footer .ft-mail{color:#6ee7b7 !important}
            data-en-alt="Calculating the deduction for leave without pay in Thailand" width="1200" height="525" fetchpriority="high" decoding="async">
     </figure>
 
-    <p data-en="&lt;strong&gt;Leave without pay&lt;/strong&gt; looks like the simplest deduction on a Thai payslip — you did not work, so you are not paid. The arithmetic is where it falls apart. Two payroll officers at the same company will often deduct different amounts for the same three days off, because they divide the monthly salary by different numbers."><strong>ลาไม่รับค่าจ้าง</strong> ดูเหมือนรายการหักที่ง่ายที่สุดบนสลิป — ไม่มาทำงานก็ไม่ได้ค่าจ้าง แต่ปัญหาอยู่ที่<strong>ตัวเลข</strong> คนทำเงินเดือนสองคนในบริษัทเดียวกัน หักเงินลา 3 วันเท่ากันได้ตัวเลขไม่เท่ากัน เพราะใช้ตัวหารคนละตัว</p>
+    <p data-en="&lt;strong&gt;Leave without pay&lt;/strong&gt; looks like the simplest deduction on a Thai payslip, you did not work, so you are not paid. The arithmetic is where it falls apart. Two payroll officers at the same company will often deduct different amounts for the same three days off, because they divide the monthly salary by different numbers."><strong>ลาไม่รับค่าจ้าง</strong> ดูเหมือนรายการหักที่ง่ายที่สุดบนสลิป ไม่มาทำงานก็ไม่ได้ค่าจ้าง แต่ปัญหาอยู่ที่<strong>ตัวเลข</strong> คนทำเงินเดือนสองคนในบริษัทเดียวกัน หักเงินลา 3 วันเท่ากันได้ตัวเลขไม่เท่ากัน เพราะใช้ตัวหารคนละตัว</p>
 
-    <h2 data-en="First: is it actually unpaid leave?">ขั้นแรก — มันเป็นลาไม่รับค่าจ้างจริงหรือเปล่า</h2>
+    <h2 data-en="First: is it actually unpaid leave?">ขั้นแรก มันเป็นลาไม่รับค่าจ้างจริงหรือเปล่า</h2>
     <p data-en="Before deducting anything, check whether the employee still has a statutory paid-leave entitlement covering that absence. Deducting from leave the law says must be paid is the most expensive mistake in this whole topic.">ก่อนหักเงิน ต้องเช็คก่อนว่าวันนั้นลูกจ้างยังมี<strong>สิทธิลาที่ได้รับค่าจ้าง</strong>เหลืออยู่ไหม การไปหักเงินจากวันลาที่กฎหมายบังคับให้จ่าย คือความผิดพลาดที่แพงที่สุดในเรื่องนี้</p>
 
     <div class="tbl-wrap">
@@ -247,19 +248,19 @@ footer .ft-mail{color:#6ee7b7 !important}
           <tr><td data-en="Annual leave">ลาพักร้อน</td><td data-en="Yes">✅ ได้</td><td data-en="At least 6 working days per year, after one full year of service">ไม่น้อยกว่า 6 วันทำงาน/ปี หลังทำงานครบ 1 ปี</td></tr>
           <tr><td data-en="Maternity leave">ลาคลอด</td><td data-en="Partly">🟡 บางส่วน</td><td data-en="98 days total; the employer pays wages for 45 of them">รวม 98 วัน โดยนายจ้างจ่ายค่าจ้าง 45 วัน</td></tr>
           <tr><td data-en="Military service leave">ลารับราชการทหาร</td><td data-en="Yes">✅ ได้</td><td data-en="Paid for up to 60 days per year">ได้ค่าจ้างไม่เกิน 60 วัน/ปี</td></tr>
-          <tr><td data-en="Leave without pay (LWOP)">ลาไม่รับค่าจ้าง</td><td data-en="No">❌ ไม่ได้</td><td data-en="Not a statutory entitlement — granted by agreement">ไม่ใช่สิทธิตามกฎหมาย เป็นการตกลงกัน</td></tr>
+          <tr><td data-en="Leave without pay (LWOP)">ลาไม่รับค่าจ้าง</td><td data-en="No">❌ ไม่ได้</td><td data-en="Not a statutory entitlement, granted by agreement">ไม่ใช่สิทธิตามกฎหมาย เป็นการตกลงกัน</td></tr>
           <tr><td data-en="Absence without leave">ขาดงาน</td><td data-en="No">❌ ไม่ได้</td><td data-en="No pay, and may also be a disciplinary matter">ไม่ได้ค่าจ้าง และอาจเป็นเรื่องวินัยด้วย</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="note">
-      <p data-en="&lt;strong&gt;A day only becomes unpaid leave once the paid entitlement is used up&lt;/strong&gt; — or when the absence does not fall under any paid category at all. An employee who has taken 30 days of sick leave already, and is sick again, is on unpaid leave from day 31.">
+      <p data-en="&lt;strong&gt;A day only becomes unpaid leave once the paid entitlement is used up&lt;/strong&gt;: or when the absence does not fall under any paid category at all. An employee who has taken 30 days of sick leave already, and is sick again, is on unpaid leave from day 31.">
         <strong>วันหนึ่งจะกลายเป็นลาไม่รับค่าจ้างก็ต่อเมื่อสิทธิที่ได้ค่าจ้างถูกใช้หมดแล้ว</strong> หรือการหยุดนั้นไม่เข้าข่ายการลาประเภทที่ได้ค่าจ้างเลย เช่น ลูกจ้างที่ลาป่วยครบ 30 วันแล้ว ป่วยอีก วันที่ 31 เป็นต้นไปคือลาไม่รับค่าจ้าง</p>
     </div>
 
-    <h2 data-en="The divisor question: 30, or the actual working days?">คำถามเรื่องตัวหาร — 30 หรือวันทำงานจริง</h2>
-    <p data-en="This is the whole problem. Take a salary of 30,000 baht and three days of unpaid leave in August 2026 — a month with 31 calendar days and, on a five-day week, 21 working days.">นี่คือปัญหาทั้งหมด สมมติเงินเดือน 30,000 บาท ลาไม่รับค่าจ้าง 3 วันในเดือนสิงหาคม 2569 ซึ่งมี 31 วันตามปฏิทิน และถ้าทำงาน 5 วัน/สัปดาห์ จะมีวันทำงาน 21 วัน</p>
+    <h2 data-en="The divisor question: 30, or the actual working days?">คำถามเรื่องตัวหาร 30 หรือวันทำงานจริง</h2>
+    <p data-en="This is the whole problem. Take a salary of 30,000 baht and three days of unpaid leave in August 2026, a month with 31 calendar days and, on a five-day week, 21 working days.">นี่คือปัญหาทั้งหมด สมมติเงินเดือน 30,000 บาท ลาไม่รับค่าจ้าง 3 วันในเดือนสิงหาคม 2569 ซึ่งมี 31 วันตามปฏิทิน และถ้าทำงาน 5 วัน/สัปดาห์ จะมีวันทำงาน 21 วัน</p>
 
     <div class="tbl-wrap">
       <table>
@@ -275,7 +276,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     <p data-en="Same three days, and a spread of nearly 1,400 baht. The 21-day divisor deducts 43% more than the 30-day one.">ลา 3 วันเท่ากัน แต่ตัวเลขห่างกันเกือบ 1,400 บาท การหารด้วย 21 หักมากกว่าการหารด้วย 30 ถึง <strong>43%</strong></p>
 
     <h2 data-en="Why 30 is the safer choice">ทำไม 30 ถึงปลอดภัยกว่า</h2>
-    <p data-en="Thai labour law, when it needs a daily wage for a monthly-paid employee — to work out overtime or holiday pay — treats the month as 30 days, regardless of whether it has 28, 30 or 31. Using the same divisor for deductions keeps one consistent daily wage across the whole payslip.">กฎหมายแรงงานไทย เวลาต้องหาค่าจ้างต่อวันของลูกจ้างรายเดือน เช่น เพื่อคิดค่าล่วงเวลาหรือค่าทำงานวันหยุด จะถือว่า<strong>หนึ่งเดือนเท่ากับ 30 วัน</strong> ไม่ว่าเดือนนั้นจะมี 28 30 หรือ 31 วัน การใช้ตัวหารเดียวกันตอนหักเงินด้วย ทำให้ทั้งสลิปมีค่าจ้างต่อวันตัวเดียวกันตลอด</p>
+    <p data-en="Thai labour law, when it needs a daily wage for a monthly-paid employee, to work out overtime or holiday pay, treats the month as 30 days, regardless of whether it has 28, 30 or 31. Using the same divisor for deductions keeps one consistent daily wage across the whole payslip.">กฎหมายแรงงานไทย เวลาต้องหาค่าจ้างต่อวันของลูกจ้างรายเดือน เช่น เพื่อคิดค่าล่วงเวลาหรือค่าทำงานวันหยุด จะถือว่า<strong>หนึ่งเดือนเท่ากับ 30 วัน</strong> ไม่ว่าเดือนนั้นจะมี 28 30 หรือ 31 วัน การใช้ตัวหารเดียวกันตอนหักเงินด้วย ทำให้ทั้งสลิปมีค่าจ้างต่อวันตัวเดียวกันตลอด</p>
 
     <div class="tbl-wrap">
       <table>
@@ -310,7 +311,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       </table>
     </div>
 
-    <p data-en="Note the social security line. Wages fell to 27,000 but the contribution did not move, because 27,000 is still above the 17,500 ceiling. Had the salary been 18,000 and the deduction 3,000, wages would drop to 15,000 — below the ceiling — and the contribution would fall from 875 to 750.">สังเกตบรรทัดประกันสังคม ค่าจ้างลดเหลือ 27,000 แต่เงินสมทบไม่ขยับ เพราะ 27,000 ยังสูงกว่าเพดาน 17,500 อยู่ดี แต่ถ้าเงินเดือน 18,000 แล้วหัก 3,000 ค่าจ้างจะเหลือ 15,000 ซึ่ง<strong>ต่ำกว่าเพดาน</strong> เงินสมทบจะลดจาก 875 เหลือ 750 บาท</p>
+    <p data-en="Note the social security line. Wages fell to 27,000 but the contribution did not move, because 27,000 is still above the 17,500 ceiling. Had the salary been 18,000 and the deduction 3,000, wages would drop to 15,000, below the ceiling, and the contribution would fall from 875 to 750.">สังเกตบรรทัดประกันสังคม ค่าจ้างลดเหลือ 27,000 แต่เงินสมทบไม่ขยับ เพราะ 27,000 ยังสูงกว่าเพดาน 17,500 อยู่ดี แต่ถ้าเงินเดือน 18,000 แล้วหัก 3,000 ค่าจ้างจะเหลือ 15,000 ซึ่ง<strong>ต่ำกว่าเพดาน</strong> เงินสมทบจะลดจาก 875 เหลือ 750 บาท</p>
 
     <h2 data-en="What it changes downstream">อะไรเปลี่ยนตามบ้าง</h2>
     <div class="tbl-wrap">
@@ -320,15 +321,15 @@ footer .ft-mail{color:#6ee7b7 !important}
           <tr><td data-en="Social security">ประกันสังคม</td><td data-en="Calculated on wages actually paid. The base sits between 1,650 and 17,500 baht, so contributions only change if pay falls below the ceiling.">คิดจากค่าจ้างที่จ่ายจริง ฐานอยู่ระหว่าง 1,650–17,500 บาท เงินสมทบจึงเปลี่ยนก็ต่อเมื่อค่าจ้างตกลงมาต่ำกว่าเพดาน</td></tr>
           <tr><td data-en="Withholding tax">ภาษีหัก ณ ที่จ่าย</td><td data-en="Falls, because taxable income for the month is lower. Recalculate rather than carrying last month's figure forward.">ลดลง เพราะเงินได้ของเดือนนั้นน้อยลง ต้องคำนวณใหม่ ไม่ใช่ใช้ตัวเลขเดือนก่อน</td></tr>
           <tr><td data-en="Employee Welfare Fund">กองทุนสงเคราะห์ลูกจ้าง</td><td data-en="Also based on wages paid, so it moves with the lower figure.">คิดจากค่าจ้างที่จ่ายเช่นกัน จึงลดลงตาม</td></tr>
-          <tr><td data-en="Provident fund">กองทุนสำรองเลี้ยงชีพ</td><td data-en="Follows whatever the fund rules define as the contribution base — usually the wage actually paid.">เป็นไปตามที่ข้อบังคับกองทุนกำหนดว่าใช้ฐานอะไร โดยทั่วไปคือค่าจ้างที่จ่ายจริง</td></tr>
-          <tr><td data-en="Length of service">อายุงาน</td><td data-en="Whether unpaid days count towards service — and therefore towards severance and annual leave — should be stated explicitly in the work rules or the leave agreement.">วันที่ลาไม่รับค่าจ้างจะนับเป็นอายุงานหรือไม่ ซึ่งมีผลต่อค่าชดเชยและวันลาพักร้อน ควรระบุให้ชัดในข้อบังคับหรือข้อตกลงการลา</td></tr>
+          <tr><td data-en="Provident fund">กองทุนสำรองเลี้ยงชีพ</td><td data-en="Follows whatever the fund rules define as the contribution base, usually the wage actually paid.">เป็นไปตามที่ข้อบังคับกองทุนกำหนดว่าใช้ฐานอะไร โดยทั่วไปคือค่าจ้างที่จ่ายจริง</td></tr>
+          <tr><td data-en="Length of service">อายุงาน</td><td data-en="Whether unpaid days count towards service, and therefore towards severance and annual leave, should be stated explicitly in the work rules or the leave agreement.">วันที่ลาไม่รับค่าจ้างจะนับเป็นอายุงานหรือไม่ ซึ่งมีผลต่อค่าชดเชยและวันลาพักร้อน ควรระบุให้ชัดในข้อบังคับหรือข้อตกลงการลา</td></tr>
         </tbody>
       </table>
     </div>
 
-    <h2 data-en="Daily-paid employees: do not deduct twice">ลูกจ้างรายวัน — อย่าหักซ้ำ</h2>
+    <h2 data-en="Daily-paid employees: do not deduct twice">ลูกจ้างรายวัน อย่าหักซ้ำ</h2>
     <p data-en="A daily-paid employee is paid for the days actually worked. A day not worked simply produces no wage for that day. Running an unpaid-leave deduction on top of that deducts the same day twice, and the employee ends up paid less than the law allows.">ลูกจ้างรายวันได้ค่าจ้างตามจำนวนวันที่มาทำงานจริง วันที่ไม่มาก็ไม่มีค่าจ้างสำหรับวันนั้นตั้งแต่ต้นอยู่แล้ว ถ้าไปหักเงินลาไม่รับค่าจ้างซ้ำอีก เท่ากับ<strong>หักวันเดียวกันสองครั้ง</strong> ลูกจ้างจะได้ค่าจ้างน้อยกว่าที่ควรได้</p>
-    <p data-en="Keep the leave record anyway — it still matters for attendance, for the diligence allowance, and for showing why the day count is lower that month.">แต่ยังควร<strong>บันทึกใบลาไว้</strong> เพราะมีผลกับสถิติการมาทำงาน เบี้ยขยัน และใช้อธิบายว่าทำไมเดือนนั้นวันทำงานถึงน้อยลง</p>
+    <p data-en="Keep the leave record anyway, it still matters for attendance, for the diligence allowance, and for showing why the day count is lower that month.">แต่ยังควร<strong>บันทึกใบลาไว้</strong> เพราะมีผลกับสถิติการมาทำงาน เบี้ยขยัน และใช้อธิบายว่าทำไมเดือนนั้นวันทำงานถึงน้อยลง</p>
 
     <h2 data-en="Half days and hours">ลาครึ่งวันและลาเป็นชั่วโมง</h2>
     <p data-en="Deduct proportionally. Half a day is 0.5. For hours, divide the hours taken by the normal working hours in a day.">หักตามสัดส่วน ลาครึ่งวันคือ 0.5 วัน ถ้าลาเป็นชั่วโมง ให้เอาจำนวนชั่วโมงที่ลาหารด้วยชั่วโมงทำงานปกติต่อวัน</p>
@@ -342,13 +343,13 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <p data-en="Set a minimum leave unit in the work rules — half a day, or one hour — so the same absence is always recorded the same way.">ควรกำหนด<strong>หน่วยการลาขั้นต่ำ</strong>ไว้ในข้อบังคับ เช่น ครึ่งวัน หรือ 1 ชั่วโมง เพื่อให้การหยุดแบบเดียวกันถูกบันทึกเหมือนกันทุกครั้ง</p>
+    <p data-en="Set a minimum leave unit in the work rules, half a day, or one hour, so the same absence is always recorded the same way.">ควรกำหนด<strong>หน่วยการลาขั้นต่ำ</strong>ไว้ในข้อบังคับ เช่น ครึ่งวัน หรือ 1 ชั่วโมง เพื่อให้การหยุดแบบเดียวกันถูกบันทึกเหมือนกันทุกครั้ง</p>
 
     <h2 data-en="Leave that crosses two pay periods">ใบลาที่คร่อมสองงวด</h2>
-    <p data-en="An employee on unpaid leave from 30 July to 2 August has four days off, but they do not all belong to one payslip. Two days fall in the July period and two in August. Deducting all four from August overstates the deduction and understates July.">ลูกจ้างลาไม่รับค่าจ้างตั้งแต่ 30 กรกฎาคม ถึง 2 สิงหาคม รวม 4 วัน แต่ไม่ได้อยู่ในสลิปใบเดียวกันทั้งหมด — <strong>2 วันอยู่งวดกรกฎาคม อีก 2 วันอยู่งวดสิงหาคม</strong> ถ้าหักทั้ง 4 วันในเดือนสิงหาคม จะหักเกินในสิงหาคมและหักขาดในกรกฎาคม</p>
+    <p data-en="An employee on unpaid leave from 30 July to 2 August has four days off, but they do not all belong to one payslip. Two days fall in the July period and two in August. Deducting all four from August overstates the deduction and understates July.">ลูกจ้างลาไม่รับค่าจ้างตั้งแต่ 30 กรกฎาคม ถึง 2 สิงหาคม รวม 4 วัน แต่ไม่ได้อยู่ในสลิปใบเดียวกันทั้งหมด <strong>2 วันอยู่งวดกรกฎาคม อีก 2 วันอยู่งวดสิงหาคม</strong> ถ้าหักทั้ง 4 วันในเดือนสิงหาคม จะหักเกินในสิงหาคมและหักขาดในกรกฎาคม</p>
     <p data-en="If the company uses a cut-off date that is not the end of the month, the split follows the cut-off, not the calendar month.">ถ้าบริษัทใช้<strong>วันตัดรอบ</strong>ที่ไม่ใช่สิ้นเดือน การแบ่งวันต้องยึดวันตัดรอบ ไม่ใช่เดือนตามปฏิทิน</p>
 
-    <h2 data-en="Before you deduct — a short checklist">เช็คก่อนหัก</h2>
+    <h2 data-en="Before you deduct, a short checklist">เช็คก่อนหัก</h2>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th data-en="Check">ตรวจ</th><th data-en="Why it matters">ทำไมต้องตรวจ</th></tr></thead>
@@ -370,7 +371,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
     <div class="cta-band">
       <h2 data-en="Let the leave record do the deduction">ให้ใบลาหักเงินให้เอง</h2>
-      <p data-en="In eSimPayroll, recording a leave-without-pay request deducts it from that period automatically — salary ÷ 30 × days, split correctly across a cut-off date, with daily-paid staff excluded so nobody is deducted twice. Social security and withholding tax recalculate on the wage actually paid. 30 days free, no credit card.">ใน eSimPayroll แค่บันทึกใบลาแบบไม่รับค่าจ้าง ระบบจะหักเงินในงวดนั้นให้อัตโนมัติ — เงินเดือน ÷ 30 × จำนวนวัน แบ่งวันตามวันตัดรอบให้ถูกต้อง และข้ามลูกจ้างรายวันเพื่อไม่ให้หักซ้ำ ประกันสังคมและภาษีคิดใหม่จากค่าจ้างที่จ่ายจริง ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต</p>
+      <p data-en="In eSimPayroll, recording a leave-without-pay request deducts it from that period automatically, salary ÷ 30 × days, split correctly across a cut-off date, with daily-paid staff excluded so nobody is deducted twice. Social security and withholding tax recalculate on the wage actually paid. 30 days free, no credit card.">ใน eSimPayroll แค่บันทึกใบลาแบบไม่รับค่าจ้าง ระบบจะหักเงินในงวดนั้นให้อัตโนมัติ เงินเดือน ÷ 30 × จำนวนวัน แบ่งวันตามวันตัดรอบให้ถูกต้อง และข้ามลูกจ้างรายวันเพื่อไม่ให้หักซ้ำ ประกันสังคมและภาษีคิดใหม่จากค่าจ้างที่จ่ายจริง ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต</p>
       <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
         <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มทดลองฟรี 30 วัน</a>
         <a href="/features" class="btn ghost" data-en="See all features">ดูฟีเจอร์ทั้งหมด</a>
@@ -380,8 +381,8 @@ footer .ft-mail{color:#6ee7b7 !important}
   <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -427,7 +428,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -444,7 +445,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -545,7 +546,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

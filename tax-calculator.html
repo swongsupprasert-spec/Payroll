@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>คำนวณภาษีเงินเดือน ฟรี — เครื่องคิดภาษีเงินได้บุคคลธรรมดา ปี 2569 | eSimPayroll</title>
+<title>คำนวณภาษีเงินเดือน ฟรี เครื่องคิดภาษีเงินได้บุคคลธรรมดา ปี 2569 | eSimPayroll</title>
 <meta name="description" content="เครื่องคำนวณภาษีเงินเดือนออนไลน์ฟรี ใส่เงินเดือน โบนัส และค่าลดหย่อน รู้ทันทีว่าเสียภาษีปีละเท่าไหร่ ถูกหัก ณ ที่จ่ายเดือนละเท่าไหร่ พร้อมตารางขั้นบันไดภาษีปี 2569 ไม่ต้องสมัคร">
 <meta name="keywords" content="คำนวณภาษีเงินเดือน,โปรแกรมคำนวณภาษี,คำนวณภาษีเงินได้บุคคลธรรมดา,คำนวณภาษี 2569,เครื่องคิดภาษี,ภาษีหัก ณ ที่จ่าย">
 <meta name="robots" content="index, follow">
@@ -29,7 +29,7 @@
   .more-h{font-size:21px;margin-bottom:18px}
   @media(max-width:760px){article h1{font-size:23px}}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -49,7 +49,7 @@
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
   .hero-img.full{aspect-ratio:16/9 !important}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -157,6 +157,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/tax-calculator"-->
@@ -217,7 +218,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         <div class="tc-big tc-m"><span>หัก ณ ที่จ่าย ประมาณ</span><strong id="rMonth">0</strong><em>บาท/เดือน</em></div>
         <div class="tc-rate">อัตราภาษีที่แท้จริง <strong id="rEff">0%</strong> ของเงินได้ · ขั้นสูงสุด <strong id="rTop">ยกเว้น</strong></div>
         <table class="tc-tbl"><tbody id="rBreak"></tbody></table>
-        <a href="/app#signup" class="btn primary tc-cta">คิดภาษีทั้งบริษัทอัตโนมัติ — ทดลองฟรี 30 วัน</a>
+        <a href="/app#signup" class="btn primary tc-cta">คิดภาษีทั้งบริษัทอัตโนมัติ ทดลองฟรี 30 วัน</a>
       </div>
     </div>
 
@@ -244,14 +245,14 @@ footer .ft-mail{color:#6ee7b7 !important}
       </tbody>
     </table></div>
     <div class="note">
-      <p style="margin-bottom:0"><strong>ใช้เพื่อประมาณการ</strong> — ยังไม่รวมค่าลดหย่อนบางประเภท เช่น บุตรคนที่ 2 ที่เกิดตั้งแต่ปี 2561 กองทุน SSF/RMF หรือเงินบริจาค ซึ่งมีเงื่อนไขเพิ่มเติม ค่าลดหย่อนเหล่านี้ใส่รวมในช่อง "ลดหย่อนอื่น ๆ" ได้ ตรวจสอบเกณฑ์ล่าสุดกับกรมสรรพากรก่อนยื่นจริง ยอดหักรายเดือนจริงขึ้นกับวิธีที่นายจ้างใช้ โดยเฉพาะเดือนที่ได้โบนัส</p>
+      <p style="margin-bottom:0"><strong>ใช้เพื่อประมาณการ</strong> ยังไม่รวมค่าลดหย่อนบางประเภท เช่น บุตรคนที่ 2 ที่เกิดตั้งแต่ปี 2561 กองทุน SSF/RMF หรือเงินบริจาค ซึ่งมีเงื่อนไขเพิ่มเติม ค่าลดหย่อนเหล่านี้ใส่รวมในช่อง "ลดหย่อนอื่น ๆ" ได้ ตรวจสอบเกณฑ์ล่าสุดกับกรมสรรพากรก่อนยื่นจริง ยอดหักรายเดือนจริงขึ้นกับวิธีที่นายจ้างใช้ โดยเฉพาะเดือนที่ได้โบนัส</p>
     </div>
 
     <p>อ่านเพิ่ม: <a href="/article-salary-tax-threshold">เงินเดือนเท่าไหร่ถึงเสียภาษี</a> · <a href="/article-withholding-tax">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</a> · <a href="/article-50tawi-pnd1">50 ทวิ และ ภ.ง.ด.1</a></p>
 
     <div class="note sources">
       <h3>แหล่งอ้างอิงทางการ</h3>
-      <ul style="margin:6px 0 0 18px"><li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและค่าลดหย่อน</a></li></ul>
+      <ul style="margin:6px 0 0 18px"><li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและค่าลดหย่อน</a></li></ul>
     </div>
 
     <h2>คำถามที่พบบ่อย</h2>
@@ -356,7 +357,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <a href="/article-welfare-fund" class="card">
         <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
         <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
-          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-withholding-tax" class="card">
@@ -383,7 +384,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -400,7 +401,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -501,7 +502,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

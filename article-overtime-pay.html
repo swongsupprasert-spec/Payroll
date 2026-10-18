@@ -193,7 +193,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -212,7 +212,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -296,6 +296,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -332,9 +333,9 @@ footer .ft-mail{color:#6ee7b7 !important}
            data-en-alt="How overtime pay is calculated under Thai labour law" width="1200" height="525" fetchpriority="high" decoding="async">
     </figure>
 
-    <p data-en="&lt;strong&gt;Overtime pay&lt;/strong&gt; goes wrong more often than any other line on a Thai payslip — not because the rates are complicated, but because the hourly rate underneath them is worked out inconsistently. This page covers both: how to find the hourly rate, and which multiplier applies when."><strong>ค่าล่วงเวลา</strong> เป็นรายการที่คิดผิดบ่อยที่สุดบนสลิปเงินเดือนไทย ไม่ใช่เพราะอัตราซับซ้อน แต่เพราะ<strong>ค่าจ้างต่อชั่วโมงที่เอามาคูณ</strong> แต่ละที่คิดไม่เหมือนกัน หน้านี้อธิบายทั้งสองส่วน — หาค่าจ้างต่อชั่วโมงยังไง และอัตราไหนใช้เมื่อไหร่</p>
+    <p data-en="&lt;strong&gt;Overtime pay&lt;/strong&gt; goes wrong more often than any other line on a Thai payslip, not because the rates are complicated, but because the hourly rate underneath them is worked out inconsistently. This page covers both: how to find the hourly rate, and which multiplier applies when."><strong>ค่าล่วงเวลา</strong> เป็นรายการที่คิดผิดบ่อยที่สุดบนสลิปเงินเดือนไทย ไม่ใช่เพราะอัตราซับซ้อน แต่เพราะ<strong>ค่าจ้างต่อชั่วโมงที่เอามาคูณ</strong> แต่ละที่คิดไม่เหมือนกัน หน้านี้อธิบายทั้งสองส่วน หาค่าจ้างต่อชั่วโมงยังไง และอัตราไหนใช้เมื่อไหร่</p>
 
-    <h2 data-en="Step 1: find the hourly rate">ขั้นที่ 1 — หาค่าจ้างต่อชั่วโมง</h2>
+    <h2 data-en="Step 1: find the hourly rate">ขั้นที่ 1 หาค่าจ้างต่อชั่วโมง</h2>
     <p data-en="This is where most mistakes start. The rate depends on how the employee is paid.">จุดนี้คือต้นตอของความผิดพลาดส่วนใหญ่ วิธีคิดขึ้นกับว่าลูกจ้างได้ค่าจ้างแบบไหน</p>
 
     <div class="cmpwrap">
@@ -352,7 +353,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         <strong>ทำไมต้องหาร 30 ไม่ใช่จำนวนวันจริงของเดือน?</strong> สำหรับลูกจ้างรายเดือน กฎหมายให้ถือว่าเดือนหนึ่งมี 30 วันเสมอ ไม่ว่าเดือนนั้นจะมี 28, 30 หรือ 31 วัน ถ้าใช้จำนวนวันจริงจะได้ค่าจ้างต่อชั่วโมงไม่เท่ากันทุกเดือน ซึ่งเป็นสาเหตุที่ค่า OT คิดออกมาไม่ตรงกัน</p>
     </div>
 
-    <h2 data-en="Step 2: pick the right multiplier">ขั้นที่ 2 — เลือกอัตราให้ถูก</h2>
+    <h2 data-en="Step 2: pick the right multiplier">ขั้นที่ 2 เลือกอัตราให้ถูก</h2>
     <p data-en="Thai labour law sets three situations with different rates. The one that trips people up is the difference between working on a holiday and working overtime on a holiday.">กฎหมายแรงงานไทยแบ่งเป็น 3 สถานการณ์ ที่คนสับสนที่สุดคือความต่างระหว่าง<strong>ทำงานในวันหยุด</strong> กับ<strong>ทำงานล่วงเวลาในวันหยุด</strong></p>
 
     <div class="cmpwrap">
@@ -395,15 +396,15 @@ footer .ft-mail{color:#6ee7b7 !important}
 
     
     <h2 data-en="When one month has several kinds of overtime">เดือนเดียวมี OT หลายแบบ คิดยังไง</h2>
-    <p data-en="In practice one person often has more than one kind of overtime in the same month. &lt;strong&gt;Each rate must be calculated separately&lt;/strong&gt; — never add all the hours together and multiply by 1.5, or you will underpay.">ในทางปฏิบัติ พนักงานคนเดียวมักมี OT มากกว่าหนึ่งประเภทในเดือนเดียวกัน <strong>ต้องแยกคิดทีละอัตรา</strong> ห้ามรวมชั่วโมงทั้งหมดแล้วคูณ 1.5 เท่าทีเดียว เพราะจะจ่ายขาด</p>
+    <p data-en="In practice one person often has more than one kind of overtime in the same month. &lt;strong&gt;Each rate must be calculated separately&lt;/strong&gt;: never add all the hours together and multiply by 1.5, or you will underpay.">ในทางปฏิบัติ พนักงานคนเดียวมักมี OT มากกว่าหนึ่งประเภทในเดือนเดียวกัน <strong>ต้องแยกคิดทีละอัตรา</strong> ห้ามรวมชั่วโมงทั้งหมดแล้วคูณ 1.5 เท่าทีเดียว เพราะจะจ่ายขาด</p>
     <div style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:16px 0;color:#1f2937">
-      <strong data-en="Example — salary 20,000 baht (83.33 baht per hour)">ตัวอย่าง — เงินเดือน 20,000 บาท (ค่าจ้าง 83.33 บาท/ชั่วโมง)</strong><br>
+      <strong data-en="Example, salary 20,000 baht (83.33 baht per hour)">ตัวอย่าง เงินเดือน 20,000 บาท (ค่าจ้าง 83.33 บาท/ชั่วโมง)</strong><br>
       <span data-en="Weekday OT 10 hours × 1.5 = &lt;strong&gt;1,250.00 baht&lt;/strong&gt;&lt;br&gt;Holiday work 8 hours × 1 = &lt;strong&gt;666.67 baht&lt;/strong&gt;&lt;br&gt;Holiday OT 4 hours × 3 = &lt;strong&gt;1,000.00 baht&lt;/strong&gt;&lt;br&gt;Month total = &lt;strong&gt;2,916.67 baht&lt;/strong&gt;">OT วันธรรมดา 10 ชั่วโมง × 1.5 = <strong>1,250.00 บาท</strong><br>ทำงานวันหยุด 8 ชั่วโมง × 1 = <strong>666.67 บาท</strong><br>OT ในวันหยุด 4 ชั่วโมง × 3 = <strong>1,000.00 บาท</strong><br>รวมทั้งเดือน = <strong>2,916.67 บาท</strong></span>
     </div>
-    <p data-en="Lumping all 22 hours together at 1.5x gives only 2,750 baht — &lt;strong&gt;166.67 baht short&lt;/strong&gt;, for one employee in one month.">ถ้าเผลอรวม 22 ชั่วโมงแล้วคูณ 1.5 จะได้เพียง 2,750 บาท <strong>จ่ายขาดไป 166.67 บาท</strong> เฉพาะพนักงานคนเดียวในเดือนเดียว</p>
+    <p data-en="Lumping all 22 hours together at 1.5x gives only 2,750 baht, &lt;strong&gt;166.67 baht short&lt;/strong&gt;, for one employee in one month.">ถ้าเผลอรวม 22 ชั่วโมงแล้วคูณ 1.5 จะได้เพียง 2,750 บาท <strong>จ่ายขาดไป 166.67 บาท</strong> เฉพาะพนักงานคนเดียวในเดือนเดียว</p>
     <div style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:16px 0;color:#1f2937">
-      <strong data-en="Daily-wage employee — 400 baht a day">ลูกจ้างรายวัน — ค่าแรง 400 บาทต่อวัน</strong><br>
-      <span data-en="Hourly rate = 400 ÷ 8 = &lt;strong&gt;50 baht&lt;/strong&gt;&lt;br&gt;Weekday OT 5 hours × 1.5 = &lt;strong&gt;375 baht&lt;/strong&gt;&lt;br&gt;Holiday work 8 hours × 2 = &lt;strong&gt;800 baht&lt;/strong&gt; — daily staff are not already paid for holidays, so the rate is 2x, not 1x.">ค่าจ้างต่อชั่วโมง = 400 ÷ 8 = <strong>50 บาท</strong><br>OT วันธรรมดา 5 ชั่วโมง × 1.5 = <strong>375 บาท</strong><br>ทำงานวันหยุด 8 ชั่วโมง × 2 = <strong>800 บาท</strong> (รายวันไม่ได้ค่าจ้างวันหยุดอยู่แล้ว จึงได้ 2 เท่า ไม่ใช่ 1 เท่า)</span>
+      <strong data-en="Daily-wage employee, 400 baht a day">ลูกจ้างรายวัน ค่าแรง 400 บาทต่อวัน</strong><br>
+      <span data-en="Hourly rate = 400 ÷ 8 = &lt;strong&gt;50 baht&lt;/strong&gt;&lt;br&gt;Weekday OT 5 hours × 1.5 = &lt;strong&gt;375 baht&lt;/strong&gt;&lt;br&gt;Holiday work 8 hours × 2 = &lt;strong&gt;800 baht&lt;/strong&gt;: daily staff are not already paid for holidays, so the rate is 2x, not 1x.">ค่าจ้างต่อชั่วโมง = 400 ÷ 8 = <strong>50 บาท</strong><br>OT วันธรรมดา 5 ชั่วโมง × 1.5 = <strong>375 บาท</strong><br>ทำงานวันหยุด 8 ชั่วโมง × 2 = <strong>800 บาท</strong> (รายวันไม่ได้ค่าจ้างวันหยุดอยู่แล้ว จึงได้ 2 เท่า ไม่ใช่ 1 เท่า)</span>
     </div>
     <h2 data-en="The 36-hour weekly cap">เพดาน 36 ชั่วโมงต่อสัปดาห์</h2>
     <p data-en="Overtime hours combined with hours worked on holidays must not exceed 36 hours in a week. Overtime also requires the employee's consent beforehand, except for certain kinds of work the law specifies.">ชั่วโมงล่วงเวลารวมกับชั่วโมงทำงานในวันหยุด <strong>ต้องไม่เกิน 36 ชั่วโมงต่อสัปดาห์</strong> และการให้ทำล่วงเวลาต้อง<strong>ได้รับความยินยอมจากลูกจ้างก่อน</strong> ยกเว้นงานบางลักษณะที่กฎหมายกำหนดไว้เฉพาะ</p>
@@ -411,13 +412,13 @@ footer .ft-mail{color:#6ee7b7 !important}
 
     <h2 data-en="Overtime and tax">ค่าล่วงเวลากับภาษี</h2>
     <p data-en="Overtime is taxable income. It goes into the same annual figure used to work out withholding tax, and must appear as its own line on the payslip so the employee can check it.">ค่าล่วงเวลาเป็น<strong>เงินได้ที่ต้องเสียภาษี</strong> ต้องนำไปรวมในเงินได้ทั้งปีที่ใช้คำนวณภาษีหัก ณ ที่จ่าย และต้องแสดงเป็น<strong>รายการแยกบรรทัด</strong>บนสลิป เพื่อให้พนักงานตรวจสอบได้</p>
-    <p data-en="A common mistake is treating overtime as a bonus paid outside payroll. It is wages, and leaving it out of the tax base means the withholding is short — which surfaces at year end when the 50 Bis certificate does not match.">ข้อผิดพลาดที่พบบ่อยคือจ่าย OT แยกนอกระบบเงินเดือนเหมือนเป็นเงินพิเศษ — <strong>OT คือค่าจ้าง</strong> ถ้าไม่รวมในฐานภาษี ภาษีที่หักจะขาด แล้วจะไปโผล่ตอนสิ้นปีเมื่อ 50 ทวิ ไม่ตรงกับที่จ่ายจริง</p>
+    <p data-en="A common mistake is treating overtime as a bonus paid outside payroll. It is wages, and leaving it out of the tax base means the withholding is short, which surfaces at year end when the 50 Bis certificate does not match.">ข้อผิดพลาดที่พบบ่อยคือจ่าย OT แยกนอกระบบเงินเดือนเหมือนเป็นเงินพิเศษ, <strong>OT คือค่าจ้าง</strong> ถ้าไม่รวมในฐานภาษี ภาษีที่หักจะขาด แล้วจะไปโผล่ตอนสิ้นปีเมื่อ 50 ทวิ ไม่ตรงกับที่จ่ายจริง</p>
 
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
-        <li><a href="https://www.krisdika.go.th" target="_blank" rel="noopener">สำนักงานคณะกรรมการกฤษฎีกา — ตัวบทกฎหมายฉบับปัจจุบัน</a></li>
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.krisdika.go.th" target="_blank" rel="noopener">สำนักงานคณะกรรมการกฤษฎีกา ตัวบทกฎหมายฉบับปัจจุบัน</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -427,16 +428,16 @@ footer .ft-mail{color:#6ee7b7 !important}
       <details><summary data-en="How is overtime calculated?">ค่าล่วงเวลาคิดยังไง</summary>
         <p data-en="Find the hourly rate first, then multiply by the statutory rate and the hours worked. Monthly staff: salary ÷ 30 ÷ normal hours per day. Daily staff: daily wage ÷ normal hours per day. Then apply 1.5x, 2x or 3x depending on the situation.">หาค่าจ้างต่อชั่วโมงก่อน แล้วคูณอัตราตามกฎหมายและจำนวนชั่วโมง รายเดือนใช้ เงินเดือน ÷ 30 ÷ ชั่วโมงทำงานต่อวัน ส่วนรายวันใช้ ค่าจ้างต่อวัน ÷ ชั่วโมงทำงานต่อวัน จากนั้นคูณ 1.5, 2 หรือ 3 เท่าตามสถานการณ์</p></details>
       <details><summary data-en="When do 1.5x, 2x and 3x apply?">อัตรา 1.5 เท่า 2 เท่า 3 เท่า ใช้ต่างกันเมื่อไหร่</summary>
-        <p data-en="1.5x for overtime on an ordinary working day. 2x when an employee who is not paid for holidays — typically daily-wage staff — works on a holiday; monthly staff already paid for the holiday receive 1x extra. 3x for overtime worked on a holiday, meaning hours beyond the normal working hours of that day.">1.5 เท่า สำหรับล่วงเวลาในวันทำงานธรรมดา · 2 เท่า สำหรับลูกจ้างที่ไม่ได้รับค่าจ้างวันหยุด เช่นรายวัน มาทำงานในวันหยุด ส่วนรายเดือนที่ได้ค่าจ้างวันหยุดอยู่แล้วได้เพิ่มอีก 1 เท่า · 3 เท่า สำหรับล่วงเวลาในวันหยุด คือทำเกินเวลาทำงานปกติของวันนั้น</p></details>
+        <p data-en="1.5x for overtime on an ordinary working day. 2x when an employee who is not paid for holidays, typically daily-wage staff, works on a holiday; monthly staff already paid for the holiday receive 1x extra. 3x for overtime worked on a holiday, meaning hours beyond the normal working hours of that day.">1.5 เท่า สำหรับล่วงเวลาในวันทำงานธรรมดา · 2 เท่า สำหรับลูกจ้างที่ไม่ได้รับค่าจ้างวันหยุด เช่นรายวัน มาทำงานในวันหยุด ส่วนรายเดือนที่ได้ค่าจ้างวันหยุดอยู่แล้วได้เพิ่มอีก 1 เท่า · 3 เท่า สำหรับล่วงเวลาในวันหยุด คือทำเกินเวลาทำงานปกติของวันนั้น</p></details>
       <details><summary data-en="How do I get the hourly rate for monthly staff?">พนักงานรายเดือนคิดค่าจ้างต่อชั่วโมงยังไง</summary>
         <p data-en="Salary ÷ 30 gives the daily wage, then ÷ normal hours per day. On 15,000 baht with an eight-hour day: 15,000 ÷ 30 = 500, then 500 ÷ 8 = 62.50 baht an hour. One hour of overtime on a working day is 62.50 × 1.5 = 93.75 baht.">เงินเดือน ÷ 30 ได้ค่าจ้างต่อวัน แล้ว ÷ ชั่วโมงทำงานต่อวัน เช่น เงินเดือน 15,000 ทำงานวันละ 8 ชั่วโมง จะได้ 15,000 ÷ 30 = 500 แล้ว 500 ÷ 8 = 62.50 บาทต่อชั่วโมง ทำ OT 1 ชั่วโมงในวันทำงานได้ 62.50 × 1.5 = 93.75 บาท</p></details>
       <details><summary data-en="Is there a limit on overtime hours?">ทำ OT ได้สูงสุดกี่ชั่วโมง</summary>
         <p data-en="Overtime plus hours worked on holidays must not exceed 36 hours per week, and overtime requires the employee's prior consent except for specific kinds of work. Keep a record of both the consent and the hours.">ล่วงเวลารวมกับชั่วโมงทำงานในวันหยุดต้องไม่เกิน 36 ชั่วโมงต่อสัปดาห์ และต้องได้รับความยินยอมจากลูกจ้างก่อน ยกเว้นงานบางลักษณะที่กฎหมายกำหนด ควรเก็บทั้งบันทึกความยินยอมและบันทึกชั่วโมงไว้</p></details>
     
 <details><summary data-en="Does overtime count towards the social security base?">OT ต้องเอาไปคิดประกันสังคมด้วยไหม</summary>
-<p data-en="No. Overtime is not a regular wage, so it is excluded from the social security base — the same as bonuses.">ไม่ต้อง ค่าล่วงเวลาไม่ใช่ค่าจ้างประจำ จึงไม่นำมารวมในฐานคำนวณประกันสังคม เช่นเดียวกับโบนัส</p></details>
+<p data-en="No. Overtime is not a regular wage, so it is excluded from the social security base, the same as bonuses.">ไม่ต้อง ค่าล่วงเวลาไม่ใช่ค่าจ้างประจำ จึงไม่นำมารวมในฐานคำนวณประกันสังคม เช่นเดียวกับโบนัส</p></details>
 <details><summary data-en="Is overtime taxable?">OT ต้องเสียภาษีไหม</summary>
-<p data-en="Yes. Overtime is taxable income and goes into the withholding tax calculation like any other earnings — unlike social security, which excludes it.">ต้องเสีย ค่าล่วงเวลาถือเป็นเงินได้ของลูกจ้าง ต้องนำไปรวมคำนวณภาษีหัก ณ ที่จ่ายเหมือนเงินได้อื่น ต่างจากประกันสังคมที่ไม่นำมารวม</p></details>
+<p data-en="Yes. Overtime is taxable income and goes into the withholding tax calculation like any other earnings, unlike social security, which excludes it.">ต้องเสีย ค่าล่วงเวลาถือเป็นเงินได้ของลูกจ้าง ต้องนำไปรวมคำนวณภาษีหัก ณ ที่จ่ายเหมือนเงินได้อื่น ต่างจากประกันสังคมที่ไม่นำมารวม</p></details>
 <details><summary data-en="Why divide by 30 when the month has 31 days?">ทำไมหาร 30 ทั้งที่เดือนนั้นมี 31 วัน</summary>
 <p data-en="For monthly-paid staff the divisor is fixed at 30 regardless of whether the month has 28, 29, 30 or 31 days, so the hourly rate stays the same every month.">กฎหมายกำหนดให้ใช้ตัวหาร 30 คงที่สำหรับลูกจ้างรายเดือน ไม่ว่าเดือนนั้นจะมี 28 29 30 หรือ 31 วัน เพื่อให้อัตราต่อชั่วโมงเท่ากันทุกเดือน</p></details>
 <details><summary data-en="If an employee volunteers to work overtime, must it still be paid?">ลูกจ้างสมัครใจทำ OT เอง ต้องจ่ายไหม</summary>
@@ -446,7 +447,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 </div>
 
     <h2 data-en="In short">สรุป</h2>
-    <p data-en="The multipliers are the easy part. What decides whether overtime is right is the hourly rate underneath — divide a monthly salary by 30, not by the days in that particular month — and remembering that overtime is wages, so it belongs in the tax base and on its own line of the payslip.">ตัวคูณเป็นส่วนที่ง่าย สิ่งที่ตัดสินว่า OT ถูกหรือผิดคือ<strong>ค่าจ้างต่อชั่วโมงที่อยู่ข้างใต้</strong> — รายเดือนต้องหาร 30 ไม่ใช่หารจำนวนวันจริงของเดือนนั้น และอย่าลืมว่า<strong>OT คือค่าจ้าง</strong> จึงต้องอยู่ในฐานภาษีและแสดงเป็นบรรทัดของตัวเองบนสลิป</p>
+    <p data-en="The multipliers are the easy part. What decides whether overtime is right is the hourly rate underneath, divide a monthly salary by 30, not by the days in that particular month, and remembering that overtime is wages, so it belongs in the tax base and on its own line of the payslip.">ตัวคูณเป็นส่วนที่ง่าย สิ่งที่ตัดสินว่า OT ถูกหรือผิดคือ<strong>ค่าจ้างต่อชั่วโมงที่อยู่ข้างใต้</strong> รายเดือนต้องหาร 30 ไม่ใช่หารจำนวนวันจริงของเดือนนั้น และอย่าลืมว่า<strong>OT คือค่าจ้าง</strong> จึงต้องอยู่ในฐานภาษีและแสดงเป็นบรรทัดของตัวเองบนสลิป</p>
 
     <div class="cta-band">
       <h2 data-en="Let the system do the multipliers">ให้ระบบคิดอัตราให้</h2>
@@ -498,7 +499,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -515,7 +516,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -616,7 +617,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

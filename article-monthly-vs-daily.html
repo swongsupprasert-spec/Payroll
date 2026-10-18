@@ -29,7 +29,7 @@
   .more-h{font-size:21px;margin-bottom:18px}
   @media(max-width:760px){article h1{font-size:23px}}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -48,7 +48,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -155,6 +155,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -183,7 +184,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="meta" data-en="Payroll · Updated 17 September 2026 · 10 min read">เงินเดือน · อัปเดต 17 กันยายน 2569 · อ่าน 10 นาที</div>
     <div class="h1row">
       <span class="h1ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M3.5 19.5c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><circle cx="17" cy="9.5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.9"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M15.8 14.6c2.6.2 4.7 2.1 4.7 4.9"/></svg></span>
-      <h1 data-en="Monthly vs daily-wage employees in Thailand — pay, holidays, overtime, social security and tax (2026)">พนักงานรายเดือน vs รายวัน ต่างกันยังไง — ค่าจ้าง วันหยุด โอที ประกันสังคม และภาษี ปี 2569</h1>
+      <h1 data-en="Monthly vs daily-wage employees in Thailand, pay, holidays, overtime, social security and tax (2026)">พนักงานรายเดือน vs รายวัน ต่างกันยังไง ค่าจ้าง วันหยุด โอที ประกันสังคม และภาษี ปี 2569</h1>
     </div>
 
     <figure class="hero-img">
@@ -191,7 +192,7 @@ footer .ft-mail{color:#6ee7b7 !important}
            alt="พนักงานรายเดือนและรายวันในที่ทำงาน" data-en-alt="Monthly and daily-wage employees at work" width="1200" height="525" fetchpriority="high" decoding="async">
     </figure>
 
-    <p data-en="Most Thai businesses have both kinds of staff — &lt;strong&gt;monthly&lt;/strong&gt; employees on a fixed salary and &lt;strong&gt;daily-wage&lt;/strong&gt; employees paid for the days they work. The difference goes well beyond &quot;how they are paid&quot;: it reaches holidays, overtime, social security, tax and how mid-month joiners and leavers are handled. Get one rule wrong and you under- or over-pay every month. This page sets the two side by side, topic by topic, with real numbers.">ธุรกิจไทยส่วนใหญ่มีพนักงานทั้งสองแบบ — <strong>รายเดือน</strong> ที่ได้เงินเดือนคงที่ และ <strong>รายวัน</strong> ที่ได้ค่าจ้างตามวันที่มาทำงาน ความต่างไม่ได้อยู่แค่ "จ่ายยังไง" แต่ลามไปถึงวันหยุด โอที ประกันสังคม ภาษี และวิธีคิดตอนเข้า-ออกกลางเดือน ทำผิดข้อเดียวคือจ่ายขาดหรือจ่ายเกินทุกเดือน หน้านี้วางทั้งสองแบบเทียบกันทีละเรื่อง พร้อมตัวเลขจริงที่เอาไปใช้ได้</p>
+    <p data-en="Most Thai businesses have both kinds of staff, &lt;strong&gt;monthly&lt;/strong&gt; employees on a fixed salary and &lt;strong&gt;daily-wage&lt;/strong&gt; employees paid for the days they work. The difference goes well beyond &quot;how they are paid&quot;: it reaches holidays, overtime, social security, tax and how mid-month joiners and leavers are handled. Get one rule wrong and you under- or over-pay every month. This page sets the two side by side, topic by topic, with real numbers.">ธุรกิจไทยส่วนใหญ่มีพนักงานทั้งสองแบบ <strong>รายเดือน</strong> ที่ได้เงินเดือนคงที่ และ <strong>รายวัน</strong> ที่ได้ค่าจ้างตามวันที่มาทำงาน ความต่างไม่ได้อยู่แค่ "จ่ายยังไง" แต่ลามไปถึงวันหยุด โอที ประกันสังคม ภาษี และวิธีคิดตอนเข้า-ออกกลางเดือน ทำผิดข้อเดียวคือจ่ายขาดหรือจ่ายเกินทุกเดือน หน้านี้วางทั้งสองแบบเทียบกันทีละเรื่อง พร้อมตัวเลขจริงที่เอาไปใช้ได้</p>
 
     <div class="note">
       <h3>สรุปใน 30 วินาที</h3>
@@ -218,8 +219,8 @@ footer .ft-mail{color:#6ee7b7 !important}
     </div>
 
     <h2 data-en="Pay calculation: full months, and joining or leaving mid-month">วิธีคิดค่าจ้าง: เต็มเดือน และเข้า-ออกกลางเดือน</h2>
-    <h3 data-en="Monthly — fixed, but pro-rated for partial months">รายเดือน — คงที่ แต่ต้อง prorate เมื่อทำงานไม่เต็มเดือน</h3>
-    <p data-en="Monthly employees receive the same amount whether the month has 28 or 31 days. The complication is joining or leaving mid-month, when pay must be pro-rated. The correct formula is &lt;strong&gt;salary × days worked ÷ days in that month&lt;/strong&gt; — not a fixed ÷ 30.">พนักงานรายเดือนได้เงินเดือนเท่ากันทุกเดือน ไม่ว่าเดือนนั้นมี 28 หรือ 31 วัน ปัญหาเกิดตอนเข้าหรือออกกลางเดือน ต้องคิดตามสัดส่วน สูตรที่ถูกต้องคือ <strong>เงินเดือน × วันที่ทำงาน ÷ จำนวนวันในเดือนนั้น</strong> ไม่ใช่หาร 30 ตายตัว</p>
+    <h3 data-en="Monthly, fixed, but pro-rated for partial months">รายเดือน คงที่ แต่ต้อง prorate เมื่อทำงานไม่เต็มเดือน</h3>
+    <p data-en="Monthly employees receive the same amount whether the month has 28 or 31 days. The complication is joining or leaving mid-month, when pay must be pro-rated. The correct formula is &lt;strong&gt;salary × days worked ÷ days in that month&lt;/strong&gt;: not a fixed ÷ 30.">พนักงานรายเดือนได้เงินเดือนเท่ากันทุกเดือน ไม่ว่าเดือนนั้นมี 28 หรือ 31 วัน ปัญหาเกิดตอนเข้าหรือออกกลางเดือน ต้องคิดตามสัดส่วน สูตรที่ถูกต้องคือ <strong>เงินเดือน × วันที่ทำงาน ÷ จำนวนวันในเดือนนั้น</strong> ไม่ใช่หาร 30 ตายตัว</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th data-en="Salary 30,000, starting on the 16th">เงินเดือน 30,000 เริ่มวันที่ 16 ของเดือน</th><th class="num" data-en="Days in month">วันในเดือน</th><th class="num" data-en="Days worked">วันที่ทำงาน</th><th class="num" data-en="First-month pay">ค่าจ้างเดือนแรก</th></tr></thead>
@@ -230,9 +231,9 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <p data-en="Same start date, different pay, because the months have different lengths. Divide by a fixed 30 and October is overpaid by 516 baht while February is underpaid by 928. A proper payroll system knows the real length of each month.">เริ่มวันที่ 16 เหมือนกัน แต่ได้ไม่เท่ากัน เพราะจำนวนวันในเดือนต่างกัน ถ้าหาร 30 ตายตัว เดือนตุลาคมจะจ่ายเกิน 516 บาท เดือนกุมภาพันธ์จะจ่ายขาด 928 บาท — ระบบเงินเดือนที่ดีต้องรู้จำนวนวันจริงของแต่ละเดือน</p>
-    <h3 data-en="Daily — count the days worked, done">รายวัน — นับวันที่มาทำงาน จบ</h3>
-    <p data-en="Daily staff need no pro-rating, because pay is already &lt;strong&gt;daily rate × days actually worked&lt;/strong&gt;. Join mid-month, count from day one; leave mid-month, count to the last day. The difficulty is &lt;em&gt;counting the days correctly&lt;/em&gt; — which needs a reliable time-attendance record.">พนักงานรายวันไม่มี prorate เพราะค่าจ้างคือ <strong>อัตราต่อวัน × วันที่ทำงานจริง</strong> อยู่แล้ว เข้ากลางเดือนก็นับวันตั้งแต่วันแรก ลาออกกลางเดือนก็นับถึงวันสุดท้าย ความยากอยู่ที่ <em>การนับวันให้ถูก</em> — ต้องมีระบบลงเวลาที่เชื่อถือได้</p>
+    <p data-en="Same start date, different pay, because the months have different lengths. Divide by a fixed 30 and October is overpaid by 516 baht while February is underpaid by 928. A proper payroll system knows the real length of each month.">เริ่มวันที่ 16 เหมือนกัน แต่ได้ไม่เท่ากัน เพราะจำนวนวันในเดือนต่างกัน ถ้าหาร 30 ตายตัว เดือนตุลาคมจะจ่ายเกิน 516 บาท เดือนกุมภาพันธ์จะจ่ายขาด 928 บาท ระบบเงินเดือนที่ดีต้องรู้จำนวนวันจริงของแต่ละเดือน</p>
+    <h3 data-en="Daily, count the days worked, done">รายวัน นับวันที่มาทำงาน จบ</h3>
+    <p data-en="Daily staff need no pro-rating, because pay is already &lt;strong&gt;daily rate × days actually worked&lt;/strong&gt;. Join mid-month, count from day one; leave mid-month, count to the last day. The difficulty is &lt;em&gt;counting the days correctly&lt;/em&gt;, which needs a reliable time-attendance record.">พนักงานรายวันไม่มี prorate เพราะค่าจ้างคือ <strong>อัตราต่อวัน × วันที่ทำงานจริง</strong> อยู่แล้ว เข้ากลางเดือนก็นับวันตั้งแต่วันแรก ลาออกกลางเดือนก็นับถึงวันสุดท้าย ความยากอยู่ที่ <em>การนับวันให้ถูก</em> ต้องมีระบบลงเวลาที่เชื่อถือได้</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th data-en="400 baht a day">ค่าจ้าง 400 บาท/วัน</th><th class="num" data-en="Days">วันทำงาน</th><th class="num" data-en="Pay this month">ค่าจ้างเดือนนี้</th></tr></thead>
@@ -245,7 +246,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     </div>
 
     <h2 data-en="Holidays and leave: where employers most often go wrong">วันหยุดและวันลา: จุดที่นายจ้างมักเข้าใจผิดที่สุด</h2>
-    <p data-en="The classic misconception is &quot;daily staff don't work, don't get paid, end of story&quot; — which is &lt;strong&gt;only half right&lt;/strong&gt;. The Labour Protection Act does not distinguish between types of employee, so holiday and leave rights belong to everyone. The one difference is that a daily worker's weekly rest day is unpaid.">ความเข้าใจผิดคลาสสิกคือ "รายวัน ไม่มาไม่ได้เงิน จบ" ซึ่ง <strong>ถูกแค่ครึ่งเดียว</strong> พระราชบัญญัติคุ้มครองแรงงานไม่ได้แยกประเภทลูกจ้าง สิทธิเรื่องวันหยุดและวันลาจึงเป็นของลูกจ้างทุกคน ต่างกันเพียงว่าวันหยุดประจำสัปดาห์ของรายวันไม่มีค่าจ้าง</p>
+    <p data-en="The classic misconception is &quot;daily staff don't work, don't get paid, end of story&quot;, which is &lt;strong&gt;only half right&lt;/strong&gt;. The Labour Protection Act does not distinguish between types of employee, so holiday and leave rights belong to everyone. The one difference is that a daily worker's weekly rest day is unpaid.">ความเข้าใจผิดคลาสสิกคือ "รายวัน ไม่มาไม่ได้เงิน จบ" ซึ่ง <strong>ถูกแค่ครึ่งเดียว</strong> พระราชบัญญัติคุ้มครองแรงงานไม่ได้แยกประเภทลูกจ้าง สิทธิเรื่องวันหยุดและวันลาจึงเป็นของลูกจ้างทุกคน ต่างกันเพียงว่าวันหยุดประจำสัปดาห์ของรายวันไม่มีค่าจ้าง</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th data-en="Day type">ประเภทวัน</th><th data-en="Monthly">รายเดือน</th><th data-en="Daily">รายวัน</th><th data-en="Note">หมายเหตุ</th></tr></thead>
@@ -263,7 +264,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="warn"><p style="margin:0" data-en="&lt;strong&gt;Traditional holidays for daily staff&lt;/strong&gt; are the most-inspected, most-complained-about item. If the company announces 13 holidays this year, daily workers must be paid for all 13 even though they do not come in."><strong>วันหยุดตามประเพณีของพนักงานรายวัน</strong> คือจุดที่ถูกตรวจสอบและร้องเรียนบ่อยที่สุด ถ้าปีนี้บริษัทประกาศวันหยุด 13 วัน พนักงานรายวันต้องได้ค่าจ้าง 13 วันนั้นเต็ม ๆ แม้ไม่ได้มาทำงาน</p></div>
 
     <h2 data-en="Overtime: same multipliers, different base">โอที: ตัวคูณเท่ากัน ฐานต่างกัน</h2>
-    <p data-en="The law sets the same multipliers for both — &lt;strong&gt;1.5×&lt;/strong&gt; for overtime on a working day · &lt;strong&gt;2×&lt;/strong&gt; for normal hours on a holiday · &lt;strong&gt;3×&lt;/strong&gt; for overtime on a holiday. What differs is how the &quot;hourly rate&quot; is found.">กฎหมายกำหนดตัวคูณเหมือนกันทั้งสองแบบ — <strong>1.5 เท่า</strong> ล่วงเวลาในวันทำงาน · <strong>2 เท่า</strong> ทำงานในวันหยุด (ชั่วโมงปกติ) · <strong>3 เท่า</strong> ล่วงเวลาในวันหยุด ต่างกันที่วิธีหา "อัตราต่อชั่วโมง"</p>
+    <p data-en="The law sets the same multipliers for both, &lt;strong&gt;1.5×&lt;/strong&gt; for overtime on a working day · &lt;strong&gt;2×&lt;/strong&gt; for normal hours on a holiday · &lt;strong&gt;3×&lt;/strong&gt; for overtime on a holiday. What differs is how the &quot;hourly rate&quot; is found.">กฎหมายกำหนดตัวคูณเหมือนกันทั้งสองแบบ <strong>1.5 เท่า</strong> ล่วงเวลาในวันทำงาน · <strong>2 เท่า</strong> ทำงานในวันหยุด (ชั่วโมงปกติ) · <strong>3 เท่า</strong> ล่วงเวลาในวันหยุด ต่างกันที่วิธีหา "อัตราต่อชั่วโมง"</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th data-en=""></th><th class="num" data-en="Hourly">อัตรา/ชม.</th><th class="num" data-en="Weekday OT 1.5×">OT วันทำงาน 1.5×</th><th class="num" data-en="Holiday work 2×">ทำงานวันหยุด 2×</th><th class="num" data-en="Holiday OT 3×">OT วันหยุด 3×</th></tr></thead>
@@ -278,7 +279,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <p data-en="Notice that monthly 15,000 and daily 500 give exactly the same overtime rate (62.50/hr), because 15,000 ÷ 30 = 500. To compare the cost of the two types, compare the &quot;daily rate&quot;, not the salary number.">สังเกตว่ารายเดือน 15,000 กับรายวัน 500 ได้อัตราโอทีเท่ากันพอดี (62.50/ชม.) เพราะ 15,000 ÷ 30 = 500 — ถ้าอยากเทียบว่าจ้างแบบไหนแพงกว่า ให้เทียบ "ค่าจ้างต่อวัน" ไม่ใช่ตัวเลขเงินเดือน</p>
+    <p data-en="Notice that monthly 15,000 and daily 500 give exactly the same overtime rate (62.50/hr), because 15,000 ÷ 30 = 500. To compare the cost of the two types, compare the &quot;daily rate&quot;, not the salary number.">สังเกตว่ารายเดือน 15,000 กับรายวัน 500 ได้อัตราโอทีเท่ากันพอดี (62.50/ชม.) เพราะ 15,000 ÷ 30 = 500 ถ้าอยากเทียบว่าจ้างแบบไหนแพงกว่า ให้เทียบ "ค่าจ้างต่อวัน" ไม่ใช่ตัวเลขเงินเดือน</p>
     <p data-en="Overtime conditions, maximum hours and more examples are in &lt;a href=&quot;/article-overtime-pay&quot;&gt;how to calculate overtime pay&lt;/a&gt;.">รายละเอียดเงื่อนไขโอที ชั่วโมงสูงสุด และตัวอย่างเพิ่มเติมอยู่ที่ <a href="/article-overtime-pay">วิธีคำนวณค่าล่วงเวลา (OT)</a></p>
 
     <h2 data-en="Social security: steady for monthly, variable for daily">ประกันสังคม: รายเดือนนิ่ง รายวันแกว่ง</h2>
@@ -308,10 +309,10 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <p data-en="At 600 a day, annual income is 187,200; after expenses, the personal allowance and social security, net income is 24,240 — far below the 150,000 line — so nothing is withheld. But the employee &lt;strong&gt;must still file PND.91&lt;/strong&gt; because income exceeds 120,000, and the employer must still issue a 50 Bis. Full working in &lt;a href=&quot;/article-withholding-tax&quot;&gt;how payroll withholding tax is calculated&lt;/a&gt;.">รายวัน 600 บาท มีเงินได้ 187,200 บาทต่อปี หักค่าใช้จ่าย ลดหย่อนส่วนตัว และประกันสังคมแล้วเหลือสุทธิ 24,240 ห่างจากเกณฑ์ 150,000 มาก จึงไม่ถูกหัก แต่ <strong>ยังต้องยื่น ภ.ง.ด.91</strong> เพราะเงินได้เกิน 120,000 และนายจ้างยังต้องออก 50 ทวิ ให้ วิธีคำนวณเต็มอยู่ที่ <a href="/article-withholding-tax">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</a></p>
+    <p data-en="At 600 a day, annual income is 187,200; after expenses, the personal allowance and social security, net income is 24,240, far below the 150,000 line, so nothing is withheld. But the employee &lt;strong&gt;must still file PND.91&lt;/strong&gt; because income exceeds 120,000, and the employer must still issue a 50 Bis. Full working in &lt;a href=&quot;/article-withholding-tax&quot;&gt;how payroll withholding tax is calculated&lt;/a&gt;.">รายวัน 600 บาท มีเงินได้ 187,200 บาทต่อปี หักค่าใช้จ่าย ลดหย่อนส่วนตัว และประกันสังคมแล้วเหลือสุทธิ 24,240 ห่างจากเกณฑ์ 150,000 มาก จึงไม่ถูกหัก แต่ <strong>ยังต้องยื่น ภ.ง.ด.91</strong> เพราะเงินได้เกิน 120,000 และนายจ้างยังต้องออก 50 ทวิ ให้ วิธีคำนวณเต็มอยู่ที่ <a href="/article-withholding-tax">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</a></p>
 
     <h2 data-en="Severance and termination rights: identical">ค่าชดเชยและสิทธิเมื่อเลิกจ้าง: เท่ากัน</h2>
-    <p data-en="A daily-wage employee who has worked 120 days is entitled to severance by length of service exactly like a monthly employee (from 30 up to 400 days of final wages), plus pay in lieu of notice. The base is &lt;strong&gt;the final wage rate&lt;/strong&gt; — for daily staff, the daily rate × the number of days due.">ลูกจ้างรายวันที่ทำงานครบ 120 วันมีสิทธิได้ค่าชดเชยตามอายุงานเหมือนรายเดือนทุกประการ (ตั้งแต่ 30 วันจนถึง 400 วันของค่าจ้างอัตราสุดท้าย) รวมถึงค่าจ้างแทนการบอกกล่าวล่วงหน้า ฐานที่ใช้คือ <strong>ค่าจ้างอัตราสุดท้าย</strong> — รายวันก็คือค่าจ้างต่อวัน × จำนวนวันตามสิทธิ</p>
+    <p data-en="A daily-wage employee who has worked 120 days is entitled to severance by length of service exactly like a monthly employee (from 30 up to 400 days of final wages), plus pay in lieu of notice. The base is &lt;strong&gt;the final wage rate&lt;/strong&gt;: for daily staff, the daily rate × the number of days due.">ลูกจ้างรายวันที่ทำงานครบ 120 วันมีสิทธิได้ค่าชดเชยตามอายุงานเหมือนรายเดือนทุกประการ (ตั้งแต่ 30 วันจนถึง 400 วันของค่าจ้างอัตราสุดท้าย) รวมถึงค่าจ้างแทนการบอกกล่าวล่วงหน้า ฐานที่ใช้คือ <strong>ค่าจ้างอัตราสุดท้าย</strong> รายวันก็คือค่าจ้างต่อวัน × จำนวนวันตามสิทธิ</p>
 
     <h2 data-en="Which should you use?">ควรจ้างแบบไหน</h2>
     <div class="tbl-wrap">
@@ -325,7 +326,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <p data-en="What you should &lt;strong&gt;not&lt;/strong&gt; do is use daily hiring to avoid legal rights — because it doesn't. Traditional holidays, sick leave, social security and severance all apply equally. The only differences are the pay base and the cost of weekly rest days.">สิ่งที่ <strong>ไม่ควร</strong> ทำคือใช้การจ้างรายวันเพื่อเลี่ยงสิทธิตามกฎหมาย — เพราะเลี่ยงไม่ได้ วันหยุดตามประเพณี ลาป่วย ประกันสังคม ค่าชดเชย ตามมาครบเหมือนกัน ที่ต่างคือฐานคำนวณและต้นทุนวันหยุดประจำสัปดาห์เท่านั้น</p>
+    <p data-en="What you should &lt;strong&gt;not&lt;/strong&gt; do is use daily hiring to avoid legal rights, because it doesn't. Traditional holidays, sick leave, social security and severance all apply equally. The only differences are the pay base and the cost of weekly rest days.">สิ่งที่ <strong>ไม่ควร</strong> ทำคือใช้การจ้างรายวันเพื่อเลี่ยงสิทธิตามกฎหมาย เพราะเลี่ยงไม่ได้ วันหยุดตามประเพณี ลาป่วย ประกันสังคม ค่าชดเชย ตามมาครบเหมือนกัน ที่ต่างคือฐานคำนวณและต้นทุนวันหยุดประจำสัปดาห์เท่านั้น</p>
 
     <h2 data-en="Five common misconceptions">ความเข้าใจผิดที่พบบ่อย 5 ข้อ</h2>
     <div class="feat"><span class="num">1</span><h4 data-en="&quot;Daily staff: no show, no pay, no exceptions.&quot;">"รายวัน ไม่มาไม่ได้เงิน ทุกกรณี"</h4>
@@ -340,7 +341,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <p data-en="That is an adverse change to terms of employment and needs the employee's consent.">เป็นการเปลี่ยนสภาพการจ้างที่ไม่เป็นคุณ ต้องได้รับความยินยอมจากลูกจ้าง</p></div>
 
     <h2 data-en="One system for both types">ให้โปรแกรมรองรับทั้งสองแบบในระบบเดียว</h2>
-    <p data-en="eSimPayroll lets you set the &lt;strong&gt;pay type&lt;/strong&gt; per employee — monthly staff are pro-rated on the real days in the month and their start/end dates, daily staff are multiplied by days entered or pulled from time attendance, overtime uses the right base for each type (÷30÷8 or ÷8), social security and tax are estimated on the type's actual wages, and the dashboard shows monthly and daily totals separately.">eSimPayroll ให้กำหนด <strong>ประเภทการจ้าง</strong> รายคน — รายเดือนคิด prorate จากจำนวนวันจริงของเดือนและวันเริ่ม/วันออก รายวันคูณจากจำนวนวันที่กรอกหรือดึงจากระบบลงเวลา อัตราโอทีคำนวณตามฐานที่ถูกต้องของแต่ละแบบ (÷30÷8 หรือ ÷8) ประกันสังคมและภาษีประมาณจากค่าจ้างจริงของประเภทนั้น และแดชบอร์ดแยกยอดรายเดือน/รายวันให้เห็นชัด</p>
+    <p data-en="eSimPayroll lets you set the &lt;strong&gt;pay type&lt;/strong&gt; per employee, monthly staff are pro-rated on the real days in the month and their start/end dates, daily staff are multiplied by days entered or pulled from time attendance, overtime uses the right base for each type (÷30÷8 or ÷8), social security and tax are estimated on the type's actual wages, and the dashboard shows monthly and daily totals separately.">eSimPayroll ให้กำหนด <strong>ประเภทการจ้าง</strong> รายคน รายเดือนคิด prorate จากจำนวนวันจริงของเดือนและวันเริ่ม/วันออก รายวันคูณจากจำนวนวันที่กรอกหรือดึงจากระบบลงเวลา อัตราโอทีคำนวณตามฐานที่ถูกต้องของแต่ละแบบ (÷30÷8 หรือ ÷8) ประกันสังคมและภาษีประมาณจากค่าจ้างจริงของประเภทนั้น และแดชบอร์ดแยกยอดรายเดือน/รายวันให้เห็นชัด</p>
     <div class="note">
       <h3 data-en="Try both types">ลองใส่ทั้งสองแบบดู</h3>
       <p data-en="Add one monthly and one daily employee and compare their payslips. Free for 30 days, no credit card.">เพิ่มพนักงานรายเดือนหนึ่งคน รายวันหนึ่งคน แล้วดูสลิปเทียบกัน ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต</p>
@@ -350,8 +351,8 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -379,7 +380,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <a href="/article-welfare-fund" class="card">
         <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
         <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
-          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-withholding-tax" class="card">
@@ -406,7 +407,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -423,7 +424,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -524,7 +525,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

@@ -73,7 +73,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -92,7 +92,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -180,6 +180,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -236,7 +237,7 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <div class="box" data-en="&lt;strong&gt;The honest trade-off:&lt;/strong&gt; online payroll gives up offline access in exchange for everything else. For most businesses that is a good trade — but if your office genuinely loses internet often, weigh it seriously."><strong>ข้อแลกเปลี่ยนที่ต้องยอมรับ:</strong> ระบบออนไลน์แลก "ใช้ตอนไม่มีเน็ต" ไปกับข้อดีอื่นทั้งหมด สำหรับธุรกิจส่วนใหญ่ถือว่าคุ้ม แต่ถ้าออฟฟิศเน็ตหลุดบ่อยจริง ๆ ต้องชั่งน้ำหนักข้อนี้ให้ดี</div>
+    <div class="box" data-en="&lt;strong&gt;The honest trade-off:&lt;/strong&gt; online payroll gives up offline access in exchange for everything else. For most businesses that is a good trade, but if your office genuinely loses internet often, weigh it seriously."><strong>ข้อแลกเปลี่ยนที่ต้องยอมรับ:</strong> ระบบออนไลน์แลก "ใช้ตอนไม่มีเน็ต" ไปกับข้อดีอื่นทั้งหมด สำหรับธุรกิจส่วนใหญ่ถือว่าคุ้ม แต่ถ้าออฟฟิศเน็ตหลุดบ่อยจริง ๆ ต้องชั่งน้ำหนักข้อนี้ให้ดี</div>
 
     <h2 data-en="How it works, step by step">โปรแกรมเงินเดือนออนไลน์ทำงานยังไง</h2>
     <div class="feat">
@@ -247,7 +248,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="feat">
       <span class="num">2</span>
       <h4 data-en="Add employees">เพิ่มข้อมูลพนักงาน</h4>
-      <p data-en="Name, ID card number, position, start date, pay type, salary and tax allowances — typed in, or imported from a CSV file in one go.">ชื่อ เลขบัตรประชาชน ตำแหน่ง วันเริ่มงาน ประเภทการจ้าง เงินเดือน และค่าลดหย่อนภาษี จะพิมพ์เองหรือนำเข้าจากไฟล์ CSV ทีเดียวทั้งหมดก็ได้</p>
+      <p data-en="Name, ID card number, position, start date, pay type, salary and tax allowances, typed in, or imported from a CSV file in one go.">ชื่อ เลขบัตรประชาชน ตำแหน่ง วันเริ่มงาน ประเภทการจ้าง เงินเดือน และค่าลดหย่อนภาษี จะพิมพ์เองหรือนำเข้าจากไฟล์ CSV ทีเดียวทั้งหมดก็ได้</p>
     </div>
     <div class="feat">
       <span class="num">3</span>
@@ -262,17 +263,17 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="feat">
       <span class="num">5</span>
       <h4 data-en="Produce payslips and statutory forms">ออกสลิปและเอกสารยื่นราชการ</h4>
-      <p data-en="Payslips, the 50 Bis certificate, form PND.1 and form SSO 1-10 — all generated from the same records, so nothing is retyped.">สลิปเงินเดือน หนังสือรับรองการหักภาษี 50 ทวิ แบบ ภ.ง.ด.1 และ สปส.1-10 ออกจากข้อมูลชุดเดียวกัน จึงไม่ต้องคีย์ซ้ำ</p>
+      <p data-en="Payslips, the 50 Bis certificate, form PND.1 and form SSO 1-10, all generated from the same records, so nothing is retyped.">สลิปเงินเดือน หนังสือรับรองการหักภาษี 50 ทวิ แบบ ภ.ง.ด.1 และ สปส.1-10 ออกจากข้อมูลชุดเดียวกัน จึงไม่ต้องคีย์ซ้ำ</p>
     </div>
 
     <h2 data-en="How it actually helps a business">ช่วยธุรกิจจัดการเงินเดือนได้อย่างไร</h2>
-    <ul data-en="&lt;li&gt;&lt;strong&gt;Less time each month&lt;/strong&gt; — the repetitive arithmetic and the forms are handled together&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Fewer errors&lt;/strong&gt; — figures flow from one place into every document instead of being retyped&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Rules stay current&lt;/strong&gt; — when a rate or ceiling changes, the provider updates it&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Work from anywhere&lt;/strong&gt; — payroll does not stop because someone is out of the office&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Nothing lost if a laptop dies&lt;/strong&gt; — the data is not on that machine&lt;/li&gt;&lt;li&gt;&lt;strong&gt;A record of what happened&lt;/strong&gt; — useful when an employee disputes a figure or an auditor asks&lt;/li&gt;">
-      <li><strong>ใช้เวลาน้อยลงทุกเดือน</strong> — งานคิดเลขซ้ำ ๆ กับงานเอกสารจบไปพร้อมกัน</li>
-      <li><strong>ผิดพลาดน้อยลง</strong> — ตัวเลขไหลจากที่เดียวไปทุกเอกสาร ไม่ต้องคีย์ซ้ำ</li>
-      <li><strong>กฎหมายทันสมัยเสมอ</strong> — พออัตราหรือเพดานเปลี่ยน ผู้ให้บริการอัปเดตให้</li>
-      <li><strong>ทำงานจากที่ไหนก็ได้</strong> — เงินเดือนไม่หยุดเพราะคนทำไม่ได้เข้าออฟฟิศ</li>
-      <li><strong>เครื่องพังก็ไม่หาย</strong> — ข้อมูลไม่ได้อยู่ในเครื่องนั้น</li>
-      <li><strong>มีร่องรอยย้อนดูได้</strong> — ใช้ตอนพนักงานทักท้วงหรือผู้สอบบัญชีขอดู</li>
+    <ul data-en="&lt;li&gt;&lt;strong&gt;Less time each month&lt;/strong&gt;: the repetitive arithmetic and the forms are handled together&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Fewer errors&lt;/strong&gt;: figures flow from one place into every document instead of being retyped&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Rules stay current&lt;/strong&gt;: when a rate or ceiling changes, the provider updates it&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Work from anywhere&lt;/strong&gt;: payroll does not stop because someone is out of the office&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Nothing lost if a laptop dies&lt;/strong&gt;: the data is not on that machine&lt;/li&gt;&lt;li&gt;&lt;strong&gt;A record of what happened&lt;/strong&gt;: useful when an employee disputes a figure or an auditor asks&lt;/li&gt;">
+      <li><strong>ใช้เวลาน้อยลงทุกเดือน</strong> งานคิดเลขซ้ำ ๆ กับงานเอกสารจบไปพร้อมกัน</li>
+      <li><strong>ผิดพลาดน้อยลง</strong> ตัวเลขไหลจากที่เดียวไปทุกเอกสาร ไม่ต้องคีย์ซ้ำ</li>
+      <li><strong>กฎหมายทันสมัยเสมอ</strong> พออัตราหรือเพดานเปลี่ยน ผู้ให้บริการอัปเดตให้</li>
+      <li><strong>ทำงานจากที่ไหนก็ได้</strong> เงินเดือนไม่หยุดเพราะคนทำไม่ได้เข้าออฟฟิศ</li>
+      <li><strong>เครื่องพังก็ไม่หาย</strong> ข้อมูลไม่ได้อยู่ในเครื่องนั้น</li>
+      <li><strong>มีร่องรอยย้อนดูได้</strong> ใช้ตอนพนักงานทักท้วงหรือผู้สอบบัญชีขอดู</li>
     </ul>
 
     <h2 data-en="Which businesses does it fit?">เหมาะกับธุรกิจแบบไหน</h2>
@@ -291,28 +292,28 @@ footer .ft-mail{color:#6ee7b7 !important}
       <li>ยังไม่มีใครถึงเกณฑ์เสียภาษี</li>
       <li>ออฟฟิศเน็ตหลุดเป็นประจำ</li>
     </ul>
-    <div class="warn" data-en="&lt;strong&gt;Be honest about size.&lt;/strong&gt; A payroll system does not make a three-person business run better — it mostly adds a monthly bill. Read the comparison in &lt;a href=&quot;article-payroll-vs-excel.html&quot;&gt;payroll software vs Excel&lt;/a&gt; before you decide."><strong>ประเมินขนาดตัวเองตามจริง</strong> ระบบเงินเดือนไม่ได้ทำให้ธุรกิจ 3 คนดีขึ้น มีแต่จะเพิ่มค่าใช้จ่ายรายเดือน ลองอ่าน <a href="/article-payroll-vs-excel">โปรแกรมเงินเดือน vs Excel</a> ก่อนตัดสินใจ</div>
+    <div class="warn" data-en="&lt;strong&gt;Be honest about size.&lt;/strong&gt; A payroll system does not make a three-person business run better, it mostly adds a monthly bill. Read the comparison in &lt;a href=&quot;article-payroll-vs-excel.html&quot;&gt;payroll software vs Excel&lt;/a&gt; before you decide."><strong>ประเมินขนาดตัวเองตามจริง</strong> ระบบเงินเดือนไม่ได้ทำให้ธุรกิจ 3 คนดีขึ้น มีแต่จะเพิ่มค่าใช้จ่ายรายเดือน ลองอ่าน <a href="/article-payroll-vs-excel">โปรแกรมเงินเดือน vs Excel</a> ก่อนตัดสินใจ</div>
 
     <h2 data-en="What to check before you sign up">ข้อควรระวังก่อนเลือก</h2>
-    <ul data-en="&lt;li&gt;&lt;strong&gt;Is the connection encrypted?&lt;/strong&gt; The address must start with https, not http&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Is your data separated from other customers&#39;?&lt;/strong&gt; Ask directly — this matters most for accounting firms&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Can you get your data out?&lt;/strong&gt; If there is no CSV export, you cannot leave without retyping everything&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Who owns the data?&lt;/strong&gt; Check the terms, and check the PDPA policy&lt;/li&gt;&lt;li&gt;&lt;strong&gt;What happens when you stop paying?&lt;/strong&gt; Can you still read and export past years?&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Was it built for Thai rules?&lt;/strong&gt; Foreign products often cannot produce 50 Bis, PND.1 or SSO 1-10&lt;/li&gt;">
-      <li><strong>เชื่อมต่อแบบเข้ารหัสไหม</strong> — ที่อยู่เว็บต้องขึ้นต้นด้วย https ไม่ใช่ http</li>
-      <li><strong>ข้อมูลแยกจากลูกค้ารายอื่นไหม</strong> — ถามตรง ๆ ได้ ข้อนี้สำคัญที่สุดกับสำนักงานบัญชี</li>
-      <li><strong>ดึงข้อมูลออกได้ไหม</strong> — ถ้าไม่มีปุ่มส่งออก CSV เท่ากับย้ายออกไม่ได้โดยไม่ต้องคีย์ใหม่ทั้งหมด</li>
-      <li><strong>ข้อมูลเป็นของใคร</strong> — อ่านเงื่อนไขการใช้งาน และดูนโยบาย PDPA</li>
-      <li><strong>ถ้าหยุดจ่ายค่าบริการจะเป็นยังไง</strong> — ยังเปิดดูและส่งออกข้อมูลปีเก่าได้ไหม</li>
-      <li><strong>ทำมาเพื่อกฎหมายไทยหรือเปล่า</strong> — ระบบต่างประเทศมักออก 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 ไม่ได้</li>
+    <ul data-en="&lt;li&gt;&lt;strong&gt;Is the connection encrypted?&lt;/strong&gt; The address must start with https, not http&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Is your data separated from other customers&#39;?&lt;/strong&gt; Ask directly, this matters most for accounting firms&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Can you get your data out?&lt;/strong&gt; If there is no CSV export, you cannot leave without retyping everything&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Who owns the data?&lt;/strong&gt; Check the terms, and check the PDPA policy&lt;/li&gt;&lt;li&gt;&lt;strong&gt;What happens when you stop paying?&lt;/strong&gt; Can you still read and export past years?&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Was it built for Thai rules?&lt;/strong&gt; Foreign products often cannot produce 50 Bis, PND.1 or SSO 1-10&lt;/li&gt;">
+      <li><strong>เชื่อมต่อแบบเข้ารหัสไหม</strong> ที่อยู่เว็บต้องขึ้นต้นด้วย https ไม่ใช่ http</li>
+      <li><strong>ข้อมูลแยกจากลูกค้ารายอื่นไหม</strong> ถามตรง ๆ ได้ ข้อนี้สำคัญที่สุดกับสำนักงานบัญชี</li>
+      <li><strong>ดึงข้อมูลออกได้ไหม</strong> ถ้าไม่มีปุ่มส่งออก CSV เท่ากับย้ายออกไม่ได้โดยไม่ต้องคีย์ใหม่ทั้งหมด</li>
+      <li><strong>ข้อมูลเป็นของใคร</strong> อ่านเงื่อนไขการใช้งาน และดูนโยบาย PDPA</li>
+      <li><strong>ถ้าหยุดจ่ายค่าบริการจะเป็นยังไง</strong> ยังเปิดดูและส่งออกข้อมูลปีเก่าได้ไหม</li>
+      <li><strong>ทำมาเพื่อกฎหมายไทยหรือเปล่า</strong> ระบบต่างประเทศมักออก 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 ไม่ได้</li>
     </ul>
 
     <h2 data-en="What does it cost?">ราคาประมาณเท่าไหร่</h2>
     <p data-en="Online payroll in Thailand is normally priced by headcount and billed monthly. eSimPayroll&#39;s Standard plan is &lt;strong&gt;free forever for 1-10 employees&lt;/strong&gt;, paid plans start at 590 baht per month, and there is a separate plan for accounting firms managing several client companies. See the &lt;a href=&quot;pricing.html&quot;&gt;full price list&lt;/a&gt;."><strong>โปรแกรม Payroll ออนไลน์</strong>ในไทยมักคิดราคาตามจำนวนพนักงานและเก็บเป็นรายเดือน ของ eSimPayroll แพ็กเกจมาตรฐาน<strong>ใช้ฟรีถาวรสำหรับพนักงาน 1-10 คน</strong> แพ็กเกจเสียเงินเริ่มต้น 590 บาท/เดือน และมีแพ็กเกจแยกสำหรับสำนักงานบัญชีที่ดูแลลูกค้าหลายบริษัท ดูรายละเอียดได้ที่ <a href="/pricing">ตารางราคาทั้งหมด</a></p>
-    <div class="box" data-en="&lt;strong&gt;A quick way to judge:&lt;/strong&gt; multiply the hours you spend on payroll each month by the hourly cost of the person doing it, then compare. Add the cost of one late or corrected filing — that number usually settles the question."><strong>วิธีตัดสินใจแบบเร็ว:</strong> เอาชั่วโมงที่ใช้ทำเงินเดือนต่อเดือน คูณค่าแรงต่อชั่วโมงของคนทำ แล้วเทียบกัน จากนั้นบวกต้นทุนของการยื่นช้าหรือยื่นแก้หนึ่งครั้ง ตัวเลขนี้มักเป็นตัวชี้ขาด</div>
+    <div class="box" data-en="&lt;strong&gt;A quick way to judge:&lt;/strong&gt; multiply the hours you spend on payroll each month by the hourly cost of the person doing it, then compare. Add the cost of one late or corrected filing, that number usually settles the question."><strong>วิธีตัดสินใจแบบเร็ว:</strong> เอาชั่วโมงที่ใช้ทำเงินเดือนต่อเดือน คูณค่าแรงต่อชั่วโมงของคนทำ แล้วเทียบกัน จากนั้นบวกต้นทุนของการยื่นช้าหรือยื่นแก้หนึ่งครั้ง ตัวเลขนี้มักเป็นตัวชี้ขาด</div>
 
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
-        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน พ.ร.บ.คุ้มครองแรงงาน</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -324,17 +325,17 @@ footer .ft-mail{color:#6ee7b7 !important}
       <details><summary data-en="How is it different from installed software?">ต่างจากโปรแกรมติดตั้งบนเครื่องอย่างไร</summary>
         <p data-en="Three main things. It needs no installation and works from any device. It is billed monthly or annually and the provider keeps the rules current, whereas installed products are usually a one-off purchase with separate update fees. And the data is backed up on the provider's servers rather than sitting on one computer you must back up yourself.">ต่างกัน 3 เรื่องหลัก หนึ่ง ไม่ต้องติดตั้งและใช้ได้ทุกอุปกรณ์ สอง คิดค่าบริการรายเดือนหรือรายปี และผู้ให้บริการอัปเดตกฎหมายให้ ส่วนแบบติดตั้งมักจ่ายก้อนเดียวแล้วมีค่าอัปเดตแยก สาม ข้อมูลสำรองอยู่บนเซิร์ฟเวอร์ผู้ให้บริการ ไม่ได้อยู่ในเครื่องเดียวที่ต้องสำรองเอง</p></details>
       <details><summary data-en="Is payroll data safe on the cloud?">ข้อมูลเงินเดือนบนคลาวด์ปลอดภัยไหม</summary>
-        <p data-en="It depends on the provider. Check that the connection is encrypted (https), that customer data is properly separated, that backups are regular, and that there is a PDPA policy. In practice, an Excel file passed around by email or chat is usually riskier — it cannot be recalled and there is no record of who opened it.">ขึ้นอยู่กับผู้ให้บริการ ควรตรวจว่าเชื่อมต่อแบบเข้ารหัส (https) ไหม แยกข้อมูลระหว่างลูกค้าชัดเจนไหม สำรองข้อมูลสม่ำเสมอไหม และมีนโยบาย PDPA หรือเปล่า ในทางปฏิบัติไฟล์ Excel ที่ส่งต่อกันทางอีเมลหรือแชตมักเสี่ยงกว่า เพราะเรียกคืนไม่ได้และไม่มีบันทึกว่าใครเปิดดู</p></details>
+        <p data-en="It depends on the provider. Check that the connection is encrypted (https), that customer data is properly separated, that backups are regular, and that there is a PDPA policy. In practice, an Excel file passed around by email or chat is usually riskier, it cannot be recalled and there is no record of who opened it.">ขึ้นอยู่กับผู้ให้บริการ ควรตรวจว่าเชื่อมต่อแบบเข้ารหัส (https) ไหม แยกข้อมูลระหว่างลูกค้าชัดเจนไหม สำรองข้อมูลสม่ำเสมอไหม และมีนโยบาย PDPA หรือเปล่า ในทางปฏิบัติไฟล์ Excel ที่ส่งต่อกันทางอีเมลหรือแชตมักเสี่ยงกว่า เพราะเรียกคืนไม่ได้และไม่มีบันทึกว่าใครเปิดดู</p></details>
       <details><summary data-en="What size of business does it suit?">เหมาะกับธุรกิจขนาดไหน</summary>
-        <p data-en="Roughly five employees and up, especially where people join or leave during the year, where there are daily-wage or overtime staff, or where more than one person handles payroll — plus accounting firms running payroll for several clients. A business with two or three monthly-paid staff and no turnover probably does not need it yet.">ประมาณ 5 คนขึ้นไป โดยเฉพาะที่มีคนเข้าออกระหว่างปี มีพนักงานรายวันหรือ OT หรือมีคนดูแลเงินเดือนมากกว่าหนึ่งคน รวมถึงสำนักงานบัญชีที่ทำเงินเดือนให้ลูกค้าหลายราย ส่วนธุรกิจที่มีพนักงาน 2-3 คนเป็นรายเดือนและไม่มีคนเข้าออก อาจยังไม่จำเป็น</p></details>
+        <p data-en="Roughly five employees and up, especially where people join or leave during the year, where there are daily-wage or overtime staff, or where more than one person handles payroll, plus accounting firms running payroll for several clients. A business with two or three monthly-paid staff and no turnover probably does not need it yet.">ประมาณ 5 คนขึ้นไป โดยเฉพาะที่มีคนเข้าออกระหว่างปี มีพนักงานรายวันหรือ OT หรือมีคนดูแลเงินเดือนมากกว่าหนึ่งคน รวมถึงสำนักงานบัญชีที่ทำเงินเดือนให้ลูกค้าหลายราย ส่วนธุรกิจที่มีพนักงาน 2-3 คนเป็นรายเดือนและไม่มีคนเข้าออก อาจยังไม่จำเป็น</p></details>
     </div>
 
     <h2 data-en="In short">สรุป</h2>
     <p data-en="&lt;strong&gt;Online payroll software&lt;/strong&gt; does not do anything a careful person with a spreadsheet cannot do. What it changes is how much attention the job demands each month, and how many places a number has to be typed before it reaches a government form. For a business past about five people, that difference compounds."><strong>โปรแกรมเงินเดือนออนไลน์</strong> ไม่ได้ทำอะไรที่คนละเอียดรอบคอบกับไฟล์ตารางคำนวณทำไม่ได้ สิ่งที่มันเปลี่ยนคือ<strong>งานนี้กินความใส่ใจแค่ไหนในแต่ละเดือน</strong> และตัวเลขหนึ่งตัวต้องถูกพิมพ์กี่ที่กว่าจะไปถึงแบบฟอร์มราชการ สำหรับธุรกิจที่โตเกิน 5 คน ความต่างตรงนี้ทบต้นขึ้นเรื่อย ๆ</p>
 
     <div class="cta-band">
-      <h2 data-en="Try eSimPayroll — online payroll software for Thai businesses">ทดลองใช้ eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจ</h2>
-      <p data-en="30 days free, no credit card needed, nothing to install. Enter one month you have already paid and compare every figure with your own records — that comparison answers the question faster than any article.">ฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้งอะไร ลองเอาเดือนที่จ่ายเงินไปแล้วจริงมากรอก แล้วเทียบทุกตัวเลขกับของเดิม การเทียบครั้งนั้นตอบคำถามได้เร็วกว่าบทความไหน ๆ</p>
+      <h2 data-en="Try eSimPayroll, online payroll software for Thai businesses">ทดลองใช้ eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจ</h2>
+      <p data-en="30 days free, no credit card needed, nothing to install. Enter one month you have already paid and compare every figure with your own records, that comparison answers the question faster than any article.">ฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้งอะไร ลองเอาเดือนที่จ่ายเงินไปแล้วจริงมากรอก แล้วเทียบทุกตัวเลขกับของเดิม การเทียบครั้งนั้นตอบคำถามได้เร็วกว่าบทความไหน ๆ</p>
       <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
         <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
         <a href="/pricing" class="btn ghost" data-en="See pricing">ดูราคา</a>
@@ -353,7 +354,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <a href="/article-welfare-fund" class="card">
         <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
         <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
-          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-withholding-tax" class="card">
@@ -381,7 +382,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <div class="wrap">
   <div class="cta-band">
     <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="If you would like to try one for yourself, &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software&lt;/a&gt; does everything described above, from tax calculation to filing-ready forms. Free for 30 days.">ถ้าอ่านมาถึงตรงนี้แล้วอยากลองของจริง <a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll ออนไลน์</a> ทำงานได้ครบทุกข้อที่เล่ามา ตั้งแต่คำนวณภาษีจนออกเอกสารยื่น ทดลองฟรี 30 วัน</div>
-<h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+<h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -398,7 +399,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -499,7 +500,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

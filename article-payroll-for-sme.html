@@ -73,7 +73,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -92,7 +92,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -180,6 +180,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -216,15 +217,15 @@ footer .ft-mail{color:#6ee7b7 !important}
            data-en-alt="Payroll software for small and medium Thai businesses" width="1200" height="525" fetchpriority="high" decoding="async">
     </figure>
 
-    <p data-en="A &lt;strong&gt;payroll system for SMEs&lt;/strong&gt; has a different job from an enterprise one. A 500-person company needs approval workflows and headcount planning. A 12-person company needs the salaries to be right, the tax to be right, and the forms filed on time — with as little of the owner&#39;s Saturday spent on it as possible."><strong>โปรแกรมเงินเดือน SME</strong> มีโจทย์คนละแบบกับระบบขององค์กรใหญ่ บริษัท 500 คนต้องการสายอนุมัติและการวางแผนกำลังคน ส่วนบริษัท 12 คนต้องการแค่ให้เงินเดือนถูก ภาษีถูก และยื่นเอกสารทัน โดยกินเวลาวันเสาร์ของเจ้าของให้น้อยที่สุด</p>
+    <p data-en="A &lt;strong&gt;payroll system for SMEs&lt;/strong&gt; has a different job from an enterprise one. A 500-person company needs approval workflows and headcount planning. A 12-person company needs the salaries to be right, the tax to be right, and the forms filed on time, with as little of the owner&#39;s Saturday spent on it as possible."><strong>โปรแกรมเงินเดือน SME</strong> มีโจทย์คนละแบบกับระบบขององค์กรใหญ่ บริษัท 500 คนต้องการสายอนุมัติและการวางแผนกำลังคน ส่วนบริษัท 12 คนต้องการแค่ให้เงินเดือนถูก ภาษีถูก และยื่นเอกสารทัน โดยกินเวลาวันเสาร์ของเจ้าของให้น้อยที่สุด</p>
 
-    <p data-en="This article covers what an SME actually needs, what it should refuse to pay for, and the break-even point — calculated, not guessed.">บทความนี้สรุปว่า SME ต้องการอะไรจริง ๆ ไม่ควรจ่ายค่าอะไร และจุดคุ้มทุนอยู่ตรงไหน โดยคำนวณให้ดู ไม่ใช่เดา</p>
+    <p data-en="This article covers what an SME actually needs, what it should refuse to pay for, and the break-even point, calculated, not guessed.">บทความนี้สรุปว่า SME ต้องการอะไรจริง ๆ ไม่ควรจ่ายค่าอะไร และจุดคุ้มทุนอยู่ตรงไหน โดยคำนวณให้ดู ไม่ใช่เดา</p>
 
     <h2 data-en="Five payroll problems specific to SMEs">5 ปัญหาเงินเดือนที่ SME เจอจริง</h2>
     <div class="feat">
       <span class="num">1</span>
       <h4 data-en="The person doing payroll is not an HR specialist">คนทำเงินเดือนไม่ใช่ HR</h4>
-      <p data-en="In most SMEs payroll sits with the owner, an accountant, or an admin who does five other jobs. They are not doing it wrong through carelessness — they are doing a specialist task part-time.">ใน SME ส่วนใหญ่ งานเงินเดือนอยู่กับเจ้าของ ฝ่ายบัญชี หรือธุรการที่ทำงานอีกห้าอย่างพร้อมกัน ไม่ได้ผิดพลาดเพราะสะเพร่า แต่เพราะทำงานเฉพาะทางแบบไม่เต็มเวลา</p>
+      <p data-en="In most SMEs payroll sits with the owner, an accountant, or an admin who does five other jobs. They are not doing it wrong through carelessness, they are doing a specialist task part-time.">ใน SME ส่วนใหญ่ งานเงินเดือนอยู่กับเจ้าของ ฝ่ายบัญชี หรือธุรการที่ทำงานอีกห้าอย่างพร้อมกัน ไม่ได้ผิดพลาดเพราะสะเพร่า แต่เพราะทำงานเฉพาะทางแบบไม่เต็มเวลา</p>
     </div>
     <div class="feat">
       <span class="num">2</span>
@@ -244,10 +245,10 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="feat">
       <span class="num">5</span>
       <h4 data-en="Nobody covers for you">ไม่มีใครสำรองงานให้</h4>
-      <p data-en="If the one person who understands the payroll file is on leave — or leaves the company — a small business can find nobody knows how the formulas work. Data on a cloud system with more than one login solves that cheaply.">ถ้าคนเดียวที่เข้าใจไฟล์เงินเดือนลาหยุด หรือลาออก ธุรกิจเล็กมักพบว่าไม่มีใครรู้ว่าสูตรทำงานยังไง การเก็บข้อมูลบนระบบที่เข้าได้มากกว่าหนึ่งคนแก้ปัญหานี้ได้ด้วยต้นทุนต่ำ</p>
+      <p data-en="If the one person who understands the payroll file is on leave, or leaves the company, a small business can find nobody knows how the formulas work. Data on a cloud system with more than one login solves that cheaply.">ถ้าคนเดียวที่เข้าใจไฟล์เงินเดือนลาหยุด หรือลาออก ธุรกิจเล็กมักพบว่าไม่มีใครรู้ว่าสูตรทำงานยังไง การเก็บข้อมูลบนระบบที่เข้าได้มากกว่าหนึ่งคนแก้ปัญหานี้ได้ด้วยต้นทุนต่ำ</p>
     </div>
 
-    <h2 data-en="What an SME needs — and what it should refuse to pay for">SME ต้องการอะไร และไม่ควรจ่ายค่าอะไร</h2>
+    <h2 data-en="What an SME needs, and what it should refuse to pay for">SME ต้องการอะไร และไม่ควรจ่ายค่าอะไร</h2>
     <div class="cmpwrap">
       <table class="cmp">
         <thead><tr><th data-en="Needed">จำเป็นต้องมี</th><th data-en="Usually not worth paying for">มักไม่คุ้มที่จะจ่าย</th></tr></thead>
@@ -261,10 +262,10 @@ footer .ft-mail{color:#6ee7b7 !important}
         </tbody>
       </table>
     </div>
-    <div class="warn" data-en="&lt;strong&gt;Overbuying is the most common SME mistake here.&lt;/strong&gt; Paying for modules nobody opens does not just waste money — the extra screens make the tool feel heavier, and the person doing payroll part-time is exactly who cannot afford that."><strong>ซื้อเกินความจำเป็นคือข้อผิดพลาดอันดับหนึ่งของ SME ในเรื่องนี้</strong> การจ่ายค่าโมดูลที่ไม่มีใครเปิดไม่ได้เสียแค่เงิน แต่หน้าจอที่เพิ่มมาทำให้โปรแกรมดูใช้ยากขึ้น และคนที่ทำเงินเดือนแบบไม่เต็มเวลาคือคนที่รับภาระตรงนั้นไม่ไหวที่สุด</div>
+    <div class="warn" data-en="&lt;strong&gt;Overbuying is the most common SME mistake here.&lt;/strong&gt; Paying for modules nobody opens does not just waste money, the extra screens make the tool feel heavier, and the person doing payroll part-time is exactly who cannot afford that."><strong>ซื้อเกินความจำเป็นคือข้อผิดพลาดอันดับหนึ่งของ SME ในเรื่องนี้</strong> การจ่ายค่าโมดูลที่ไม่มีใครเปิดไม่ได้เสียแค่เงิน แต่หน้าจอที่เพิ่มมาทำให้โปรแกรมดูใช้ยากขึ้น และคนที่ทำเงินเดือนแบบไม่เต็มเวลาคือคนที่รับภาระตรงนั้นไม่ไหวที่สุด</div>
 
     <h2 data-en="Is it worth it? The break-even, calculated">คุ้มไหม? คำนวณจุดคุ้มทุนให้ดู</h2>
-    <p data-en="Most SMEs compare the monthly fee against zero, because doing it manually feels free. It is not — it costs the hourly wage of whoever sits down to do it. Here is that cost, using office hours of 22 days × 8 hours:">SME ส่วนใหญ่เทียบค่าโปรแกรมกับศูนย์ เพราะรู้สึกว่าทำเองไม่เสียเงิน ความจริงคือเสีย — เสียเป็นค่าแรงของคนที่นั่งทำ ตารางนี้คิดจากชั่วโมงทำงานปกติ 22 วัน × 8 ชั่วโมง</p>
+    <p data-en="Most SMEs compare the monthly fee against zero, because doing it manually feels free. It is not, it costs the hourly wage of whoever sits down to do it. Here is that cost, using office hours of 22 days × 8 hours:">SME ส่วนใหญ่เทียบค่าโปรแกรมกับศูนย์ เพราะรู้สึกว่าทำเองไม่เสียเงิน ความจริงคือเสีย เสียเป็นค่าแรงของคนที่นั่งทำ ตารางนี้คิดจากชั่วโมงทำงานปกติ 22 วัน × 8 ชั่วโมง</p>
     <div class="cmpwrap">
       <table class="cmp">
         <thead><tr><th data-en="Salary of the person doing payroll">เงินเดือนคนทำ</th><th data-en="Cost per hour">ค่าแรง/ชม.</th><th data-en="3 hrs/month">3 ชม./เดือน</th><th data-en="5 hrs/month">5 ชม./เดือน</th><th data-en="8 hrs/month">8 ชม./เดือน</th></tr></thead>
@@ -280,12 +281,12 @@ footer .ft-mail{color:#6ee7b7 !important}
       <h4 data-en="Break-even for an 11-30 employee business">จุดคุ้มทุนของธุรกิจ 11-30 คน</h4>
       <table>
         <tr><td data-en="eSimPayroll Standard, 11-30 employees, monthly">eSimPayroll แพ็กเกจมาตรฐาน 11-30 คน รายเดือน</td><td>590.00</td></tr>
-        <tr><td data-en="Paid annually (10 months for 12) — per month">จ่ายรายปี (จ่าย 10 เดือน ใช้ 12 เดือน) — เฉลี่ย/เดือน</td><td>491.67</td></tr>
-        <tr><td data-en="Break-even vs a 25,000-baht salary — monthly plan">จุดคุ้มทุนกับคนเงินเดือน 25,000 — รายเดือน</td><td data-en="4.2 hrs">4.2 ชม.</td></tr>
-        <tr><td data-en="Break-even vs a 25,000-baht salary — annual plan">จุดคุ้มทุนกับคนเงินเดือน 25,000 — รายปี</td><td data-en="3.5 hrs">3.5 ชม.</td></tr>
+        <tr><td data-en="Paid annually (10 months for 12), per month">จ่ายรายปี (จ่าย 10 เดือน ใช้ 12 เดือน) เฉลี่ย/เดือน</td><td>491.67</td></tr>
+        <tr><td data-en="Break-even vs a 25,000-baht salary, monthly plan">จุดคุ้มทุนกับคนเงินเดือน 25,000 รายเดือน</td><td data-en="4.2 hrs">4.2 ชม.</td></tr>
+        <tr><td data-en="Break-even vs a 25,000-baht salary, annual plan">จุดคุ้มทุนกับคนเงินเดือน 25,000 รายปี</td><td data-en="3.5 hrs">3.5 ชม.</td></tr>
       </table>
     </div>
-    <p data-en="In other words: if payroll takes more than about &lt;strong&gt;four hours a month&lt;/strong&gt; for a business of this size, the software costs less than doing it by hand — before counting the cost of a single wrong filing. With 1-10 employees there is nothing to work out: the Standard plan is free forever. Full figures on the &lt;a href=&quot;pricing.html&quot;&gt;pricing page&lt;/a&gt;.">พูดอีกอย่างคือ ถ้าการทำเงินเดือนของธุรกิจขนาดนี้ใช้เวลาเกิน <strong>ประมาณ 4 ชั่วโมงต่อเดือน</strong> ค่าโปรแกรมถูกกว่าการทำมือ โดยที่ยังไม่ได้นับต้นทุนของการยื่นเอกสารผิดแม้แต่ครั้งเดียว ส่วนธุรกิจที่มีพนักงาน 1-10 คนไม่ต้องคิดเลย เพราะแพ็กเกจมาตรฐานใช้ฟรีถาวร ดูราคาทั้งหมดที่ <a href="/pricing">หน้าแพ็กเกจและราคา</a></p>
+    <p data-en="In other words: if payroll takes more than about &lt;strong&gt;four hours a month&lt;/strong&gt; for a business of this size, the software costs less than doing it by hand, before counting the cost of a single wrong filing. With 1-10 employees there is nothing to work out: the Standard plan is free forever. Full figures on the &lt;a href=&quot;pricing.html&quot;&gt;pricing page&lt;/a&gt;.">พูดอีกอย่างคือ ถ้าการทำเงินเดือนของธุรกิจขนาดนี้ใช้เวลาเกิน <strong>ประมาณ 4 ชั่วโมงต่อเดือน</strong> ค่าโปรแกรมถูกกว่าการทำมือ โดยที่ยังไม่ได้นับต้นทุนของการยื่นเอกสารผิดแม้แต่ครั้งเดียว ส่วนธุรกิจที่มีพนักงาน 1-10 คนไม่ต้องคิดเลย เพราะแพ็กเกจมาตรฐานใช้ฟรีถาวร ดูราคาทั้งหมดที่ <a href="/pricing">หน้าแพ็กเกจและราคา</a></p>
     <div class="box" data-en="&lt;strong&gt;Do this honestly:&lt;/strong&gt; time yourself on the next payroll run, including checking, printing and filing. Most people find the real figure is well above their estimate."><strong>ทำแบบตรงไปตรงมา:</strong> จับเวลาตัวเองในรอบเงินเดือนถัดไป นับรวมเวลาตรวจทาน พิมพ์เอกสาร และยื่นด้วย คนส่วนใหญ่พบว่าตัวเลขจริงสูงกว่าที่ประเมินไว้มาก</div>
 
     <h2 data-en="A 7-point checklist before you choose">เช็คลิสต์ 7 ข้อก่อนเลือก</h2>
@@ -298,18 +299,18 @@ footer .ft-mail{color:#6ee7b7 !important}
       <li><strong>ส่งออกข้อมูลเป็น CSV</strong> ได้ทั้งหมดไหม เผื่อวันหนึ่งอยากย้ายออก</li>
       <li>คนที่สองล็อกอินเข้ามาทำแทนได้ไหมตอนคนแรกไม่อยู่</li>
     </ul>
-    <p data-en="Test these with a month you have already paid, not with sample data. Sample data hides the awkward cases — the mid-month joiner, the person who resigned, the one with overtime.">ทดสอบด้วยเดือนที่จ่ายเงินไปแล้วจริง ไม่ใช่ข้อมูลตัวอย่าง เพราะข้อมูลตัวอย่างจะซ่อนเคสยาก ๆ ไว้ ทั้งคนเข้ากลางเดือน คนที่ลาออก และคนที่มี OT</p>
+    <p data-en="Test these with a month you have already paid, not with sample data. Sample data hides the awkward cases, the mid-month joiner, the person who resigned, the one with overtime.">ทดสอบด้วยเดือนที่จ่ายเงินไปแล้วจริง ไม่ใช่ข้อมูลตัวอย่าง เพราะข้อมูลตัวอย่างจะซ่อนเคสยาก ๆ ไว้ ทั้งคนเข้ากลางเดือน คนที่ลาออก และคนที่มี OT</p>
 
     <h2 data-en="Where eSimPayroll sits">eSimPayroll อยู่ตรงไหนในภาพนี้</h2>
     <p data-en="&lt;a href=&quot;index.html&quot;&gt;eSimPayroll&lt;/a&gt; was built for exactly this size of business: the Standard plan is free forever for 1-10 employees, paid plans start at 590 baht a month and scale to 150 employees, with everything in the &quot;needed&quot; column above included rather than sold as add-ons. Accounting firms running payroll for several client companies have a separate plan."><a href="/">eSimPayroll</a> ทำมาเพื่อธุรกิจขนาดนี้โดยตรง แพ็กเกจมาตรฐานใช้ฟรีถาวรสำหรับพนักงาน 1-10 คน แพ็กเกจเสียเงินเริ่มต้น 590 บาท/เดือน และขยายได้ถึง 150 คน โดยทุกอย่างในคอลัมน์ "จำเป็นต้องมี" ข้างบนรวมอยู่แล้ว ไม่ได้แยกขายเป็นโมดูลเสริม ส่วนสำนักงานบัญชีที่ทำเงินเดือนให้ลูกค้าหลายบริษัทมีแพ็กเกจแยกให้</p>
-    <div class="box" data-en="Try it against the checklist during the 30-day free trial — no credit card, nothing to install. If any of the seven answers is no, you will know within an hour.">ลองเอาเช็คลิสต์ 7 ข้อไปทดสอบในช่วงทดลองใช้ฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง ถ้ามีข้อไหนตอบว่าไม่ จะรู้ภายในชั่วโมงเดียว</div>
+    <div class="box" data-en="Try it against the checklist during the 30-day free trial, no credit card, nothing to install. If any of the seven answers is no, you will know within an hour.">ลองเอาเช็คลิสต์ 7 ข้อไปทดสอบในช่วงทดลองใช้ฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง ถ้ามีข้อไหนตอบว่าไม่ จะรู้ภายในชั่วโมงเดียว</div>
 
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
-        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน พ.ร.บ.คุ้มครองแรงงาน</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -323,11 +324,11 @@ footer .ft-mail{color:#6ee7b7 !important}
       <details><summary data-en="How much does it cost?">โปรแกรมเงินเดือนสำหรับ SME ราคาเท่าไหร่</summary>
         <p data-en="In Thailand it is normally priced by headcount, billed monthly. eSimPayroll&#39;s Standard plan is free forever for 1-10 employees; for 11-30 employees it is 590 baht a month, and paying annually costs 10 months for 12, about 492 baht a month. The number worth comparing is not the fee alone but the fee against the wage cost of whoever does payroll by hand.">ในไทยมักคิดตามจำนวนพนักงานและเก็บรายเดือน ของ eSimPayroll แพ็กเกจมาตรฐานใช้ฟรีถาวรสำหรับ 1-10 คน ส่วน 11-30 คน 590 บาท/เดือน จ่ายรายปีจ่าย 10 เดือนใช้ 12 เดือน เฉลี่ยราว 492 บาท/เดือน ตัวเลขที่ควรเทียบไม่ใช่ค่าโปรแกรมอย่างเดียว แต่คือค่าโปรแกรมเทียบกับค่าแรงของคนที่นั่งทำเงินเดือนเอง</p></details>
       <details><summary data-en="Do SMEs need a full HR suite?">SME จำเป็นต้องซื้อระบบ HR ครบวงจรไหม</summary>
-        <p data-en="Usually not. Full HR suites cover recruitment, appraisals, training and org structure — things a small business rarely turns on. Paying for unused modules is one of the top reasons businesses overspend on systems, and the extra screens make the tool harder to use.">ส่วนใหญ่ไม่จำเป็น ระบบ HR ครบวงจรรวมงานสรรหา ประเมินผล ฝึกอบรม และโครงสร้างองค์กร ซึ่งธุรกิจเล็กมักไม่ได้เปิดใช้ การจ่ายค่าโมดูลที่ไม่ได้ใช้เป็นสาเหตุต้น ๆ ที่ธุรกิจจ่ายค่าระบบแพงเกินจริง และหน้าจอที่เพิ่มมาทำให้ใช้ยากขึ้น</p></details>
+        <p data-en="Usually not. Full HR suites cover recruitment, appraisals, training and org structure, things a small business rarely turns on. Paying for unused modules is one of the top reasons businesses overspend on systems, and the extra screens make the tool harder to use.">ส่วนใหญ่ไม่จำเป็น ระบบ HR ครบวงจรรวมงานสรรหา ประเมินผล ฝึกอบรม และโครงสร้างองค์กร ซึ่งธุรกิจเล็กมักไม่ได้เปิดใช้ การจ่ายค่าโมดูลที่ไม่ได้ใช้เป็นสาเหตุต้น ๆ ที่ธุรกิจจ่ายค่าระบบแพงเกินจริง และหน้าจอที่เพิ่มมาทำให้ใช้ยากขึ้น</p></details>
     </div>
 
     <h2 data-en="In short">สรุป</h2>
-    <p data-en="Choosing a &lt;strong&gt;payroll system for an SME&lt;/strong&gt; is mostly an exercise in subtraction: work out what you actually do every month, refuse to pay for the rest, and check the four hard cases — mid-month joiners, leavers, daily staff and mid-year raises. Then price it against the hours you are already spending, not against zero.">การเลือก<strong>โปรแกรมเงินเดือน SME</strong> ส่วนใหญ่คือการตัดออก ดูว่าจริง ๆ แล้วทำอะไรทุกเดือนบ้าง ปฏิเสธที่จะจ่ายค่าส่วนที่เหลือ แล้วตรวจ 4 เคสยาก คือคนเข้ากลางเดือน คนลาออก พนักงานรายวัน และการขึ้นเงินเดือนกลางปี จากนั้นค่อยเทียบราคากับ<strong>ชั่วโมงที่เสียไปอยู่แล้ว</strong> ไม่ใช่เทียบกับศูนย์</p>
+    <p data-en="Choosing a &lt;strong&gt;payroll system for an SME&lt;/strong&gt; is mostly an exercise in subtraction: work out what you actually do every month, refuse to pay for the rest, and check the four hard cases, mid-month joiners, leavers, daily staff and mid-year raises. Then price it against the hours you are already spending, not against zero.">การเลือก<strong>โปรแกรมเงินเดือน SME</strong> ส่วนใหญ่คือการตัดออก ดูว่าจริง ๆ แล้วทำอะไรทุกเดือนบ้าง ปฏิเสธที่จะจ่ายค่าส่วนที่เหลือ แล้วตรวจ 4 เคสยาก คือคนเข้ากลางเดือน คนลาออก พนักงานรายวัน และการขึ้นเงินเดือนกลางปี จากนั้นค่อยเทียบราคากับ<strong>ชั่วโมงที่เสียไปอยู่แล้ว</strong> ไม่ใช่เทียบกับศูนย์</p>
   </article>
 </div>
 
@@ -341,7 +342,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <a href="/article-welfare-fund" class="card">
         <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
         <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
-          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-withholding-tax" class="card">
@@ -368,8 +369,8 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="SMEs with 1-100 employees can use &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software&lt;/a&gt; straight away — nothing to install, it runs in the browser.">SME ที่มีพนักงาน 1-100 คน ใช้ <a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll ครบวงจร</a> ได้ทันทีโดยไม่ต้องติดตั้งอะไร เปิดผ่านเบราว์เซอร์ได้เลย</div>
-<h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="SMEs with 1-100 employees can use &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software&lt;/a&gt; straight away, nothing to install, it runs in the browser.">SME ที่มีพนักงาน 1-100 คน ใช้ <a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll ครบวงจร</a> ได้ทันทีโดยไม่ต้องติดตั้งอะไร เปิดผ่านเบราว์เซอร์ได้เลย</div>
+<h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -386,7 +387,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -487,7 +488,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

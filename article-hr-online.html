@@ -73,7 +73,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -92,7 +92,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -180,6 +180,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -216,17 +217,17 @@ footer .ft-mail{color:#6ee7b7 !important}
            data-en-alt="Online HR software used to manage personnel in a browser" width="1200" height="525" fetchpriority="high" decoding="async">
     </figure>
 
-    <p data-en="&lt;strong&gt;Online HR software&lt;/strong&gt; is a personnel system that runs in a web browser and keeps everything about employees in one place — records, attendance, leave, shift rosters, and in most cases payroll. The data lives on the provider's cloud, so it opens on any device with nothing installed."><strong>โปรแกรม HR ออนไลน์</strong> คือระบบบริหารงานบุคคลที่ทำงานผ่านเว็บเบราว์เซอร์ รวมงานที่เกี่ยวกับพนักงานไว้ในที่เดียว ทั้งทะเบียนประวัติ การบันทึกเวลาเข้าออกงาน การลา ตารางกะ และในหลายระบบรวมถึงการคำนวณเงินเดือนด้วย ข้อมูลอยู่บนคลาวด์ของผู้ให้บริการ เปิดใช้จากอุปกรณ์ไหนก็ได้โดยไม่ต้องติดตั้งอะไร</p>
+    <p data-en="&lt;strong&gt;Online HR software&lt;/strong&gt; is a personnel system that runs in a web browser and keeps everything about employees in one place, records, attendance, leave, shift rosters, and in most cases payroll. The data lives on the provider's cloud, so it opens on any device with nothing installed."><strong>โปรแกรม HR ออนไลน์</strong> คือระบบบริหารงานบุคคลที่ทำงานผ่านเว็บเบราว์เซอร์ รวมงานที่เกี่ยวกับพนักงานไว้ในที่เดียว ทั้งทะเบียนประวัติ การบันทึกเวลาเข้าออกงาน การลา ตารางกะ และในหลายระบบรวมถึงการคำนวณเงินเดือนด้วย ข้อมูลอยู่บนคลาวด์ของผู้ให้บริการ เปิดใช้จากอุปกรณ์ไหนก็ได้โดยไม่ต้องติดตั้งอะไร</p>
 
     <h2 data-en="What online HR software actually does">โปรแกรม HR ออนไลน์ ทำอะไรได้บ้าง</h2>
     <p data-en="Scope varies a lot between products. These are the parts most Thai businesses actually use:">ขอบเขตของแต่ละระบบต่างกันมาก ส่วนที่ธุรกิจไทยได้ใช้จริงมักเป็นกลุ่มนี้</p>
     <ul>
-      <li data-en="&lt;strong&gt;Employee records&lt;/strong&gt; — personal details, position, start date, employment type, salary history, documents."><strong>ทะเบียนประวัติพนักงาน</strong> — ข้อมูลส่วนตัว ตำแหน่ง วันเริ่มงาน ประเภทการจ้าง ประวัติการปรับเงินเดือน และเอกสารประกอบ</li>
-      <li data-en="&lt;strong&gt;Attendance&lt;/strong&gt; — clock-in and clock-out, late and early-leave tracking, overtime hours feeding straight into payroll."><strong>เวลาเข้าออกงาน</strong> — บันทึกเวลาเข้าออก นับสาย ออกก่อน และชั่วโมงล่วงเวลาที่ส่งต่อเข้าการคำนวณเงินเดือน</li>
-      <li data-en="&lt;strong&gt;Leave&lt;/strong&gt; — requests, approvals, and remaining entitlement calculated automatically instead of tracked on paper."><strong>การลา</strong> — ยื่นลา อนุมัติ และคำนวณสิทธิคงเหลือให้อัตโนมัติ แทนการจดในสมุด</li>
-      <li data-en="&lt;strong&gt;Shift rosters&lt;/strong&gt; — planning who works which shift, and rotating shifts for businesses that run more than one."><strong>ตารางกะ</strong> — จัดว่าใครเข้ากะไหน และหมุนเวียนกะสำหรับธุรกิจที่มีหลายกะ</li>
-      <li data-en="&lt;strong&gt;Payroll&lt;/strong&gt; — wages, withholding tax, social security and funds, payslips, and the statutory forms."><strong>เงินเดือน</strong> — ค่าจ้าง ภาษีหัก ณ ที่จ่าย ประกันสังคมและกองทุน สลิปเงินเดือน และเอกสารยื่นราชการ</li>
-      <li data-en="&lt;strong&gt;Appraisal and recruitment&lt;/strong&gt; — present in larger HR suites, usually not in payroll-focused products."><strong>ประเมินผลและสรรหา</strong> — มีในระบบ HR ขนาดใหญ่ ส่วนใหญ่ไม่มีในระบบที่เน้นเงินเดือน</li>
+      <li data-en="&lt;strong&gt;Employee records&lt;/strong&gt;: personal details, position, start date, employment type, salary history, documents."><strong>ทะเบียนประวัติพนักงาน</strong> ข้อมูลส่วนตัว ตำแหน่ง วันเริ่มงาน ประเภทการจ้าง ประวัติการปรับเงินเดือน และเอกสารประกอบ</li>
+      <li data-en="&lt;strong&gt;Attendance&lt;/strong&gt;: clock-in and clock-out, late and early-leave tracking, overtime hours feeding straight into payroll."><strong>เวลาเข้าออกงาน</strong> บันทึกเวลาเข้าออก นับสาย ออกก่อน และชั่วโมงล่วงเวลาที่ส่งต่อเข้าการคำนวณเงินเดือน</li>
+      <li data-en="&lt;strong&gt;Leave&lt;/strong&gt;: requests, approvals, and remaining entitlement calculated automatically instead of tracked on paper."><strong>การลา</strong> ยื่นลา อนุมัติ และคำนวณสิทธิคงเหลือให้อัตโนมัติ แทนการจดในสมุด</li>
+      <li data-en="&lt;strong&gt;Shift rosters&lt;/strong&gt;: planning who works which shift, and rotating shifts for businesses that run more than one."><strong>ตารางกะ</strong> จัดว่าใครเข้ากะไหน และหมุนเวียนกะสำหรับธุรกิจที่มีหลายกะ</li>
+      <li data-en="&lt;strong&gt;Payroll&lt;/strong&gt;: wages, withholding tax, social security and funds, payslips, and the statutory forms."><strong>เงินเดือน</strong> ค่าจ้าง ภาษีหัก ณ ที่จ่าย ประกันสังคมและกองทุน สลิปเงินเดือน และเอกสารยื่นราชการ</li>
+      <li data-en="&lt;strong&gt;Appraisal and recruitment&lt;/strong&gt;: present in larger HR suites, usually not in payroll-focused products."><strong>ประเมินผลและสรรหา</strong> มีในระบบ HR ขนาดใหญ่ ส่วนใหญ่ไม่มีในระบบที่เน้นเงินเดือน</li>
     </ul>
 
     <h2 data-en="HR software vs payroll software: the real difference">ต่างจากโปรแกรมเงินเดือนยังไง</h2>
@@ -247,37 +248,37 @@ footer .ft-mail{color:#6ee7b7 !important}
     </div>
 
     <div class="box">
-      <p data-en="&lt;strong&gt;Worth saying plainly:&lt;/strong&gt; eSimPayroll is a payroll system with attendance, leave and shift rosters built in — not a full HR suite. It does not do appraisals, recruitment or training records. If those are what you need, a larger HR platform is the right answer, and this article should help you ask better questions of it.">
+      <p data-en="&lt;strong&gt;Worth saying plainly:&lt;/strong&gt; eSimPayroll is a payroll system with attendance, leave and shift rosters built in, not a full HR suite. It does not do appraisals, recruitment or training records. If those are what you need, a larger HR platform is the right answer, and this article should help you ask better questions of it.">
         <strong>พูดกันตรง ๆ:</strong> eSimPayroll เป็นโปรแกรมเงินเดือนที่มีเวลาทำงาน การลา และตารางกะอยู่ด้วย <strong>ไม่ใช่ระบบ HR ครบวงจร</strong> ไม่มีส่วนประเมินผล สรรหา หรือประวัติการอบรม ถ้าสิ่งที่คุณต้องการคือส่วนเหล่านั้น ระบบ HR ขนาดใหญ่คือคำตอบที่ถูกกว่า และบทความนี้น่าจะช่วยให้ถามคำถามกับผู้ขายได้ตรงจุดขึ้น</p>
     </div>
 
     <h2 data-en="Which businesses should use one">ธุรกิจแบบไหนควรใช้</h2>
-    <p data-en="The tipping point is rarely headcount alone — it is complexity.">จุดที่คุ้มมักไม่ได้อยู่ที่จำนวนคนอย่างเดียว แต่อยู่ที่<strong>ความซับซ้อน</strong></p>
+    <p data-en="The tipping point is rarely headcount alone, it is complexity.">จุดที่คุ้มมักไม่ได้อยู่ที่จำนวนคนอย่างเดียว แต่อยู่ที่<strong>ความซับซ้อน</strong></p>
     <ul>
-      <li data-en="&lt;strong&gt;Worth it&lt;/strong&gt; — from roughly 10 employees, especially with shift work, leave entitlements that must be tracked, people joining and leaving during the year, or more than one person handling HR."><strong>คุ้มที่จะใช้</strong> — ประมาณ 10 คนขึ้นไป โดยเฉพาะที่มีการเข้างานเป็นกะ มีสิทธิลาที่ต้องนับคงเหลือ มีคนเข้าออกระหว่างปี หรือมีคนดูแลงานบุคคลมากกว่าหนึ่งคน</li>
-      <li data-en="&lt;strong&gt;Start smaller&lt;/strong&gt; — a handful of staff on fixed hours, leave you can count on one hand. Payroll software alone is usually enough, and you can add the rest later."><strong>ยังไม่ต้องรีบ</strong> — พนักงานไม่กี่คน เวลาทำงานคงที่ การลานับด้วยมือได้ เริ่มจากโปรแกรมเงินเดือนอย่างเดียวก่อนมักพอ แล้วค่อยขยายทีหลัง</li>
-      <li data-en="&lt;strong&gt;Accounting firms&lt;/strong&gt; — running payroll for several client companies is its own case: what matters most is switching between companies cleanly, not the breadth of HR features."><strong>สำนักงานบัญชี</strong> — เป็นกรณีเฉพาะ สิ่งที่สำคัญที่สุดคือสลับระหว่างบริษัทลูกค้าได้สะอาด ไม่ใช่จำนวนฟีเจอร์ HR</li>
+      <li data-en="&lt;strong&gt;Worth it&lt;/strong&gt;: from roughly 10 employees, especially with shift work, leave entitlements that must be tracked, people joining and leaving during the year, or more than one person handling HR."><strong>คุ้มที่จะใช้</strong> ประมาณ 10 คนขึ้นไป โดยเฉพาะที่มีการเข้างานเป็นกะ มีสิทธิลาที่ต้องนับคงเหลือ มีคนเข้าออกระหว่างปี หรือมีคนดูแลงานบุคคลมากกว่าหนึ่งคน</li>
+      <li data-en="&lt;strong&gt;Start smaller&lt;/strong&gt;: a handful of staff on fixed hours, leave you can count on one hand. Payroll software alone is usually enough, and you can add the rest later."><strong>ยังไม่ต้องรีบ</strong> พนักงานไม่กี่คน เวลาทำงานคงที่ การลานับด้วยมือได้ เริ่มจากโปรแกรมเงินเดือนอย่างเดียวก่อนมักพอ แล้วค่อยขยายทีหลัง</li>
+      <li data-en="&lt;strong&gt;Accounting firms&lt;/strong&gt;: running payroll for several client companies is its own case: what matters most is switching between companies cleanly, not the breadth of HR features."><strong>สำนักงานบัญชี</strong> เป็นกรณีเฉพาะ สิ่งที่สำคัญที่สุดคือสลับระหว่างบริษัทลูกค้าได้สะอาด ไม่ใช่จำนวนฟีเจอร์ HR</li>
     </ul>
 
     <h2 data-en="How to choose one">เลือกโปรแกรม HR ออนไลน์ยังไง</h2>
     <ul>
-      <li data-en="&lt;strong&gt;1. Write down what actually wastes your time&lt;/strong&gt; — pick the system that fixes the heaviest item, not the one with the longest feature list."><strong>1. เขียนงานที่เสียเวลาที่สุดออกมาก่อน</strong> — เลือกระบบที่แก้ข้อที่หนักที่สุดได้ ไม่ใช่เลือกจากจำนวนฟีเจอร์</li>
-      <li data-en="&lt;strong&gt;2. Check the Thai statutory calculations&lt;/strong&gt; — progressive withholding tax, social security with its cap, provident fund, employee welfare fund, and overtime at 1.5× and 3×."><strong>2. ตรวจว่าคำนวณตามกฎหมายไทยครบไหม</strong> — ภาษีหัก ณ ที่จ่ายแบบขั้นบันได ประกันสังคมพร้อมเพดาน กองทุนสำรองเลี้ยงชีพ กองทุนสงเคราะห์ลูกจ้าง และค่าล่วงเวลา 1.5 เท่าและ 3 เท่า</li>
-      <li data-en="&lt;strong&gt;3. Test with a real month&lt;/strong&gt; — during the trial, enter a month you have already paid and compare every figure. Pay attention to mid-month joiners and mid-year pay rises; that is where systems differ."><strong>3. ทดสอบด้วยเดือนจริง</strong> — ช่วงทดลองใช้ ให้กรอกเดือนที่จ่ายไปแล้วจริงแล้วเทียบทุกตัวเลข ดูให้ดีที่กรณีคนเข้างานกลางเดือนและการขึ้นเงินเดือนกลางปี เพราะเป็นจุดที่แต่ละระบบต่างกัน</li>
-      <li data-en="&lt;strong&gt;4. Ask how you get your data out&lt;/strong&gt; — before signing up, not after. A good system exports to a file you can open yourself, such as CSV."><strong>4. ถามเรื่องการนำข้อมูลออก</strong> — ถามก่อนสมัคร ไม่ใช่ตอนจะเลิกใช้ ระบบที่ดีต้องส่งออกเป็นไฟล์ที่เปิดอ่านได้เอง เช่น CSV</li>
-      <li data-en="&lt;strong&gt;5. Start narrow&lt;/strong&gt; — turn on payroll and attendance first, let the team settle, then add the rest. Switching everything on at once is the usual reason projects stall."><strong>5. เริ่มจากขอบเขตเล็กก่อน</strong> — เปิดใช้เงินเดือนกับเวลาทำงานก่อน ให้ทีมคุ้นเคยแล้วค่อยเพิ่มส่วนอื่น การเปิดทุกอย่างพร้อมกันคือสาเหตุที่โครงการมักค้างกลางทาง</li>
+      <li data-en="&lt;strong&gt;1. Write down what actually wastes your time&lt;/strong&gt;: pick the system that fixes the heaviest item, not the one with the longest feature list."><strong>1. เขียนงานที่เสียเวลาที่สุดออกมาก่อน</strong> เลือกระบบที่แก้ข้อที่หนักที่สุดได้ ไม่ใช่เลือกจากจำนวนฟีเจอร์</li>
+      <li data-en="&lt;strong&gt;2. Check the Thai statutory calculations&lt;/strong&gt;: progressive withholding tax, social security with its cap, provident fund, employee welfare fund, and overtime at 1.5× and 3×."><strong>2. ตรวจว่าคำนวณตามกฎหมายไทยครบไหม</strong> ภาษีหัก ณ ที่จ่ายแบบขั้นบันได ประกันสังคมพร้อมเพดาน กองทุนสำรองเลี้ยงชีพ กองทุนสงเคราะห์ลูกจ้าง และค่าล่วงเวลา 1.5 เท่าและ 3 เท่า</li>
+      <li data-en="&lt;strong&gt;3. Test with a real month&lt;/strong&gt;: during the trial, enter a month you have already paid and compare every figure. Pay attention to mid-month joiners and mid-year pay rises; that is where systems differ."><strong>3. ทดสอบด้วยเดือนจริง</strong> ช่วงทดลองใช้ ให้กรอกเดือนที่จ่ายไปแล้วจริงแล้วเทียบทุกตัวเลข ดูให้ดีที่กรณีคนเข้างานกลางเดือนและการขึ้นเงินเดือนกลางปี เพราะเป็นจุดที่แต่ละระบบต่างกัน</li>
+      <li data-en="&lt;strong&gt;4. Ask how you get your data out&lt;/strong&gt;: before signing up, not after. A good system exports to a file you can open yourself, such as CSV."><strong>4. ถามเรื่องการนำข้อมูลออก</strong> ถามก่อนสมัคร ไม่ใช่ตอนจะเลิกใช้ ระบบที่ดีต้องส่งออกเป็นไฟล์ที่เปิดอ่านได้เอง เช่น CSV</li>
+      <li data-en="&lt;strong&gt;5. Start narrow&lt;/strong&gt;: turn on payroll and attendance first, let the team settle, then add the rest. Switching everything on at once is the usual reason projects stall."><strong>5. เริ่มจากขอบเขตเล็กก่อน</strong> เปิดใช้เงินเดือนกับเวลาทำงานก่อน ให้ทีมคุ้นเคยแล้วค่อยเพิ่มส่วนอื่น การเปิดทุกอย่างพร้อมกันคือสาเหตุที่โครงการมักค้างกลางทาง</li>
     </ul>
 
     <h2 data-en="What does it cost?">ราคาประมาณเท่าไหร่</h2>
     <p data-en="Most Thai products charge monthly per employee. Payroll-and-attendance focused systems typically sit in the tens of baht per person per month; full HR suites with appraisal and recruitment cost more and often carry a setup fee.">ส่วนใหญ่ในไทยคิดรายเดือนตามจำนวนพนักงาน ระบบที่เน้นเงินเดือนและเวลาทำงานมักอยู่ในหลักไม่กี่สิบบาทต่อคนต่อเดือน ส่วนระบบ HR ครบวงจรที่มีประเมินผลและสรรหาจะสูงกว่านั้น และมักมีค่าติดตั้งเริ่มต้น</p>
-    <p data-en="Three questions worth asking before you commit: how many employees does this price include, is there a separate setup or training fee, and what happens to the data if we stop.">3 คำถามที่ควรถามก่อนตัดสินใจ — ราคานี้รวมพนักงานกี่คน มีค่าติดตั้งหรือค่าอบรมแยกไหม และถ้าเลิกใช้ข้อมูลจะเป็นยังไง</p>
+    <p data-en="Three questions worth asking before you commit: how many employees does this price include, is there a separate setup or training fee, and what happens to the data if we stop.">3 คำถามที่ควรถามก่อนตัดสินใจ ราคานี้รวมพนักงานกี่คน มีค่าติดตั้งหรือค่าอบรมแยกไหม และถ้าเลิกใช้ข้อมูลจะเป็นยังไง</p>
 
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
-        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน พ.ร.บ.คุ้มครองแรงงาน</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -287,19 +288,19 @@ footer .ft-mail{color:#6ee7b7 !important}
       <details><summary data-en="What is online HR software?">โปรแกรม HR ออนไลน์ คืออะไร</summary>
         <p data-en="A personnel system running in a web browser that keeps employee records, attendance, leave, shift rosters and usually payroll in one place. The data sits on the provider's cloud, so it opens from any device with nothing installed.">คือระบบบริหารงานบุคคลที่ทำงานผ่านเบราว์เซอร์ รวมทะเบียนประวัติ เวลาเข้าออกงาน การลา ตารางกะ และมักรวมเงินเดือนไว้ในที่เดียว ข้อมูลอยู่บนคลาวด์ เปิดจากอุปกรณ์ไหนก็ได้โดยไม่ต้องติดตั้ง</p></details>
       <details><summary data-en="How is it different from payroll software?">ต่างจากโปรแกรมเงินเดือนอย่างไร</summary>
-        <p data-en="Payroll software focuses on calculating pay, tax and contributions and producing payslips and statutory forms. HR software covers a wider scope — records, leave, attendance, appraisal, recruitment. In practice they overlap: good payroll products include attendance and leave, and large HR suites include payroll.">โปรแกรมเงินเดือนโฟกัสที่คำนวณค่าจ้าง ภาษี เงินสมทบ และออกสลิปกับเอกสารยื่น ส่วนโปรแกรม HR ขอบเขตกว้างกว่า ครอบคลุมทะเบียนประวัติ การลา เวลาทำงาน ประเมินผล และสรรหา ในทางปฏิบัติทับซ้อนกัน โปรแกรมเงินเดือนที่ดีมักมีเวลาทำงานและการลา ส่วนระบบ HR ใหญ่ก็มักมีเงินเดือน</p></details>
+        <p data-en="Payroll software focuses on calculating pay, tax and contributions and producing payslips and statutory forms. HR software covers a wider scope, records, leave, attendance, appraisal, recruitment. In practice they overlap: good payroll products include attendance and leave, and large HR suites include payroll.">โปรแกรมเงินเดือนโฟกัสที่คำนวณค่าจ้าง ภาษี เงินสมทบ และออกสลิปกับเอกสารยื่น ส่วนโปรแกรม HR ขอบเขตกว้างกว่า ครอบคลุมทะเบียนประวัติ การลา เวลาทำงาน ประเมินผล และสรรหา ในทางปฏิบัติทับซ้อนกัน โปรแกรมเงินเดือนที่ดีมักมีเวลาทำงานและการลา ส่วนระบบ HR ใหญ่ก็มักมีเงินเดือน</p></details>
       <details><summary data-en="When should a business start using one?">ธุรกิจขนาดไหนควรเริ่มใช้</summary>
-        <p data-en="Complexity matters more than headcount. From around ten employees — especially with shift work, leave entitlements to track, turnover during the year, or more than one person handling HR — a system starts paying off. With a few staff on fixed hours, payroll software alone is usually enough to begin with.">ความซับซ้อนสำคัญกว่าจำนวนคน ประมาณ 10 คนขึ้นไป โดยเฉพาะที่มีกะ มีสิทธิลาที่ต้องนับ มีคนเข้าออกระหว่างปี หรือมีคนดูแลมากกว่าหนึ่งคน ระบบจะเริ่มคุ้ม ถ้ามีพนักงานไม่กี่คนเวลาทำงานคงที่ เริ่มจากโปรแกรมเงินเดือนอย่างเดียวก่อนมักพอ</p></details>
+        <p data-en="Complexity matters more than headcount. From around ten employees, especially with shift work, leave entitlements to track, turnover during the year, or more than one person handling HR, a system starts paying off. With a few staff on fixed hours, payroll software alone is usually enough to begin with.">ความซับซ้อนสำคัญกว่าจำนวนคน ประมาณ 10 คนขึ้นไป โดยเฉพาะที่มีกะ มีสิทธิลาที่ต้องนับ มีคนเข้าออกระหว่างปี หรือมีคนดูแลมากกว่าหนึ่งคน ระบบจะเริ่มคุ้ม ถ้ามีพนักงานไม่กี่คนเวลาทำงานคงที่ เริ่มจากโปรแกรมเงินเดือนอย่างเดียวก่อนมักพอ</p></details>
       <details><summary data-en="How much does it cost?">ราคาประมาณเท่าไหร่</summary>
         <p data-en="Usually monthly per employee. Payroll-and-attendance systems tend to be tens of baht per person per month; full HR suites cost more and often add a setup fee. Ask how many employees the price covers, whether setup or training is billed separately, and how you export your data if you leave.">ส่วนใหญ่คิดรายเดือนตามจำนวนคน ระบบที่เน้นเงินเดือนและเวลาทำงานมักอยู่หลักไม่กี่สิบบาทต่อคนต่อเดือน ระบบ HR ครบวงจรสูงกว่าและมักมีค่าติดตั้ง ควรถามว่าราคารวมกี่คน มีค่าติดตั้งหรืออบรมแยกไหม และถ้าเลิกใช้จะดึงข้อมูลออกยังไง</p></details>
     </div>
 
     <h2 data-en="In short">สรุป</h2>
-    <p data-en="&lt;strong&gt;Online HR software&lt;/strong&gt; is worth buying for the part of it you will actually open every week. Most businesses that regret the purchase bought breadth they never used, while the thing that genuinely cost them time — payroll and attendance — was something a narrower system handled better and cheaper.">สิ่งที่ควรจ่ายเงินให้<strong>โปรแกรม HR ออนไลน์</strong> คือส่วนที่คุณจะเปิดใช้จริงทุกสัปดาห์ ธุรกิจที่เสียดายเงินส่วนใหญ่ซื้อความกว้างที่ไม่ได้ใช้ ขณะที่งานซึ่งกินเวลาจริง — เงินเดือนกับเวลาทำงาน — เป็นสิ่งที่ระบบเล็กกว่าทำได้ดีกว่าและถูกกว่า</p>
+    <p data-en="&lt;strong&gt;Online HR software&lt;/strong&gt; is worth buying for the part of it you will actually open every week. Most businesses that regret the purchase bought breadth they never used, while the thing that genuinely cost them time, payroll and attendance, was something a narrower system handled better and cheaper.">สิ่งที่ควรจ่ายเงินให้<strong>โปรแกรม HR ออนไลน์</strong> คือส่วนที่คุณจะเปิดใช้จริงทุกสัปดาห์ ธุรกิจที่เสียดายเงินส่วนใหญ่ซื้อความกว้างที่ไม่ได้ใช้ ขณะที่งานซึ่งกินเวลาจริง เงินเดือนกับเวลาทำงาน เป็นสิ่งที่ระบบเล็กกว่าทำได้ดีกว่าและถูกกว่า</p>
 
     <div class="cta-band">
-      <h2 data-en="eSimPayroll — payroll, attendance, leave and shifts in one place">eSimPayroll — เงินเดือน เวลาทำงาน การลา และกะ ในที่เดียว</h2>
-      <p data-en="Not a full HR suite, and not trying to be. It calculates payroll to Thai law and handles attendance, leave and shift rosters — on the Premium plan with mobile check-in (selfie, face scan, GPS), mobile leave requests with an approval chain, and automatic shift rotation. 30 days free, no credit card, nothing to install.">ไม่ใช่ระบบ HR ครบวงจร และไม่ได้พยายามจะเป็น แต่คำนวณเงินเดือนตามกฎหมายไทย พร้อมดูแลเวลาทำงาน การลา และตารางกะ — แพ็กเกจพรีเมียมมีลงเวลาผ่านมือถือ (เซลฟี สแกนใบหน้า GPS) ลางานผ่านมือถือพร้อมสายอนุมัติ และหมุนเวียนกะอัตโนมัติ ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
+      <h2 data-en="eSimPayroll, payroll, attendance, leave and shifts in one place">eSimPayroll เงินเดือน เวลาทำงาน การลา และกะ ในที่เดียว</h2>
+      <p data-en="Not a full HR suite, and not trying to be. It calculates payroll to Thai law and handles attendance, leave and shift rosters, on the Premium plan with mobile check-in (selfie, face scan, GPS), mobile leave requests with an approval chain, and automatic shift rotation. 30 days free, no credit card, nothing to install.">ไม่ใช่ระบบ HR ครบวงจร และไม่ได้พยายามจะเป็น แต่คำนวณเงินเดือนตามกฎหมายไทย พร้อมดูแลเวลาทำงาน การลา และตารางกะ แพ็กเกจพรีเมียมมีลงเวลาผ่านมือถือ (เซลฟี สแกนใบหน้า GPS) ลางานผ่านมือถือพร้อมสายอนุมัติ และหมุนเวียนกะอัตโนมัติ ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
       <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
         <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
         <a href="/features" class="btn ghost" data-en="See all features">ดูฟีเจอร์ทั้งหมด</a>
@@ -346,8 +347,8 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="For businesses that want to start with payroll first, &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software&lt;/a&gt; covers attendance, leave and payroll in one system — no need to stitch several tools together.">สำหรับธุรกิจที่ต้องการเริ่มจากงานเงินเดือนก่อน <a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll ของ eSimPayroll</a> ครอบคลุมทั้งลงเวลา ลางาน และคำนวณเงินเดือนในระบบเดียว ไม่ต้องต่อหลายโปรแกรม</div>
-<h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="For businesses that want to start with payroll first, &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software&lt;/a&gt; covers attendance, leave and payroll in one system, no need to stitch several tools together.">สำหรับธุรกิจที่ต้องการเริ่มจากงานเงินเดือนก่อน <a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll ของ eSimPayroll</a> ครอบคลุมทั้งลงเวลา ลางาน และคำนวณเงินเดือนในระบบเดียว ไม่ต้องต่อหลายโปรแกรม</div>
+<h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -364,7 +365,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -465,7 +466,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

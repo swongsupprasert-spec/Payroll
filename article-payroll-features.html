@@ -73,7 +73,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -92,7 +92,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -185,6 +185,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -221,13 +222,13 @@ footer .ft-mail{color:#6ee7b7 !important}
            data-en-alt="Payroll software features for HR and accounting teams" width="1200" height="525" fetchpriority="high" decoding="async">
     </figure>
 
-    <p data-en="&lt;strong&gt;Payroll software&lt;/strong&gt; is a program that calculates wages, overtime, withholding tax and statutory contributions, then produces payslips and the forms an employer must file. The word covers a wide range of products, though — some handle everything, others stop at the arithmetic and leave the paperwork to you."><strong>โปรแกรม Payroll</strong> คือโปรแกรมที่คำนวณค่าจ้าง ค่าล่วงเวลา ภาษีหัก ณ ที่จ่าย และเงินสมทบตามกฎหมาย แล้วออกสลิปเงินเดือนพร้อมเอกสารที่นายจ้างต้องยื่นราชการ แต่คำนี้ครอบคลุมสินค้าหลากหลายมาก บางตัวทำครบ บางตัวจบแค่คิดเลขแล้วปล่อยงานเอกสารให้คุณทำเอง</p>
+    <p data-en="&lt;strong&gt;Payroll software&lt;/strong&gt; is a program that calculates wages, overtime, withholding tax and statutory contributions, then produces payslips and the forms an employer must file. The word covers a wide range of products, though, some handle everything, others stop at the arithmetic and leave the paperwork to you."><strong>โปรแกรม Payroll</strong> คือโปรแกรมที่คำนวณค่าจ้าง ค่าล่วงเวลา ภาษีหัก ณ ที่จ่าย และเงินสมทบตามกฎหมาย แล้วออกสลิปเงินเดือนพร้อมเอกสารที่นายจ้างต้องยื่นราชการ แต่คำนี้ครอบคลุมสินค้าหลากหลายมาก บางตัวทำครบ บางตัวจบแค่คิดเลขแล้วปล่อยงานเอกสารให้คุณทำเอง</p>
 
-    <p data-en="This article lists the &lt;strong&gt;10 features a payroll system should have&lt;/strong&gt; to actually finish the job in Thailand. Use it as a checklist when you compare products — if any one is missing, that part of the work goes back to being manual.">บทความนี้รวม <strong>10 ฟีเจอร์ที่ระบบ Payroll ควรมีครบ</strong> เพื่อให้งานจบจริงในบริบทกฎหมายไทย ใช้เป็นเช็คลิสต์ตอนเทียบสินค้าได้เลย เพราะถ้าขาดข้อใดข้อหนึ่ง งานส่วนนั้นจะย้อนกลับไปทำมือ</p>
+    <p data-en="This article lists the &lt;strong&gt;10 features a payroll system should have&lt;/strong&gt; to actually finish the job in Thailand. Use it as a checklist when you compare products, if any one is missing, that part of the work goes back to being manual.">บทความนี้รวม <strong>10 ฟีเจอร์ที่ระบบ Payroll ควรมีครบ</strong> เพื่อให้งานจบจริงในบริบทกฎหมายไทย ใช้เป็นเช็คลิสต์ตอนเทียบสินค้าได้เลย เพราะถ้าขาดข้อใดข้อหนึ่ง งานส่วนนั้นจะย้อนกลับไปทำมือ</p>
 
-    <div class="box" data-en="&lt;strong&gt;How to use this list:&lt;/strong&gt; during a trial, do not just look at whether a feature exists. Enter one month you have already paid and check that the numbers match your own records. A feature that exists but computes differently is worse than one that is missing, because you will not notice."><strong>วิธีใช้เช็คลิสต์นี้:</strong> ตอนทดลองใช้ อย่าดูแค่ว่ามีฟีเจอร์หรือไม่ ให้เอาเดือนที่จ่ายเงินไปแล้วจริงมากรอก แล้วเทียบว่าตัวเลขตรงกับของเดิมไหม เพราะฟีเจอร์ที่มีแต่คิดคนละแบบ อันตรายกว่าฟีเจอร์ที่ไม่มี — เพราะคุณจะไม่รู้ตัว</div>
+    <div class="box" data-en="&lt;strong&gt;How to use this list:&lt;/strong&gt; during a trial, do not just look at whether a feature exists. Enter one month you have already paid and check that the numbers match your own records. A feature that exists but computes differently is worse than one that is missing, because you will not notice."><strong>วิธีใช้เช็คลิสต์นี้:</strong> ตอนทดลองใช้ อย่าดูแค่ว่ามีฟีเจอร์หรือไม่ ให้เอาเดือนที่จ่ายเงินไปแล้วจริงมากรอก แล้วเทียบว่าตัวเลขตรงกับของเดิมไหม เพราะฟีเจอร์ที่มีแต่คิดคนละแบบ อันตรายกว่าฟีเจอร์ที่ไม่มี เพราะคุณจะไม่รู้ตัว</div>
 
-    <div style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:20px 0;color:#1f2937" data-en="Looking for a payroll program that already does all ten? <a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;>eSimPayroll payroll software</a> covers every item on this checklist — try it free for 30 days.">กำลังมองหา<a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll ของ eSimPayroll</a>ที่ทำครบทั้ง 10 ข้อนี้อยู่แล้ว? ทดลองใช้ฟรี 30 วัน ไม่ต้องผูกบัตร</div>
+    <div style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:20px 0;color:#1f2937" data-en="Looking for a payroll program that already does all ten? <a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;>eSimPayroll payroll software</a> covers every item on this checklist, try it free for 30 days.">กำลังมองหา<a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll ของ eSimPayroll</a>ที่ทำครบทั้ง 10 ข้อนี้อยู่แล้ว? ทดลองใช้ฟรี 30 วัน ไม่ต้องผูกบัตร</div>
 <h2 data-en="The 10 features a payroll system should have">10 ฟีเจอร์ที่โปรแกรม Payroll ควรมี</h2>
 
     <div class="feat">
@@ -248,21 +249,21 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="feat">
       <span class="num">3</span>
       <h4 data-en="Overtime (OT)">ค่าล่วงเวลา (OT)</h4>
-      <p data-en="Thai law sets different multipliers depending on when the overtime falls — 1.5× for overtime on a working day and 3× for overtime on a holiday, among others. The hourly rate itself is derived differently for monthly and daily staff.">กฎหมายไทยกำหนดตัวคูณต่างกันตามช่วงเวลาที่ทำ เช่น <strong>1.5 เท่า</strong> สำหรับล่วงเวลาวันทำงาน และ <strong>3 เท่า</strong> สำหรับล่วงเวลาวันหยุด ส่วนอัตราต่อชั่วโมงก็คำนวณคนละสูตรระหว่างรายเดือนกับรายวัน</p>
+      <p data-en="Thai law sets different multipliers depending on when the overtime falls, 1.5× for overtime on a working day and 3× for overtime on a holiday, among others. The hourly rate itself is derived differently for monthly and daily staff.">กฎหมายไทยกำหนดตัวคูณต่างกันตามช่วงเวลาที่ทำ เช่น <strong>1.5 เท่า</strong> สำหรับล่วงเวลาวันทำงาน และ <strong>3 เท่า</strong> สำหรับล่วงเวลาวันหยุด ส่วนอัตราต่อชั่วโมงก็คำนวณคนละสูตรระหว่างรายเดือนกับรายวัน</p>
       <div class="chk" data-en="&lt;b&gt;Check:&lt;/b&gt; can you choose the multiplier per entry, and does the hourly rate follow the employee's pay type automatically? Typing the OT amount by hand every month defeats the purpose."><b>เช็ค:</b> เลือกตัวคูณรายรายการได้ไหม และอัตราต่อชั่วโมงเปลี่ยนตามประเภทการจ้างให้เองหรือเปล่า ถ้าต้องพิมพ์ยอด OT เองทุกเดือนก็ไม่ต่างจากทำมือ</div>
     </div>
 
     <div class="feat">
       <span class="num">4</span>
       <h4 data-en="Earnings and deductions">เงินเพิ่มและเงินหัก</h4>
-      <p data-en="Beyond base pay there are commission, diligence allowance, travel and position allowances, bonuses — and on the other side, absence deductions, company loans, student-loan repayments (KYS) and mid-month advances.">นอกจากค่าจ้างฐานยังมีค่าคอมมิชชั่น เบี้ยขยัน ค่าเดินทาง ค่าตำแหน่ง โบนัส และฝั่งเงินหักอย่างหักขาดงาน เงินกู้บริษัท กยศ. และเงินเบิกล่วงหน้ากลางเดือน</p>
-      <div class="chk" data-en="&lt;b&gt;Check:&lt;/b&gt; which items count toward the &lt;strong&gt;social security wage base&lt;/strong&gt;? Regular allowances do; overtime and bonuses do not. A system that lumps everything together will over-deduct."><b>เช็ค:</b> รายการไหนนับเป็น<strong>ฐานค่าจ้างประกันสังคม</strong> — ค่าตอบแทนประจำนับ ส่วนค่าล่วงเวลากับโบนัสไม่นับ ระบบที่รวมทุกอย่างเป็นก้อนเดียวจะหักเกิน</div>
+      <p data-en="Beyond base pay there are commission, diligence allowance, travel and position allowances, bonuses, and on the other side, absence deductions, company loans, student-loan repayments (KYS) and mid-month advances.">นอกจากค่าจ้างฐานยังมีค่าคอมมิชชั่น เบี้ยขยัน ค่าเดินทาง ค่าตำแหน่ง โบนัส และฝั่งเงินหักอย่างหักขาดงาน เงินกู้บริษัท กยศ. และเงินเบิกล่วงหน้ากลางเดือน</p>
+      <div class="chk" data-en="&lt;b&gt;Check:&lt;/b&gt; which items count toward the &lt;strong&gt;social security wage base&lt;/strong&gt;? Regular allowances do; overtime and bonuses do not. A system that lumps everything together will over-deduct."><b>เช็ค:</b> รายการไหนนับเป็น<strong>ฐานค่าจ้างประกันสังคม</strong> ค่าตอบแทนประจำนับ ส่วนค่าล่วงเวลากับโบนัสไม่นับ ระบบที่รวมทุกอย่างเป็นก้อนเดียวจะหักเกิน</div>
     </div>
 
     <div class="feat">
       <span class="num">5</span>
       <h4 data-en="Withholding tax">ภาษีหัก ณ ที่จ่าย</h4>
-      <p data-en="The most misunderstood part. Thai withholding tax is not computed month by month — it is derived from &lt;strong&gt;projected income for the whole tax year&lt;/strong&gt;, less expenses and allowances, run through the progressive brackets, then divided across the months worked.">ส่วนที่เข้าใจผิดกันมากที่สุด ภาษีหัก ณ ที่จ่ายของไทย<strong>ไม่ได้คิดทีละเดือน</strong> แต่คิดจาก<strong>เงินได้ทั้งปีภาษี</strong> หักค่าใช้จ่ายและค่าลดหย่อน เข้าอัตราก้าวหน้า แล้วจึงหารเฉลี่ยตามเดือนที่ทำงาน</p>
+      <p data-en="The most misunderstood part. Thai withholding tax is not computed month by month, it is derived from &lt;strong&gt;projected income for the whole tax year&lt;/strong&gt;, less expenses and allowances, run through the progressive brackets, then divided across the months worked.">ส่วนที่เข้าใจผิดกันมากที่สุด ภาษีหัก ณ ที่จ่ายของไทย<strong>ไม่ได้คิดทีละเดือน</strong> แต่คิดจาก<strong>เงินได้ทั้งปีภาษี</strong> หักค่าใช้จ่ายและค่าลดหย่อน เข้าอัตราก้าวหน้า แล้วจึงหารเฉลี่ยตามเดือนที่ทำงาน</p>
       <p data-en="This is why a raise in June, a bonus in December or an employee joining in August changes the tax for every remaining month.">เพราะแบบนี้ การขึ้นเงินเดือนเดือนมิถุนายน โบนัสเดือนธันวาคม หรือพนักงานเข้างานเดือนสิงหาคม จึงกระทบภาษีของทุกเดือนที่เหลือ</p>
       <div class="chk" data-en="&lt;b&gt;Check:&lt;/b&gt; enter a raise mid-year and see whether the monthly tax for the &lt;em&gt;earlier&lt;/em&gt; months is recalculated too. If only the current month moves, the system is computing tax the wrong way. See &lt;a href=&quot;article-withholding-tax.html&quot;&gt;how withholding tax is calculated&lt;/a&gt;."><b>เช็ค:</b> ลองใส่การขึ้นเงินเดือนกลางปี แล้วดูว่าภาษีของเดือน<em>ก่อนหน้า</em>ถูกคำนวณใหม่ด้วยไหม ถ้าขยับแค่เดือนปัจจุบัน แปลว่าระบบคิดภาษีผิดวิธี ดูเพิ่มที่ <a href="/article-withholding-tax">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</a></div>
     </div>
@@ -284,7 +285,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="feat">
       <span class="num">8</span>
       <h4 data-en="Withholding tax certificate (50 Bis)">หนังสือรับรองการหักภาษี 50 ทวิ</h4>
-      <p data-en="The certificate each employee needs in order to file their own annual personal income tax return. The employer must issue it — employees cannot produce it themselves.">เอกสารที่พนักงานต้องใช้ไปยื่นภาษีเงินได้บุคคลธรรมดาประจำปีของตัวเอง นายจ้างมีหน้าที่ออกให้ พนักงานทำเองไม่ได้</p>
+      <p data-en="The certificate each employee needs in order to file their own annual personal income tax return. The employer must issue it, employees cannot produce it themselves.">เอกสารที่พนักงานต้องใช้ไปยื่นภาษีเงินได้บุคคลธรรมดาประจำปีของตัวเอง นายจ้างมีหน้าที่ออกให้ พนักงานทำเองไม่ได้</p>
       <div class="chk" data-en="&lt;b&gt;Check:&lt;/b&gt; are the totals pulled from the payroll records automatically, or retyped? Retyping is where transcription errors enter, and this is the document employees check most carefully."><b>เช็ค:</b> ยอดรวมดึงจากข้อมูลเงินเดือนอัตโนมัติ หรือต้องคีย์ใหม่ การคีย์ซ้ำคือจุดที่ตัวเลขเพี้ยน และนี่คือเอกสารที่พนักงานตรวจละเอียดที่สุด</div>
     </div>
 
@@ -323,28 +324,28 @@ footer .ft-mail{color:#6ee7b7 !important}
     </div>
 
     <h2 data-en="Payroll software or full HR software?">โปรแกรม Payroll หรือ โปรแกรม HR Payroll</h2>
-    <p data-en="&lt;strong&gt;Payroll software&lt;/strong&gt; focuses on wages, tax, contributions and statutory forms. &lt;strong&gt;HR software&lt;/strong&gt; covers the wider people function — recruitment, appraisals, training, org structure. Products that bundle both are marketed as &lt;strong&gt;HR Payroll&lt;/strong&gt; suites."><strong>โปรแกรม Payroll</strong> เน้นค่าจ้าง ภาษี เงินสมทบ และเอกสารยื่นราชการ ส่วน<strong>โปรแกรม HR</strong> ครอบคลุมงานบุคคลทั้งหมด ทั้งสรรหา ประเมินผล ฝึกอบรม และโครงสร้างองค์กร ตัวที่รวมสองอย่างเข้าด้วยกันมักขายในชื่อ <strong>โปรแกรม HR Payroll</strong></p>
-    <div class="warn" data-en="&lt;strong&gt;Do not overbuy.&lt;/strong&gt; A 20-person company rarely needs appraisal workflows and competency matrices. Paying for modules nobody opens is the most common way businesses overspend on HR systems — and the unused screens make the tool feel heavier than it is."><strong>อย่าซื้อเกินความจำเป็น</strong> บริษัท 20 คนแทบไม่ได้ใช้ระบบประเมินผลหรือผังสมรรถนะ การจ่ายค่าโมดูลที่ไม่มีใครเปิดคือสาเหตุอันดับหนึ่งที่ธุรกิจจ่ายค่าระบบ HR แพงเกินจริง และหน้าจอที่ไม่ได้ใช้ยังทำให้โปรแกรมดูใช้ยากกว่าที่เป็น</div>
+    <p data-en="&lt;strong&gt;Payroll software&lt;/strong&gt; focuses on wages, tax, contributions and statutory forms. &lt;strong&gt;HR software&lt;/strong&gt; covers the wider people function, recruitment, appraisals, training, org structure. Products that bundle both are marketed as &lt;strong&gt;HR Payroll&lt;/strong&gt; suites."><strong>โปรแกรม Payroll</strong> เน้นค่าจ้าง ภาษี เงินสมทบ และเอกสารยื่นราชการ ส่วน<strong>โปรแกรม HR</strong> ครอบคลุมงานบุคคลทั้งหมด ทั้งสรรหา ประเมินผล ฝึกอบรม และโครงสร้างองค์กร ตัวที่รวมสองอย่างเข้าด้วยกันมักขายในชื่อ <strong>โปรแกรม HR Payroll</strong></p>
+    <div class="warn" data-en="&lt;strong&gt;Do not overbuy.&lt;/strong&gt; A 20-person company rarely needs appraisal workflows and competency matrices. Paying for modules nobody opens is the most common way businesses overspend on HR systems, and the unused screens make the tool feel heavier than it is."><strong>อย่าซื้อเกินความจำเป็น</strong> บริษัท 20 คนแทบไม่ได้ใช้ระบบประเมินผลหรือผังสมรรถนะ การจ่ายค่าโมดูลที่ไม่มีใครเปิดคือสาเหตุอันดับหนึ่งที่ธุรกิจจ่ายค่าระบบ HR แพงเกินจริง และหน้าจอที่ไม่ได้ใช้ยังทำให้โปรแกรมดูใช้ยากกว่าที่เป็น</div>
 
     <h2 data-en="How eSimPayroll covers all ten">eSimPayroll ทำทั้ง 10 ข้อนี้ได้อย่างไร</h2>
     <p data-en="&lt;a href=&quot;index.html&quot;&gt;eSimPayroll&lt;/a&gt; is &lt;strong&gt;online payroll software&lt;/strong&gt; built specifically around Thai payroll rules, so the ten items above map to menus in the app rather than to add-on modules:"><a href="/">eSimPayroll</a> เป็น<strong>โปรแกรมเงินเดือนออนไลน์</strong>ที่ออกแบบมาเพื่อกฎหมายเงินเดือนไทยโดยเฉพาะ ทั้ง 10 ข้อข้างต้นจึงเป็นเมนูในโปรแกรม ไม่ใช่โมดูลเสริมที่ต้องซื้อเพิ่ม</p>
-    <ul data-en="&lt;li&gt;&lt;strong&gt;1-2&lt;/strong&gt; Employee records keep start date, resignation date and a full salary history; mid-month joiners are prorated day by day&lt;/li&gt;&lt;li&gt;&lt;strong&gt;3-4&lt;/strong&gt; Overtime multipliers follow the law and the hourly rate follows the pay type; earnings and deductions know which items enter the social security wage base · the Premium plan adds per-day, per-person OT approval, day-based multipliers (1.5 / 2 / 3×) and automatic 3× OT for work on company-calendar holidays&lt;/li&gt;&lt;li&gt;&lt;strong&gt;5&lt;/strong&gt; Tax is computed from full-year income across every month worked, so a raise or a mid-year joiner is reflected automatically&lt;/li&gt;&lt;li&gt;&lt;strong&gt;6&lt;/strong&gt; Social security rate and ceiling are editable in settings, directors can be excluded, and the welfare fund is supported&lt;/li&gt;&lt;li&gt;&lt;strong&gt;7-9&lt;/strong&gt; Payslips, 50 Bis, PND.1 and SSO 1-10 are generated from the same records — nothing is retyped — and only people actually employed that month are listed&lt;/li&gt;&lt;li&gt;&lt;strong&gt;10&lt;/strong&gt; Summary, by-department and full-detail reports, all exportable to CSV&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Also (Premium)&lt;/strong&gt; mobile check-in with selfie, face scan and GPS — no app to install · mobile leave requests with an approval chain and photo attachments · multiple shifts with automatic rotation — all flowing into payroll&lt;/li&gt;">
+    <ul data-en="&lt;li&gt;&lt;strong&gt;1-2&lt;/strong&gt; Employee records keep start date, resignation date and a full salary history; mid-month joiners are prorated day by day&lt;/li&gt;&lt;li&gt;&lt;strong&gt;3-4&lt;/strong&gt; Overtime multipliers follow the law and the hourly rate follows the pay type; earnings and deductions know which items enter the social security wage base · the Premium plan adds per-day, per-person OT approval, day-based multipliers (1.5 / 2 / 3×) and automatic 3× OT for work on company-calendar holidays&lt;/li&gt;&lt;li&gt;&lt;strong&gt;5&lt;/strong&gt; Tax is computed from full-year income across every month worked, so a raise or a mid-year joiner is reflected automatically&lt;/li&gt;&lt;li&gt;&lt;strong&gt;6&lt;/strong&gt; Social security rate and ceiling are editable in settings, directors can be excluded, and the welfare fund is supported&lt;/li&gt;&lt;li&gt;&lt;strong&gt;7-9&lt;/strong&gt; Payslips, 50 Bis, PND.1 and SSO 1-10 are generated from the same records, nothing is retyped, and only people actually employed that month are listed&lt;/li&gt;&lt;li&gt;&lt;strong&gt;10&lt;/strong&gt; Summary, by-department and full-detail reports, all exportable to CSV&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Also (Premium)&lt;/strong&gt; mobile check-in with selfie, face scan and GPS, no app to install · mobile leave requests with an approval chain and photo attachments · multiple shifts with automatic rotation, all flowing into payroll&lt;/li&gt;">
       <li><strong>ข้อ 1-2</strong> ข้อมูลพนักงานเก็บวันเริ่มงาน วันลาออก และประวัติการขึ้นเงินเดือนครบ คนเข้ากลางเดือนคิดเฉลี่ยรายวันให้</li>
       <li><strong>ข้อ 3-4</strong> ตัวคูณ OT ตามกฎหมาย อัตราต่อชั่วโมงเปลี่ยนตามประเภทการจ้าง และระบบรู้ว่ารายการไหนเข้าฐานประกันสังคม · แพ็กเกจพรีเมียมอนุมัติ OT รายวันรายคน ตั้งตัวคูณตามวัน (1.5 / 2 / 3 เท่า) และทำงานวันหยุดในปฏิทินบริษัทคิด OT 3 เท่าให้อัตโนมัติ</li>
       <li><strong>ข้อ 5</strong> ภาษีคำนวณจากเงินได้ทั้งปีทุกเดือนที่ทำงาน ขึ้นเงินเดือนหรือเข้างานกลางปีจึงสะท้อนให้อัตโนมัติ</li>
       <li><strong>ข้อ 6</strong> อัตราและเพดานประกันสังคมแก้ได้เองในหน้าตั้งค่า ยกเว้นกรรมการได้ และรองรับกองทุนสงเคราะห์ลูกจ้าง</li>
       <li><strong>ข้อ 7-9</strong> สลิป 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 ออกจากข้อมูลชุดเดียวกัน ไม่ต้องคีย์ซ้ำ และแสดงเฉพาะคนที่ทำงานอยู่จริงในเดือนนั้น</li>
       <li><strong>ข้อ 10</strong> รายงานสรุป แยกตามแผนก และรายละเอียดทั้งหมด ส่งออก CSV ได้</li>
-      <li><strong>เพิ่มเติม (พรีเมียม)</strong> ลงเวลาผ่านมือถือด้วยเซลฟี สแกนใบหน้า และตรวจ GPS ไม่ต้องติดตั้งแอป · ลางานผ่านมือถือพร้อมสายอนุมัติและแนบรูป · ตั้งกะหลายกะและหมุนเวียนกะอัตโนมัติ — ทั้งหมดส่งผลเข้าเงินเดือนให้เอง</li>
+      <li><strong>เพิ่มเติม (พรีเมียม)</strong> ลงเวลาผ่านมือถือด้วยเซลฟี สแกนใบหน้า และตรวจ GPS ไม่ต้องติดตั้งแอป · ลางานผ่านมือถือพร้อมสายอนุมัติและแนบรูป · ตั้งกะหลายกะและหมุนเวียนกะอัตโนมัติ ทั้งหมดส่งผลเข้าเงินเดือนให้เอง</li>
     </ul>
-    <div class="box" data-en="&lt;strong&gt;Test it the honest way:&lt;/strong&gt; the trial is 30 days and needs no credit card. Enter one month you have already paid and compare every figure with your own records. That comparison tells you more than any feature list — including this one."><strong>ทดสอบแบบตรงไปตรงมา:</strong> ทดลองใช้ฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต เอาเดือนที่จ่ายเงินไปแล้วจริงมากรอก แล้วเทียบทุกตัวเลขกับของเดิม การเทียบครั้งนั้นบอกอะไรได้มากกว่ารายการฟีเจอร์ใด ๆ รวมทั้งบทความนี้ด้วย</div>
+    <div class="box" data-en="&lt;strong&gt;Test it the honest way:&lt;/strong&gt; the trial is 30 days and needs no credit card. Enter one month you have already paid and compare every figure with your own records. That comparison tells you more than any feature list, including this one."><strong>ทดสอบแบบตรงไปตรงมา:</strong> ทดลองใช้ฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต เอาเดือนที่จ่ายเงินไปแล้วจริงมากรอก แล้วเทียบทุกตัวเลขกับของเดิม การเทียบครั้งนั้นบอกอะไรได้มากกว่ารายการฟีเจอร์ใด ๆ รวมทั้งบทความนี้ด้วย</div>
 
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
-        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน พ.ร.บ.คุ้มครองแรงงาน</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -353,8 +354,8 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="faq">
       <details><summary data-en="What does payroll software include?">โปรแกรม Payroll มีอะไรบ้าง</summary>
         <p data-en="At minimum, ten parts: employee records, salary calculation, overtime, earnings and deductions, withholding tax, social security and funds, payslips, the 50 Bis certificate, form PND.1, and payroll reports. If any one is missing, that part of the work goes back to being manual.">อย่างน้อย 10 ส่วน คือ ข้อมูลพนักงาน คำนวณเงินเดือน ค่าล่วงเวลา เงินเพิ่มและเงินหัก ภาษีหัก ณ ที่จ่าย ประกันสังคมและกองทุน สลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และรายงานสรุปเงินเดือน ถ้าขาดข้อใดข้อหนึ่ง งานส่วนนั้นจะย้อนกลับไปทำมือ</p></details>
-      <details><summary data-en="Payroll software vs HR software — what is the difference?">โปรแกรม Payroll กับโปรแกรม HR ต่างกันอย่างไร</summary>
-        <p data-en="Payroll software focuses on wages, tax, contributions and statutory filings. HR software covers the wider people function — recruitment, appraisals, training, org structure. Bundles are sold as HR Payroll suites. A small business that only needs to run payroll and file forms usually does not need the larger suite.">โปรแกรม Payroll เน้นค่าจ้าง ภาษี เงินสมทบ และการยื่นเอกสารราชการ ส่วนโปรแกรม HR ครอบคลุมงานบุคคลทั้งหมด ทั้งสรรหา ประเมินผล ฝึกอบรม และโครงสร้างองค์กร ตัวที่รวมกันเรียกว่า โปรแกรม HR Payroll ธุรกิจเล็กที่ต้องการแค่ทำเงินเดือนและยื่นเอกสาร มักไม่จำเป็นต้องซื้อชุดใหญ่</p></details>
+      <details><summary data-en="Payroll software vs HR software, what is the difference?">โปรแกรม Payroll กับโปรแกรม HR ต่างกันอย่างไร</summary>
+        <p data-en="Payroll software focuses on wages, tax, contributions and statutory filings. HR software covers the wider people function, recruitment, appraisals, training, org structure. Bundles are sold as HR Payroll suites. A small business that only needs to run payroll and file forms usually does not need the larger suite.">โปรแกรม Payroll เน้นค่าจ้าง ภาษี เงินสมทบ และการยื่นเอกสารราชการ ส่วนโปรแกรม HR ครอบคลุมงานบุคคลทั้งหมด ทั้งสรรหา ประเมินผล ฝึกอบรม และโครงสร้างองค์กร ตัวที่รวมกันเรียกว่า โปรแกรม HR Payroll ธุรกิจเล็กที่ต้องการแค่ทำเงินเดือนและยื่นเอกสาร มักไม่จำเป็นต้องซื้อชุดใหญ่</p></details>
       <details><summary data-en="Which statutory forms must a payroll system produce?">ระบบ Payroll ต้องออกเอกสารราชการอะไรได้บ้าง</summary>
         <p data-en="Four at minimum: the 50 Bis withholding certificate for each employee, form PND.1 filed monthly with the Revenue Department, form SSO 1-10 filed monthly with the Social Security Office, and form KT.20 Kor for the annual workmen's compensation fund.">อย่างน้อย 4 อย่าง คือ หนังสือรับรองการหักภาษี ณ ที่จ่าย <strong>50 ทวิ</strong> สำหรับพนักงานแต่ละคน แบบ <strong>ภ.ง.ด.1</strong> ยื่นกรมสรรพากรทุกเดือน แบบ <strong>สปส.1-10</strong> ยื่นสำนักงานประกันสังคมทุกเดือน และแบบ <strong>กท.20ก</strong> สำหรับเงินกองทุนเงินทดแทนรายปี</p></details>
       <details><summary data-en="Does payroll software handle daily-wage staff too?">โปรแกรมเงินเดือนพนักงานรองรับพนักงานรายวันด้วยไหม</summary>
@@ -362,7 +363,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     </div>
 
     <h2 data-en="In short">สรุป</h2>
-    <p data-en="When you ask &lt;strong&gt;what payroll software includes&lt;/strong&gt;, the useful answer is not a longer feature list — it is whether the ten items above are all present and all correct for Thai rules. Features 5, 6 and 9 are where most products quietly differ, and they are the three that cost real money when they are wrong.">คำถามว่า <strong>โปรแกรม Payroll มีอะไรบ้าง</strong> คำตอบที่ใช้ได้จริงไม่ใช่รายการฟีเจอร์ที่ยาวกว่า แต่คือ 10 ข้อข้างต้นมีครบและถูกต้องตามกฎหมายไทยหรือไม่ ข้อ 5, 6 และ 9 คือจุดที่แต่ละเจ้าต่างกันเงียบ ๆ และเป็นสามข้อที่พอผิดแล้วเสียเงินจริง</p>
+    <p data-en="When you ask &lt;strong&gt;what payroll software includes&lt;/strong&gt;, the useful answer is not a longer feature list, it is whether the ten items above are all present and all correct for Thai rules. Features 5, 6 and 9 are where most products quietly differ, and they are the three that cost real money when they are wrong.">คำถามว่า <strong>โปรแกรม Payroll มีอะไรบ้าง</strong> คำตอบที่ใช้ได้จริงไม่ใช่รายการฟีเจอร์ที่ยาวกว่า แต่คือ 10 ข้อข้างต้นมีครบและถูกต้องตามกฎหมายไทยหรือไม่ ข้อ 5, 6 และ 9 คือจุดที่แต่ละเจ้าต่างกันเงียบ ๆ และเป็นสามข้อที่พอผิดแล้วเสียเงินจริง</p>
     <p data-en="Take the checklist above into your next trial and test with a month you have already paid. Thirty minutes of comparison will save a year of corrections.">เอาเช็คลิสต์ข้างบนไปใช้ตอนทดลองใช้ระบบถัดไป แล้วทดสอบด้วยเดือนที่จ่ายเงินไปแล้ว ใช้เวลาเทียบ 30 นาที ประหยัดการตามแก้ทั้งปี</p>
   </article>
 </div>
@@ -377,7 +378,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <a href="/article-welfare-fund" class="card">
         <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
         <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
-          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-withholding-tax" class="card">
@@ -404,7 +405,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -421,7 +422,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -522,7 +523,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

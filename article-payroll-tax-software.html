@@ -73,7 +73,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -92,7 +92,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -180,6 +180,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -216,9 +217,9 @@ footer .ft-mail{color:#6ee7b7 !important}
            data-en-alt="Choosing payroll tax software for a Thai business" width="1200" height="525" fetchpriority="high" decoding="async">
     </figure>
 
-    <p data-en="A &lt;strong&gt;payroll tax calculator&lt;/strong&gt; works out how much withholding tax to deduct from each employee every month. Sounds simple — but Thai withholding tax is computed from &lt;strong&gt;projected full-year income&lt;/strong&gt;, not from the current month, which is exactly where most free calculators and most spreadsheets go wrong."><strong>โปรแกรมคำนวณภาษีเงินเดือน</strong> คือเครื่องมือที่คิดว่าต้องหักภาษี ณ ที่จ่ายจากพนักงานแต่ละคนเดือนละเท่าไหร่ ฟังดูง่าย แต่ภาษีหัก ณ ที่จ่ายของไทยคำนวณจาก<strong>เงินได้ทั้งปีที่ประมาณการ</strong> ไม่ใช่จากเดือนปัจจุบัน และนั่นคือจุดที่เครื่องคำนวณฟรีส่วนใหญ่กับไฟล์ Excel ส่วนใหญ่พลาด</p>
+    <p data-en="A &lt;strong&gt;payroll tax calculator&lt;/strong&gt; works out how much withholding tax to deduct from each employee every month. Sounds simple, but Thai withholding tax is computed from &lt;strong&gt;projected full-year income&lt;/strong&gt;, not from the current month, which is exactly where most free calculators and most spreadsheets go wrong."><strong>โปรแกรมคำนวณภาษีเงินเดือน</strong> คือเครื่องมือที่คิดว่าต้องหักภาษี ณ ที่จ่ายจากพนักงานแต่ละคนเดือนละเท่าไหร่ ฟังดูง่าย แต่ภาษีหัก ณ ที่จ่ายของไทยคำนวณจาก<strong>เงินได้ทั้งปีที่ประมาณการ</strong> ไม่ใช่จากเดือนปัจจุบัน และนั่นคือจุดที่เครื่องคำนวณฟรีส่วนใหญ่กับไฟล์ Excel ส่วนใหญ่พลาด</p>
 
-    <p data-en="This article gives you &lt;strong&gt;two tests&lt;/strong&gt; you can run in about ten minutes that will tell you whether any tool computes Thai payroll tax correctly — then compares the four kinds of options available.">บทความนี้ให้ <strong>ข้อทดสอบ 2 ข้อ</strong> ที่ใช้เวลาประมาณสิบนาที แล้วจะรู้ทันทีว่าเครื่องมือที่กำลังดูอยู่คิดภาษีไทยถูกหรือไม่ จากนั้นค่อยเทียบตัวเลือกทั้ง 4 แบบที่มีในตลาด</p>
+    <p data-en="This article gives you &lt;strong&gt;two tests&lt;/strong&gt; you can run in about ten minutes that will tell you whether any tool computes Thai payroll tax correctly, then compares the four kinds of options available.">บทความนี้ให้ <strong>ข้อทดสอบ 2 ข้อ</strong> ที่ใช้เวลาประมาณสิบนาที แล้วจะรู้ทันทีว่าเครื่องมือที่กำลังดูอยู่คิดภาษีไทยถูกหรือไม่ จากนั้นค่อยเทียบตัวเลือกทั้ง 4 แบบที่มีในตลาด</p>
 
     <h2 data-en="Two tests that separate correct from wrong">2 ข้อทดสอบที่แยกโปรแกรมที่คิดถูก ออกจากที่คิดผิด</h2>
 
@@ -233,15 +234,15 @@ footer .ft-mail{color:#6ee7b7 !important}
         <tr><td data-en="Below the 150,000 threshold → tax">ต่ำกว่าเกณฑ์ 150,000 → ภาษี</td><td>0.00</td></tr>
       </table>
     </div>
-    <div class="warn" data-en="&lt;strong&gt;A wrong system assumes twelve months&lt;/strong&gt; and computes annual income as 600,000 — deducting &lt;strong&gt;1,704.17 baht a month&lt;/strong&gt; from someone who legally owes &lt;strong&gt;nothing&lt;/strong&gt;. If the figure you see is not zero, stop and ask why."><strong>ระบบที่ผิดจะเหมาเอาว่าทำงาน 12 เดือน</strong> คิดเงินได้ทั้งปีเป็น 600,000 บาท แล้วหักภาษี <strong>1,704.17 บาทต่อเดือน</strong> จากคนที่ตามกฎหมาย<strong>ไม่ต้องเสียภาษีเลยสักบาท</strong> ถ้าตัวเลขที่เห็นไม่ใช่ศูนย์ ให้หยุดแล้วถามว่าทำไม</div>
+    <div class="warn" data-en="&lt;strong&gt;A wrong system assumes twelve months&lt;/strong&gt; and computes annual income as 600,000, deducting &lt;strong&gt;1,704.17 baht a month&lt;/strong&gt; from someone who legally owes &lt;strong&gt;nothing&lt;/strong&gt;. If the figure you see is not zero, stop and ask why."><strong>ระบบที่ผิดจะเหมาเอาว่าทำงาน 12 เดือน</strong> คิดเงินได้ทั้งปีเป็น 600,000 บาท แล้วหักภาษี <strong>1,704.17 บาทต่อเดือน</strong> จากคนที่ตามกฎหมาย<strong>ไม่ต้องเสียภาษีเลยสักบาท</strong> ถ้าตัวเลขที่เห็นไม่ใช่ศูนย์ ให้หยุดแล้วถามว่าทำไม</div>
 
     <h4 data-en="Test 2 · A mid-year pay rise">ทดสอบที่ 2 · ขึ้นเงินเดือนกลางปี</h4>
-    <p data-en="Take an employee on 30,000 baht who is raised to 40,000 from July. The correct annual income is 30,000 × 6 + 40,000 × 6 = 420,000 — not 40,000 × 12.">พนักงานเงินเดือน 30,000 บาท ขึ้นเป็น 40,000 ตั้งแต่เดือนกรกฎาคม เงินได้ทั้งปีที่ถูกต้องคือ 30,000 × 6 + 40,000 × 6 = 420,000 บาท ไม่ใช่ 40,000 × 12</p>
+    <p data-en="Take an employee on 30,000 baht who is raised to 40,000 from July. The correct annual income is 30,000 × 6 + 40,000 × 6 = 420,000, not 40,000 × 12.">พนักงานเงินเดือน 30,000 บาท ขึ้นเป็น 40,000 ตั้งแต่เดือนกรกฎาคม เงินได้ทั้งปีที่ถูกต้องคือ 30,000 × 6 + 40,000 × 6 = 420,000 บาท ไม่ใช่ 40,000 × 12</p>
     <div class="calcbox">
       <h4 data-en="Correct vs wrong">คิดถูก เทียบกับ คิดผิด</h4>
       <table>
-        <tr><td data-en="Correct — annual income 420,000 → tax per month">คิดถูก — เงินได้ทั้งปี 420,000 → ภาษี/เดือน</td><td>414.58</td></tr>
-        <tr><td data-en="Wrong — current salary × 12 = 480,000 → tax per month">คิดผิด — เงินเดือนปัจจุบัน × 12 = 480,000 → ภาษี/เดือน</td><td>704.17</td></tr>
+        <tr><td data-en="Correct, annual income 420,000 → tax per month">คิดถูก เงินได้ทั้งปี 420,000 → ภาษี/เดือน</td><td>414.58</td></tr>
+        <tr><td data-en="Wrong, current salary × 12 = 480,000 → tax per month">คิดผิด เงินเดือนปัจจุบัน × 12 = 480,000 → ภาษี/เดือน</td><td>704.17</td></tr>
         <tr><td data-en="Over-deducted per month · per year">หักเกินต่อเดือน · ต่อปี</td><td>289.59 · 3,475.08</td></tr>
       </table>
     </div>
@@ -261,7 +262,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="feat">
       <span class="num">3</span>
       <h4 data-en="Keeps a salary history">เก็บประวัติการขึ้นเงินเดือน</h4>
-      <p data-en="Without it, a raise silently rewrites the whole year — which is Test 2 above.">ถ้าไม่มี การขึ้นเงินเดือนจะเขียนทับทั้งปีแบบเงียบ ๆ ซึ่งก็คือข้อทดสอบที่ 2 ข้างบน</p>
+      <p data-en="Without it, a raise silently rewrites the whole year, which is Test 2 above.">ถ้าไม่มี การขึ้นเงินเดือนจะเขียนทับทั้งปีแบบเงียบ ๆ ซึ่งก็คือข้อทดสอบที่ 2 ข้างบน</p>
     </div>
     <div class="feat">
       <span class="num">4</span>
@@ -271,7 +272,7 @@ footer .ft-mail{color:#6ee7b7 !important}
     <div class="feat">
       <span class="num">5</span>
       <h4 data-en="Feeds the figures into the forms">ส่งตัวเลขต่อไปยังเอกสารได้</h4>
-      <p data-en="A calculator that gives you a number you then retype into &lt;a href=&quot;article-50tawi-pnd1.html&quot;&gt;PND.1 and the 50 Bis certificate&lt;/a&gt; has only done half the job — and retyping is where errors enter.">เครื่องมือที่ให้ตัวเลขมาแล้วต้องเอาไปคีย์ใหม่ใน <a href="/article-50tawi-pnd1">ภ.ง.ด.1 และ 50 ทวิ</a> ถือว่าทำงานได้แค่ครึ่งเดียว และการคีย์ซ้ำคือจุดที่ตัวเลขเพี้ยน</p>
+      <p data-en="A calculator that gives you a number you then retype into &lt;a href=&quot;article-50tawi-pnd1.html&quot;&gt;PND.1 and the 50 Bis certificate&lt;/a&gt; has only done half the job, and retyping is where errors enter.">เครื่องมือที่ให้ตัวเลขมาแล้วต้องเอาไปคีย์ใหม่ใน <a href="/article-50tawi-pnd1">ภ.ง.ด.1 และ 50 ทวิ</a> ถือว่าทำงานได้แค่ครึ่งเดียว และการคีย์ซ้ำคือจุดที่ตัวเลขเพี้ยน</p>
     </div>
 
     <h2 data-en="The four kinds of options">ตัวเลือกที่มีในไทย 4 แบบ</h2>
@@ -288,23 +289,23 @@ footer .ft-mail{color:#6ee7b7 !important}
     </div>
 
     <h2 data-en="So which should you use?">แล้วควรใช้ตัวไหน</h2>
-    <ul data-en="&lt;li&gt;&lt;strong&gt;Just want to check one figure&lt;/strong&gt; — a free online calculator is fine&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Under about 5 employees, nobody joins or leaves&lt;/strong&gt; — Excel still works; see &lt;a href=&quot;article-payroll-vs-excel.html&quot;&gt;payroll software vs Excel&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Running payroll monthly, people join and leave, forms to file&lt;/strong&gt; — payroll software with tax built in&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Nobody in-house can own it&lt;/strong&gt; — outsource, but compare the annual cost first&lt;/li&gt;">
-      <li><strong>แค่อยากเช็คตัวเลขคนเดียว</strong> — เครื่องคำนวณฟรีบนเว็บก็พอ</li>
-      <li><strong>พนักงานไม่เกิน 5 คน ไม่มีคนเข้าออก</strong> — Excel ยังไหว ดูเพิ่มที่ <a href="/article-payroll-vs-excel">โปรแกรมเงินเดือน vs Excel</a></li>
-      <li><strong>ทำเงินเดือนทุกเดือน มีคนเข้าออก ต้องยื่นเอกสาร</strong> — ใช้โปรแกรมเงินเดือนที่คำนวณภาษีในตัว</li>
-      <li><strong>ไม่มีคนในองค์กรรับผิดชอบได้</strong> — จ้างข้างนอก แต่เทียบค่าใช้จ่ายทั้งปีก่อน</li>
+    <ul data-en="&lt;li&gt;&lt;strong&gt;Just want to check one figure&lt;/strong&gt;: a free online calculator is fine&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Under about 5 employees, nobody joins or leaves&lt;/strong&gt;: Excel still works; see &lt;a href=&quot;article-payroll-vs-excel.html&quot;&gt;payroll software vs Excel&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Running payroll monthly, people join and leave, forms to file&lt;/strong&gt;: payroll software with tax built in&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Nobody in-house can own it&lt;/strong&gt;: outsource, but compare the annual cost first&lt;/li&gt;">
+      <li><strong>แค่อยากเช็คตัวเลขคนเดียว</strong> เครื่องคำนวณฟรีบนเว็บก็พอ</li>
+      <li><strong>พนักงานไม่เกิน 5 คน ไม่มีคนเข้าออก</strong>: Excel ยังไหว ดูเพิ่มที่ <a href="/article-payroll-vs-excel">โปรแกรมเงินเดือน vs Excel</a></li>
+      <li><strong>ทำเงินเดือนทุกเดือน มีคนเข้าออก ต้องยื่นเอกสาร</strong> ใช้โปรแกรมเงินเดือนที่คำนวณภาษีในตัว</li>
+      <li><strong>ไม่มีคนในองค์กรรับผิดชอบได้</strong> จ้างข้างนอก แต่เทียบค่าใช้จ่ายทั้งปีก่อน</li>
     </ul>
     <div class="warn" data-en="&lt;strong&gt;Whatever you pick, run the two tests above on it.&lt;/strong&gt; A tool that fails Test 1 will over-withhold from every new joiner, every year, and nobody will notice until an employee files their own return and finds they overpaid."><strong>ไม่ว่าจะเลือกอะไร ให้เอา 2 ข้อทดสอบข้างบนไปลองก่อน</strong> เครื่องมือที่ตกข้อทดสอบที่ 1 จะหักภาษีเกินจากพนักงานใหม่ทุกคน ทุกปี และจะไม่มีใครรู้จนกว่าพนักงานไปยื่นภาษีเองแล้วพบว่าจ่ายเกิน</div>
 
     <h2 data-en="What eSimPayroll does with these five">eSimPayroll ทำ 5 ข้อนี้อย่างไร</h2>
     <p data-en="&lt;a href=&quot;index.html&quot;&gt;eSimPayroll&lt;/a&gt; is a &lt;a href=&quot;index.html#covers&quot;&gt;payroll tax calculator&lt;/a&gt; inside a full payroll system: tax is derived from full-year income across only the months actually worked, salary history is kept so a raise recalculates earlier months, the social security base excludes overtime and its ceiling is editable, and the resulting figures flow straight into PND.1 and the 50 Bis certificate without retyping."><a href="/">eSimPayroll</a> เป็น<a href="/#covers">โปรแกรมคำนวณภาษีเงินเดือน</a>ที่อยู่ในระบบเงินเดือนเต็มรูปแบบ คิดภาษีจากเงินได้ทั้งปีเฉพาะเดือนที่ทำงานจริง เก็บประวัติการขึ้นเงินเดือนไว้จึงคำนวณเดือนก่อนหน้าใหม่ให้ ฐานประกันสังคมกันค่าล่วงเวลาออกและแก้เพดานเองได้ แล้วตัวเลขที่ได้ไหลตรงเข้า ภ.ง.ด.1 และ 50 ทวิ โดยไม่ต้องคีย์ซ้ำ</p>
-    <div class="box" data-en="Do not take that on trust — run Test 1 and Test 2 yourself during the 30-day free trial. Ten minutes will tell you more than this article can.">อย่าเพิ่งเชื่อ ลองเอาข้อทดสอบที่ 1 และ 2 ไปรันเองในช่วงทดลองใช้ฟรี 30 วัน สิบนาทีบอกได้มากกว่าบทความนี้ทั้งบท</div>
+    <div class="box" data-en="Do not take that on trust, run Test 1 and Test 2 yourself during the 30-day free trial. Ten minutes will tell you more than this article can.">อย่าเพิ่งเชื่อ ลองเอาข้อทดสอบที่ 1 และ 2 ไปรันเองในช่วงทดลองใช้ฟรี 30 วัน สิบนาทีบอกได้มากกว่าบทความนี้ทั้งบท</div>
 
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -312,13 +313,13 @@ footer .ft-mail{color:#6ee7b7 !important}
     <h2 data-en="Frequently asked questions">คำถามที่พบบ่อย</h2>
     <div class="faq">
       <details><summary data-en="Which payroll tax calculator should I use?">โปรแกรมคำนวณภาษีเงินเดือน ใช้ตัวไหนดี</summary>
-        <p data-en="It depends on whether you only need a number or also need to file. For a rough figure for one person, a free web calculator is enough. For running payroll for a whole company every month and producing PND.1 and 50 Bis, use payroll software with tax built in — the figures then flow from one place into every document without retyping.">ขึ้นอยู่กับว่าต้องการแค่ตัวเลข หรือต้องยื่นเอกสารด้วย ถ้าอยากรู้ตัวเลขคร่าว ๆ ของคนเดียว เครื่องคำนวณฟรีบนเว็บก็พอ แต่ถ้าต้องทำเงินเดือนทั้งบริษัททุกเดือนและต้องออก ภ.ง.ด.1 กับ 50 ทวิ ควรใช้<strong>โปรแกรมเงินเดือนที่คำนวณภาษีในตัว</strong> เพราะตัวเลขจะไหลจากที่เดียวไปทุกเอกสารโดยไม่ต้องคีย์ซ้ำ</p></details>
+        <p data-en="It depends on whether you only need a number or also need to file. For a rough figure for one person, a free web calculator is enough. For running payroll for a whole company every month and producing PND.1 and 50 Bis, use payroll software with tax built in, the figures then flow from one place into every document without retyping.">ขึ้นอยู่กับว่าต้องการแค่ตัวเลข หรือต้องยื่นเอกสารด้วย ถ้าอยากรู้ตัวเลขคร่าว ๆ ของคนเดียว เครื่องคำนวณฟรีบนเว็บก็พอ แต่ถ้าต้องทำเงินเดือนทั้งบริษัททุกเดือนและต้องออก ภ.ง.ด.1 กับ 50 ทวิ ควรใช้<strong>โปรแกรมเงินเดือนที่คำนวณภาษีในตัว</strong> เพราะตัวเลขจะไหลจากที่เดียวไปทุกเอกสารโดยไม่ต้องคีย์ซ้ำ</p></details>
       <details><summary data-en="Can I run payroll with a free web calculator?">เครื่องคำนวณภาษีฟรีบนเว็บ ใช้ทำเงินเดือนได้ไหม</summary>
-        <p data-en="For estimating, yes. For real payroll, no — it handles one person at a time, keeps no history, does not know when each employee started, does not handle mid-year raises, and cannot produce statutory forms. You end up retyping the numbers into another file anyway.">ใช้ประมาณการได้ แต่ไม่เหมาะกับการทำเงินเดือนจริง เพราะคำนวณทีละคน ไม่เก็บประวัติ ไม่รู้ว่าพนักงานเข้างานเดือนไหน ไม่รองรับการขึ้นเงินเดือนกลางปี และออกเอกสารยื่นราชการไม่ได้ สุดท้ายต้องคีย์ตัวเลขซ้ำเข้าไฟล์อื่นอยู่ดี</p></details>
+        <p data-en="For estimating, yes. For real payroll, no, it handles one person at a time, keeps no history, does not know when each employee started, does not handle mid-year raises, and cannot produce statutory forms. You end up retyping the numbers into another file anyway.">ใช้ประมาณการได้ แต่ไม่เหมาะกับการทำเงินเดือนจริง เพราะคำนวณทีละคน ไม่เก็บประวัติ ไม่รู้ว่าพนักงานเข้างานเดือนไหน ไม่รองรับการขึ้นเงินเดือนกลางปี และออกเอกสารยื่นราชการไม่ได้ สุดท้ายต้องคีย์ตัวเลขซ้ำเข้าไฟล์อื่นอยู่ดี</p></details>
       <details><summary data-en="How do I know the calculation is correct?">จะรู้ได้อย่างไรว่าโปรแกรมคิดถูก</summary>
-        <p data-en="Run the two tests in this article. Test 1: an employee starting 1 September on 50,000 baht must show annual income of 200,000 and tax of zero — not 600,000. Test 2: record a mid-year raise and check that the earlier months are recalculated. If only the current month moves, the method is wrong.">ใช้ 2 ข้อทดสอบในบทความนี้ ข้อ 1 พนักงานเริ่มงาน 1 กันยายน เงินเดือน 50,000 ต้องขึ้นเงินได้ทั้งปี 200,000 และภาษีเป็นศูนย์ ไม่ใช่ 600,000 · ข้อ 2 บันทึกการขึ้นเงินเดือนกลางปี แล้วดูว่าเดือนก่อนหน้าถูกคำนวณใหม่ไหม ถ้าขยับแค่เดือนปัจจุบันแปลว่าวิธีคิดผิด</p></details>
+        <p data-en="Run the two tests in this article. Test 1: an employee starting 1 September on 50,000 baht must show annual income of 200,000 and tax of zero, not 600,000. Test 2: record a mid-year raise and check that the earlier months are recalculated. If only the current month moves, the method is wrong.">ใช้ 2 ข้อทดสอบในบทความนี้ ข้อ 1 พนักงานเริ่มงาน 1 กันยายน เงินเดือน 50,000 ต้องขึ้นเงินได้ทั้งปี 200,000 และภาษีเป็นศูนย์ ไม่ใช่ 600,000 · ข้อ 2 บันทึกการขึ้นเงินเดือนกลางปี แล้วดูว่าเดือนก่อนหน้าถูกคำนวณใหม่ไหม ถ้าขยับแค่เดือนปัจจุบันแปลว่าวิธีคิดผิด</p></details>
       <details><summary data-en="What happens if payroll tax is wrong?">ภาษีเงินเดือนคำนวณผิดแล้วเกิดอะไรขึ้น</summary>
-        <p data-en="Under-withhold and the employee owes money when filing their annual return — and usually blames the employer. Over-withhold and the employee loses the use of that money all year before claiming it back. Either way the employer may need to file an amended PND.1, and late filings can carry a penalty.">หักน้อยเกินไป พนักงานต้องจ่ายเพิ่มตอนยื่นภาษีประจำปี และมักไม่พอใจนายจ้าง · หักมากเกินไป พนักงานเสียโอกาสใช้เงินทั้งปีแล้วค่อยไปขอคืน ทั้งสองกรณีนายจ้างอาจต้องยื่น ภ.ง.ด.1 แก้ไข และการยื่นล่าช้าอาจมีเบี้ยปรับ</p></details>
+        <p data-en="Under-withhold and the employee owes money when filing their annual return, and usually blames the employer. Over-withhold and the employee loses the use of that money all year before claiming it back. Either way the employer may need to file an amended PND.1, and late filings can carry a penalty.">หักน้อยเกินไป พนักงานต้องจ่ายเพิ่มตอนยื่นภาษีประจำปี และมักไม่พอใจนายจ้าง · หักมากเกินไป พนักงานเสียโอกาสใช้เงินทั้งปีแล้วค่อยไปขอคืน ทั้งสองกรณีนายจ้างอาจต้องยื่น ภ.ง.ด.1 แก้ไข และการยื่นล่าช้าอาจมีเบี้ยปรับ</p></details>
     </div>
 
     <h2 data-en="In short">สรุป</h2>
@@ -336,7 +337,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <a href="/article-welfare-fund" class="card">
         <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
         <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
-          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-withholding-tax" class="card">
@@ -364,7 +365,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <div class="wrap">
   <div class="cta-band">
     <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="If you would rather not work out tax by hand every month, &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software&lt;/a&gt; applies the progressive brackets and spreads the tax across the year automatically, then issues the 50 Tawi and Por Ngor Dor 1 forms.">ถ้าไม่อยากคำนวณภาษีเองทุกเดือน <a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll ที่คำนวณภาษีอัตโนมัติ</a> จะคิดภาษีหัก ณ ที่จ่ายแบบขั้นบันไดและเฉลี่ยทั้งปีให้อัตโนมัติ พร้อมออก 50 ทวิ และ ภ.ง.ด.1</div>
-<h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+<h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -381,7 +382,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -482,7 +483,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

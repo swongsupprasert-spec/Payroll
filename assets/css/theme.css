@@ -1,0 +1,77 @@
+/* ธีมหน้าเว็บ (ทุกหน้า ยกเว้นหน้าแรก): แบนเนอร์หัวหน้า + น้อง eSim + ไอคอนสี่เหลี่ยมสี
+   ตำแหน่งเนื้อหาคงเดิม เปลี่ยนแค่สีพื้นหัวหน้า ไอคอน และเพิ่มน้อง eSim */
+
+/* ---------- แบนเนอร์หัวหน้า (.pagehead) ---------- */
+.pagehead{background:none;padding:22px 0 10px;overflow:visible}
+.pagehead>.wrap{position:relative;overflow:hidden;max-width:1140px;padding:44px 230px 40px;border-radius:24px;
+  background:radial-gradient(circle at 86% 30%,rgba(255,255,255,.8),transparent 38%),linear-gradient(115deg,#e0f2fe 0%,#dbeafe 40%,#dcfce7 100%);
+  border:1px solid rgba(14,58,92,.08);box-shadow:0 10px 30px rgba(14,58,92,.08)}
+.pagehead>.wrap::before{content:"";position:absolute;right:-70px;bottom:-110px;width:300px;height:300px;border-radius:50%;background:rgba(16,185,129,.13)}
+.pagehead>.wrap::after{content:"";position:absolute;left:-60px;top:-90px;width:220px;height:220px;border-radius:50%;background:rgba(59,130,246,.10)}
+.pagehead>.wrap>*{position:relative;z-index:1}
+.pagehead h1{color:#0e3a5c}
+.pagehead p{color:#35546f}
+.ph-esim{position:absolute!important;right:34px;bottom:-14px;width:150px;height:auto;z-index:1;filter:drop-shadow(0 10px 16px rgba(14,58,92,.25));pointer-events:none}
+.ph-b{position:absolute!important;z-index:1;display:grid;place-items:center;width:50px;height:50px;border-radius:16px;background:#fff;font-size:24px;
+  box-shadow:0 8px 18px rgba(14,58,92,.14);pointer-events:none}
+.ph-b.b1{left:46px;top:34px;rotate:-8deg}
+.ph-b.b2{left:96px;bottom:30px;rotate:7deg}
+.ph-b.b3{left:150px;top:26px;rotate:10deg;width:42px;height:42px;font-size:20px;border-radius:13px}
+@media(max-width:900px){
+  .pagehead>.wrap{padding:30px 22px 128px;border-radius:20px}
+  .ph-esim{right:50%;translate:50% 0;width:118px;bottom:-12px}
+  .ph-b.b1{left:22px;top:auto;bottom:26px}
+  .ph-b.b2{left:auto;right:22px;bottom:30px}
+  .ph-b.b3{display:none}
+}
+@media(max-width:600px){.pagehead{padding:12px 0 6px}.pagehead>.wrap{margin:0 12px}}
+
+/* ---------- หัวบทความ (.h1row): การ์ดแบนเนอร์ + ไอคอนสี + น้อง eSim ---------- */
+.h1row{position:relative;overflow:hidden;align-items:center;padding:22px 150px 22px 22px;border-radius:20px;
+  background:radial-gradient(circle at 88% 40%,rgba(255,255,255,.8),transparent 40%),linear-gradient(115deg,#e0f2fe 0%,#dbeafe 45%,#dcfce7 100%);
+  border:1px solid rgba(14,58,92,.08)}
+.h1row::before{content:"";position:absolute;right:-50px;bottom:-80px;width:220px;height:220px;border-radius:50%;background:rgba(16,185,129,.13)}
+.h1row::after{content:"";position:absolute;right:18px;bottom:-12px;width:104px;height:108px;background:url(/media/esim/e1c.png) center bottom/contain no-repeat;
+  filter:drop-shadow(0 8px 12px rgba(14,58,92,.22))}
+.h1row>*{position:relative;z-index:1}
+.h1row h1{color:#0e3a5c}
+.h1ic{background:linear-gradient(135deg,#3b82f6,#2563eb)!important;color:#fff!important;box-shadow:0 8px 16px rgba(37,99,235,.28)}
+@media(max-width:640px){
+  .h1row{padding:14px 74px 14px 14px;gap:10px}
+  .h1row::after{width:68px;height:72px;right:4px;bottom:-8px}
+}
+
+/* ---------- ไอคอนสี่เหลี่ยมสี (สีวนตามลำดับ ฟ้า เขียว เหลือง แดง ม่วง) ---------- */
+.ftab .ti,.fitem .fi,.abtop ~ * .ic,.vals .ic{color:#fff!important;box-shadow:0 6px 14px rgba(14,58,92,.16)}
+.ftab:nth-child(5n+1) .ti,.fitem:nth-child(5n+1) .fi,.vals>*:nth-child(5n+1) .ic{background:linear-gradient(135deg,#3b82f6,#2563eb)!important}
+.ftab:nth-child(5n+2) .ti,.fitem:nth-child(5n+2) .fi,.vals>*:nth-child(5n+2) .ic{background:linear-gradient(135deg,#22c55e,#16a34a)!important}
+.ftab:nth-child(5n+3) .ti,.fitem:nth-child(5n+3) .fi,.vals>*:nth-child(5n+3) .ic{background:linear-gradient(135deg,#fbbf24,#f59e0b)!important}
+.ftab:nth-child(5n+4) .ti,.fitem:nth-child(5n+4) .fi,.vals>*:nth-child(5n+4) .ic{background:linear-gradient(135deg,#f87171,#ef4444)!important}
+.ftab:nth-child(5n+5) .ti,.fitem:nth-child(5n+5) .fi,.vals>*:nth-child(5n+5) .ic{background:linear-gradient(135deg,#a78bfa,#7c3aed)!important}
+.ftab .ti svg,.fitem .fi svg{stroke:#fff!important;color:#fff!important}
+
+/* ---------- หน้าเกี่ยวกับเรา: หัวหน้าเป็นการ์ดแบนเนอร์ + น้อง eSim ---------- */
+.abtop{position:relative;padding:34px 36px;border-radius:24px;
+  background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.8),transparent 45%),linear-gradient(115deg,#e0f2fe 0%,#dbeafe 45%,#dcfce7 100%);
+  border:1px solid rgba(14,58,92,.08);box-shadow:0 10px 30px rgba(14,58,92,.08)}
+.abtop h1{color:#0e3a5c}
+.abtop::after{content:"";position:absolute;left:calc(53% - 64px);bottom:-18px;width:104px;height:108px;z-index:2;pointer-events:none;
+  background:url(/media/esim/e2c.png) center bottom/contain no-repeat;filter:drop-shadow(0 8px 12px rgba(14,58,92,.25))}
+@media(max-width:860px){.abtop{padding:24px 18px 70px}.abtop::after{left:auto;right:14px;width:86px;height:90px}}
+
+/* ---------- คู่มือ: หัวคู่มือเป็นการ์ดแบนเนอร์ (เฉพาะบนจอ ตอนพิมพ์คงแบบเดิม) ---------- */
+@media screen{
+  .mhead{position:relative;overflow:hidden;padding:20px 130px 20px 20px!important;border:1px solid rgba(14,58,92,.08)!important;border-radius:18px;
+    background:radial-gradient(circle at 88% 40%,rgba(255,255,255,.8),transparent 40%),linear-gradient(115deg,#e0f2fe 0%,#dbeafe 45%,#dcfce7 100%)}
+  .mhead::after{content:"";position:absolute;right:16px;bottom:-14px;width:100px;height:104px;
+    background:url(/media/esim/e3c.png) center bottom/contain no-repeat;filter:drop-shadow(0 8px 12px rgba(14,58,92,.22))}
+  .mhead .logo{background:linear-gradient(135deg,#3b82f6,#2563eb)!important;box-shadow:0 8px 16px rgba(37,99,235,.28)}
+  .mhead h1{color:#0e3a5c}
+}
+
+/* หัวหน้าที่มีเนื้อหายาวต่อท้าย (เช่น ตัวคำนวณราคา): น้อง eSim และไอคอนอยู่ระดับหัวข้อ */
+.pagehead.ph-tall>.wrap{padding-bottom:30px}
+.pagehead.ph-tall .ph-esim{top:22px;bottom:auto;width:132px}
+.pagehead.ph-tall .ph-b.b2{top:110px;bottom:auto}
+@media(max-width:900px){.pagehead.ph-tall>.wrap{padding-top:130px}.pagehead.ph-tall .ph-esim{top:6px;width:110px}
+  .pagehead.ph-tall .ph-b.b1{top:30px;bottom:auto}.pagehead.ph-tall .ph-b.b2{top:40px;right:22px}}

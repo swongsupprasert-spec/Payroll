@@ -57,7 +57,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -76,7 +76,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -156,6 +156,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -192,19 +193,19 @@ footer .ft-mail{color:#6ee7b7 !important}
            data-en-alt="Comparing payroll software with Excel spreadsheets" width="1200" height="525" fetchpriority="high" decoding="async">
     </figure>
 
-    <p data-en="&lt;strong&gt;Still running payroll in Excel?&lt;/strong&gt; This article compares &lt;strong&gt;payroll software vs Excel&lt;/strong&gt; honestly — what Excel genuinely does well, the six points where the formulas start to break, and how to tell which one fits your business right now."><strong>ยังทำเงินเดือนด้วย Excel อยู่หรือเปล่า?</strong> บทความนี้เทียบ <strong>โปรแกรมเงินเดือน vs Excel</strong> แบบตรงไปตรงมา ทั้งข้อดีที่ Excel ทำได้จริง จุดที่สูตรเริ่มเอาไม่อยู่ และวิธีดูว่าธุรกิจของคุณตอนนี้เหมาะกับแบบไหน</p>
+    <p data-en="&lt;strong&gt;Still running payroll in Excel?&lt;/strong&gt; This article compares &lt;strong&gt;payroll software vs Excel&lt;/strong&gt; honestly, what Excel genuinely does well, the six points where the formulas start to break, and how to tell which one fits your business right now."><strong>ยังทำเงินเดือนด้วย Excel อยู่หรือเปล่า?</strong> บทความนี้เทียบ <strong>โปรแกรมเงินเดือน vs Excel</strong> แบบตรงไปตรงมา ทั้งข้อดีที่ Excel ทำได้จริง จุดที่สูตรเริ่มเอาไม่อยู่ และวิธีดูว่าธุรกิจของคุณตอนนี้เหมาะกับแบบไหน</p>
 
     <p data-en="&lt;strong&gt;Payroll software&lt;/strong&gt; is a program that calculates salary, overtime, withholding tax, social security and fund contributions, then produces payslips and the statutory forms an employer must file. &lt;strong&gt;Excel&lt;/strong&gt; is a general-purpose spreadsheet: it can do the same arithmetic, but every rule has to be written and maintained by you."><strong>โปรแกรมเงินเดือน</strong> คือโปรแกรมที่คำนวณเงินเดือน ค่าล่วงเวลา ภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนต่าง ๆ แล้วออกสลิปเงินเดือนพร้อมเอกสารที่นายจ้างต้องยื่นราชการ ส่วน <strong>Excel</strong> คือโปรแกรมตารางคำนวณทั่วไป คิดเลขชุดเดียวกันได้ แต่กฎทุกข้อคุณต้องเขียนสูตรและดูแลเอง</p>
 
-    <h2 data-en="Excel is not the enemy — what it genuinely does well">Excel ไม่ใช่ผู้ร้าย — ข้อดีที่ต้องยอมรับ</h2>
+    <h2 data-en="Excel is not the enemy, what it genuinely does well">Excel ไม่ใช่ผู้ร้าย ข้อดีที่ต้องยอมรับ</h2>
     <p data-en="Most Thai businesses start payroll in Excel for good reasons:"><strong>ทำเงินเดือนด้วย Excel</strong> เป็นจุดเริ่มต้นของธุรกิจไทยเกือบทุกราย และมีเหตุผลที่ดี</p>
-    <ul data-en="&lt;li&gt;&lt;strong&gt;No extra cost&lt;/strong&gt; — most offices already own it&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Total freedom&lt;/strong&gt; — any odd allowance or deduction can be added as a column&lt;/li&gt;&lt;li&gt;&lt;strong&gt;No learning curve&lt;/strong&gt; — accounting staff already know it&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Works offline&lt;/strong&gt; and the file is yours&lt;/li&gt;">
-      <li><strong>ไม่มีค่าใช้จ่ายเพิ่ม</strong> — ออฟฟิศส่วนใหญ่มี Excel อยู่แล้ว</li>
-      <li><strong>ยืดหยุ่นเต็มที่</strong> — เบี้ยเลี้ยงหรือรายการหักแปลก ๆ แค่เพิ่มคอลัมน์</li>
-      <li><strong>ไม่ต้องเรียนใหม่</strong> — ฝ่ายบัญชีใช้เป็นอยู่แล้ว</li>
+    <ul data-en="&lt;li&gt;&lt;strong&gt;No extra cost&lt;/strong&gt;: most offices already own it&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Total freedom&lt;/strong&gt;: any odd allowance or deduction can be added as a column&lt;/li&gt;&lt;li&gt;&lt;strong&gt;No learning curve&lt;/strong&gt;: accounting staff already know it&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Works offline&lt;/strong&gt; and the file is yours&lt;/li&gt;">
+      <li><strong>ไม่มีค่าใช้จ่ายเพิ่ม</strong> ออฟฟิศส่วนใหญ่มี Excel อยู่แล้ว</li>
+      <li><strong>ยืดหยุ่นเต็มที่</strong> เบี้ยเลี้ยงหรือรายการหักแปลก ๆ แค่เพิ่มคอลัมน์</li>
+      <li><strong>ไม่ต้องเรียนใหม่</strong> ฝ่ายบัญชีใช้เป็นอยู่แล้ว</li>
       <li><strong>ใช้ออฟไลน์ได้</strong> ไฟล์อยู่กับเรา ไม่ต้องพึ่งใคร</li>
     </ul>
-    <div class="box" data-en="If you have under 5 employees, all monthly-paid, nobody joins or leaves, and nobody earns enough to pay tax — Excel is genuinely sufficient. Do not let anyone talk you out of it.">ถ้าธุรกิจมีพนักงานไม่เกิน 5 คน เป็นรายเดือนทั้งหมด ไม่มีคนเข้าออก และยังไม่มีใครถึงเกณฑ์เสียภาษี — <strong>Excel เพียงพอจริง ๆ</strong> ไม่ต้องรีบเปลี่ยน</div>
+    <div class="box" data-en="If you have under 5 employees, all monthly-paid, nobody joins or leaves, and nobody earns enough to pay tax, Excel is genuinely sufficient. Do not let anyone talk you out of it.">ถ้าธุรกิจมีพนักงานไม่เกิน 5 คน เป็นรายเดือนทั้งหมด ไม่มีคนเข้าออก และยังไม่มีใครถึงเกณฑ์เสียภาษี, <strong>Excel เพียงพอจริง ๆ</strong> ไม่ต้องรีบเปลี่ยน</div>
 
     <h2 data-en="6 points where Excel starts to break">6 จุดที่ Excel เริ่มเอาไม่อยู่</h2>
 
@@ -221,17 +222,17 @@ footer .ft-mail{color:#6ee7b7 !important}
         <tr><td data-en="Actually payable">ได้รับจริง</td><td>23,225.81</td></tr>
       </table>
     </div>
-    <p data-en="The prorated figure is easy enough. The hard part is that the &lt;strong&gt;annual&lt;/strong&gt; income used for tax must also use 23,225.81 for August — not 45,000. Most Excel sheets quietly use the full salary for every month, so the tax comes out too high all year.">ตัวเลข 23,225.81 คำนวณไม่ยาก แต่จุดที่พลาดกันมากคือ<strong>เงินได้ทั้งปี</strong>ที่ใช้คิดภาษีต้องใช้ 23,225.81 สำหรับเดือนสิงหาคมด้วย ไม่ใช่ 45,000 ไฟล์ Excel ส่วนใหญ่ใส่เงินเดือนเต็มทุกเดือนโดยไม่รู้ตัว ภาษีจึงสูงเกินจริงไปทั้งปี</p>
+    <p data-en="The prorated figure is easy enough. The hard part is that the &lt;strong&gt;annual&lt;/strong&gt; income used for tax must also use 23,225.81 for August, not 45,000. Most Excel sheets quietly use the full salary for every month, so the tax comes out too high all year.">ตัวเลข 23,225.81 คำนวณไม่ยาก แต่จุดที่พลาดกันมากคือ<strong>เงินได้ทั้งปี</strong>ที่ใช้คิดภาษีต้องใช้ 23,225.81 สำหรับเดือนสิงหาคมด้วย ไม่ใช่ 45,000 ไฟล์ Excel ส่วนใหญ่ใส่เงินเดือนเต็มทุกเดือนโดยไม่รู้ตัว ภาษีจึงสูงเกินจริงไปทั้งปี</p>
     <div class="warn" data-en="&lt;strong&gt;Check your own sheet:&lt;/strong&gt; open the tax column for anyone who joined or resigned mid-month. If the annual income row uses the full monthly salary for that month, the withholding is wrong."><strong>ลองเช็คไฟล์ตัวเอง:</strong> เปิดคอลัมน์ภาษีของคนที่เข้างานหรือลาออกกลางเดือน ถ้าแถวเงินได้ทั้งปีใส่เงินเดือนเต็มของเดือนนั้น แปลว่าภาษีที่หักผิดอยู่</div>
 
     <h4 data-en="3. Statutory forms must be retyped">3. เอกสารราชการต้องคีย์ใหม่</h4>
-    <p data-en="Every month you need PND.1 and SSO 1-10; every year, 50 Bis for each employee and KT.20 Kor. Excel computes the numbers but does not produce the forms, so someone retypes them — and retyping is where transcription errors enter.">ทุกเดือนต้องยื่น <strong>ภ.ง.ด.1</strong> และ <strong>สปส.1-10</strong> ทุกปีต้องออก <strong>50 ทวิ</strong> ให้พนักงานทุกคน และ <strong>กท.20ก</strong> Excel คิดเลขให้ได้ แต่ไม่ออกแบบฟอร์มให้ ต้องมีคนคีย์ซ้ำ ซึ่งการคีย์ซ้ำคือจุดที่ตัวเลขเพี้ยน</p>
+    <p data-en="Every month you need PND.1 and SSO 1-10; every year, 50 Bis for each employee and KT.20 Kor. Excel computes the numbers but does not produce the forms, so someone retypes them, and retyping is where transcription errors enter.">ทุกเดือนต้องยื่น <strong>ภ.ง.ด.1</strong> และ <strong>สปส.1-10</strong> ทุกปีต้องออก <strong>50 ทวิ</strong> ให้พนักงานทุกคน และ <strong>กท.20ก</strong> Excel คิดเลขให้ได้ แต่ไม่ออกแบบฟอร์มให้ ต้องมีคนคีย์ซ้ำ ซึ่งการคีย์ซ้ำคือจุดที่ตัวเลขเพี้ยน</p>
 
     <h4 data-en="4. Formulas break silently">4. สูตรพังแบบเงียบ ๆ</h4>
-    <p data-en="Insert a row, drag a cell wrong, or copy last month's file and forget one range — Excel does not warn you. The sheet still shows a number, just the wrong one. Payroll errors are only discovered when an employee complains or the Revenue Department writes back.">แทรกแถว ลากเซลล์ผิด หรือก๊อปไฟล์เดือนที่แล้วมาแล้วลืมแก้ช่วงข้อมูลสักช่อง — Excel ไม่เตือน มันยังขึ้นตัวเลขให้เหมือนเดิม แค่เป็นตัวเลขที่ผิด และความผิดพลาดเรื่องเงินเดือนมักถูกพบตอนพนักงานทักมา หรือตอนสรรพากรมีหนังสือกลับมา</p>
+    <p data-en="Insert a row, drag a cell wrong, or copy last month's file and forget one range, Excel does not warn you. The sheet still shows a number, just the wrong one. Payroll errors are only discovered when an employee complains or the Revenue Department writes back.">แทรกแถว ลากเซลล์ผิด หรือก๊อปไฟล์เดือนที่แล้วมาแล้วลืมแก้ช่วงข้อมูลสักช่อง, Excel ไม่เตือน มันยังขึ้นตัวเลขให้เหมือนเดิม แค่เป็นตัวเลขที่ผิด และความผิดพลาดเรื่องเงินเดือนมักถูกพบตอนพนักงานทักมา หรือตอนสรรพากรมีหนังสือกลับมา</p>
 
     <h4 data-en="5. Rules change every year">5. กฎหมายเปลี่ยนทุกปี</h4>
-    <p data-en="Contribution ceilings, rates and new funds change. When they do, every formula in every file — this year's, last year's, the copy on someone's laptop — has to be updated by hand. Payroll software updates the rule once, centrally.">เพดานเงินสมทบ อัตรา และกองทุนใหม่ ๆ มีการเปลี่ยนแปลงเป็นระยะ เช่นกองทุนสงเคราะห์ลูกจ้างที่เริ่มบังคับใช้ พอกฎเปลี่ยนทีต้องไล่แก้สูตรทุกไฟล์ ทั้งของปีนี้ ปีที่แล้ว และไฟล์ที่อยู่ในเครื่องคนอื่น ส่วน<strong>ระบบ Payroll</strong> แก้กฎที่เดียวจบ</p>
+    <p data-en="Contribution ceilings, rates and new funds change. When they do, every formula in every file, this year's, last year's, the copy on someone's laptop, has to be updated by hand. Payroll software updates the rule once, centrally.">เพดานเงินสมทบ อัตรา และกองทุนใหม่ ๆ มีการเปลี่ยนแปลงเป็นระยะ เช่นกองทุนสงเคราะห์ลูกจ้างที่เริ่มบังคับใช้ พอกฎเปลี่ยนทีต้องไล่แก้สูตรทุกไฟล์ ทั้งของปีนี้ ปีที่แล้ว และไฟล์ที่อยู่ในเครื่องคนอื่น ส่วน<strong>ระบบ Payroll</strong> แก้กฎที่เดียวจบ</p>
 
     <h4 data-en="6. Confidentiality and PDPA">6. ความลับและ PDPA</h4>
     <p data-en="A payroll file holds ID card numbers, salaries and bank accounts. Once it travels by email or LINE it can no longer be recalled, and there is no record of who opened it. Under Thailand's PDPA the employer remains responsible for that data.">ไฟล์เงินเดือนมีเลขบัตรประชาชน ฐานเงินเดือน และเลขบัญชีธนาคาร พอส่งทางอีเมลหรือไลน์ไปแล้วเรียกคืนไม่ได้ และไม่มีบันทึกว่าใครเปิดดูบ้าง ตาม <strong>PDPA</strong> นายจ้างยังเป็นผู้รับผิดชอบข้อมูลชุดนี้อยู่</p>
@@ -274,23 +275,23 @@ footer .ft-mail{color:#6ee7b7 !important}
       <li>เคยยื่นเอกสารช้า หรือเคยต้องยื่นแก้ไข</li>
       <li>พนักงานเริ่มขอสลิปเงินเดือน</li>
     </ul>
-    <div class="box" data-en="&lt;strong&gt;A quick way to decide:&lt;/strong&gt; multiply the hours you spend on payroll each month by what an hour of your time is worth. Compare that with the monthly fee. Then add the cost of one filing error — that is usually what settles it."><strong>วิธีตัดสินใจแบบเร็ว:</strong> เอาจำนวนชั่วโมงที่ใช้ทำเงินเดือนต่อเดือน คูณกับค่าแรงต่อชั่วโมงของคนทำ แล้วเทียบกับค่าบริการรายเดือน จากนั้นบวกต้นทุนของการยื่นผิดหนึ่งครั้งเข้าไป — ตัวเลขนี้มักเป็นตัวชี้ขาด</div>
+    <div class="box" data-en="&lt;strong&gt;A quick way to decide:&lt;/strong&gt; multiply the hours you spend on payroll each month by what an hour of your time is worth. Compare that with the monthly fee. Then add the cost of one filing error, that is usually what settles it."><strong>วิธีตัดสินใจแบบเร็ว:</strong> เอาจำนวนชั่วโมงที่ใช้ทำเงินเดือนต่อเดือน คูณกับค่าแรงต่อชั่วโมงของคนทำ แล้วเทียบกับค่าบริการรายเดือน จากนั้นบวกต้นทุนของการยื่นผิดหนึ่งครั้งเข้าไป ตัวเลขนี้มักเป็นตัวชี้ขาด</div>
 
     <h2 data-en="How to move from Excel without drama">ย้ายจาก Excel ยังไงให้ไม่วุ่น</h2>
-    <ul data-en="&lt;li&gt;&lt;strong&gt;Pick a clean starting point&lt;/strong&gt; — the start of a tax year is easiest, but any month works if you carry the year-to-date figures across&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Export employees to CSV&lt;/strong&gt; — name, ID number, start date, salary, pay type&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Run one month in parallel&lt;/strong&gt; — enter a month you have already paid and check every figure against your sheet&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Keep the old file read-only&lt;/strong&gt; as your reference for that year&lt;/li&gt;">
-      <li><strong>เลือกจุดตั้งต้นให้สะอาด</strong> — ต้นปีภาษีง่ายที่สุด แต่เริ่มกลางปีก็ได้ ถ้ายกยอดสะสมตั้งแต่ต้นปีมาด้วย</li>
-      <li><strong>ส่งออกรายชื่อเป็น CSV</strong> — ชื่อ เลขบัตรประชาชน วันเริ่มงาน เงินเดือน ประเภทการจ้าง</li>
-      <li><strong>ลองทำคู่ขนาน 1 เดือน</strong> — เอาเดือนที่จ่ายเงินไปแล้วมากรอก แล้วไล่เทียบทุกตัวเลขกับไฟล์เดิม</li>
+    <ul data-en="&lt;li&gt;&lt;strong&gt;Pick a clean starting point&lt;/strong&gt;: the start of a tax year is easiest, but any month works if you carry the year-to-date figures across&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Export employees to CSV&lt;/strong&gt;: name, ID number, start date, salary, pay type&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Run one month in parallel&lt;/strong&gt;: enter a month you have already paid and check every figure against your sheet&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Keep the old file read-only&lt;/strong&gt; as your reference for that year&lt;/li&gt;">
+      <li><strong>เลือกจุดตั้งต้นให้สะอาด</strong> ต้นปีภาษีง่ายที่สุด แต่เริ่มกลางปีก็ได้ ถ้ายกยอดสะสมตั้งแต่ต้นปีมาด้วย</li>
+      <li><strong>ส่งออกรายชื่อเป็น CSV</strong> ชื่อ เลขบัตรประชาชน วันเริ่มงาน เงินเดือน ประเภทการจ้าง</li>
+      <li><strong>ลองทำคู่ขนาน 1 เดือน</strong> เอาเดือนที่จ่ายเงินไปแล้วมากรอก แล้วไล่เทียบทุกตัวเลขกับไฟล์เดิม</li>
       <li><strong>เก็บไฟล์เดิมไว้แบบอ่านอย่างเดียว</strong> เป็นหลักฐานอ้างอิงของปีนั้น</li>
     </ul>
-    <div class="warn" data-en="&lt;strong&gt;Do not skip the parallel month.&lt;/strong&gt; If the new system's numbers do not match your sheet, you want to find out on a month you have already paid — not on the month people are waiting for their money."><strong>อย่าข้ามขั้นตอนทำคู่ขนาน</strong> ถ้าตัวเลขของระบบใหม่ไม่ตรงกับไฟล์เดิม ควรรู้ตอนที่เป็นเดือนที่จ่ายเงินไปแล้ว ไม่ใช่เดือนที่พนักงานกำลังรอเงินอยู่</div>
+    <div class="warn" data-en="&lt;strong&gt;Do not skip the parallel month.&lt;/strong&gt; If the new system's numbers do not match your sheet, you want to find out on a month you have already paid, not on the month people are waiting for their money."><strong>อย่าข้ามขั้นตอนทำคู่ขนาน</strong> ถ้าตัวเลขของระบบใหม่ไม่ตรงกับไฟล์เดิม ควรรู้ตอนที่เป็นเดือนที่จ่ายเงินไปแล้ว ไม่ใช่เดือนที่พนักงานกำลังรอเงินอยู่</div>
 
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
-        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน พ.ร.บ.คุ้มครองแรงงาน</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -298,17 +299,17 @@ footer .ft-mail{color:#6ee7b7 !important}
     <h2 data-en="Frequently asked questions">คำถามที่พบบ่อย</h2>
     <div class="faq">
       <details><summary data-en="Is running payroll in Excel illegal?">ทำเงินเดือนด้วย Excel ผิดกฎหมายไหม</summary>
-        <p data-en="No. The law does not require payroll software — you may use Excel or even work it out by hand. What it does require is that withholding tax and social security are correct, that each employee receives a 50 Bis certificate, and that PND.1 and SSO 1-10 are filed on time. The liability sits with accuracy and deadlines, not with the tool.">ไม่ผิด กฎหมายไม่ได้บังคับว่าต้องใช้<strong>โปรแกรมเงินเดือน</strong> จะใช้ Excel หรือคิดมือก็ได้ สิ่งที่กฎหมายบังคับคือภาษีหัก ณ ที่จ่ายและประกันสังคมต้องถูกต้อง ต้องออก 50 ทวิ ให้ลูกจ้าง และยื่น ภ.ง.ด.1 กับ สปส.1-10 ตรงกำหนด ความรับผิดอยู่ที่ความถูกต้องและกำหนดเวลา ไม่ใช่เครื่องมือ</p></details>
+        <p data-en="No. The law does not require payroll software, you may use Excel or even work it out by hand. What it does require is that withholding tax and social security are correct, that each employee receives a 50 Bis certificate, and that PND.1 and SSO 1-10 are filed on time. The liability sits with accuracy and deadlines, not with the tool.">ไม่ผิด กฎหมายไม่ได้บังคับว่าต้องใช้<strong>โปรแกรมเงินเดือน</strong> จะใช้ Excel หรือคิดมือก็ได้ สิ่งที่กฎหมายบังคับคือภาษีหัก ณ ที่จ่ายและประกันสังคมต้องถูกต้อง ต้องออก 50 ทวิ ให้ลูกจ้าง และยื่น ภ.ง.ด.1 กับ สปส.1-10 ตรงกำหนด ความรับผิดอยู่ที่ความถูกต้องและกำหนดเวลา ไม่ใช่เครื่องมือ</p></details>
       <details><summary data-en="At what size should we stop using Excel?">ธุรกิจขนาดไหนควรเลิกใช้ Excel</summary>
         <p data-en="There is no fixed headcount. The real signals are: people joining or leaving mid-month, daily-wage or overtime staff, several statutory forms every month, or more than one person editing the file. Once any of those is routine, the time cost and error risk usually exceed the software fee.">ไม่มีเส้นแบ่งตายตัวที่จำนวนคน สัญญาณจริงคือ มีคนเข้าออกกลางเดือน มีพนักงานรายวันหรือ OT ต้องออกเอกสารราชการหลายแบบทุกเดือน หรือมีคนแก้ไฟล์มากกว่าหนึ่งคน พอข้อใดข้อหนึ่งกลายเป็นเรื่องประจำ ต้นทุนเวลาและความเสี่ยงมักสูงกว่าค่าโปรแกรม</p></details>
       <details><summary data-en="Is migrating from Excel difficult?">ย้ายข้อมูลจาก Excel เข้าโปรแกรมเงินเดือนยากไหม</summary>
         <p data-en="Not particularly. Most payroll software imports CSV, which Excel saves directly. Prepare the employee list, ID numbers, start dates, salaries, and the year-to-date tax and social security totals so the annual calculation stays continuous.">ไม่ยาก <strong>ระบบ Payroll</strong> ส่วนใหญ่นำเข้าไฟล์ CSV ได้ ซึ่ง Excel บันทึกออกมาได้ตรง ๆ สิ่งที่ต้องเตรียมคือรายชื่อพนักงาน เลขบัตรประชาชน วันเริ่มงาน เงินเดือน และยอดภาษีกับประกันสังคมสะสมตั้งแต่ต้นปี เพื่อให้การคิดภาษีทั้งปีต่อเนื่องถูกต้อง</p></details>
       <details><summary data-en="Which calculates tax more accurately?">โปรแกรมเงินเดือน vs Excel อันไหนคำนวณภาษีแม่นกว่า</summary>
-        <p data-en="In practice, payroll software. Thai withholding tax is derived from full-year income spread across the months worked, so a raise, a bonus or a mid-month joiner changes the whole year. Excel needs the formula rebuilt each time. That said, a well-built and well-maintained sheet will give the same answer — the difference is how much attention it demands.">ในทางปฏิบัติ <strong>โปรแกรมเงินเดือน</strong>แม่นกว่า เพราะภาษีหัก ณ ที่จ่ายคิดจากเงินได้ทั้งปีแล้วเฉลี่ยตามเดือนที่ทำงาน การขึ้นเงินเดือน โบนัส หรือคนเข้างานกลางเดือน กระทบทั้งปี Excel ต้องรื้อสูตรใหม่ทุกครั้ง ทั้งนี้ไฟล์ที่วางสูตรถูกและดูแลดีก็ให้ผลตรงกันได้ ต่างกันที่ต้องใช้ความใส่ใจแค่ไหน</p></details>
+        <p data-en="In practice, payroll software. Thai withholding tax is derived from full-year income spread across the months worked, so a raise, a bonus or a mid-month joiner changes the whole year. Excel needs the formula rebuilt each time. That said, a well-built and well-maintained sheet will give the same answer, the difference is how much attention it demands.">ในทางปฏิบัติ <strong>โปรแกรมเงินเดือน</strong>แม่นกว่า เพราะภาษีหัก ณ ที่จ่ายคิดจากเงินได้ทั้งปีแล้วเฉลี่ยตามเดือนที่ทำงาน การขึ้นเงินเดือน โบนัส หรือคนเข้างานกลางเดือน กระทบทั้งปี Excel ต้องรื้อสูตรใหม่ทุกครั้ง ทั้งนี้ไฟล์ที่วางสูตรถูกและดูแลดีก็ให้ผลตรงกันได้ ต่างกันที่ต้องใช้ความใส่ใจแค่ไหน</p></details>
     </div>
 
     <h2 data-en="In short">สรุป</h2>
-    <p data-en="&lt;strong&gt;Payroll software vs Excel&lt;/strong&gt; is not a question of which is better in the abstract — it is a question of how complicated your payroll has become. Excel is a fine place to start and an honest tool. It stops being the cheap option the moment mid-month joiners, overtime and monthly filings turn every payroll run into an afternoon of careful checking."><strong>โปรแกรมเงินเดือน vs Excel</strong> ไม่ใช่คำถามว่าอะไรดีกว่ากันโดยทั่วไป แต่เป็นคำถามว่าเงินเดือนของคุณซับซ้อนขึ้นแค่ไหนแล้ว Excel เป็นจุดเริ่มต้นที่ดีและเป็นเครื่องมือที่ซื่อตรง มันเลิกเป็นตัวเลือกที่ถูกที่สุดก็ต่อเมื่อคนเข้าออกกลางเดือน OT และเอกสารรายเดือน ทำให้การทำเงินเดือนแต่ละรอบกลายเป็นการนั่งไล่ตรวจทั้งบ่าย</p>
+    <p data-en="&lt;strong&gt;Payroll software vs Excel&lt;/strong&gt; is not a question of which is better in the abstract, it is a question of how complicated your payroll has become. Excel is a fine place to start and an honest tool. It stops being the cheap option the moment mid-month joiners, overtime and monthly filings turn every payroll run into an afternoon of careful checking."><strong>โปรแกรมเงินเดือน vs Excel</strong> ไม่ใช่คำถามว่าอะไรดีกว่ากันโดยทั่วไป แต่เป็นคำถามว่าเงินเดือนของคุณซับซ้อนขึ้นแค่ไหนแล้ว Excel เป็นจุดเริ่มต้นที่ดีและเป็นเครื่องมือที่ซื่อตรง มันเลิกเป็นตัวเลือกที่ถูกที่สุดก็ต่อเมื่อคนเข้าออกกลางเดือน OT และเอกสารรายเดือน ทำให้การทำเงินเดือนแต่ละรอบกลายเป็นการนั่งไล่ตรวจทั้งบ่าย</p>
     <p data-en="If that describes your month, try running one already-paid month through a &lt;a href=&quot;index.html&quot;&gt;payroll system&lt;/a&gt; in parallel. The comparison will answer the question faster than any article.">ถ้าตรงกับเดือนของคุณ ลองเอาเดือนที่จ่ายเงินไปแล้วมากรอกใน<a href="/"><strong>ระบบ Payroll</strong></a>ดูคู่ขนานสักเดือน การเทียบตัวเลขจะตอบคำถามนี้ได้เร็วกว่าบทความไหน ๆ</p>
   </article>
 </div>
@@ -323,7 +324,7 @@ footer .ft-mail{color:#6ee7b7 !important}
       <a href="/article-welfare-fund" class="card">
         <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
         <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
-          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 — สรุปครบ</h3>
+          <h3 data-en="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
           <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
 
       <a href="/article-withholding-tax" class="card">
@@ -350,8 +351,8 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="Ready to move off Excel? Try &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software&lt;/a&gt; — it imports your existing spreadsheet so you do not have to retype everything.">พร้อมเลิกใช้ Excel แล้ว ลองย้ายมาที่<a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll สำหรับธุรกิจไทย</a> ที่นำเข้าข้อมูลจากไฟล์ Excel เดิมได้ ไม่ต้องพิมพ์ใหม่ทั้งหมด</div>
-<h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="Ready to move off Excel? Try &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software&lt;/a&gt;, it imports your existing spreadsheet so you do not have to retype everything.">พร้อมเลิกใช้ Excel แล้ว ลองย้ายมาที่<a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll สำหรับธุรกิจไทย</a> ที่นำเข้าข้อมูลจากไฟล์ Excel เดิมได้ ไม่ต้องพิมพ์ใหม่ทั้งหมด</div>
+<h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -368,7 +369,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -469,7 +470,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

@@ -73,7 +73,7 @@
   .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
 
-  /* ไอคอนหัวบทความ — วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
   .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
   .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
     justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
@@ -92,7 +92,7 @@
     background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
   .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
   @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
-  /* แถวบทความอื่น ๆ — เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
   .artwrap{position:relative}
   .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
     scroll-snap-type:x mandatory;padding:6px 2px 14px;
@@ -180,6 +180,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 <link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=2">
 <link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
 <!--#header active="/articles"-->
@@ -216,10 +217,10 @@ footer .ft-mail{color:#6ee7b7 !important}
            data-en-alt="Comparing free payroll options against paid software" width="1200" height="525" fetchpriority="high" decoding="async">
     </figure>
 
-    <p data-en="&lt;strong&gt;Free payroll software&lt;/strong&gt; does exist. What varies is what &quot;free&quot; actually means — and the trade-off attached to each kind. This page lays out the options honestly, including where paying is the cheaper choice and where it is not."><strong>โปรแกรมเงินเดือนฟรี</strong> มีอยู่จริง แต่คำว่า "ฟรี" ในตลาดนี้มีหลายแบบ และแต่ละแบบแลกมาด้วยอะไรไม่เหมือนกัน หน้านี้จะบอกตามตรงว่ามีทางเลือกอะไรบ้าง แบบไหนใช้ได้จริง และจุดไหนที่การจ่ายเงินกลับถูกกว่าการใช้ของฟรี</p>
+    <p data-en="&lt;strong&gt;Free payroll software&lt;/strong&gt; does exist. What varies is what &quot;free&quot; actually means, and the trade-off attached to each kind. This page lays out the options honestly, including where paying is the cheaper choice and where it is not."><strong>โปรแกรมเงินเดือนฟรี</strong> มีอยู่จริง แต่คำว่า "ฟรี" ในตลาดนี้มีหลายแบบ และแต่ละแบบแลกมาด้วยอะไรไม่เหมือนกัน หน้านี้จะบอกตามตรงว่ามีทางเลือกอะไรบ้าง แบบไหนใช้ได้จริง และจุดไหนที่การจ่ายเงินกลับถูกกว่าการใช้ของฟรี</p>
 
     <div class="box">
-      <p data-en="&lt;strong&gt;Said plainly up front:&lt;/strong&gt; eSimPayroll has a &lt;strong&gt;Standard plan that is free forever&lt;/strong&gt; for businesses with 1-10 employees — no payment needed. It does not include Premium features such as mobile check-in, time attendance and leave. Above 10 employees, or for Premium, it is paid, after a 30-day free trial with every feature. The other free routes, such as a spreadsheet, are covered below — and they may well be the right choice for your business.">
+      <p data-en="&lt;strong&gt;Said plainly up front:&lt;/strong&gt; eSimPayroll has a &lt;strong&gt;Standard plan that is free forever&lt;/strong&gt; for businesses with 1-10 employees, no payment needed. It does not include Premium features such as mobile check-in, time attendance and leave. Above 10 employees, or for Premium, it is paid, after a 30-day free trial with every feature. The other free routes, such as a spreadsheet, are covered below, and they may well be the right choice for your business.">
         <strong>บอกไว้ก่อนเลย:</strong> eSimPayroll มี<strong>แพ็กเกจมาตรฐานที่ใช้ฟรีถาวร</strong>สำหรับธุรกิจที่มีพนักงาน 1–10 คน ไม่ต้องจ่ายเงิน แต่ไม่รวมฟีเจอร์พรีเมี่ยม เช่น ลงเวลาผ่านมือถือ ระบบเวลาเข้างาน และระบบลา ถ้าพนักงานเกิน 10 คนหรือต้องการฟีเจอร์พรีเมี่ยมจะเป็นแบบเสียเงิน โดยทดลองใช้ครบทุกฟีเจอร์ฟรี 30 วันก่อน ส่วนทางเลือกฟรีแบบอื่น เช่น ไฟล์ตารางคำนวณ อยู่ในหัวข้อด้านล่าง และอาจเป็นทางเลือกที่เหมาะกับธุรกิจคุณจริง ๆ</p>
     </div>
 
@@ -237,50 +238,50 @@ footer .ft-mail{color:#6ee7b7 !important}
       </table>
     </div>
 
-    <h2 data-en="Doing it in a spreadsheet — the genuinely free route">ทำเองด้วยไฟล์ตารางคำนวณ — ทางที่ฟรีจริง</h2>
+    <h2 data-en="Doing it in a spreadsheet, the genuinely free route">ทำเองด้วยไฟล์ตารางคำนวณ ทางที่ฟรีจริง</h2>
     <p data-en="If you already have Excel or use Google Sheets, this costs nothing extra and never expires. For a small, stable team it is a perfectly reasonable answer, and plenty of businesses run this way for years without trouble.">ถ้ามี Excel อยู่แล้วหรือใช้ Google Sheets ทางนี้ไม่มีค่าใช้จ่ายเพิ่มและไม่มีวันหมดอายุ สำหรับทีมเล็กที่คนไม่ค่อยเข้าออก วิธีนี้<strong>สมเหตุสมผลจริง</strong> และมีธุรกิจจำนวนมากทำแบบนี้มาหลายปีโดยไม่มีปัญหา</p>
     <p data-en="What you take on is the arithmetic and the maintenance:">สิ่งที่ต้องรับผิดชอบเองคือการคำนวณและการดูแลให้ทันสมัย</p>
     <ul>
-      <li data-en="&lt;strong&gt;Progressive withholding tax&lt;/strong&gt; — bracket by bracket, calculated on annual income and spread across the months worked."><strong>ภาษีหัก ณ ที่จ่ายแบบขั้นบันได</strong> — คิดทีละขั้น จากเงินได้ทั้งปี แล้วเฉลี่ยตามจำนวนเดือนที่ทำงาน</li>
-      <li data-en="&lt;strong&gt;Social security with its cap&lt;/strong&gt; — 5% of wages, but only up to the statutory ceiling."><strong>ประกันสังคมพร้อมเพดาน</strong> — 5% ของค่าจ้าง แต่คิดได้ไม่เกินเพดานที่กฎหมายกำหนด</li>
-      <li data-en="&lt;strong&gt;Mid-month joiners and leavers&lt;/strong&gt; — pay prorated by days, and the annual figure used for tax must use the prorated amount, not the full salary. This is the step most spreadsheets get wrong."><strong>คนเข้าออกกลางเดือน</strong> — ค่าจ้างหารตามวัน และเงินได้ทั้งปีที่ใช้คิดภาษีต้องใช้ยอดที่หารแล้ว ไม่ใช่เงินเดือนเต็ม <strong>ข้อนี้คือจุดที่ไฟล์ตารางคำนวณผิดบ่อยที่สุด</strong></li>
-      <li data-en="&lt;strong&gt;Retyping&lt;/strong&gt; — the same figures go into the payslip, then again into the 50 Bis certificate, PND.1 and SSO 1-10."><strong>การพิมพ์ซ้ำ</strong> — ตัวเลขชุดเดิมต้องพิมพ์ลงสลิป แล้วพิมพ์อีกครั้งลง 50 ทวิ ภ.ง.ด.1 และ สปส.1-10</li>
-      <li data-en="&lt;strong&gt;Keeping up with the law&lt;/strong&gt; — when rates or rules change, you find out and fix the formulas yourself."><strong>ตามกฎหมายให้ทัน</strong> — เมื่ออัตราหรือกติกาเปลี่ยน ต้องรู้เองและแก้สูตรเอง</li>
+      <li data-en="&lt;strong&gt;Progressive withholding tax&lt;/strong&gt;: bracket by bracket, calculated on annual income and spread across the months worked."><strong>ภาษีหัก ณ ที่จ่ายแบบขั้นบันได</strong> คิดทีละขั้น จากเงินได้ทั้งปี แล้วเฉลี่ยตามจำนวนเดือนที่ทำงาน</li>
+      <li data-en="&lt;strong&gt;Social security with its cap&lt;/strong&gt;: 5% of wages, but only up to the statutory ceiling."><strong>ประกันสังคมพร้อมเพดาน</strong> 5% ของค่าจ้าง แต่คิดได้ไม่เกินเพดานที่กฎหมายกำหนด</li>
+      <li data-en="&lt;strong&gt;Mid-month joiners and leavers&lt;/strong&gt;: pay prorated by days, and the annual figure used for tax must use the prorated amount, not the full salary. This is the step most spreadsheets get wrong."><strong>คนเข้าออกกลางเดือน</strong> ค่าจ้างหารตามวัน และเงินได้ทั้งปีที่ใช้คิดภาษีต้องใช้ยอดที่หารแล้ว ไม่ใช่เงินเดือนเต็ม <strong>ข้อนี้คือจุดที่ไฟล์ตารางคำนวณผิดบ่อยที่สุด</strong></li>
+      <li data-en="&lt;strong&gt;Retyping&lt;/strong&gt;: the same figures go into the payslip, then again into the 50 Bis certificate, PND.1 and SSO 1-10."><strong>การพิมพ์ซ้ำ</strong> ตัวเลขชุดเดิมต้องพิมพ์ลงสลิป แล้วพิมพ์อีกครั้งลง 50 ทวิ ภ.ง.ด.1 และ สปส.1-10</li>
+      <li data-en="&lt;strong&gt;Keeping up with the law&lt;/strong&gt;: when rates or rules change, you find out and fix the formulas yourself."><strong>ตามกฎหมายให้ทัน</strong> เมื่ออัตราหรือกติกาเปลี่ยน ต้องรู้เองและแก้สูตรเอง</li>
     </ul>
 
     <h2 data-en="What free tiers usually leave out">แพ็กเกจฟรีมักไม่รวมอะไร</h2>
     <p data-en="Free tiers are a real offer, not a trick. But the limits tend to sit where a growing business will eventually hit them. Worth checking before you commit your data:">แพ็กเกจฟรีเป็นข้อเสนอจริง ไม่ใช่กลลวง แต่ข้อจำกัดมักตั้งอยู่ตรงจุดที่ธุรกิจซึ่งกำลังโตจะไปชนเข้าพอดี ควรตรวจก่อนย้ายข้อมูลเข้าไป</p>
     <ul>
-      <li data-en="&lt;strong&gt;Staff limit&lt;/strong&gt; — ask what happens on the day you hire past it."><strong>จำนวนพนักงานที่จำกัด</strong> — ถามให้ชัดว่าวันที่รับคนเกินจำนวนแล้วจะเป็นยังไง</li>
-      <li data-en="&lt;strong&gt;Statutory forms&lt;/strong&gt; — 50 Bis, PND.1 and SSO 1-10 are often on the paid tier, which is where most of the monthly work actually is."><strong>เอกสารราชการ</strong> — 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 มักอยู่ในแพ็กเกจเสียเงิน ซึ่งเป็นงานส่วนใหญ่ของแต่ละเดือนพอดี</li>
-      <li data-en="&lt;strong&gt;Someone to ask&lt;/strong&gt; — when a figure looks wrong, free tiers rarely come with support."><strong>คนให้ถาม</strong> — เวลาตัวเลขดูไม่ถูก แพ็กเกจฟรีมักไม่มีคนให้ปรึกษา</li>
-      <li data-en="&lt;strong&gt;Getting your data back out&lt;/strong&gt; — ask this before you sign up, not on the day you want to leave. A good system exports to CSV."><strong>การดึงข้อมูลออก</strong> — ถามตั้งแต่ก่อนสมัคร ไม่ใช่ตอนจะเลิกใช้ ระบบที่ดีต้องส่งออกเป็น CSV ได้</li>
+      <li data-en="&lt;strong&gt;Staff limit&lt;/strong&gt;: ask what happens on the day you hire past it."><strong>จำนวนพนักงานที่จำกัด</strong> ถามให้ชัดว่าวันที่รับคนเกินจำนวนแล้วจะเป็นยังไง</li>
+      <li data-en="&lt;strong&gt;Statutory forms&lt;/strong&gt;: 50 Bis, PND.1 and SSO 1-10 are often on the paid tier, which is where most of the monthly work actually is."><strong>เอกสารราชการ</strong> 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 มักอยู่ในแพ็กเกจเสียเงิน ซึ่งเป็นงานส่วนใหญ่ของแต่ละเดือนพอดี</li>
+      <li data-en="&lt;strong&gt;Someone to ask&lt;/strong&gt;: when a figure looks wrong, free tiers rarely come with support."><strong>คนให้ถาม</strong> เวลาตัวเลขดูไม่ถูก แพ็กเกจฟรีมักไม่มีคนให้ปรึกษา</li>
+      <li data-en="&lt;strong&gt;Getting your data back out&lt;/strong&gt;: ask this before you sign up, not on the day you want to leave. A good system exports to CSV."><strong>การดึงข้อมูลออก</strong> ถามตั้งแต่ก่อนสมัคร ไม่ใช่ตอนจะเลิกใช้ ระบบที่ดีต้องส่งออกเป็น CSV ได้</li>
     </ul>
 
     <h2 data-en="Working out whether free is actually cheaper">คำนวณดูว่าของฟรีถูกกว่าจริงหรือเปล่า</h2>
     <p data-en="Free software is not free labour. The honest comparison is time plus risk against the monthly fee:">โปรแกรมฟรีไม่ได้แปลว่าแรงงานฟรี การเทียบที่ตรงไปตรงมาคือ <strong>เวลาบวกความเสี่ยง</strong> เทียบกับค่าบริการรายเดือน</p>
     <ol>
       <li data-en="&lt;strong&gt;Time one real month.&lt;/strong&gt; Count the hours from gathering data through to preparing the forms.">
-        <strong>จับเวลาหนึ่งเดือนจริง</strong> — นับตั้งแต่รวบรวมข้อมูล คำนวณ ออกสลิป จนถึงเตรียมเอกสารยื่น</li>
+        <strong>จับเวลาหนึ่งเดือนจริง</strong> นับตั้งแต่รวบรวมข้อมูล คำนวณ ออกสลิป จนถึงเตรียมเอกสารยื่น</li>
       <li data-en="&lt;strong&gt;Multiply by the hourly cost&lt;/strong&gt; of whoever does it. Four hours at 200 baht an hour is 800 baht a month, before any mistakes."><strong>คูณด้วยค่าแรงต่อชั่วโมง</strong>ของคนที่ทำ เช่น 4 ชั่วโมง × 200 บาท = <strong>800 บาทต่อเดือน</strong> โดยยังไม่นับความผิดพลาด</li>
-      <li data-en="&lt;strong&gt;Count the corrections&lt;/strong&gt; over the past year — times a figure had to be fixed after the fact, or an employee queried their pay."><strong>นับจำนวนครั้งที่ต้องแก้ย้อนหลัง</strong>ในหนึ่งปีที่ผ่านมา หรือครั้งที่พนักงานทักว่ายอดไม่ตรง</li>
-      <li data-en="&lt;strong&gt;Compare.&lt;/strong&gt; If time plus risk exceeds the fee, paying is the cheaper option. If it does not, staying free is the sound decision."><strong>เอามาเทียบกัน</strong> — ถ้าเวลาบวกความเสี่ยงแพงกว่าค่าโปรแกรม การจ่ายเงินคือทางที่ถูกกว่า ถ้าไม่ใช่ ใช้ของฟรีต่อไปคือการตัดสินใจที่ถูกต้อง</li>
+      <li data-en="&lt;strong&gt;Count the corrections&lt;/strong&gt; over the past year, times a figure had to be fixed after the fact, or an employee queried their pay."><strong>นับจำนวนครั้งที่ต้องแก้ย้อนหลัง</strong>ในหนึ่งปีที่ผ่านมา หรือครั้งที่พนักงานทักว่ายอดไม่ตรง</li>
+      <li data-en="&lt;strong&gt;Compare.&lt;/strong&gt; If time plus risk exceeds the fee, paying is the cheaper option. If it does not, staying free is the sound decision."><strong>เอามาเทียบกัน</strong> ถ้าเวลาบวกความเสี่ยงแพงกว่าค่าโปรแกรม การจ่ายเงินคือทางที่ถูกกว่า ถ้าไม่ใช่ ใช้ของฟรีต่อไปคือการตัดสินใจที่ถูกต้อง</li>
     </ol>
-    <p data-en="In practice the crossover tends to arrive somewhere past five to ten employees, or the first time someone joins mid-year — because that is where manual calculation starts going wrong quietly.">ในทางปฏิบัติ จุดตัดมักมาถึงเมื่อมีพนักงานเกินราว 5–10 คน หรือครั้งแรกที่มีคนเข้างานกลางปี เพราะนั่นคือจุดที่การคำนวณด้วยมือเริ่ม<strong>ผิดแบบเงียบ ๆ</strong></p>
+    <p data-en="In practice the crossover tends to arrive somewhere past five to ten employees, or the first time someone joins mid-year, because that is where manual calculation starts going wrong quietly.">ในทางปฏิบัติ จุดตัดมักมาถึงเมื่อมีพนักงานเกินราว 5–10 คน หรือครั้งแรกที่มีคนเข้างานกลางปี เพราะนั่นคือจุดที่การคำนวณด้วยมือเริ่ม<strong>ผิดแบบเงียบ ๆ</strong></p>
 
     <h2 data-en="Who should stay free, and who should not">ใครควรใช้ของฟรีต่อ ใครไม่ควร</h2>
     <ul>
-      <li data-en="&lt;strong&gt;Stay free&lt;/strong&gt; — a handful of monthly-paid staff, no turnover, no overtime, one person handling it, and no history of figures needing correction."><strong>ใช้ของฟรีต่อได้</strong> — พนักงานไม่กี่คน เป็นรายเดือนทั้งหมด ไม่มีคนเข้าออก ไม่มี OT มีคนดูแลคนเดียว และไม่เคยต้องแก้ตัวเลขย้อนหลัง</li>
-      <li data-en="&lt;strong&gt;Time to pay&lt;/strong&gt; — people join or leave during the year, there are daily-wage or overtime staff, more than one person touches payroll, or you have already had to correct a figure after paying."><strong>ถึงเวลาจ่ายแล้ว</strong> — มีคนเข้าออกระหว่างปี มีพนักงานรายวันหรือ OT มีคนแตะเงินเดือนมากกว่าหนึ่งคน หรือเคยต้องแก้ตัวเลขหลังจ่ายเงินไปแล้ว</li>
-      <li data-en="&lt;strong&gt;Accounting firms&lt;/strong&gt; — running payroll for several client companies on free tools rarely holds up, because the limits apply per company and the retyping multiplies by the number of clients."><strong>สำนักงานบัญชี</strong> — ทำเงินเดือนให้ลูกค้าหลายบริษัทด้วยเครื่องมือฟรีมักไปไม่รอด เพราะข้อจำกัดคิดแยกรายบริษัท และงานพิมพ์ซ้ำคูณตามจำนวนลูกค้า</li>
+      <li data-en="&lt;strong&gt;Stay free&lt;/strong&gt;: a handful of monthly-paid staff, no turnover, no overtime, one person handling it, and no history of figures needing correction."><strong>ใช้ของฟรีต่อได้</strong> พนักงานไม่กี่คน เป็นรายเดือนทั้งหมด ไม่มีคนเข้าออก ไม่มี OT มีคนดูแลคนเดียว และไม่เคยต้องแก้ตัวเลขย้อนหลัง</li>
+      <li data-en="&lt;strong&gt;Time to pay&lt;/strong&gt;: people join or leave during the year, there are daily-wage or overtime staff, more than one person touches payroll, or you have already had to correct a figure after paying."><strong>ถึงเวลาจ่ายแล้ว</strong> มีคนเข้าออกระหว่างปี มีพนักงานรายวันหรือ OT มีคนแตะเงินเดือนมากกว่าหนึ่งคน หรือเคยต้องแก้ตัวเลขหลังจ่ายเงินไปแล้ว</li>
+      <li data-en="&lt;strong&gt;Accounting firms&lt;/strong&gt;: running payroll for several client companies on free tools rarely holds up, because the limits apply per company and the retyping multiplies by the number of clients."><strong>สำนักงานบัญชี</strong> ทำเงินเดือนให้ลูกค้าหลายบริษัทด้วยเครื่องมือฟรีมักไปไม่รอด เพราะข้อจำกัดคิดแยกรายบริษัท และงานพิมพ์ซ้ำคูณตามจำนวนลูกค้า</li>
     </ul>
 
     <div class="note sources">
       <h3 data-en="Official sources">แหล่งอ้างอิงทางการ</h3>
       <ul style="margin:6px 0 0 18px">
-        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร — ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
-        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม — เงินสมทบและสิทธิประโยชน์</a></li>
-        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน — พ.ร.บ.คุ้มครองแรงงาน</a></li>
+        <li><a href="https://www.rd.go.th" target="_blank" rel="noopener">กรมสรรพากร ภาษีเงินได้บุคคลธรรมดาและภาษีหัก ณ ที่จ่าย</a></li>
+        <li><a href="https://www.sso.go.th" target="_blank" rel="noopener">สำนักงานประกันสังคม เงินสมทบและสิทธิประโยชน์</a></li>
+        <li><a href="https://www.labour.go.th" target="_blank" rel="noopener">กรมสวัสดิการและคุ้มครองแรงงาน พ.ร.บ.คุ้มครองแรงงาน</a></li>
       </ul>
       <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">อัตราและเกณฑ์อาจเปลี่ยนตามประกาศของหน่วยงาน ตรวจสอบฉบับล่าสุดก่อนใช้ยื่นจริง</p>
     </div>
@@ -290,19 +291,19 @@ footer .ft-mail{color:#6ee7b7 !important}
       <details><summary data-en="Is there really free payroll software?">โปรแกรมเงินเดือนฟรี มีจริงไหม</summary>
         <p data-en="Yes, in several forms: a spreadsheet you build yourself (free forever, but you own the formulas), a free tier capped by employee count, open source you host yourself, or a time-limited free trial. Each is a real offer with a different trade-off.">มีจริง และมีหลายแบบ ทั้งทำเองด้วยไฟล์ตารางคำนวณ (ฟรีถาวร แต่ต้องดูแลสูตรเอง) แพ็กเกจฟรีที่จำกัดจำนวนพนักงาน โอเพนซอร์สที่ต้องติดตั้งเอง และทดลองใช้ฟรีตามระยะเวลา แต่ละแบบเป็นข้อเสนอจริง เพียงแต่แลกมาด้วยคนละอย่าง</p></details>
       <details><summary data-en="Is doing payroll in Excel really free?">ทำเงินเดือนด้วย Excel ฟรีจริงไหม</summary>
-        <p data-en="The software costs nothing extra if you already have it — the cost moves to your time and your risk. You write the progressive tax and social security formulas yourself, handle mid-month joiners yourself, and retype the same figures into the payslip and the statutory forms. For a few stable staff that is genuinely fine.">ตัวโปรแกรมไม่มีค่าใช้จ่ายเพิ่มถ้ามีอยู่แล้ว ต้นทุนย้ายไปอยู่ที่เวลาและความเสี่ยงแทน ต้องเขียนสูตรภาษีขั้นบันไดและประกันสังคมเอง จัดการคนเข้ากลางเดือนเอง และพิมพ์ตัวเลขซ้ำลงสลิปกับเอกสารราชการ ถ้ามีพนักงานไม่กี่คนที่ไม่ค่อยเปลี่ยน วิธีนี้เพียงพอจริง</p></details>
+        <p data-en="The software costs nothing extra if you already have it, the cost moves to your time and your risk. You write the progressive tax and social security formulas yourself, handle mid-month joiners yourself, and retype the same figures into the payslip and the statutory forms. For a few stable staff that is genuinely fine.">ตัวโปรแกรมไม่มีค่าใช้จ่ายเพิ่มถ้ามีอยู่แล้ว ต้นทุนย้ายไปอยู่ที่เวลาและความเสี่ยงแทน ต้องเขียนสูตรภาษีขั้นบันไดและประกันสังคมเอง จัดการคนเข้ากลางเดือนเอง และพิมพ์ตัวเลขซ้ำลงสลิปกับเอกสารราชการ ถ้ามีพนักงานไม่กี่คนที่ไม่ค่อยเปลี่ยน วิธีนี้เพียงพอจริง</p></details>
       <details><summary data-en="What do free versions usually leave out?">โปรแกรมเงินเดือนฟรีมีข้อจำกัดอะไรบ้าง</summary>
-        <p data-en="Commonly: a cap on employees, statutory forms on the paid tier only, no one to ask when a number looks wrong, no updates when the law changes, and sometimes no way to export your data. The last three matter more than people expect — Thai tax and labour rules do change, and a system that does not follow will be wrong without warning.">ที่พบบ่อยคือจำกัดจำนวนพนักงาน เอกสารราชการอยู่ในแพ็กเกจเสียเงิน ไม่มีคนให้ถามเมื่อตัวเลขดูผิด ไม่อัปเดตเมื่อกฎหมายเปลี่ยน และบางระบบดึงข้อมูลออกไม่ได้ สามข้อหลังสำคัญกว่าที่คิด เพราะกฎหมายภาษีและแรงงานไทยมีแก้เป็นระยะ ถ้าระบบไม่ตามให้ ตัวเลขจะผิดโดยไม่มีใครเตือน</p></details>
+        <p data-en="Commonly: a cap on employees, statutory forms on the paid tier only, no one to ask when a number looks wrong, no updates when the law changes, and sometimes no way to export your data. The last three matter more than people expect, Thai tax and labour rules do change, and a system that does not follow will be wrong without warning.">ที่พบบ่อยคือจำกัดจำนวนพนักงาน เอกสารราชการอยู่ในแพ็กเกจเสียเงิน ไม่มีคนให้ถามเมื่อตัวเลขดูผิด ไม่อัปเดตเมื่อกฎหมายเปลี่ยน และบางระบบดึงข้อมูลออกไม่ได้ สามข้อหลังสำคัญกว่าที่คิด เพราะกฎหมายภาษีและแรงงานไทยมีแก้เป็นระยะ ถ้าระบบไม่ตามให้ ตัวเลขจะผิดโดยไม่มีใครเตือน</p></details>
       <details><summary data-en="When is it time to start paying?">ควรเริ่มจ่ายเงินเมื่อไหร่</summary>
-        <p data-en="Work it out rather than guess: hours spent per month times the hourly cost of whoever does it, plus how often figures had to be corrected. Four hours at 200 baht is 800 baht a month before mistakes. The crossover usually arrives past five to ten employees, or the first mid-year joiner.">คำนวณดีกว่าเดา — ชั่วโมงที่ใช้ต่อเดือน × ค่าแรงต่อชั่วโมงของคนที่ทำ บวกจำนวนครั้งที่ต้องแก้ตัวเลข เช่น 4 ชั่วโมง × 200 บาท = 800 บาทต่อเดือนโดยยังไม่นับความผิดพลาด จุดตัดมักมาถึงเมื่อเกิน 5–10 คน หรือครั้งแรกที่มีคนเข้างานกลางปี</p></details>
+        <p data-en="Work it out rather than guess: hours spent per month times the hourly cost of whoever does it, plus how often figures had to be corrected. Four hours at 200 baht is 800 baht a month before mistakes. The crossover usually arrives past five to ten employees, or the first mid-year joiner.">คำนวณดีกว่าเดา ชั่วโมงที่ใช้ต่อเดือน × ค่าแรงต่อชั่วโมงของคนที่ทำ บวกจำนวนครั้งที่ต้องแก้ตัวเลข เช่น 4 ชั่วโมง × 200 บาท = 800 บาทต่อเดือนโดยยังไม่นับความผิดพลาด จุดตัดมักมาถึงเมื่อเกิน 5–10 คน หรือครั้งแรกที่มีคนเข้างานกลางปี</p></details>
     </div>
 
     <h2 data-en="In short">สรุป</h2>
-    <p data-en="Free payroll software is real, and for a small stable team it is often the right answer — this page is not trying to talk you out of it. What is worth avoiding is assuming free means cheaper without checking. Count the hours, count the corrections, and compare. If free still wins, stay free.">โปรแกรมเงินเดือนฟรีมีจริง และสำหรับทีมเล็กที่คนไม่ค่อยเปลี่ยน มัน<strong>มักเป็นคำตอบที่ถูกต้อง</strong> — หน้านี้ไม่ได้พยายามพูดให้เลิกใช้ สิ่งที่ควรเลี่ยงคือการเหมาว่าฟรีแปลว่าถูกกว่าโดยไม่เคยคำนวณ ลองนับชั่วโมง นับจำนวนครั้งที่ต้องแก้ แล้วเอามาเทียบ ถ้าของฟรียังชนะ ก็ใช้ของฟรีต่อไป</p>
+    <p data-en="Free payroll software is real, and for a small stable team it is often the right answer, this page is not trying to talk you out of it. What is worth avoiding is assuming free means cheaper without checking. Count the hours, count the corrections, and compare. If free still wins, stay free.">โปรแกรมเงินเดือนฟรีมีจริง และสำหรับทีมเล็กที่คนไม่ค่อยเปลี่ยน มัน<strong>มักเป็นคำตอบที่ถูกต้อง</strong> หน้านี้ไม่ได้พยายามพูดให้เลิกใช้ สิ่งที่ควรเลี่ยงคือการเหมาว่าฟรีแปลว่าถูกกว่าโดยไม่เคยคำนวณ ลองนับชั่วโมง นับจำนวนครั้งที่ต้องแก้ แล้วเอามาเทียบ ถ้าของฟรียังชนะ ก็ใช้ของฟรีต่อไป</p>
 
     <div class="cta-band">
       <h2 data-en="Test it free for 30 days, then decide">ทดลองฟรี 30 วัน แล้วค่อยตัดสินใจ</h2>
-      <p data-en="eSimPayroll's Standard plan is free forever for up to 10 employees. Above that, or for Premium features, there is a monthly fee — after 30 days free with every feature, no credit card. The trial is long enough to enter a month you have already paid and compare every figure against your own records. If the comparison does not convince you, do not buy it.">eSimPayroll แพ็กเกจมาตรฐานใช้ฟรีถาวรสำหรับพนักงานไม่เกิน 10 คน ถ้าเกินจากนั้นหรือต้องการฟีเจอร์พรีเมี่ยมจึงคิดค่าบริการรายเดือน — ทดลองครบทุกฟีเจอร์ฟรี 30 วันก่อน ไม่ต้องใช้บัตรเครดิต ช่วงทดลองยาวพอให้เอาเดือนที่จ่ายไปแล้วจริงมากรอกแล้วเทียบทุกตัวเลขกับของเดิม <strong>ถ้าเทียบแล้วยังไม่มั่นใจ ก็ไม่ต้องซื้อ</strong></p>
+      <p data-en="eSimPayroll's Standard plan is free forever for up to 10 employees. Above that, or for Premium features, there is a monthly fee, after 30 days free with every feature, no credit card. The trial is long enough to enter a month you have already paid and compare every figure against your own records. If the comparison does not convince you, do not buy it.">eSimPayroll แพ็กเกจมาตรฐานใช้ฟรีถาวรสำหรับพนักงานไม่เกิน 10 คน ถ้าเกินจากนั้นหรือต้องการฟีเจอร์พรีเมี่ยมจึงคิดค่าบริการรายเดือน ทดลองครบทุกฟีเจอร์ฟรี 30 วันก่อน ไม่ต้องใช้บัตรเครดิต ช่วงทดลองยาวพอให้เอาเดือนที่จ่ายไปแล้วจริงมากรอกแล้วเทียบทุกตัวเลขกับของเดิม <strong>ถ้าเทียบแล้วยังไม่มั่นใจ ก็ไม่ต้องซื้อ</strong></p>
       <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
         <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มทดลองฟรี 30 วัน</a>
         <a href="/pricing" class="btn ghost" data-en="See pricing">ดูราคา</a>
@@ -350,8 +351,8 @@ footer .ft-mail{color:#6ee7b7 !important}
 
 <div class="wrap">
   <div class="cta-band">
-    <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="If free tools no longer fit, consider &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software&lt;/a&gt; — free forever for up to 10 employees on the Standard plan, paid plans from 590 baht a month, with a full 30-day free trial before you decide.">ถ้าของฟรีไม่ตอบโจทย์แล้ว ลองดู <a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll ที่คิดค่าบริการตามจำนวนพนักงาน</a> ใช้ฟรีถาวรสำหรับพนักงานไม่เกิน 10 คน (แพ็กเกจมาตรฐาน) แพ็กเกจเสียเงินเริ่มต้น 590 บาทต่อเดือน และให้ทดลองใช้ฟรีเต็มรูปแบบ 30 วันก่อนตัดสินใจ</div>
-<h2 data-en="eSimPayroll — online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="If free tools no longer fit, consider &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software&lt;/a&gt;, free forever for up to 10 employees on the Standard plan, paid plans from 590 baht a month, with a full 30-day free trial before you decide.">ถ้าของฟรีไม่ตอบโจทย์แล้ว ลองดู <a href="/" style="color:var(--brand);font-weight:700">โปรแกรม Payroll ที่คิดค่าบริการตามจำนวนพนักงาน</a> ใช้ฟรีถาวรสำหรับพนักงานไม่เกิน 10 คน (แพ็กเกจมาตรฐาน) แพ็กเกจเสียเงินเริ่มต้น 590 บาทต่อเดือน และให้ทดลองใช้ฟรีเต็มรูปแบบ 30 วันก่อนตัดสินใจ</div>
+<h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
     <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
@@ -368,7 +369,7 @@ footer .ft-mail{color:#6ee7b7 !important}
 
       <div>
         <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="12" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
-        <div class="ft-tag" data-en="Online payroll for Thai businesses — tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
         <div class="ft-social">
           <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
@@ -469,7 +470,7 @@ footer .ft-mail{color:#6ee7b7 !important}
   box.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync);
   window.addEventListener('load',sync);
-  /* จับการเปลี่ยนขนาดจริง — event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
   if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
   setTimeout(sync,60); setTimeout(sync,400); sync();
 

@@ -237,6 +237,47 @@ function repairOtZero(){
   if(n) save();
   if(n) console.info('repairOtZero: คำนวณยอด OT ใหม่', n, 'รายการ');
 }
+/* ---------- แบนเนอร์หัวหน้า (ทุกหน้ายกเว้นแดชบอร์ด): ชื่อหน้า + คำอธิบายสั้น + น้อง eSim ----------
+   [ไอคอน 3 ตัวคั่นเว้นวรรค, ท่าน้อง eSim, คำอธิบายไทย, คำอธิบายอังกฤษ] */
+const PB_INFO={
+  employees:['👥 🪪 📇','e1c','รายชื่อ ประวัติ และข้อมูลเงินเดือนของพนักงานทุกคน','Every employee’s profile and pay details in one place'],
+  checkin:['📱 🙂 📍','e4c','สแกนหน้า + GPS ลงเวลาผ่านมือถือ ไม่ต้องซื้อเครื่องสแกน','Face scan + GPS check-in from any phone'],
+  attend:['⏰ 📅 ✅','e3c','บันทึกเวลาเข้า-ออก สาย และ OT ส่งต่อเข้าเงินเดือนให้เอง','Clock-in times, lateness and OT flow straight into payroll'],
+  leave:['🌴 📝 ✅','e6c','ยื่นใบลา อนุมัติ และดูวันลาคงเหลือของทุกคน','Leave requests, approvals and balances'],
+  resign:['🚪 📄 🤝','e5c','บันทึกพนักงานลาออก พร้อมคิดเงินงวดสุดท้าย','Record leavers and their final pay'],
+  advance:['💸 🗓️ 🧾','e2c','เบิกเงินล่วงหน้า และจ่ายรายสัปดาห์ / 2 รอบ','Salary advances and weekly / twice-a-month pay'],
+  payroll:['🧮 💰 ⏱️','e3c','คิด OT ภาษี ประกันสังคม และกองทุนให้อัตโนมัติ','OT, tax, social security and funds calculated for you'],
+  summary:['📊 💰 🏦','e1c','ยอดเงินเดือนทั้งงวด พร้อมใบสรุปยอดโอน','The whole period at a glance, ready to transfer'],
+  dept:['🏢 📊 💼','e2c','ต้นทุนเงินเดือนแยกตามแผนก','Payroll cost by department'],
+  detail:['📋 🔎 📑','e3c','ทุกรายการเงินได้ เงินหัก ของทุกคนในตารางเดียว','Every earning and deduction in one table'],
+  slip:['🧾 ✉️ 🖨️','e6c','สลิปเงินเดือน พิมพ์ / PDF / ส่งให้พนักงาน','Payslips to print, save as PDF or send'],
+  wht:['📄 ✍️ ✅','e1c','หนังสือรับรองการหักภาษี ณ ที่จ่าย (50 ทวิ)','Withholding tax certificates (50 Bis)'],
+  pnd1:['🏛️ 📄 🧮','e3c','แบบ ภ.ง.ด.1 ยอดตรงกับเงินเดือนทุกบาท','PND.1 that matches payroll to the baht'],
+  sso:['🛡️ 📄 🏥','e1c','แบบประกันสังคม สปส.1-10 พร้อมยื่น','SSO 1-10 ready to file'],
+  pvd:['🏦 📈 📄','e2c','สรุปเงินสะสม / สมทบ กองทุนสำรองเลี้ยงชีพ','Provident fund contributions summary'],
+  wf:['🤝 📄 🏛️','e2c','สรุปเงินสะสม / สมทบ กองทุนสงเคราะห์ลูกจ้าง','Employee welfare fund summary'],
+  settings:['⚙️ 🏢 🗓️','e5c','ข้อมูลบริษัท วันหยุด อัตรา OT และการตั้งค่าทั้งหมด','Company info, holidays, OT rates and more'],
+  feedback:['💬 💡 🛠️','e6c','แจ้งปัญหา หรือเสนอแนะ ทีมงานอ่านทุกข้อความ','Report a problem or suggest an idea'],
+  orders:['🛒 🧾 💳','e4c','ประวัติคำสั่งซื้อ ต่ออายุ และใบเสร็จ','Orders, renewals and receipts'],
+  quotes:['📄 💼 ✍️','e1c','ออกใบเสนอราคาให้ลูกค้า','Quotations for customers'],
+  linechats:['💬 🟢 👥','e6c','แชต LINE ของลูกค้า','Customer LINE chats'],
+  companies:['🏢 📁 👥','e1c','บริษัทลูกค้าทั้งหมดของสำนักงาน','All of the firm’s client companies'],
+  admin:['🛡️ 👥 ⚙️','e5c','จัดการผู้ใช้และระบบ','Users and system administration']
+};
+function pageBanner(p){
+  const [ic, pose, th, en]=PB_INFO[p], b=ic.split(' ');
+  return el(`<div class="dhero pbanner no-print">
+    <div class="dhero-tx">
+      <div class="dhero-k">eSimPayroll</div>
+      <h1>${esc(tr('nav_'+p))}</h1>
+      <p>${esc(LANG==='en'?en:th)}</p>
+    </div>
+    <div class="dhero-art" aria-hidden="true">
+      <span class="dh-b b1">${b[0]}</span><span class="dh-b b2">${b[1]}</span><span class="dh-b b3">${b[2]}</span>
+      <img src="/media/esim/${pose}.png" alt="" loading="lazy">
+    </div>
+  </div>`);
+}
 function render(){
   repairOtZero();
   /* จ่ายรายรอบอยู่ในหน้าเบิกจ่ายล่วงหน้า (แท็บ) — ลิงก์/ค่าที่จำไว้แบบเดิมพาไปแท็บนั้น */
@@ -250,6 +291,7 @@ function render(){
   if(pageLocked(PAGE)){ PAGE='dashboard'; savePage(PAGE); renderNav(); }
   const v = $('#view'); v.innerHTML='';
   if(TARGET_UID && MY_UID && TARGET_UID!==MY_UID) v.appendChild(adminBanner());
+  if(PAGE!=='dashboard' && PB_INFO[PAGE]) v.appendChild(pageBanner(PAGE));
   // สำนักงานบัญชีที่ยังไม่ได้เลือกบริษัท — ให้เพิ่ม/เลือกบริษัทก่อน
   if(isFirm() && !CUR_CO && PAGE!=='companies' && PAGE!=='admin'){ PAGE='companies'; savePage(PAGE); renderNav(); }
   ({dashboard:vDashboard, employees:vEmployees, attend:vAttend, checkin:vCheckin, leave:vLeave, resign:vResign, advance:vAdvance, rounds:(x)=>vRounds(x), payroll:vPayroll, summary:vSummary,
