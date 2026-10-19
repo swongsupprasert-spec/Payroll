@@ -14,7 +14,7 @@ function downloadFile(name, content, type){
 }
 
 /* ---------- นำเข้า/ส่งออก พนักงาน เป็น CSV ---------- */
-const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','เบอร์โทร','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เหตุผลในการลาออก','รายละเอียดการลาออก','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%','กองทุนสงเคราะห์%','คิดOT(ใช่/ไม่)','กะประจำ'];
+const EMP_CSV_HEAD=['รหัส','ชื่อ-นามสกุล','เพศ','สัญชาติ','ตำแหน่ง','เบอร์โทร','แผนก','ประเภท','ค่าจ้าง','วันเริ่มงาน(ปปปป-ดด-วว)','วันที่ลาออก(ปปปป-ดด-วว)','เหตุผลในการลาออก','รายละเอียดการลาออก','เลขบัตรประชาชน','ที่อยู่','ธนาคาร','เลขที่บัญชี','อัตรากสล.%','กองทุนสงเคราะห์%','คิดOT(ใช่/ไม่)','กะประจำ','ลดหย่อนคู่สมรส(มี/ไม่มี)','จำนวนบุตร','บุตรคนที่2+เกิดตั้งแต่2561','บิดามารดาที่อุปการะ','เบี้ยประกันชีวิต/ปี','เบี้ยประกันสุขภาพ/ปี','ประกันสุขภาพบิดามารดา/ปี','ดอกเบี้ยบ้าน/ปี','ลดหย่อนอื่น/ปี'];
 function csvEsc(v){ v=String(v??''); return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
 /* ---------- ช่องที่ Excel ชอบแปลงค่าให้เอง ----------
    เลขบัตร 13 หลัก -> 1.23457E+11 · เบอร์โทร 0812345678 -> 812345678 (เลข 0 หน้าหาย)
@@ -73,7 +73,8 @@ function exportEmpCSV(){
       e.payType==='daily'?'รายวัน':'รายเดือน',
       e.salary||0, csvKeepText(e.startDate), csvKeepText(e.resignDate),
       resignReasonLabel(e.resignReason), e.resignNote||'', csvKeepText(e.taxId),
-      e.address||'', e.bank||'', csvKeepText(e.bankNo), e.pvdRate||0, e.wfRate||'', e.noOT?'ไม่':'ใช่', (shiftById(e.shiftId)||ensureShifts()[0]).name].map(csvEsc).join(','));
+      e.address||'', e.bank||'', csvKeepText(e.bankNo), e.pvdRate||0, e.wfRate||'', e.noOT?'ไม่':'ใช่', (shiftById(e.shiftId)||ensureShifts()[0]).name,
+      (+e.spouse)?'มี':'ไม่มี', ...TAX_ALLOW_FIELDS.map(([k])=>+e[k]||0)].map(csvEsc).join(','));
   });
   const tag = empFilter==='daily'?'_รายวัน' : empFilter==='monthly'?'_รายเดือน' : '';
   downloadFile(`employees${tag}_${curPeriod()}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8');
@@ -104,7 +105,17 @@ const EMP_FIELDS=[
   ['pvdRate','อัตรากสล.%',    [/กสล|สำรองเลี้ยงชีพ/,/\bpvd\b/i]],
   ['wfRate','กองทุนสงเคราะห์%',[/สงเคราะห์/,/\bwelfare\b/i]],
   ['noOT','คิดOT',           [/คิด ?ot/i,/^ot$/i]],
-  ['shift','กะประจำ',        [/^กะ/,/\bshift\b/i]]
+  ['shift','กะประจำ',        [/^กะ/,/\bshift\b/i]],
+  // ค่าลดหย่อนภาษี (นำเข้าเฉพาะเมื่อไฟล์มีคอลัมน์นั้น) · ลำดับสำคัญ: คอลัมน์เฉพาะก่อนคอลัมน์ทั่วไป
+  ['spouse','ลดหย่อนคู่สมรส',  [/คู่สมรส/,/\bspouse\b/i]],
+  ['children2','บุตรคนที่2+',   [/บุตรคนที่ ?2|2561/,/\bchild(ren)? ?2\b/i]],
+  ['children','จำนวนบุตร',      [/บุตร/,/\bchildren\b/i]],
+  ['parentHealth','ประกันสุขภาพบิดามารดา',[/สุขภาพ ?บิดามารดา|สุขภาพพ่อแม่/,/\bparent ?health\b/i]],
+  ['parents','บิดามารดา',       [/บิดามารดา|พ่อแม่/,/\bparents\b/i]],
+  ['lifeIns','ประกันชีวิต',      [/ประกันชีวิต/,/\blife\b/i]],
+  ['healthIns','ประกันสุขภาพ',    [/ประกันสุขภาพ/,/\bhealth\b/i]],
+  ['homeLoan','ดอกเบี้ยบ้าน',     [/ดอกเบี้ย/,/\b(home ?loan|mortgage)\b/i]],
+  ['otherAllow','ลดหย่อนอื่น',     [/ลดหย่อนอื่น/,/\bother ?allow/i]]
 ];
 const EMP_POS_ORDER=['code','name','gender','nationality','position','dept','payType','salary',
   'startDate','resignDate','taxId','address','bank','bankNo','pvdRate','wfRate','noOT','shift'];
@@ -150,6 +161,9 @@ function empRecFromRow(c, map){
     pvdRate:pvd, wfRate: pvd>0 ? 0 : num('wfRate'),
     noOT: otTxt && /^(ไม่|no|n|0|false)$/i.test(otTxt) ? 1 : 0
   };
+  // ค่าลดหย่อน: ใส่เฉพาะช่องที่ไฟล์มีคอลัมน์ ไม่ทับค่าที่มีอยู่ด้วย 0
+  if(map.spouse!==undefined) rec.spouse=/^(มี|yes|y|1|true)$/i.test(String(g('spouse')).trim())?1:0;
+  TAX_ALLOW_FIELDS.forEach(([k])=>{ if(map[k]!==undefined) rec[k]=Math.max(0,num(k)); });
   const sh=g('shift');
   if(sh){ const s=ensureShifts().find(x=>x.name===sh); if(s) rec.shiftId=s.id; }
   return rec;

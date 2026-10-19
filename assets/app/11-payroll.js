@@ -592,10 +592,14 @@ function taxModal(emp, r){
         ${line('หัก ค่าใช้จ่าย 50% (สูงสุด 100,000)', t.expense, true)}
         ${line('หัก ลดหย่อนส่วนตัว', t.personal, true)}
         ${t.spouse?line('หัก คู่สมรส', t.spouse, true):''}
-        ${t.children?line('หัก บุตร ('+ (emp.children||0) +' คน)', t.children, true):''}
+        ${t.children?line('หัก บุตร ('+ (emp.children||0) +' คน'+((+emp.children2)?' · คนที่ 2+ เกิดตั้งแต่ 2561 '+Math.min(+emp.children2,+emp.children||0)+' คน':'')+')', t.children, true):''}
+        ${t.parents?line('หัก บิดามารดา ('+Math.min(4,+emp.parents||0)+' คน)', t.parents, true):''}
+        ${t.ins?line('หัก ประกันชีวิต + ประกันสุขภาพตนเอง (รวมสูงสุด 100,000)', t.ins, true):''}
+        ${t.parentHealth?line('หัก ประกันสุขภาพบิดามารดา (สูงสุด 15,000)', t.parentHealth, true):''}
+        ${t.home?line('หัก ดอกเบี้ยเงินกู้ซื้อบ้าน (สูงสุด 100,000)', t.home, true):''}
         ${line('หัก ประกันสังคม (สูงสุด 10,500)', t.sso, true)}
         ${t.pvd?line('หัก กองทุนสำรองเลี้ยงชีพ', t.pvd, true):''}
-        ${t.other?line('หัก ลดหย่อนอื่น', t.other, true):''}
+        ${t.other?line('หัก ลดหย่อนอื่น ๆ', t.other, true):''}
       </tbody>
       <tfoot>
         <tr><td><strong>เงินได้สุทธิ (ฐานภาษี)</strong></td><td class="num"><strong>${money(t.net)}</strong></td></tr>

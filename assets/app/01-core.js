@@ -333,16 +333,43 @@ function estTax(emp, year, rec){
   const expense=Math.min(inc*0.5,100000);                    // ค่าใช้จ่าย 50% สูงสุด 100,000
   const personal=60000;                                      // ลดหย่อนส่วนตัว (ไม่เฉลี่ยตามเดือน)
   const spouse=(+emp.spouse)?60000:0;                        // คู่สมรส
-  const children=(Number(emp.children||0))*30000;            // บุตรคนละ 30,000
+  const al=taxAllowOf(emp);                                  // ค่าลดหย่อนจากข้อมูลพนักงาน (คิดเพดานแล้ว)
+  const children=al.children;                                // บุตรคนละ 30,000 · คนที่ 2+ เกิดตั้งแต่ 2561 เพิ่มอีก 30,000
   const ssoCap=autoSSO(DB.ssoMaxBase)*12;                     // เพดาน ปกส./ปี = 875 × 12 = 10,500
   const sso=Math.min(wages.reduce((s,w)=>s+autoSSO(w),0), ssoCap);   // ประกันสังคม (คิดจากค่าจ้างจริงรายเดือน)
   const pvd=Math.min(wageSum*(emp.pvdRate||0)/100,500000);     // กสล.
-  const other=Number(emp.otherAllow||0);                     // ลดหย่อนอื่น
-  const totalDed=expense+personal+spouse+children+sso+pvd+other;
+  const other=al.other;                                      // ลดหย่อนอื่น (SSF, RMF, เงินบริจาค ฯลฯ)
+  const {parents,ins,parentHealth,home}=al;
+  const totalDed=expense+personal+spouse+children+parents+ins+parentHealth+home+sso+pvd+other;
   const net=Math.max(0,inc-totalDed);                        // เงินได้สุทธิ (ฐานภาษี)
   const annual=progressiveTax(net);
   const monthly=months>0 ? Math.round(annual/months*100)/100 : 0; // เฉลี่ยตามเดือนที่ทำงาน
-  return {months,recurringMonthly,bonus,inc,expense,personal,spouse,children,sso,pvd,other,totalDed,net,annual,monthly};
+  return {months,recurringMonthly,bonus,inc,expense,personal,spouse,children,parents,ins,parentHealth,home,sso,pvd,other,totalDed,net,annual,monthly};
+}
+/* ค่าลดหย่อนภาษีรายคน (กรอกที่ข้อมูลพนักงาน) — คืนยอดหลังคิดเพดานตามกฎหมายแล้ว
+   [ช่อง, ชื่อ, เพดาน] · ประกันชีวิต + สุขภาพตนเอง รวมกันไม่เกิน 100,000 */
+const TAX_ALLOW_FIELDS=[
+  ['children','จำนวนบุตร (คน)',null],
+  ['children2','บุตรคนที่ 2 ขึ้นไป ที่เกิดตั้งแต่ปี 2561 (คน)',null],
+  ['parents','บิดามารดาที่อุปการะ (คน, สูงสุด 4)',4],
+  ['lifeIns','เบี้ยประกันชีวิต / ปี',100000],
+  ['healthIns','เบี้ยประกันสุขภาพตนเอง / ปี',25000],
+  ['parentHealth','เบี้ยประกันสุขภาพบิดามารดา / ปี',15000],
+  ['homeLoan','ดอกเบี้ยเงินกู้ซื้อบ้าน / ปี',100000],
+  ['otherAllow','ลดหย่อนอื่น ๆ / ปี (SSF, RMF, เงินบริจาค ฯลฯ)',null]
+];
+function taxAllowOf(emp){
+  const n=k=>Math.max(0, Number(emp[k])||0);
+  const kids=Math.floor(n('children')), kids2=Math.min(kids, Math.floor(n('children2')));
+  const life=Math.min(n('lifeIns'),100000), health=Math.min(n('healthIns'),25000);
+  return {
+    children: kids*30000 + kids2*30000,
+    parents: Math.min(4, Math.floor(n('parents')))*30000,
+    ins: Math.min(life+health, 100000),
+    parentHealth: Math.min(n('parentHealth'),15000),
+    home: Math.min(n('homeLoan'),100000),
+    other: n('otherAllow')
+  };
 }
 function calc(emp, p){
   const r = readRec(p, emp.id);
@@ -370,4 +397,4 @@ function periodTotals(p){
   });
   return {count, salary, earn, gross, ded, net, tax, earnBy, dedBy, salMonthly, salDaily, nMonthly, nDaily};
 }
-
+

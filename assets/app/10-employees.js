@@ -427,6 +427,19 @@ function empForm(id){
       <div class="field"><label>ธนาคาร</label><input id="f_bank" value="${esc(e.bank)}"></div>
       <div class="field"><label>เลขที่บัญชี</label><input id="f_bankNo" value="${esc(e.bankNo)}"></div>
       <div class="field" style="grid-column:1/-1"><label>ที่อยู่ (สำหรับหนังสือรับรองหัก ณ ที่จ่าย 50 ทวิ)</label><input id="f_address" value="${esc(e.address||'')}" placeholder="บ้านเลขที่ หมู่ ถนน ตำบล/แขวง อำเภอ/เขต จังหวัด รหัสไปรษณีย์"></div>
+      <!-- ค่าลดหย่อนภาษี: ใช้คำนวณภาษีหัก ณ ที่จ่ายรายเดือน (estTax) -->
+      <div class="field" style="grid-column:1/-1;background:#f5f8ff;border:1px solid var(--line);border-radius:10px;padding:12px 14px">
+        <label style="font-weight:700;color:var(--brand-d)">🧾 ค่าลดหย่อนภาษี <span class="muted" style="font-weight:400">(ไม่บังคับ · ใช้คิดภาษีหัก ณ ที่จ่ายให้อัตโนมัติ)</span></label>
+        <div class="grid2" style="margin-top:8px">
+          <div class="field"><label>คู่สมรส (ไม่มีเงินได้)</label><select id="f_tx_spouse">
+            <option value="0" ${!(+e.spouse)?'selected':''}>ไม่มี / มีเงินได้</option>
+            <option value="1" ${(+e.spouse)?'selected':''}>มี ไม่มีเงินได้ (ลดหย่อน 60,000)</option></select></div>
+          ${TAX_ALLOW_FIELDS.map(([k,lab,max])=>`<div class="field"><label>${lab}</label>
+            <input id="f_tx_${k}" type="number" min="0" ${max?`max="${max}"`:''} step="${/^(children|children2|parents)$/.test(k)?1:100}" value="${+e[k]||''}" placeholder="0"></div>`).join('')}
+        </div>
+        <div id="f_txSum" class="muted" style="font-size:12px;margin-top:6px"></div>
+        <div class="muted" style="font-size:11px;margin-top:3px">บุตรคนละ 30,000 · บุตรคนที่ 2 ขึ้นไปที่เกิดตั้งแต่ปี 2561 ได้เพิ่มอีกคนละ 30,000 · บิดามารดาคนละ 30,000 · ประกันชีวิต + สุขภาพตนเองรวมไม่เกิน 100,000 · ระบบคิดเพดานให้เอง · ประกันสังคมและ กสล. ดึงจากยอดหักจริงอยู่แล้ว ไม่ต้องกรอก</div>
+      </div>
     </div>
     <datalist id="deptList">${[...new Set(DB.employees.map(x=>x.dept).filter(Boolean))].map(d=>`<option value="${esc(d)}">`).join('')}</datalist>`;
   openModal(id?'แก้ไขพนักงาน':'เพิ่มพนักงาน', body, [['ยกเลิก','ghost',closeModal],['บันทึก','',()=>{
@@ -454,8 +467,16 @@ function empForm(id){
     const newSal=nsRaw===''?null:(+nsRaw||0);
     if(newSal!==null && !(newSal>0)){ toast('อัตราใหม่ต้องมากกว่า 0'); return; }
 
+    // ค่าลดหย่อนภาษี
+    rec.spouse=+g('f_tx_spouse')||0;
+    TAX_ALLOW_FIELDS.forEach(([k])=>{ rec[k]=Math.max(0,+g('f_tx_'+k)||0); });
+    rec.children=Math.floor(rec.children); rec.children2=Math.min(rec.children, Math.floor(rec.children2)); rec.parents=Math.min(4, Math.floor(rec.parents));
+
     const target = id ? e : {id:uid(),...rec};
     if(id) Object.assign(e,rec); else DB.employees.push(target);
+    // งวดปัจจุบันที่ทำไว้แล้ว: คิดภาษีใหม่ตามค่าลดหย่อนใหม่ (งวดก่อนหน้าคงเดิม ยอดที่หักไปแล้วไม่ย้อนแก้)
+    const curRec=DB.payroll && DB.payroll[PERIOD] && DB.payroll[PERIOD][target.id];
+    if(curRec && curRec.ded) autoDeductions(target, curRec);
 
     let msg='บันทึกแล้ว';
     if(newSal!==null){
@@ -533,6 +554,13 @@ function empForm(id){
     const w=$('#codeWarn'); if(w) w.textContent = dup ? '⚠️ รหัสนี้ถูกใช้แล้ว' : '';
   };
   ['#f_pvdRate','#f_wfRate'].forEach(s=>{ const n=$(s); if(n) n.addEventListener('input', syncFunds); });
+  // รวมค่าลดหย่อนสด ๆ (หลังคิดเพดาน) ให้เห็นก่อนบันทึก
+  const txSum=()=>{ const o={spouse:+$('#f_tx_spouse').value||0};
+    TAX_ALLOW_FIELDS.forEach(([k])=>{ o[k]=+$('#f_tx_'+k).value||0; });
+    const a=taxAllowOf(o), tot=(o.spouse?60000:0)+a.children+a.parents+a.ins+a.parentHealth+a.home+a.other;
+    $('#f_txSum').innerHTML = tot ? `รวมค่าลดหย่อนที่กรอก <strong>${money(tot)}</strong> บาท/ปี (ไม่รวมลดหย่อนส่วนตัว 60,000 ที่ได้ทุกคนอยู่แล้ว)` : 'ยังไม่ได้กรอก · ทุกคนได้ลดหย่อนส่วนตัว 60,000 อยู่แล้ว'; };
+  ['#f_tx_spouse',...TAX_ALLOW_FIELDS.map(([k])=>'#f_tx_'+k)].forEach(s=>{ const n=$(s); if(n){ n.addEventListener('input',txSum); n.addEventListener('change',txSum); } });
+  txSum();
   const wfSet=$('#f_wfSet');
   if(wfSet) wfSet.onclick=()=>{ $('#f_wfRate').value=(+DB.wfRateDefault||0.25); syncFunds(); };
   syncFunds();
