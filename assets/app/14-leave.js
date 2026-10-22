@@ -65,10 +65,12 @@ function anniversary1Y(emp){
   if(!y||!m||!d) return null;
   return new Date(y+1, m-1, d);
 }
-// สิทธิ์ลาพักร้อนของปีที่ดู: ต้องทำงานครบ 1 ปีแล้ว
+// สิทธิ์ลาพักร้อนของปีที่ดู: ตามกฎหมายต้องทำงานครบ 1 ปี (บริษัทเลือกให้ก่อนครบได้)
 //   ปีที่ผ่านมา/ปีอนาคต → วัดที่สิ้นปีนั้น · ปีปัจจุบัน → วัดที่วันนี้
 function vacationEligible(emp, year){
   const ann=anniversary1Y(emp);
+  // บริษัทตั้งให้ลาพักร้อนได้ก่อนครบ 1 ปี (ทั้งบริษัท หรือเฉพาะคน) — ให้สิทธิ์เลย
+  if(DB.vacNoWait || (emp && emp.vacNoWait)) return { ok:true, ann, free:true };
   if(!ann) return { ok:false, ann:null, reason:'ไม่ได้ระบุวันเริ่มงาน' };
   const nowY=new Date().getFullYear();
   const asOf = (year===nowY) ? new Date() : new Date(year,11,31);
@@ -103,13 +105,15 @@ function empQuotaForm(emp, year){
       <div class="field"><label>${esc(LEAVE_LAB(k))} (วัน/ปี)</label>
         <input type="number" min="0" step="0.5" id="eq_${k}" value="${ownQuota(emp,k)??''}"
           placeholder="ค่าส่วนกลาง ${num(+g[k]||0)} วัน"></div>`).join('')}
-    ${!vac.ok?`<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 13px;font-size:12.5px;color:#92400e">
-      ⚠️ คนนี้ยังทำงานไม่ครบ 1 ปี — ถึงตั้งโควตาลาพักร้อนไว้ ระบบก็ยังไม่ให้สิทธิ์จนกว่าจะครบตามกฎหมาย</div>`:''}`,
+    ${(anniversary1Y(emp) && anniversary1Y(emp)>new Date()) && !DB.vacNoWait ? `<label style="display:flex;gap:10px;align-items:flex-start;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 13px;font-size:13px;color:#92400e;cursor:pointer">
+      <input type="checkbox" id="eq_vacNoWait" ${emp.vacNoWait?'checked':''} style="margin-top:3px">
+      <span>คนนี้ยังทำงานไม่ครบ 1 ปี · <strong>ให้สิทธิ์ลาพักร้อนได้เลย ไม่ต้องรอครบ 1 ปี</strong><br><span style="font-size:12px">ไม่ติ๊ก = ได้สิทธิ์เมื่อครบ 1 ปีตามกฎหมาย</span></span></label>`:''}`,
     [['ยกเลิก','ghost',closeModal],
      ['ใช้ค่าส่วนกลาง','ghost',()=>{
        delete emp.quota; save(); closeModal(); render(); toast('กลับไปใช้ค่าส่วนกลางแล้ว');
      }],
      ['บันทึก','',()=>{
+       const nw=$('#eq_vacNoWait'); if(nw){ if(nw.checked) emp.vacNoWait=1; else delete emp.vacNoWait; }
        const q={};
        QUOTA_TYPES.forEach(k=>{ const v=$('#eq_'+k).value.trim(); if(v!=='') q[k]=Math.max(0,+v||0); });
        if(Object.keys(q).length) emp.quota=q; else delete emp.quota;
@@ -222,15 +226,18 @@ function vLeave(v){
         <input type="number" min="0" step="0.5" id="lq_${k}" value="${q[k]??''}"></div>`).join('')}
       <div class="field" style="max-width:170px"><label>ชั่วโมงทำงาน/วัน</label>
         <input type="number" min="1" step="0.5" id="lvHPD" value="${lvHPD()}"></div>
+      <label style="display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer;padding-bottom:8px">
+        <input type="checkbox" id="lvNoWait" ${DB.vacNoWait?'checked':''}> ให้ลาพักร้อนได้ตั้งแต่เริ่มงาน (ไม่ต้องรอครบ 1 ปี)</label>
       <button class="btn ghost sm" id="lvQSave">💾 บันทึกโควตา</button>
       <span class="muted" style="font-size:12.5px">ตามกฎหมายแรงงาน: ลาป่วย 30 วัน · ลากิจ 3 วัน · ลาพักร้อน 6 วัน<br>
-        <span style="color:#b45309">* ลาพักร้อนให้เฉพาะพนักงานที่ทำงานครบ 1 ปีแล้ว — คนที่ยังไม่ครบจะไม่ได้โควตา</span></span>
+        <span style="color:#b45309">* ${DB.vacNoWait?'ตั้งไว้ให้ลาพักร้อนได้ตั้งแต่เริ่มงาน':'ตามกฎหมายได้สิทธิ์เมื่อทำงานครบ 1 ปี · ให้ก่อนครบได้ทั้งบริษัท (ติ๊กด้านซ้าย) หรือรายคน (ปุ่มตั้งโควตา)'}</span></span>
     </div></div></div>`);
   v.appendChild(cfg);
   cfg.querySelector('#lvQSave').onclick=()=>{
     DB.leaveQuota=DB.leaveQuota||{};
     QUOTA_TYPES.forEach(k=>{ DB.leaveQuota[k]=+cfg.querySelector('#lq_'+k).value||0; });
     DB.leaveHoursPerDay=Math.max(1,+cfg.querySelector('#lvHPD').value||8);
+    if(cfg.querySelector('#lvNoWait').checked) DB.vacNoWait=1; else delete DB.vacNoWait;
     save(); render(); toast('บันทึกโควตาแล้ว');
   };
 
