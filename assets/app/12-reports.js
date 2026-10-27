@@ -3,7 +3,8 @@
 function vSummary(v){
   const t=periodTotals(PERIOD);
   v.appendChild(el(`<div class="toolbar"><h2 style="font-size:16px">สรุปเงินเดือน — ${periodLabel(PERIOD)}</h2>
-    <button class="btn ghost sm" style="margin-left:auto" onclick="printWide()">🖨️ พิมพ์</button></div>`));
+    <button class="btn ghost sm" style="margin-left:auto" onclick="exportNetTxt()" title="เลขบัญชี · ชื่อ · เงินสุทธิ (คั่นด้วย Tab) สำหรับส่งธนาคาร">⬇️ TXT ส่งธนาคาร</button>
+    <button class="btn ghost sm" onclick="printWide()">🖨️ พิมพ์</button></div>`));
   const rows=activeEmps(PERIOD).map(e=>{ const c=calc(e,PERIOD); return `<tr>
     <td><span class="chip">${esc(e.code)}</span></td><td>${esc(e.name)}</td>
     <td class="num pos">${money(c.gross)}</td><td class="num neg">${money(c.dedTotal)}</td><td class="num"><strong>${money(c.net)}</strong></td></tr>`;}).join('');
@@ -14,6 +15,16 @@ function vSummary(v){
     <tfoot><tr><td colspan="2">รวมทั้งสิ้น</td><td class="num">${money(t.gross)}</td><td class="num">${money(t.ded)}</td><td class="num">${money(t.net)}</td></tr></tfoot>
   </table>`));
   v.appendChild(panel);
+}
+/* ไฟล์ TXT ส่งธนาคาร: เฉพาะเงินสุทธิ — เลขบัญชี(ตัวเลขล้วน) [Tab] ชื่อ [Tab] ยอด ต่อบรรทัด · ข้ามคนสุทธิ ≤ 0 */
+function exportNetTxt(){
+  const list=activeEmps(PERIOD).map(e=>({e,net:Math.round(calc(e,PERIOD).net*100)/100})).filter(x=>x.net>0);
+  if(!list.length){ toast('ไม่มีเงินสุทธิที่ต้องโอนในงวดนี้'); return; }
+  const noAcc=list.filter(x=>!String(x.e.bankNo||'').replace(/\D/g,''));
+  const lines=list.map(x=>[String(x.e.bankNo||'').replace(/\D/g,''),x.e.name,x.net.toFixed(2)].join('\t'));
+  downloadFile(`net_pay_${PERIOD}.txt`, lines.join('\r\n')+'\r\n', 'text/plain;charset=utf-8');
+  const tot=list.reduce((s,x)=>s+x.net,0);
+  toast(`ส่งออก TXT แล้ว ${list.length} คน รวม ${money(tot)}`+(noAcc.length?` · ⚠️ ${noAcc.length} คนยังไม่มีเลขบัญชี`:''));
 }
 
 /* ============ 4. DEPT SUMMARY ============ */
@@ -314,4 +325,4 @@ function vPND1(v){
     downloadFile(`pnd1_${PERIOD}.csv`, '﻿'+lines.join('\n'),'text/csv'); toast('ส่งออกแล้ว');
   };
 }
-
+
