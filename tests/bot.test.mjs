@@ -251,3 +251,12 @@ test('webhook: แอดมินกด "ฉันตอบเอง" → บอ
     assert.ok(Date.parse(chats.get('U3').paused_until) > Date.now()); assert.equal(chats.get('U3').paused_by, 'customer');
   } finally { globalThis.fetch = realFetch; delete process.env.SUPABASE_SERVICE_ROLE_KEY; }
 });
+
+// คำตอบที่แอดมินสอนบอท (sql/40)
+import { pickLearned } from '../api/_learned.mjs';
+test('บอทใช้คำตอบที่แอดมินสอน เมื่อลูกค้าถามคล้ายกัน', () => {
+  const rows = [{ id: 1, question: 'ลาออกกลางเดือนคิดเงินยังไง|พนักงานลาออกกลางเดือน', answer: 'A1' }];
+  assert.equal(pickLearned('ลาออกกลางเดือน คิดเงินยังไงครับ', rows, false)?.row.answer, 'A1');
+  assert.equal(pickLearned('พนักงานลาออกกลางเดือนต้องทำไง', rows, true)?.row.answer, 'A1');
+  assert.equal(pickLearned('ราคาเท่าไหร่', rows, true), null);
+});

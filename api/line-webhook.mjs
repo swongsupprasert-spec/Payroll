@@ -5,6 +5,7 @@
 //   LINE_CHANNEL_ACCESS_TOKEN  — ใช้ส่งข้อความตอบกลับ
 import crypto from 'node:crypto';
 import { answer, answerMedia, isGreeting, silenced } from './_bot.mjs';
+import { pickLearned } from './_learned.mjs';
 
 const API = 'https://api.line.me/v2/bot';
 const auth = () => ({ Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}` });
@@ -60,6 +61,18 @@ async function saveChat(uid, row) {
       body: JSON.stringify({ user_id: uid, ...row }),
     });
   } catch (e) { console.error('chats', e.message); }
+}
+// คำตอบที่แอดมินสอนไว้ (sql/40) — โหลดเก็บไว้ 60 วินาที ไม่ต้องถาม Supabase ทุกข้อความ
+let LEARNED = { rows: [], at: 0 };
+async function loadLearned() {
+  if (!SB_KEY()) return [];
+  if (Date.now() - LEARNED.at < 60 * 1000) return LEARNED.rows;
+  try {
+    const r = await sb('line_bot_learned?active=eq.true&select=id,question,answer');
+    const rows = r.ok ? await r.json() : null;
+    if (Array.isArray(rows)) LEARNED = { rows, at: Date.now() };
+  } catch { /* ใช้ชุดเดิม */ }
+  return LEARNED.rows;
 }
 // บันทึกคำถามที่บอทตอบไม่ได้ (none) หรือได้แค่แนะนำบทความ (weak) → ดูใน Supabase เพื่อเพิ่มคำตอบ
 async function logMiss(uid, text, kind) {
@@ -144,7 +157,13 @@ export default async function handler(req, res) {
           const name = uid && isGreeting(text) ? await displayName(uid) : '';
           const ctx = { name, mem };
           msgs = answer(text, ctx);
-          if (ctx.miss) await logMiss(uid, text, ctx.miss);
+          // คำตอบที่แอดมินเคยตอบคำถามคล้ายกัน → ใช้แทน (ไม่ใช้กับคำทักทาย)
+          const hit = isGreeting(text) ? null : pickLearned(text, await loadLearned(), !!ctx.miss);
+          if (hit) {
+            msgs = [{ type: 'text', text: hit.row.answer.slice(0, 5000), quickReply: msgs.find((m) => m.quickReply)?.quickReply }];
+            if (!msgs[0].quickReply) delete msgs[0].quickReply;
+            sb('rpc/line_bot_learned_used', { method: 'POST', body: JSON.stringify({ p_id: hit.row.id }) }).catch(() => {});
+          } else if (ctx.miss) await logMiss(uid, text, ctx.miss);
         } else {
           msgs = answerMedia(ev.message?.type);
         }

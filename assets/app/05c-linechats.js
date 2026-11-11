@@ -28,7 +28,13 @@ async function vLineChats(v){
     ครบเวลาบอทกลับมาตอบเอง หรือกด “ให้บอทตอบต่อ” เมื่อคุยจบ · <span class="muted">ลูกค้าไม่เห็นการกดปุ่มเหล่านี้</span></div></div>`));
   const panel=el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap" id="lcTbl"><div class="empty">กำลังโหลด…</div></div></div></div>`);
   v.appendChild(panel);
+  v.appendChild(el(`<div class="toolbar" style="margin-top:18px"><h2 style="font-size:16px">🧠 คำตอบที่บอทจำไว้</h2>
+    <span class="muted" style="font-size:12.5px">ลูกค้าถามคล้ายกันครั้งหน้า บอทตอบด้วยคำตอบนี้ให้เอง</span>
+    <button class="btn sm" style="margin-left:auto" id="lcLrnAdd">＋ เพิ่มคำตอบ</button></div>`));
+  v.appendChild(el(`<div class="panel"><div class="pbody" style="padding:0"><div class="tbl-wrap" id="lcLrnTbl"><div class="empty">กำลังโหลด…</div></div></div></div>`));
   $('#lcRef').onclick=()=>render();
+  $('#lcLrnAdd').onclick=()=>lcLearnEdit({});
+  lcLearnDraw();
   await lcDraw();
   LC_TIMER=setInterval(()=>{ if(PAGE!=='linechats'||!$('#lcTbl')){ clearInterval(LC_TIMER); return; } lcDraw(); },30000);
 }
@@ -51,7 +57,8 @@ async function lcDraw(){
         : '<span class="chip" style="background:#e0f2fe;color:#0369a1">🤖 บอทตอบ</span>'}</td>
       <td style="white-space:nowrap;text-align:right">${paused
         ? `<button class="btn ghost sm" data-lcx="${i}" title="ต่อเวลาอีก 2 ชม.">+2 ชม.</button> <button class="btn ghost sm" data-lcr="${i}">🤖 ให้บอทตอบต่อ</button>`
-        : `<button class="btn sm" data-lcp="${i}">🙋 ฉันตอบเอง</button>`}</td></tr>`; }).join('')}
+        : `<button class="btn sm" data-lcp="${i}">🙋 ฉันตอบเอง</button>`}
+        <button class="btn ghost sm" data-lcl="${i}" title="บันทึกคำตอบที่ตอบลูกค้าไป ให้บอทใช้ตอบครั้งหน้า">🧠 จำคำตอบ</button></td></tr>`; }).join('')}
   </tbody></table>`;
   const set=async(c,until,by,msg)=>{
     const {error}=await sb.from('line_bot_chats').update({paused_until:until,paused_by:by}).eq('user_id',c.user_id);
@@ -65,4 +72,49 @@ async function lcDraw(){
     set(c,new Date(base+LC_PAUSE_MS).toISOString(),c.paused_by||'admin','ต่อเวลาอีก 2 ชม. แล้ว'); });
   box.querySelectorAll('[data-lcr]').forEach(b=>b.onclick=()=>{ const c=data[+b.dataset.lcr];
     set(c,null,null,`บอทกลับมาตอบ ${c.name||'ลูกค้า'} แล้ว`); });
+  box.querySelectorAll('[data-lcl]').forEach(b=>b.onclick=()=>{ const c=data[+b.dataset.lcl];
+    const t=c.last_text||''; lcLearnEdit({question:/^\[.*\]$/.test(t)?'':t}); });
+}
+
+/* ---------- 🧠 คำตอบที่บอทจำไว้ (ตาราง line_bot_learned, sql/40) ---------- */
+let LC_LRN=[];
+async function lcLearnDraw(){
+  const box=$('#lcLrnTbl'); if(!box) return;
+  const {data,error}=await sb.from('line_bot_learned').select('*').order('updated_at',{ascending:false});
+  if(!$('#lcLrnTbl')) return;
+  if(error){ box.innerHTML=`<div class="empty">โหลดไม่ได้: ${esc(error.message)}<br><span style="font-size:12px">(ยังไม่ได้รัน sql/40-supabase-line-learned.sql ใน Supabase?)</span></div>`; return; }
+  LC_LRN=data||[];
+  if(!LC_LRN.length){ box.innerHTML='<div class="empty">ยังไม่มี — หลังตอบลูกค้าใน LINE OA แล้ว กด “🧠 จำคำตอบ” ที่แถวของลูกค้า แล้ววางคำตอบที่ตอบไป</div>'; return; }
+  box.innerHTML=`<table><thead><tr><th>คำถามลูกค้า</th><th>คำตอบ</th><th>ใช้ไป</th><th>สถานะ</th><th></th></tr></thead><tbody>
+    ${LC_LRN.map((r,i)=>`<tr style="${r.active?'':'opacity:.5'}">
+      <td style="max-width:260px">${esc(r.question).split('|').join('<br>')}</td>
+      <td style="max-width:380px;white-space:pre-wrap">${esc(r.answer)}</td>
+      <td style="white-space:nowrap">${r.uses||0} ครั้ง</td>
+      <td style="white-space:nowrap">${r.active?'<span class="chip" style="background:#dcfce7;color:#15803d">ใช้อยู่</span>':'<span class="chip">ปิดไว้</span>'}</td>
+      <td style="white-space:nowrap;text-align:right"><button class="btn ghost sm" data-lle="${i}">✏️ แก้</button>
+        <button class="btn ghost sm" data-llt="${i}">${r.active?'⏸ ปิดใช้':'▶ เปิดใช้'}</button></td></tr>`).join('')}
+  </tbody></table>`;
+  box.querySelectorAll('[data-lle]').forEach(b=>b.onclick=()=>lcLearnEdit(LC_LRN[+b.dataset.lle]));
+  box.querySelectorAll('[data-llt]').forEach(b=>b.onclick=async()=>{ const r=LC_LRN[+b.dataset.llt];
+    const {error}=await sb.from('line_bot_learned').update({active:!r.active,updated_at:new Date().toISOString()}).eq('id',r.id);
+    if(error){ toast('บันทึกไม่สำเร็จ: '+error.message); return; }
+    toast(r.active?'ปิดใช้คำตอบนี้แล้ว':'เปิดใช้คำตอบนี้แล้ว'); lcLearnDraw(); });
+}
+function lcLearnEdit(r){
+  openModal(r.id?'✏️ แก้คำตอบที่บอทจำ':'🧠 ให้บอทจำคำตอบ',`
+    <label style="display:block">คำถามลูกค้า <span class="muted" style="font-weight:400">— ถามได้หลายแบบ ขึ้นบรรทัดใหม่ทีละแบบ</span></label>
+    <textarea id="llQ" rows="3" style="width:100%" placeholder="เช่น ลาออกกลางเดือนคิดเงินยังไง">${esc((r.question||'').split('|').join('\n'))}</textarea>
+    <label style="display:block;margin-top:10px">คำตอบที่แอดมินตอบลูกค้า</label>
+    <textarea id="llA" rows="6" style="width:100%" placeholder="วางข้อความที่ตอบลูกค้าไปใน LINE OA">${esc(r.answer||'')}</textarea>
+    <div class="muted" style="font-size:12.5px;margin-top:8px">ลูกค้าถามคล้าย ๆ กันครั้งหน้า บอทจะตอบด้วยข้อความนี้ทันที · อย่าใส่ข้อมูลส่วนตัวของลูกค้าในคำตอบ</div>`,
+    [['ยกเลิก','ghost',closeModal],['บันทึก','',async()=>{
+      const question=$('#llQ').value.split('\n').map(s=>s.trim().replace(/\|/g,' ')).filter(s=>s.length>=2).join('|').slice(0,500);
+      const answer=$('#llA').value.trim().slice(0,2000);
+      if(!question){ toast('ใส่คำถามลูกค้าอย่างน้อย 1 แบบ'); return; }
+      if(!answer){ toast('ใส่คำตอบก่อน'); return; }
+      const row={question,answer,updated_at:new Date().toISOString()};
+      const {error}=r.id?await sb.from('line_bot_learned').update(row).eq('id',r.id):await sb.from('line_bot_learned').insert(row);
+      if(error){ toast('บันทึกไม่สำเร็จ: '+error.message); return; }
+      closeModal(); toast('บอทจำคำตอบนี้แล้ว — มีผลภายใน 1 นาที'); lcLearnDraw();
+    }]]);
 }
