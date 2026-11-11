@@ -151,13 +151,13 @@ function periodRange(p){
 function fmtD(d){ return `${d.getDate()} ${THAI_MONTHS_ABBR[d.getMonth()]} ${d.getFullYear()+543}`; }
 
 /* ---------- Payroll calc ---------- */
-const EARN_FIELDS = [['ot','ค่าล่วงเวลา (OT)','Overtime (OT)'],['commission','ค่าคอมมิชชั่น','Commission'],['diligence','ค่าเบี้ยขยัน','Diligence Allowance'],['travel','ค่าเดินทาง','Travel Allowance'],['position','ค่าตำแหน่ง','Position Allowance'],['bonus','โบนัส','Bonus'],['other','อื่นๆ','Other']];
+const EARN_FIELDS = [['ot','ค่าล่วงเวลา (OT)','Overtime (OT)'],['commission','ค่าคอมมิชชั่น','Commission'],['diligence','ค่าเบี้ยขยัน','Diligence Allowance'],['travel','ค่าเดินทาง','Travel Allowance'],['position','ค่าตำแหน่ง','Position Allowance'],['cola','ค่าครองชีพ','Cost of Living Allowance'],['phone','ค่าโทรศัพท์','Phone Allowance'],['bonus','โบนัส','Bonus'],['other','อื่นๆ','Other']];
 const DED_FIELDS = [['tax','ภาษีเงินได้','Income Tax'],['sso','ประกันสังคม','Social Security'],['pvd','กองทุนสำรองเลี้ยงชีพ','Provident Fund'],['wf','กองทุนสงเคราะห์ลูกจ้าง','Employee Welfare Fund'],['loan','เงินกู้บริษัท','Company Loan'],['studentloan','กยศ.','Student Loan (SLF)'],['absent','หักขาดงาน/ลาไม่รับค่าจ้าง','Unpaid Leave / Absence'],['advance','เบิกจ่ายล่วงหน้า','Advance Payment'],['other','อื่นๆ','Other']];
 // ป้ายรายการตามภาษา (f = [key, th, en])
 function FL(f){ return (LANG==='en' && f[2]) ? f[2] : f[1]; }
 
 function ensurePeriod(p){ if(!DB.payroll[p]) DB.payroll[p]={}; return DB.payroll[p]; }
-function blankRec(){ return { earn:{ot:0,commission:0,diligence:0,travel:0,position:0,bonus:0,other:0}, ded:{tax:0,sso:0,pvd:0,wf:0,loan:0,studentloan:0,absent:0,other:0} }; }
+function blankRec(){ return { earn:{ot:0,commission:0,diligence:0,travel:0,position:0,cola:0,phone:0,bonus:0,other:0}, ded:{tax:0,sso:0,pvd:0,wf:0,loan:0,studentloan:0,absent:0,other:0} }; }
 // getRec: สำหรับ "แก้ไข" — สร้างเรคคอร์ดจริงถ้ายังไม่มี
 function getRec(p, empId){
   const pp = ensurePeriod(p);
@@ -258,7 +258,7 @@ function setManualDed(rec, key, val){ rec.manual=rec.manual||{}; rec.manual[key]
 function clearManualDed(emp, rec, key){ if(rec.manual) delete rec.manual[key]; autoDeductions(emp, rec); }
 /* ---------- ค่าจ้างตามนิยามประกันสังคม (ใช้ร่วมกันทั้ง สปส.1-10 และ กท.20 ก) ----------
    = ค่าจ้างฐาน + ค่าตอบแทนประจำ  (ไม่รวมค่าล่วงเวลาและโบนัส)                        */
-const SSO_WAGE_KEYS=['commission','diligence','travel','position','other'];
+const SSO_WAGE_KEYS=['commission','diligence','travel','position','cola','phone','other'];
 function ssoWage(emp, rec, p){
   const r = rec || readRec(p||PERIOD, emp.id);
   return basePay(emp, r, p||PERIOD) + SSO_WAGE_KEYS.reduce((s,k)=>s+Number(r.earn[k]||0),0);
@@ -275,11 +275,14 @@ function monthlyWage(emp, rec){
 }
 // อัตรา OT ต่อชั่วโมง: รายเดือน = เงินเดือน÷วัน÷ชม. · รายวัน = ค่าจ้าง/วัน÷ชม.
 // ติ๊ก "นำค่าตำแหน่งไปคิด OT" (emp.posInOT) → ฐาน OT = เงินเดือน + ค่าตำแหน่งของงวดนั้น
-function otPosAdd(emp, r){
-  if(!emp || !emp.posInOT) return 0;
-  const rec = r || ((DB.payroll||{})[PERIOD]||{})[emp.id];
-  return Number((rec && rec.earn && rec.earn.position) || 0);
+// ค่าครองชีพ (emp.colaInOT) และค่าโทรศัพท์ (emp.phoneInOT) ติ๊กได้แบบเดียวกัน
+const OT_ADD_KEYS={position:'posInOT', cola:'colaInOT', phone:'phoneInOT'};
+function otAddParts(emp, r){
+  if(!emp) return [];
+  const rec = r || ((DB.payroll||{})[PERIOD]||{})[emp.id], earn=(rec&&rec.earn)||{};
+  return Object.entries(OT_ADD_KEYS).filter(([k,f])=>emp[f] && Number(earn[k]||0)).map(([k])=>[k, Number(earn[k]||0)]);
 }
+function otPosAdd(emp, r){ return otAddParts(emp, r).reduce((s,x)=>s+x[1],0); }
 function otRate(emp, r){
   const h=DB.otHours||8, d=DB.otDays||30, pos=otPosAdd(emp, r);
   if(emp && emp.payType==='daily') return salaryFor(emp, PERIOD)/h + pos/d/h;
@@ -332,7 +335,7 @@ function estTax(emp, year, rec){
     wages.push(emp.payType==='daily' ? wage : basePay(emp, null, mp));
   }
   const wageSum = wages.reduce((a,b)=>a+b,0);
-  const extras = ['ot','commission','diligence','travel','position','other'].reduce((s,k)=>s+Number(earn[k]||0),0);
+  const extras = ['ot','commission','diligence','travel','position','cola','phone','other'].reduce((s,k)=>s+Number(earn[k]||0),0);
   const recurringMonthly = (months>0?wageSum/months:wage) + extras;   // เฉลี่ย/เดือน (ไว้แสดงในกล่องวิธีคำนวณ)
   const bonus = Number(earn.bonus||0);                       // โบนัส = จ่ายครั้งเดียว บวกครั้งเดียว
   const inc=wageSum + extras*months + bonus;                 // เงินได้ทั้งปี (รวมเงินได้ทุกประเภท)

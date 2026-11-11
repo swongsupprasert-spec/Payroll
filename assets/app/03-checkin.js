@@ -624,6 +624,7 @@ function vCheckin(v){
   const logP=el(`<div class="panel"><div style="padding:16px 18px 6px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
     <h3 style="margin-right:auto">3. บันทึกการลงเวลา (งวดนี้)</h3>
     <button class="btn ghost sm" id="ckReload">🔄 โหลดใหม่</button>
+    ${S.punches.length?'<button class="btn ghost sm" id="ckXls" title="บันทึกเป็นไฟล์ที่เปิดด้วย Excel ได้">📊 บันทึกเป็น Excel</button>':''}
     ${unmerged?`<button class="btn sm" id="ckMerge">⬇️ นำเข้าหน้าเวลาเข้างาน (${num(unmerged)} ใหม่)</button>`:(S.punches.length?'<span class="chip" style="background:#dcfce7;color:#15803d;font-weight:700;padding:6px 12px">✅ นำเข้าครบแล้ว</span> <button class="btn ghost sm" id="ckMerge" data-redo="1">⬇️ นำเข้าใหม่อีกครั้ง</button>':'')}
   </div>
   <p class="muted" style="font-size:12.5px;padding:0 18px 8px">นำเข้าแล้วระบบใช้ <strong>เวลาเข้าเร็วสุด</strong> และ <strong>เวลาออกช้าสุด</strong> ของแต่ละวัน ไปคิดวันทำงาน มาสาย และ OT ตามปกติ · รูปถูกลบอัตโนมัติหลัง 90 วัน</p>
@@ -645,6 +646,17 @@ function vCheckin(v){
   </tbody></table></div></div>`);
   v.appendChild(logP);
   logP.querySelector('#ckReload').onclick=()=>render();
+  // บันทึกการลงเวลาเป็นไฟล์ CSV (UTF-8 มี BOM → เปิดด้วย Excel ภาษาไทยไม่เพี้ยน)
+  const xb=logP.querySelector('#ckXls'); if(xb) xb.onclick=()=>{
+    const head=['วันที่','เวลา','รหัสพนักงาน','ชื่อพนักงาน','ประเภท','สถานที่','ระยะ (ม.)','ในพื้นที่','ละติจูด','ลองจิจูด','ความเหมือนใบหน้า (%)','สถานะ','แก้ไขแล้ว','เวลาเดิม'];
+    const lines=[head.map(csvEsc).join(',')];
+    S.punches.forEach(p=>{ const [d,t]=ckBkk(p.ts);
+      lines.push([d,t,p.emp_code||'',p.emp_name||'',p.kind==='in'?'เข้า':'ออก',p.site_name||'',p.distance_m!=null?Math.round(p.distance_m):'',
+        p.in_zone===false?'นอกพื้นที่':(p.lat!=null?'ใช่':''),p.lat??'',p.lng??'',
+        p.face_dist!=null&&p.face_dist!==0?Math.max(0,Math.round((1-p.face_dist)*100)):'',p.merged?'นำเข้าแล้ว':'รอนำเข้า',
+        p.edited_at?'ใช่':'',p.orig_ts?ckBkk(p.orig_ts).join(' '):''].map(csvEsc).join(',')); });
+    downloadFile(`checkin_${PERIOD}.csv`, '﻿'+lines.join('\r\n'), 'text/csv;charset=utf-8'); toast('บันทึกไฟล์แล้ว');
+  };
   /* แก้/ลบรายการที่นำเข้าแล้ว → คำนวณเวลาเข้า-ออกของวันนั้นใหม่จากรายการที่เหลือ (เวลาเข้าเร็วสุด/ออกช้าสุด) */
   const redoDay=(empId,day,list)=>{
     const box=ensureAttend(periodOfDate(day)); if(!box[empId]) box[empId]={};

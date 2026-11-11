@@ -47,5 +47,5 @@ export function makeApp(names, dbOver = {}, period = '2026-10') {
 /* ชุดฟังก์ชันคำนวณเงินเดือนพื้นฐาน */
 export const CORE = ['EARN_FIELDS', 'DED_FIELDS', 'SSO_WAGE_KEYS', 'TAX_BRACKETS', 'periodRange', 'isoOf', 'blankRec',
   'readRec', 'autoSSO', 'salHistOf', 'salaryOnDate', 'salaryFor', 'prorate', 'basePay', 'resignedBefore',
-  'ssoWage', 'ssoExempt', 'monthlyWage', 'otPosAdd', 'taxAllowOf', 'otRate', 'otAmount', 'progressiveTax', 'monthsEmployedInYear',
+  'ssoWage', 'ssoExempt', 'monthlyWage', 'otPosAdd', 'otAddParts', 'OT_ADD_KEYS', 'taxAllowOf', 'otRate', 'otAmount', 'progressiveTax', 'monthsEmployedInYear',
   'estTax', 'calc', 'daysInMonth'];

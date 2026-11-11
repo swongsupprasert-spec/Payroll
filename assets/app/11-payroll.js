@@ -242,11 +242,13 @@ function vPayroll(v){
       : `<div style="margin-top:6px">พนักงานเริ่มงาน ${fmtDate(emp.startDate)} ซึ่งยังไม่ถึงงวดนี้ จึงยังไม่มีเงินเดือนในงวด ${periodLabel(PERIOD)}</div>`}
   </div>` : '';
 
-  const earnRows=EARN_FIELDS.filter(([k])=>k!=='ot').map(([k,l])=>`<div class="field"><label>${l}</label><input type="number" step="0.01" data-earn="${k}" value="${r.earn[k]||0}">${k==='position'?`
-    <label style="display:flex;gap:6px;align-items:center;font-size:12.5px;font-weight:400;margin-top:5px;cursor:pointer"><input type="checkbox" id="posInOT" ${emp.posInOT?'checked':''} style="width:auto;margin:0"> นำไปคิดฐาน OT ด้วย</label>`:''}</div>`).join('');
-  const otRateLabelOf=()=>{ const pos=otPosAdd(emp,r), d=DB.otDays||30, h=DB.otHours||8;
-    return isDaily ? `${money(emp.salary)}÷${h}${pos?` + ค่าตำแหน่ง ${money(pos)}÷${d}÷${h}`:''}`
-                   : `${pos?`(${money(emp.salary)}+ค่าตำแหน่ง ${money(pos)})`:money(emp.salary)}÷${d}÷${h}`; };
+  const earnRows=EARN_FIELDS.filter(([k])=>k!=='ot').map(([k,l])=>`<div class="field"><label>${l}</label><input type="number" step="0.01" data-earn="${k}" value="${r.earn[k]||0}">${OT_ADD_KEYS[k]?`
+    <label style="display:flex;gap:6px;align-items:center;font-size:12.5px;font-weight:400;margin-top:5px;cursor:pointer"><input type="checkbox" data-otadd="${k}" ${emp[OT_ADD_KEYS[k]]?'checked':''} style="width:auto;margin:0"> นำไปคิดฐาน OT ด้วย</label>`:''}${k==='other'?`
+    <div style="color:#dc2626;font-size:12.5px;line-height:1.5;margin-top:6px"><strong>หลักเกณฑ์การคำนวณฐาน OT</strong><br>รวมเงินที่มีลักษณะเป็นค่าจ้าง เช่น เงินเดือน ค่าตำแหน่ง ค่าครองชีพ และค่าตอบแทนประจำอื่น ๆ ตามมาตรา 5 พ.ร.บ.คุ้มครองแรงงาน พ.ศ. 2541</div>`:''}</div>`).join('');
+  const otRateLabelOf=()=>{ const parts=otAddParts(emp,r), d=DB.otDays||30, h=DB.otHours||8, nm=k=>(EARN_FIELDS.find(x=>x[0]===k)||[])[1]||k;
+    const add=parts.map(([k,v])=>`${nm(k)} ${money(v)}`).join('+');
+    return isDaily ? `${money(emp.salary)}÷${h}${parts.length?` + (${add})÷${d}÷${h}`:''}`
+                   : `${parts.length?`(${money(emp.salary)}+${add})`:money(emp.salary)}÷${d}÷${h}`; };
   const otBlock=`<div class="field" style="grid-column:1/-1;background:#f6faf8;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px">
     <label style="font-weight:700;color:var(--brand-d)">ค่าล่วงเวลา (OT) — คำนวณรายชั่วโมง</label>
     <div class="muted" style="font-size:12px;margin-top:2px">อัตรา/ชม. <span id="otRateTxt">${otRateLabelOf()} = ${money(otRate(emp,r))}</span> บาท · เพิ่มได้หลายแถวถ้าเดือนนี้มี OT หลายแบบ</div>
@@ -359,9 +361,10 @@ function vPayroll(v){
   };
   drawOTRows(true);
   // ค่าตำแหน่ง: ติ๊ก/แก้ยอด → คิด OT ใหม่ (จำค่าติ๊กไว้ที่พนักงาน ใช้ทุกงวด)
-  const posCb=panel.querySelector('#posInOT'), posIn=panel.querySelector('input[data-earn="position"]');
-  if(posCb) posCb.onchange=()=>{ emp.posInOT=posCb.checked; recalcOT(true); save(); };
-  if(posIn){ const prev=posIn.oninput; posIn.oninput=()=>{ prev(); if(emp.posInOT) recalcOT(true); }; }
+  // ค่าครองชีพ/ค่าโทรศัพท์ ทำงานแบบเดียวกัน
+  panel.querySelectorAll('[data-otadd]').forEach(cb=>{ const k=cb.dataset.otadd, f=OT_ADD_KEYS[k], inp=panel.querySelector(`input[data-earn="${k}"]`);
+    cb.onchange=()=>{ emp[f]=cb.checked; recalcOT(true); save(); };
+    if(inp){ const prev=inp.oninput; inp.oninput=()=>{ if(prev) prev(); if(emp[f]) recalcOT(true); }; } });
   panel.querySelector('#otAdd').onclick=()=>{ otRowsOf(r).push({h:0,m:1.5}); drawOTRows(); };
   // พนักงานรายวัน: เปลี่ยนจำนวนวัน → อัปเดตค่าจ้างฐาน
   const wd=panel.querySelector('#workDays');

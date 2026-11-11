@@ -57,6 +57,7 @@ test('อัตรา OT และค่า OT', () => {
   assert.equal(A.otRate(M(30000)), 125); // 30,000 ÷ 30 ÷ 8
   assert.equal(A.otRate({...M(30000), posInOT:true}, {earn:{position:6000}}), 150); // (30,000+ค่าตำแหน่ง 6,000) ÷ 30 ÷ 8
   assert.equal(A.otRate(M(30000), {earn:{position:6000}}), 125); // ไม่ติ๊ก = ไม่นำค่าตำแหน่งไปคิด
+  assert.equal(A.otRate({...M(30000), colaInOT:true, phoneInOT:true}, {earn:{cola:1200,phone:1200,position:6000}}), 135); // (30,000+ครองชีพ 1,200+โทรศัพท์ 1,200) ÷ 30 ÷ 8
   assert.equal(A.otAmount(M(30000), 6, 1.5), 1125);
   assert.equal(A.otAmount(M(25000), 6, 1.5), 937.5);
   assert.equal(A.otAmount(M(25000), 4, 3), 1250);
