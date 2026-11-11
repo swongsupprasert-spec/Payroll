@@ -274,12 +274,18 @@ function monthlyWage(emp, rec){
   return salaryFor(emp, PERIOD);
 }
 // อัตรา OT ต่อชั่วโมง: รายเดือน = เงินเดือน÷วัน÷ชม. · รายวัน = ค่าจ้าง/วัน÷ชม.
-function otRate(emp){
-  const h=DB.otHours||8;
-  if(emp && emp.payType==='daily') return salaryFor(emp, PERIOD)/h;
-  const d=DB.otDays||30; return (emp?salaryFor(emp, PERIOD):0)/d/h;
+// ติ๊ก "นำค่าตำแหน่งไปคิด OT" (emp.posInOT) → ฐาน OT = เงินเดือน + ค่าตำแหน่งของงวดนั้น
+function otPosAdd(emp, r){
+  if(!emp || !emp.posInOT) return 0;
+  const rec = r || ((DB.payroll||{})[PERIOD]||{})[emp.id];
+  return Number((rec && rec.earn && rec.earn.position) || 0);
 }
-function otAmount(emp,hours,mult){ return Math.round(otRate(emp)*Number(hours||0)*Number(mult||0)*100)/100; }
+function otRate(emp, r){
+  const h=DB.otHours||8, d=DB.otDays||30, pos=otPosAdd(emp, r);
+  if(emp && emp.payType==='daily') return salaryFor(emp, PERIOD)/h + pos/d/h;
+  return ((emp?salaryFor(emp, PERIOD):0)+pos)/d/h;
+}
+function otAmount(emp,hours,mult,r){ return Math.round(otRate(emp,r)*Number(hours||0)*Number(mult||0)*100)/100; }
 /* OT หลายแถว — เดือนหนึ่งมี OT หลายแบบปนกัน (วันธรรมดา / วันหยุด / ล่วงเวลาวันหยุด)
    ของเดิมเก็บได้แถวเดียวใน otHours + otMult จึงย้ายมาเป็นแถวแรกให้อัตโนมัติ */
 const OT_MULTS=[['1','1× ทำงานวันหยุด (ในเวลา)'],['1.5','1.5× ล่วงเวลาวันทำงานปกติ'],['2','2× ค่าทำงานวันหยุด'],['2.5','2.5×'],['3','3× ล่วงเวลาในวันหยุด']];
@@ -292,7 +298,7 @@ function otRowsOf(r){
   return r.earn.otRows;
 }
 function otTotal(emp,r){
-  return Math.round(otRowsOf(r).reduce(function(s,x){ return s+otAmount(emp,x.h,x.m); },0)*100)/100;
+  return Math.round(otRowsOf(r).reduce(function(s,x){ return s+otAmount(emp,x.h,x.m,r); },0)*100)/100;
 }
 
 // ภาษีเงินได้บุคคลธรรมดา — อัตราก้าวหน้า (ขั้นบันได)
