@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payroll คืออะไร? ระบบเงินเดือนทำอะไรบ้าง [2569] | eSimPayroll</title>
+<meta name="description" content="Payroll คือกระบวนการจ่ายเงินเดือนทั้งหมด ตั้งแต่คำนวณ หักภาษี ประกันสังคม ไปจนถึงยื่น ภ.ง.ด.1 สปส.1-10 และ 50 ทวิ ดูขั้นตอน ความต่าง Salary กับ Payroll และ HR พร้อมตารางเทียบ Excel">
+<meta name="keywords" content="payroll คือ,payroll คืออะไร,ระบบ payroll คือ,hr payroll คือ,โปรแกรม payroll คือ,salary กับ payroll ต่างกันอย่างไร,payroll เงินเดือน,payroll calculations,ระบบเงินเดือน">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0e3a5c">
+<link rel="canonical" href="https://esimpayroll.com/article-what-is-payroll">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="eSimPayroll">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://esimpayroll.com/article-what-is-payroll">
+<meta property="og:title" content="Payroll คืออะไร? ระบบเงินเดือนทำอะไรบ้าง [2569]">
+<meta property="og:description" content="Payroll คือกระบวนการจ่ายเงินเดือนทั้งหมด ตั้งแต่คำนวณ หักภาษี ประกันสังคม ไปจนถึงยื่น ภ.ง.ด.1 สปส.1-10 และ 50 ทวิ ดูขั้นตอน ความต่าง Salary กับ Payroll และ HR พร้อมตารางเทียบ Excel">
+<meta property="og:image" content="https://esimpayroll.com/media/covers/what-is-payroll-hero.jpg">
+<meta name="twitter:image" content="https://esimpayroll.com/media/covers/what-is-payroll-hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Payroll คืออะไร? ระบบเงินเดือนทำอะไรบ้าง [2569]">
+<meta name="twitter:description" content="Payroll คือกระบวนการจ่ายเงินเดือนทั้งหมด ตั้งแต่คำนวณ หักภาษี ประกันสังคม ไปจนถึงยื่น ภ.ง.ด.1 สปส.1-10 และ 50 ทวิ ดูขั้นตอน ความต่าง Salary กับ Payroll และ HR พร้อมตารางเทียบ Excel">
+<link rel="stylesheet" href="/assets/css/article.css">
+<style>
+  /* หน้าบทความเดี่ยว */
+  article{border-top:0;padding:8px 0 44px}
+  article h1{font-size:31px;letter-spacing:-.4px;margin-bottom:16px;line-height:1.3}
+  .backbar{padding:20px 0 0}
+  .backbar a{color:var(--brand);font-weight:700;font-size:14.5px}
+  .backbar a:hover{text-decoration:underline}
+  .more-h{font-size:21px;margin-bottom:18px}
+  @media(max-width:760px){article h1{font-size:23px}}
+  /* ตารางเปรียบเทียบ */
+  .cmpwrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:14px}
+  table.cmp{width:100%;border-collapse:collapse;font-size:14.5px;min-width:520px}
+  table.cmp th,table.cmp td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  table.cmp thead th{background:var(--brand);color:#fff;font-weight:700;font-size:14px;border-bottom:0}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp tbody tr:nth-child(even){background:#f8fbfa}
+  table.cmp td:first-child{font-weight:700;color:var(--brand-d);white-space:nowrap}
+  .yes{color:#059669;font-weight:700}
+  .no{color:#dc2626;font-weight:700}
+  /* กล่องเตือน */
+  article .warn{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;
+    border-radius:10px;padding:14px 18px;margin:16px 0}
+  /* คำถามที่พบบ่อย */
+  .faq details{border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:10px;background:#fff}
+  .faq summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;font-size:15.5px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";float:right;color:var(--accent);font-weight:800}
+  .faq details[open] summary::after{content:"−"}
+  .faq details[open] summary{border-bottom:1px solid var(--line)}
+  .faq details p{padding:14px 18px 4px;margin:0}
+  /* การ์ดฟีเจอร์เรียงเลข */
+  .feat{border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px;margin:0 0 14px;background:#fff;
+    box-shadow:var(--sh-sm);position:relative}
+  .feat > h4{margin:0 0 8px;padding-left:44px;font-size:18px;line-height:1.45;min-height:34px;display:flex;align-items:center}
+  .feat .num{position:absolute;left:20px;top:17px;width:34px;height:34px;border-radius:10px;background:var(--grad);
+    color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 3px 6px rgba(11,27,43,.16)}
+  .feat p{margin-bottom:8px}
+  .feat p:last-child{margin-bottom:0}
+  .chk{background:var(--accent-bg);border-radius:9px;padding:9px 13px;font-size:14px;margin-top:10px}
+  .chk b{color:var(--brand-d)}
+  @media(max-width:640px){
+    .feat{padding:15px 15px 13px}
+    .feat > h4{padding-left:40px;font-size:16.5px}
+    .feat .num{left:15px;top:14px;width:30px;height:30px;font-size:14px}
+  }
+  /* ตัวอย่างคำนวณ */
+  .calcbox{background:var(--accent-bg);border:1px solid #a7e3cd;border-radius:14px;padding:16px 20px;margin:16px 0}
+  .calcbox h4{margin:0 0 10px;font-size:16px;color:var(--brand-d)}
+  .calcbox table{width:100%;border-collapse:collapse;font-size:14.5px}
+  .calcbox td{padding:6px 0;border-bottom:1px solid rgba(15,118,110,.16)}
+  .calcbox td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .calcbox tr:last-child td{border-bottom:0;font-weight:800;color:var(--brand-d)}
+
+  /* ไอคอนหัวบทความ วาดเป็น SVG ไม่ใช่อีโมจิ จะได้ขึ้นเหมือนกันทุกเครื่อง */
+  .h1row{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
+  .h1ic{flex-shrink:0;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
+    justify-content:center;background:var(--grad);color:#fff;box-shadow:0 4px 9px rgba(11,27,43,.16);margin-top:2px}
+  .h1ic svg{width:25px;height:25px;display:block}
+  .h1row h1{margin-bottom:0}
+  @media(max-width:640px){
+    .h1ic{width:38px;height:38px;border-radius:11px}
+    .h1ic svg{width:21px;height:21px}
+    .h1row{gap:11px}
+  }
+  /* ภาพหัวบทความ */
+  .hero-img{margin:0 0 26px;border-radius:var(--r-md);overflow:hidden;position:relative;
+    background:#eaf6f1;box-shadow:var(--sh-md);aspect-ratio:16/7}
+  .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero-img::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(170deg,rgba(14,58,92,.18),rgba(16,185,129,.08) 60%,transparent)}
+  .hero-cap{font-size:13px;color:var(--muted);margin:-16px 0 24px;text-align:center}
+  @media(max-width:640px){.hero-img{aspect-ratio:16/9;border-radius:14px}}
+  /* แถวบทความอื่น ๆ เรียงแถวเดียว ลากเลื่อนได้ เหมือนหน้าแรก */
+  .artwrap{position:relative}
+  .cards{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;
+    scroll-snap-type:x mandatory;padding:6px 2px 14px;
+    cursor:grab;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .cards::-webkit-scrollbar{display:none}
+  .cards.grabbing{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none;user-select:none}
+  .cards.grabbing .card,.cards.grabbing img{pointer-events:none}
+  .cards > .card{flex:0 0 calc((100% - 66px) / 4);scroll-snap-align:start}
+  .cards > .card img{-webkit-user-drag:none;user-select:none}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+    width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.95);
+    backdrop-filter:blur(8px);box-shadow:var(--sh-md);cursor:pointer;font-size:19px;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;transition:.2s;font-family:inherit}
+  .arrow:hover{background:#fff;transform:translateY(-50%) scale(1.08);box-shadow:var(--sh-lg)}
+  .arrow[disabled]{opacity:0;pointer-events:none}
+  .arrow.prev{left:-20px}
+  .arrow.next{right:-20px}
+  @media(max-width:980px){
+    .cards > .card{flex:0 0 calc((100% - 22px) / 2)}
+    .arrow.prev{left:-8px} .arrow.next{right:-8px}
+  }
+  @media(max-width:640px){
+    .cards{gap:14px}
+    .cards > .card{flex:0 0 82%}
+    .arrow{display:none}
+  }
+</style>
+  /* กล่องคำตอบสั้น */
+  article .answer{background:var(--accent-bg);border:1px solid #a7e3cd;border-left:4px solid var(--accent);border-radius:14px;padding:16px 20px;margin:0 0 22px;font-size:16.5px;line-height:1.75}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Payroll คืออะไร? ระบบเงินเดือนทำอะไรบ้าง [2569]","description":"Payroll คือกระบวนการจ่ายเงินเดือนทั้งหมด ตั้งแต่คำนวณ หักภาษี ประกันสังคม ไปจนถึงยื่น ภ.ง.ด.1 สปส.1-10 และ 50 ทวิ ดูขั้นตอน ความต่าง Salary กับ Payroll และ HR พร้อมตารางเทียบ Excel","inLanguage":"th","datePublished":"2026-11-12","dateModified":"2026-11-12","image":"https://esimpayroll.com/media/covers/what-is-payroll-hero.jpg","author":{"@type":"Organization","name":"eSimPayroll"},"publisher":{"@type":"Organization","name":"eSimPayroll"},"mainEntityOfPage":"https://esimpayroll.com/article-what-is-payroll"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"หน้าแรก","item":"https://esimpayroll.com/"},{"@type":"ListItem","position":2,"name":"บทความ","item":"https://esimpayroll.com/articles"},{"@type":"ListItem","position":3,"name":"Payroll คืออะไร","item":"https://esimpayroll.com/article-what-is-payroll"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"th","mainEntity":[{"@type":"Question","name":"Payroll คืออะไร","acceptedAnswer":{"@type":"Answer","text":"Payroll คือกระบวนการจ่ายค่าจ้างพนักงาน ตั้งแต่คำนวณเงินได้ หักภาษี ประกันสังคม และกองทุน โอนเงินเดือนสุทธิ ออกสลิป ไปจนถึงยื่น ภ.ง.ด.1 สปส.1-10 และออก 50 ทวิ ให้หน่วยงานรัฐ"}},{"@type":"Question","name":"Salary กับ Payroll ต่างกันอย่างไร","acceptedAnswer":{"@type":"Answer","text":"Salary คือค่าจ้างที่ตกลงกับพนักงานหนึ่งคน ส่วน Payroll คือกระบวนการทั้งหมดในการจ่ายเงินพนักงานทุกคนให้ถูกต้อง และยื่นแบบภาษีกับประกันสังคมที่เกี่ยวข้อง"}},{"@type":"Question","name":"ระบบ Payroll คืออะไร","acceptedAnswer":{"@type":"Answer","text":"ระบบ Payroll คือชุดข้อมูล กฎ และเครื่องมือที่บริษัทใช้ทำเงินเดือนทุกเดือน ปัจจุบันมักหมายถึงโปรแกรมเงินเดือนที่คำนวณภาษีและประกันสังคมอัตโนมัติ และออกสลิปกับเอกสารราชการให้"}},{"@type":"Question","name":"HR Payroll คืออะไร ต่างจาก HR ไหม","acceptedAnswer":{"@type":"Answer","text":"HR Payroll คืองานเงินเดือนที่อยู่ภายใต้งาน HR โดย HR ดูแลพนักงานตลอดวงจรการทำงาน ส่วน Payroll ดูแลเฉพาะเรื่องค่าจ้าง ภาษี และการยื่นเอกสาร"}},{"@type":"Question","name":"ทำ Payroll ต้องยื่นเอกสารอะไรบ้าง","acceptedAnswer":{"@type":"Answer","text":"รายเดือน: ภ.ง.ด.1 ยื่นกรมสรรพากร และ สปส.1-10 ยื่นสำนักงานประกันสังคม รวมถึงนำส่งกองทุนสงเคราะห์ลูกจ้างตั้งแต่ตุลาคม 2569 รายปี: ออก 50 ทวิ ให้พนักงานทุกคน และยื่น ภ.ง.ด.1ก ภายในสิ้นเดือนกุมภาพันธ์"}},{"@type":"Question","name":"เมื่อไหร่ควรเลิกใช้ Excel แล้วเปลี่ยนมาใช้โปรแกรม Payroll","acceptedAnswer":{"@type":"Answer","text":"โดยทั่วไปเมื่อมีพนักงานประมาณ 5 คนขึ้นไป มีพนักงานรายวัน มีโอทีเป็นประจำ มีคนเข้า–ออกกลางเดือน หรือดูแลหลายบริษัท เพราะถึงจุดนั้นเวลาที่เสียไปและความเสี่ยงยื่นผิดมักแพงกว่าค่าโปรแกรม"}}]}
+</script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-05JJT2VDRV"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js",new Date());
+  gtag("config","G-05JJT2VDRV",{anonymize_ip:true});
+</script>
+<style>
+/* ---------- ท้ายเว็บพื้นเข้ม ---------- */
+footer{background:#0b1b2b !important;border-top:0 !important;color:#a9c4d4 !important}
+footer .ft-brand,footer .ft-brand span{color:#fff !important}
+footer .ft-h{color:#6ee7b7 !important}
+footer .ft-list a:hover{color:#6ee7b7 !important}
+footer .ft-bot{border-top:1px solid rgba(255,255,255,.14) !important;color:#8fb0c4}
+footer .ft-mail{color:#6ee7b7 !important}
+/* ---------- ไอคอนโซเชียล ---------- */
+.ft-social{display:flex;gap:10px;margin-top:15px}
+.soc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#c2d8e4;
+  transition:transform .2s,color .2s,background .2s,border-color .2s}
+.soc svg{width:19px;height:19px}
+.soc:hover{transform:translateY(-3px);color:#fff;border-color:transparent}
+.soc.tiktok:hover{background:#000}
+.soc.ig:hover{background:linear-gradient(45deg,#f09433,#dc2743 45%,#bc1888)}
+.soc.fb:hover{background:#1877F2}
+.soc.yt:hover{background:#FF0000}
+.soc.line:hover{background:#06C755}
+.soc:focus-visible{outline:2px solid #6ee7b7;outline-offset:2px}
+</style>
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png?v=3">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png?v=3">
+<link rel="icon" type="image/png" sizes="144x144" href="/brand/favicon-144.png?v=3">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png?v=3">
+<link rel="shortcut icon" href="/brand/favicon-48.png?v=3">
+<link rel="apple-touch-icon" sizes="192x192" href="/brand/favicon-192.png?v=3">
+<link rel="preload" href="/fonts/noto-sans-thai-thai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/noto-sans-thai.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
+</head>
+<body>
+<!--#header active="/articles"-->
+<header>
+  <nav>
+    <a href="/" class="logo"><svg viewBox="0 0 44 44" width="34" height="34" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgNav" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="22" fill="url(#lgNav)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></a>
+    <div class="sp">
+      <a href="/features" class="link" data-en="Features">ฟีเจอร์</a>
+        <a href="/pricing" class="link" data-en="Pricing">ราคา</a>
+      <a href="/articles" class="link active" data-en="Articles">บทความ</a>
+      <a href="/tax-calculator" class="link" data-en="Free tax calculator">คำนวณภาษีฟรี</a>
+      <a href="/about" class="link" data-en="About">เกี่ยวกับ</a>
+      <button id="langBtn" class="btn ghost" style="padding:8px 12px;font-size:14px;margin-left:4px">🌐 EN</button>
+        <a href="/app#signup" class="btn primary" style="padding:9px 18px" data-en="30-day free trial">ทดลองฟรี 30 วัน</a>
+    </div>
+  </nav>
+</header>
+<!--/header-->
+
+<div class="wrap backbar">
+  <a href="/articles" data-en="← All articles">← กลับไปหน้าบทความ</a>
+</div>
+
+<div class="wrap">
+<article>
+    <div class="meta" data-en="Payroll basics · Published 12 November 2026 · 9 min read">พื้นฐานเงินเดือน · เผยแพร่ 12 พฤศจิกายน 2569 · อ่าน 9 นาที</div>
+    <div class="h1row">
+      <span class="h1ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect fill="none" stroke="currentColor" stroke-width="1.9" x="3.5" y="5" width="17" height="14" rx="2.2"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M7 10h6M7 14h4M16 10.5v4"/></svg></span>
+      <h1 data-en="What is payroll? What a payroll system actually does [2026]">Payroll คืออะไร? ระบบเงินเดือนทำอะไรบ้าง [2569]</h1>
+    </div>
+
+    <div class="answer" id="answer" data-en="&lt;strong&gt;Payroll&lt;/strong&gt; is the whole process of paying employees: collecting hours, leave and overtime, calculating gross pay, deducting withholding tax, social security and funds, paying net salary into bank accounts, issuing payslips, and filing the related forms (PND.1, SSO 1-10, 50 Bis) with the government on time each month."><strong>Payroll (เพย์โรล)</strong> คือกระบวนการจ่ายค่าจ้างพนักงานทั้งหมด ตั้งแต่รวบรวมเวลาทำงาน วันลา และโอที คำนวณเงินเดือนรวม หักภาษี ณ ที่จ่าย ประกันสังคม และกองทุนต่าง ๆ โอนเงินเดือนสุทธิเข้าบัญชีพนักงาน ออกสลิปเงินเดือน ไปจนถึงยื่นแบบ ภ.ง.ด.1 สปส.1-10 และออก 50 ทวิ ให้ทันกำหนดของรัฐทุกเดือน</div>
+
+    <figure class="hero-img">
+      <img src="/media/covers/what-is-payroll-hero.jpg" alt="Payroll คืออะไร ขั้นตอนทำเงินเดือนตั้งแต่คำนวณจนยื่นภาษี"
+           data-en-alt="What payroll is: the steps from calculating salary to filing tax" width="1200" height="525" fetchpriority="high" decoding="async">
+    </figure>
+
+    <p data-en="People often use &quot;payroll&quot; and &quot;salary&quot; as if they mean the same thing. They do not. Salary is one number on one person's payslip. Payroll is the monthly job of turning everyone's salary, overtime and deductions into correct payments and correct government filings. This guide explains what that job involves, how it differs from salary and from HR, what Thai law requires of every employer, and when Excel stops being enough.">หลายคนใช้คำว่า "Payroll" กับ "เงินเดือน" สลับกันเหมือนเป็นคำเดียวกัน แต่จริง ๆ ไม่ใช่ <strong>เงินเดือน (Salary)</strong> คือตัวเลขหนึ่งตัวในสลิปของพนักงานหนึ่งคน ส่วน <strong>Payroll</strong> คืองานประจำเดือนที่เปลี่ยนเงินเดือน โอที และรายการหักของทุกคน ให้กลายเป็นยอดโอนที่ถูกต้องและเอกสารราชการที่ถูกต้อง บทความนี้อธิบายว่างานนี้มีอะไรบ้าง ต่างจากเงินเดือนและงาน HR ตรงไหน กฎหมายไทยบังคับนายจ้างให้ทำอะไร และเมื่อไหร่ที่ Excel เริ่มไม่พอ</p>
+
+    <h2 data-en="What does payroll involve? The monthly steps">Payroll ทำอะไรบ้าง: ขั้นตอนทุกเดือน</h2>
+    <p data-en="Whether you run it in a notebook, Excel or software, every payroll cycle goes through the same eight steps.">ไม่ว่าจะทำด้วยสมุด Excel หรือโปรแกรม ทุกรอบเงินเดือนต้องผ่าน 8 ขั้นนี้เหมือนกัน</p>
+    <ol data-en="&lt;li&gt;&lt;strong&gt;Update employee data:&lt;/strong&gt; joiners, leavers, pay rises, bank accounts, tax allowances.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Collect hours:&lt;/strong&gt; attendance, late arrivals, unpaid leave, overtime hours.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Calculate gross pay:&lt;/strong&gt; salary or daily wage × days, plus OT, allowances, commission, bonus.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Calculate deductions:&lt;/strong&gt; withholding tax, social security 5% (max 875), provident fund, Employee Welfare Fund 0.25%, loans.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Approve and pay:&lt;/strong&gt; check totals, then transfer net pay to each bank account.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Issue payslips&lt;/strong&gt; to every employee.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;File and remit:&lt;/strong&gt; PND.1 to the Revenue Department and SSO 1-10 to the Social Security Office by the deadlines.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Year-end:&lt;/strong&gt; 50 Bis certificates for every employee and the annual PND.1 Kor.&lt;/li&gt;">
+      <li><strong>อัปเดตข้อมูลพนักงาน</strong> คนเข้าใหม่ คนลาออก การปรับเงินเดือน เลขบัญชี และค่าลดหย่อนภาษี</li>
+      <li><strong>รวบรวมเวลาทำงาน</strong> วันมาทำงาน มาสาย ลาไม่รับค่าจ้าง และชั่วโมงโอที</li>
+      <li><strong>คำนวณเงินได้รวม</strong> เงินเดือนหรือค่าจ้างรายวัน × จำนวนวัน บวกโอที ค่าตำแหน่ง ค่าคอมมิชชั่น เบี้ยขยัน และโบนัส</li>
+      <li><strong>คำนวณรายการหัก</strong> ภาษีหัก ณ ที่จ่าย ประกันสังคม 5% (สูงสุด 875 บาท) กองทุนสำรองเลี้ยงชีพ กองทุนสงเคราะห์ลูกจ้าง 0.25% และเงินกู้</li>
+      <li><strong>ตรวจและโอนเงิน</strong> เช็กยอดรวมแล้วโอนเงินเดือนสุทธิเข้าบัญชีพนักงานแต่ละคน</li>
+      <li><strong>ออกสลิปเงินเดือน</strong> ให้พนักงานทุกคน</li>
+      <li><strong>ยื่นแบบและนำส่งเงิน</strong> ภ.ง.ด.1 ให้กรมสรรพากร และ สปส.1-10 ให้สำนักงานประกันสังคมตามกำหนด</li>
+      <li><strong>งานสิ้นปี</strong> ออกหนังสือรับรอง 50 ทวิ ให้พนักงานทุกคน และยื่น ภ.ง.ด.1ก</li>
+    </ol>
+    <p data-en="Steps 3 and 4 are the &lt;strong&gt;payroll calculations&lt;/strong&gt; most people picture. They are also where most mistakes happen: tax that is a flat percentage instead of an annual estimate, social security on the wrong base, or a mid-month joiner paid for the full month. Worked examples are in &lt;a href=&quot;/article-how-to-calculate-salary&quot;&gt;how to calculate employee salary&lt;/a&gt;.">ขั้นที่ 3 และ 4 คือ <strong>การคำนวณ Payroll (payroll calculations)</strong> ที่คนส่วนใหญ่นึกถึง และเป็นจุดที่ผิดบ่อยที่สุด เช่น หักภาษีเป็นเปอร์เซ็นต์คงที่แทนการประมาณทั้งปี คิดประกันสังคมผิดฐาน หรือจ่ายเต็มเดือนให้คนที่เข้างานกลางเดือน ดูตัวอย่างคำนวณทีละบรรทัดได้ที่ <a href="/article-how-to-calculate-salary">วิธีคำนวณเงินเดือนพนักงาน</a></p>
+
+    <div class="calcbox">
+      <h4 data-en="A one-person example: salary 30,000 baht">ตัวอย่างพนักงาน 1 คน เงินเดือน 30,000 บาท</h4>
+      <table>
+        <tr><td data-en="Salary">เงินเดือน</td><td>30,000.00</td></tr>
+        <tr><td data-en="Less social security 5% (capped at 875)">หัก ประกันสังคม 5% (เพดาน 875)</td><td>− 875.00</td></tr>
+        <tr><td data-en="Less withholding tax (annual 1,975 ÷ 12)">หัก ภาษี ณ ที่จ่าย (ทั้งปี 1,975 ÷ 12)</td><td>− 164.58</td></tr>
+        <tr><td data-en="Less Employee Welfare Fund 0.25%">หัก กองทุนสงเคราะห์ลูกจ้าง 0.25%</td><td>− 75.00</td></tr>
+        <tr><td data-en="Net pay transferred">เงินเดือนสุทธิที่โอน</td><td>28,885.42</td></tr>
+      </table>
+    </div>
+    <p style="font-size:13.5px;color:var(--muted)" data-en="Single, no other allowances, no OT or bonus. The employer also pays its own 875 social security and 75 welfare fund contribution on top of the salary.">สมมติโสด ไม่มีลดหย่อนอื่น ไม่มีโอทีหรือโบนัส นายจ้างยังต้องจ่ายสมทบประกันสังคม 875 บาทและกองทุนสงเคราะห์ลูกจ้าง 75 บาทในส่วนของตัวเองเพิ่มจากเงินเดือนด้วย</p>
+
+    <h2 data-en="Payroll vs salary: what is the difference?">Salary กับ Payroll ต่างกันอย่างไร</h2>
+    <div class="cmpwrap">
+      <table class="cmp">
+        <thead><tr><th data-en="Topic">หัวข้อ</th><th>Salary (เงินเดือน)</th><th>Payroll (ระบบเงินเดือน)</th></tr></thead>
+        <tbody>
+          <tr><td data-en="What it is">คืออะไร</td><td data-en="The agreed pay for one employee">ค่าจ้างที่ตกลงกับพนักงานหนึ่งคน</td><td data-en="The process of paying all employees and filing the forms">กระบวนการจ่ายเงินพนักงานทุกคนและยื่นเอกสาร</td></tr>
+          <tr><td data-en="Scope">ขอบเขต</td><td data-en="One number per person">ตัวเลขเดียวต่อคน</td><td data-en="Hours, OT, allowances, tax, SSO, funds, transfers, payslips, filings">เวลา โอที เงินเพิ่ม ภาษี ปกส. กองทุน การโอน สลิป การยื่นแบบ</td></tr>
+          <tr><td data-en="Who cares">ใครสนใจ</td><td data-en="The employee">พนักงาน</td><td data-en="Employer, HR/accounting, Revenue Department, SSO">นายจ้าง HR/บัญชี กรมสรรพากร สำนักงานประกันสังคม</td></tr>
+          <tr><td data-en="Example">ตัวอย่าง</td><td data-en="30,000 baht a month">30,000 บาท/เดือน</td><td data-en="Net 28,885.42 paid, tax and SSO remitted, payslip and PND.1 done">โอนสุทธิ 28,885.42 นำส่งภาษีและ ปกส. ออกสลิปและ ภ.ง.ด.1 แล้ว</td></tr>
+          <tr><td data-en="When wrong">ถ้าผิด</td><td data-en="One unhappy employee">พนักงานหนึ่งคนไม่พอใจ</td><td data-en="Surcharges, fines, corrected filings for every month affected">เงินเพิ่ม ค่าปรับ และต้องยื่นแก้ทุกเดือนที่ผิด</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-en="So &lt;strong&gt;payroll salary&lt;/strong&gt; questions (&quot;payroll เงินเดือน&quot;) are really about the process around the number: how it is calculated, what is deducted and what has to be reported.">ดังนั้นคำถามเรื่อง <strong>Payroll เงินเดือน</strong> จริง ๆ แล้วคือเรื่องกระบวนการรอบตัวเลขนั้น ว่าคิดยังไง หักอะไร และต้องรายงานอะไรบ้าง</p>
+
+    <h2 data-en="Payroll vs HR">Payroll กับ HR ต่างกันยังไง</h2>
+    <p data-en="&lt;strong&gt;HR&lt;/strong&gt; (human resources) covers the whole employee lifecycle: recruiting, contracts, onboarding, training, appraisals, discipline, welfare and leaving. &lt;strong&gt;Payroll&lt;/strong&gt; is one function inside that, the money part. When people search for &quot;HR payroll&quot;, they usually mean the payroll work an HR officer does, or software that combines both.">งาน <strong>HR (ทรัพยากรบุคคล)</strong> ครอบคลุมชีวิตพนักงานทั้งหมด ตั้งแต่สรรหา ทำสัญญา ปฐมนิเทศ ฝึกอบรม ประเมินผล วินัย สวัสดิการ จนถึงพ้นสภาพ ส่วน <strong>Payroll</strong> เป็นหนึ่งงานในนั้น คือส่วนที่เกี่ยวกับเงิน คำว่า <strong>HR Payroll</strong> ที่คนค้นหา มักหมายถึงงานเงินเดือนที่เจ้าหน้าที่ HR ทำ หรือโปรแกรมที่รวมทั้งสองอย่างไว้ด้วยกัน</p>
+    <p data-en="In small companies one person often does both, and the owner or the accountant runs payroll. That is fine, but the skills are different: HR is about people and policy, payroll is about rules, deadlines and arithmetic that must be exact. More on choosing between a full HR suite and payroll-only software in &lt;a href=&quot;/article-hr-online&quot;&gt;online HR systems&lt;/a&gt;.">ในบริษัทเล็ก คนเดียวมักทำทั้งสองงาน หรือเจ้าของกิจการ/นักบัญชีเป็นคนทำเงินเดือนเอง ซึ่งไม่ผิด แต่ทักษะต่างกัน HR เน้นคนและนโยบาย ส่วน Payroll เน้นกฎ กำหนดเวลา และตัวเลขที่ต้องถูกเป๊ะ อ่านต่อเรื่องเลือกระบบ HR เต็มรูปแบบหรือโปรแกรมเงินเดือนอย่างเดียวได้ที่ <a href="/article-hr-online">ระบบ HR ออนไลน์</a></p>
+
+    <h2 data-en="What does a payroll system or payroll software do?">ระบบ Payroll / โปรแกรม Payroll คืออะไร</h2>
+    <p data-en="A &lt;strong&gt;payroll system&lt;/strong&gt; is the set of rules, data and tools a company uses to run the eight steps above. &lt;strong&gt;Payroll software&lt;/strong&gt; is a program that automates most of them: you keep employee data and monthly inputs (hours, OT, leave) up to date, and it calculates tax, social security and funds to Thai law, prints payslips, and produces PND.1, SSO 1-10 and 50 Bis without retyping.">
+      <strong>ระบบ Payroll</strong> คือชุดกฎ ข้อมูล และเครื่องมือที่บริษัทใช้ทำ 8 ขั้นข้างบน ส่วน <strong>โปรแกรม Payroll</strong> คือโปรแกรมที่ทำส่วนใหญ่ให้อัตโนมัติ คุณดูแลข้อมูลพนักงานและข้อมูลประจำเดือน (เวลา โอที วันลา) ให้ถูกต้อง แล้วโปรแกรมคำนวณภาษี ประกันสังคม และกองทุนตามกฎหมายไทย พิมพ์สลิป และออก ภ.ง.ด.1 สปส.1-10 และ 50 ทวิ ให้โดยไม่ต้องคีย์ซ้ำ</p>
+
+    <h2 data-en="Doing it in Excel vs using payroll software">ทำเองด้วย Excel vs ใช้โปรแกรม Payroll</h2>
+    <div class="cmpwrap">
+      <table class="cmp">
+        <thead><tr><th data-en="Topic">เรื่อง</th><th>Excel</th><th data-en="Payroll software">โปรแกรม Payroll</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Cost">ค่าใช้จ่าย</td><td data-en="Free, but costs staff time">ฟรี แต่เสียเวลาคน</td><td data-en="Monthly fee (some free for small teams)">ค่าบริการรายเดือน (บางเจ้าฟรีสำหรับทีมเล็ก)</td></tr>
+          <tr><td data-en="Tax calculation">คำนวณภาษี</td><td data-en="Formulas you build and maintain">สูตรที่ต้องสร้างและดูแลเอง</td><td data-en="Annual estimate per person, built in">ประมาณทั้งปีรายคนให้อัตโนมัติ</td></tr>
+          <tr><td data-en="Law changes">กฎหมายเปลี่ยน</td><td data-en="You must notice and fix formulas">ต้องรู้เองและแก้สูตรเอง</td><td data-en="Provider updates the rules">ผู้ให้บริการอัปเดตให้</td></tr>
+          <tr><td data-en="Government forms">เอกสารราชการ</td><td data-en="Retype into each form">คีย์ซ้ำลงแต่ละแบบ</td><td data-en="Generated from the same data">ออกจากข้อมูลชุดเดียวกัน</td></tr>
+          <tr><td data-en="Mistake risk">ความเสี่ยงผิดพลาด</td><td data-en="High once you have joiners, leavers, OT">สูงเมื่อมีคนเข้า–ออกและโอที</td><td data-en="Lower, rules are applied the same way every month">ต่ำกว่า เพราะใช้กฎเดียวกันทุกเดือน</td></tr>
+          <tr><td data-en="Suits">เหมาะกับ</td><td data-en="1–5 monthly staff, no turnover">พนักงานรายเดือน 1–5 คน ไม่ค่อยมีคนเข้าออก</td><td data-en="5+ staff, daily wages, OT, several companies">5 คนขึ้นไป มีรายวัน โอที หรือหลายบริษัท</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-en="A fuller breakdown, including the hidden hours Excel costs, is in &lt;a href=&quot;/article-payroll-vs-excel&quot;&gt;payroll software vs Excel&lt;/a&gt;.">เปรียบเทียบแบบละเอียด รวมถึงชั่วโมงแฝงที่ Excel กินไป อ่านได้ที่ <a href="/article-payroll-vs-excel">โปรแกรมเงินเดือน vs Excel</a></p>
+
+    <h2 data-en="What Thai law requires of payroll">Payroll ต้องทำอะไรตามกฎหมายไทย</h2>
+    <p data-en="Every employer in Thailand, whatever its size, has the same core obligations. Missing a deadline brings surcharges even when the amounts are right.">นายจ้างทุกรายในไทย ไม่ว่าเล็กหรือใหญ่ มีหน้าที่หลักชุดเดียวกัน ยื่นช้าแม้ยอดถูกก็โดนเงินเพิ่มได้</p>
+    <div class="feat"><span class="num">1</span><h4 data-en="Withholding tax and PND.1 (monthly)">ภาษีหัก ณ ที่จ่าย และ ภ.ง.ด.1 (ทุกเดือน)</h4>
+      <p data-en="Estimate each employee's tax for the year, withhold the monthly share, and file PND.1 by the 7th of the following month (15th if filed online). See &lt;a href=&quot;/article-withholding-tax&quot;&gt;how to calculate withholding tax on salary&lt;/a&gt;.">ประมาณภาษีทั้งปีของพนักงานแต่ละคน หักส่วนของแต่ละเดือน แล้วยื่น ภ.ง.ด.1 ภายในวันที่ 7 ของเดือนถัดไป (ยื่นออนไลน์ได้ถึงวันที่ 15) ดูวิธีคิดที่ <a href="/article-withholding-tax">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</a></p></div>
+    <div class="feat"><span class="num">2</span><h4 data-en="Social security and SSO 1-10 (monthly)">ประกันสังคม และ สปส.1-10 (ทุกเดือน)</h4>
+      <p data-en="Deduct 5% of wages (base 1,650–17,500, so at most 875 baht), add the same employer contribution, and remit with SSO 1-10 by the 15th of the following month. Details in &lt;a href=&quot;/article-social-security&quot;&gt;social security at 5%, capped at 875&lt;/a&gt;.">หักลูกจ้าง 5% ของค่าจ้าง (ฐาน 1,650–17,500 จึงหักสูงสุด 875 บาท) นายจ้างสมทบเท่ากัน แล้วนำส่งพร้อม สปส.1-10 ภายในวันที่ 15 ของเดือนถัดไป รายละเอียดที่ <a href="/article-social-security">ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</a></p></div>
+    <div class="feat"><span class="num">3</span><h4 data-en="Employee Welfare Fund (from 1 Oct 2026)">กองทุนสงเคราะห์ลูกจ้าง (เริ่ม 1 ต.ค. 2569)</h4>
+      <p data-en="Employers not covered by a registered provident fund deduct 0.25% of wages and contribute the same. Who is covered and how to file: &lt;a href=&quot;/article-welfare-fund&quot;&gt;Employee Welfare Fund 0.25%&lt;/a&gt;.">นายจ้างที่ไม่มีกองทุนสำรองเลี้ยงชีพจดทะเบียน ต้องหักลูกจ้าง 0.25% ของค่าจ้างและสมทบเท่ากัน ใครต้องจ่ายและยื่นยังไงดูที่ <a href="/article-welfare-fund">กองทุนสงเคราะห์ลูกจ้าง 0.25%</a></p></div>
+    <div class="feat"><span class="num">4</span><h4 data-en="50 Bis and PND.1 Kor (yearly)">50 ทวิ และ ภ.ง.ด.1ก (ทุกปี)</h4>
+      <p data-en="Give every employee a 50 Bis certificate showing the year's income and tax withheld, and file the annual PND.1 Kor by the end of February. See &lt;a href=&quot;/article-50tawi-pnd1&quot;&gt;50 Bis and PND.1&lt;/a&gt;.">ออกหนังสือรับรอง 50 ทวิ แสดงเงินได้และภาษีที่หักทั้งปีให้พนักงานทุกคน และยื่น ภ.ง.ด.1ก ภายในสิ้นเดือนกุมภาพันธ์ ดูที่ <a href="/article-50tawi-pnd1">50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</a></p></div>
+    <div class="feat"><span class="num">5</span><h4 data-en="Pay records and payslips">หลักฐานการจ่ายและสลิปเงินเดือน</h4>
+      <p data-en="The Labour Protection Act requires wage records to be kept for at least two years, and wages to be paid at least once a month.">พ.ร.บ.คุ้มครองแรงงาน กำหนดให้เก็บเอกสารเกี่ยวกับการจ่ายค่าจ้างไม่น้อยกว่า 2 ปี และต้องจ่ายค่าจ้างอย่างน้อยเดือนละครั้ง</p></div>
+
+    <h2 data-en="Pay cycles">รอบจ่ายเงินเดือน</h2>
+    <p data-en="Thai law requires wages to be paid at least once a month. Most companies pay monthly staff once a month, often on the 25th or the last working day. Daily-wage staff are commonly paid twice a month or weekly. Whatever the cycle, the &lt;strong&gt;tax and social security period is still the calendar month&lt;/strong&gt;: everything paid within the month is added together for PND.1 and SSO 1-10.">กฎหมายไทยกำหนดให้จ่ายค่าจ้างอย่างน้อยเดือนละครั้ง บริษัทส่วนใหญ่จ่ายพนักงานรายเดือนเดือนละครั้ง มักเป็นวันที่ 25 หรือวันทำงานสุดท้ายของเดือน ส่วนพนักงานรายวันมักจ่ายเดือนละ 2 รอบหรือรายสัปดาห์ ไม่ว่าจะจ่ายกี่รอบ <strong>งวดภาษีและประกันสังคมยังเป็นรายเดือนปฏิทินเสมอ</strong> ทุกยอดที่จ่ายในเดือนนั้นต้องรวมกันเพื่อยื่น ภ.ง.ด.1 และ สปส.1-10</p>
+    <div class="warn" data-en="&lt;strong&gt;Common trap:&lt;/strong&gt; calculating social security separately on each half-month payment. The 875 cap applies to the month, not to each payment, so split payments must be combined first."><strong>กับดักที่เจอบ่อย:</strong> คิดประกันสังคมแยกทีละรอบครึ่งเดือน เพดาน 875 บาทใช้กับทั้งเดือน ไม่ใช่ต่อรอบ จึงต้องรวมยอดทุกรอบในเดือนก่อนคิด</div>
+
+    <div data-kwlink="1" style="background:var(--accent-bg);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:15px 18px;margin:22px 0;color:#1f2937" data-en="If you want to see the whole process run for you, &lt;a href=&quot;/&quot; style=&quot;color:var(--brand);font-weight:700&quot;&gt;eSimPayroll payroll software for SMEs&lt;/a&gt; calculates tax, social security and the welfare fund, then prints payslips, PND.1, SSO 1-10 and 50 Bis. Free forever for up to 10 employees.">อยากเห็นทั้งกระบวนการทำงานให้อัตโนมัติ ลองดู <a href="/" style="color:var(--brand);font-weight:700">ระบบ Payroll สำหรับ SME</a> ที่คำนวณภาษี ประกันสังคม และกองทุนสงเคราะห์ลูกจ้าง แล้วพิมพ์สลิป ภ.ง.ด.1 สปส.1-10 และ 50 ทวิ ให้ครบ ใช้ฟรีถาวรสำหรับพนักงานไม่เกิน 10 คน</div>
+
+    <h2 data-en="Frequently asked questions">คำถามที่พบบ่อย</h2>
+    <div class="faq">
+      <details><summary data-en="What is payroll?">Payroll คืออะไร</summary>
+        <p data-en="Payroll is the process of paying employees: calculating gross pay, deducting tax, social security and funds, paying net salary, issuing payslips and filing PND.1, SSO 1-10 and 50 Bis with the government.">Payroll คือกระบวนการจ่ายค่าจ้างพนักงาน ตั้งแต่คำนวณเงินได้ หักภาษี ประกันสังคม และกองทุน โอนเงินเดือนสุทธิ ออกสลิป ไปจนถึงยื่น ภ.ง.ด.1 สปส.1-10 และออก 50 ทวิ ให้หน่วยงานรัฐ</p></details>
+      <details><summary data-en="What is the difference between salary and payroll?">Salary กับ Payroll ต่างกันอย่างไร</summary>
+        <p data-en="Salary is the agreed pay of one employee. Payroll is the whole process of paying all employees correctly and filing the related tax and social security forms.">Salary คือค่าจ้างที่ตกลงกับพนักงานหนึ่งคน ส่วน Payroll คือกระบวนการทั้งหมดในการจ่ายเงินพนักงานทุกคนให้ถูกต้อง และยื่นแบบภาษีกับประกันสังคมที่เกี่ยวข้อง</p></details>
+      <details><summary data-en="What is a payroll system?">ระบบ Payroll คืออะไร</summary>
+        <p data-en="A payroll system is the set of data, rules and tools a company uses to run payroll each month. Today it usually means payroll software that calculates tax and social security automatically and produces payslips and government forms.">ระบบ Payroll คือชุดข้อมูล กฎ และเครื่องมือที่บริษัทใช้ทำเงินเดือนทุกเดือน ปัจจุบันมักหมายถึงโปรแกรมเงินเดือนที่คำนวณภาษีและประกันสังคมอัตโนมัติ และออกสลิปกับเอกสารราชการให้</p></details>
+      <details><summary data-en="Is HR payroll the same as HR?">HR Payroll คืออะไร ต่างจาก HR ไหม</summary>
+        <p data-en="HR payroll is the payroll function within HR. HR covers the whole employee lifecycle, while payroll is only the pay, tax and filing part.">HR Payroll คืองานเงินเดือนที่อยู่ภายใต้งาน HR โดย HR ดูแลพนักงานตลอดวงจรการทำงาน ส่วน Payroll ดูแลเฉพาะเรื่องค่าจ้าง ภาษี และการยื่นเอกสาร</p></details>
+      <details><summary data-en="Which forms must payroll file in Thailand?">ทำ Payroll ต้องยื่นเอกสารอะไรบ้าง</summary>
+        <p data-en="Monthly: PND.1 to the Revenue Department and SSO 1-10 to the Social Security Office, plus the Employee Welfare Fund remittance from October 2026. Yearly: 50 Bis certificates for every employee and PND.1 Kor by the end of February.">รายเดือน: ภ.ง.ด.1 ยื่นกรมสรรพากร และ สปส.1-10 ยื่นสำนักงานประกันสังคม รวมถึงนำส่งกองทุนสงเคราะห์ลูกจ้างตั้งแต่ตุลาคม 2569 รายปี: ออก 50 ทวิ ให้พนักงานทุกคน และยื่น ภ.ง.ด.1ก ภายในสิ้นเดือนกุมภาพันธ์</p></details>
+      <details><summary data-en="When is it worth moving from Excel to payroll software?">เมื่อไหร่ควรเลิกใช้ Excel แล้วเปลี่ยนมาใช้โปรแกรม Payroll</summary>
+        <p data-en="Usually once you have about five or more employees, daily-wage staff, regular overtime, people joining or leaving mid-month, or more than one company. At that point the time spent and the risk of a wrong filing typically cost more than the software.">โดยทั่วไปเมื่อมีพนักงานประมาณ 5 คนขึ้นไป มีพนักงานรายวัน มีโอทีเป็นประจำ มีคนเข้า–ออกกลางเดือน หรือดูแลหลายบริษัท เพราะถึงจุดนั้นเวลาที่เสียไปและความเสี่ยงยื่นผิดมักแพงกว่าค่าโปรแกรม</p></details>
+    </div>
+
+    <h2 data-en="In short">สรุป</h2>
+    <p data-en="Payroll is not just paying salaries. It is a monthly cycle of calculating, deducting, paying, documenting and filing, with legal deadlines attached. Get the eight steps right, know your five legal duties, and choose tools that match your size: Excel for a handful of monthly staff, software once turnover, OT or daily wages appear.">Payroll ไม่ใช่แค่การจ่ายเงินเดือน แต่เป็นวงจรประจำเดือนของการคำนวณ หัก จ่าย ออกเอกสาร และยื่นแบบ ที่มีกำหนดเวลาตามกฎหมาย ทำ 8 ขั้นให้ถูก รู้หน้าที่ 5 ข้อตามกฎหมาย และเลือกเครื่องมือให้เหมาะกับขนาด ใช้ Excel ได้เมื่อมีพนักงานรายเดือนไม่กี่คน และเปลี่ยนมาใช้โปรแกรมเมื่อเริ่มมีคนเข้าออก โอที หรือพนักงานรายวัน</p>
+
+    <div class="cta-band">
+      <h2 data-en="Try eSimPayroll free for 30 days">ทดลองใช้ eSimPayroll ฟรี 30 วัน</h2>
+      <p data-en="No credit card, nothing to install. Enter one month you have already paid and compare every figure with your own records.">ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้งอะไร ลองกรอกเดือนที่จ่ายไปแล้วจริง แล้วเทียบทุกตัวเลขกับของเดิม</p>
+      <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
+        <a href="/pricing" class="btn ghost" data-en="See pricing">ดูราคา</a>
+      </div>
+    </div>
+  </article>
+</div>
+
+<section style="background:var(--bg);border-top:1px solid var(--line)">
+  <div class="wrap wide">
+    <h2 class="more-h" data-en="More articles">บทความอื่น ๆ</h2>
+    <div class="artwrap">
+      <button class="arrow prev" id="artPrev" aria-label="เลื่อนซ้าย">‹</button>
+      <button class="arrow next" id="artNext" aria-label="เลื่อนขวา">›</button>
+      <div class="cards">
+      <a href="/article-welfare-fund" class="card">
+        <div class="cover"><img width="760" height="436" loading="lazy" alt="กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% ที่นายจ้างต้องรู้" data-en-alt="Employee Welfare Fund 0.25% deduction: what employers need to know" src="/media/covers/employee-welfare-fund-thailand-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="New law">กฎหมายใหม่</span>
+          <h3 data-en="Employee Welfare Fund: 0.25% deduction from 1 Oct 2026, the full summary">กองทุนสงเคราะห์ลูกจ้าง หัก 0.25% เริ่ม 1 ต.ค. 2569 สรุปครบ</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="/article-withholding-tax" class="card">
+        <div class="cover"><img width="760" height="507" loading="lazy" alt="วิธีคำนวณภาษีหัก ณ ที่จ่ายจากเงินเดือน" data-en-alt="How to calculate withholding tax from salary" src="/media/covers/payroll-withholding-tax-calculation-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="Tax">ภาษี</span>
+          <h3 data-en="How to calculate withholding tax on salary">ภาษีหัก ณ ที่จ่ายเงินเดือน คำนวณยังไง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="/article-social-security" class="card">
+        <div class="cover"><img width="760" height="507" loading="lazy" alt="วิธีคำนวณเงินเดือนพนักงาน ประกันสังคม และภาษี" data-en-alt="How to calculate employee salary, social security and tax" src="/media/covers/social-security-contribution-thailand-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="Social security">ประกันสังคม</span>
+          <h3 data-en="Social security at 5%, capped at 875 baht: how it works">ประกันสังคม 5% เพดาน 875 บาท คิดยังไง</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+
+      <a href="/article-50tawi-pnd1" class="card">
+        <div class="cover"><img width="760" height="507" loading="lazy" alt="เอกสารภาษี 50 ทวิ และแบบ ภ.ง.ด.1 ที่นายจ้างต้องยื่น" data-en-alt="50 Bis and PND.1 tax documents employers must file" src="/media/covers/50-bis-pnd1-tax-documents-card.jpg"></div>
+        <div class="body"><span class="tag" data-en="Documents">เอกสาร</span>
+          <h3 data-en="50 Bis and PND.1: what they are and when to file">50 ทวิ และ ภ.ง.ด.1 คืออะไร ยื่นเมื่อไหร่</h3>
+          <span class="more" data-en="Read more →">อ่านต่อ →</span></div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="cta-band">
+<h2 data-en="eSimPayroll, online payroll software for Thai businesses">eSimPayroll โปรแกรมเงินเดือนออนไลน์สำหรับธุรกิจไทย</h2>
+    <p data-en="Calculates withholding tax, social security and funds to Thai law, then produces payslips, 50 Bis, PND.1 and SSO 1-10 ready to file. 30 days free, no credit card, nothing to install.">คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตามกฎหมายไทย ออกสลิปเงินเดือน 50 ทวิ ภ.ง.ด.1 และ สปส.1-10 พร้อมยื่น ทดลองฟรี 30 วัน ไม่ต้องใช้บัตรเครดิต ไม่ต้องติดตั้ง</p>
+    <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="/app#signup" class="btn primary" data-en="🚀 Start the 30-day free trial">🚀 เริ่มใช้งานฟรี 30 วัน</a>
+      <a href="/" class="btn ghost" data-en="See all features">ดูฟีเจอร์ทั้งหมด</a>
+      <a href="/pricing" class="btn ghost" data-en="See pricing">ดูราคา</a>
+    </div>
+  </div>
+</div>
+
+<!--#footer-->
+<footer>
+  <div class="wrap">
+    <div class="ft-grid">
+
+      <div>
+        <div class="ft-brand"><svg viewBox="0 0 44 44" width="28" height="28" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="lgFt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset=".55" stop-color="#17557f"/><stop offset="1" stop-color="#092942"/></linearGradient></defs><rect width="44" height="44" rx="22" fill="url(#lgFt)"/><path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>eSim<span style="color:var(--brand)">Payroll</span></span></div>
+        <div class="ft-tag" data-en="Online payroll for Thai businesses, tax, social security, provident fund and every official form, all calculated for you.">ระบบเงินเดือนออนไลน์สำหรับธุรกิจไทย คำนวณภาษี ประกันสังคม กองทุนสำรองเลี้ยงชีพ และออกเอกสารราชการให้ครบ</div>
+        <div class="ft-social">
+          <a class="soc tiktok" href="https://www.tiktok.com/@esimpayroll" target="_blank" rel="noopener" aria-label="TikTok eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 1.9 1.7 3.4 3.9 3.6v3.1c-1.5 0-2.8-.4-3.9-1.2v6.6c0 3.4-2.6 5.9-5.9 5.9A5.8 5.8 0 0 1 4.9 15c0-3.3 2.6-5.9 5.9-5.9.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.8 2.8 0 1 0 2.8 2.8V3z"/></svg></a>
+          <a class="soc fb" href="https://www.facebook.com/people/esimpayroll/61593817897037/" target="_blank" rel="noopener" aria-label="Facebook eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg></a>
+          <a class="soc yt" href="https://www.youtube.com/@esimpayroll" target="_blank" rel="noopener" aria-label="YouTube eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.75-1.77C18.3 5 12 5 12 5s-6.3 0-7.85.43A2.5 2.5 0 0 0 2.4 7.2C2 8.77 2 12 2 12s0 3.23.4 4.8a2.5 2.5 0 0 0 1.75 1.77C5.7 19 12 19 12 19s6.3 0 7.85-.43a2.5 2.5 0 0 0 1.75-1.77C22 15.23 22 12 22 12s0-3.23-.4-4.8zM10 15.02V8.98L15.2 12 10 15.02z"/></svg></a>
+          <a class="soc ig" href="https://www.instagram.com/esimpayroll" target="_blank" rel="noopener" aria-label="Instagram eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="4.6"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+          <a class="soc line" href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener" aria-label="LINE eSimPayroll">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.1c-5 0-9 3.3-9 7.4 0 3.6 3.2 6.7 7.5 7.3.3.1.7.2.8.5.1.2.1.6 0 .9l-.1.8c0 .2-.2.9.8.5s5.2-3.1 7.1-5.3c1.3-1.4 1.9-2.9 1.9-4.7 0-4.1-4-7.4-9-7.4zM8.5 13H6.9a.5.5 0 0 1-.5-.5V9.4a.5.5 0 0 1 1 0v2.7h1.1a.5.5 0 0 1 0 1zm1.8-.5a.5.5 0 0 1-1 0V9.4a.5.5 0 0 1 1 0zm4.4 0a.5.5 0 0 1-.9.3l-1.6-2.1v1.8a.5.5 0 0 1-1 0V9.4a.5.5 0 0 1 .9-.3l1.6 2.2V9.4a.5.5 0 0 1 1 0zm2.9-2.1a.5.5 0 0 1 0 1h-1.1v.6h1.1a.5.5 0 0 1 0 1H16a.5.5 0 0 1-.5-.5V9.4a.5.5 0 0 1 .5-.5h1.6a.5.5 0 0 1 0 1h-1.1v.5z"/></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Menu">เมนู</div>
+        <ul class="ft-list">
+          <li><a href="/#features" data-en="Features">ฟีเจอร์</a></li>
+          <li><a href="/pricing" data-en="Pricing">แพ็กเกจและราคา</a></li>
+          <li><a href="/articles" data-en="Articles">บทความ</a></li>
+          <li><a href="/about" data-en="About us">เกี่ยวกับเรา</a></li>
+          <li><a href="/app#signup" data-en="30-day free trial">ทดลองฟรี 30 วัน</a></li>
+          <li><a href="/contact" data-en="Contact us">ติดต่อเรา</a></li>
+          <li><a href="/refund" data-en="Cancellation &amp; refunds">การยกเลิกและคืนเงิน</a></li>
+          <li><a href="/privacy" data-en="Privacy policy">นโยบายความเป็นส่วนตัว</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="ft-h" data-en="Contact">ติดต่อเรา</div>
+        <div class="ft-line">
+          <a href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener">
+            <img src="/brand/line-qr-512.png?v=3" alt="LINE @esimpayroll" class="ft-qr" width="88" height="88" loading="lazy">
+          </a>
+          <div>
+            <a href="https://line.me/R/ti/p/@esimpayroll" target="_blank" rel="noopener" class="ft-lineid" data-en="Add friend">เพิ่มเพื่อน</a>
+            <div style="font-size:12.5px" data-en="Scan the QR or tap the button">สแกน QR หรือกดปุ่มด้านบน</div>
+            <div style="margin-top:9px"><a href="mailto:hello@esimpayroll.com" class="ft-mail">hello@esimpayroll.com</a></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ft-bot">
+      <div data-en="© 2026 eSimPayroll · All rights reserved">© 2569 eSimPayroll · สงวนลิขสิทธิ์</div>
+      <div data-en="Made for Thai businesses 🇹🇭">พัฒนาเพื่อธุรกิจไทย 🇹🇭</div>
+    </div>
+  </div>
+</footer>
+<!--/footer-->
+
+<script>
+(function(){
+  var KEY='lang';
+  function apply(l){
+    document.documentElement.lang = (l==='en'?'en':'th');
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      if(!el.hasAttribute('data-th')) el.setAttribute('data-th', el.innerHTML);
+      el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-th');
+    });
+    document.querySelectorAll('[data-en-ph]').forEach(function(el){
+      if(!el.hasAttribute('data-th-ph')) el.setAttribute('data-th-ph', el.placeholder||'');
+      el.placeholder = (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-th-ph');
+    });
+
+  document.querySelectorAll('[data-en-alt]').forEach(function(el){
+    if(!el.hasAttribute('data-th-alt')) el.setAttribute('data-th-alt', el.alt||'');
+    el.alt = (l==='en') ? el.getAttribute('data-en-alt') : el.getAttribute('data-th-alt');
+  });
+    var b=document.getElementById('langBtn'); if(b) b.textContent = (l==='en'?'🌐 TH':'🌐 EN');
+    try{ localStorage.setItem(KEY,l); }catch(e){}
+  }
+  var cur='th'; try{ cur = localStorage.getItem(KEY)||'th'; }catch(e){}
+  window.__setLang=apply;
+  document.addEventListener('DOMContentLoaded',function(){
+    apply(cur);
+    var b=document.getElementById('langBtn');
+    if(b) b.onclick=function(){ cur=(cur==='en'?'th':'en'); apply(cur); };
+  });
+})();
+</script>
+<script>
+/* แถว "บทความอื่น ๆ" · ลากการ์ดเลื่อนได้ + ปุ่มลูกศรเลื่อนทีละใบ (เหมือนหน้าแรก) */
+(function(){
+  var box=document.querySelector('.cards'), prev=document.getElementById('artPrev'), next=document.getElementById('artNext');
+  if(!box) return;
+  var GAP=parseFloat(getComputedStyle(box).gap)||22;
+  function step(){ var c=box.querySelector('.card'); return c ? c.getBoundingClientRect().width+GAP : 300; }
+  function sync(){
+    if(!prev||!next) return;
+    var max=box.scrollWidth-box.clientWidth-2;
+    prev.disabled = box.scrollLeft<=2;
+    next.disabled = box.scrollLeft>=max;
+  }
+  if(prev) prev.onclick=function(){ box.scrollBy({left:-step(),behavior:'smooth'}); };
+  if(next) next.onclick=function(){ box.scrollBy({left: step(),behavior:'smooth'}); };
+  box.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync);
+  window.addEventListener('load',sync);
+  /* จับการเปลี่ยนขนาดจริง, event resize อย่างเดียวพลาดได้เมื่อ layout เปลี่ยนจากสาเหตุอื่น */
+  if(window.ResizeObserver){ try{ new ResizeObserver(sync).observe(box); }catch(e){} }
+  setTimeout(sync,60); setTimeout(sync,400); sync();
+
+  var down=false, dragging=false, startX=0, startScroll=0, moved=0, lastX=0, lastT=0, vel=0, glide=0;
+  box.addEventListener('pointerdown', function(e){
+    if(e.pointerType!=='mouse' || e.button!==0) return;
+    cancelAnimationFrame(glide);
+    down=true; dragging=false; moved=0;
+    startX=lastX=e.clientX; startScroll=box.scrollLeft; lastT=e.timeStamp; vel=0;
+  });
+  box.addEventListener('pointermove', function(e){
+    if(!down) return;
+    var dx=e.clientX-startX;
+    if(!dragging){
+      if(Math.abs(dx)<5) return;
+      dragging=true; box.classList.add('grabbing');
+      try{ box.setPointerCapture(e.pointerId); }catch(err){}
+    }
+    e.preventDefault();
+    moved=Math.abs(dx);
+    box.scrollLeft=startScroll-dx;
+    sync();
+    var dt=e.timeStamp-lastT;
+    if(dt>0){ vel=(e.clientX-lastX)/dt; lastX=e.clientX; lastT=e.timeStamp; }
+  });
+  function release(e){
+    if(!down) return;
+    down=false;
+    if(!dragging) return;
+    try{ box.releasePointerCapture(e.pointerId); }catch(err){}
+    box.classList.remove('grabbing'); dragging=false; sync();
+    var v=vel*16;
+    function stop(){ box.style.scrollSnapType=''; box.style.scrollBehavior=''; sync(); }
+    setTimeout(stop, 800);
+    (function slide(){
+      if(Math.abs(v)<0.6){ stop(); return; }
+      box.style.scrollSnapType='none'; box.style.scrollBehavior='auto';
+      box.scrollLeft-=v; v*=0.92; sync();
+      glide=requestAnimationFrame(slide);
+    })();
+  }
+  box.addEventListener('pointerup', release);
+  box.addEventListener('pointercancel', release);
+  box.addEventListener('click', function(e){
+    if(moved>5){ e.preventDefault(); e.stopPropagation(); moved=0; }
+  }, true);
+  box.addEventListener('dragstart', function(e){ e.preventDefault(); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="512" height="512" role="img" aria-label="eSimPayroll">
+  <defs>
+    <linearGradient id="mk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#10b981"/>
+      <stop offset=".55" stop-color="#17557f"/>
+      <stop offset="1" stop-color="#092942"/>
+    </linearGradient>
+  </defs>
+  <circle cx="22" cy="22" r="22" fill="url(#mk)"/>
+  <g transform="translate(22 22) scale(1.32) translate(-22.5 -21.5)">
+    <path d="M28.5 27.5A8.5 8.5 0 1 1 31 21.5H14" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
